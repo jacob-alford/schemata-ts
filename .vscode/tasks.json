@@ -1,0 +1,39 @@
+{
+  "version": "2.0.0",
+  "tasks": [
+    {
+      "label": "build:watch",
+      "runOptions": {
+        "runOn": "folderOpen"
+      },
+      "type": "shell",
+      "command": "yarn",
+      "isBackground": true,
+      "args": ["run", "build:watch"],
+      "group": "build",
+      "presentation": {
+        "reveal": "always",
+        "echo": false,
+        "focus": false,
+        "panel": "dedicated"
+      }
+    },
+    {
+      "label": "test:watch",
+      "runOptions": {
+        "runOn": "folderOpen"
+      },
+      "type": "shell",
+      "command": "yarn",
+      "isBackground": true,
+      "args": ["run", "test:watch"],
+      "group": "none",
+      "presentation": {
+        "reveal": "always",
+        "echo": false,
+        "focus": false,
+        "panel": "dedicated"
+      }
+    }
+  ]
+}

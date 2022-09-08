@@ -1,0 +1,18 @@
+{
+  "extends": "./tsconfig.json",
+  "compilerOptions": {
+    "incremental": true,
+    "rootDir": "./src",
+    "outDir": "./build/esm",
+    "sourceMap": true,
+    "declarationDir": "./build/dts",
+    "declarationMap": true,
+    "declaration": true,
+    "stripInternal": true,
+    "module": "ESNext",
+    "target": "ESNext",
+    "tsBuildInfoFile": "./dist/tsconfig.build.tsbuildinfo"
+  },
+  "include": ["./src"],
+  "exclude": ["src/__tests__/*.ts"]
+}
