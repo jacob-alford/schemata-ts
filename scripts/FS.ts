@@ -1,18 +1,36 @@
+import * as O from 'fp-ts/Option'
+import * as RA from 'fp-ts/ReadonlyArray'
 import * as TE from 'fp-ts/TaskEither'
 import * as T from 'fp-ts/Task'
-import { flow } from 'fp-ts/function'
+import { flow, pipe } from 'fp-ts/function'
 import * as fs from 'fs'
 import G from 'glob'
 
 export interface FileSystem {
   readonly exists: (path: string) => T.Task<boolean>
+  readonly readDirs: (path: string) => TE.TaskEither<Error, ReadonlyArray<string>>
   readonly readFile: (path: string) => TE.TaskEither<Error, string>
+  readonly readFiles: (path: string) => TE.TaskEither<Error, ReadonlyArray<string>>
   readonly writeFile: (path: string, content: string) => TE.TaskEither<Error, void>
   readonly copyFile: (from: string, to: string) => TE.TaskEither<Error, void>
   readonly glob: (pattern: string) => TE.TaskEither<Error, ReadonlyArray<string>>
   readonly mkdir: (path: string) => TE.TaskEither<Error, void>
   readonly moveFile: (from: string, to: string) => TE.TaskEither<Error, void>
 }
+
+const readDirs = TE.taskify<
+  fs.PathLike,
+  { encoding: BufferEncoding; withFileTypes: true },
+  NodeJS.ErrnoException,
+  ReadonlyArray<fs.Dirent>
+>(fs.readdir)
+
+const readFiles = TE.taskify<
+  fs.PathLike,
+  { encoding: BufferEncoding; withFileTypes: false | undefined },
+  NodeJS.ErrnoException,
+  ReadonlyArray<string>
+>(fs.readdir)
 
 const readFile = TE.taskify<
   fs.PathLike,
@@ -41,7 +59,23 @@ export const fileSystem: FileSystem = {
       () => true
     )
   ),
+  readDirs: path =>
+    pipe(
+      readDirs(path, { encoding: 'utf-8', withFileTypes: true }),
+      TE.map(
+        flow(
+          RA.filterMap(dir =>
+            pipe(
+              dir,
+              O.fromPredicate(dir => dir.isDirectory()),
+              O.map(dir => dir.name)
+            )
+          )
+        )
+      )
+    ),
   readFile: path => readFile(path, { encoding: 'utf-8' }),
+  readFiles: path => readFiles(path, { encoding: 'utf-8', withFileTypes: false }),
   writeFile,
   copyFile,
   glob,

@@ -9,6 +9,7 @@
  *
  * @since 0.0.1
  */
+import { Kind, Kind2, URIS, URIS2, HKT } from 'fp-ts/HKT'
 import * as D from 'io-ts/Decoder'
 import * as Eq_ from 'fp-ts/Eq'
 import * as G from 'io-ts/Guard'
@@ -33,6 +34,24 @@ export type Int = number & IntBrand
 
 /**
  * @since 0.0.1
+ * @category Model
+ */
+export type SchemableParams<S> = HKT<S, Int>
+
+/**
+ * @since 0.0.1
+ * @category Model
+ */
+export type SchemableParams1<S extends URIS> = Kind<S, Int>
+
+/**
+ * @since 0.0.1
+ * @category Model
+ */
+export type SchemableParams2C<S extends URIS2> = Kind2<S, unknown, Int>
+
+/**
+ * @since 0.0.1
  * @category Refinements
  */
 export function isInt(n: number): n is Int {
@@ -43,25 +62,25 @@ export function isInt(n: number): n is Int {
  * @since 0.0.1
  * @category Instances
  */
-export const Decoder: D.Decoder<unknown, Int> = pipe(D.number, D.refine(isInt, 'Int'))
+export const Decoder: SchemableParams2C<D.URI> = pipe(D.number, D.refine(isInt, 'Int'))
 
 /**
  * @since 0.0.1
  * @category Instances
  */
-export const Eq: Eq_.Eq<Int> = N.Eq
+export const Eq: SchemableParams1<Eq_.URI> = N.Eq
 
 /**
  * @since 0.0.1
  * @category Instances
  */
-export const Guard: G.Guard<unknown, Int> = pipe(G.number, G.refine(isInt))
+export const Guard: SchemableParams1<G.URI> = pipe(G.number, G.refine(isInt))
 
 /**
  * @since 0.0.1
  * @category Instances
  */
-export const TaskDecoder: TD.TaskDecoder<unknown, Int> = pipe(
+export const TaskDecoder: SchemableParams2C<TD.URI> = pipe(
   TD.number,
   TD.refine(isInt, 'Int')
 )
@@ -70,4 +89,4 @@ export const TaskDecoder: TD.TaskDecoder<unknown, Int> = pipe(
  * @since 0.0.1
  * @category Instances
  */
-export const Type: t.Type<Int> = pipe(t.number, t.refine(isInt, 'Int'))
+export const Type: SchemableParams1<t.URI> = pipe(t.number, t.refine(isInt, 'Int'))

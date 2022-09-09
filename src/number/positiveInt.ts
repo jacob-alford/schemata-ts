@@ -9,6 +9,7 @@
  *
  * @since 0.0.1
  */
+import { Kind, Kind2, URIS, URIS2, HKT } from 'fp-ts/HKT'
 import * as D from 'io-ts/Decoder'
 import * as Eq_ from 'fp-ts/Eq'
 import * as G from 'io-ts/Guard'
@@ -17,7 +18,7 @@ import * as t from 'io-ts/Type'
 import * as N from 'fp-ts/number'
 import { pipe } from 'fp-ts/function'
 
-import { isInt } from './int'
+import { isInt } from './Int'
 
 /**
  * @since 0.0.1
@@ -32,6 +33,24 @@ interface PositiveIntBrand {
  * @category Model
  */
 export type PositiveInt = number & PositiveIntBrand
+
+/**
+ * @since 0.0.1
+ * @category Model
+ */
+export type SchemableParams<S> = HKT<S, PositiveInt>
+
+/**
+ * @since 0.0.1
+ * @category Model
+ */
+export type SchemableParams1<S extends URIS> = Kind<S, PositiveInt>
+
+/**
+ * @since 0.0.1
+ * @category Model
+ */
+export type SchemableParams2C<S extends URIS2> = Kind2<S, unknown, PositiveInt>
 
 /**
  * @since 0.0.1

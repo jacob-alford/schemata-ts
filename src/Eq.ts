@@ -3,35 +3,34 @@
  *
  * @since 0.0.1
  */
-import * as Eq from 'fp-ts/Eq'
-import { Schemable as EqSchemable } from 'io-ts/Eq'
+import * as Eq from 'io-ts/Eq'
 import { SchemableExt1 } from './SchemableExt'
 
 /* number */
-import { Eq as IntEq } from './number/int'
-import { Eq as NegativeIntEq } from './number/negativeInt'
-import { Eq as PositiveIntEq } from './number/positiveInt'
+import * as Int from './number/Int'
+import * as NegativeInt from './number/NegativeInt'
+import * as PositiveInt from './number/PositiveInt'
 
 /* string */
-import { Eq as IsoDateEq } from './string/isoDateString'
+import * as ISODate from './string/ISODateString'
 
 /* date */
-import { Eq as SafeDateEq } from './date/safeDate'
+import * as SafeDate from './date/SafeDate'
 
 /**
  * @since 0.0.1
  * @category Instances
  */
 export const Schemable: SchemableExt1<Eq.URI> = {
-  ...EqSchemable,
+  ...Eq.Schemable,
   /* number */
-  Int: IntEq,
-  NegativeInt: NegativeIntEq,
-  PositiveInt: PositiveIntEq,
+  Int: Int.Eq,
+  NegativeInt: NegativeInt.Eq,
+  PositiveInt: PositiveInt.Eq,
 
   /* string */
-  ISODate: IsoDateEq,
+  ISODate: ISODate.Eq,
 
   /* date */
-  SafeDate: SafeDateEq,
+  SafeDate: SafeDate.Eq,
 }
