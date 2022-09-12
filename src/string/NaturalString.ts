@@ -1,10 +1,10 @@
 /**
- * Negative integer branded newtype string.
+ * Natural branded newtype string.
  *
- * Represents negative integers:
+ * Represents integers:
  *
  * ```math
- *  { z | z ∈ ℤ, z >= -2 ** 53 + 1, z < 0 }
+ *  { z | z ∈ ℤ, z >= 0, z <= 2 ** 53 - 1 }
  * ```
  *
  * @since 0.0.1
@@ -17,56 +17,54 @@ import * as TD from 'io-ts/TaskDecoder'
 import * as t from 'io-ts/Type'
 import * as Str from 'fp-ts/string'
 import { pipe, unsafeCoerce } from 'fp-ts/function'
-
-import { isIntString, toInt } from './IntString'
-import { NegativeInt } from '../number/NegativeInt'
+import { Natural } from '../number/Natural'
 
 /**
  * @since 0.0.1
  * @category Internal
  */
-interface NegativeIntStringBrand {
-  readonly NegativeIntString: unique symbol
+interface NaturalStringBrand {
+  readonly Int: unique symbol
 }
 
 /**
- * Negative integer branded newtype.
+ * Natural branded newtype.
  *
- * Represents negative integers:
+ * Represents integers:
  *
  * ```math
- *  { z | z ∈ ℤ, z >= -2 ** 53 + 1, z < 0 }
+ *  { z | z ∈ ℤ, z >= 0, z <= 2 ** 53 - 1 }
  * ```
  *
  * @since 0.0.1
  * @category Model
  */
-export type NegativeIntString = string & NegativeIntStringBrand
+export type NaturalString = string & NaturalStringBrand
 
 /**
  * @since 0.0.1
  * @category Model
  */
-export type SchemableParams<S> = HKT<S, NegativeIntString>
+export type SchemableParams<S> = HKT<S, NaturalString>
 
 /**
  * @since 0.0.1
  * @category Model
  */
-export type SchemableParams1<S extends URIS> = Kind<S, NegativeIntString>
+export type SchemableParams1<S extends URIS> = Kind<S, NaturalString>
 
 /**
  * @since 0.0.1
  * @category Model
  */
-export type SchemableParams2C<S extends URIS2> = Kind2<S, unknown, NegativeIntString>
+export type SchemableParams2C<S extends URIS2> = Kind2<S, unknown, NaturalString>
 
 /**
  * @since 0.0.1
  * @category Refinements
  */
-export function isNegativeIntString(n: string): n is NegativeIntString {
-  return isIntString(n) && toInt(n) < 0
+export function isNaturalString(n: string): n is NaturalString {
+  return pipe(n, parseFloat, n => Number.isSafeInteger(n) && n >= 0)
 }
 
 /**
@@ -75,7 +73,7 @@ export function isNegativeIntString(n: string): n is NegativeIntString {
  */
 export const Decoder: SchemableParams2C<D.URI> = pipe(
   D.string,
-  D.refine(isNegativeIntString, 'NegativeIntString')
+  D.refine(isNaturalString, 'Natural')
 )
 
 /**
@@ -88,10 +86,7 @@ export const Eq: SchemableParams1<Eq_.URI> = Str.Eq
  * @since 0.0.1
  * @category Instances
  */
-export const Guard: SchemableParams1<G.URI> = pipe(
-  G.string,
-  G.refine(isNegativeIntString)
-)
+export const Guard: SchemableParams1<G.URI> = pipe(G.string, G.refine(isNaturalString))
 
 /**
  * @since 0.0.1
@@ -99,7 +94,7 @@ export const Guard: SchemableParams1<G.URI> = pipe(
  */
 export const TaskDecoder: SchemableParams2C<TD.URI> = pipe(
   TD.string,
-  TD.refine(isNegativeIntString, 'NegativeIntString')
+  TD.refine(isNaturalString, 'Natural')
 )
 
 /**
@@ -108,12 +103,11 @@ export const TaskDecoder: SchemableParams2C<TD.URI> = pipe(
  */
 export const Type: SchemableParams1<t.URI> = pipe(
   t.string,
-  t.refine(isNegativeIntString, 'NegativeIntString')
+  t.refine(isNaturalString, 'Natural')
 )
 
 /**
  * @since 0.0.1
  * @category Destructors
  */
-export const toNegativeInt: (s: NegativeIntString) => NegativeInt = s =>
-  unsafeCoerce(parseInt(s, 10))
+export const toNatural: (n: NaturalString) => Natural = n => unsafeCoerce(parseInt(n))

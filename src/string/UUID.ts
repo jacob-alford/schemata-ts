@@ -1,5 +1,5 @@
 /**
- * Represents strings that conform to the ISO 8601 standard
+ * Represents strings that are UUIDs.
  *
  * @since 0.0.1
  */
@@ -36,6 +36,8 @@ const uuidRegex = {
 }
 
 /**
+ * Represents strings that are UUIDs.
+ *
  * @since 0.0.1
  * @category Model
  */

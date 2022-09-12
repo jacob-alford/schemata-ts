@@ -1,5 +1,5 @@
 /**
- * Positive integer branded newtype.
+ * Positive integer branded newtype string.
  *
  * Represents positive integers:
  *

@@ -10,12 +10,14 @@ import { SchemableExt2C } from './SchemableExt'
 
 /** Number */
 import * as Int from './number/Int'
+import * as Natural from './number/Natural'
 import * as NegativeInt from './number/NegativeInt'
 import * as PositiveInt from './number/PositiveInt'
 
 /** String */
 import * as ISODateString from './string/ISODateString'
 import * as IntString from './string/IntString'
+import * as NaturalString from './string/NaturalString'
 import * as NegativeIntString from './string/NegativeIntString'
 import * as PositiveIntString from './string/PositiveIntString'
 import * as UUID from './string/UUID'
@@ -30,10 +32,12 @@ import * as SafeDate from './date/SafeDate'
 export const Schemable: SchemableExt2C<D.URI> = {
   ...D.Schemable,
   Int: Int.Decoder,
+  Natural: Natural.Decoder,
   NegativeInt: NegativeInt.Decoder,
   PositiveInt: PositiveInt.Decoder,
   ISODateString: ISODateString.Decoder,
   IntString: IntString.Decoder,
+  NaturalString: NaturalString.Decoder,
   NegativeIntString: NegativeIntString.Decoder,
   PositiveIntString: PositiveIntString.Decoder,
   UUID: UUID.Decoder,
