@@ -19,6 +19,7 @@ import * as ISODateString from './string/ISODateString'
 import * as IntString from './string/IntString'
 import * as NaturalString from './string/NaturalString'
 import * as NegativeIntString from './string/NegativeIntString'
+import * as NonemptyString from './string/NonemptyString'
 import * as PositiveIntString from './string/PositiveIntString'
 import * as UUID from './string/UUID'
 
@@ -39,6 +40,7 @@ export const Schemable: SchemableExt1<G.URI> = {
   IntString: IntString.Guard,
   NaturalString: NaturalString.Guard,
   NegativeIntString: NegativeIntString.Guard,
+  NonemptyString: NonemptyString.Guard,
   PositiveIntString: PositiveIntString.Guard,
   UUID: UUID.Guard,
   SafeDate: SafeDate.Guard,

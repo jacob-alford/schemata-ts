@@ -19,6 +19,7 @@ import * as ISODateString from './string/ISODateString'
 import * as IntString from './string/IntString'
 import * as NaturalString from './string/NaturalString'
 import * as NegativeIntString from './string/NegativeIntString'
+import * as NonemptyString from './string/NonemptyString'
 import * as PositiveIntString from './string/PositiveIntString'
 import * as UUID from './string/UUID'
 
@@ -39,6 +40,7 @@ export const Schemable: SchemableExt2C<TD.URI> = {
   IntString: IntString.TaskDecoder,
   NaturalString: NaturalString.TaskDecoder,
   NegativeIntString: NegativeIntString.TaskDecoder,
+  NonemptyString: NonemptyString.TaskDecoder,
   PositiveIntString: PositiveIntString.TaskDecoder,
   UUID: UUID.TaskDecoder,
   SafeDate: SafeDate.TaskDecoder,
