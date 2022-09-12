@@ -8,15 +8,16 @@
 import * as TD from 'io-ts/TaskDecoder'
 import { SchemableExt2C } from './SchemableExt'
 
-/* number */
+/** Number */
 import * as Int from './number/Int'
 import * as NegativeInt from './number/NegativeInt'
 import * as PositiveInt from './number/PositiveInt'
 
-/* string */
-import * as IsoDate from './string/ISODateString'
+/** String */
+import * as ISODateString from './string/ISODateString'
+import * as UUID from './string/UUID'
 
-/* date */
+/** Date */
 import * as SafeDate from './date/SafeDate'
 
 /**
@@ -25,14 +26,10 @@ import * as SafeDate from './date/SafeDate'
  */
 export const Schemable: SchemableExt2C<TD.URI> = {
   ...TD.Schemable,
-  /* number */
   Int: Int.TaskDecoder,
   NegativeInt: NegativeInt.TaskDecoder,
   PositiveInt: PositiveInt.TaskDecoder,
-
-  /* string */
-  ISODateString: IsoDate.TaskDecoder,
-
-  /* date */
+  ISODateString: ISODateString.TaskDecoder,
+  UUID: UUID.TaskDecoder,
   SafeDate: SafeDate.TaskDecoder,
 }

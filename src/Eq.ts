@@ -8,15 +8,16 @@
 import * as Eq from 'io-ts/Eq'
 import { SchemableExt1 } from './SchemableExt'
 
-/* number */
+/** Number */
 import * as Int from './number/Int'
 import * as NegativeInt from './number/NegativeInt'
 import * as PositiveInt from './number/PositiveInt'
 
-/* string */
-import * as ISODate from './string/ISODateString'
+/** String */
+import * as ISODateString from './string/ISODateString'
+import * as UUID from './string/UUID'
 
-/* date */
+/** Date */
 import * as SafeDate from './date/SafeDate'
 
 /**
@@ -25,14 +26,10 @@ import * as SafeDate from './date/SafeDate'
  */
 export const Schemable: SchemableExt1<Eq.URI> = {
   ...Eq.Schemable,
-  /* number */
   Int: Int.Eq,
   NegativeInt: NegativeInt.Eq,
   PositiveInt: PositiveInt.Eq,
-
-  /* string */
-  ISODateString: ISODate.Eq,
-
-  /* date */
+  ISODateString: ISODateString.Eq,
+  UUID: UUID.Eq,
   SafeDate: SafeDate.Eq,
 }

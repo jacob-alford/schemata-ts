@@ -389,13 +389,13 @@ const main: Build<void> = pipe(
         pipe(
           combinators,
           makeSchemableInstanceModuleContents(typeclass),
-          writeToDisk(`./src/_${typeclass[0]}.ts`)
+          writeToDisk(`./src/${typeclass[0]}.ts`)
         )
       )
     )
   ),
   RTE.chainFirst(({ combinators }) =>
-    pipe(makeSchemableExtContents(combinators), writeToDisk(`./src/_SchemableExt.ts`))
+    pipe(makeSchemableExtContents(combinators), writeToDisk(`./src/SchemableExt.ts`))
   ),
   RTE.chainIOK(() => Cons.log('Done!'))
 )

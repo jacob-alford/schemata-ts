@@ -8,15 +8,16 @@
 import * as t from 'io-ts/Type'
 import { SchemableExt1 } from './SchemableExt'
 
-/* number */
+/** Number */
 import * as Int from './number/Int'
 import * as NegativeInt from './number/NegativeInt'
 import * as PositiveInt from './number/PositiveInt'
 
-/* string */
-import * as IsoDate from './string/ISODateString'
+/** String */
+import * as ISODateString from './string/ISODateString'
+import * as UUID from './string/UUID'
 
-/* date */
+/** Date */
 import * as SafeDate from './date/SafeDate'
 
 /**
@@ -25,14 +26,10 @@ import * as SafeDate from './date/SafeDate'
  */
 export const Schemable: SchemableExt1<t.URI> = {
   ...t.Schemable,
-  /* number */
   Int: Int.Type,
   NegativeInt: NegativeInt.Type,
   PositiveInt: PositiveInt.Type,
-
-  /* string */
-  ISODateString: IsoDate.Type,
-
-  /* date */
+  ISODateString: ISODateString.Type,
+  UUID: UUID.Type,
   SafeDate: SafeDate.Type,
 }
