@@ -56,7 +56,7 @@ export function isSafeDate(d: unknown): d is SafeDate {
  * @since 0.0.1
  * @category Instances
  */
-export const Guard: G.Guard<unknown, SafeDate> = {
+export const Guard: SchemableParams1<G.URI> = {
   is: isSafeDate,
 }
 
@@ -64,13 +64,13 @@ export const Guard: G.Guard<unknown, SafeDate> = {
  * @since 0.0.1
  * @category Instances
  */
-export const Decoder: D.Decoder<unknown, SafeDate> = D.fromGuard(Guard, 'SafeDate')
+export const Decoder: SchemableParams2C<D.URI> = D.fromGuard(Guard, 'SafeDate')
 
 /**
  * @since 0.0.1
  * @category Instances
  */
-export const Eq: Eq_.Eq<SafeDate> = {
+export const Eq: SchemableParams1<Eq_.URI> = {
   equals: (x, y) => x.getTime() === y.getTime(),
 }
 
@@ -78,13 +78,13 @@ export const Eq: Eq_.Eq<SafeDate> = {
  * @since 0.0.1
  * @category Instances
  */
-export const TaskDecoder: TD.TaskDecoder<unknown, SafeDate> = TD.fromDecoder(Decoder)
+export const TaskDecoder: SchemableParams2C<TD.URI> = TD.fromDecoder(Decoder)
 
 /**
  * @since 0.0.1
  * @category Instances
  */
-export const Type: t.Type<SafeDate> = new t_.Type<SafeDate, unknown, unknown>(
+export const Type: SchemableParams1<t.URI> = new t_.Type<SafeDate, unknown, unknown>(
   'SafeDate',
   isSafeDate,
   (u, c) => (isSafeDate(u) ? t_.success(u) : t_.failure(u, c)),

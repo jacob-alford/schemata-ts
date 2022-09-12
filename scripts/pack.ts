@@ -38,11 +38,9 @@ export const copyPackageJson: Build<void> = C =>
           access: 'public',
         },
         typesVersions: {
-          "*": {
-            "*": [
-              "./*.d.ts"
-            ]
-          }
+          '*': {
+            '*': ['./*.d.ts'],
+          },
         },
       })
 

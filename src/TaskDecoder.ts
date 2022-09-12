@@ -31,7 +31,7 @@ export const Schemable: SchemableExt2C<TD.URI> = {
   PositiveInt: PositiveInt.TaskDecoder,
 
   /* string */
-  ISODate: IsoDate.TaskDecoder,
+  ISODateString: IsoDate.TaskDecoder,
 
   /* date */
   SafeDate: SafeDate.TaskDecoder,

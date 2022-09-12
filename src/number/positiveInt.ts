@@ -64,7 +64,7 @@ export function isPositiveInt(n: number): n is PositiveInt {
  * @since 0.0.1
  * @category Instances
  */
-export const Decoder: D.Decoder<unknown, PositiveInt> = pipe(
+export const Decoder: SchemableParams2C<D.URI> = pipe(
   D.number,
   D.refine(isPositiveInt, 'PositiveInt')
 )
@@ -73,22 +73,19 @@ export const Decoder: D.Decoder<unknown, PositiveInt> = pipe(
  * @since 0.0.1
  * @category Instances
  */
-export const Eq: Eq_.Eq<PositiveInt> = N.Eq
+export const Eq: SchemableParams1<Eq_.URI> = N.Eq
 
 /**
  * @since 0.0.1
  * @category Instances
  */
-export const Guard: G.Guard<unknown, PositiveInt> = pipe(
-  G.number,
-  G.refine(isPositiveInt)
-)
+export const Guard: SchemableParams1<G.URI> = pipe(G.number, G.refine(isPositiveInt))
 
 /**
  * @since 0.0.1
  * @category Instances
  */
-export const TaskDecoder: TD.TaskDecoder<unknown, PositiveInt> = pipe(
+export const TaskDecoder: SchemableParams2C<TD.URI> = pipe(
   TD.number,
   TD.refine(isPositiveInt, 'PositiveInt')
 )
@@ -97,7 +94,7 @@ export const TaskDecoder: TD.TaskDecoder<unknown, PositiveInt> = pipe(
  * @since 0.0.1
  * @category Instances
  */
-export const Type: t.Type<PositiveInt> = pipe(
+export const Type: SchemableParams1<t.URI> = pipe(
   t.number,
   t.refine(isPositiveInt, 'PositiveInt')
 )

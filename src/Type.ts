@@ -31,7 +31,7 @@ export const Schemable: SchemableExt1<t.URI> = {
   PositiveInt: PositiveInt.Type,
 
   /* string */
-  ISODate: IsoDate.Type,
+  ISODateString: IsoDate.Type,
 
   /* date */
   SafeDate: SafeDate.Type,

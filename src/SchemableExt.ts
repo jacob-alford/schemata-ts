@@ -24,7 +24,7 @@ export interface SchemableExt<S> extends Schemable<S> {
   readonly NegativeInt: NegativeInt.SchemableParams<S>
 
   /* string */
-  readonly ISODate: ISODate.SchemableParams<S>
+  readonly ISODateString: ISODate.SchemableParams<S>
   readonly SafeDate: SafeDate.SchemableParams<S>
 }
 
@@ -39,7 +39,7 @@ export interface SchemableExt1<S extends URIS> extends Schemable1<S> {
   readonly NegativeInt: NegativeInt.SchemableParams1<S>
 
   /* string */
-  readonly ISODate: ISODate.SchemableParams1<S>
+  readonly ISODateString: ISODate.SchemableParams1<S>
   readonly SafeDate: SafeDate.SchemableParams1<S>
 }
 
@@ -54,6 +54,6 @@ export interface SchemableExt2C<S extends URIS2> extends Schemable2C<S, unknown>
   readonly NegativeInt: NegativeInt.SchemableParams2C<S>
 
   /* string */
-  readonly ISODate: ISODate.SchemableParams2C<S>
+  readonly ISODateString: ISODate.SchemableParams2C<S>
   readonly SafeDate: SafeDate.SchemableParams2C<S>
 }

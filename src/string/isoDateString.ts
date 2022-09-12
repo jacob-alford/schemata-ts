@@ -75,7 +75,7 @@ export function isISODate(s: unknown): s is ISODate {
  * @since 0.0.1
  * @category Instances
  */
-export const Decoder: D.Decoder<unknown, ISODate> = pipe(
+export const Decoder: SchemableParams2C<D.URI> = pipe(
   D.string,
   D.refine(isISODate, 'ISODate')
 )
@@ -84,7 +84,7 @@ export const Decoder: D.Decoder<unknown, ISODate> = pipe(
  * @since 0.0.1
  * @category Instances
  */
-export const Eq: Eq_.Eq<ISODate> = {
+export const Eq: SchemableParams1<Eq_.URI> = {
   equals: (x, y) => new Date(x).getTime() === new Date(y).getTime(),
 }
 
@@ -92,13 +92,13 @@ export const Eq: Eq_.Eq<ISODate> = {
  * @since 0.0.1
  * @category Instances
  */
-export const Guard: G.Guard<unknown, ISODate> = pipe(G.string, G.refine(isISODate))
+export const Guard: SchemableParams1<G.URI> = pipe(G.string, G.refine(isISODate))
 
 /**
  * @since 0.0.1
  * @category Instances
  */
-export const TaskDecoder: TD.TaskDecoder<unknown, ISODate> = pipe(
+export const TaskDecoder: SchemableParams2C<TD.URI> = pipe(
   TD.string,
   TD.refine(isISODate, 'ISODate')
 )
@@ -107,7 +107,10 @@ export const TaskDecoder: TD.TaskDecoder<unknown, ISODate> = pipe(
  * @since 0.0.1
  * @category Instances
  */
-export const Type: t.Type<ISODate> = pipe(t.string, t.refine(isISODate, 'ISODate'))
+export const Type: SchemableParams1<t.URI> = pipe(
+  t.string,
+  t.refine(isISODate, 'ISODate')
+)
 
 /**
  * @since 0.0.1

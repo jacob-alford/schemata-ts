@@ -31,7 +31,7 @@ export const Schemable: SchemableExt1<G.URI> = {
   PositiveInt: PositiveInt.Guard,
 
   /* string */
-  ISODate: IsoDate.Guard,
+  ISODateString: IsoDate.Guard,
 
   /* date */
   SafeDate: SafeDate.Guard,
