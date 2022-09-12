@@ -15,15 +15,17 @@ import * as Eq_ from 'fp-ts/Eq'
 import * as G from 'io-ts/Guard'
 import * as TD from 'io-ts/TaskDecoder'
 import * as t from 'io-ts/Type'
-import * as N from 'fp-ts/number'
-import { pipe } from 'fp-ts/function'
+import * as Str from 'fp-ts/string'
+import { pipe, unsafeCoerce } from 'fp-ts/function'
+
+import { Int } from '../number/Int'
 
 /**
  * @since 0.0.1
  * @category Internal
  */
-interface IntBrand {
-  readonly Int: unique symbol
+interface IntStringBrand {
+  readonly IntString: unique symbol
 }
 
 /**
@@ -38,63 +40,72 @@ interface IntBrand {
  * @since 0.0.1
  * @category Model
  */
-export type Int = number & IntBrand
+export type IntString = string & IntStringBrand
 
 /**
  * @since 0.0.1
  * @category Model
  */
-export type SchemableParams<S> = HKT<S, Int>
+export type SchemableParams<S> = HKT<S, IntString>
 
 /**
  * @since 0.0.1
  * @category Model
  */
-export type SchemableParams1<S extends URIS> = Kind<S, Int>
+export type SchemableParams1<S extends URIS> = Kind<S, IntString>
 
 /**
  * @since 0.0.1
  * @category Model
  */
-export type SchemableParams2C<S extends URIS2> = Kind2<S, unknown, Int>
+export type SchemableParams2C<S extends URIS2> = Kind2<S, unknown, IntString>
 
 /**
  * @since 0.0.1
  * @category Refinements
  */
-export function isInt(n: number): n is Int {
-  return G.number.is(n) && Number.isInteger(n)
+export function isIntString(n: string): n is IntString {
+  return pipe(n, parseFloat, Number.isSafeInteger)
 }
 
 /**
  * @since 0.0.1
  * @category Instances
  */
-export const Decoder: SchemableParams2C<D.URI> = pipe(D.number, D.refine(isInt, 'Int'))
-
-/**
- * @since 0.0.1
- * @category Instances
- */
-export const Eq: SchemableParams1<Eq_.URI> = N.Eq
-
-/**
- * @since 0.0.1
- * @category Instances
- */
-export const Guard: SchemableParams1<G.URI> = pipe(G.number, G.refine(isInt))
-
-/**
- * @since 0.0.1
- * @category Instances
- */
-export const TaskDecoder: SchemableParams2C<TD.URI> = pipe(
-  TD.number,
-  TD.refine(isInt, 'Int')
+export const Decoder: SchemableParams2C<D.URI> = pipe(
+  D.string,
+  D.refine(isIntString, 'Int')
 )
 
 /**
  * @since 0.0.1
  * @category Instances
  */
-export const Type: SchemableParams1<t.URI> = pipe(t.number, t.refine(isInt, 'Int'))
+export const Eq: SchemableParams1<Eq_.URI> = Str.Eq
+
+/**
+ * @since 0.0.1
+ * @category Instances
+ */
+export const Guard: SchemableParams1<G.URI> = pipe(G.string, G.refine(isIntString))
+
+/**
+ * @since 0.0.1
+ * @category Instances
+ */
+export const TaskDecoder: SchemableParams2C<TD.URI> = pipe(
+  TD.string,
+  TD.refine(isIntString, 'Int')
+)
+
+/**
+ * @since 0.0.1
+ * @category Instances
+ */
+export const Type: SchemableParams1<t.URI> = pipe(t.string, t.refine(isIntString, 'Int'))
+
+/**
+ * @since 0.0.1
+ * @category Destructors
+ */
+export const toInt: (s: IntString) => Int = s => unsafeCoerce(parseInt(s, 10))

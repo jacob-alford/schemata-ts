@@ -15,17 +15,17 @@ import * as Eq_ from 'fp-ts/Eq'
 import * as G from 'io-ts/Guard'
 import * as TD from 'io-ts/TaskDecoder'
 import * as t from 'io-ts/Type'
-import * as N from 'fp-ts/number'
+import * as Str from 'fp-ts/string'
 import { pipe } from 'fp-ts/function'
 
-import { isInt } from './Int'
+import { isIntString, toInt } from './IntString'
 
 /**
  * @since 0.0.1
  * @category Internal
  */
-interface PositiveIntBrand {
-  readonly PositiveInt: unique symbol
+interface PositiveIntStringBrand {
+  readonly PositiveIntString: unique symbol
 }
 
 /**
@@ -40,32 +40,32 @@ interface PositiveIntBrand {
  * @since 0.0.1
  * @category Model
  */
-export type PositiveInt = number & PositiveIntBrand
+export type PositiveIntString = string & PositiveIntStringBrand
 
 /**
  * @since 0.0.1
  * @category Model
  */
-export type SchemableParams<S> = HKT<S, PositiveInt>
+export type SchemableParams<S> = HKT<S, PositiveIntString>
 
 /**
  * @since 0.0.1
  * @category Model
  */
-export type SchemableParams1<S extends URIS> = Kind<S, PositiveInt>
+export type SchemableParams1<S extends URIS> = Kind<S, PositiveIntString>
 
 /**
  * @since 0.0.1
  * @category Model
  */
-export type SchemableParams2C<S extends URIS2> = Kind2<S, unknown, PositiveInt>
+export type SchemableParams2C<S extends URIS2> = Kind2<S, unknown, PositiveIntString>
 
 /**
  * @since 0.0.1
  * @category Refinements
  */
-export function isPositiveInt(n: number): n is PositiveInt {
-  return isInt(n) && n > 0
+export function isPositiveIntString(n: string): n is PositiveIntString {
+  return isIntString(n) && toInt(n) > 0
 }
 
 /**
@@ -73,29 +73,32 @@ export function isPositiveInt(n: number): n is PositiveInt {
  * @category Instances
  */
 export const Decoder: SchemableParams2C<D.URI> = pipe(
-  D.number,
-  D.refine(isPositiveInt, 'PositiveInt')
+  D.string,
+  D.refine(isPositiveIntString, 'PositiveIntString')
 )
 
 /**
  * @since 0.0.1
  * @category Instances
  */
-export const Eq: SchemableParams1<Eq_.URI> = N.Eq
+export const Eq: SchemableParams1<Eq_.URI> = Str.Eq
 
 /**
  * @since 0.0.1
  * @category Instances
  */
-export const Guard: SchemableParams1<G.URI> = pipe(G.number, G.refine(isPositiveInt))
+export const Guard: SchemableParams1<G.URI> = pipe(
+  G.string,
+  G.refine(isPositiveIntString)
+)
 
 /**
  * @since 0.0.1
  * @category Instances
  */
 export const TaskDecoder: SchemableParams2C<TD.URI> = pipe(
-  TD.number,
-  TD.refine(isPositiveInt, 'PositiveInt')
+  TD.string,
+  TD.refine(isPositiveIntString, 'PositiveIntString')
 )
 
 /**
@@ -103,6 +106,6 @@ export const TaskDecoder: SchemableParams2C<TD.URI> = pipe(
  * @category Instances
  */
 export const Type: SchemableParams1<t.URI> = pipe(
-  t.number,
-  t.refine(isPositiveInt, 'PositiveInt')
+  t.string,
+  t.refine(isPositiveIntString, 'PositiveIntString')
 )

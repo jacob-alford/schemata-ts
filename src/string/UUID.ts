@@ -46,7 +46,7 @@ export type UUID = string & UUIDBrand
  * @category Model
  */
 export type UUIDSchemableOptions = {
-  version: keyof typeof uuidRegex
+  version?: keyof typeof uuidRegex
 }
 
 /**
@@ -80,7 +80,7 @@ export const isUUID =
   (s: string): s is UUID =>
     typeof s === 'string' &&
     !Number.isNaN(new Date(s).getTime()) &&
-    uuidRegex[options.version].test(s)
+    uuidRegex[options.version ?? 'all'].test(s)
 
 /**
  * @since 0.0.1

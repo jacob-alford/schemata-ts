@@ -15,17 +15,18 @@ import * as Eq_ from 'fp-ts/Eq'
 import * as G from 'io-ts/Guard'
 import * as TD from 'io-ts/TaskDecoder'
 import * as t from 'io-ts/Type'
-import * as N from 'fp-ts/number'
-import { pipe } from 'fp-ts/function'
+import * as Str from 'fp-ts/string'
+import { pipe, unsafeCoerce } from 'fp-ts/function'
 
-import { isInt } from './Int'
+import { isIntString, toInt } from './IntString'
+import { NegativeInt } from '../number/NegativeInt'
 
 /**
  * @since 0.0.1
  * @category Internal
  */
-interface NegativeIntBrand {
-  readonly NegativeInt: unique symbol
+interface NegativeIntStringBrand {
+  readonly NegativeIntString: unique symbol
 }
 
 /**
@@ -40,32 +41,32 @@ interface NegativeIntBrand {
  * @since 0.0.1
  * @category Model
  */
-export type NegativeInt = number & NegativeIntBrand
+export type NegativeIntString = string & NegativeIntStringBrand
 
 /**
  * @since 0.0.1
  * @category Model
  */
-export type SchemableParams<S> = HKT<S, NegativeInt>
+export type SchemableParams<S> = HKT<S, NegativeIntString>
 
 /**
  * @since 0.0.1
  * @category Model
  */
-export type SchemableParams1<S extends URIS> = Kind<S, NegativeInt>
+export type SchemableParams1<S extends URIS> = Kind<S, NegativeIntString>
 
 /**
  * @since 0.0.1
  * @category Model
  */
-export type SchemableParams2C<S extends URIS2> = Kind2<S, unknown, NegativeInt>
+export type SchemableParams2C<S extends URIS2> = Kind2<S, unknown, NegativeIntString>
 
 /**
  * @since 0.0.1
  * @category Refinements
  */
-export function isNegativeInt(n: number): n is NegativeInt {
-  return isInt(n) && n < 0
+export function isNegativeIntString(n: string): n is NegativeIntString {
+  return isIntString(n) && toInt(n) < 0
 }
 
 /**
@@ -73,29 +74,32 @@ export function isNegativeInt(n: number): n is NegativeInt {
  * @category Instances
  */
 export const Decoder: SchemableParams2C<D.URI> = pipe(
-  D.number,
-  D.refine(isNegativeInt, 'NegativeInt')
+  D.string,
+  D.refine(isNegativeIntString, 'NegativeIntString')
 )
 
 /**
  * @since 0.0.1
  * @category Instances
  */
-export const Eq: SchemableParams1<Eq_.URI> = N.Eq
+export const Eq: SchemableParams1<Eq_.URI> = Str.Eq
 
 /**
  * @since 0.0.1
  * @category Instances
  */
-export const Guard: SchemableParams1<G.URI> = pipe(G.number, G.refine(isNegativeInt))
+export const Guard: SchemableParams1<G.URI> = pipe(
+  G.string,
+  G.refine(isNegativeIntString)
+)
 
 /**
  * @since 0.0.1
  * @category Instances
  */
 export const TaskDecoder: SchemableParams2C<TD.URI> = pipe(
-  TD.number,
-  TD.refine(isNegativeInt, 'NegativeInt')
+  TD.string,
+  TD.refine(isNegativeIntString, 'NegativeIntString')
 )
 
 /**
@@ -103,6 +107,13 @@ export const TaskDecoder: SchemableParams2C<TD.URI> = pipe(
  * @category Instances
  */
 export const Type: SchemableParams1<t.URI> = pipe(
-  t.number,
-  t.refine(isNegativeInt, 'NegativeInt')
+  t.string,
+  t.refine(isNegativeIntString, 'NegativeIntString')
 )
+
+/**
+ * @since 0.0.1
+ * @category Destructors
+ */
+export const toNegativeInt: (s: NegativeIntString) => NegativeInt = s =>
+  unsafeCoerce(parseInt(s, 10))
