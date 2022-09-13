@@ -80,9 +80,7 @@ export type SchemableParams2C<S extends URIS2> = (
 export const isUUID =
   (options: UUIDSchemableOptions) =>
   (s: string): s is UUID =>
-    typeof s === 'string' &&
-    !Number.isNaN(new Date(s).getTime()) &&
-    uuidRegex[options.version ?? 'all'].test(s)
+    typeof s === 'string' && uuidRegex[options.version ?? 'all'].test(s)
 
 /**
  * @since 0.0.1
