@@ -1,6 +1,6 @@
 {
   "name": "schemable-ts-types",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "This package exposes io-ts-types built for use with Schema and Schemable in io-ts.",
   "homepage": "https://jacob-alford.github.io/schemable-ts-types/",
   "repository": "https://github.com/jacob-alford/schemable-ts-types",
@@ -42,6 +42,7 @@
     "build:cjs": "babel build/esm --config-file ./.babel.cjs.json --out-dir build/cjs --out-file-extension .js --source-maps",
     "build:pack": "yarn build && yarn concurrently \"yarn build:cjs\" \"yarn build:mjs\" && yarn ts-node scripts/pack.ts",
     "generate": "yarn ts-node scripts/schemableGen.ts && yarn format",
+    "spelling": "yarn cspell \"**\"",
     "prerelease": "yarn clean && yarn build:pack",
     "release": "yarn ts-node scripts/config.ts && cd dist && npm publish",
     "docs": "yarn run docs-ts",

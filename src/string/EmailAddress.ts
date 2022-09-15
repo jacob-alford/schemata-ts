@@ -1,5 +1,5 @@
 /**
- * Represents strings (emailAddresss) that conform to the RFC 5322 standard.
+ * Represents strings (email addresses) that conform to the RFC 5322 standard.
  *
  * See: https://emailregex.com/
  *
@@ -34,7 +34,7 @@ const emailAddressRegex =
   /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
 
 /**
- * Represents strings (emailAddresss) that conform to the RFC 5322 standard.
+ * Represents strings (email addresses) that conform to the RFC 5322 standard.
  *
  * See: https://emailregex.com/
  *

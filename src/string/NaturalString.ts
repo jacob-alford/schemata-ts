@@ -24,7 +24,7 @@ import { Natural } from '../number/Natural'
  * @category Internal
  */
 interface NaturalStringBrand {
-  readonly Int: unique symbol
+  readonly NaturalString: unique symbol
 }
 
 /**

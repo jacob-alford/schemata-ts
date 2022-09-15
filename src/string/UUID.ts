@@ -48,21 +48,21 @@ export type UUID = string & UUIDBrand
  * @category Model
  */
 export type UUIDSchemableOptions = {
-  version?: keyof typeof uuidRegex
+  version: keyof typeof uuidRegex
 }
 
 /**
  * @since 0.0.1
  * @category Model
  */
-export type SchemableParams<S> = (options?: UUIDSchemableOptions) => HKT<S, UUID>
+export type SchemableParams<S> = (options: UUIDSchemableOptions) => HKT<S, UUID>
 
 /**
  * @since 0.0.1
  * @category Model
  */
 export type SchemableParams1<S extends URIS> = (
-  options?: UUIDSchemableOptions
+  options: UUIDSchemableOptions
 ) => Kind<S, UUID>
 
 /**
@@ -70,7 +70,7 @@ export type SchemableParams1<S extends URIS> = (
  * @category Model
  */
 export type SchemableParams2C<S extends URIS2> = (
-  options?: UUIDSchemableOptions
+  options: UUIDSchemableOptions
 ) => Kind2<S, unknown, UUID>
 
 /**
@@ -80,13 +80,13 @@ export type SchemableParams2C<S extends URIS2> = (
 export const isUUID =
   (options: UUIDSchemableOptions) =>
   (s: string): s is UUID =>
-    typeof s === 'string' && uuidRegex[options.version ?? 'all'].test(s)
+    typeof s === 'string' && uuidRegex[options.version].test(s)
 
 /**
  * @since 0.0.1
  * @category Instances
  */
-export const Decoder: SchemableParams2C<D.URI> = (options = {}) =>
+export const Decoder: SchemableParams2C<D.URI> = options =>
   pipe(D.string, D.refine(isUUID(options), 'UUID'))
 
 /**
@@ -99,19 +99,19 @@ export const Eq: SchemableParams1<Eq_.URI> = () => Str.Eq
  * @since 0.0.1
  * @category Instances
  */
-export const Guard: SchemableParams1<G.URI> = (options = {}) =>
+export const Guard: SchemableParams1<G.URI> = options =>
   pipe(G.string, G.refine(isUUID(options)))
 
 /**
  * @since 0.0.1
  * @category Instances
  */
-export const TaskDecoder: SchemableParams2C<TD.URI> = (options = {}) =>
+export const TaskDecoder: SchemableParams2C<TD.URI> = options =>
   pipe(TD.string, TD.refine(isUUID(options), 'UUID'))
 
 /**
  * @since 0.0.1
  * @category Instances
  */
-export const Type: SchemableParams1<t.URI> = (options = {}) =>
+export const Type: SchemableParams1<t.URI> = options =>
   pipe(t.string, t.refine(isUUID(options), 'UUID'))

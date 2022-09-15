@@ -1,5 +1,5 @@
 {
-  "version": "0.1",
+  "version": "0.2",
   "language": "en",
   "ignorePaths": [
     "**/node_modules/**",
@@ -13,7 +13,26 @@
     "**/yarn-error.log",
     "**/docs/examples/",
     "**/docs/modules/*.ts.md",
-    ".vscode"
+    ".vscode",
+    "build",
+    "coverage",
+    "package.json",
+    "scripts",
+    "tests",
+    "tsconfig.build.json",
+    "tsconfig.json",
+    "docs"
   ],
-  "words": []
+  "words": [
+    "Schemable",
+    "combinators",
+    "typeclass",
+    "typeclasses",
+    "typeof",
+    "Purescript",
+    "struct",
+    "newtype",
+    "bigints",
+    "nats"
+  ]
 }

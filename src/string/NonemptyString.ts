@@ -17,7 +17,7 @@ import { pipe } from 'fp-ts/function'
  * @category Internal
  */
 interface NonemptyStringBrand {
-  readonly UUID: unique symbol
+  readonly NonemptyString: unique symbol
 }
 
 /**
