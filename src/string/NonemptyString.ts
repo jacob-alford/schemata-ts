@@ -90,9 +90,3 @@ export const Type: SchemableParams1<t.URI> = pipe(
   t.string,
   t.refine(isNonemptyString, 'NonemptyString')
 )
-
-/**
- * @since 0.0.1
- * @category Destructors
- */
-export const toDate: (iso: NonemptyString) => Date = iso => new Date(iso)

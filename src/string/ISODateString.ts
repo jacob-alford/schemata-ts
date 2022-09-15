@@ -10,7 +10,8 @@ import * as G from 'io-ts/Guard'
 import * as O from 'fp-ts/Option'
 import * as TD from 'io-ts/TaskDecoder'
 import * as t from 'io-ts/Type'
-import { pipe } from 'fp-ts/function'
+import { flow, pipe, unsafeCoerce } from 'fp-ts/function'
+import { SafeDate, Decoder as decodeSafeDate } from '../date/SafeDate'
 
 /**
  * @since 0.0.1
@@ -59,8 +60,12 @@ export type SchemableParams2C<S extends URIS2> = Kind2<S, unknown, ISODate>
  * @since 0.0.1
  * @category Constructors
  */
-export const fromDate: (d: Date) => O.Option<ISODate> = d =>
-  pipe(d.toISOString(), O.fromPredicate(isISODate))
+export const fromDate: (d: Date) => O.Option<ISODate> = flow(
+  decodeSafeDate.decode,
+  O.fromEither,
+  O.map(sd => sd.toISOString()),
+  O.filter(isISODate)
+)
 
 /**
  * @since 0.0.1
@@ -118,4 +123,4 @@ export const Type: SchemableParams1<t.URI> = pipe(
  * @since 0.0.1
  * @category Destructors
  */
-export const toDate: (iso: ISODate) => Date = iso => new Date(iso)
+export const toSafeDate: (iso: ISODate) => SafeDate = iso => unsafeCoerce(new Date(iso))

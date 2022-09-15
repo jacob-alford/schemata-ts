@@ -16,9 +16,10 @@ import * as G from 'io-ts/Guard'
 import * as TD from 'io-ts/TaskDecoder'
 import * as t from 'io-ts/Type'
 import * as Str from 'fp-ts/string'
-import { pipe } from 'fp-ts/function'
+import { pipe, unsafeCoerce } from 'fp-ts/function'
 
 import { isIntString, toInt } from './IntString'
+import { PositiveInt } from '../number/PositiveInt'
 
 /**
  * @since 0.0.1
@@ -109,3 +110,10 @@ export const Type: SchemableParams1<t.URI> = pipe(
   t.string,
   t.refine(isPositiveIntString, 'PositiveIntString')
 )
+
+/**
+ * @since 0.0.1
+ * @category Destructors
+ */
+export const toPositiveInt: (n: PositiveIntString) => PositiveInt = n =>
+  unsafeCoerce(parseInt(n))

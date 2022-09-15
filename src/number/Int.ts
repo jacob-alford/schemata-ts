@@ -63,7 +63,7 @@ export type SchemableParams2C<S extends URIS2> = Kind2<S, unknown, Int>
  * @category Refinements
  */
 export function isInt(n: number): n is Int {
-  return G.number.is(n) && Number.isInteger(n)
+  return G.number.is(n) && Number.isSafeInteger(n)
 }
 
 /**
