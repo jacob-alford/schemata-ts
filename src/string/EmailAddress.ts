@@ -3,12 +3,15 @@
  *
  * See: https://emailregex.com/
  *
+ * **Note: Does not validate international addresses**
+ *
  * @since 0.0.1
  */
 import { Kind, Kind2, URIS, URIS2, HKT } from 'fp-ts/HKT'
 import * as D from 'io-ts/Decoder'
 import * as Eq_ from 'fp-ts/Eq'
 import * as G from 'io-ts/Guard'
+import * as Str from 'fp-ts/string'
 import * as TD from 'io-ts/TaskDecoder'
 import * as t from 'io-ts/Type'
 import { pipe } from 'fp-ts/function'
@@ -34,6 +37,8 @@ const emailAddressRegex =
  * Represents strings (emailAddresss) that conform to the RFC 5322 standard.
  *
  * See: https://emailregex.com/
+ *
+ * **Note: Does not validate international addresses**
  *
  * @since 0.0.1
  * @category Model
@@ -79,9 +84,7 @@ export const Decoder: SchemableParams2C<D.URI> = pipe(
  * @since 0.0.1
  * @category Instances
  */
-export const Eq: SchemableParams1<Eq_.URI> = {
-  equals: (x, y) => new Date(x).getTime() === new Date(y).getTime(),
-}
+export const Eq: SchemableParams1<Eq_.URI> = Str.Eq
 
 /**
  * @since 0.0.1
