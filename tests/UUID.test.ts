@@ -269,48 +269,48 @@ describe('UUID', () => {
   describe('all', () => {
     describe('Decoder', () => {
       it('catches an invalid UUID', () => {
-        const result = Decoder().decode('1.1')
+        const result = Decoder({ version: 'all' }).decode('1.1')
         expect(result._tag).toBe('Left')
       })
       it('validates a valid UUID', () => {
-        const result = Decoder().decode(makev1())
+        const result = Decoder({ version: 'all' }).decode(makev1())
         expect(result._tag).toBe('Right')
       })
     })
     describe('Eq', () => {
       it('returns true for similar UUIDs', () => {
         const test = makev5()
-        expect(Eq().equals(test, test)).toBe(true)
+        expect(Eq({ version: 'all' }).equals(test, test)).toBe(true)
       })
       it('returns false for dissimilar UUIDs', () => {
-        expect(Eq().equals(_('1'), _('2'))).toBe(false)
+        expect(Eq({ version: 'all' }).equals(_('1'), _('2'))).toBe(false)
       })
     })
     describe('Guard', () => {
       it('guards against invalid UUID', () => {
-        expect(Guard().is('')).toBe(false)
+        expect(Guard({ version: 'all' }).is('')).toBe(false)
       })
       it('permits a valid UUID', () => {
-        expect(Guard().is(makev2())).toBe(true)
+        expect(Guard({ version: 'all' }).is(makev2())).toBe(true)
       })
     })
     describe('TaskDecoder', () => {
       it('invalidates an invalid date', async () => {
-        const result = await TaskDecoder().decode('')()
+        const result = await TaskDecoder({ version: 'all' }).decode('')()
         expect(result._tag).toBe('Left')
       })
       it('validates an valid date', async () => {
-        const result = await TaskDecoder().decode(makev4())()
+        const result = await TaskDecoder({ version: 'all' }).decode(makev4())()
         expect(result._tag).toBe('Right')
       })
     })
     describe('Type', () => {
       it('decodes an invalid UUID', () => {
-        const result = Type().decode('1.1')
+        const result = Type({ version: 'all' }).decode('1.1')
         expect(result._tag).toBe('Left')
       })
       it('decodes an valid UUID', () => {
-        const result = Type().decode(makev5())
+        const result = Type({ version: 'all' }).decode(makev5())
         expect(result._tag).toBe('Right')
       })
     })
