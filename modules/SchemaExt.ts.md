@@ -20,6 +20,8 @@ Added in v0.0.1
   - [interpreter](#interpreter)
 - [Model](#model)
   - [SchemaExt (interface)](#schemaext-interface)
+- [Utilities](#utilities)
+  - [TypeOf (type alias)](#typeof-type-alias)
 
 ---
 
@@ -84,3 +86,15 @@ export interface SchemaExt<A> {
 ```
 
 Added in v0.0.1
+
+# Utilities
+
+## TypeOf (type alias)
+
+**Signature**
+
+```ts
+export type TypeOf<S> = S extends SchemaExt<infer A> ? A : never
+```
+
+Added in v2.2.0
