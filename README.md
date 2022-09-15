@@ -1,6 +1,6 @@
 # schemable-ts-types
 
-Exposes an extended Schemable typeclass `SchemableExt` with types inspired by `io-ts-types`, `validators.js`.
+Exposes an extended Schemable typeclass `SchemableExt` with types inspired by `io-ts-types`, and `validators.js`.
 
 ## Table of Contents
 
@@ -41,7 +41,7 @@ Currently supported:
 
 ## Contributing
 
-This library current has 100% jest coverage, contributions are highly encouraged and we should seek to maintain this high level of test coverage. Send over a PR!
+This library currently has 100% jest coverage, contributions are highly encouraged and we should seek to maintain this high level of test coverage. Send over a PR!
 
 ## Install
 
