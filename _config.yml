@@ -1,0 +1,13 @@
+remote_theme: pmarsceill/just-the-docs
+
+# Enable or disable the site search
+search_enabled: true
+
+# Aux links for the upper right navigation
+aux_links:
+  'Docs':
+    - 'https://jacob-alford.github.io/matrix-ts/'
+  'Docs':
+    - 'https://jacob-alford.github.io/matrix-ts/modules'
+  "GitHub":
+    - "https://github.com/jacob-alford/matrix-ts"
