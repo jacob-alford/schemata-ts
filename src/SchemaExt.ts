@@ -26,6 +26,12 @@ export function make<A>(f: SchemaExt<A>): SchemaExt<A> {
 }
 
 /**
+ * @since 2.2.0
+ * @category Utilities
+ */
+export type TypeOf<S> = S extends SchemaExt<infer A> ? A : never
+
+/**
  * Generator a typeclass instance to a Schema by supplying Schemable. i.e.
  * `schemable-ts-types/Decoder`
  *

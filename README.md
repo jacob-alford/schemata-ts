@@ -5,6 +5,7 @@ Exposes an extended Schemable typeclass `SchemableExt` with types inspired by `i
 ## Table of Contents
 
 <!-- AUTO-GENERATED-CONTENT:START (TOC) -->
+
 - [Install](#install)
   - [Yarn](#yarn)
   - [NPM](#npm)
@@ -13,7 +14,7 @@ Exposes an extended Schemable typeclass `SchemableExt` with types inspired by `i
   - [The problem:](#the-problem)
   - [The solution: Schema / Schemable](#the-solution-schema--schemable)
   - [The value of an extended Schemable](#the-value-of-an-extended-schemable)
-<!-- AUTO-GENERATED-CONTENT:END -->
+  <!-- AUTO-GENERATED-CONTENT:END -->
 
 ## Install
 
