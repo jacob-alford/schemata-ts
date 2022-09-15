@@ -6,7 +6,7 @@ parent: Modules
 
 ## EmailAddress overview
 
-Represents strings (emailAddresss) that conform to the RFC 5322 standard.
+Represents strings (email addresses) that conform to the RFC 5322 standard.
 
 See: https://emailregex.com/
 
@@ -90,7 +90,7 @@ Added in v0.0.1
 
 ## EmailAddress (type alias)
 
-Represents strings (emailAddresss) that conform to the RFC 5322 standard.
+Represents strings (email addresses) that conform to the RFC 5322 standard.
 
 See: https://emailregex.com/
 

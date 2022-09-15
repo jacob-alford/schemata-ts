@@ -15,11 +15,13 @@ Exposes an extended Schemable typeclass `SchemableExt` with types inspired by `i
 
 - [Disclaimer](#disclaimer)
 - [Contributing](#contributing)
+  - [Test Coverage](#test-coverage)
+  - [Combinator Module Structure](#combinator-module-structure)
+  - [Generating SchemableExt/Instances](#generating-schemableextinstances)
 - [Install](#install)
   - [Yarn](#yarn)
   - [NPM](#npm)
 - [Documentation](#documentation)
-- [Contributing](#contributing-1)
 - [Schemable types explained](#schemable-types-explained)
   - [The problem:](#the-problem)
   - [The solution: Schema / Schemable](#the-solution-schema--schemable)
@@ -48,7 +50,19 @@ Currently supported:
 
 ## Contributing
 
-This library current has 100% jest coverage, contributions are highly encouraged and we should seek to maintain this high level of test coverage. Send over a PR!
+### Test Coverage
+
+This library currently has 100% jest coverage, contributions are highly encouraged and we should seek to maintain this high level of test coverage. Send over a PR!
+
+### Combinator Module Structure
+
+Schemable combinator modules must have a unique name and can be found in the folder whose primitive they extend, i.e. string, number, or date. A Schemable combinator module must export `Decoder`, `Eq`, `Guard`, `TaskDecoder`, and `Type` instances (named exactly), along with type aliases: `SchemableParams`, `SchemableParams1`, and `SchemableParams2C` which are the types of the exported `Decoder`, etc instances with the HKT/Kind type argument for that particular instance. Optionally, combinator modules can export convenience functions to convert to stronger types, i.e. ISODateString to SafeDate with the assumption that the guard function (isISODateString) matches the strength of the target type.
+
+### Generating SchemableExt/Instances
+
+Once the new combinator modules are in place, run `yarn generate` and the ts script will update the typeclass instances and SchemableExt module with the newly created combinators.
+
+_Coming soon: convenience function for generating new Schemable combinators._
 
 ## Install
 
@@ -162,7 +176,7 @@ export const eqUser = interpreter(Eq.Schemable)(UserSchema)
 export const guardUser = interpreter(G.Schemable)(UserSchema)
 ```
 
-And with this, the structure of domain types and operators come from a single source, making future maintanence and extension trivial.
+And with this, the structure of domain types and operators come from a single source, making future maintenance and extension trivial.
 
 ### The value of an extended Schemable
 

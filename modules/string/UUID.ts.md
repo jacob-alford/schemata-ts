@@ -90,7 +90,7 @@ Added in v0.0.1
 **Signature**
 
 ```ts
-export type SchemableParams<S> = (options?: UUIDSchemableOptions) => HKT<S, UUID>
+export type SchemableParams<S> = (options: UUIDSchemableOptions) => HKT<S, UUID>
 ```
 
 Added in v0.0.1
@@ -100,7 +100,7 @@ Added in v0.0.1
 **Signature**
 
 ```ts
-export type SchemableParams1<S extends URIS> = (options?: UUIDSchemableOptions) => Kind<S, UUID>
+export type SchemableParams1<S extends URIS> = (options: UUIDSchemableOptions) => Kind<S, UUID>
 ```
 
 Added in v0.0.1
@@ -110,7 +110,7 @@ Added in v0.0.1
 **Signature**
 
 ```ts
-export type SchemableParams2C<S extends URIS2> = (options?: UUIDSchemableOptions) => Kind2<S, unknown, UUID>
+export type SchemableParams2C<S extends URIS2> = (options: UUIDSchemableOptions) => Kind2<S, unknown, UUID>
 ```
 
 Added in v0.0.1
@@ -133,7 +133,7 @@ Added in v0.0.1
 
 ```ts
 export type UUIDSchemableOptions = {
-  version?: keyof typeof uuidRegex
+  version: keyof typeof uuidRegex
 }
 ```
 
