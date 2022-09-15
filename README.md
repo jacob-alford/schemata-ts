@@ -1,6 +1,6 @@
 # schemable-ts-types
 
-This package exposes io-ts-types built for use with `Schema` and `Schemable` in io-ts.
+Exposes an extended Schemable typeclass `SchemableExt` with types inspired by `io-ts-types`, `validators.js`.
 
 ## Table of Contents
 
