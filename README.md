@@ -5,16 +5,42 @@ Exposes an extended Schemable typeclass `SchemableExt` with types inspired by `i
 ## Table of Contents
 
 <!-- AUTO-GENERATED-CONTENT:START (TOC) -->
-
+- [Disclaimer](#disclaimer)
+- [Contributing](#contributing)
 - [Install](#install)
   - [Yarn](#yarn)
   - [NPM](#npm)
 - [Documentation](#documentation)
+- [Contributing](#contributing-1)
 - [Schemable types explained](#schemable-types-explained)
   - [The problem:](#the-problem)
   - [The solution: Schema / Schemable](#the-solution-schema--schemable)
   - [The value of an extended Schemable](#the-value-of-an-extended-schemable)
-  <!-- AUTO-GENERATED-CONTENT:END -->
+<!-- AUTO-GENERATED-CONTENT:END -->
+
+## Disclaimer
+
+This library is in its nascent stages (< 1.0.0) and still has a lot of work ahead before it's at feature parity with `io-ts-types`, or `validators.js`.
+
+Currently supported:
+
+- `date` > `SafeDate.ts`
+- `number` > `Int.ts`
+- `number` > `Natural.ts`
+- `number` > `NegativeInt.ts`
+- `number` > `PositiveInt.ts`
+- `string` > `EmailAddress.ts`
+- `string` > `IntString.ts`
+- `string` > `ISODateString.ts`
+- `string` > `NaturalString.ts`
+- `string` > `NegativeIntString.ts`
+- `string` > `NonemptyString.ts`
+- `string` > `PositiveIntString.ts`
+- `string` > `UUID.ts`
+
+## Contributing
+
+This library current has 100% jest coverage, contributions are highly encouraged and we should seek to maintain this high level of test coverage. Send over a PR!
 
 ## Install
 
@@ -23,13 +49,13 @@ Uses `fp-ts`, and `io-ts` as peer dependencies. Read more about peer dependencie
 ### Yarn
 
 ```bash
-yarn add fp-ts io-ts schemable-ts-types
+yarn add schemable-ts-types
 ```
 
 ### NPM
 
 ```bash
-npm install fp-ts io-ts schemable-ts-types
+npm install schemable-ts-types
 ```
 
 ## Documentation
@@ -37,6 +63,8 @@ npm install fp-ts io-ts schemable-ts-types
 - [Docs](https://jacob-alford.github.io/schemable-ts-types/modules/)
 - [fp-ts](https://gcanti.github.io/fp-ts/modules/)
 - [io-ts](https://gcanti.github.io/io-ts/modules/)
+
+## Contributing
 
 ## Schemable types explained
 
@@ -141,7 +169,7 @@ import { D, Eq, G, SC } from 'schemable-ts-types'
 
 const UserSchema = SC.make(S =>
   S.struct({
-    name: S.string,
+    name: S.NonemptyString,
     email: S.Email,
     age: S.Natural,
     id: S.UUID({ version: 5 }),
