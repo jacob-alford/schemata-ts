@@ -5,6 +5,7 @@ Exposes an extended Schemable typeclass `SchemableExt` with types inspired by `i
 ## Table of Contents
 
 <!-- AUTO-GENERATED-CONTENT:START (TOC) -->
+
 - [Disclaimer](#disclaimer)
 - [Contributing](#contributing)
 - [Install](#install)
@@ -16,7 +17,7 @@ Exposes an extended Schemable typeclass `SchemableExt` with types inspired by `i
   - [The problem:](#the-problem)
   - [The solution: Schema / Schemable](#the-solution-schema--schemable)
   - [The value of an extended Schemable](#the-value-of-an-extended-schemable)
-<!-- AUTO-GENERATED-CONTENT:END -->
+  <!-- AUTO-GENERATED-CONTENT:END -->
 
 ## Disclaimer
 
@@ -63,8 +64,6 @@ npm install schemable-ts-types
 - [Docs](https://jacob-alford.github.io/schemable-ts-types/modules/)
 - [fp-ts](https://gcanti.github.io/fp-ts/modules/)
 - [io-ts](https://gcanti.github.io/io-ts/modules/)
-
-## Contributing
 
 ## Schemable types explained
 
