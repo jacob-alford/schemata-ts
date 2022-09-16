@@ -15,6 +15,7 @@ import * as NegativeInt from './number/NegativeInt'
 import * as PositiveInt from './number/PositiveInt'
 
 /** String */
+import * as ASCII from './string/ASCII'
 import * as EmailAddress from './string/EmailAddress'
 import * as ISODateString from './string/ISODateString'
 import * as IntString from './string/IntString'
@@ -36,6 +37,7 @@ export interface SchemableExt<S> extends Schemable<S> {
   readonly Natural: Natural.SchemableParams<S>
   readonly NegativeInt: NegativeInt.SchemableParams<S>
   readonly PositiveInt: PositiveInt.SchemableParams<S>
+  readonly ASCII: ASCII.SchemableParams<S>
   readonly EmailAddress: EmailAddress.SchemableParams<S>
   readonly ISODateString: ISODateString.SchemableParams<S>
   readonly IntString: IntString.SchemableParams<S>
@@ -56,6 +58,7 @@ export interface SchemableExt1<S extends URIS> extends Schemable1<S> {
   readonly Natural: Natural.SchemableParams1<S>
   readonly NegativeInt: NegativeInt.SchemableParams1<S>
   readonly PositiveInt: PositiveInt.SchemableParams1<S>
+  readonly ASCII: ASCII.SchemableParams1<S>
   readonly EmailAddress: EmailAddress.SchemableParams1<S>
   readonly ISODateString: ISODateString.SchemableParams1<S>
   readonly IntString: IntString.SchemableParams1<S>
@@ -76,6 +79,7 @@ export interface SchemableExt2C<S extends URIS2> extends Schemable2C<S, unknown>
   readonly Natural: Natural.SchemableParams2C<S>
   readonly NegativeInt: NegativeInt.SchemableParams2C<S>
   readonly PositiveInt: PositiveInt.SchemableParams2C<S>
+  readonly ASCII: ASCII.SchemableParams2C<S>
   readonly EmailAddress: EmailAddress.SchemableParams2C<S>
   readonly ISODateString: ISODateString.SchemableParams2C<S>
   readonly IntString: IntString.SchemableParams2C<S>
