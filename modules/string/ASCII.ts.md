@@ -1,12 +1,12 @@
 ---
-title: string/NonemptyString.ts
-nav_order: 18
+title: string/ASCII.ts
+nav_order: 12
 parent: Modules
 ---
 
-## NonemptyString overview
+## ASCII overview
 
-Represents strings that are not empty strings.
+A string where every character is valid ASCII format.
 
 Added in v0.0.1
 
@@ -21,12 +21,12 @@ Added in v0.0.1
   - [TaskDecoder](#taskdecoder)
   - [Type](#type)
 - [Model](#model)
-  - [NonemptyString (type alias)](#nonemptystring-type-alias)
+  - [ASCII (type alias)](#ascii-type-alias)
   - [SchemableParams (type alias)](#schemableparams-type-alias)
   - [SchemableParams1 (type alias)](#schemableparams1-type-alias)
   - [SchemableParams2C (type alias)](#schemableparams2c-type-alias)
 - [Refinements](#refinements)
-  - [isNonemptyString](#isnonemptystring)
+  - [isAscii](#isascii)
 
 ---
 
@@ -37,7 +37,7 @@ Added in v0.0.1
 **Signature**
 
 ```ts
-export declare const Decoder: D.Decoder<unknown, NonemptyString>
+export declare const Decoder: D.Decoder<unknown, ASCII>
 ```
 
 Added in v0.0.1
@@ -47,7 +47,7 @@ Added in v0.0.1
 **Signature**
 
 ```ts
-export declare const Eq: Eq_.Eq<NonemptyString>
+export declare const Eq: Eq_.Eq<ASCII>
 ```
 
 Added in v0.0.1
@@ -57,7 +57,7 @@ Added in v0.0.1
 **Signature**
 
 ```ts
-export declare const Guard: G.Guard<unknown, NonemptyString>
+export declare const Guard: G.Guard<unknown, ASCII>
 ```
 
 Added in v0.0.1
@@ -67,7 +67,7 @@ Added in v0.0.1
 **Signature**
 
 ```ts
-export declare const TaskDecoder: TD.TaskDecoder<unknown, NonemptyString>
+export declare const TaskDecoder: TD.TaskDecoder<unknown, ASCII>
 ```
 
 Added in v0.0.1
@@ -77,21 +77,21 @@ Added in v0.0.1
 **Signature**
 
 ```ts
-export declare const Type: t.Type<NonemptyString>
+export declare const Type: t.Type<ASCII>
 ```
 
 Added in v0.0.1
 
 # Model
 
-## NonemptyString (type alias)
+## ASCII (type alias)
 
-Represents strings that are not empty strings.
+Represents strings that contain only valid ASCII characters.
 
 **Signature**
 
 ```ts
-export type NonemptyString = string & NonemptyStringBrand
+export type ASCII = string & ASCIIBrand
 ```
 
 Added in v0.0.1
@@ -101,7 +101,7 @@ Added in v0.0.1
 **Signature**
 
 ```ts
-export type SchemableParams<S> = HKT<S, NonemptyString>
+export type SchemableParams<S> = HKT<S, ASCII>
 ```
 
 Added in v0.0.1
@@ -111,7 +111,7 @@ Added in v0.0.1
 **Signature**
 
 ```ts
-export type SchemableParams1<S extends URIS> = Kind<S, NonemptyString>
+export type SchemableParams1<S extends URIS> = Kind<S, ASCII>
 ```
 
 Added in v0.0.1
@@ -121,19 +121,19 @@ Added in v0.0.1
 **Signature**
 
 ```ts
-export type SchemableParams2C<S extends URIS2> = Kind2<S, unknown, NonemptyString>
+export type SchemableParams2C<S extends URIS2> = Kind2<S, unknown, ASCII>
 ```
 
 Added in v0.0.1
 
 # Refinements
 
-## isNonemptyString
+## isAscii
 
 **Signature**
 
 ```ts
-export declare const isNonemptyString: (s: string) => s is NonemptyString
+export declare const isAscii: (s: string) => s is ASCII
 ```
 
 Added in v0.0.1
