@@ -5,6 +5,7 @@ Exposes an extended Schemable typeclass `SchemableExt` with types inspired by `i
 ## Table of Contents
 
 <!-- AUTO-GENERATED-CONTENT:START (TOC) -->
+
 - [Disclaimer](#disclaimer)
 - [Contributing](#contributing)
   - [Test Coverage](#test-coverage)
@@ -19,7 +20,7 @@ Exposes an extended Schemable typeclass `SchemableExt` with types inspired by `i
   - [The problem:](#the-problem)
   - [The solution: Schema / Schemable](#the-solution-schema--schemable)
   - [The value of an extended Schemable](#the-value-of-an-extended-schemable)
-<!-- AUTO-GENERATED-CONTENT:END -->
+  <!-- AUTO-GENERATED-CONTENT:END -->
 
 ## Disclaimer
 
@@ -59,7 +60,7 @@ _Coming soon: convenience function for generating new Schemable combinators._
 
 ### Generating Documentation
 
-Our docs pages are automatically generated whenever a PR is merged into the `main` branch, so the following step is optional. If you want to manually re-generate the documentation pages, use `yarn docs`. This command uses [docs-ts](https://github.com/gcanti/docs-ts) and JSDoc-style annotations to parse code comments for metadata about each module.
+Our docs pages are automatically generated whenever a PR is merged into the `master` branch, so the following step is optional. If you want to manually re-generate the documentation pages, use `yarn docs`. This command uses [docs-ts](https://github.com/gcanti/docs-ts) and JSDoc-style annotations to parse code comments for metadata about each module.
 
 ## Installation
 
