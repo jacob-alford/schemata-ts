@@ -8,6 +8,9 @@ parent: Modules
 
 Represents strings that are UUIDs.
 
+This is heavily inspired by the `validator.js` module
+[`isUUID`](https://github.com/validatorjs/validator.js/blob/master/src/lib/isUUID.js).
+
 Added in v0.0.1
 
 ---

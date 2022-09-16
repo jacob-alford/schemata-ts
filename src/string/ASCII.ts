@@ -1,6 +1,9 @@
 /**
  * A string in which every character is valid ASCII.
  *
+ * - This is heavily inspired by the `validator.js` module
+ *   [`isAscii`](https://github.com/validatorjs/validator.js/blob/master/src/lib/isAscii.js).
+ *
  * @since 0.0.1
  */
 import { Kind, Kind2, URIS, URIS2, HKT } from 'fp-ts/HKT'
@@ -26,7 +29,6 @@ interface ASCIIBrand {
  * @note Control characters are banned by ESLint by default, however
  * these special characters are valid ASCII (codes 0-31).
  * @see https://eslint.org/docs/latest/rules/no-control-regex
- * @see https://github.com/validatorjs/validator.js/blob/master/src/lib/isAscii.js
  */
 const asciiRegex = /^[\x00-\x7F]+$/ // eslint-disable-line no-control-regex
 
