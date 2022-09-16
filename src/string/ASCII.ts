@@ -1,5 +1,5 @@
 /**
- * A string where every character is valid ASCII format.
+ * A string in which every character is valid ASCII.
  *
  * @since 0.0.1
  */
@@ -23,10 +23,10 @@ interface ASCIIBrand {
 /**
  * @since 0.0.1
  * @category Internal
- * @see: https://github.com/validatorjs/validator.js/blob/master/src/lib/isAscii.js
- * @note Control Flow characters are valid ASCII codes 0-30, thus we need to
- * disable an otherwise useful eslint rule..
- * https://stackoverflow.com/questions/49743842/javascript-unexpected-control-characters-in-regular-expression
+ * @note Control Flow characters are banned by ESLint by default, however
+ * these characters are valid ASCII (codes 0-30).
+ * @see https://eslint.org/docs/latest/rules/no-control-regex
+ * @see https://github.com/validatorjs/validator.js/blob/master/src/lib/isAscii.js
  */
 const asciiRegex = /^[\x00-\x7F]+$/ // eslint-disable-line no-control-regex
 
