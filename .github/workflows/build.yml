@@ -27,6 +27,7 @@ jobs:
       - run: yarn run test
       - run: yarn run eslint
   deploy-docs:
+    if: github.ref == 'refs/heads/master'
     needs:
       - build
     runs-on: ubuntu-latest
