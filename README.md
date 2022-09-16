@@ -5,13 +5,13 @@ Exposes an extended Schemable typeclass `SchemableExt` with types inspired by `i
 ## Table of Contents
 
 <!-- AUTO-GENERATED-CONTENT:START (TOC) -->
-
 - [Disclaimer](#disclaimer)
 - [Contributing](#contributing)
   - [Test Coverage](#test-coverage)
   - [Combinator Module Structure](#combinator-module-structure)
   - [Generating SchemableExt/Instances](#generating-schemableextinstances)
-- [Install](#install)
+  - [Generating Docs](#generating-docs)
+- [Installation](#installation)
   - [Yarn](#yarn)
   - [NPM](#npm)
 - [Documentation](#documentation)
@@ -19,7 +19,7 @@ Exposes an extended Schemable typeclass `SchemableExt` with types inspired by `i
   - [The problem:](#the-problem)
   - [The solution: Schema / Schemable](#the-solution-schema--schemable)
   - [The value of an extended Schemable](#the-value-of-an-extended-schemable)
-  <!-- AUTO-GENERATED-CONTENT:END -->
+<!-- AUTO-GENERATED-CONTENT:END -->
 
 ## Disclaimer
 
@@ -57,7 +57,11 @@ Once the new combinator modules are in place, run `yarn generate` and the ts scr
 
 _Coming soon: convenience function for generating new Schemable combinators._
 
-## Install
+### Generating Docs
+
+After adding a new module, appropriate tests, and generating the SchemableExt instances, there's still one remaining step. Use `yarn docs` to re-generate the documentation pages. This will parse information about your new module from the code comments and add it to the docs. Sometimes an author might forget to generate the documentation, so feel free to open a separate PR if you notice that the docs are out-of-date.
+
+## Installation
 
 Uses `fp-ts`, and `io-ts` as peer dependencies. Read more about peer dependencies at [nodejs.org](https://nodejs.org/en/blog/npm/peer-dependencies/).
 
@@ -85,7 +89,7 @@ npm install schemable-ts-types
 
 At present there is no way\* in vanilla Typescript to derive domain typeclasses from domain types. Languages like Haskell, Purescript, and Rust support this functionality out of the box. With the older `io-ts` system you would have a domain declaration that looks like the following.
 
-\*([ts-plus](https://dev.to/matechs/the-case-for-ts-18b3) seeks to extend Typescript with this functionality and more)
+\*(Note: [ts-plus](https://dev.to/matechs/the-case-for-ts-18b3) seeks to extend Typescript with this functionality and more)
 
 ```typescript
 import * as t from 'io-ts'
