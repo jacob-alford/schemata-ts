@@ -11,7 +11,8 @@ Exposes an extended Schemable typeclass `SchemableExt` with types inspired by `i
   - [Test Coverage](#test-coverage)
   - [Combinator Module Structure](#combinator-module-structure)
   - [Generating SchemableExt/Instances](#generating-schemableextinstances)
-- [Install](#install)
+  - [Generating Documentation](#generating-documentation)
+- [Installation](#installation)
   - [Yarn](#yarn)
   - [NPM](#npm)
 - [Documentation](#documentation)
@@ -57,7 +58,11 @@ Once the new combinator modules are in place, run `yarn generate` and the ts scr
 
 _Coming soon: convenience function for generating new Schemable combinators._
 
-## Install
+### Generating Documentation
+
+Our docs pages are automatically generated whenever a PR is merged into the `master` branch, so the following step is optional. If you want to manually re-generate the documentation pages, use `yarn docs`. This command uses [docs-ts](https://github.com/gcanti/docs-ts) and JSDoc-style annotations to parse code comments for metadata about each module.
+
+## Installation
 
 Uses `fp-ts`, and `io-ts` as peer dependencies. Read more about peer dependencies at [nodejs.org](https://nodejs.org/en/blog/npm/peer-dependencies/).
 
@@ -75,9 +80,10 @@ npm install schemable-ts-types
 
 ## Documentation
 
-- [Docs](https://jacob-alford.github.io/schemable-ts-types/modules/)
+- [schemable-ts-types](https://jacob-alford.github.io/schemable-ts-types/modules/)
 - [fp-ts](https://gcanti.github.io/fp-ts/modules/)
 - [io-ts](https://gcanti.github.io/io-ts/modules/)
+- [docs-ts](https://github.com/gcanti/docs-ts)
 
 ## Schemable types explained
 
@@ -85,7 +91,7 @@ npm install schemable-ts-types
 
 At present there is no way\* in vanilla Typescript to derive domain typeclasses from domain types. Languages like Haskell, Purescript, and Rust support this functionality out of the box. With the older `io-ts` system you would have a domain declaration that looks like the following.
 
-\*([ts-plus](https://dev.to/matechs/the-case-for-ts-18b3) seeks to extend Typescript with this functionality and more)
+\*(Note: [ts-plus](https://dev.to/matechs/the-case-for-ts-18b3) seeks to extend Typescript with this functionality and more)
 
 ```typescript
 import * as t from 'io-ts'
