@@ -23,8 +23,8 @@ interface ASCIIBrand {
 /**
  * @since 0.0.1
  * @category Internal
- * @note Control Flow characters are banned by ESLint by default, however
- * these characters are valid ASCII (codes 0-30).
+ * @note Control characters are banned by ESLint by default, however
+ * these special characters are valid ASCII (codes 0-31).
  * @see https://eslint.org/docs/latest/rules/no-control-regex
  * @see https://github.com/validatorjs/validator.js/blob/master/src/lib/isAscii.js
  */
