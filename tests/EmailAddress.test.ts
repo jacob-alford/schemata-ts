@@ -12,16 +12,17 @@ describe('EmailAddress', () => {
     })
   })
   describe('Eq', () => {
-    it('returns true for similar dates', () => {
-      const email = 'abc@abc.abc'
-      if (!Guard.is(email)) throw new Error('Unexpected result')
-      expect(Eq.equals(email, email)).toBe(true)
+    it('returns true for similar email addresses', () => {
+      const email1 = 'abc@abc.abc'
+      const email2 = 'def@abc.abc'
+      if (!Guard.is(email1) || !Guard.is(email2)) throw new Error('Unexpected result')
+      expect(Eq.equals(email1, email2)).toBe(true)
     })
-    it('returns false for dissimilar dates', () => {
-      const date1 = 'abc@abc.abc'
-      const date2 = 'def@def.abc'
-      if (!Guard.is(date1) || !Guard.is(date2)) throw new Error('Unexpected result')
-      expect(Eq.equals(date1, date2)).toBe(false)
+    it('returns false for dissimilar email addresses', () => {
+      const email1 = 'abc@abc.abc'
+      const email2 = 'def@def.abc'
+      if (!Guard.is(email1) || !Guard.is(email2)) throw new Error('Unexpected result')
+      expect(Eq.equals(email1, email2)).toBe(false)
     })
   })
   describe('Guard', () => {
@@ -47,7 +48,7 @@ describe('EmailAddress', () => {
       const result = Type.decode('abc')
       expect(result._tag).toBe('Left')
     })
-    it('decodes an invalid email', () => {
+    it('decodes an valid email', () => {
       const result = Type.decode('abc@abc.abc')
       expect(result._tag).toBe('Right')
     })
