@@ -12,6 +12,7 @@ Exposes an extended Schemable typeclass `SchemableExt` with types inspired by `i
 ## Table of Contents
 
 <!-- AUTO-GENERATED-CONTENT:START (TOC) -->
+
 - [Disclaimer](#disclaimer)
 - [Contributing](#contributing)
   - [Test Coverage](#test-coverage)
@@ -26,7 +27,7 @@ Exposes an extended Schemable typeclass `SchemableExt` with types inspired by `i
   - [The problem:](#the-problem)
   - [The solution: Schema / Schemable](#the-solution-schema--schemable)
   - [The value of an extended Schemable](#the-value-of-an-extended-schemable)
-<!-- AUTO-GENERATED-CONTENT:END -->
+  <!-- AUTO-GENERATED-CONTENT:END -->
 
 ## Disclaimer
 
@@ -60,13 +61,13 @@ Schemable combinator modules must have a unique name and can be found in the fol
 
 ### Generating SchemableExt/Instances
 
-Once the new combinator modules are in place, run `yarn generate` and the ts script will update the typeclass instances and SchemableExt module with the newly created combinators.
+Once the new combinator modules are in place, run `yarn generate:schemables` and the ts script will update the typeclass instances and SchemableExt module with the newly created combinators.
 
-_Coming soon: convenience function for generating new Schemable combinators._
+Create a new combinator file using `yarn generate:template [string | number] [NameOfCombinator]`. Note: the name of the new combinator must be unique, and begin with a capital letter.
 
 ### Generating Documentation
 
-Our docs pages are automatically generated whenever a PR is merged into the `main` branch, so the following step is optional. If you want to manually re-generate the documentation pages, use `yarn docs`. This command uses [docs-ts](https://github.com/gcanti/docs-ts) and JSDoc-style annotations to parse code comments for metadata about each module.
+Our docs pages are automatically generated whenever a PR is merged into the `master` branch, so the following step is optional. If you want to manually re-generate the documentation pages, use `yarn docs`. This command uses [docs-ts](https://github.com/gcanti/docs-ts) and JSDoc-style annotations to parse code comments for metadata about each module.
 
 ## Installation
 
