@@ -10,7 +10,7 @@ Exposes an extended Schemable typeclass `SchemableExt` with types inspired by `i
   - [Test Coverage](#test-coverage)
   - [Combinator Module Structure](#combinator-module-structure)
   - [Generating SchemableExt/Instances](#generating-schemableextinstances)
-  - [Generating Docs](#generating-docs)
+  - [Generating Documentation](#generating-documentation)
 - [Installation](#installation)
   - [Yarn](#yarn)
   - [NPM](#npm)
@@ -57,9 +57,9 @@ Once the new combinator modules are in place, run `yarn generate` and the ts scr
 
 _Coming soon: convenience function for generating new Schemable combinators._
 
-### Generating Docs
+### Generating Documentation
 
-After adding a new module, appropriate tests, and generating the SchemableExt instances, there's still one remaining step. Use `yarn docs` to re-generate the documentation pages. This will parse information about your new module from the code comments and add it to the docs. Sometimes an author might forget to generate the documentation, so feel free to open a separate PR if you notice that the docs are out-of-date.
+Our docs pages are automatically generated whenever a PR is merged into the `main` branch, so the following step is optional. If you want to manually re-generate the documentation pages, use `yarn docs`. This command uses [docs-ts](https://github.com/gcanti/docs-ts) and JSDoc-style annotations to parse code comments for metadata about each module.
 
 ## Installation
 
@@ -79,9 +79,10 @@ npm install schemable-ts-types
 
 ## Documentation
 
-- [Docs](https://jacob-alford.github.io/schemable-ts-types/modules/)
+- [schemable-ts-types](https://jacob-alford.github.io/schemable-ts-types/modules/)
 - [fp-ts](https://gcanti.github.io/fp-ts/modules/)
 - [io-ts](https://gcanti.github.io/io-ts/modules/)
+- [docs-ts](https://github.com/gcanti/docs-ts)
 
 ## Schemable types explained
 
