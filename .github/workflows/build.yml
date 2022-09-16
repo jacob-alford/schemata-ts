@@ -2,11 +2,11 @@ name: Test
 on:
   push:
     branches:
-      - master
+      - main
       - $default-branch
   pull_request:
     branches:
-      - master
+      - main
       - $default-branch
 jobs:
   build:
@@ -27,7 +27,7 @@ jobs:
       - run: yarn run test
       - run: yarn run eslint
   deploy-docs:
-    if: github.ref == 'refs/heads/master'
+    if: github.ref == 'refs/heads/main'
     needs:
       - build
     runs-on: ubuntu-latest
