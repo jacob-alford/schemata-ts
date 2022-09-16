@@ -13,14 +13,14 @@ describe('EmailAddress', () => {
   })
   describe('Eq', () => {
     it('returns true for similar email addresses', () => {
-      const email1 = 'abc@abc.abc'
-      const email2 = 'def@abc.abc'
+      const email1 = 'abc@abc.com'
+      const email2 = 'abc@abc.com'
       if (!Guard.is(email1) || !Guard.is(email2)) throw new Error('Unexpected result')
       expect(Eq.equals(email1, email2)).toBe(true)
     })
     it('returns false for dissimilar email addresses', () => {
-      const email1 = 'abc@abc.abc'
-      const email2 = 'def@def.abc'
+      const email1 = 'abc@abc.com'
+      const email2 = 'def@def.com'
       if (!Guard.is(email1) || !Guard.is(email2)) throw new Error('Unexpected result')
       expect(Eq.equals(email1, email2)).toBe(false)
     })
