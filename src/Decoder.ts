@@ -15,6 +15,7 @@ import * as NegativeInt from './number/NegativeInt'
 import * as PositiveInt from './number/PositiveInt'
 
 /** String */
+import * as ASCII from './string/ASCII'
 import * as EmailAddress from './string/EmailAddress'
 import * as ISODateString from './string/ISODateString'
 import * as IntString from './string/IntString'
@@ -37,6 +38,7 @@ export const Schemable: SchemableExt2C<D.URI> = {
   Natural: Natural.Decoder,
   NegativeInt: NegativeInt.Decoder,
   PositiveInt: PositiveInt.Decoder,
+  ASCII: ASCII.Decoder,
   EmailAddress: EmailAddress.Decoder,
   ISODateString: ISODateString.Decoder,
   IntString: IntString.Decoder,
