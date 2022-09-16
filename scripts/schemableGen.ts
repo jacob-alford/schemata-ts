@@ -9,6 +9,7 @@ import * as TE from 'fp-ts/TaskEither'
 import { FileSystem, fileSystem } from './FS'
 import { cli, CLI } from './CLI'
 import { run } from './run'
+import { makeDestructureImport, makeModuleStarImport } from './ts-helpers'
 
 interface Build<A> extends RTE.ReaderTaskEither<FileSystem & CLI, Error, A> {}
 
@@ -193,41 +194,6 @@ export const moduleHeaderComment: (module: string) => ts.JSDoc = module =>
 export const instanceComment: ts.JSDoc = _.createJSDocComment(
   `@since 0.0.1\n@category Instances`
 )
-
-const makeModuleStarImport: (name: string, path: string) => ts.ImportDeclaration = (
-  name,
-  path
-) =>
-  _.createImportDeclaration(
-    undefined,
-    _.createImportClause(
-      false,
-      undefined,
-      _.createNamespaceImport(_.createIdentifier(name))
-    ),
-    _.createStringLiteral(path),
-    undefined
-  )
-
-const makeDestructureImport: (
-  destructuredElements: ReadonlyArray<string>,
-  path: string
-) => ts.ImportDeclaration = (destructuredElements, path) =>
-  _.createImportDeclaration(
-    undefined,
-    _.createImportClause(
-      false,
-      undefined,
-      _.createNamedImports(
-        pipe(
-          destructuredElements,
-          RA.map(el => _.createImportSpecifier(false, undefined, _.createIdentifier(el)))
-        )
-      )
-    ),
-    _.createStringLiteral(path),
-    undefined
-  )
 
 const makeSchemableInstance: (
   tc: SchemableTypeclasses

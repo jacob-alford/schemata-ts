@@ -54,7 +54,7 @@ Schemable combinator modules must have a unique name and can be found in the fol
 
 ### Generating SchemableExt/Instances
 
-Once the new combinator modules are in place, run `yarn generate` and the ts script will update the typeclass instances and SchemableExt module with the newly created combinators.
+Once the new combinator modules are in place, run `yarn generate:schemables` and the ts script will update the typeclass instances and SchemableExt module with the newly created combinators.
 
 _Coming soon: convenience function for generating new Schemable combinators._
 

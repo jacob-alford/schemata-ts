@@ -24,15 +24,17 @@
     "docs"
   ],
   "words": [
-    "Schemable",
+    "bigints",
     "combinators",
+    "nats",
+    "newtype",
+    "Purescript",
+    "Schemable",
+    "schemables",
+    "struct",
     "typeclass",
     "typeclasses",
     "typeof",
-    "Purescript",
-    "struct",
-    "newtype",
-    "bigints",
-    "nats"
+    "unimplimented"
   ]
 }
