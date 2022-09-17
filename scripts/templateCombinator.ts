@@ -423,7 +423,7 @@ const main: Build<void> = pipe(
     (args): args is [string, string] => args.length === 2,
     () =>
       new Error(
-        'Must provide primitive type (string | number), and capitalized module name (SafeDate)'
+        'Must provide primitive type (string | number), and capitalized module name (e.g. SafeDate)'
       )
   ),
   RTE.filterOrElse(
@@ -439,7 +439,7 @@ const main: Build<void> = pipe(
   RTE.chainFirstIOK(() => Cons.log("Checking that module doesn't already exist...")),
   RTE.chainFirst(({ args: [, module] }) => checkModuleUniqueness(module)),
   RTE.chainFirstIOK(() => Cons.log('Getting package version...')),
-  RTE.bind('packageVersion', () => getPackageJson),
+  RTE.apS('packageVersion', getPackageJson),
   RTE.chainFirstIOK(({ args: [, module] }) => Cons.log(`Generating ${module}.ts...`)),
   RTE.bind(
     'moduleContents',
@@ -453,7 +453,7 @@ const main: Build<void> = pipe(
     pipe(moduleContents, writeToDisk(`./src/${primitive}/${module}.ts`))
   ),
   RTE.chainFirstIOK(() => Cons.log('Formatting with Prettier...')),
-  RTE.chainFirst(() => format),
+  RTE.apFirst(format),
   RTE.chainFirstIOK(() => Cons.log('Done!'))
 )
 
