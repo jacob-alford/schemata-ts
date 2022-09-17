@@ -38,10 +38,10 @@ const makeCombinatorModule: (
     ts.ScriptKind.TS
   )
 
-  const primitiveModule: [string, string, number] =
+  const primitiveModule: [string, string, number, string] =
     primitive === 'string'
-      ? ['Str', 'string', ts.SyntaxKind.StringKeyword]
-      : ['Num', 'number', ts.SyntaxKind.NumberKeyword]
+      ? ['Str', 'string', ts.SyntaxKind.StringKeyword, 's']
+      : ['N', 'number', ts.SyntaxKind.NumberKeyword, 'n']
 
   return pipe(
     [
@@ -152,15 +152,15 @@ const makeCombinatorModule: (
                   _.createParameterDeclaration(
                     undefined,
                     undefined,
-                    _.createIdentifier('s'),
+                    _.createIdentifier(primitiveModule[3]),
                     undefined,
-                    _.createKeywordTypeNode(ts.SyntaxKind.StringKeyword),
+                    _.createKeywordTypeNode(primitiveModule[2]),
                     undefined
                   ),
                 ],
                 _.createTypePredicateNode(
                   undefined,
-                  's',
+                  primitiveModule[3],
                   _.createTypeReferenceNode(name)
                 ),
                 _.createToken(ts.SyntaxKind.EqualsGreaterThanToken),
@@ -298,7 +298,7 @@ const makeCombinatorModule: (
               _.createCallExpression(_.createIdentifier('pipe'), undefined, [
                 _.createPropertyAccessExpression(
                   _.createIdentifier('TD'),
-                  _.createIdentifier('string')
+                  _.createIdentifier(primitiveModule[1])
                 ),
                 _.createCallExpression(
                   _.createPropertyAccessExpression(
@@ -334,7 +334,7 @@ const makeCombinatorModule: (
               _.createCallExpression(_.createIdentifier('pipe'), undefined, [
                 _.createPropertyAccessExpression(
                   _.createIdentifier('t'),
-                  _.createIdentifier('string')
+                  _.createIdentifier(primitiveModule[1])
                 ),
                 _.createCallExpression(
                   _.createPropertyAccessExpression(
