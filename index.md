@@ -12,6 +12,7 @@ Exposes an extended Schemable typeclass `SchemableExt` with types inspired by `i
 ## Table of Contents
 
 <!-- AUTO-GENERATED-CONTENT:START (TOC) -->
+
 - [Disclaimer](#disclaimer)
 - [Contributing](#contributing)
   - [Test Coverage](#test-coverage)
@@ -26,7 +27,7 @@ Exposes an extended Schemable typeclass `SchemableExt` with types inspired by `i
   - [The problem:](#the-problem)
   - [The solution: Schema / Schemable](#the-solution-schema--schemable)
   - [The value of an extended Schemable](#the-value-of-an-extended-schemable)
-<!-- AUTO-GENERATED-CONTENT:END -->
+  <!-- AUTO-GENERATED-CONTENT:END -->
 
 ## Disclaimer
 
@@ -60,9 +61,9 @@ Schemable combinator modules must have a unique name and can be found in the fol
 
 ### Generating SchemableExt/Instances
 
-Once the new combinator modules are in place, run `yarn generate` and the ts script will update the typeclass instances and SchemableExt module with the newly created combinators.
+Create a new combinator file using `yarn generate:template [string | number] [NameOfCombinator]`. Note: the name of the new combinator must be unique, and begin with a capital letter.
 
-_Coming soon: convenience function for generating new Schemable combinators._
+Once the new combinator modules are in place, run `yarn generate:schemables` and the ts script will update the typeclass instances and SchemableExt module with the newly created combinators.
 
 ### Generating Documentation
 
