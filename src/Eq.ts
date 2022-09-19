@@ -12,16 +12,20 @@ import { SchemableExt1 } from './SchemableExt'
 import * as Int from './number/Int'
 import * as Natural from './number/Natural'
 import * as NegativeInt from './number/NegativeInt'
+import * as PositiveFloat from './number/PositiveFloat'
 import * as PositiveInt from './number/PositiveInt'
 
 /** String */
 import * as ASCII from './string/ASCII'
+import * as Base64 from './string/Base64'
+import * as BtcAddress from './string/BtcAddress'
 import * as EmailAddress from './string/EmailAddress'
 import * as ISODateString from './string/ISODateString'
 import * as IntString from './string/IntString'
 import * as NaturalString from './string/NaturalString'
 import * as NegativeIntString from './string/NegativeIntString'
 import * as NonemptyString from './string/NonemptyString'
+import * as PositiveFloatString from './string/PositiveFloatString'
 import * as PositiveIntString from './string/PositiveIntString'
 import * as UUID from './string/UUID'
 
@@ -37,14 +41,18 @@ export const Schemable: SchemableExt1<Eq.URI> = {
   Int: Int.Eq,
   Natural: Natural.Eq,
   NegativeInt: NegativeInt.Eq,
+  PositiveFloat: PositiveFloat.Eq,
   PositiveInt: PositiveInt.Eq,
   ASCII: ASCII.Eq,
+  Base64: Base64.Eq,
+  BtcAddress: BtcAddress.Eq,
   EmailAddress: EmailAddress.Eq,
   ISODateString: ISODateString.Eq,
   IntString: IntString.Eq,
   NaturalString: NaturalString.Eq,
   NegativeIntString: NegativeIntString.Eq,
   NonemptyString: NonemptyString.Eq,
+  PositiveFloatString: PositiveFloatString.Eq,
   PositiveIntString: PositiveIntString.Eq,
   UUID: UUID.Eq,
   SafeDate: SafeDate.Eq,
