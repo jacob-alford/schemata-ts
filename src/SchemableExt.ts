@@ -18,6 +18,8 @@ import * as PositiveInt from './number/PositiveInt'
 
 /** String */
 import * as ASCII from './string/ASCII'
+import * as Base64 from './string/Base64'
+import * as Base64Url from './string/Base64Url'
 import * as BtcAddress from './string/BtcAddress'
 import * as EmailAddress from './string/EmailAddress'
 import * as ISODateString from './string/ISODateString'
@@ -45,6 +47,8 @@ export interface SchemableExt<S> extends Schemable<S> {
   readonly PositiveFloat: PositiveFloat.SchemableParams<S>
   readonly PositiveInt: PositiveInt.SchemableParams<S>
   readonly ASCII: ASCII.SchemableParams<S>
+  readonly Base64: Base64.SchemableParams<S>
+  readonly Base64Url: Base64Url.SchemableParams<S>
   readonly BtcAddress: BtcAddress.SchemableParams<S>
   readonly EmailAddress: EmailAddress.SchemableParams<S>
   readonly ISODateString: ISODateString.SchemableParams<S>
@@ -71,6 +75,8 @@ export interface SchemableExt1<S extends URIS> extends Schemable1<S> {
   readonly PositiveFloat: PositiveFloat.SchemableParams1<S>
   readonly PositiveInt: PositiveInt.SchemableParams1<S>
   readonly ASCII: ASCII.SchemableParams1<S>
+  readonly Base64: Base64.SchemableParams1<S>
+  readonly Base64Url: Base64Url.SchemableParams1<S>
   readonly BtcAddress: BtcAddress.SchemableParams1<S>
   readonly EmailAddress: EmailAddress.SchemableParams1<S>
   readonly ISODateString: ISODateString.SchemableParams1<S>
@@ -97,6 +103,8 @@ export interface SchemableExt2C<S extends URIS2> extends Schemable2C<S, unknown>
   readonly PositiveFloat: PositiveFloat.SchemableParams2C<S>
   readonly PositiveInt: PositiveInt.SchemableParams2C<S>
   readonly ASCII: ASCII.SchemableParams2C<S>
+  readonly Base64: Base64.SchemableParams2C<S>
+  readonly Base64Url: Base64Url.SchemableParams2C<S>
   readonly BtcAddress: BtcAddress.SchemableParams2C<S>
   readonly EmailAddress: EmailAddress.SchemableParams2C<S>
   readonly ISODateString: ISODateString.SchemableParams2C<S>
