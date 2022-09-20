@@ -24,6 +24,7 @@ import * as BtcAddress from './string/BtcAddress'
 import * as EmailAddress from './string/EmailAddress'
 import * as ISODateString from './string/ISODateString'
 import * as IntString from './string/IntString'
+import * as JWT from './string/JWT'
 import * as NaturalString from './string/NaturalString'
 import * as NegativeIntString from './string/NegativeIntString'
 import * as NonNegativeFloatString from './string/NonNegativeFloatString'
@@ -53,6 +54,7 @@ export interface SchemableExt<S> extends Schemable<S> {
   readonly EmailAddress: EmailAddress.SchemableParams<S>
   readonly ISODateString: ISODateString.SchemableParams<S>
   readonly IntString: IntString.SchemableParams<S>
+  readonly JWT: JWT.SchemableParams<S>
   readonly NaturalString: NaturalString.SchemableParams<S>
   readonly NegativeIntString: NegativeIntString.SchemableParams<S>
   readonly NonNegativeFloatString: NonNegativeFloatString.SchemableParams<S>
@@ -81,6 +83,7 @@ export interface SchemableExt1<S extends URIS> extends Schemable1<S> {
   readonly EmailAddress: EmailAddress.SchemableParams1<S>
   readonly ISODateString: ISODateString.SchemableParams1<S>
   readonly IntString: IntString.SchemableParams1<S>
+  readonly JWT: JWT.SchemableParams1<S>
   readonly NaturalString: NaturalString.SchemableParams1<S>
   readonly NegativeIntString: NegativeIntString.SchemableParams1<S>
   readonly NonNegativeFloatString: NonNegativeFloatString.SchemableParams1<S>
@@ -109,6 +112,7 @@ export interface SchemableExt2C<S extends URIS2> extends Schemable2C<S, unknown>
   readonly EmailAddress: EmailAddress.SchemableParams2C<S>
   readonly ISODateString: ISODateString.SchemableParams2C<S>
   readonly IntString: IntString.SchemableParams2C<S>
+  readonly JWT: JWT.SchemableParams2C<S>
   readonly NaturalString: NaturalString.SchemableParams2C<S>
   readonly NegativeIntString: NegativeIntString.SchemableParams2C<S>
   readonly NonNegativeFloatString: NonNegativeFloatString.SchemableParams2C<S>
