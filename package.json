@@ -60,7 +60,8 @@
   },
   "peerDependencies": {
     "fp-ts": "^2.9.5",
-    "io-ts": "^2.2.18"
+    "io-ts": "^2.2.18",
+    "fast-check": "^3.1.4"
   },
   "devDependencies": {
     "@babel/cli": "^7.17.10",
