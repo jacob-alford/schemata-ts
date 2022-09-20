@@ -18,6 +18,7 @@ import * as PositiveInt from './number/PositiveInt'
 /** String */
 import * as ASCII from './string/ASCII'
 import * as Base64 from './string/Base64'
+import * as Base64Url from './string/Base64Url'
 import * as BtcAddress from './string/BtcAddress'
 import * as EmailAddress from './string/EmailAddress'
 import * as ISODateString from './string/ISODateString'
@@ -45,6 +46,7 @@ export const Schemable: SchemableExt1<t.URI> = {
   PositiveInt: PositiveInt.Type,
   ASCII: ASCII.Type,
   Base64: Base64.Type,
+  Base64Url: Base64Url.Type,
   BtcAddress: BtcAddress.Type,
   EmailAddress: EmailAddress.Type,
   ISODateString: ISODateString.Type,
