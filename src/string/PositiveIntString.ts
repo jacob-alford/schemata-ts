@@ -116,4 +116,4 @@ export const Type: SchemableParams1<t.URI> = pipe(
  * @category Destructors
  */
 export const toPositiveInt: (n: PositiveIntString) => PositiveInt = n =>
-  unsafeCoerce(parseInt(n))
+  unsafeCoerce(Number(n))

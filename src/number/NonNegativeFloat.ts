@@ -1,10 +1,10 @@
 /**
- * Positive Float branded newtype.
+ * Non-negative floating point branded newtype.
  *
- * Represents floating point numbers:
+ * Represents non-negative floating point numbers:
  *
  * ```math
- *  { f | f ∈ R, f > 0, f <= 2 ** 53 - 1 }
+ *  { f | f ∈ ℝ, f >= 0, f <= 2 ** 53 - 1 }
  * ```
  *
  * @since 0.0.2
@@ -22,48 +22,48 @@ import { pipe } from 'fp-ts/function'
  * @since 0.0.2
  * @category Internal
  */
-interface PositiveFloatBrand {
-  readonly PositiveFloat: unique symbol
+interface NonNegativeFloatBrand {
+  readonly NonNegativeFloat: unique symbol
 }
 
 /**
- * Positive Float branded newtype.
+ * Non-negative floating point branded newtype.
  *
- * Represents floating point numbers:
+ * Represents non-negative floating point numbers:
  *
  * ```math
- *  { f | f ∈ R, f > 0, f <= 2 ** 53 - 1 }
+ *  { f | f ∈ ℝ, f >= 0, f <= 2 ** 53 - 1 }
  * ```
  *
  * @since 0.0.2
  * @category Model
  */
-export type PositiveFloat = number & PositiveFloatBrand
+export type NonNegativeFloat = number & NonNegativeFloatBrand
 
 /**
  * @since 0.0.2
  * @category Model
  */
-export type SchemableParams<S> = HKT<S, PositiveFloat>
+export type SchemableParams<S> = HKT<S, NonNegativeFloat>
 
 /**
  * @since 0.0.2
  * @category Model
  */
-export type SchemableParams1<S extends URIS> = Kind<S, PositiveFloat>
+export type SchemableParams1<S extends URIS> = Kind<S, NonNegativeFloat>
 
 /**
  * @since 0.0.2
  * @category Model
  */
-export type SchemableParams2C<S extends URIS2> = Kind2<S, unknown, PositiveFloat>
+export type SchemableParams2C<S extends URIS2> = Kind2<S, unknown, NonNegativeFloat>
 
 /**
  * @since 0.0.2
  * @category Refinements
  */
-export const isPositiveFloat = (f: number): f is PositiveFloat =>
-  typeof f === 'number' && G.number.is(f) && f > 0 && f <= Number.MAX_SAFE_INTEGER
+export const isNonNegativeFloat = (n: number): n is NonNegativeFloat =>
+  typeof n === 'number' && G.number.is(n) && n >= 0 && n <= Number.MAX_SAFE_INTEGER
 
 /**
  * @since 0.0.2
@@ -71,7 +71,7 @@ export const isPositiveFloat = (f: number): f is PositiveFloat =>
  */
 export const Decoder: SchemableParams2C<D.URI> = pipe(
   D.number,
-  D.refine(isPositiveFloat, 'PositiveFloat')
+  D.refine(isNonNegativeFloat, 'NonNegativeFloat')
 )
 
 /**
@@ -84,7 +84,7 @@ export const Eq: SchemableParams1<Eq_.URI> = N.Eq
  * @since 0.0.2
  * @category Instances
  */
-export const Guard: SchemableParams1<G.URI> = pipe(G.number, G.refine(isPositiveFloat))
+export const Guard: SchemableParams1<G.URI> = pipe(G.number, G.refine(isNonNegativeFloat))
 
 /**
  * @since 0.0.2
@@ -92,7 +92,7 @@ export const Guard: SchemableParams1<G.URI> = pipe(G.number, G.refine(isPositive
  */
 export const TaskDecoder: SchemableParams2C<TD.URI> = pipe(
   TD.number,
-  TD.refine(isPositiveFloat, 'PositiveFloat')
+  TD.refine(isNonNegativeFloat, 'NonNegativeFloat')
 )
 
 /**
@@ -101,5 +101,5 @@ export const TaskDecoder: SchemableParams2C<TD.URI> = pipe(
  */
 export const Type: SchemableParams1<t.URI> = pipe(
   t.number,
-  t.refine(isPositiveFloat, 'PositiveFloat')
+  t.refine(isNonNegativeFloat, 'NonNegativeFloat')
 )

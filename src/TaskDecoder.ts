@@ -12,16 +12,21 @@ import { SchemableExt2C } from './SchemableExt'
 import * as Int from './number/Int'
 import * as Natural from './number/Natural'
 import * as NegativeInt from './number/NegativeInt'
+import * as NonNegativeFloat from './number/NonNegativeFloat'
+import * as PositiveFloat from './number/PositiveFloat'
 import * as PositiveInt from './number/PositiveInt'
 
 /** String */
 import * as ASCII from './string/ASCII'
+import * as BtcAddress from './string/BtcAddress'
 import * as EmailAddress from './string/EmailAddress'
 import * as ISODateString from './string/ISODateString'
 import * as IntString from './string/IntString'
 import * as NaturalString from './string/NaturalString'
 import * as NegativeIntString from './string/NegativeIntString'
+import * as NonNegativeFloatString from './string/NonNegativeFloatString'
 import * as NonemptyString from './string/NonemptyString'
+import * as PositiveFloatString from './string/PositiveFloatString'
 import * as PositiveIntString from './string/PositiveIntString'
 import * as UUID from './string/UUID'
 
@@ -37,14 +42,19 @@ export const Schemable: SchemableExt2C<TD.URI> = {
   Int: Int.TaskDecoder,
   Natural: Natural.TaskDecoder,
   NegativeInt: NegativeInt.TaskDecoder,
+  NonNegativeFloat: NonNegativeFloat.TaskDecoder,
+  PositiveFloat: PositiveFloat.TaskDecoder,
   PositiveInt: PositiveInt.TaskDecoder,
   ASCII: ASCII.TaskDecoder,
+  BtcAddress: BtcAddress.TaskDecoder,
   EmailAddress: EmailAddress.TaskDecoder,
   ISODateString: ISODateString.TaskDecoder,
   IntString: IntString.TaskDecoder,
   NaturalString: NaturalString.TaskDecoder,
   NegativeIntString: NegativeIntString.TaskDecoder,
+  NonNegativeFloatString: NonNegativeFloatString.TaskDecoder,
   NonemptyString: NonemptyString.TaskDecoder,
+  PositiveFloatString: PositiveFloatString.TaskDecoder,
   PositiveIntString: PositiveIntString.TaskDecoder,
   UUID: UUID.TaskDecoder,
   SafeDate: SafeDate.TaskDecoder,

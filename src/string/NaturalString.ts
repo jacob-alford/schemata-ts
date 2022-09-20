@@ -13,11 +13,13 @@ import { Kind, Kind2, URIS, URIS2, HKT } from 'fp-ts/HKT'
 import * as D from 'io-ts/Decoder'
 import * as Eq_ from 'fp-ts/Eq'
 import * as G from 'io-ts/Guard'
+import * as Pred from 'fp-ts/Predicate'
 import * as TD from 'io-ts/TaskDecoder'
 import * as t from 'io-ts/Type'
 import * as Str from 'fp-ts/string'
 import { pipe, unsafeCoerce } from 'fp-ts/function'
 import { Natural } from '../number/Natural'
+import { isInt } from '../number/Int'
 
 /**
  * @since 0.0.1
@@ -63,9 +65,12 @@ export type SchemableParams2C<S extends URIS2> = Kind2<S, unknown, NaturalString
  * @since 0.0.1
  * @category Refinements
  */
-export function isNaturalString(n: string): n is NaturalString {
-  return pipe(n, parseFloat, n => Number.isSafeInteger(n) && n >= 0)
-}
+export const isNaturalString = (n: string): n is NaturalString =>
+  pipe(
+    n,
+    Number,
+    Pred.and(isInt)(n => n >= 0)
+  )
 
 /**
  * @since 0.0.1
