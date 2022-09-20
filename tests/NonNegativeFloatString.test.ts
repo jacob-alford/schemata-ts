@@ -21,7 +21,18 @@ const validNumbers = [
   `${Number.MAX_SAFE_INTEGER}`,
 ]
 
-const invalidNumbers = ['-1', '-1.1', `${-Math.random()}`, `${Number.MIN_SAFE_INTEGER}`]
+const invalidNumbers = [
+  '-1',
+  'a',
+  '-1.1',
+  '-1.1.1.1.1',
+  '2......',
+  `${-Math.random()}`,
+  `${Number.MIN_SAFE_INTEGER}`,
+  `${Infinity}`,
+  `${-Infinity}`,
+  `${NaN}`,
+]
 
 describe('NonNegativeFloatString', () => {
   describe('Decoder', () => {

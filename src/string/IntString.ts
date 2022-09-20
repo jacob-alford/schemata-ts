@@ -18,7 +18,7 @@ import * as t from 'io-ts/Type'
 import * as Str from 'fp-ts/string'
 import { pipe, unsafeCoerce } from 'fp-ts/function'
 
-import { Int } from '../number/Int'
+import { Int, isInt } from '../number/Int'
 
 /**
  * @since 0.0.1
@@ -64,9 +64,7 @@ export type SchemableParams2C<S extends URIS2> = Kind2<S, unknown, IntString>
  * @since 0.0.1
  * @category Refinements
  */
-export function isIntString(n: string): n is IntString {
-  return pipe(n, parseFloat, Number.isSafeInteger)
-}
+export const isIntString = (n: string): n is IntString => pipe(n, Number, isInt)
 
 /**
  * @since 0.0.1
@@ -108,4 +106,4 @@ export const Type: SchemableParams1<t.URI> = pipe(t.string, t.refine(isIntString
  * @since 0.0.1
  * @category Destructors
  */
-export const toInt: (s: IntString) => Int = s => unsafeCoerce(parseInt(s, 10))
+export const toInt: (s: IntString) => Int = s => unsafeCoerce(Number(s))

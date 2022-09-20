@@ -65,9 +65,8 @@ export type SchemableParams2C<S extends URIS2> = Kind2<S, unknown, NegativeIntSt
  * @since 0.0.1
  * @category Refinements
  */
-export function isNegativeIntString(n: string): n is NegativeIntString {
-  return isIntString(n) && toInt(n) < 0
-}
+export const isNegativeIntString = (n: string): n is NegativeIntString =>
+  isIntString(n) && toInt(n) < 0
 
 /**
  * @since 0.0.1
@@ -116,4 +115,4 @@ export const Type: SchemableParams1<t.URI> = pipe(
  * @category Destructors
  */
 export const toNegativeInt: (s: NegativeIntString) => NegativeInt = s =>
-  unsafeCoerce(parseInt(s, 10))
+  unsafeCoerce(Number(s))

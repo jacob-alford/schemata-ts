@@ -64,7 +64,7 @@ export type SchemableParams2C<S extends URIS2> = Kind2<S, unknown, PositiveFloat
  * @category Refinements
  */
 export const isPositiveFloatString = (s: string): s is PositiveFloatString =>
-  pipe(s, parseFloat, isPositiveFloat)
+  pipe(s, Number, isPositiveFloat)
 
 /**
  * @since 0.0.2
@@ -113,4 +113,4 @@ export const Type: SchemableParams1<t.URI> = pipe(
  * @category Utilities
  */
 export const toPositiveFloat: (s: PositiveFloatString) => PositiveFloat = s =>
-  unsafeCoerce(parseFloat(s))
+  unsafeCoerce(Number(s))

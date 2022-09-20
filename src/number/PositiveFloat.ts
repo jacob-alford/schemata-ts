@@ -63,7 +63,7 @@ export type SchemableParams2C<S extends URIS2> = Kind2<S, unknown, PositiveFloat
  * @category Refinements
  */
 export const isPositiveFloat = (f: number): f is PositiveFloat =>
-  typeof f === 'number' && G.number.is(f) && f > 0
+  typeof f === 'number' && G.number.is(f) && f > 0 && f <= Number.MAX_SAFE_INTEGER
 
 /**
  * @since 0.0.2

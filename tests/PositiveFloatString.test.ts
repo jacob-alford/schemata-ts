@@ -18,9 +18,15 @@ const validNumbers = ['1', '1.1', `${Math.random() + 1}`, `${Number.MAX_SAFE_INT
 const invalidNumbers = [
   '0',
   '-1',
+  '1.1.1.1',
+  '2......',
+  'a',
   '-1.1',
   `${-Math.random()}`,
   `${Number.MIN_SAFE_INTEGER}`,
+  `${Infinity}`,
+  `${-Infinity}`,
+  `${NaN}`,
 ]
 
 describe('PositiveFloatString', () => {
