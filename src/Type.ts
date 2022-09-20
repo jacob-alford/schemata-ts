@@ -12,16 +12,21 @@ import { SchemableExt1 } from './SchemableExt'
 import * as Int from './number/Int'
 import * as Natural from './number/Natural'
 import * as NegativeInt from './number/NegativeInt'
+import * as NonNegativeFloat from './number/NonNegativeFloat'
+import * as PositiveFloat from './number/PositiveFloat'
 import * as PositiveInt from './number/PositiveInt'
 
 /** String */
 import * as ASCII from './string/ASCII'
+import * as BtcAddress from './string/BtcAddress'
 import * as EmailAddress from './string/EmailAddress'
 import * as ISODateString from './string/ISODateString'
 import * as IntString from './string/IntString'
 import * as NaturalString from './string/NaturalString'
 import * as NegativeIntString from './string/NegativeIntString'
+import * as NonNegativeFloatString from './string/NonNegativeFloatString'
 import * as NonemptyString from './string/NonemptyString'
+import * as PositiveFloatString from './string/PositiveFloatString'
 import * as PositiveIntString from './string/PositiveIntString'
 import * as UUID from './string/UUID'
 
@@ -37,14 +42,19 @@ export const Schemable: SchemableExt1<t.URI> = {
   Int: Int.Type,
   Natural: Natural.Type,
   NegativeInt: NegativeInt.Type,
+  NonNegativeFloat: NonNegativeFloat.Type,
+  PositiveFloat: PositiveFloat.Type,
   PositiveInt: PositiveInt.Type,
   ASCII: ASCII.Type,
+  BtcAddress: BtcAddress.Type,
   EmailAddress: EmailAddress.Type,
   ISODateString: ISODateString.Type,
   IntString: IntString.Type,
   NaturalString: NaturalString.Type,
   NegativeIntString: NegativeIntString.Type,
+  NonNegativeFloatString: NonNegativeFloatString.Type,
   NonemptyString: NonemptyString.Type,
+  PositiveFloatString: PositiveFloatString.Type,
   PositiveIntString: PositiveIntString.Type,
   UUID: UUID.Type,
   SafeDate: SafeDate.Type,
