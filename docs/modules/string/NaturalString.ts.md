@@ -1,6 +1,6 @@
 ---
 title: string/NaturalString.ts
-nav_order: 16
+nav_order: 22
 parent: Modules
 ---
 
@@ -159,7 +159,7 @@ Added in v0.0.1
 **Signature**
 
 ```ts
-export declare function isNaturalString(n: string): n is NaturalString
+export declare const isNaturalString: (n: string) => n is NaturalString
 ```
 
 Added in v0.0.1

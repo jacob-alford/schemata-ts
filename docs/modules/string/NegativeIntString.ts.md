@@ -1,6 +1,6 @@
 ---
 title: string/NegativeIntString.ts
-nav_order: 17
+nav_order: 24
 parent: Modules
 ---
 
@@ -159,7 +159,7 @@ Added in v0.0.1
 **Signature**
 
 ```ts
-export declare function isNegativeIntString(n: string): n is NegativeIntString
+export declare const isNegativeIntString: (n: string) => n is NegativeIntString
 ```
 
 Added in v0.0.1

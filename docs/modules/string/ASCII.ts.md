@@ -1,6 +1,6 @@
 ---
 title: string/ASCII.ts
-nav_order: 12
+nav_order: 15
 parent: Modules
 ---
 
@@ -8,8 +8,8 @@ parent: Modules
 
 A string in which every character is valid ASCII.
 
-- This is heavily inspired by the `validator.js` module
-  [`isAscii`](https://github.com/validatorjs/validator.js/blob/master/src/lib/isAscii.js).
+This is heavily inspired by the `validator.js` module
+[`isAscii`](https://github.com/validatorjs/validator.js/blob/master/src/lib/isAscii.js).
 
 Added in v0.0.1
 

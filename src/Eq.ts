@@ -11,6 +11,7 @@ import { SchemableExt1 } from './SchemableExt'
 /** Number */
 import * as Int from './number/Int'
 import * as Natural from './number/Natural'
+import * as NegativeFloat from './number/NegativeFloat'
 import * as NegativeInt from './number/NegativeInt'
 import * as NonNegativeFloat from './number/NonNegativeFloat'
 import * as PositiveFloat from './number/PositiveFloat'
@@ -25,6 +26,7 @@ import * as EmailAddress from './string/EmailAddress'
 import * as ISODateString from './string/ISODateString'
 import * as IntString from './string/IntString'
 import * as NaturalString from './string/NaturalString'
+import * as NegativeFloatString from './string/NegativeFloatString'
 import * as NegativeIntString from './string/NegativeIntString'
 import * as NonNegativeFloatString from './string/NonNegativeFloatString'
 import * as NonemptyString from './string/NonemptyString'
@@ -43,6 +45,7 @@ export const Schemable: SchemableExt1<Eq.URI> = {
   ...Eq.Schemable,
   Int: Int.Eq,
   Natural: Natural.Eq,
+  NegativeFloat: NegativeFloat.Eq,
   NegativeInt: NegativeInt.Eq,
   NonNegativeFloat: NonNegativeFloat.Eq,
   PositiveFloat: PositiveFloat.Eq,
@@ -55,6 +58,7 @@ export const Schemable: SchemableExt1<Eq.URI> = {
   ISODateString: ISODateString.Eq,
   IntString: IntString.Eq,
   NaturalString: NaturalString.Eq,
+  NegativeFloatString: NegativeFloatString.Eq,
   NegativeIntString: NegativeIntString.Eq,
   NonNegativeFloatString: NonNegativeFloatString.Eq,
   NonemptyString: NonemptyString.Eq,
