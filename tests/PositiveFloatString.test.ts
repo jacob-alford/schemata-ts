@@ -2,7 +2,14 @@ import * as RA from 'fp-ts/ReadonlyArray'
 
 import { tuple } from 'fp-ts/function'
 
-import { Decoder, Eq, Guard, TaskDecoder, Type } from '../src/string/PositiveFloatString'
+import {
+  Decoder,
+  Eq,
+  Guard,
+  TaskDecoder,
+  toPositiveFloat,
+  Type,
+} from '../src/string/PositiveFloatString'
 
 import { cat, combineExpected } from '../test-utils'
 
@@ -61,5 +68,10 @@ describe('PositiveFloatString', () => {
 
       expect(result._tag).toBe(expectedTag)
     })
+  })
+  it('converts to a PositiveFloat', () => {
+    const numStr = '1.1'
+    if (!Guard.is(numStr)) throw new Error('Unexpected result')
+    expect(toPositiveFloat(numStr)).toBe(1.1)
   })
 })

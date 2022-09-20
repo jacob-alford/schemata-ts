@@ -1,10 +1,10 @@
 /**
- * Positive floating point branded newtype string.
+ * Non-negative floating point branded newtype string.
  *
- * Represents positive floating point numbers:
+ * Represents non-negative floating point numbers:
  *
  * ```math
- *  { f | f ∈ ℝ, f > 0, f <= 2 ** 53 - 1 }
+ *  { f | f ∈ ℝ, f >= 0, f <= 2 ** 53 - 1 }
  * ```
  *
  * @since 0.0.2
@@ -17,54 +17,54 @@ import * as Str from 'fp-ts/string'
 import * as TD from 'io-ts/TaskDecoder'
 import * as t from 'io-ts/Type'
 import { pipe, unsafeCoerce } from 'fp-ts/function'
-import { isPositiveFloat, PositiveFloat } from '../number/PositiveFloat'
+import { isNonNegativeFloat, NonNegativeFloat } from '../number/NonNegativeFloat'
 
 /**
  * @since 0.0.2
  * @category Internal
  */
-interface PositiveFloatStringBrand {
-  readonly PositiveFloatString: unique symbol
+interface NonNegativeFloatStringBrand {
+  readonly NonNegativeFloatString: unique symbol
 }
 
 /**
- * Positive floating point branded newtype string.
+ * Non-negative floating point branded newtype string.
  *
- * Represents positive floating point numbers:
+ * Represents non-negative floating point numbers:
  *
  * ```math
- *  { f | f ∈ ℝ, f > 0, f <= 2 ** 53 - 1 }
+ *  { f | f ∈ ℝ, f >= 0, f <= 2 ** 53 - 1 }
  * ```
  *
  * @since 0.0.2
  * @category Model
  */
-export type PositiveFloatString = string & PositiveFloatStringBrand
+export type NonNegativeFloatString = string & NonNegativeFloatStringBrand
 
 /**
  * @since 0.0.2
  * @category Model
  */
-export type SchemableParams<S> = HKT<S, PositiveFloatString>
+export type SchemableParams<S> = HKT<S, NonNegativeFloatString>
 
 /**
  * @since 0.0.2
  * @category Model
  */
-export type SchemableParams1<S extends URIS> = Kind<S, PositiveFloatString>
+export type SchemableParams1<S extends URIS> = Kind<S, NonNegativeFloatString>
 
 /**
  * @since 0.0.2
  * @category Model
  */
-export type SchemableParams2C<S extends URIS2> = Kind2<S, unknown, PositiveFloatString>
+export type SchemableParams2C<S extends URIS2> = Kind2<S, unknown, NonNegativeFloatString>
 
 /**
  * @since 0.0.2
  * @category Refinements
  */
-export const isPositiveFloatString = (s: string): s is PositiveFloatString =>
-  pipe(s, parseFloat, isPositiveFloat)
+export const isNonNegativeFloatString = (s: string): s is NonNegativeFloatString =>
+  typeof s === 'string' && pipe(s, parseFloat, isNonNegativeFloat)
 
 /**
  * @since 0.0.2
@@ -72,7 +72,7 @@ export const isPositiveFloatString = (s: string): s is PositiveFloatString =>
  */
 export const Decoder: SchemableParams2C<D.URI> = pipe(
   D.string,
-  D.refine(isPositiveFloatString, 'PositiveFloatString')
+  D.refine(isNonNegativeFloatString, 'NonNegativeFloatString')
 )
 
 /**
@@ -87,7 +87,7 @@ export const Eq: SchemableParams1<Eq_.URI> = Str.Eq
  */
 export const Guard: SchemableParams1<G.URI> = pipe(
   G.string,
-  G.refine(isPositiveFloatString)
+  G.refine(isNonNegativeFloatString)
 )
 
 /**
@@ -96,7 +96,7 @@ export const Guard: SchemableParams1<G.URI> = pipe(
  */
 export const TaskDecoder: SchemableParams2C<TD.URI> = pipe(
   TD.string,
-  TD.refine(isPositiveFloatString, 'PositiveFloatString')
+  TD.refine(isNonNegativeFloatString, 'NonNegativeFloatString')
 )
 
 /**
@@ -105,12 +105,12 @@ export const TaskDecoder: SchemableParams2C<TD.URI> = pipe(
  */
 export const Type: SchemableParams1<t.URI> = pipe(
   t.string,
-  t.refine(isPositiveFloatString, 'PositiveFloatString')
+  t.refine(isNonNegativeFloatString, 'NonNegativeFloatString')
 )
 
 /**
  * @since 0.0.2
  * @category Utilities
  */
-export const toPositiveFloat: (s: PositiveFloatString) => PositiveFloat = s =>
+export const toNonNegativeFloat: (s: NonNegativeFloatString) => NonNegativeFloat = s =>
   unsafeCoerce(parseFloat(s))

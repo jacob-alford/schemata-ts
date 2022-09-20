@@ -1,14 +1,14 @@
 import * as RA from 'fp-ts/ReadonlyArray'
 import { tuple } from 'fp-ts/function'
-import { Decoder, Eq, Guard, TaskDecoder, Type } from '../src/number/PositiveFloat'
+import { Decoder, Eq, Guard, TaskDecoder, Type } from '../src/number/NonNegativeFloat'
 
 import { cat, combineExpected } from '../test-utils'
 
-const validNumbers = [1, 1.1, Math.random() + 1, Number.MAX_SAFE_INTEGER]
+const validNumbers = [0, 1, 1.1, Math.random() + 1, Number.MAX_SAFE_INTEGER]
 
-const invalidNumbers = [0, -1, -1.1, -Math.random(), Number.MIN_SAFE_INTEGER]
+const invalidNumbers = [-1, -1.1, -Math.random(), Number.MIN_SAFE_INTEGER]
 
-describe('PositiveFloat', () => {
+describe('NonNegativeFloat', () => {
   describe('Decoder', () => {
     test.each(
       cat(combineExpected(validNumbers, 'Right'), combineExpected(invalidNumbers, 'Left'))
