@@ -1,6 +1,6 @@
 ---
 title: string/PositiveFloatString.ts
-nav_order: 21
+nav_order: 23
 parent: Modules
 ---
 
@@ -33,6 +33,8 @@ Added in v0.0.2
   - [SchemableParams2C (type alias)](#schemableparams2c-type-alias)
 - [Refinements](#refinements)
   - [isPositiveFloatString](#ispositivefloatstring)
+- [Utilities](#utilities)
+  - [toPositiveFloat](#topositivefloat)
 
 ---
 
@@ -146,6 +148,18 @@ Added in v0.0.2
 
 ```ts
 export declare const isPositiveFloatString: (s: string) => s is PositiveFloatString
+```
+
+Added in v0.0.2
+
+# Utilities
+
+## toPositiveFloat
+
+**Signature**
+
+```ts
+export declare const toPositiveFloat: (s: PositiveFloatString) => PositiveFloat
 ```
 
 Added in v0.0.2

@@ -145,7 +145,7 @@ Added in v0.0.1
 **Signature**
 
 ```ts
-export declare function isInt(n: number): n is Int
+export declare const isInt: (n: number) => n is Int
 ```
 
 Added in v0.0.1

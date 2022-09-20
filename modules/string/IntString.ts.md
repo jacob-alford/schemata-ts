@@ -1,6 +1,6 @@
 ---
 title: string/IntString.ts
-nav_order: 16
+nav_order: 17
 parent: Modules
 ---
 
@@ -159,7 +159,7 @@ Added in v0.0.1
 **Signature**
 
 ```ts
-export declare function isIntString(n: string): n is IntString
+export declare const isIntString: (n: string) => n is IntString
 ```
 
 Added in v0.0.1
