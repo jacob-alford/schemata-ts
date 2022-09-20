@@ -6,7 +6,18 @@ import { cat, combineExpected } from '../test-utils'
 
 const validNumbers = [1, 1.1, Math.random() + 1, Number.MAX_SAFE_INTEGER]
 
-const invalidNumbers = [-1, -1.1, -Math.random(), Number.MIN_SAFE_INTEGER]
+const invalidNumbers = [
+  0,
+  -1,
+  -1.1,
+  '2......',
+  'a',
+  -Math.random(),
+  Number.MIN_SAFE_INTEGER,
+  Infinity,
+  -Infinity,
+  NaN,
+]
 
 describe('PositiveFloat', () => {
   describe('Decoder', () => {

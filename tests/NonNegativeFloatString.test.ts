@@ -7,21 +7,26 @@ import {
   Eq,
   Guard,
   TaskDecoder,
-  toPositiveFloat,
+  toNonNegativeFloat,
   Type,
-} from '../src/string/PositiveFloatString'
+} from '../src/string/NonNegativeFloatString'
 
 import { cat, combineExpected } from '../test-utils'
 
-const validNumbers = ['1', '1.1', `${Math.random() + 1}`, `${Number.MAX_SAFE_INTEGER}`]
+const validNumbers = [
+  '0',
+  '1',
+  '1.1',
+  `${Math.random() + 1}`,
+  `${Number.MAX_SAFE_INTEGER}`,
+]
 
 const invalidNumbers = [
-  '0',
   '-1',
-  '1.1.1.1',
-  '2......',
   'a',
   '-1.1',
+  '-1.1.1.1.1',
+  '2......',
   `${-Math.random()}`,
   `${Number.MIN_SAFE_INTEGER}`,
   `${Infinity}`,
@@ -29,7 +34,7 @@ const invalidNumbers = [
   `${NaN}`,
 ]
 
-describe('PositiveFloatString', () => {
+describe('NonNegativeFloatString', () => {
   describe('Decoder', () => {
     test.each(
       cat(combineExpected(validNumbers, 'Right'), combineExpected(invalidNumbers, 'Left'))
@@ -81,9 +86,9 @@ describe('PositiveFloatString', () => {
       expect(result._tag).toBe(expectedTag)
     })
   })
-  it('converts to a PositiveFloat', () => {
-    const numStr = '1.1'
+  it('converts to a NonNegativeFloat', () => {
+    const numStr = '0'
     if (!Guard.is(numStr)) throw new Error('Unexpected result')
-    expect(toPositiveFloat(numStr)).toBe(1.1)
+    expect(toNonNegativeFloat(numStr)).toBe(0)
   })
 })

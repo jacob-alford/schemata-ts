@@ -62,9 +62,8 @@ export type SchemableParams2C<S extends URIS2> = Kind2<S, unknown, Int>
  * @since 0.0.1
  * @category Refinements
  */
-export function isInt(n: number): n is Int {
-  return G.number.is(n) && Number.isSafeInteger(n)
-}
+export const isInt = (n: number): n is Int =>
+  typeof n === 'number' && G.number.is(n) && Number.isSafeInteger(n)
 
 /**
  * @since 0.0.1
