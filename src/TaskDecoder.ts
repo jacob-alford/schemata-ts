@@ -24,6 +24,7 @@ import * as BtcAddress from './string/BtcAddress'
 import * as EmailAddress from './string/EmailAddress'
 import * as ISODateString from './string/ISODateString'
 import * as IntString from './string/IntString'
+import * as JWT from './string/JWT'
 import * as NaturalString from './string/NaturalString'
 import * as NegativeIntString from './string/NegativeIntString'
 import * as NonNegativeFloatString from './string/NonNegativeFloatString'
@@ -54,6 +55,7 @@ export const Schemable: SchemableExt2C<TD.URI> = {
   EmailAddress: EmailAddress.TaskDecoder,
   ISODateString: ISODateString.TaskDecoder,
   IntString: IntString.TaskDecoder,
+  JWT: JWT.TaskDecoder,
   NaturalString: NaturalString.TaskDecoder,
   NegativeIntString: NegativeIntString.TaskDecoder,
   NonNegativeFloatString: NonNegativeFloatString.TaskDecoder,
