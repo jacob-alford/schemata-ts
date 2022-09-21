@@ -149,7 +149,7 @@ export const tuple = <A extends ReadonlyArray<unknown>>(
  * @since 0.0.2
  * @category Internal
  */
-const typeOf = (x: unknown): string => (x === null ? 'null' : typeof x)
+export const typeOf = (x: unknown): string => (x === null ? 'null' : typeof x)
 
 /**
  * @since 0.0.2
@@ -163,7 +163,7 @@ const intersect_ = <A, B>(a: A, b: B): A & B => {
       return Object.assign({}, a, b)
     }
   }
-  return b as A & B
+  return undefined as A & B
 }
 
 /**
@@ -208,7 +208,7 @@ export const readonly: <A>(arb: Arbitrary<A>) => Arbitrary<Readonly<A>> = identi
  * @category Combinators
  */
 export const union = <A extends [Arbitrary<unknown>, ...Array<Arbitrary<unknown>>]>(
-  ...members: { [K in keyof A]: Arbitrary<A[K]> }
+  ...members: A
 ): Arbitrary<A[number]> => fc.oneof(...members) as unknown as Arbitrary<A[number]>
 
 // -------------------------------------------------------------------------------------

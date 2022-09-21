@@ -1264,6 +1264,13 @@
     minimatch "^3.0.4"
     strip-json-comments "^3.1.1"
 
+"@fast-check/jest@^1.1.0":
+  version "1.1.0"
+  resolved "https://registry.yarnpkg.com/@fast-check/jest/-/jest-1.1.0.tgz#2e2569d6c0fb671b8e0ed7415f8392aab52d904b"
+  integrity sha512-/2vAsB0GS2Tk81yN29vHLS3Si7jKmxVchMaLADThaJ0ER5Ayqa0HSUHcSlMOzoGvXDprdV918tdKEAdI8qh7xw==
+  dependencies:
+    fast-check "^3.0.0"
+
 "@humanwhocodes/config-array@^0.5.0":
   version "0.5.0"
   resolved "https://registry.yarnpkg.com/@humanwhocodes/config-array/-/config-array-0.5.0.tgz#1407967d4c6eecd7388f83acf1eaf4d0c6e58ef9"
@@ -3421,6 +3428,13 @@ fast-check@^2.13.0:
   integrity sha512-wRUT2KD2lAmT75WNIJIHECawoUUMHM0I5jrlLXGtGeqmPL8jl/EldUDjY1VCp6fDY8yflyfUeIOsOBrIbIiArg==
   dependencies:
     pure-rand "^5.0.1"
+
+fast-check@^3.0.0:
+  version "3.1.4"
+  resolved "https://registry.yarnpkg.com/fast-check/-/fast-check-3.1.4.tgz#e755623b4a63d0a26c285acbd1c1d8e3ea283a6e"
+  integrity sha512-AC4o8U7riY668tHAcJ10PHWpmhaNDfyzs2THFwQ6FJMPP05EmHKEmYvup7B1DCS+kKAzzosjSF51TamUM5IyPA==
+  dependencies:
+    pure-rand "^5.0.2"
 
 fast-deep-equal@^3.1.1, fast-deep-equal@^3.1.3:
   version "3.1.3"
@@ -6086,7 +6100,7 @@ punycode@^2.1.0, punycode@^2.1.1:
   resolved "https://registry.yarnpkg.com/punycode/-/punycode-2.1.1.tgz#b58b010ac40c22c5657616c8d2c2c02c7bf479ec"
   integrity sha512-XRsRjdf+j5ml+y/6GKHPZbrF/8p2Yga0JPtdqTIY2Xe5ohJPD9saDJJLPvp9+NSBprVvevdXZybnj2cv8OEd0A==
 
-pure-rand@^5.0.1:
+pure-rand@^5.0.1, pure-rand@^5.0.2:
   version "5.0.3"
   resolved "https://registry.yarnpkg.com/pure-rand/-/pure-rand-5.0.3.tgz#a2f15dfbc3be8433d1d8ed67ee411aa83fb90406"
   integrity sha512-9N8x1h8dptBQpHyC7aZMS+iNOAm97WMGY0AFrguU1cpfW3I5jINkWe5BIY5md0ofy+1TCIELsVcm/GJXZSaPbw==
