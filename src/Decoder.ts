@@ -11,6 +11,7 @@ import { SchemableExt2C } from './SchemableExt'
 /** Number */
 import * as Int from './number/Int'
 import * as Natural from './number/Natural'
+import * as NegativeFloat from './number/NegativeFloat'
 import * as NegativeInt from './number/NegativeInt'
 import * as NonNegativeFloat from './number/NonNegativeFloat'
 import * as PositiveFloat from './number/PositiveFloat'
@@ -26,6 +27,7 @@ import * as ISODateString from './string/ISODateString'
 import * as IntString from './string/IntString'
 import * as JWT from './string/JWT'
 import * as NaturalString from './string/NaturalString'
+import * as NegativeFloatString from './string/NegativeFloatString'
 import * as NegativeIntString from './string/NegativeIntString'
 import * as NonNegativeFloatString from './string/NonNegativeFloatString'
 import * as NonemptyString from './string/NonemptyString'
@@ -44,6 +46,7 @@ export const Schemable: SchemableExt2C<D.URI> = {
   ...D.Schemable,
   Int: Int.Decoder,
   Natural: Natural.Decoder,
+  NegativeFloat: NegativeFloat.Decoder,
   NegativeInt: NegativeInt.Decoder,
   NonNegativeFloat: NonNegativeFloat.Decoder,
   PositiveFloat: PositiveFloat.Decoder,
@@ -57,6 +60,7 @@ export const Schemable: SchemableExt2C<D.URI> = {
   IntString: IntString.Decoder,
   JWT: JWT.Decoder,
   NaturalString: NaturalString.Decoder,
+  NegativeFloatString: NegativeFloatString.Decoder,
   NegativeIntString: NegativeIntString.Decoder,
   NonNegativeFloatString: NonNegativeFloatString.Decoder,
   NonemptyString: NonemptyString.Decoder,
