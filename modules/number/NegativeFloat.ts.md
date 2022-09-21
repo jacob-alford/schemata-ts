@@ -1,17 +1,17 @@
 ---
-title: number/PositiveFloat.ts
-nav_order: 11
+title: number/NegativeFloat.ts
+nav_order: 8
 parent: Modules
 ---
 
-## PositiveFloat overview
+## NegativeFloat overview
 
-Positive Float branded newtype.
+Negative floating point branded newtype.
 
-Represents floating point numbers:
+Represents negative floating point numbers:
 
 ```math
- { f | f ∈ R, f > 0, f <= 2 ** 53 - 1 }
+ { f | f ∈ ℝ, f < 0, f >= -2 ** 53 + 1 }
 ```
 
 Added in v0.0.2
@@ -27,12 +27,12 @@ Added in v0.0.2
   - [TaskDecoder](#taskdecoder)
   - [Type](#type)
 - [Model](#model)
-  - [PositiveFloat (type alias)](#positivefloat-type-alias)
+  - [NegativeFloat (type alias)](#negativefloat-type-alias)
   - [SchemableParams (type alias)](#schemableparams-type-alias)
   - [SchemableParams1 (type alias)](#schemableparams1-type-alias)
   - [SchemableParams2C (type alias)](#schemableparams2c-type-alias)
 - [Refinements](#refinements)
-  - [isPositiveFloat](#ispositivefloat)
+  - [isNegativeFloat](#isnegativefloat)
 
 ---
 
@@ -43,7 +43,7 @@ Added in v0.0.2
 **Signature**
 
 ```ts
-export declare const Decoder: D.Decoder<unknown, PositiveFloat>
+export declare const Decoder: D.Decoder<unknown, NegativeFloat>
 ```
 
 Added in v0.0.2
@@ -53,7 +53,7 @@ Added in v0.0.2
 **Signature**
 
 ```ts
-export declare const Eq: Eq_.Eq<PositiveFloat>
+export declare const Eq: Eq_.Eq<NegativeFloat>
 ```
 
 Added in v0.0.2
@@ -63,7 +63,7 @@ Added in v0.0.2
 **Signature**
 
 ```ts
-export declare const Guard: G.Guard<unknown, PositiveFloat>
+export declare const Guard: G.Guard<unknown, NegativeFloat>
 ```
 
 Added in v0.0.2
@@ -73,7 +73,7 @@ Added in v0.0.2
 **Signature**
 
 ```ts
-export declare const TaskDecoder: TD.TaskDecoder<unknown, PositiveFloat>
+export declare const TaskDecoder: TD.TaskDecoder<unknown, NegativeFloat>
 ```
 
 Added in v0.0.2
@@ -83,27 +83,27 @@ Added in v0.0.2
 **Signature**
 
 ```ts
-export declare const Type: t.Type<PositiveFloat>
+export declare const Type: t.Type<NegativeFloat>
 ```
 
 Added in v0.0.2
 
 # Model
 
-## PositiveFloat (type alias)
+## NegativeFloat (type alias)
 
-Positive Float branded newtype.
+Negative floating point branded newtype.
 
-Represents floating point numbers:
+Represents negative floating point numbers:
 
 ```math
- { f | f ∈ R, f > 0, f <= 2 ** 53 - 1 }
+ { f | f ∈ ℝ, f < 0, f >= -2 ** 53 + 1 }
 ```
 
 **Signature**
 
 ```ts
-export type PositiveFloat = number & PositiveFloatBrand
+export type NegativeFloat = number & NegativeFloatBrand
 ```
 
 Added in v0.0.2
@@ -113,7 +113,7 @@ Added in v0.0.2
 **Signature**
 
 ```ts
-export type SchemableParams<S> = HKT<S, PositiveFloat>
+export type SchemableParams<S> = HKT<S, NegativeFloat>
 ```
 
 Added in v0.0.2
@@ -123,7 +123,7 @@ Added in v0.0.2
 **Signature**
 
 ```ts
-export type SchemableParams1<S extends URIS> = Kind<S, PositiveFloat>
+export type SchemableParams1<S extends URIS> = Kind<S, NegativeFloat>
 ```
 
 Added in v0.0.2
@@ -133,19 +133,19 @@ Added in v0.0.2
 **Signature**
 
 ```ts
-export type SchemableParams2C<S extends URIS2> = Kind2<S, unknown, PositiveFloat>
+export type SchemableParams2C<S extends URIS2> = Kind2<S, unknown, NegativeFloat>
 ```
 
 Added in v0.0.2
 
 # Refinements
 
-## isPositiveFloat
+## isNegativeFloat
 
 **Signature**
 
 ```ts
-export declare const isPositiveFloat: (f: number) => f is PositiveFloat
+export declare const isNegativeFloat: (f: number) => f is NegativeFloat
 ```
 
 Added in v0.0.2

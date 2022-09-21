@@ -1,6 +1,6 @@
 ---
 title: SchemableExt.ts
-nav_order: 12
+nav_order: 13
 parent: Modules
 ---
 
@@ -33,6 +33,7 @@ Added in v0.0.1
 export interface SchemableExt<S> extends Schemable<S> {
   readonly Int: Int.SchemableParams<S>
   readonly Natural: Natural.SchemableParams<S>
+  readonly NegativeFloat: NegativeFloat.SchemableParams<S>
   readonly NegativeInt: NegativeInt.SchemableParams<S>
   readonly NonNegativeFloat: NonNegativeFloat.SchemableParams<S>
   readonly PositiveFloat: PositiveFloat.SchemableParams<S>
@@ -46,6 +47,7 @@ export interface SchemableExt<S> extends Schemable<S> {
   readonly IntString: IntString.SchemableParams<S>
   readonly JWT: JWT.SchemableParams<S>
   readonly NaturalString: NaturalString.SchemableParams<S>
+  readonly NegativeFloatString: NegativeFloatString.SchemableParams<S>
   readonly NegativeIntString: NegativeIntString.SchemableParams<S>
   readonly NonNegativeFloatString: NonNegativeFloatString.SchemableParams<S>
   readonly NonemptyString: NonemptyString.SchemableParams<S>
@@ -66,6 +68,7 @@ Added in v0.0.1
 export interface SchemableExt1<S extends URIS> extends Schemable1<S> {
   readonly Int: Int.SchemableParams1<S>
   readonly Natural: Natural.SchemableParams1<S>
+  readonly NegativeFloat: NegativeFloat.SchemableParams1<S>
   readonly NegativeInt: NegativeInt.SchemableParams1<S>
   readonly NonNegativeFloat: NonNegativeFloat.SchemableParams1<S>
   readonly PositiveFloat: PositiveFloat.SchemableParams1<S>
@@ -79,6 +82,7 @@ export interface SchemableExt1<S extends URIS> extends Schemable1<S> {
   readonly IntString: IntString.SchemableParams1<S>
   readonly JWT: JWT.SchemableParams1<S>
   readonly NaturalString: NaturalString.SchemableParams1<S>
+  readonly NegativeFloatString: NegativeFloatString.SchemableParams1<S>
   readonly NegativeIntString: NegativeIntString.SchemableParams1<S>
   readonly NonNegativeFloatString: NonNegativeFloatString.SchemableParams1<S>
   readonly NonemptyString: NonemptyString.SchemableParams1<S>
@@ -99,6 +103,7 @@ Added in v0.0.1
 export interface SchemableExt2C<S extends URIS2> extends Schemable2C<S, unknown> {
   readonly Int: Int.SchemableParams2C<S>
   readonly Natural: Natural.SchemableParams2C<S>
+  readonly NegativeFloat: NegativeFloat.SchemableParams2C<S>
   readonly NegativeInt: NegativeInt.SchemableParams2C<S>
   readonly NonNegativeFloat: NonNegativeFloat.SchemableParams2C<S>
   readonly PositiveFloat: PositiveFloat.SchemableParams2C<S>
@@ -112,6 +117,7 @@ export interface SchemableExt2C<S extends URIS2> extends Schemable2C<S, unknown>
   readonly IntString: IntString.SchemableParams2C<S>
   readonly JWT: JWT.SchemableParams2C<S>
   readonly NaturalString: NaturalString.SchemableParams2C<S>
+  readonly NegativeFloatString: NegativeFloatString.SchemableParams2C<S>
   readonly NegativeIntString: NegativeIntString.SchemableParams2C<S>
   readonly NonNegativeFloatString: NonNegativeFloatString.SchemableParams2C<S>
   readonly NonemptyString: NonemptyString.SchemableParams2C<S>
