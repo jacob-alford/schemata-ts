@@ -15,6 +15,9 @@ import * as Str from 'fp-ts/string'
 import * as TD from 'io-ts/TaskDecoder'
 import * as t from 'io-ts/Type'
 import { pipe } from 'fp-ts/function'
+import * as fc from 'fast-check'
+
+import * as Arb from '../internal/ArbitraryBase'
 
 /**
  * @since 0.0.3
@@ -115,3 +118,18 @@ export const Type: SchemableParams1<t.URI> = pipe(
   t.string,
   t.refine(isHexColor, 'HexColor')
 )
+
+/**
+ * @since 0.0.3
+ * @category Instances
+ */
+export const Arbitrary: SchemableParams1<Arb.URI> = fc
+  .tuple(fc.constantFrom('#', ''), fc.constantFrom(3, 4, 6, 8))
+  .chain(([hash, n]) =>
+    fc
+      .hexaString({
+        minLength: n,
+        maxLength: n,
+      })
+      .map(hex => hash + hex)
+  ) as Arb.Arbitrary<HexColor>

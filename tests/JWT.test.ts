@@ -2,9 +2,9 @@ import * as RA from 'fp-ts/ReadonlyArray'
 
 import { tuple } from 'fp-ts/function'
 
-import { Decoder, Eq, Guard, TaskDecoder, Type } from '../src/string/JWT'
+import * as JWT from '../src/string/JWT'
 
-import { cat, combineExpected } from '../test-utils'
+import { cat, combineExpected, validateArbitrary } from '../test-utils'
 
 const validStrings = [
   'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJsb2dnZWRJbkFzIjoiYWRtaW4iLCJpYXQiOjE0MjI3Nzk2Mzh9.gzSraSYS8EXBxLN_oWnFSRgCzcmJmMjLiuyu5CSpyHI',
@@ -25,7 +25,7 @@ describe('JWT', () => {
     test.each(
       cat(combineExpected(validStrings, 'Right'), combineExpected(invalidStrings, 'Left'))
     )('validates valid strings, and catches bad strings', (num, expectedTag) => {
-      const result = Decoder.decode(num)
+      const result = JWT.Decoder.decode(num)
 
       expect(result._tag).toBe(expectedTag)
     })
@@ -36,8 +36,8 @@ describe('JWT', () => {
       'determines two strings are equal',
 
       (num1, num2) => {
-        const guard = Guard.is
-        const eq = Eq.equals
+        const guard = JWT.Guard.is
+        const eq = JWT.Eq.equals
 
         if (!guard(num1) || !guard(num2)) {
           throw new Error('Unexpected result')
@@ -52,7 +52,7 @@ describe('JWT', () => {
     test.each(
       cat(combineExpected(validStrings, true), combineExpected(invalidStrings, false))
     )('validates valid strings, and catches bad strings', (num, expectedTag) => {
-      const result = Guard.is(num)
+      const result = JWT.Guard.is(num)
 
       expect(result).toBe(expectedTag)
     })
@@ -62,7 +62,7 @@ describe('JWT', () => {
     test.each(
       cat(combineExpected(validStrings, 'Right'), combineExpected(invalidStrings, 'Left'))
     )('validates valid strings, and catches bad strings', async (num, expectedTag) => {
-      const result = await TaskDecoder.decode(num)()
+      const result = await JWT.TaskDecoder.decode(num)()
 
       expect(result._tag).toBe(expectedTag)
     })
@@ -72,9 +72,15 @@ describe('JWT', () => {
     test.each(
       cat(combineExpected(validStrings, 'Right'), combineExpected(invalidStrings, 'Left'))
     )('validates valid strings, and catches bad strings', (num, expectedTag) => {
-      const result = Type.decode(num)
+      const result = JWT.Type.decode(num)
 
       expect(result._tag).toBe(expectedTag)
+    })
+  })
+
+  describe('Arbitrary', () => {
+    it('generates valid JWTs', () => {
+      validateArbitrary(JWT, JWT.isJWT)
     })
   })
 })

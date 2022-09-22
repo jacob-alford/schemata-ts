@@ -3,9 +3,9 @@ import * as E from 'fp-ts/Either'
 
 import { pipe, tuple } from 'fp-ts/function'
 
-import { Decoder, Eq, Encoder, Guard, TaskDecoder, Type } from '../src/string/Hexadecimal'
+import * as Hexadecimal from '../src/string/Hexadecimal'
 
-import { cat, combineExpected } from '../test-utils'
+import { cat, combineExpected, validateArbitrary } from '../test-utils'
 
 const validStrings = [
   'deadBEEF',
@@ -35,7 +35,7 @@ describe('Hexadecimal', () => {
     test.each(
       cat(combineExpected(validStrings, 'Right'), combineExpected(invalidStrings, 'Left'))
     )('validates valid strings, and catches bad strings', (str, expectedTag) => {
-      const result = Decoder.decode(str)
+      const result = Hexadecimal.Decoder.decode(str)
 
       expect(result._tag).toBe(expectedTag)
     })
@@ -47,8 +47,8 @@ describe('Hexadecimal', () => {
       original => {
         const roundtrip = pipe(
           original,
-          Decoder.decode,
-          E.map(Encoder.encode),
+          Hexadecimal.Decoder.decode,
+          E.map(Hexadecimal.Encoder.encode),
           E.getOrElse(() => 'invalid')
         )
 
@@ -62,8 +62,8 @@ describe('Hexadecimal', () => {
       'determines two strings are equal',
 
       (str1, str2) => {
-        const guard = Guard.is
-        const eq = Eq.equals
+        const guard = Hexadecimal.Guard.is
+        const eq = Hexadecimal.Eq.equals
 
         if (!guard(str1) || !guard(str2)) {
           throw new Error('Unexpected result')
@@ -78,7 +78,7 @@ describe('Hexadecimal', () => {
     test.each(
       cat(combineExpected(validStrings, true), combineExpected(invalidStrings, false))
     )('validates valid strings, and catches bad strings', (str, expectedTag) => {
-      const result = Guard.is(str)
+      const result = Hexadecimal.Guard.is(str)
 
       expect(result).toBe(expectedTag)
     })
@@ -88,7 +88,7 @@ describe('Hexadecimal', () => {
     test.each(
       cat(combineExpected(validStrings, 'Right'), combineExpected(invalidStrings, 'Left'))
     )('validates valid strings, and catches bad strings', async (str, expectedTag) => {
-      const result = await TaskDecoder.decode(str)()
+      const result = await Hexadecimal.TaskDecoder.decode(str)()
 
       expect(result._tag).toBe(expectedTag)
     })
@@ -98,9 +98,15 @@ describe('Hexadecimal', () => {
     test.each(
       cat(combineExpected(validStrings, 'Right'), combineExpected(invalidStrings, 'Left'))
     )('validates valid strings, and catches bad strings', (str, expectedTag) => {
-      const result = Type.decode(str)
+      const result = Hexadecimal.Type.decode(str)
 
       expect(result._tag).toBe(expectedTag)
+    })
+  })
+
+  describe('Arbitrary', () => {
+    it('generates valid Hexadecimals', () => {
+      validateArbitrary(Hexadecimal, Hexadecimal.isHexadecimal)
     })
   })
 })

@@ -3,9 +3,9 @@ import * as E from 'fp-ts/Either'
 
 import { pipe, tuple } from 'fp-ts/function'
 
-import { Decoder, Eq, Encoder, Guard, TaskDecoder, Type } from '../src/string/HexColor'
+import * as HexColor from '../src/string/HexColor'
 
-import { cat, combineExpected } from '../test-utils'
+import { cat, combineExpected, validateArbitrary } from '../test-utils'
 
 const validStrings = ['#ff0000ff', '#ff0034', '#CCCCCC', '0f38', 'fff', '#f00']
 
@@ -16,7 +16,7 @@ describe('HexColor', () => {
     test.each(
       cat(combineExpected(validStrings, 'Right'), combineExpected(invalidStrings, 'Left'))
     )('validates valid strings, and catches bad strings', (str, expectedTag) => {
-      const result = Decoder.decode(str)
+      const result = HexColor.Decoder.decode(str)
 
       expect(result._tag).toBe(expectedTag)
     })
@@ -28,8 +28,8 @@ describe('HexColor', () => {
       original => {
         const roundtrip = pipe(
           original,
-          Decoder.decode,
-          E.map(Encoder.encode),
+          HexColor.Decoder.decode,
+          E.map(HexColor.Encoder.encode),
           E.getOrElse(() => 'invalid')
         )
 
@@ -43,8 +43,8 @@ describe('HexColor', () => {
       'determines two strings are equal',
 
       (str1, str2) => {
-        const guard = Guard.is
-        const eq = Eq.equals
+        const guard = HexColor.Guard.is
+        const eq = HexColor.Eq.equals
 
         if (!guard(str1) || !guard(str2)) {
           throw new Error('Unexpected result')
@@ -59,7 +59,7 @@ describe('HexColor', () => {
     test.each(
       cat(combineExpected(validStrings, true), combineExpected(invalidStrings, false))
     )('validates valid strings, and catches bad strings', (str, expectedTag) => {
-      const result = Guard.is(str)
+      const result = HexColor.Guard.is(str)
 
       expect(result).toBe(expectedTag)
     })
@@ -69,7 +69,7 @@ describe('HexColor', () => {
     test.each(
       cat(combineExpected(validStrings, 'Right'), combineExpected(invalidStrings, 'Left'))
     )('validates valid strings, and catches bad strings', async (str, expectedTag) => {
-      const result = await TaskDecoder.decode(str)()
+      const result = await HexColor.TaskDecoder.decode(str)()
 
       expect(result._tag).toBe(expectedTag)
     })
@@ -79,9 +79,15 @@ describe('HexColor', () => {
     test.each(
       cat(combineExpected(validStrings, 'Right'), combineExpected(invalidStrings, 'Left'))
     )('validates valid strings, and catches bad strings', (str, expectedTag) => {
-      const result = Type.decode(str)
+      const result = HexColor.Type.decode(str)
 
       expect(result._tag).toBe(expectedTag)
+    })
+  })
+
+  describe('Arbitrary', () => {
+    it('generates valid HexColors', () => {
+      validateArbitrary(HexColor, HexColor.isHexColor)
     })
   })
 })

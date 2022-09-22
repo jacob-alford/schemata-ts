@@ -12,7 +12,10 @@ import * as O from 'fp-ts/Option'
 import * as TD from 'io-ts/TaskDecoder'
 import * as t from 'io-ts/Type'
 import { flow, pipe, unsafeCoerce } from 'fp-ts/function'
+import * as fc from 'fast-check'
+
 import { SafeDate, Decoder as decodeSafeDate } from '../date/SafeDate'
+import * as Arb from '../internal/ArbitraryBase'
 
 /**
  * @since 0.0.1
@@ -29,7 +32,7 @@ interface ISODateBrand {
  * @category Internal
  */
 const iso8601Regex =
-  /^([+-]?\d{4}(?!\d{2}\b))((-?)((0[1-9]|1[0-2])(\3([12]\d|0[1-9]|3[01]))?|W([0-4]\d|5[0-2])(-?[1-7])?|(00[1-9]|0[1-9]\d|[12]\d{2}|3([0-5]\d|6[1-6])))([T\s]((([01]\d|2[0-3])((:?)[0-5]\d)?|24:?00)([.,]\d+(?!:))?)?(\17[0-5]\d([.,]\d+)?)?([zZ]|([+-])([01]\d|2[0-3]):?([0-5]\d)?)?)?)?$/
+  /^((\d{4}|[+-]?\d{6})(?!\d{2}\b))((-?)((0[1-9]|1[0-2])(\4([12]\d|0[1-9]|3[01]))?|W([0-4]\d|5[0-2])(-?[1-7])?|(00[1-9]|0[1-9]\d|[12]\d{2}|3([0-5]\d|6[1-6])))([T\s]((([01]\d|2[0-3])((:?)[0-5]\d)?|24:?00)([.,]\d+(?!:))?)?(\18[0-5]\d([.,]\d+)?)?([zZ]|([+-])([01]\d|2[0-3]):?([0-5]\d)?)?)?)?$/
 
 /**
  * Represents strings that conform to the ISO 8601 standard.
@@ -137,3 +140,11 @@ export const toSafeDate: (iso: ISODate) => SafeDate = iso => unsafeCoerce(new Da
  * @category Instances
  */
 export const Encoder: SchemableParams2<Enc.URI> = Enc.id()
+
+/**
+ * @since 0.0.3
+ * @category Instances
+ */
+export const Arbitrary: SchemableParams1<Arb.URI> = fc
+  .date()
+  .map(d => d.toISOString()) as Arb.Arbitrary<ISODate>

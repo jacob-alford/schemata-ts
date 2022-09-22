@@ -19,8 +19,9 @@ import * as t from 'io-ts/Type'
 import * as Str from 'fp-ts/string'
 import { pipe, unsafeCoerce } from 'fp-ts/function'
 
+import * as Arb from '../internal/ArbitraryBase'
+import * as PositiveInt from '../number/PositiveInt'
 import { isIntString, toInt } from './IntString'
-import { PositiveInt } from '../number/PositiveInt'
 
 /**
  * @since 0.0.1
@@ -122,7 +123,7 @@ export const Type: SchemableParams1<t.URI> = pipe(
  * @since 0.0.1
  * @category Destructors
  */
-export const toPositiveInt: (n: PositiveIntString) => PositiveInt = n =>
+export const toPositiveInt: (n: PositiveIntString) => PositiveInt.PositiveInt = n =>
   unsafeCoerce(Number(n))
 
 /**
@@ -130,3 +131,11 @@ export const toPositiveInt: (n: PositiveIntString) => PositiveInt = n =>
  * @category Instances
  */
 export const Encoder: SchemableParams2<Enc.URI> = Enc.id()
+
+/**
+ * @since 0.0.3
+ * @category Instances
+ */
+export const Arbitrary: SchemableParams1<Arb.URI> = PositiveInt.Arbitrary.map(i =>
+  i.toString()
+) as Arb.Arbitrary<PositiveIntString>

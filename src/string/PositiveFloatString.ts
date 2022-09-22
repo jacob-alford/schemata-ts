@@ -18,7 +18,9 @@ import * as Str from 'fp-ts/string'
 import * as TD from 'io-ts/TaskDecoder'
 import * as t from 'io-ts/Type'
 import { pipe, unsafeCoerce } from 'fp-ts/function'
-import { isPositiveFloat, PositiveFloat } from '../number/PositiveFloat'
+
+import * as PositiveFloat from '../number/PositiveFloat'
+import * as Arb from '../internal/ArbitraryBase'
 
 /**
  * @since 0.0.2
@@ -71,7 +73,7 @@ export type SchemableParams2C<S extends URIS2> = Kind2<S, unknown, PositiveFloat
  * @category Refinements
  */
 export const isPositiveFloatString = (s: string): s is PositiveFloatString =>
-  pipe(s, Number, isPositiveFloat)
+  pipe(s, Number, PositiveFloat.isPositiveFloat)
 
 /**
  * @since 0.0.2
@@ -119,11 +121,20 @@ export const Type: SchemableParams1<t.URI> = pipe(
  * @since 0.0.2
  * @category Utilities
  */
-export const toPositiveFloat: (s: PositiveFloatString) => PositiveFloat = s =>
-  unsafeCoerce(Number(s))
+export const toPositiveFloat: (
+  s: PositiveFloatString
+) => PositiveFloat.PositiveFloat = s => unsafeCoerce(Number(s))
 
 /**
  * @since 0.0.3
  * @category Instances
  */
 export const Encoder: SchemableParams2<Enc.URI> = Enc.id()
+
+/**
+ * @since 0.0.3
+ * @category Instances
+ */
+export const Arbitrary: SchemableParams1<Arb.URI> = PositiveFloat.Arbitrary.map(f =>
+  f.toString()
+) as Arb.Arbitrary<PositiveFloatString>

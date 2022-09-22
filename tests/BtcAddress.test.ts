@@ -1,8 +1,8 @@
 import * as RA from 'fp-ts/ReadonlyArray'
 import { tuple } from 'fp-ts/function'
-import { Decoder, Eq, Guard, TaskDecoder, Type } from '../src/string/BtcAddress'
+import * as BtcAddress from '../src/string/BtcAddress'
 
-import { cat, combineExpected } from '../test-utils'
+import { cat, combineExpected, validateArbitrary } from '../test-utils'
 
 const validAddresses = [
   '1MUz4VMYui5qY1mxUiG8BQ1Luv6tqkvaiL',
@@ -32,7 +32,7 @@ describe('BtcAddress', () => {
     )(
       'validates valid BTC addresses, and catches bad addresses',
       (address, expectedTag) => {
-        const result = Decoder.decode(address)
+        const result = BtcAddress.Decoder.decode(address)
         expect(result._tag).toBe(expectedTag)
       }
     )
@@ -41,9 +41,9 @@ describe('BtcAddress', () => {
     test.each(RA.zipWith(validAddresses, validAddresses, tuple))(
       'determines two addresses are equal',
       (address1, address2) => {
-        if (!Guard.is(address1) || !Guard.is(address2))
+        if (!BtcAddress.Guard.is(address1) || !BtcAddress.Guard.is(address2))
           throw new Error('Unexpected result')
-        expect(Eq.equals(address1, address2)).toBe(true)
+        expect(BtcAddress.Eq.equals(address1, address2)).toBe(true)
       }
     )
   })
@@ -53,7 +53,7 @@ describe('BtcAddress', () => {
     )(
       'validates valid BTC addresses, and catches bad addresses',
       (address, expectedTag) => {
-        const result = Guard.is(address)
+        const result = BtcAddress.Guard.is(address)
         expect(result).toBe(expectedTag)
       }
     )
@@ -67,7 +67,7 @@ describe('BtcAddress', () => {
     )(
       'validates valid BTC addresses, and catches bad addresses',
       async (address, expectedTag) => {
-        const result = await TaskDecoder.decode(address)()
+        const result = await BtcAddress.TaskDecoder.decode(address)()
         expect(result._tag).toBe(expectedTag)
       }
     )
@@ -81,9 +81,15 @@ describe('BtcAddress', () => {
     )(
       'validates valid BTC addresses, and catches bad addresses',
       (address, expectedTag) => {
-        const result = Type.decode(address)
+        const result = BtcAddress.Type.decode(address)
         expect(result._tag).toBe(expectedTag)
       }
     )
+  })
+
+  describe('Arbitrary', () => {
+    it('generates valid BtcAddresses', () => {
+      validateArbitrary(BtcAddress, BtcAddress.isBtcAddress)
+    })
   })
 })

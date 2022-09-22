@@ -15,6 +15,9 @@ import * as Str from 'fp-ts/string'
 import * as TD from 'io-ts/TaskDecoder'
 import * as t from 'io-ts/Type'
 import { pipe } from 'fp-ts/function'
+import * as fc from 'fast-check'
+
+import * as Arb from '../internal/ArbitraryBase'
 
 /**
  * @since 0.0.2
@@ -122,3 +125,34 @@ export const Type: SchemableParams1<t.URI> = pipe(
  * @category Instances
  */
 export const Encoder: SchemableParams2<Enc.URI> = Enc.id()
+
+/**
+ * @since 0.0.3
+ * @category Instances
+ */
+export const Arbitrary: SchemableParams1<Arb.URI> = fc.oneof(
+  // bech32
+  fc
+    .stringOf(
+      fc.oneof(
+        fc.nat(9).map(c => c.toString()),
+        fc
+          .integer({
+            min: 'a'.charCodeAt(0),
+            max: 'z'.charCodeAt(0),
+          })
+          .map(n => String.fromCharCode(n))
+      ),
+      { minLength: 25, maxLength: 39 }
+    )
+    .map(s => 'bc1' + s),
+  // base58
+  fc
+    .stringOf(
+      fc.base64().filter(c => !'IOl0+=/'.includes(c)),
+      { minLength: 25, maxLength: 39 }
+    )
+    .chain(addr =>
+      fc.oneof(fc.constant('1'), fc.constant('3')).map(prefix => prefix + addr)
+    )
+) as Arb.Arbitrary<BtcAddress>

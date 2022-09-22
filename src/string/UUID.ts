@@ -15,6 +15,9 @@ import * as Str from 'fp-ts/string'
 import * as TD from 'io-ts/TaskDecoder'
 import * as t from 'io-ts/Type'
 import { pipe } from 'fp-ts/function'
+import * as fc from 'fast-check'
+
+import * as Arb from '../internal/ArbitraryBase'
 
 /**
  * @since 0.0.1
@@ -133,3 +136,10 @@ export const Type: SchemableParams1<t.URI> = options =>
  * @category Instances
  */
 export const Encoder: SchemableParams2<Enc.URI> = () => Enc.id()
+
+/**
+ * @since 0.0.3
+ * @category Instances
+ */
+export const Arbitrary: SchemableParams1<Arb.URI> = options =>
+  fc.uuid().filter(isUUID(options))
