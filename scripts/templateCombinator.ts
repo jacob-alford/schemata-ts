@@ -46,8 +46,9 @@ const makeCombinatorModule: (
   return pipe(
     [
       _.createJSDocComment(`TODO: Add module comment\n\n@since ${packageVersion}`),
-      makeDestructureImport(['Kind', 'Kind2', 'URIS', 'URIS2', 'HKT'], 'fp-ts/HKT'),
+      makeDestructureImport(['Kind', 'Kind2', 'URIS', 'URIS2', 'HKT2'], 'fp-ts/HKT'),
       makeModuleStarImport('D', 'io-ts/Decoder'),
+      makeModuleStarImport('Enc', 'io-ts/Encoder'),
       makeModuleStarImport('Eq_', 'fp-ts/Eq'),
       makeModuleStarImport('G', 'io-ts/Guard'),
       makeModuleStarImport(primitiveModule[0], `fp-ts/${primitiveModule[1]}`),
@@ -96,8 +97,9 @@ const makeCombinatorModule: (
             undefined
           ),
         ],
-        _.createTypeReferenceNode(_.createIdentifier('HKT'), [
+        _.createTypeReferenceNode(_.createIdentifier('HKT2'), [
           _.createTypeReferenceNode(_.createIdentifier('S'), undefined),
+          _.createTypeReferenceNode(_.createIdentifier(primitive), undefined),
           _.createTypeReferenceNode(_.createIdentifier(name), undefined),
         ])
       ),
@@ -115,6 +117,24 @@ const makeCombinatorModule: (
         ],
         _.createTypeReferenceNode(_.createIdentifier('Kind'), [
           _.createTypeReferenceNode(_.createIdentifier('S'), undefined),
+          _.createTypeReferenceNode(_.createIdentifier(name), undefined),
+        ])
+      ),
+      sinceAndCategory('Model', packageVersion),
+      _.createTypeAliasDeclaration(
+        [_.createModifier(ts.SyntaxKind.ExportKeyword)],
+        _.createIdentifier('SchemableParams2'),
+        [
+          _.createTypeParameterDeclaration(
+            undefined,
+            _.createIdentifier('S'),
+            _.createTypeReferenceNode(_.createIdentifier('URIS2'), undefined),
+            undefined
+          ),
+        ],
+        _.createTypeReferenceNode(_.createIdentifier('Kind2'), [
+          _.createTypeReferenceNode(_.createIdentifier('S'), undefined),
+          _.createTypeReferenceNode(_.createIdentifier(primitive), undefined),
           _.createTypeReferenceNode(_.createIdentifier(name), undefined),
         ])
       ),
@@ -211,6 +231,36 @@ const makeCombinatorModule: (
                   [_.createIdentifier(`is${name}`), _.createStringLiteral(name)]
                 ),
               ])
+            ),
+          ],
+          ts.NodeFlags.Const
+        )
+      ),
+      sinceAndCategory('Instances', packageVersion),
+      _.createVariableStatement(
+        [_.createModifier(ts.SyntaxKind.ExportKeyword)],
+        _.createVariableDeclarationList(
+          [
+            _.createVariableDeclaration(
+              _.createIdentifier('Encoder'),
+              undefined,
+              _.createTypeReferenceNode(_.createIdentifier('SchemableParams2'), [
+                _.createTypeReferenceNode(
+                  _.createQualifiedName(
+                    _.createIdentifier('Enc'),
+                    _.createIdentifier('URI')
+                  ),
+                  undefined
+                ),
+              ]),
+              _.createCallExpression(
+                _.createPropertyAccessExpression(
+                  _.createIdentifier('Enc'),
+                  _.createIdentifier('id')
+                ),
+                undefined,
+                []
+              )
             ),
           ],
           ts.NodeFlags.Const
