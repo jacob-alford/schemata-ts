@@ -23,6 +23,7 @@ import * as Base64 from './string/Base64'
 import * as Base64Url from './string/Base64Url'
 import * as BtcAddress from './string/BtcAddress'
 import * as EmailAddress from './string/EmailAddress'
+import * as HexColor from './string/HexColor'
 import * as Hexadecimal from './string/Hexadecimal'
 import * as ISODateString from './string/ISODateString'
 import * as IntString from './string/IntString'
@@ -57,6 +58,7 @@ export const Schemable: SchemableExt2<Enc.URI> = {
   Base64Url: Base64Url.Encoder,
   BtcAddress: BtcAddress.Encoder,
   EmailAddress: EmailAddress.Encoder,
+  HexColor: HexColor.Encoder,
   Hexadecimal: Hexadecimal.Encoder,
   ISODateString: ISODateString.Encoder,
   IntString: IntString.Encoder,
