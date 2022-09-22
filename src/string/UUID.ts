@@ -6,8 +6,9 @@
  *
  * @since 0.0.1
  */
-import { Kind, Kind2, URIS, URIS2, HKT } from 'fp-ts/HKT'
+import { Kind, Kind2, URIS, URIS2, HKT2 } from 'fp-ts/HKT'
 import * as D from 'io-ts/Decoder'
+import * as Enc from 'io-ts/Encoder'
 import * as Eq_ from 'fp-ts/Eq'
 import * as G from 'io-ts/Guard'
 import * as Str from 'fp-ts/string'
@@ -58,7 +59,7 @@ export type UUIDSchemableOptions = {
  * @since 0.0.1
  * @category Model
  */
-export type SchemableParams<S> = (options: UUIDSchemableOptions) => HKT<S, UUID>
+export type SchemableParams<S> = (options: UUIDSchemableOptions) => HKT2<S, string, UUID>
 
 /**
  * @since 0.0.1
@@ -67,6 +68,14 @@ export type SchemableParams<S> = (options: UUIDSchemableOptions) => HKT<S, UUID>
 export type SchemableParams1<S extends URIS> = (
   options: UUIDSchemableOptions
 ) => Kind<S, UUID>
+
+/**
+ * @since 0.0.3
+ * @category Model
+ */
+export type SchemableParams2<S extends URIS2> = (
+  options: UUIDSchemableOptions
+) => Kind2<S, string, UUID>
 
 /**
  * @since 0.0.1
@@ -118,3 +127,9 @@ export const TaskDecoder: SchemableParams2C<TD.URI> = options =>
  */
 export const Type: SchemableParams1<t.URI> = options =>
   pipe(t.string, t.refine(isUUID(options), 'UUID'))
+
+/**
+ * @since 0.0.3
+ * @category Instances
+ */
+export const Encoder: SchemableParams2<Enc.URI> = () => Enc.id()

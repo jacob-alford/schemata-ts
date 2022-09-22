@@ -9,7 +9,8 @@
  *
  * @since 0.0.2
  */
-import { Kind, Kind2, URIS, URIS2, HKT } from 'fp-ts/HKT'
+import * as Enc from 'io-ts/Encoder'
+import { Kind, Kind2, URIS, URIS2, HKT2 } from 'fp-ts/HKT'
 import * as D from 'io-ts/Decoder'
 import * as Eq_ from 'fp-ts/Eq'
 import * as G from 'io-ts/Guard'
@@ -44,13 +45,19 @@ export type NegativeFloat = number & NegativeFloatBrand
  * @since 0.0.2
  * @category Model
  */
-export type SchemableParams<S> = HKT<S, NegativeFloat>
+export type SchemableParams<S> = HKT2<S, number, NegativeFloat>
 
 /**
  * @since 0.0.2
  * @category Model
  */
 export type SchemableParams1<S extends URIS> = Kind<S, NegativeFloat>
+
+/**
+ * @since 0.0.3
+ * @category Model
+ */
+export type SchemableParams2<S extends URIS2> = Kind2<S, number, NegativeFloat>
 
 /**
  * @since 0.0.2
@@ -103,3 +110,9 @@ export const Type: SchemableParams1<t.URI> = pipe(
   t.number,
   t.refine(isNegativeFloat, 'NegativeFloat')
 )
+
+/**
+ * @since 0.0.3
+ * @category Instances
+ */
+export const Encoder: SchemableParams2<Enc.URI> = Enc.id()
