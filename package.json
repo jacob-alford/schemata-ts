@@ -59,6 +59,7 @@
     ]
   },
   "peerDependencies": {
+    "fast-check": "^3.1.4",
     "fp-ts": "^2.9.5",
     "io-ts": "^2.2.18"
   },
@@ -69,6 +70,7 @@
     "@babel/plugin-transform-modules-commonjs": "^7.18.2",
     "@babel/preset-env": "^7.18.2",
     "@babel/preset-typescript": "^7.17.12",
+    "@fast-check/jest": "^1.1.0",
     "@types/jest": "^26.0.20",
     "@typescript-eslint/eslint-plugin": "^4.25.0",
     "@typescript-eslint/parser": "^4.25.0",
