@@ -1,6 +1,7 @@
-import { unsafeCoerce } from 'fp-ts/function'
+import { pipe, unsafeCoerce } from 'fp-ts/function'
+import * as E from 'fp-ts/Either'
 import * as RA from 'fp-ts/ReadonlyArray'
-import { Eq, Decoder, Guard, UUID, TaskDecoder, Type } from '../src/string/UUID'
+import { Eq, Encoder, Decoder, Guard, UUID, TaskDecoder, Type } from '../src/string/UUID'
 
 const _: (n: string) => UUID = unsafeCoerce
 
@@ -31,6 +32,16 @@ describe('UUID', () => {
         const result = Decoder({ version: 1 }).decode(makev1())
         expect(result._tag).toBe('Right')
       })
+    })
+    describe('Encoder', () => {
+      const original: string = makev1()
+      const roundtrip = pipe(
+        original,
+        Decoder({ version: 1 }).decode,
+        E.map(Encoder({ version: 1 }).encode),
+        E.getOrElse(() => 'invalid')
+      )
+      expect(original).toEqual(roundtrip)
     })
     describe('Eq', () => {
       it('returns true for similar UUIDs', () => {
@@ -81,6 +92,16 @@ describe('UUID', () => {
         expect(result._tag).toBe('Right')
       })
     })
+    describe('Encoder', () => {
+      const original: string = makev2()
+      const roundtrip = pipe(
+        original,
+        Decoder({ version: 2 }).decode,
+        E.map(Encoder({ version: 2 }).encode),
+        E.getOrElse(() => 'invalid')
+      )
+      expect(original).toEqual(roundtrip)
+    })
     describe('Eq', () => {
       it('returns true for similar UUIDs', () => {
         const test = makev2()
@@ -129,6 +150,16 @@ describe('UUID', () => {
         const result = Decoder({ version: 3 }).decode(makev3())
         expect(result._tag).toBe('Right')
       })
+    })
+    describe('Encoder', () => {
+      const original: string = makev3()
+      const roundtrip = pipe(
+        original,
+        Decoder({ version: 3 }).decode,
+        E.map(Encoder({ version: 3 }).encode),
+        E.getOrElse(() => 'invalid')
+      )
+      expect(original).toEqual(roundtrip)
     })
     describe('Eq', () => {
       it('returns true for similar UUIDs', () => {
@@ -179,6 +210,16 @@ describe('UUID', () => {
         expect(result._tag).toBe('Right')
       })
     })
+    describe('Encoder', () => {
+      const original: string = makev4()
+      const roundtrip = pipe(
+        original,
+        Decoder({ version: 4 }).decode,
+        E.map(Encoder({ version: 4 }).encode),
+        E.getOrElse(() => 'invalid')
+      )
+      expect(original).toEqual(roundtrip)
+    })
     describe('Eq', () => {
       it('returns true for similar UUIDs', () => {
         const test = makev4()
@@ -228,6 +269,16 @@ describe('UUID', () => {
         expect(result._tag).toBe('Right')
       })
     })
+    describe('Encoder', () => {
+      const original: string = makev5()
+      const roundtrip = pipe(
+        original,
+        Decoder({ version: 5 }).decode,
+        E.map(Encoder({ version: 5 }).encode),
+        E.getOrElse(() => 'invalid')
+      )
+      expect(original).toEqual(roundtrip)
+    })
     describe('Eq', () => {
       it('returns true for similar UUIDs', () => {
         const test = makev5()
@@ -276,6 +327,16 @@ describe('UUID', () => {
         const result = Decoder({ version: 'all' }).decode(makev1())
         expect(result._tag).toBe('Right')
       })
+    })
+    describe('Encoder', () => {
+      const original: string = makev1()
+      const roundtrip = pipe(
+        original,
+        Decoder({ version: 'all' }).decode,
+        E.map(Encoder({ version: 'all' }).encode),
+        E.getOrElse(() => 'invalid')
+      )
+      expect(original).toEqual(roundtrip)
     })
     describe('Eq', () => {
       it('returns true for similar UUIDs', () => {
