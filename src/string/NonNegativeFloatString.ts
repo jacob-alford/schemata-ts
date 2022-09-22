@@ -9,8 +9,9 @@
  *
  * @since 0.0.2
  */
-import { Kind, Kind2, URIS, URIS2, HKT } from 'fp-ts/HKT'
+import { Kind, Kind2, URIS, URIS2, HKT2 } from 'fp-ts/HKT'
 import * as D from 'io-ts/Decoder'
+import * as Enc from 'io-ts/Encoder'
 import * as Eq_ from 'fp-ts/Eq'
 import * as G from 'io-ts/Guard'
 import * as Str from 'fp-ts/string'
@@ -45,13 +46,19 @@ export type NonNegativeFloatString = string & NonNegativeFloatStringBrand
  * @since 0.0.2
  * @category Model
  */
-export type SchemableParams<S> = HKT<S, NonNegativeFloatString>
+export type SchemableParams<S> = HKT2<S, string, NonNegativeFloatString>
 
 /**
  * @since 0.0.2
  * @category Model
  */
 export type SchemableParams1<S extends URIS> = Kind<S, NonNegativeFloatString>
+
+/**
+ * @since 0.0.2
+ * @category Model
+ */
+export type SchemableParams2<S extends URIS2> = Kind2<S, string, NonNegativeFloatString>
 
 /**
  * @since 0.0.2
@@ -114,3 +121,9 @@ export const Type: SchemableParams1<t.URI> = pipe(
  */
 export const toNonNegativeFloat: (s: NonNegativeFloatString) => NonNegativeFloat = s =>
   unsafeCoerce(Number(s))
+
+/**
+ * @since 0.0.3
+ * @category Instances
+ */
+export const Encoder: SchemableParams2<Enc.URI> = Enc.id()

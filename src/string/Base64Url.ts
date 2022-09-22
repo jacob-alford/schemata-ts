@@ -8,8 +8,9 @@
  *
  * @since 0.0.2
  */
-import { Kind, Kind2, URIS, URIS2, HKT } from 'fp-ts/HKT'
+import { Kind, Kind2, URIS, URIS2, HKT2 } from 'fp-ts/HKT'
 import * as D from 'io-ts/Decoder'
+import * as Enc from 'io-ts/Encoder'
 import * as Eq_ from 'fp-ts/Eq'
 import * as G from 'io-ts/Guard'
 import * as Str from 'fp-ts/string'
@@ -42,13 +43,19 @@ export type Base64Url = string & Base64UrlBrand
  * @since 0.0.2
  * @category Model
  */
-export type SchemableParams<S> = HKT<S, Base64Url>
+export type SchemableParams<S> = HKT2<S, string, Base64Url>
 
 /**
  * @since 0.0.2
  * @category Model
  */
 export type SchemableParams1<S extends URIS> = Kind<S, Base64Url>
+
+/**
+ * @since 0.0.3
+ * @category Model
+ */
+export type SchemableParams2<S extends URIS2> = Kind2<S, string, Base64Url>
 
 /**
  * @since 0.0.2
@@ -106,3 +113,9 @@ export const Type: SchemableParams1<t.URI> = pipe(
   t.string,
   t.refine(isBase64Url, 'Base64Url')
 )
+
+/**
+ * @since 0.0.3
+ * @category Instances
+ */
+export const Encoder: SchemableParams2<Enc.URI> = Enc.id()

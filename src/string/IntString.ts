@@ -9,8 +9,9 @@
  *
  * @since 0.0.1
  */
-import { Kind, Kind2, URIS, URIS2, HKT } from 'fp-ts/HKT'
+import { Kind, Kind2, URIS, URIS2, HKT2 } from 'fp-ts/HKT'
 import * as D from 'io-ts/Decoder'
+import * as Enc from 'io-ts/Encoder'
 import * as Eq_ from 'fp-ts/Eq'
 import * as G from 'io-ts/Guard'
 import * as TD from 'io-ts/TaskDecoder'
@@ -46,13 +47,19 @@ export type IntString = string & IntStringBrand
  * @since 0.0.1
  * @category Model
  */
-export type SchemableParams<S> = HKT<S, IntString>
+export type SchemableParams<S> = HKT2<S, string, IntString>
 
 /**
  * @since 0.0.1
  * @category Model
  */
 export type SchemableParams1<S extends URIS> = Kind<S, IntString>
+
+/**
+ * @since 0.0.3
+ * @category Model
+ */
+export type SchemableParams2<S extends URIS2> = Kind2<S, string, IntString>
 
 /**
  * @since 0.0.1
@@ -107,3 +114,9 @@ export const Type: SchemableParams1<t.URI> = pipe(t.string, t.refine(isIntString
  * @category Destructors
  */
 export const toInt: (s: IntString) => Int = s => unsafeCoerce(Number(s))
+
+/**
+ * @since 0.0.3
+ * @category Instances
+ */
+export const Encoder: SchemableParams2<Enc.URI> = Enc.id()
