@@ -6,3 +6,4 @@ docs/_site
 coverage
 build
 .DS_store
+.eslintcache
