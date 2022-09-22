@@ -2,37 +2,32 @@ import * as RA from 'fp-ts/ReadonlyArray'
 
 import { tuple } from 'fp-ts/function'
 
-import * as NonNegativeFloatString from '../src/string/NonNegativeFloatString'
+import * as NegativeFloatString from '../../src/string/NegativeFloatString'
 
-import { cat, combineExpected, validateArbitrary } from '../test-utils'
+import { cat, combineExpected, validateArbitrary } from '../../test-utils'
 
-const validNumbers = [
-  '0',
-  '1',
-  '1.1',
-  `${Math.random() + 1}`,
-  `${Number.MAX_SAFE_INTEGER}`,
-]
+const validNumbers = ['-1', '-1.1', `-${Math.random() + 1}`, `${Number.MIN_SAFE_INTEGER}`]
 
 const invalidNumbers = [
-  '-1',
-  'a',
-  '-1.1',
-  '-1.1.1.1.1',
+  '0',
+  '1',
+  '1.1.1.1',
   '2......',
-  `${-Math.random()}`,
-  `${Number.MIN_SAFE_INTEGER}`,
+  'a',
+  '1.1',
+  `${Math.random()}`,
+  `${Number.MAX_SAFE_INTEGER}`,
   `${Infinity}`,
   `${-Infinity}`,
   `${NaN}`,
 ]
 
-describe('NonNegativeFloatString', () => {
+describe('NegativeFloatString', () => {
   describe('Decoder', () => {
     test.each(
       cat(combineExpected(validNumbers, 'Right'), combineExpected(invalidNumbers, 'Left'))
     )('validates valid numbers, and catches bad numbers', (num, expectedTag) => {
-      const result = NonNegativeFloatString.Decoder.decode(num)
+      const result = NegativeFloatString.Decoder.decode(num)
 
       expect(result._tag).toBe(expectedTag)
     })
@@ -43,13 +38,10 @@ describe('NonNegativeFloatString', () => {
       'determines two numbers are equal',
 
       (num1, num2) => {
-        if (
-          !NonNegativeFloatString.Guard.is(num1) ||
-          !NonNegativeFloatString.Guard.is(num2)
-        )
+        if (!NegativeFloatString.Guard.is(num1) || !NegativeFloatString.Guard.is(num2))
           throw new Error('Unexpected result')
 
-        expect(NonNegativeFloatString.Eq.equals(num1, num2)).toBe(true)
+        expect(NegativeFloatString.Eq.equals(num1, num2)).toBe(true)
       }
     )
   })
@@ -58,7 +50,7 @@ describe('NonNegativeFloatString', () => {
     test.each(
       cat(combineExpected(validNumbers, true), combineExpected(invalidNumbers, false))
     )('validates valid numbers, and catches bad numbers', (num, expectedTag) => {
-      const result = NonNegativeFloatString.Guard.is(num)
+      const result = NegativeFloatString.Guard.is(num)
 
       expect(result).toBe(expectedTag)
     })
@@ -68,7 +60,7 @@ describe('NonNegativeFloatString', () => {
     test.each(
       cat(combineExpected(validNumbers, 'Right'), combineExpected(invalidNumbers, 'Left'))
     )('validates valid numbers, and catches bad numbers', async (num, expectedTag) => {
-      const result = await NonNegativeFloatString.TaskDecoder.decode(num)()
+      const result = await NegativeFloatString.TaskDecoder.decode(num)()
 
       expect(result._tag).toBe(expectedTag)
     })
@@ -78,23 +70,20 @@ describe('NonNegativeFloatString', () => {
     test.each(
       cat(combineExpected(validNumbers, 'Right'), combineExpected(invalidNumbers, 'Left'))
     )('validates valid numbers, and catches bad numbers', (num, expectedTag) => {
-      const result = NonNegativeFloatString.Type.decode(num)
+      const result = NegativeFloatString.Type.decode(num)
 
       expect(result._tag).toBe(expectedTag)
     })
   })
-  it('converts to a NonNegativeFloat', () => {
-    const numStr = '0'
-    if (!NonNegativeFloatString.Guard.is(numStr)) throw new Error('Unexpected result')
-    expect(NonNegativeFloatString.toNonNegativeFloat(numStr)).toBe(0)
+  it('converts to a PositiveFloat', () => {
+    const numStr = '-1.1'
+    if (!NegativeFloatString.Guard.is(numStr)) throw new Error('Unexpected result')
+    expect(NegativeFloatString.toNegativeFloat(numStr)).toBe(-1.1)
   })
 
   describe('Arbitrary', () => {
-    it('generates valid NonNegativeFloatStrings', () => {
-      validateArbitrary(
-        NonNegativeFloatString,
-        NonNegativeFloatString.isNonNegativeFloatString
-      )
+    it('generates valid NegativeFloatStrings', () => {
+      validateArbitrary(NegativeFloatString, NegativeFloatString.isNegativeFloatString)
     })
   })
 })

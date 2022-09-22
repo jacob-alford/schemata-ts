@@ -1,5 +1,5 @@
-import * as ASCII from '../src/string/ASCII'
-import { validateArbitrary } from '../test-utils'
+import * as ASCII from '../../src/string/ASCII'
+import { validateArbitrary } from '../../test-utils'
 
 describe('ASCII', () => {
   describe('Decoder', () => {

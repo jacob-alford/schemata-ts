@@ -1,5 +1,5 @@
-import * as SafeDate from '../src/date/SafeDate'
-import { validateArbitrary } from '../test-utils'
+import * as SafeDate from '../../src/date/SafeDate'
+import { validateArbitrary } from '../../test-utils'
 
 describe('SafeDate', () => {
   describe('Decoder', () => {

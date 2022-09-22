@@ -1,6 +1,6 @@
 import { unsafeCoerce } from 'fp-ts/function'
-import * as Natural from '../src/number/Natural'
-import { validateArbitrary } from '../test-utils'
+import * as Natural from '../../src/number/Natural'
+import { validateArbitrary } from '../../test-utils'
 
 const _: (n: number) => Natural.Natural = unsafeCoerce
 

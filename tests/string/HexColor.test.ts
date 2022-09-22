@@ -3,39 +3,20 @@ import * as E from 'fp-ts/Either'
 
 import { pipe, tuple } from 'fp-ts/function'
 
-import * as Hexadecimal from '../src/string/Hexadecimal'
+import * as HexColor from '../../src/string/HexColor'
 
-import { cat, combineExpected, validateArbitrary } from '../test-utils'
+import { cat, combineExpected, validateArbitrary } from '../../test-utils'
 
-const validStrings = [
-  'deadBEEF',
-  'ff0044',
-  '0xff0044',
-  '0XfF0044',
-  '0x0123456789abcDEF',
-  '0X0123456789abcDEF',
-  '0hfedCBA9876543210',
-  '0HfedCBA9876543210',
-  '0123456789abcDEF',
-]
+const validStrings = ['#ff0000ff', '#ff0034', '#CCCCCC', '0f38', 'fff', '#f00']
 
-const invalidStrings = [
-  'abcdefg',
-  '',
-  '..',
-  '0xa2h',
-  '0xa20x',
-  '0x0123456789abcDEFq',
-  '0hfedCBA9876543210q',
-  '01234q56789abcDEF',
-]
+const invalidStrings = ['#ff', 'fff0a', '#ff12FG', '#bbh']
 
-describe('Hexadecimal', () => {
+describe('HexColor', () => {
   describe('Decoder', () => {
     test.each(
       cat(combineExpected(validStrings, 'Right'), combineExpected(invalidStrings, 'Left'))
     )('validates valid strings, and catches bad strings', (str, expectedTag) => {
-      const result = Hexadecimal.Decoder.decode(str)
+      const result = HexColor.Decoder.decode(str)
 
       expect(result._tag).toBe(expectedTag)
     })
@@ -47,8 +28,8 @@ describe('Hexadecimal', () => {
       original => {
         const roundtrip = pipe(
           original,
-          Hexadecimal.Decoder.decode,
-          E.map(Hexadecimal.Encoder.encode),
+          HexColor.Decoder.decode,
+          E.map(HexColor.Encoder.encode),
           E.getOrElse(() => 'invalid')
         )
 
@@ -62,8 +43,8 @@ describe('Hexadecimal', () => {
       'determines two strings are equal',
 
       (str1, str2) => {
-        const guard = Hexadecimal.Guard.is
-        const eq = Hexadecimal.Eq.equals
+        const guard = HexColor.Guard.is
+        const eq = HexColor.Eq.equals
 
         if (!guard(str1) || !guard(str2)) {
           throw new Error('Unexpected result')
@@ -78,7 +59,7 @@ describe('Hexadecimal', () => {
     test.each(
       cat(combineExpected(validStrings, true), combineExpected(invalidStrings, false))
     )('validates valid strings, and catches bad strings', (str, expectedTag) => {
-      const result = Hexadecimal.Guard.is(str)
+      const result = HexColor.Guard.is(str)
 
       expect(result).toBe(expectedTag)
     })
@@ -88,7 +69,7 @@ describe('Hexadecimal', () => {
     test.each(
       cat(combineExpected(validStrings, 'Right'), combineExpected(invalidStrings, 'Left'))
     )('validates valid strings, and catches bad strings', async (str, expectedTag) => {
-      const result = await Hexadecimal.TaskDecoder.decode(str)()
+      const result = await HexColor.TaskDecoder.decode(str)()
 
       expect(result._tag).toBe(expectedTag)
     })
@@ -98,15 +79,15 @@ describe('Hexadecimal', () => {
     test.each(
       cat(combineExpected(validStrings, 'Right'), combineExpected(invalidStrings, 'Left'))
     )('validates valid strings, and catches bad strings', (str, expectedTag) => {
-      const result = Hexadecimal.Type.decode(str)
+      const result = HexColor.Type.decode(str)
 
       expect(result._tag).toBe(expectedTag)
     })
   })
 
   describe('Arbitrary', () => {
-    it('generates valid Hexadecimals', () => {
-      validateArbitrary(Hexadecimal, Hexadecimal.isHexadecimal)
+    it('generates valid HexColors', () => {
+      validateArbitrary(HexColor, HexColor.isHexColor)
     })
   })
 })

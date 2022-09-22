@@ -1,6 +1,6 @@
 import { unsafeCoerce } from 'fp-ts/function'
-import * as NonemptyString from '../src/string/NonemptyString'
-import { validateArbitrary } from '../test-utils'
+import * as NonemptyString from '../../src/string/NonemptyString'
+import { validateArbitrary } from '../../test-utils'
 
 const _: (n: string) => NonemptyString.NonemptyString = unsafeCoerce
 

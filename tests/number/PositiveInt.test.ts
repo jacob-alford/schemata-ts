@@ -1,6 +1,6 @@
 import { unsafeCoerce } from 'fp-ts/function'
-import * as PositiveInt from '../src/number/PositiveInt'
-import { validateArbitrary } from '../test-utils'
+import * as PositiveInt from '../../src/number/PositiveInt'
+import { validateArbitrary } from '../../test-utils'
 
 const _: (n: number) => PositiveInt.PositiveInt = unsafeCoerce
 

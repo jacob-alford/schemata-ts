@@ -1,8 +1,8 @@
 import { pipe, unsafeCoerce } from 'fp-ts/function'
 import * as E from 'fp-ts/Either'
 import * as RA from 'fp-ts/ReadonlyArray'
-import * as UUID from '../src/string/UUID'
-import { validateArbitrary } from '../test-utils'
+import * as UUID from '../../src/string/UUID'
+import { validateArbitrary } from '../../test-utils'
 
 const _: (n: string) => UUID.UUID = unsafeCoerce
 

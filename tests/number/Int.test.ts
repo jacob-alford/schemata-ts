@@ -1,6 +1,6 @@
 import { unsafeCoerce } from 'fp-ts/function'
-import * as Int from '../src/number/Int'
-import { validateArbitrary } from '../test-utils'
+import * as Int from '../../src/number/Int'
+import { validateArbitrary } from '../../test-utils'
 
 const _: (n: number) => Int.Int = unsafeCoerce
 

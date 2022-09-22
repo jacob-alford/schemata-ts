@@ -1,6 +1,6 @@
 import { unsafeCoerce } from 'fp-ts/function'
-import * as NegativeIntString from '../src/string/NegativeIntString'
-import { validateArbitrary } from '../test-utils'
+import * as NegativeIntString from '../../src/string/NegativeIntString'
+import { validateArbitrary } from '../../test-utils'
 
 const _: (n: string) => NegativeIntString.NegativeIntString = unsafeCoerce
 

@@ -1,8 +1,8 @@
 import * as RA from 'fp-ts/ReadonlyArray'
 import { tuple } from 'fp-ts/function'
-import * as NegativeFloat from '../src/number/NegativeFloat'
+import * as NegativeFloat from '../../src/number/NegativeFloat'
 
-import { cat, combineExpected, validateArbitrary } from '../test-utils'
+import { cat, combineExpected, validateArbitrary } from '../../test-utils'
 
 const validNumbers = [-1, -1.1, -Math.random() - 1, Number.MIN_SAFE_INTEGER]
 

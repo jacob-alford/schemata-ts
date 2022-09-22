@@ -1,17 +1,16 @@
 import * as RA from 'fp-ts/ReadonlyArray'
 import { tuple } from 'fp-ts/function'
-import * as PositiveFloat from '../src/number/PositiveFloat'
+import * as NonNegativeFloat from '../../src/number/NonNegativeFloat'
 
-import { cat, combineExpected, validateArbitrary } from '../test-utils'
+import { cat, combineExpected, validateArbitrary } from '../../test-utils'
 
-const validNumbers = [1, 1.1, Math.random() + 1, Number.MAX_SAFE_INTEGER]
+const validNumbers = [0, 1, 1.1, Math.random() + 1, Number.MAX_SAFE_INTEGER]
 
 const invalidNumbers = [
-  0,
   -1,
   -1.1,
-  '2......',
   'a',
+  '2......',
   -Math.random(),
   Number.MIN_SAFE_INTEGER,
   Infinity,
@@ -19,12 +18,12 @@ const invalidNumbers = [
   NaN,
 ]
 
-describe('PositiveFloat', () => {
+describe('NonNegativeFloat', () => {
   describe('Decoder', () => {
     test.each(
       cat(combineExpected(validNumbers, 'Right'), combineExpected(invalidNumbers, 'Left'))
     )('validates valid numbers, and catches bad numbers', (num, expectedTag) => {
-      const result = PositiveFloat.Decoder.decode(num)
+      const result = NonNegativeFloat.Decoder.decode(num)
       expect(result._tag).toBe(expectedTag)
     })
   })
@@ -32,9 +31,9 @@ describe('PositiveFloat', () => {
     test.each(RA.zipWith(validNumbers, validNumbers, tuple))(
       'determines two numbers are equal',
       (num1, num2) => {
-        if (!PositiveFloat.Guard.is(num1) || !PositiveFloat.Guard.is(num2))
+        if (!NonNegativeFloat.Guard.is(num1) || !NonNegativeFloat.Guard.is(num2))
           throw new Error('Unexpected result')
-        expect(PositiveFloat.Eq.equals(num1, num2)).toBe(true)
+        expect(NonNegativeFloat.Eq.equals(num1, num2)).toBe(true)
       }
     )
   })
@@ -42,7 +41,7 @@ describe('PositiveFloat', () => {
     test.each(
       cat(combineExpected(validNumbers, true), combineExpected(invalidNumbers, false))
     )('validates valid numbers, and catches bad numbers', (num, expectedTag) => {
-      const result = PositiveFloat.Guard.is(num)
+      const result = NonNegativeFloat.Guard.is(num)
       expect(result).toBe(expectedTag)
     })
   })
@@ -50,7 +49,7 @@ describe('PositiveFloat', () => {
     test.each(
       cat(combineExpected(validNumbers, 'Right'), combineExpected(invalidNumbers, 'Left'))
     )('validates valid numbers, and catches bad numbers', async (num, expectedTag) => {
-      const result = await PositiveFloat.TaskDecoder.decode(num)()
+      const result = await NonNegativeFloat.TaskDecoder.decode(num)()
       expect(result._tag).toBe(expectedTag)
     })
   })
@@ -58,14 +57,14 @@ describe('PositiveFloat', () => {
     test.each(
       cat(combineExpected(validNumbers, 'Right'), combineExpected(invalidNumbers, 'Left'))
     )('validates valid numbers, and catches bad numbers', (num, expectedTag) => {
-      const result = PositiveFloat.Type.decode(num)
+      const result = NonNegativeFloat.Type.decode(num)
       expect(result._tag).toBe(expectedTag)
     })
   })
 
   describe('Arbitrary', () => {
-    it('generates valid PositiveFloats', () => {
-      validateArbitrary(PositiveFloat, PositiveFloat.isPositiveFloat)
+    it('generates valid NonNegativeFloats', () => {
+      validateArbitrary(NonNegativeFloat, NonNegativeFloat.isNonNegativeFloat)
     })
   })
 })

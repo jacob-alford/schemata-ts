@@ -1,5 +1,5 @@
-import * as ISODateString from '../src/string/ISODateString'
-import { validateArbitrary } from '../test-utils'
+import * as ISODateString from '../../src/string/ISODateString'
+import { validateArbitrary } from '../../test-utils'
 
 describe('ISODateString', () => {
   describe('Decoder', () => {
