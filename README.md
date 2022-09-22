@@ -20,27 +20,12 @@ Exposes an extended Schemable typeclass `SchemableExt` with types inspired by `i
   - [The problem:](#the-problem)
   - [The solution: Schema / Schemable](#the-solution-schema--schemable)
   - [The value of an extended Schemable](#the-value-of-an-extended-schemable)
-  <!-- AUTO-GENERATED-CONTENT:END -->
+- [Currently supported modules:](#currently-supported-modules)
+<!-- AUTO-GENERATED-CONTENT:END -->
 
 ## Disclaimer
 
 This library is in its nascent stages (< 1.0.0) and still has a lot of work ahead before it's at feature parity with `io-ts-types`, or `validators.js`.
-
-Currently supported:
-
-- `date` > `SafeDate.ts`
-- `number` > `Int.ts`
-- `number` > `Natural.ts`
-- `number` > `NegativeInt.ts`
-- `number` > `PositiveInt.ts`
-- `string` > `EmailAddress.ts`
-- `string` > `IntString.ts`
-- `string` > `ISODateString.ts`
-- `string` > `NaturalString.ts`
-- `string` > `NegativeIntString.ts`
-- `string` > `NonemptyString.ts`
-- `string` > `PositiveIntString.ts`
-- `string` > `UUID.ts`
 
 ## Contributing
 
@@ -56,7 +41,7 @@ Schemable combinator modules must have a unique name and can be found in the fol
 
 Create a new combinator file using `yarn generate:template [string | number] [NameOfCombinator]`. Note: the name of the new combinator must be unique, and begin with a capital letter.
 
-Once the new combinator modules are in place, run `yarn generate:schemables` and the ts script will update the typeclass instances and SchemableExt module with the newly created combinators.
+Once the new combinator modules are in place, run `yarn generate:schemables` and the ts script will update the typeclass instances and SchemableExt module with the newly created combinators. Don't forget to add tests!
 
 ### Generating Documentation
 
@@ -82,7 +67,7 @@ npm install schemable-ts-types
 
 - [schemable-ts-types](https://jacob-alford.github.io/schemable-ts-types/modules/)
 - [fp-ts](https://gcanti.github.io/fp-ts/modules/)
-- [io-ts](https://gcanti.github.io/io-ts/modules/)
+- [io-ts](https://gcanti.github.io/io-ts)
 - [docs-ts](https://github.com/gcanti/docs-ts)
 
 ## Schemable types explained
@@ -205,3 +190,34 @@ export const guardUser = SC.interpreter(G.Schemable)(UserSchema)
 ```
 
 And now we can guarantee that a user's email will conform to RFC 5322, their id will be a proper UUID-v5, and their age will not be negative.
+
+## Currently supported modules:
+
+| primitive | refinement                |
+| --------- | ------------------------- |
+| `Date`    | SafeDate.ts               |
+| `number`  | Int.ts                    |
+| `number`  | Natural.ts                |
+| `number`  | NegativeFloat.ts          |
+| `number`  | NegativeInt.ts            |
+| `number`  | NonNegativeFloat.ts       |
+| `number`  | PositiveFloat.ts          |
+| `number`  | PositiveInt.ts            |
+| `string`  | ASCII.ts                  |
+| `string`  | Base64.ts                 |
+| `string`  | Base64Url.ts              |
+| `string`  | BtcAddress.ts             |
+| `string`  | EmailAddress.ts           |
+| `string`  | HexColor.ts               |
+| `string`  | Hexadecimal.ts            |
+| `string`  | ISODateString.ts          |
+| `string`  | IntString.ts              |
+| `string`  | JWT.ts                    |
+| `string`  | NaturalString.ts          |
+| `string`  | NegativeFloatString.ts    |
+| `string`  | NegativeIntString.ts      |
+| `string`  | NonNegativeFloatString.ts |
+| `string`  | NonemptyString.ts         |
+| `string`  | PositiveFloatString.ts    |
+| `string`  | PositiveIntString.ts      |
+| `string`  | UUID.ts                   |
