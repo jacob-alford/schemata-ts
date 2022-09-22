@@ -3,8 +3,6 @@ import * as fc from 'fast-check'
 import * as Arb from '../src/internal/ArbitraryBase'
 import { isPositiveFloat } from '../src/number/PositiveFloat'
 
-const typeOf: (a: unknown) => string = a => (a === null ? 'null' : typeof a)
-
 describe('ArbitraryBase', () => {
   describe('constructors', () => {
     test('literal', () => {
@@ -63,7 +61,7 @@ describe('ArbitraryBase', () => {
     test('nullable', () => {
       fc.assert(
         fc.property(Arb.nullable(Arb.number), nullableNum => {
-          expect(['null', 'number']).toContain(typeOf(nullableNum))
+          expect(['null', 'number']).toContain(Arb.typeOf(nullableNum))
         })
       )
     })
@@ -157,7 +155,7 @@ describe('ArbitraryBase', () => {
             C: Arb.record(Arb.literal('C')),
           }),
           obj => {
-            expect(typeOf(obj)).toBe('object')
+            expect(Arb.typeOf(obj)).toBe('object')
           }
         )
       )
@@ -188,7 +186,7 @@ describe('ArbitraryBase', () => {
     test('union', () => {
       fc.assert(
         fc.property(Arb.union(Arb.number, Arb.string), numOrStr => {
-          expect(['number', 'string']).toContain(typeOf(numOrStr))
+          expect(['number', 'string']).toContain(Arb.typeOf(numOrStr))
         })
       )
     })
