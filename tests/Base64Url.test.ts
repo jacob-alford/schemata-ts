@@ -28,8 +28,8 @@ describe('Base64Url', () => {
   describe('Decoder', () => {
     test.each(
       cat(combineExpected(validStrings, 'Right'), combineExpected(invalidStrings, 'Left'))
-    )('validates valid strings, and catches bad strings', (num, expectedTag) => {
-      const result = Decoder.decode(num)
+    )('validates valid strings, and catches bad strings', (str, expectedTag) => {
+      const result = Decoder.decode(str)
 
       expect(result._tag).toBe(expectedTag)
     })
@@ -39,15 +39,15 @@ describe('Base64Url', () => {
     test.each(RA.zipWith(validStrings, validStrings, tuple))(
       'determines two strings are equal',
 
-      (num1, num2) => {
+      (str1, str2) => {
         const guard = Guard.is
         const eq = Eq.equals
 
-        if (!guard(num1) || !guard(num2)) {
+        if (!guard(str1) || !guard(str2)) {
           throw new Error('Unexpected result')
         }
 
-        expect(eq(num1, num2)).toBe(true)
+        expect(eq(str1, str2)).toBe(true)
       }
     )
   })
@@ -55,8 +55,8 @@ describe('Base64Url', () => {
   describe('Guard', () => {
     test.each(
       cat(combineExpected(validStrings, true), combineExpected(invalidStrings, false))
-    )('validates valid strings, and catches bad strings', (num, expectedTag) => {
-      const result = Guard.is(num)
+    )('validates valid strings, and catches bad strings', (str, expectedTag) => {
+      const result = Guard.is(str)
 
       expect(result).toBe(expectedTag)
     })
@@ -65,8 +65,8 @@ describe('Base64Url', () => {
   describe('TaskDecoder', () => {
     test.each(
       cat(combineExpected(validStrings, 'Right'), combineExpected(invalidStrings, 'Left'))
-    )('validates valid strings, and catches bad strings', async (num, expectedTag) => {
-      const result = await TaskDecoder.decode(num)()
+    )('validates valid strings, and catches bad strings', async (str, expectedTag) => {
+      const result = await TaskDecoder.decode(str)()
 
       expect(result._tag).toBe(expectedTag)
     })
@@ -75,8 +75,8 @@ describe('Base64Url', () => {
   describe('Type', () => {
     test.each(
       cat(combineExpected(validStrings, 'Right'), combineExpected(invalidStrings, 'Left'))
-    )('validates valid strings, and catches bad strings', (num, expectedTag) => {
-      const result = Type.decode(num)
+    )('validates valid strings, and catches bad strings', (str, expectedTag) => {
+      const result = Type.decode(str)
 
       expect(result._tag).toBe(expectedTag)
     })
