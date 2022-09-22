@@ -1,6 +1,6 @@
 {
   "name": "schemable-ts-types",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "description": "This package exposes io-ts-types built for use with Schema and Schemable in io-ts.",
   "homepage": "https://jacob-alford.github.io/schemable-ts-types/",
   "repository": "https://github.com/jacob-alford/schemable-ts-types",
