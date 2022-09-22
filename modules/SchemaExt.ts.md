@@ -1,6 +1,6 @@
 ---
 title: SchemaExt.ts
-nav_order: 14
+nav_order: 15
 parent: Modules
 ---
 
@@ -32,7 +32,7 @@ Added in v0.0.1
 **Signature**
 
 ```ts
-export declare function make<A>(f: SchemaExt<A>): SchemaExt<A>
+export declare function make<E, A>(f: SchemaExt<E, A>): SchemaExt<E, A>
 ```
 
 Added in v0.0.1
@@ -41,16 +41,37 @@ Added in v0.0.1
 
 ## interpreter
 
-Generator a typeclass instance to a Schema by supplying Schemable. i.e.
+Derives a typeclass instance from a Schema by supplying Schemable. i.e.
 `schemable-ts-types/Decoder`
 
 **Signature**
 
 ```ts
 export declare const interpreter: {
-  <S extends 'io-ts/TaskDecoder' | 'io-ts/Decoder' | 'Separated' | 'Either' | 'IOEither' | 'TaskEither'>(
+  <
+    S extends
+      | 'io-ts/TaskDecoder'
+      | 'io-ts/Decoder'
+      | 'io-ts/Encoder'
+      | 'Separated'
+      | 'Either'
+      | 'IOEither'
+      | 'TaskEither'
+  >(
+    S: SchemableExt2<S>
+  ): <E, A>(schema: SchemaExt<E, A>) => Kind2<S, E, A>
+  <
+    S extends
+      | 'io-ts/TaskDecoder'
+      | 'io-ts/Decoder'
+      | 'io-ts/Encoder'
+      | 'Separated'
+      | 'Either'
+      | 'IOEither'
+      | 'TaskEither'
+  >(
     S: SchemableExt2C<S>
-  ): <A>(schema: SchemaExt<A>) => Kind2<S, unknown, A>
+  ): <A>(schema: SchemaExt<unknown, A>) => Kind2<S, unknown, A>
   <
     S extends
       | 'io-ts/Type'
@@ -67,7 +88,7 @@ export declare const interpreter: {
       | 'TaskOption'
   >(
     S: SchemableExt1<S>
-  ): <A>(schema: SchemaExt<A>) => Kind<S, A>
+  ): <A>(schema: SchemaExt<unknown, A>) => Kind<S, A>
 }
 ```
 
@@ -80,8 +101,8 @@ Added in v0.0.1
 **Signature**
 
 ```ts
-export interface SchemaExt<A> {
-  <S>(S: SchemableExt<S>): HKT<S, A>
+export interface SchemaExt<E, A> {
+  <S>(S: SchemableExt<S>): HKT2<S, E, A>
 }
 ```
 
@@ -94,7 +115,7 @@ Added in v0.0.1
 **Signature**
 
 ```ts
-export type TypeOf<S> = S extends SchemaExt<infer A> ? A : never
+export type TypeOf<S> = S extends SchemaExt<unknown, infer A> ? A : never
 ```
 
 Added in v2.2.0

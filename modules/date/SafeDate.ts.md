@@ -16,6 +16,7 @@ Added in v0.0.1
 
 - [Instances](#instances)
   - [Decoder](#decoder)
+  - [Encoder](#encoder)
   - [Eq](#eq)
   - [Guard](#guard)
   - [TaskDecoder](#taskdecoder)
@@ -24,6 +25,7 @@ Added in v0.0.1
   - [SafeDate (type alias)](#safedate-type-alias)
   - [SchemableParams (type alias)](#schemableparams-type-alias)
   - [SchemableParams1 (type alias)](#schemableparams1-type-alias)
+  - [SchemableParams2 (type alias)](#schemableparams2-type-alias)
   - [SchemableParams2C (type alias)](#schemableparams2c-type-alias)
 - [Refinements](#refinements)
   - [isSafeDate](#issafedate)
@@ -41,6 +43,16 @@ export declare const Decoder: D.Decoder<unknown, SafeDate>
 ```
 
 Added in v0.0.1
+
+## Encoder
+
+**Signature**
+
+```ts
+export declare const Encoder: Enc.Encoder<Date, SafeDate>
+```
+
+Added in v0.0.3
 
 ## Eq
 
@@ -99,7 +111,7 @@ Added in v0.0.1
 **Signature**
 
 ```ts
-export type SchemableParams<S> = HKT<S, SafeDate>
+export type SchemableParams<S> = HKT2<S, Date, SafeDate>
 ```
 
 Added in v0.0.1
@@ -113,6 +125,16 @@ export type SchemableParams1<S extends URIS> = Kind<S, SafeDate>
 ```
 
 Added in v0.0.1
+
+## SchemableParams2 (type alias)
+
+**Signature**
+
+```ts
+export type SchemableParams2<S extends URIS2> = Kind2<S, Date, SafeDate>
+```
+
+Added in v0.0.3
 
 ## SchemableParams2C (type alias)
 

@@ -1,6 +1,6 @@
 ---
 title: number/PositiveFloat.ts
-nav_order: 11
+nav_order: 12
 parent: Modules
 ---
 
@@ -22,6 +22,7 @@ Added in v0.0.2
 
 - [Instances](#instances)
   - [Decoder](#decoder)
+  - [Encoder](#encoder)
   - [Eq](#eq)
   - [Guard](#guard)
   - [TaskDecoder](#taskdecoder)
@@ -30,6 +31,7 @@ Added in v0.0.2
   - [PositiveFloat (type alias)](#positivefloat-type-alias)
   - [SchemableParams (type alias)](#schemableparams-type-alias)
   - [SchemableParams1 (type alias)](#schemableparams1-type-alias)
+  - [SchemableParams2 (type alias)](#schemableparams2-type-alias)
   - [SchemableParams2C (type alias)](#schemableparams2c-type-alias)
 - [Refinements](#refinements)
   - [isPositiveFloat](#ispositivefloat)
@@ -47,6 +49,16 @@ export declare const Decoder: D.Decoder<unknown, PositiveFloat>
 ```
 
 Added in v0.0.2
+
+## Encoder
+
+**Signature**
+
+```ts
+export declare const Encoder: Enc.Encoder<number, PositiveFloat>
+```
+
+Added in v0.0.3
 
 ## Eq
 
@@ -113,7 +125,7 @@ Added in v0.0.2
 **Signature**
 
 ```ts
-export type SchemableParams<S> = HKT<S, PositiveFloat>
+export type SchemableParams<S> = HKT2<S, number, PositiveFloat>
 ```
 
 Added in v0.0.2
@@ -127,6 +139,16 @@ export type SchemableParams1<S extends URIS> = Kind<S, PositiveFloat>
 ```
 
 Added in v0.0.2
+
+## SchemableParams2 (type alias)
+
+**Signature**
+
+```ts
+export type SchemableParams2<S extends URIS2> = Kind2<S, number, PositiveFloat>
+```
+
+Added in v0.0.3
 
 ## SchemableParams2C (type alias)
 

@@ -1,6 +1,6 @@
 ---
 title: string/NonemptyString.ts
-nav_order: 26
+nav_order: 27
 parent: Modules
 ---
 
@@ -16,6 +16,7 @@ Added in v0.0.1
 
 - [Instances](#instances)
   - [Decoder](#decoder)
+  - [Encoder](#encoder)
   - [Eq](#eq)
   - [Guard](#guard)
   - [TaskDecoder](#taskdecoder)
@@ -24,6 +25,7 @@ Added in v0.0.1
   - [NonemptyString (type alias)](#nonemptystring-type-alias)
   - [SchemableParams (type alias)](#schemableparams-type-alias)
   - [SchemableParams1 (type alias)](#schemableparams1-type-alias)
+  - [SchemableParams2 (type alias)](#schemableparams2-type-alias)
   - [SchemableParams2C (type alias)](#schemableparams2c-type-alias)
 - [Refinements](#refinements)
   - [isNonemptyString](#isnonemptystring)
@@ -41,6 +43,16 @@ export declare const Decoder: D.Decoder<unknown, NonemptyString>
 ```
 
 Added in v0.0.1
+
+## Encoder
+
+**Signature**
+
+```ts
+export declare const Encoder: Enc.Encoder<string, NonemptyString>
+```
+
+Added in v0.0.3
 
 ## Eq
 
@@ -101,7 +113,7 @@ Added in v0.0.1
 **Signature**
 
 ```ts
-export type SchemableParams<S> = HKT<S, NonemptyString>
+export type SchemableParams<S> = HKT2<S, string, NonemptyString>
 ```
 
 Added in v0.0.1
@@ -115,6 +127,16 @@ export type SchemableParams1<S extends URIS> = Kind<S, NonemptyString>
 ```
 
 Added in v0.0.1
+
+## SchemableParams2 (type alias)
+
+**Signature**
+
+```ts
+export type SchemableParams2<S extends URIS2> = Kind2<S, string, NonemptyString>
+```
+
+Added in v0.0.3
 
 ## SchemableParams2C (type alias)
 

@@ -1,6 +1,6 @@
 ---
 title: SchemableExt.ts
-nav_order: 13
+nav_order: 14
 parent: Modules
 ---
 
@@ -19,6 +19,7 @@ Added in v0.0.1
 - [Instances](#instances)
   - [SchemableExt (interface)](#schemableext-interface)
   - [SchemableExt1 (interface)](#schemableext1-interface)
+  - [SchemableExt2 (interface)](#schemableext2-interface)
   - [SchemableExt2C (interface)](#schemableext2c-interface)
 
 ---
@@ -30,7 +31,7 @@ Added in v0.0.1
 **Signature**
 
 ```ts
-export interface SchemableExt<S> extends Schemable<S> {
+export interface SchemableExt<S> extends SchemableHKT2<S> {
   readonly Int: Int.SchemableParams<S>
   readonly Natural: Natural.SchemableParams<S>
   readonly NegativeFloat: NegativeFloat.SchemableParams<S>
@@ -90,6 +91,41 @@ export interface SchemableExt1<S extends URIS> extends Schemable1<S> {
   readonly PositiveIntString: PositiveIntString.SchemableParams1<S>
   readonly UUID: UUID.SchemableParams1<S>
   readonly SafeDate: SafeDate.SchemableParams1<S>
+}
+```
+
+Added in v0.0.1
+
+## SchemableExt2 (interface)
+
+**Signature**
+
+```ts
+export interface SchemableExt2<S extends URIS2> extends Schemable2<S> {
+  readonly Int: Int.SchemableParams2<S>
+  readonly Natural: Natural.SchemableParams2<S>
+  readonly NegativeFloat: NegativeFloat.SchemableParams2<S>
+  readonly NegativeInt: NegativeInt.SchemableParams2<S>
+  readonly NonNegativeFloat: NonNegativeFloat.SchemableParams2<S>
+  readonly PositiveFloat: PositiveFloat.SchemableParams2<S>
+  readonly PositiveInt: PositiveInt.SchemableParams2<S>
+  readonly ASCII: ASCII.SchemableParams2<S>
+  readonly Base64: Base64.SchemableParams2<S>
+  readonly Base64Url: Base64Url.SchemableParams2<S>
+  readonly BtcAddress: BtcAddress.SchemableParams2<S>
+  readonly EmailAddress: EmailAddress.SchemableParams2<S>
+  readonly ISODateString: ISODateString.SchemableParams2<S>
+  readonly IntString: IntString.SchemableParams2<S>
+  readonly JWT: JWT.SchemableParams2<S>
+  readonly NaturalString: NaturalString.SchemableParams2<S>
+  readonly NegativeFloatString: NegativeFloatString.SchemableParams2<S>
+  readonly NegativeIntString: NegativeIntString.SchemableParams2<S>
+  readonly NonNegativeFloatString: NonNegativeFloatString.SchemableParams2<S>
+  readonly NonemptyString: NonemptyString.SchemableParams2<S>
+  readonly PositiveFloatString: PositiveFloatString.SchemableParams2<S>
+  readonly PositiveIntString: PositiveIntString.SchemableParams2<S>
+  readonly UUID: UUID.SchemableParams2<S>
+  readonly SafeDate: SafeDate.SchemableParams2<S>
 }
 ```
 

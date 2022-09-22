@@ -1,6 +1,6 @@
 ---
 title: string/ISODateString.ts
-nav_order: 21
+nav_order: 22
 parent: Modules
 ---
 
@@ -20,6 +20,7 @@ Added in v0.0.1
   - [toSafeDate](#tosafedate)
 - [Instances](#instances)
   - [Decoder](#decoder)
+  - [Encoder](#encoder)
   - [Eq](#eq)
   - [Guard](#guard)
   - [TaskDecoder](#taskdecoder)
@@ -28,6 +29,7 @@ Added in v0.0.1
   - [ISODate (type alias)](#isodate-type-alias)
   - [SchemableParams (type alias)](#schemableparams-type-alias)
   - [SchemableParams1 (type alias)](#schemableparams1-type-alias)
+  - [SchemableParams2 (type alias)](#schemableparams2-type-alias)
   - [SchemableParams2C (type alias)](#schemableparams2c-type-alias)
 - [Refinements](#refinements)
   - [isISODate](#isisodate)
@@ -69,6 +71,16 @@ export declare const Decoder: D.Decoder<unknown, ISODate>
 ```
 
 Added in v0.0.1
+
+## Encoder
+
+**Signature**
+
+```ts
+export declare const Encoder: Enc.Encoder<string, ISODate>
+```
+
+Added in v0.0.3
 
 ## Eq
 
@@ -129,7 +141,7 @@ Added in v0.0.1
 **Signature**
 
 ```ts
-export type SchemableParams<S> = HKT<S, ISODate>
+export type SchemableParams<S> = HKT2<S, string, ISODate>
 ```
 
 Added in v0.0.1
@@ -143,6 +155,16 @@ export type SchemableParams1<S extends URIS> = Kind<S, ISODate>
 ```
 
 Added in v0.0.1
+
+## SchemableParams2 (type alias)
+
+**Signature**
+
+```ts
+export type SchemableParams2<S extends URIS2> = Kind2<S, string, ISODate>
+```
+
+Added in v0.0.3
 
 ## SchemableParams2C (type alias)
 

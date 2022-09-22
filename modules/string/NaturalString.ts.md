@@ -1,6 +1,6 @@
 ---
 title: string/NaturalString.ts
-nav_order: 23
+nav_order: 24
 parent: Modules
 ---
 
@@ -24,6 +24,7 @@ Added in v0.0.1
   - [toNatural](#tonatural)
 - [Instances](#instances)
   - [Decoder](#decoder)
+  - [Encoder](#encoder)
   - [Eq](#eq)
   - [Guard](#guard)
   - [TaskDecoder](#taskdecoder)
@@ -32,6 +33,7 @@ Added in v0.0.1
   - [NaturalString (type alias)](#naturalstring-type-alias)
   - [SchemableParams (type alias)](#schemableparams-type-alias)
   - [SchemableParams1 (type alias)](#schemableparams1-type-alias)
+  - [SchemableParams2 (type alias)](#schemableparams2-type-alias)
   - [SchemableParams2C (type alias)](#schemableparams2c-type-alias)
 - [Refinements](#refinements)
   - [isNaturalString](#isnaturalstring)
@@ -61,6 +63,16 @@ export declare const Decoder: D.Decoder<unknown, NaturalString>
 ```
 
 Added in v0.0.1
+
+## Encoder
+
+**Signature**
+
+```ts
+export declare const Encoder: Enc.Encoder<string, NaturalString>
+```
+
+Added in v0.0.3
 
 ## Eq
 
@@ -127,7 +139,7 @@ Added in v0.0.1
 **Signature**
 
 ```ts
-export type SchemableParams<S> = HKT<S, NaturalString>
+export type SchemableParams<S> = HKT2<S, string, NaturalString>
 ```
 
 Added in v0.0.1
@@ -141,6 +153,16 @@ export type SchemableParams1<S extends URIS> = Kind<S, NaturalString>
 ```
 
 Added in v0.0.1
+
+## SchemableParams2 (type alias)
+
+**Signature**
+
+```ts
+export type SchemableParams2<S extends URIS2> = Kind2<S, string, NaturalString>
+```
+
+Added in v0.0.3
 
 ## SchemableParams2C (type alias)
 
