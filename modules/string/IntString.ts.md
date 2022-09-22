@@ -1,6 +1,6 @@
 ---
 title: string/IntString.ts
-nav_order: 21
+nav_order: 23
 parent: Modules
 ---
 
