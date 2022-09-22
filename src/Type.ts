@@ -23,6 +23,8 @@ import * as Base64 from './string/Base64'
 import * as Base64Url from './string/Base64Url'
 import * as BtcAddress from './string/BtcAddress'
 import * as EmailAddress from './string/EmailAddress'
+import * as HexColor from './string/HexColor'
+import * as Hexadecimal from './string/Hexadecimal'
 import * as ISODateString from './string/ISODateString'
 import * as IntString from './string/IntString'
 import * as JWT from './string/JWT'
@@ -56,6 +58,8 @@ export const Schemable: SchemableExt1<t.URI> = {
   Base64Url: Base64Url.Type,
   BtcAddress: BtcAddress.Type,
   EmailAddress: EmailAddress.Type,
+  HexColor: HexColor.Type,
+  Hexadecimal: Hexadecimal.Type,
   ISODateString: ISODateString.Type,
   IntString: IntString.Type,
   JWT: JWT.Type,

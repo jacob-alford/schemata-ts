@@ -1,30 +1,36 @@
 import * as RA from 'fp-ts/ReadonlyArray'
+import * as E from 'fp-ts/Either'
 
-import { tuple } from 'fp-ts/function'
+import { pipe, tuple } from 'fp-ts/function'
 
-import { Decoder, Eq, Guard, TaskDecoder, Type } from '../src/string/Base64Url'
+import { Decoder, Eq, Encoder, Guard, TaskDecoder, Type } from '../src/string/Hexadecimal'
 
 import { cat, combineExpected } from '../test-utils'
 
 const validStrings = [
-  '',
-  'bGFkaWVzIGFuZCBnZW50bGVtZW4sIHdlIGFyZSBmbG9hdGluZyBpbiBzcGFjZQ',
-  '1234',
-  'bXVtLW5ldmVyLXByb3Vk',
-  'PDw_Pz8-Pg',
-  'VGhpcyBpcyBhbiBlbmNvZGVkIHN0cmluZw',
+  'deadBEEF',
+  'ff0044',
+  '0xff0044',
+  '0XfF0044',
+  '0x0123456789abcDEF',
+  '0X0123456789abcDEF',
+  '0hfedCBA9876543210',
+  '0HfedCBA9876543210',
+  '0123456789abcDEF',
 ]
 
 const invalidStrings = [
-  ' AA',
-  '\tAA',
-  '\rAA',
-  '\nAA',
-  'This+isa/bad+base64Url==',
-  '0K3RgtC+INC30LDQutC+0LTQuNGA0L7QstCw0L3QvdCw0Y8g0YHRgtGA0L7QutCw',
+  'abcdefg',
+  '',
+  '..',
+  '0xa2h',
+  '0xa20x',
+  '0x0123456789abcDEFq',
+  '0hfedCBA9876543210q',
+  '01234q56789abcDEF',
 ]
 
-describe('Base64Url', () => {
+describe('Hexadecimal', () => {
   describe('Decoder', () => {
     test.each(
       cat(combineExpected(validStrings, 'Right'), combineExpected(invalidStrings, 'Left'))
@@ -33,6 +39,22 @@ describe('Base64Url', () => {
 
       expect(result._tag).toBe(expectedTag)
     })
+  })
+
+  describe('Encoder', () => {
+    test.each(validStrings)(
+      'encoding a decoded value yields original value',
+      original => {
+        const roundtrip = pipe(
+          original,
+          Decoder.decode,
+          E.map(Encoder.encode),
+          E.getOrElse(() => 'invalid')
+        )
+
+        expect(original).toEqual(roundtrip)
+      }
+    )
   })
 
   describe('Eq', () => {
