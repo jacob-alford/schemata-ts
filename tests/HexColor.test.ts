@@ -11,7 +11,7 @@ const validStrings = ['#ff0000ff', '#ff0034', '#CCCCCC', '0f38', 'fff', '#f00']
 
 const invalidStrings = ['#ff', 'fff0a', '#ff12FG', '#bbh']
 
-describe('Hexadecimal', () => {
+describe('HexColor', () => {
   describe('Decoder', () => {
     test.each(
       cat(combineExpected(validStrings, 'Right'), combineExpected(invalidStrings, 'Left'))
