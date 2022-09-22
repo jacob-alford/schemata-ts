@@ -23,6 +23,7 @@ import * as Base64 from './string/Base64'
 import * as Base64Url from './string/Base64Url'
 import * as BtcAddress from './string/BtcAddress'
 import * as EmailAddress from './string/EmailAddress'
+import * as Hexadecimal from './string/Hexadecimal'
 import * as ISODateString from './string/ISODateString'
 import * as IntString from './string/IntString'
 import * as JWT from './string/JWT'
@@ -56,6 +57,7 @@ export const Schemable: SchemableExt2C<TD.URI> = {
   Base64Url: Base64Url.TaskDecoder,
   BtcAddress: BtcAddress.TaskDecoder,
   EmailAddress: EmailAddress.TaskDecoder,
+  Hexadecimal: Hexadecimal.TaskDecoder,
   ISODateString: ISODateString.TaskDecoder,
   IntString: IntString.TaskDecoder,
   JWT: JWT.TaskDecoder,
