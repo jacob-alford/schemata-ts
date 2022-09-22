@@ -8,6 +8,7 @@ export const Schemable: Schemable2<Enc.URI> = {
   literal: () => Enc.id(),
   string: Enc.id(),
   number: Enc.id(),
+  boolean: Enc.id(),
   nullable: Enc.nullable,
   // @ts-expect-error -- typelevel difference
   struct: Enc.struct,
