@@ -1,15 +1,15 @@
 ---
-title: string/HexColor.ts
-nav_order: 23
+title: string/CreditCard.ts
+nav_order: 20
 parent: Modules
 ---
 
-## HexColor overview
+## CreditCard overview
 
-A valid hexadecimal color value.
+Represents (some) valid credit card numbers.
 
-Inspired by
-[isHexColor](https://github.com/validatorjs/validator.js/blob/master/src/lib/isHexColor.js)
+At the moment, this mostly handles Visa, Mastercard, American Express, Diners Club,
+Discover, and JCB.
 
 Added in v0.0.3
 
@@ -26,13 +26,13 @@ Added in v0.0.3
   - [TaskDecoder](#taskdecoder)
   - [Type](#type)
 - [Model](#model)
-  - [HexColor (type alias)](#hexcolor-type-alias)
+  - [CreditCard (type alias)](#creditcard-type-alias)
   - [SchemableParams (type alias)](#schemableparams-type-alias)
   - [SchemableParams1 (type alias)](#schemableparams1-type-alias)
   - [SchemableParams2 (type alias)](#schemableparams2-type-alias)
   - [SchemableParams2C (type alias)](#schemableparams2c-type-alias)
 - [Refinements](#refinements)
-  - [isHexColor](#ishexcolor)
+  - [isCreditCard](#iscreditcard)
 
 ---
 
@@ -43,7 +43,7 @@ Added in v0.0.3
 **Signature**
 
 ```ts
-export declare const Arbitrary: Arb.Arbitrary<HexColor>
+export declare const Arbitrary: Arb.Arbitrary<CreditCard>
 ```
 
 Added in v0.0.3
@@ -53,7 +53,7 @@ Added in v0.0.3
 **Signature**
 
 ```ts
-export declare const Decoder: D.Decoder<unknown, HexColor>
+export declare const Decoder: D.Decoder<unknown, CreditCard>
 ```
 
 Added in v0.0.3
@@ -63,7 +63,7 @@ Added in v0.0.3
 **Signature**
 
 ```ts
-export declare const Encoder: Enc.Encoder<string, HexColor>
+export declare const Encoder: Enc.Encoder<string, CreditCard>
 ```
 
 Added in v0.0.3
@@ -73,7 +73,7 @@ Added in v0.0.3
 **Signature**
 
 ```ts
-export declare const Eq: Eq_.Eq<HexColor>
+export declare const Eq: Eq_.Eq<CreditCard>
 ```
 
 Added in v0.0.3
@@ -83,7 +83,7 @@ Added in v0.0.3
 **Signature**
 
 ```ts
-export declare const Guard: G.Guard<unknown, HexColor>
+export declare const Guard: G.Guard<unknown, CreditCard>
 ```
 
 Added in v0.0.3
@@ -93,7 +93,7 @@ Added in v0.0.3
 **Signature**
 
 ```ts
-export declare const TaskDecoder: TD.TaskDecoder<unknown, HexColor>
+export declare const TaskDecoder: TD.TaskDecoder<unknown, CreditCard>
 ```
 
 Added in v0.0.3
@@ -103,24 +103,24 @@ Added in v0.0.3
 **Signature**
 
 ```ts
-export declare const Type: t.Type<HexColor>
+export declare const Type: t.Type<CreditCard>
 ```
 
 Added in v0.0.3
 
 # Model
 
-## HexColor (type alias)
+## CreditCard (type alias)
 
-A valid hexadecimal color value.
+Represents (some) valid credit card numbers.
 
-Inspired by
-[isHexColor](https://github.com/validatorjs/validator.js/blob/master/src/lib/isHexColor.js)
+At the moment, this mostly handles Visa, Mastercard, American Express, Diners Club,
+Discover, and JCB.
 
 **Signature**
 
 ```ts
-export type HexColor = string & HexColorBrand
+export type CreditCard = string & CreditCardBrand
 ```
 
 Added in v0.0.3
@@ -130,7 +130,7 @@ Added in v0.0.3
 **Signature**
 
 ```ts
-export type SchemableParams<S> = HKT2<S, string, HexColor>
+export type SchemableParams<S> = HKT2<S, string, CreditCard>
 ```
 
 Added in v0.0.3
@@ -140,7 +140,7 @@ Added in v0.0.3
 **Signature**
 
 ```ts
-export type SchemableParams1<S extends URIS> = Kind<S, HexColor>
+export type SchemableParams1<S extends URIS> = Kind<S, CreditCard>
 ```
 
 Added in v0.0.3
@@ -150,7 +150,7 @@ Added in v0.0.3
 **Signature**
 
 ```ts
-export type SchemableParams2<S extends URIS2> = Kind2<S, string, HexColor>
+export type SchemableParams2<S extends URIS2> = Kind2<S, string, CreditCard>
 ```
 
 Added in v0.0.3
@@ -160,19 +160,19 @@ Added in v0.0.3
 **Signature**
 
 ```ts
-export type SchemableParams2C<S extends URIS2> = Kind2<S, unknown, HexColor>
+export type SchemableParams2C<S extends URIS2> = Kind2<S, unknown, CreditCard>
 ```
 
 Added in v0.0.3
 
 # Refinements
 
-## isHexColor
+## isCreditCard
 
 **Signature**
 
 ```ts
-export declare const isHexColor: (s: string) => s is HexColor
+export declare const isCreditCard: (s: string) => s is CreditCard
 ```
 
 Added in v0.0.3
