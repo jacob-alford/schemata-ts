@@ -27,11 +27,6 @@ jobs:
       - run: yarn run build
       - run: yarn run test
       - run: yarn run eslint
-      - run: yarn test:ci
-      - name: Generating coverage badges
-        uses: jpb06/jest-badges-action@latest
-          with:
-            branches: main
   deploy-docs:
     if: github.ref == 'refs/heads/main'
     needs:
@@ -49,3 +44,14 @@ jobs:
         with:
           branch: gh-pages
           folder: docs
+  test-coverage-badge:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Check out repository code
+      uses: actions/checkout@v2
+    - name: Generate test coverage
+      run: yarn test:ci
+    - name: Generating test coverage badges
+      uses: jpb06/jest-badges-action@latest
+        with:
+          branches: main
