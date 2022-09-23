@@ -23,6 +23,7 @@ Added in v0.0.1
 - [Destructors](#destructors)
   - [toNatural](#tonatural)
 - [Instances](#instances)
+  - [Arbitrary](#arbitrary)
   - [Decoder](#decoder)
   - [Encoder](#encoder)
   - [Eq](#eq)
@@ -53,6 +54,16 @@ export declare const toNatural: (n: NaturalString) => Natural
 Added in v0.0.1
 
 # Instances
+
+## Arbitrary
+
+**Signature**
+
+```ts
+export declare const Arbitrary: Arb.Arbitrary<NaturalString>
+```
+
+Added in v0.0.3
 
 ## Decoder
 

@@ -18,6 +18,7 @@ Added in v0.0.3
 <h2 class="text-delta">Table of contents</h2>
 
 - [Instances](#instances)
+  - [Arbitrary](#arbitrary)
   - [Decoder](#decoder)
   - [Encoder](#encoder)
   - [Eq](#eq)
@@ -36,6 +37,16 @@ Added in v0.0.3
 ---
 
 # Instances
+
+## Arbitrary
+
+**Signature**
+
+```ts
+export declare const Arbitrary: Arb.Arbitrary<Hexadecimal>
+```
+
+Added in v0.0.3
 
 ## Decoder
 

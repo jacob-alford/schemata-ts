@@ -19,6 +19,7 @@ Added in v0.0.1
 - [Destructors](#destructors)
   - [toSafeDate](#tosafedate)
 - [Instances](#instances)
+  - [Arbitrary](#arbitrary)
   - [Decoder](#decoder)
   - [Encoder](#encoder)
   - [Eq](#eq)
@@ -61,6 +62,16 @@ export declare const toSafeDate: (iso: ISODate) => SafeDate
 Added in v0.0.1
 
 # Instances
+
+## Arbitrary
+
+**Signature**
+
+```ts
+export declare const Arbitrary: Arb.Arbitrary<ISODate>
+```
+
+Added in v0.0.3
 
 ## Decoder
 

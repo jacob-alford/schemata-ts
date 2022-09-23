@@ -18,6 +18,7 @@ Added in v0.0.2
 <h2 class="text-delta">Table of contents</h2>
 
 - [Instances](#instances)
+  - [Arbitrary](#arbitrary)
   - [Decoder](#decoder)
   - [Encoder](#encoder)
   - [Eq](#eq)
@@ -36,6 +37,18 @@ Added in v0.0.2
 ---
 
 # Instances
+
+## Arbitrary
+
+Note: This will produce unsigned JWTs, with `alg: "none"`.
+
+**Signature**
+
+```ts
+export declare const Arbitrary: Arb.Arbitrary<JWT>
+```
+
+Added in v0.0.3
 
 ## Decoder
 

@@ -23,6 +23,7 @@ Added in v0.0.1
 - [Destructors](#destructors)
   - [toInt](#toint)
 - [Instances](#instances)
+  - [Arbitrary](#arbitrary)
   - [Decoder](#decoder)
   - [Encoder](#encoder)
   - [Eq](#eq)
@@ -47,12 +48,22 @@ Added in v0.0.1
 **Signature**
 
 ```ts
-export declare const toInt: (s: IntString) => Int
+export declare const toInt: (s: IntString) => Int.Int
 ```
 
 Added in v0.0.1
 
 # Instances
+
+## Arbitrary
+
+**Signature**
+
+```ts
+export declare const Arbitrary: Arb.Arbitrary<IntString>
+```
+
+Added in v0.0.3
 
 ## Decoder
 

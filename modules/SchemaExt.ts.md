@@ -57,6 +57,7 @@ export declare const interpreter: {
       | 'Either'
       | 'IOEither'
       | 'TaskEither'
+      | 'ReadonlyTuple'
   >(
     S: SchemableExt2<S>
   ): <E, A>(schema: SchemaExt<E, A>) => Kind2<S, E, A>
@@ -69,6 +70,7 @@ export declare const interpreter: {
       | 'Either'
       | 'IOEither'
       | 'TaskEither'
+      | 'ReadonlyTuple'
   >(
     S: SchemableExt2C<S>
   ): <A>(schema: SchemaExt<unknown, A>) => Kind2<S, unknown, A>
@@ -77,6 +79,7 @@ export declare const interpreter: {
       | 'io-ts/Type'
       | 'Eq'
       | 'io-ts/Guard'
+      | 'Arbitrary'
       | 'Predicate'
       | 'ReadonlyNonEmptyArray'
       | 'Option'
@@ -86,6 +89,7 @@ export declare const interpreter: {
       | 'IO'
       | 'Task'
       | 'TaskOption'
+      | 'ReadonlyArray'
   >(
     S: SchemableExt1<S>
   ): <A>(schema: SchemaExt<unknown, A>) => Kind<S, A>

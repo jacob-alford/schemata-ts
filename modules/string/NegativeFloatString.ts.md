@@ -11,7 +11,7 @@ Negative floating point branded newtype string.
 Represents negative floating point number strings:
 
 ```math
- { f | f ∈ ℝ, f < 0, f >= -2 ** 53 + 1 }
+ { f | f ∈ ℝ, f < 0, f >= -Number.MAX_VALUE }
 ```
 
 Added in v0.0.2
@@ -21,6 +21,7 @@ Added in v0.0.2
 <h2 class="text-delta">Table of contents</h2>
 
 - [Instances](#instances)
+  - [Arbitrary](#arbitrary)
   - [Decoder](#decoder)
   - [Encoder](#encoder)
   - [Eq](#eq)
@@ -41,6 +42,16 @@ Added in v0.0.2
 ---
 
 # Instances
+
+## Arbitrary
+
+**Signature**
+
+```ts
+export declare const Arbitrary: Arb.Arbitrary<NegativeFloatString>
+```
+
+Added in v0.0.3
 
 ## Decoder
 
@@ -111,7 +122,7 @@ Negative floating point branded newtype string.
 Represents negative floating point number strings:
 
 ```math
- { f | f ∈ ℝ, f < 0, f >= -2 ** 53 + 1 }
+ { f | f ∈ ℝ, f < 0, f >= -Number.MAX_VALUE }
 ```
 
 **Signature**
@@ -181,7 +192,7 @@ Added in v0.0.2
 **Signature**
 
 ```ts
-export declare const toNegativeFloat: (s: NegativeFloatString) => NegativeFloat
+export declare const toNegativeFloat: (s: NegativeFloatString) => NegativeFloat.NegativeFloat
 ```
 
 Added in v0.0.2

@@ -11,7 +11,7 @@ Positive Float branded newtype.
 Represents floating point numbers:
 
 ```math
- { f | f ∈ R, f > 0, f <= 2 ** 53 - 1 }
+ { f | f ∈ R, f > 0, f <= Number.MAX_VALUE }
 ```
 
 Added in v0.0.2
@@ -21,6 +21,7 @@ Added in v0.0.2
 <h2 class="text-delta">Table of contents</h2>
 
 - [Instances](#instances)
+  - [Arbitrary](#arbitrary)
   - [Decoder](#decoder)
   - [Encoder](#encoder)
   - [Eq](#eq)
@@ -39,6 +40,16 @@ Added in v0.0.2
 ---
 
 # Instances
+
+## Arbitrary
+
+**Signature**
+
+```ts
+export declare const Arbitrary: Arb.Arbitrary<PositiveFloat>
+```
+
+Added in v0.0.3
 
 ## Decoder
 
@@ -109,7 +120,7 @@ Positive Float branded newtype.
 Represents floating point numbers:
 
 ```math
- { f | f ∈ R, f > 0, f <= 2 ** 53 - 1 }
+ { f | f ∈ R, f > 0, f <= Number.MAX_VALUE }
 ```
 
 **Signature**

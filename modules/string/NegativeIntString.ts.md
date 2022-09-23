@@ -23,6 +23,7 @@ Added in v0.0.1
 - [Destructors](#destructors)
   - [toNegativeInt](#tonegativeint)
 - [Instances](#instances)
+  - [Arbitrary](#arbitrary)
   - [Decoder](#decoder)
   - [Encoder](#encoder)
   - [Eq](#eq)
@@ -47,12 +48,22 @@ Added in v0.0.1
 **Signature**
 
 ```ts
-export declare const toNegativeInt: (s: NegativeIntString) => NegativeInt
+export declare const toNegativeInt: (s: NegativeIntString) => NegativeInt.NegativeInt
 ```
 
 Added in v0.0.1
 
 # Instances
+
+## Arbitrary
+
+**Signature**
+
+```ts
+export declare const Arbitrary: Arb.Arbitrary<NegativeIntString>
+```
+
+Added in v0.0.3
 
 ## Decoder
 
