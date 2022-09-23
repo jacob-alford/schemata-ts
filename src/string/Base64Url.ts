@@ -20,6 +20,7 @@ import { pipe } from 'fp-ts/function'
 import * as fc from 'fast-check'
 
 import * as Arb from '../internal/ArbitraryBase'
+import { urlifyBase64 } from '../internal/util'
 
 /**
  * @since 0.0.2
@@ -129,6 +130,4 @@ export const Encoder: SchemableParams2<Enc.URI> = Enc.id()
  */
 export const Arbitrary: SchemableParams1<Arb.URI> = fc
   .base64String()
-  .map(s =>
-    s.replaceAll(/[=+/]/g, c => (c === '/' ? '_' : c === '+' ? '-' : c === '=' ? '' : c))
-  ) as Arb.Arbitrary<Base64Url>
+  .map(urlifyBase64) as Arb.Arbitrary<Base64Url>

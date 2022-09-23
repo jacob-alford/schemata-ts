@@ -19,7 +19,7 @@ import * as fc from 'fast-check'
 
 import * as Arb from '../internal/ArbitraryBase'
 import { isBase64Url } from './Base64Url'
-import { base64Encode } from '../internal/util'
+import { base64Encode, urlifyBase64 } from '../internal/util'
 
 /**
  * @since 0.0.2
@@ -125,13 +125,8 @@ export const Encoder: SchemableParams2<Enc.URI> = Enc.id()
  * @category Instances
  */
 export const Arbitrary: SchemableParams1<Arb.URI> = fc.object().map(json => {
-  const header = base64Encode(JSON.stringify({ alg: 'none', typ: 'JWT' })).replaceAll(
-    /[=+/]/g,
-    c => (c === '/' ? '_' : c === '+' ? '-' : c === '=' ? '' : c)
-  )
-  const payload = base64Encode(JSON.stringify(json)).replaceAll(/[=+/]/g, c =>
-    c === '/' ? '_' : c === '+' ? '-' : c === '=' ? '' : c
-  )
+  const header = urlifyBase64(base64Encode(JSON.stringify({ alg: 'none', typ: 'JWT' })))
+  const payload = urlifyBase64(base64Encode(JSON.stringify(json)))
   const signature = ''
   return [header, payload, signature].join('.')
 }) as Arb.Arbitrary<JWT>
