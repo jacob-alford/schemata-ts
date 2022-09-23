@@ -2,6 +2,9 @@
 
 Exposes an extended Schemable typeclass `SchemableExt` with types inspired by `io-ts-types`, and `validators.js`.
 
+![build status](https://github.com/jacob-alford/schemable-ts-types/actions/workflows/build.yml/badge.svg)
+[![npm version](https://badge.fury.io/js/schemable-ts-types.svg)](https://badge.fury.io/js/schemable-ts-types)
+[![HitCount](https://hits.dwyl.com/jacob-alford/schemable-ts-types.svg?style=flat-square)](http://hits.dwyl.com/jacob-alford/schemable-ts-types)
 ![Jest coverage](./badges/coverage-jest%20coverage.svg)
 
 ## Table of Contents
