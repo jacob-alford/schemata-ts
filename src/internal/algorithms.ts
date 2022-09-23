@@ -21,6 +21,5 @@ export const luhn: (cc: string) => number = flow(
       ? 1 + (d * 2 - 10)
       : d * 2
   ),
-  sum => (sum % 10) % 10,
-  checksum => (checksum === 0 ? 0 : 10 - checksum)
+  sum => (10 - (sum % 10)) % 10
 )
