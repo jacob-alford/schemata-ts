@@ -4,7 +4,8 @@ import { validateArbitrary } from '../../test-utils'
 
 const _: (n: string) => PositiveIntString.PositiveIntString = unsafeCoerce
 
-const make: () => PositiveIntString.PositiveIntString = () => _(`${(Math.random() * 100000 + 1) | 0}`)
+const make: () => PositiveIntString.PositiveIntString = () =>
+  _(`${(Math.random() * 100000 + 1) | 0}`)
 
 describe('PositiveIntString', () => {
   describe('Decoder', () => {
@@ -34,7 +35,9 @@ describe('PositiveIntString', () => {
       expect(PositiveIntString.Guard.is(make())).toBe(true)
     })
     it('protects against bigPositiveIntStrings', () => {
-      expect(PositiveIntString.Guard.is(`1234567890123456789012345678901234567890n`)).toBe(false)
+      expect(
+        PositiveIntString.Guard.is(`1234567890123456789012345678901234567890n`)
+      ).toBe(false)
     })
   })
   describe('Type', () => {
