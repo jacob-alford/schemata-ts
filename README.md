@@ -4,8 +4,9 @@ Exposes an extended Schemable typeclass `SchemableExt` with types inspired by `i
 
 ![build status](https://github.com/jacob-alford/schemable-ts-types/actions/workflows/build.yml/badge.svg)
 [![npm version](https://badge.fury.io/js/schemable-ts-types.svg)](https://badge.fury.io/js/schemable-ts-types)
-[![HitCount](https://hits.dwyl.com/jacob-alford/schemable-ts-types.svg?style=flat-square)](http://hits.dwyl.com/jacob-alford/schemable-ts-types)
-![Jest coverage](./badges/coverage-jest%20coverage.svg)
+[![hit count](https://hits.dwyl.com/jacob-alford/schemable-ts-types.svg?style=flat)](http://hits.dwyl.com/jacob-alford/schemable-ts-types)
+![jest coverage](./badges/coverage-jest%20coverage.svg)
+![github](https://img.shields.io/github/license/jacob-alford/schemable-ts-types)
 
 ## Table of Contents
 
