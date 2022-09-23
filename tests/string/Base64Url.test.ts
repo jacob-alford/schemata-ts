@@ -2,9 +2,9 @@ import * as RA from 'fp-ts/ReadonlyArray'
 
 import { tuple } from 'fp-ts/function'
 
-import { Decoder, Eq, Guard, TaskDecoder, Type } from '../src/string/Base64Url'
+import * as Base64Url from '../../src/string/Base64Url'
 
-import { cat, combineExpected } from '../test-utils'
+import { cat, combineExpected, validateArbitrary } from '../../test-utils'
 
 const validStrings = [
   '',
@@ -29,7 +29,7 @@ describe('Base64Url', () => {
     test.each(
       cat(combineExpected(validStrings, 'Right'), combineExpected(invalidStrings, 'Left'))
     )('validates valid strings, and catches bad strings', (str, expectedTag) => {
-      const result = Decoder.decode(str)
+      const result = Base64Url.Decoder.decode(str)
 
       expect(result._tag).toBe(expectedTag)
     })
@@ -40,8 +40,8 @@ describe('Base64Url', () => {
       'determines two strings are equal',
 
       (str1, str2) => {
-        const guard = Guard.is
-        const eq = Eq.equals
+        const guard = Base64Url.Guard.is
+        const eq = Base64Url.Eq.equals
 
         if (!guard(str1) || !guard(str2)) {
           throw new Error('Unexpected result')
@@ -56,7 +56,7 @@ describe('Base64Url', () => {
     test.each(
       cat(combineExpected(validStrings, true), combineExpected(invalidStrings, false))
     )('validates valid strings, and catches bad strings', (str, expectedTag) => {
-      const result = Guard.is(str)
+      const result = Base64Url.Guard.is(str)
 
       expect(result).toBe(expectedTag)
     })
@@ -66,7 +66,7 @@ describe('Base64Url', () => {
     test.each(
       cat(combineExpected(validStrings, 'Right'), combineExpected(invalidStrings, 'Left'))
     )('validates valid strings, and catches bad strings', async (str, expectedTag) => {
-      const result = await TaskDecoder.decode(str)()
+      const result = await Base64Url.TaskDecoder.decode(str)()
 
       expect(result._tag).toBe(expectedTag)
     })
@@ -76,9 +76,15 @@ describe('Base64Url', () => {
     test.each(
       cat(combineExpected(validStrings, 'Right'), combineExpected(invalidStrings, 'Left'))
     )('validates valid strings, and catches bad strings', (str, expectedTag) => {
-      const result = Type.decode(str)
+      const result = Base64Url.Type.decode(str)
 
       expect(result._tag).toBe(expectedTag)
+    })
+  })
+
+  describe('Arbitrary', () => {
+    it('generates valid Base64Urls', () => {
+      validateArbitrary(Base64Url, Base64Url.isBase64Url)
     })
   })
 })

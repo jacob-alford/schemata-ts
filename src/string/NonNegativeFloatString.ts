@@ -4,7 +4,7 @@
  * Represents non-negative floating point numbers:
  *
  * ```math
- *  { f | f ∈ ℝ, f >= 0, f <= 2 ** 53 - 1 }
+ *  { f | f ∈ ℝ, f >= 0, f <= Number.MAX_VALUE }
  * ```
  *
  * @since 0.0.2
@@ -18,7 +18,9 @@ import * as Str from 'fp-ts/string'
 import * as TD from 'io-ts/TaskDecoder'
 import * as t from 'io-ts/Type'
 import { pipe, unsafeCoerce } from 'fp-ts/function'
-import { isNonNegativeFloat, NonNegativeFloat } from '../number/NonNegativeFloat'
+
+import * as Arb from '../internal/ArbitraryBase'
+import * as NonNegativeFloat from '../number/NonNegativeFloat'
 
 /**
  * @since 0.0.2
@@ -34,7 +36,7 @@ interface NonNegativeFloatStringBrand {
  * Represents non-negative floating point numbers:
  *
  * ```math
- *  { f | f ∈ ℝ, f >= 0, f <= 2 ** 53 - 1 }
+ *  { f | f ∈ ℝ, f >= 0, f <= Number.MAX_VALUE }
  * ```
  *
  * @since 0.0.2
@@ -71,7 +73,7 @@ export type SchemableParams2C<S extends URIS2> = Kind2<S, unknown, NonNegativeFl
  * @category Refinements
  */
 export const isNonNegativeFloatString = (s: string): s is NonNegativeFloatString =>
-  typeof s === 'string' && pipe(s, Number, isNonNegativeFloat)
+  typeof s === 'string' && pipe(s, Number, NonNegativeFloat.isNonNegativeFloat)
 
 /**
  * @since 0.0.2
@@ -119,11 +121,20 @@ export const Type: SchemableParams1<t.URI> = pipe(
  * @since 0.0.2
  * @category Utilities
  */
-export const toNonNegativeFloat: (s: NonNegativeFloatString) => NonNegativeFloat = s =>
-  unsafeCoerce(Number(s))
+export const toNonNegativeFloat: (
+  s: NonNegativeFloatString
+) => NonNegativeFloat.NonNegativeFloat = s => unsafeCoerce(Number(s))
 
 /**
  * @since 0.0.3
  * @category Instances
  */
 export const Encoder: SchemableParams2<Enc.URI> = Enc.id()
+
+/**
+ * @since 0.0.3
+ * @category Instances
+ */
+export const Arbitrary: SchemableParams1<Arb.URI> = NonNegativeFloat.Arbitrary.map(f =>
+  f.toString()
+) as Arb.Arbitrary<NonNegativeFloatString>

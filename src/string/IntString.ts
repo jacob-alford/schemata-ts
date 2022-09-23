@@ -19,7 +19,8 @@ import * as t from 'io-ts/Type'
 import * as Str from 'fp-ts/string'
 import { pipe, unsafeCoerce } from 'fp-ts/function'
 
-import { Int, isInt } from '../number/Int'
+import * as Arb from '../internal/ArbitraryBase'
+import * as Int from '../number/Int'
 
 /**
  * @since 0.0.1
@@ -71,7 +72,7 @@ export type SchemableParams2C<S extends URIS2> = Kind2<S, unknown, IntString>
  * @since 0.0.1
  * @category Refinements
  */
-export const isIntString = (n: string): n is IntString => pipe(n, Number, isInt)
+export const isIntString = (n: string): n is IntString => pipe(n, Number, Int.isInt)
 
 /**
  * @since 0.0.1
@@ -113,10 +114,18 @@ export const Type: SchemableParams1<t.URI> = pipe(t.string, t.refine(isIntString
  * @since 0.0.1
  * @category Destructors
  */
-export const toInt: (s: IntString) => Int = s => unsafeCoerce(Number(s))
+export const toInt: (s: IntString) => Int.Int = s => unsafeCoerce(Number(s))
 
 /**
  * @since 0.0.3
  * @category Instances
  */
 export const Encoder: SchemableParams2<Enc.URI> = Enc.id()
+
+/**
+ * @since 0.0.3
+ * @category Instances
+ */
+export const Arbitrary: SchemableParams1<Arb.URI> = Int.Arbitrary.map(i =>
+  i.toString(10)
+) as Arb.Arbitrary<IntString>

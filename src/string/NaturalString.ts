@@ -19,6 +19,9 @@ import * as TD from 'io-ts/TaskDecoder'
 import * as t from 'io-ts/Type'
 import * as Str from 'fp-ts/string'
 import { pipe, unsafeCoerce } from 'fp-ts/function'
+
+import * as Arb from '../internal/ArbitraryBase'
+import * as Nat from '../number/Natural'
 import { Natural } from '../number/Natural'
 import { isInt } from '../number/Int'
 
@@ -129,3 +132,11 @@ export const toNatural: (n: NaturalString) => Natural = n => unsafeCoerce(parseI
  * @category Instances
  */
 export const Encoder: SchemableParams2<Enc.URI> = Enc.id()
+
+/**
+ * @since 0.0.3
+ * @category Instances
+ */
+export const Arbitrary: SchemableParams1<Arb.URI> = Nat.Arbitrary.map(n =>
+  n.toString()
+) as Arb.Arbitrary<NaturalString>

@@ -18,6 +18,9 @@ import * as TD from 'io-ts/TaskDecoder'
 import * as t from 'io-ts/Type'
 import * as N from 'fp-ts/number'
 import { pipe } from 'fp-ts/function'
+import * as fc from 'fast-check'
+
+import * as Arb from '../internal/ArbitraryBase'
 import { isInt } from './Int'
 
 /**
@@ -118,3 +121,9 @@ export const Type: SchemableParams1<t.URI> = pipe(
  * @category Instances
  */
 export const Encoder: SchemableParams2<Enc.URI> = Enc.id()
+
+/**
+ * @since 0.0.3
+ * @category Instances
+ */
+export const Arbitrary: SchemableParams1<Arb.URI> = fc.nat().filter(isNatural)

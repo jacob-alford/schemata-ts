@@ -17,6 +17,10 @@ import * as Str from 'fp-ts/string'
 import * as TD from 'io-ts/TaskDecoder'
 import * as t from 'io-ts/Type'
 import { pipe } from 'fp-ts/function'
+import * as fc from 'fast-check'
+
+import * as Arb from '../internal/ArbitraryBase'
+import { urlifyBase64 } from '../internal/util'
 
 /**
  * @since 0.0.2
@@ -119,3 +123,11 @@ export const Type: SchemableParams1<t.URI> = pipe(
  * @category Instances
  */
 export const Encoder: SchemableParams2<Enc.URI> = Enc.id()
+
+/**
+ * @since 0.0.3
+ * @category Instances
+ */
+export const Arbitrary: SchemableParams1<Arb.URI> = fc
+  .base64String()
+  .map(urlifyBase64) as Arb.Arbitrary<Base64Url>

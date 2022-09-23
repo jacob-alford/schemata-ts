@@ -4,7 +4,7 @@
  * Represents non-negative floating point numbers:
  *
  * ```math
- *  { f | f ∈ ℝ, f >= 0, f <= 2 ** 53 - 1 }
+ *  { f | f ∈ ℝ, f >= 0, f <= Number.MAX_VALUE }
  * ```
  *
  * @since 0.0.2
@@ -18,6 +18,9 @@ import * as N from 'fp-ts/number'
 import * as TD from 'io-ts/TaskDecoder'
 import * as t from 'io-ts/Type'
 import { pipe } from 'fp-ts/function'
+import * as fc from 'fast-check'
+
+import * as Arb from '../internal/ArbitraryBase'
 
 /**
  * @since 0.0.2
@@ -33,7 +36,7 @@ interface NonNegativeFloatBrand {
  * Represents non-negative floating point numbers:
  *
  * ```math
- *  { f | f ∈ ℝ, f >= 0, f <= 2 ** 53 - 1 }
+ *  { f | f ∈ ℝ, f >= 0, f <= Number.MAX_VALUE }
  * ```
  *
  * @since 0.0.2
@@ -70,7 +73,7 @@ export type SchemableParams2C<S extends URIS2> = Kind2<S, unknown, NonNegativeFl
  * @category Refinements
  */
 export const isNonNegativeFloat = (n: number): n is NonNegativeFloat =>
-  typeof n === 'number' && G.number.is(n) && n >= 0 && n <= Number.MAX_SAFE_INTEGER
+  typeof n === 'number' && G.number.is(n) && n >= 0 && n <= Number.MAX_VALUE
 
 /**
  * @since 0.0.2
@@ -116,3 +119,11 @@ export const Type: SchemableParams1<t.URI> = pipe(
  * @category Instances
  */
 export const Encoder: SchemableParams2<Enc.URI> = Enc.id()
+
+/**
+ * @since 0.0.3
+ * @category Instances
+ */
+export const Arbitrary: SchemableParams1<Arb.URI> = fc
+  .float({ min: 0, max: Number.MAX_VALUE })
+  .filter(isNonNegativeFloat)

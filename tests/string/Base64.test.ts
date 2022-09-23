@@ -2,9 +2,9 @@ import * as RA from 'fp-ts/ReadonlyArray'
 
 import { tuple } from 'fp-ts/function'
 
-import { Decoder, Eq, Guard, isBase64, TaskDecoder, Type } from '../src/string/Base64'
+import * as Base64 from '../../src/string/Base64'
 
-import { cat, combineExpected } from '../test-utils'
+import { cat, combineExpected, validateArbitrary } from '../../test-utils'
 
 const validStrings = [
   '',
@@ -41,7 +41,7 @@ describe('Base64', () => {
     test.each(
       cat(combineExpected(validStrings, 'Right'), combineExpected(invalidStrings, 'Left'))
     )('validates valid strings, and catches bad strings', (str, expectedTag) => {
-      const result = Decoder.decode(str)
+      const result = Base64.Decoder.decode(str)
 
       expect(result._tag).toBe(expectedTag)
     })
@@ -52,8 +52,8 @@ describe('Base64', () => {
       'determines two strings are equal',
 
       (str1, str2) => {
-        const guard = Guard.is
-        const eq = Eq.equals
+        const guard = Base64.Guard.is
+        const eq = Base64.Eq.equals
 
         if (!guard(str1) || !guard(str2)) {
           throw new Error('Unexpected result')
@@ -68,7 +68,7 @@ describe('Base64', () => {
     test.each(
       cat(combineExpected(validStrings, true), combineExpected(invalidStrings, false))
     )('validates valid strings, and catches bad strings', (str, expectedTag) => {
-      const result = Guard.is(str)
+      const result = Base64.Guard.is(str)
 
       expect(result).toBe(expectedTag)
     })
@@ -78,7 +78,7 @@ describe('Base64', () => {
     test.each(
       cat(combineExpected(validStrings, 'Right'), combineExpected(invalidStrings, 'Left'))
     )('validates valid strings, and catches bad strings', async (str, expectedTag) => {
-      const result = await TaskDecoder.decode(str)()
+      const result = await Base64.TaskDecoder.decode(str)()
 
       expect(result._tag).toBe(expectedTag)
     })
@@ -88,7 +88,7 @@ describe('Base64', () => {
     test.each(
       cat(combineExpected(validStrings, 'Right'), combineExpected(invalidStrings, 'Left'))
     )('validates valid strings, and catches bad strings', (str, expectedTag) => {
-      const result = Type.decode(str)
+      const result = Base64.Type.decode(str)
 
       expect(result._tag).toBe(expectedTag)
     })
@@ -99,7 +99,7 @@ describe('Base64', () => {
       str += String.fromCharCode((Math.random() * 26) | 97)
       encoded = Buffer.from(str).toString('base64')
 
-      if (!isBase64(encoded)) {
+      if (!Base64.isBase64(encoded)) {
         const msg = `validator.isBase64() failed with "${encoded}"`
         throw new Error(msg)
       }
@@ -117,6 +117,12 @@ Zy1dm3UxhX/Tir2Cg+5kTAVQ6qqliklhGSCcYw0rNMfl+q151zKu4/j9id5pHnrkjnjrV1odz3u/
 aBKxLpzf8cf2BlYdRooqvFIbdJULftmn0lABukKc0eaPclSdz//DzTU318fpHnFbzlUpi82UVNL4
 IUqUviQNw7SX41v90N39iNP3JmczkN8J70+o7NLYlcvp4xXIFOcRaDrinbCcXT1WfQ==`
 
-    expect(isBase64(str)).toBeTruthy
+    expect(Base64.isBase64(str)).toBeTruthy
+  })
+
+  describe('Arbitrary', () => {
+    it('generates valid Base64s', () => {
+      validateArbitrary(Base64, Base64.isBase64)
+    })
   })
 })
