@@ -1,5 +1,8 @@
 /**
- * TODO: Add module comment
+ * Represents (some) valid credit card numbers.
+ *
+ * At the moment, this mostly handles Visa, Mastercard, American Express, Diners Club,
+ * Discover, and JCB.
  *
  * @since 0.0.3
  */
@@ -11,13 +14,12 @@ import * as G from 'io-ts/Guard'
 import * as Str from 'fp-ts/string'
 import * as TD from 'io-ts/TaskDecoder'
 import * as t from 'io-ts/Type'
-import { flow, pipe } from 'fp-ts/function'
+import { pipe } from 'fp-ts/function'
 import * as fc from 'fast-check'
-import * as RA from 'fp-ts/ReadonlyArray'
 
 import * as Arb from '../internal/ArbitraryBase'
-import { MonoidSum } from 'fp-ts/lib/number'
 import { digits } from '../internal/util'
+import { luhn } from '../internal/algorithms'
 
 /**
  * @since 0.0.3
@@ -28,7 +30,10 @@ interface CreditCardBrand {
 }
 
 /**
- * TODO: Add module comment
+ * Represents (some) valid credit card numbers.
+ *
+ * At the moment, this mostly handles Visa, Mastercard, American Express, Diners Club,
+ * Discover, and JCB.
  *
  * @since 0.0.3
  * @category Model
@@ -59,25 +64,45 @@ export type SchemableParams2<S extends URIS2> = Kind2<S, string, CreditCard>
  */
 export type SchemableParams2C<S extends URIS2> = Kind2<S, unknown, CreditCard>
 
-const cc =
-  /(^4[0-9]{12}(?:[0-9]{3})?$)|(^(?:5[1-5][0-9]{2}|222[1-9]|22[3-9][0-9]|2[3-6][0-9]{2}|27[01][0-9]|2720)[0-9]{12}$)|(3[47][0-9]{13})|(^3(?:0[0-5]|[68][0-9])[0-9]{11}$)|(^6(?:011|5[0-9]{2})[0-9]{12}$)|(^(?:2131|1800|35\d{3})\d{11}$)/
+const cc = new RegExp(
+  [
+    // visa
+    // source: https://en.wikipedia.org/w/index.php?title=Payment_card_number&oldid=1110892430
+    // afaict the 13-digit variant has not been a thing for years, but maybe there
+    // are still some valid cards floating around?
+    /(^4(\d{12}|\d{15})$)/,
 
-/** This calculates the Luhn checksum for a given string of digits. */
-const luhn: (cc: string) => number = flow(
-  Str.split(''),
-  RA.reverse,
-  RA.map(d => parseInt(d)),
-  RA.foldMapWithIndex(MonoidSum)((i, d) =>
-    i % 2 === 1
-      ? // numbers of odd rank stay the same
-        d
-      : // numbers of even rank get doubled, then their digits are summed
-      d * 2 >= 10
-      ? 1 + (d * 2 - 10)
-      : d * 2
-  ),
-  sum => (sum % 10) % 10,
-  checksum => (checksum === 0 ? 0 : 10 - checksum)
+    // mastercard
+    // source: https://web.archive.org/web/20180514224309/https://www.mastercard.us/content/dam/mccom/global/documents/mastercard-rules.pdf
+    /(^(5[1-5]\d{4}|222[1-9]\d{2}|22[3-9]\d{3}|2[3-6]\d{4}|27[01]\d{3}|2720\d{2})\d{10}$)/,
+
+    // american express
+    // source: https://web.archive.org/web/20210504163517/https://www.americanexpress.com/content/dam/amex/hk/en/staticassets/merchant/pdf/support-and-services/useful-information-and-downloads/GuidetoCheckingCardFaces.pdf
+    /(^3[47]\d{13}$)/,
+
+    // diners club
+    // US/Canada DCI cards will match as Mastercard (source: https://web.archive.org/web/20081204135437/http://www.mastercard.com/in/merchant/en/solutions_resources/dinersclub.html)
+    // Others match regex below (source: https://web.archive.org/web/20170822221741/https://www.discovernetwork.com/downloads/IPP_VAR_Compliance.pdf)
+    /(^(3(0([0-5]\d{5}|95\d{4})|[89]\d{6})\d{8,11}|36\d{6}\d{6,11})$)/,
+
+    // discover
+    // source: https://web.archive.org/web/20170822221741/https://www.discovernetwork.com/downloads/IPP_VAR_Compliance.pdf
+    /(^(6011(0[5-9]\d{2}|[2-4]\d{3}|74\d{2}|7[7-9]\d{2}|8[6-9]\d{2}|9\d{3})|64[4-9]\d{5}|650[0-5]\d{4}|65060[1-9]\d{2}|65061[1-9]\d{2}|6506[2-9]\d{3}|650[7-9]\d{4}|65[1-9]\d{5})\d{8,11}$)/,
+
+    // jcb
+    /(^(352[89]\d{4}|35[3-8]\d{5})\d{8,11}$)/,
+
+    // Rupay
+    // some are JCB co-branded so will match as JCB above
+    // for the rest, best source I could find is just wikipedia:
+    // https://en.wikipedia.org/w/index.php?title=Payment_card_number&oldid=1110892430
+    /(^((60|65|81|82)\d{14}|508\d{14})$)/,
+
+    // unionpay
+    /(^62(2(12[6-9]\d{2}|1[3-9]\d{3}|[2-8]\d|9[01]\d{3}|92[0-5]\d{2})|[4-6]\d{5}|8[2-8]\d{4})\d{8,11}$)/,
+  ]
+    .map(re => re.source)
+    .join('|')
 )
 
 /**
