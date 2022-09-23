@@ -1,8 +1,8 @@
 import * as RA from 'fp-ts/ReadonlyArray'
 import { tuple } from 'fp-ts/function'
-import * as BtcAddress from '../src/string/BtcAddress'
+import * as BtcAddress from '../../src/string/BtcAddress'
 
-import { cat, combineExpected, validateArbitrary } from '../test-utils'
+import { cat, combineExpected, validateArbitrary } from '../../test-utils'
 
 const validAddresses = [
   '1MUz4VMYui5qY1mxUiG8BQ1Luv6tqkvaiL',

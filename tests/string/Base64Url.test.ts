@@ -2,9 +2,9 @@ import * as RA from 'fp-ts/ReadonlyArray'
 
 import { tuple } from 'fp-ts/function'
 
-import * as Base64Url from '../src/string/Base64Url'
+import * as Base64Url from '../../src/string/Base64Url'
 
-import { cat, combineExpected, validateArbitrary } from '../test-utils'
+import { cat, combineExpected, validateArbitrary } from '../../test-utils'
 
 const validStrings = [
   '',

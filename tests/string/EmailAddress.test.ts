@@ -1,5 +1,5 @@
-import * as EmailAddress from '../src/string/EmailAddress'
-import { validateArbitrary } from '../test-utils'
+import * as EmailAddress from '../../src/string/EmailAddress'
+import { validateArbitrary } from '../../test-utils'
 
 describe('EmailAddress', () => {
   describe('Decoder', () => {
