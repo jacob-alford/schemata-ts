@@ -4,7 +4,7 @@
  * Represents non-negative floating point numbers:
  *
  * ```math
- *  { f | f ∈ ℝ, f >= 0, f <= 2 ** 53 - 1 }
+ *  { f | f ∈ ℝ, f >= 0, f <= Number.MAX_VALUE }
  * ```
  *
  * @since 0.0.2
@@ -36,7 +36,7 @@ interface NonNegativeFloatBrand {
  * Represents non-negative floating point numbers:
  *
  * ```math
- *  { f | f ∈ ℝ, f >= 0, f <= 2 ** 53 - 1 }
+ *  { f | f ∈ ℝ, f >= 0, f <= Number.MAX_VALUE }
  * ```
  *
  * @since 0.0.2
