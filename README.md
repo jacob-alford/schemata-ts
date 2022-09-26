@@ -2,11 +2,11 @@
 
 Exposes an extended Schemable typeclass `SchemableExt` with types inspired by `io-ts-types`, and `validators.js`.
 
-![build status](https://github.com/jacob-alford/schemable-ts-types/actions/workflows/build.yml/badge.svg)
-[![npm version](https://badge.fury.io/js/schemable-ts-types.svg)](https://badge.fury.io/js/schemable-ts-types)
-![jest coverage](./badges/coverage-jest%20coverage.svg)
-![vulnerabilities](https://img.shields.io/snyk/vulnerabilities/npm/schemable-ts-types)
-![license](https://img.shields.io/github/license/jacob-alford/schemable-ts-types)
+![Build Status](https://github.com/jacob-alford/schemable-ts-types/actions/workflows/build.yml/badge.svg)
+[![NPM Version](https://badge.fury.io/js/schemable-ts-types.svg)](https://badge.fury.io/js/schemable-ts-types)
+[![Coverage Status](https://coveralls.io/repos/github/jacob-alford/schemable-ts-types/badge.svg?branch=main)](https://coveralls.io/github/jacob-alford/schemable-ts-types?branch=main)
+![Vulnerabilities](https://img.shields.io/snyk/vulnerabilities/npm/schemable-ts-types)
+![License](https://img.shields.io/github/license/jacob-alford/schemable-ts-types)
 
 ## Table of Contents
 

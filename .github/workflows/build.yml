@@ -44,14 +44,3 @@ jobs:
         with:
           branch: gh-pages
           folder: docs
-  test-coverage-badge:
-    runs-on: ubuntu-latest
-    steps:
-    - name: Check out repository code
-      uses: actions/checkout@v2
-    - name: Generate test coverage
-      run: yarn test:ci
-    - name: Generating test coverage badges
-      uses: jpb06/jest-badges-action@latest
-        with:
-          branches: main
