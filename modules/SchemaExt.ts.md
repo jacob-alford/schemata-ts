@@ -1,6 +1,6 @@
 ---
 title: SchemaExt.ts
-nav_order: 15
+nav_order: 16
 parent: Modules
 ---
 
@@ -55,9 +55,9 @@ export declare const interpreter: {
       | 'io-ts/Encoder'
       | 'Separated'
       | 'Either'
+      | 'ReadonlyTuple'
       | 'IOEither'
       | 'TaskEither'
-      | 'ReadonlyTuple'
   >(
     S: SchemableExt2<S>
   ): <E, A>(schema: SchemaExt<E, A>) => Kind2<S, E, A>
@@ -68,9 +68,9 @@ export declare const interpreter: {
       | 'io-ts/Encoder'
       | 'Separated'
       | 'Either'
+      | 'ReadonlyTuple'
       | 'IOEither'
       | 'TaskEither'
-      | 'ReadonlyTuple'
   >(
     S: SchemableExt2C<S>
   ): <A>(schema: SchemaExt<unknown, A>) => Kind2<S, unknown, A>
@@ -86,10 +86,10 @@ export declare const interpreter: {
       | 'ReadonlyRecord'
       | 'Endomorphism'
       | 'Ord'
+      | 'ReadonlyArray'
       | 'IO'
       | 'Task'
       | 'TaskOption'
-      | 'ReadonlyArray'
   >(
     S: SchemableExt1<S>
   ): <A>(schema: SchemaExt<unknown, A>) => Kind<S, A>
