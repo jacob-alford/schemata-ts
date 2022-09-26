@@ -22,6 +22,7 @@ import * as ASCII from './string/ASCII'
 import * as Base64 from './string/Base64'
 import * as Base64Url from './string/Base64Url'
 import * as BtcAddress from './string/BtcAddress'
+import * as CreditCard from './string/CreditCard'
 import * as EmailAddress from './string/EmailAddress'
 import * as HexColor from './string/HexColor'
 import * as Hexadecimal from './string/Hexadecimal'
@@ -57,6 +58,7 @@ export const Schemable: SchemableExt2C<TD.URI> = {
   Base64: Base64.TaskDecoder,
   Base64Url: Base64Url.TaskDecoder,
   BtcAddress: BtcAddress.TaskDecoder,
+  CreditCard: CreditCard.TaskDecoder,
   EmailAddress: EmailAddress.TaskDecoder,
   HexColor: HexColor.TaskDecoder,
   Hexadecimal: Hexadecimal.TaskDecoder,
