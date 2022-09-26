@@ -26,8 +26,6 @@ jobs:
       - run: yarn install
       - run: yarn run build
       - run: yarn run eslint
-
-      - name: Generate test coverage
       - run: yarn test:ci
 
       - name: Coveralls
