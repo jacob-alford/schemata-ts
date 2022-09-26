@@ -27,9 +27,13 @@ jobs:
       - run: yarn run build
       - run: yarn run eslint
       - run: yarn test:ci
-
+  finish:
+    needs: build
+    runs-on: ubuntu-latest
+    steps:
       - name: Coveralls
-        uses: coverallsapp/github-action@master
+      - run: yarn coveralls < coverage/lcov.info
+        uses: coverallsapp/github-action@v1.1.0
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
   deploy-docs:

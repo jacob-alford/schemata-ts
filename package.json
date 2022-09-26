@@ -35,7 +35,7 @@
     "test": "yarn run jest",
     "test:w": "yarn run jest --watch",
     "test:c": "yarn run jest --coverage",
-    "test:ci": "yarn run jest --coverage --ci && coveralls < coverage/lcov.info",
+    "test:ci": "yarn run jest --coverage --ci",
     "circular": "yarn madge --circular dist",
     "clean": "rm -rf dist build",
     "build": "tsc -b ./tsconfig.build.json",
