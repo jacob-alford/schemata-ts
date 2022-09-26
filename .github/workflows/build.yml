@@ -32,8 +32,8 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Coveralls
-      - run: yarn coveralls < coverage/lcov.info
-        uses: coverallsapp/github-action@v1.1.0
+        run: yarn coveralls < coverage/lcov.info
+      - uses: coverallsapp/github-action@v1.1.0
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
   deploy-docs:
