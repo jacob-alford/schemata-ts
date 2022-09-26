@@ -23,12 +23,12 @@ jobs:
         uses: actions/setup-node@v1
         with:
           node-version: ${{ matrix.node-version }}
-        run: yarn install
-        run: yarn run build
-        run: yarn run eslint
+      - run: yarn install
+      - run: yarn run build
+      - run: yarn run eslint
 
       - name: Generate test coverage
-        run: yarn test:ci
+      - run: yarn test:ci
 
       - name: Coveralls
         uses: coverallsapp/github-action@master
