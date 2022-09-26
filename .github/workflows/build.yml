@@ -27,9 +27,8 @@ jobs:
       - run: yarn run build
       - run: yarn run eslint
       - run: yarn run test:ci
-
+      - run: yarn coveralls < ./coverage/lcov.info
       - name: Coveralls
-        run: yarn coveralls < ./coverage/lcov.info
         uses: coverallsapp/github-action@v1.1.0
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
