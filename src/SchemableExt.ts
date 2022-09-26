@@ -23,6 +23,7 @@ import * as ASCII from './string/ASCII'
 import * as Base64 from './string/Base64'
 import * as Base64Url from './string/Base64Url'
 import * as BtcAddress from './string/BtcAddress'
+import * as CreditCard from './string/CreditCard'
 import * as EmailAddress from './string/EmailAddress'
 import * as HexColor from './string/HexColor'
 import * as Hexadecimal from './string/Hexadecimal'
@@ -57,6 +58,7 @@ export interface SchemableExt<S> extends SchemableHKT2<S> {
   readonly Base64: Base64.SchemableParams<S>
   readonly Base64Url: Base64Url.SchemableParams<S>
   readonly BtcAddress: BtcAddress.SchemableParams<S>
+  readonly CreditCard: CreditCard.SchemableParams<S>
   readonly EmailAddress: EmailAddress.SchemableParams<S>
   readonly HexColor: HexColor.SchemableParams<S>
   readonly Hexadecimal: Hexadecimal.SchemableParams<S>
@@ -90,6 +92,7 @@ export interface SchemableExt1<S extends URIS> extends Schemable1<S> {
   readonly Base64: Base64.SchemableParams1<S>
   readonly Base64Url: Base64Url.SchemableParams1<S>
   readonly BtcAddress: BtcAddress.SchemableParams1<S>
+  readonly CreditCard: CreditCard.SchemableParams1<S>
   readonly EmailAddress: EmailAddress.SchemableParams1<S>
   readonly HexColor: HexColor.SchemableParams1<S>
   readonly Hexadecimal: Hexadecimal.SchemableParams1<S>
@@ -123,6 +126,7 @@ export interface SchemableExt2<S extends URIS2> extends Schemable2<S> {
   readonly Base64: Base64.SchemableParams2<S>
   readonly Base64Url: Base64Url.SchemableParams2<S>
   readonly BtcAddress: BtcAddress.SchemableParams2<S>
+  readonly CreditCard: CreditCard.SchemableParams2<S>
   readonly EmailAddress: EmailAddress.SchemableParams2<S>
   readonly HexColor: HexColor.SchemableParams2<S>
   readonly Hexadecimal: Hexadecimal.SchemableParams2<S>
@@ -156,6 +160,7 @@ export interface SchemableExt2C<S extends URIS2> extends Schemable2C<S, unknown>
   readonly Base64: Base64.SchemableParams2C<S>
   readonly Base64Url: Base64Url.SchemableParams2C<S>
   readonly BtcAddress: BtcAddress.SchemableParams2C<S>
+  readonly CreditCard: CreditCard.SchemableParams2C<S>
   readonly EmailAddress: EmailAddress.SchemableParams2C<S>
   readonly HexColor: HexColor.SchemableParams2C<S>
   readonly Hexadecimal: Hexadecimal.SchemableParams2C<S>
