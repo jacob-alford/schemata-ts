@@ -3,7 +3,15 @@
  *
  * @since 0.0.3
  * @example
- *   background-color: hsl(270 60% 70% / 0.7);
+ *   const hue = 270
+ *   const saturation = 60
+ *   const lightness = 70
+ *   const alpha = 0.7
+ *
+ *   const styles = styled.div`
+ *     color: hsl(160, 50%, 50%, 0.6);
+ *     background-color: hsl(${hue} ${saturation}% ${lightness}% / ${alpha});
+ *   `
  */
 import { Kind, Kind2, URIS, URIS2, HKT2 } from 'fp-ts/HKT'
 import * as D from 'io-ts/Decoder'
@@ -32,7 +40,15 @@ interface HslColorBrand {
  *
  * @since 0.0.3
  * @example
- *   background-color: hsl(270 60% 70% / 0.7);
+ *   const hue = 270
+ *   const saturation = 60
+ *   const lightness = 70
+ *   const alpha = 0.7
+ *
+ *   const styles = styled.div`
+ *     color: hsl(160, 50%, 50%, 0.6);
+ *     background-color: hsl(${hue} ${saturation}% ${lightness}% / ${alpha});
+ *   `
  */
 export type HslColor = string & HslColorBrand
 
