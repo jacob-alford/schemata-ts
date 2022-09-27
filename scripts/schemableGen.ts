@@ -93,7 +93,8 @@ export const makeSchemableExtTypeclass: (
               )
             ),
             ts.SyntaxKind.MultiLineCommentTrivia,
-            `* ${comment}`
+            `* ${comment}`,
+            true
           )
         )
       ),
@@ -114,7 +115,8 @@ export const makeSchemableExtTypeclass: (
               )
             ),
             ts.SyntaxKind.MultiLineCommentTrivia,
-            `* ${comment}`
+            `* ${comment}`,
+            true
           )
         )
       ),
@@ -135,7 +137,8 @@ export const makeSchemableExtTypeclass: (
               )
             ),
             ts.SyntaxKind.MultiLineCommentTrivia,
-            `* ${comment}`
+            `* ${comment}`,
+            true
           )
         )
       ),
@@ -371,7 +374,6 @@ export const getJSDocHeaderText: (fileContents: string) => string = fileContents
     RNEA.head,
     Str.split('/**'),
     RNEA.tail,
-    RA.chain(flow(Str.split('*'), RNEA.tail)),
     RA.foldMap(Str.Monoid)(Str.trim)
   )
 

@@ -48,33 +48,321 @@ import * as SafeDate from './date/SafeDate'
  * @category Instances
  */
 export interface SchemableExt<S> extends SchemableHKT2<S> {
+  /**
+   * - Integer branded newtype.
+   *
+   * Represents integers:
+   *
+   * ```math
+   *  { z | z ∈ ℤ, z >= -2 ** 53 + 1, z <= 2 ** 53 - 1 }
+   * ```
+   *
+   * @since 0.0.1
+   */
   readonly Int: Int.SchemableParams<S>
+
+  /**
+   * - Natural branded newtype.
+   *
+   * Represents integers:
+   *
+   * ```math
+   *  { z | z ∈ ℤ, z >= 0, z <= 2 ** 53 - 1 }
+   * ```
+   *
+   * @since 0.0.1
+   */
   readonly Natural: Natural.SchemableParams<S>
+
+  /**
+   * - Negative floating point branded newtype.
+   *
+   * Represents negative floating point numbers:
+   *
+   * ```math
+   *  { f | f ∈ ℝ, f < 0, f >= -Number.MAX_VALUE }
+   * ```
+   *
+   * @since 0.0.2
+   */
   readonly NegativeFloat: NegativeFloat.SchemableParams<S>
+
+  /**
+   * - Negative integer branded newtype.
+   *
+   * Represents negative integers:
+   *
+   * ```math
+   *  { z | z ∈ ℤ, z >= -2 ** 53 + 1, z < 0 }
+   * ```
+   *
+   * @since 0.0.1
+   */
   readonly NegativeInt: NegativeInt.SchemableParams<S>
+
+  /**
+   * - Non-negative floating point branded newtype.
+   *
+   * Represents non-negative floating point numbers:
+   *
+   * ```math
+   *  { f | f ∈ ℝ, f >= 0, f <= Number.MAX_VALUE }
+   * ```
+   *
+   * @since 0.0.2
+   */
   readonly NonNegativeFloat: NonNegativeFloat.SchemableParams<S>
+
+  /**
+   * - Positive Float branded newtype.
+   *
+   * Represents floating point numbers:
+   *
+   * ```math
+   *  { f | f ∈ R, f > 0, f <= Number.MAX_VALUE }
+   * ```
+   *
+   * @since 0.0.2
+   */
   readonly PositiveFloat: PositiveFloat.SchemableParams<S>
+
+  /**
+   * - Positive integer branded newtype.
+   *
+   * Represents positive integers:
+   *
+   * ```math
+   *  { z | z ∈ ℤ, z > 0, z <= 2 ** 53 - 1 }
+   * ```
+   *
+   * @since 0.0.1
+   */
   readonly PositiveInt: PositiveInt.SchemableParams<S>
+
+  /**
+   * - A string in which every character is valid ASCII.
+   *
+   * This is heavily inspired by the `validator.js` module
+   * [`isAscii`](https://github.com/validatorjs/validator.js/blob/master/src/lib/isAscii.js).
+   *
+   * @since 0.0.1
+   */
   readonly ASCII: ASCII.SchemableParams<S>
+
+  /**
+   * - Representing a Base64-encoded string.
+   *
+   * For a URL-safe version, @see Base64UrlSafe module
+   *
+   * This module is heavily inspired by the `validator.js` module
+   * [`isBase64`](https://github.com/validatorjs/validator.js/blob/master/src/lib/isBase64.js).
+   *
+   * @since 0.0.2
+   */
   readonly Base64: Base64.SchemableParams<S>
+
+  /**
+   * - Representing a URL-safe, Base64 encoded string.
+   *
+   * For a non-URL-safe alternative, @see Base64
+   *
+   * This module is heavily inspired by the `validator.js` module
+   * [`isBase64`](https://github.com/validatorjs/validator.js/blob/master/src/lib/isBase64.js).
+   *
+   * @since 0.0.2
+   */
   readonly Base64Url: Base64Url.SchemableParams<S>
+
+  /**
+   * - Represents strings which are valid Bitcoin addresses.
+   *
+   * This is heavily inspired by the `validator.js` module
+   * [`isBtcAddress`](https://github.com/validatorjs/validator.js/blob/master/src/lib/isBtcAddress.js).
+   *
+   * @since 0.0.2
+   */
   readonly BtcAddress: BtcAddress.SchemableParams<S>
+
+  /**
+   * - Represents (some) valid credit card numbers.
+   *
+   * At the moment, this mostly handles Visa, Mastercard, American Express, Diners Club,
+   * Discover, and JCB.
+   *
+   * @since 0.0.3
+   */
   readonly CreditCard: CreditCard.SchemableParams<S>
+
+  /**
+   * - Represents strings (email addresses) that conform to the RFC 5322 standard.
+   *
+   * See: https://emailregex.com/
+   *
+   * **Note: Does not validate international addresses**
+   *
+   * @since 0.0.1
+   */
   readonly EmailAddress: EmailAddress.SchemableParams<S>
+
+  /**
+   * - A valid hexadecimal color value.
+   *
+   * Inspired by
+   * [isHexColor](https://github.com/validatorjs/validator.js/blob/master/src/lib/isHexColor.js)
+   *
+   * @since 0.0.3
+   */
   readonly HexColor: HexColor.SchemableParams<S>
+
+  /**
+   * - A string of hexadecimal characters.
+   *
+   * Inspired by
+   * [isHexadecimal](https://github.com/validatorjs/validator.js/blob/master/src/lib/isHexadecimal.js)
+   *
+   * @since 0.0.3
+   */
   readonly Hexadecimal: Hexadecimal.SchemableParams<S>
+
+  /**
+   * - An HSL string. Commonly in CSS.
+   *
+   * @since 0.0.3
+   * @example
+   *   background-color: hsl(270 60% 70% / 0.7);
+   */
   readonly HslColor: HslColor.SchemableParams<S>
+
+  /**
+   * - Represents strings that conform to the ISO 8601 standard.
+   *
+   * @since 0.0.1
+   */
   readonly ISODateString: ISODateString.SchemableParams<S>
+
+  /**
+   * - Integer branded newtype.
+   *
+   * Represents integers:
+   *
+   * ```math
+   *  { z | z ∈ ℤ, z >= -2 ** 53 + 1, z <= 2 ** 53 - 1 }
+   * ```
+   *
+   * @since 0.0.1
+   */
   readonly IntString: IntString.SchemableParams<S>
+
+  /**
+   * - A valid, Base64-encoded JWT.
+   *
+   * Inspired by validator.js' [JWT
+   * module](https://github.com/validatorjs/validator.js/blob/master/src/lib/isJWT.js).
+   *
+   * @since 0.0.2
+   */
   readonly JWT: JWT.SchemableParams<S>
+
+  /**
+   * - Natural branded newtype string.
+   *
+   * Represents integers:
+   *
+   * ```math
+   *  { z | z ∈ ℤ, z >= 0, z <= 2 ** 53 - 1 }
+   * ```
+   *
+   * @since 0.0.1
+   */
   readonly NaturalString: NaturalString.SchemableParams<S>
+
+  /**
+   * - Negative floating point branded newtype string.
+   *
+   * Represents negative floating point number strings:
+   *
+   * ```math
+   *  { f | f ∈ ℝ, f < 0, f >= -Number.MAX_VALUE }
+   * ```
+   *
+   * @since 0.0.2
+   */
   readonly NegativeFloatString: NegativeFloatString.SchemableParams<S>
+
+  /**
+   * - Negative integer branded newtype string.
+   *
+   * Represents negative integers:
+   *
+   * ```math
+   *  { z | z ∈ ℤ, z >= -2 ** 53 + 1, z < 0 }
+   * ```
+   *
+   * @since 0.0.1
+   */
   readonly NegativeIntString: NegativeIntString.SchemableParams<S>
+
+  /**
+   * - Non-negative floating point branded newtype string.
+   *
+   * Represents non-negative floating point numbers:
+   *
+   * ```math
+   *  { f | f ∈ ℝ, f >= 0, f <= Number.MAX_VALUE }
+   * ```
+   *
+   * @since 0.0.2
+   */
   readonly NonNegativeFloatString: NonNegativeFloatString.SchemableParams<S>
+
+  /**
+   * - Represents strings that are not empty strings.
+   *
+   * @since 0.0.1
+   */
   readonly NonemptyString: NonemptyString.SchemableParams<S>
+
+  /**
+   * - Positive floating point branded newtype string.
+   *
+   * Represents positive floating point numbers:
+   *
+   * ```math
+   *  { f | f ∈ ℝ, f > 0, f <= Number.MAX_VALUE }
+   * ```
+   *
+   * @since 0.0.2
+   */
   readonly PositiveFloatString: PositiveFloatString.SchemableParams<S>
+
+  /**
+   * - Positive integer branded newtype string.
+   *
+   * Represents positive integers:
+   *
+   * ```math
+   *  { z | z ∈ ℤ, z > 0, z <= 2 ** 53 - 1 }
+   * ```
+   *
+   * @since 0.0.1
+   */
   readonly PositiveIntString: PositiveIntString.SchemableParams<S>
+
+  /**
+   * - Represents strings that are UUIDs.
+   *
+   * This is heavily inspired by the `validator.js` module
+   * [`isUUID`](https://github.com/validatorjs/validator.js/blob/master/src/lib/isUUID.js).
+   *
+   * @since 0.0.1
+   */
   readonly UUID: UUID.SchemableParams<S>
+
+  /**
+   * - Represents Date objects which are not invalid dates
+   *
+   * @since 0.0.1
+   */
   readonly SafeDate: SafeDate.SchemableParams<S>
 }
 
@@ -83,33 +371,321 @@ export interface SchemableExt<S> extends SchemableHKT2<S> {
  * @category Instances
  */
 export interface SchemableExt1<S extends URIS> extends Schemable1<S> {
+  /**
+   * - Integer branded newtype.
+   *
+   * Represents integers:
+   *
+   * ```math
+   *  { z | z ∈ ℤ, z >= -2 ** 53 + 1, z <= 2 ** 53 - 1 }
+   * ```
+   *
+   * @since 0.0.1
+   */
   readonly Int: Int.SchemableParams1<S>
+
+  /**
+   * - Natural branded newtype.
+   *
+   * Represents integers:
+   *
+   * ```math
+   *  { z | z ∈ ℤ, z >= 0, z <= 2 ** 53 - 1 }
+   * ```
+   *
+   * @since 0.0.1
+   */
   readonly Natural: Natural.SchemableParams1<S>
+
+  /**
+   * - Negative floating point branded newtype.
+   *
+   * Represents negative floating point numbers:
+   *
+   * ```math
+   *  { f | f ∈ ℝ, f < 0, f >= -Number.MAX_VALUE }
+   * ```
+   *
+   * @since 0.0.2
+   */
   readonly NegativeFloat: NegativeFloat.SchemableParams1<S>
+
+  /**
+   * - Negative integer branded newtype.
+   *
+   * Represents negative integers:
+   *
+   * ```math
+   *  { z | z ∈ ℤ, z >= -2 ** 53 + 1, z < 0 }
+   * ```
+   *
+   * @since 0.0.1
+   */
   readonly NegativeInt: NegativeInt.SchemableParams1<S>
+
+  /**
+   * - Non-negative floating point branded newtype.
+   *
+   * Represents non-negative floating point numbers:
+   *
+   * ```math
+   *  { f | f ∈ ℝ, f >= 0, f <= Number.MAX_VALUE }
+   * ```
+   *
+   * @since 0.0.2
+   */
   readonly NonNegativeFloat: NonNegativeFloat.SchemableParams1<S>
+
+  /**
+   * - Positive Float branded newtype.
+   *
+   * Represents floating point numbers:
+   *
+   * ```math
+   *  { f | f ∈ R, f > 0, f <= Number.MAX_VALUE }
+   * ```
+   *
+   * @since 0.0.2
+   */
   readonly PositiveFloat: PositiveFloat.SchemableParams1<S>
+
+  /**
+   * - Positive integer branded newtype.
+   *
+   * Represents positive integers:
+   *
+   * ```math
+   *  { z | z ∈ ℤ, z > 0, z <= 2 ** 53 - 1 }
+   * ```
+   *
+   * @since 0.0.1
+   */
   readonly PositiveInt: PositiveInt.SchemableParams1<S>
+
+  /**
+   * - A string in which every character is valid ASCII.
+   *
+   * This is heavily inspired by the `validator.js` module
+   * [`isAscii`](https://github.com/validatorjs/validator.js/blob/master/src/lib/isAscii.js).
+   *
+   * @since 0.0.1
+   */
   readonly ASCII: ASCII.SchemableParams1<S>
+
+  /**
+   * - Representing a Base64-encoded string.
+   *
+   * For a URL-safe version, @see Base64UrlSafe module
+   *
+   * This module is heavily inspired by the `validator.js` module
+   * [`isBase64`](https://github.com/validatorjs/validator.js/blob/master/src/lib/isBase64.js).
+   *
+   * @since 0.0.2
+   */
   readonly Base64: Base64.SchemableParams1<S>
+
+  /**
+   * - Representing a URL-safe, Base64 encoded string.
+   *
+   * For a non-URL-safe alternative, @see Base64
+   *
+   * This module is heavily inspired by the `validator.js` module
+   * [`isBase64`](https://github.com/validatorjs/validator.js/blob/master/src/lib/isBase64.js).
+   *
+   * @since 0.0.2
+   */
   readonly Base64Url: Base64Url.SchemableParams1<S>
+
+  /**
+   * - Represents strings which are valid Bitcoin addresses.
+   *
+   * This is heavily inspired by the `validator.js` module
+   * [`isBtcAddress`](https://github.com/validatorjs/validator.js/blob/master/src/lib/isBtcAddress.js).
+   *
+   * @since 0.0.2
+   */
   readonly BtcAddress: BtcAddress.SchemableParams1<S>
+
+  /**
+   * - Represents (some) valid credit card numbers.
+   *
+   * At the moment, this mostly handles Visa, Mastercard, American Express, Diners Club,
+   * Discover, and JCB.
+   *
+   * @since 0.0.3
+   */
   readonly CreditCard: CreditCard.SchemableParams1<S>
+
+  /**
+   * - Represents strings (email addresses) that conform to the RFC 5322 standard.
+   *
+   * See: https://emailregex.com/
+   *
+   * **Note: Does not validate international addresses**
+   *
+   * @since 0.0.1
+   */
   readonly EmailAddress: EmailAddress.SchemableParams1<S>
+
+  /**
+   * - A valid hexadecimal color value.
+   *
+   * Inspired by
+   * [isHexColor](https://github.com/validatorjs/validator.js/blob/master/src/lib/isHexColor.js)
+   *
+   * @since 0.0.3
+   */
   readonly HexColor: HexColor.SchemableParams1<S>
+
+  /**
+   * - A string of hexadecimal characters.
+   *
+   * Inspired by
+   * [isHexadecimal](https://github.com/validatorjs/validator.js/blob/master/src/lib/isHexadecimal.js)
+   *
+   * @since 0.0.3
+   */
   readonly Hexadecimal: Hexadecimal.SchemableParams1<S>
+
+  /**
+   * - An HSL string. Commonly in CSS.
+   *
+   * @since 0.0.3
+   * @example
+   *   background-color: hsl(270 60% 70% / 0.7);
+   */
   readonly HslColor: HslColor.SchemableParams1<S>
+
+  /**
+   * - Represents strings that conform to the ISO 8601 standard.
+   *
+   * @since 0.0.1
+   */
   readonly ISODateString: ISODateString.SchemableParams1<S>
+
+  /**
+   * - Integer branded newtype.
+   *
+   * Represents integers:
+   *
+   * ```math
+   *  { z | z ∈ ℤ, z >= -2 ** 53 + 1, z <= 2 ** 53 - 1 }
+   * ```
+   *
+   * @since 0.0.1
+   */
   readonly IntString: IntString.SchemableParams1<S>
+
+  /**
+   * - A valid, Base64-encoded JWT.
+   *
+   * Inspired by validator.js' [JWT
+   * module](https://github.com/validatorjs/validator.js/blob/master/src/lib/isJWT.js).
+   *
+   * @since 0.0.2
+   */
   readonly JWT: JWT.SchemableParams1<S>
+
+  /**
+   * - Natural branded newtype string.
+   *
+   * Represents integers:
+   *
+   * ```math
+   *  { z | z ∈ ℤ, z >= 0, z <= 2 ** 53 - 1 }
+   * ```
+   *
+   * @since 0.0.1
+   */
   readonly NaturalString: NaturalString.SchemableParams1<S>
+
+  /**
+   * - Negative floating point branded newtype string.
+   *
+   * Represents negative floating point number strings:
+   *
+   * ```math
+   *  { f | f ∈ ℝ, f < 0, f >= -Number.MAX_VALUE }
+   * ```
+   *
+   * @since 0.0.2
+   */
   readonly NegativeFloatString: NegativeFloatString.SchemableParams1<S>
+
+  /**
+   * - Negative integer branded newtype string.
+   *
+   * Represents negative integers:
+   *
+   * ```math
+   *  { z | z ∈ ℤ, z >= -2 ** 53 + 1, z < 0 }
+   * ```
+   *
+   * @since 0.0.1
+   */
   readonly NegativeIntString: NegativeIntString.SchemableParams1<S>
+
+  /**
+   * - Non-negative floating point branded newtype string.
+   *
+   * Represents non-negative floating point numbers:
+   *
+   * ```math
+   *  { f | f ∈ ℝ, f >= 0, f <= Number.MAX_VALUE }
+   * ```
+   *
+   * @since 0.0.2
+   */
   readonly NonNegativeFloatString: NonNegativeFloatString.SchemableParams1<S>
+
+  /**
+   * - Represents strings that are not empty strings.
+   *
+   * @since 0.0.1
+   */
   readonly NonemptyString: NonemptyString.SchemableParams1<S>
+
+  /**
+   * - Positive floating point branded newtype string.
+   *
+   * Represents positive floating point numbers:
+   *
+   * ```math
+   *  { f | f ∈ ℝ, f > 0, f <= Number.MAX_VALUE }
+   * ```
+   *
+   * @since 0.0.2
+   */
   readonly PositiveFloatString: PositiveFloatString.SchemableParams1<S>
+
+  /**
+   * - Positive integer branded newtype string.
+   *
+   * Represents positive integers:
+   *
+   * ```math
+   *  { z | z ∈ ℤ, z > 0, z <= 2 ** 53 - 1 }
+   * ```
+   *
+   * @since 0.0.1
+   */
   readonly PositiveIntString: PositiveIntString.SchemableParams1<S>
+
+  /**
+   * - Represents strings that are UUIDs.
+   *
+   * This is heavily inspired by the `validator.js` module
+   * [`isUUID`](https://github.com/validatorjs/validator.js/blob/master/src/lib/isUUID.js).
+   *
+   * @since 0.0.1
+   */
   readonly UUID: UUID.SchemableParams1<S>
+
+  /**
+   * - Represents Date objects which are not invalid dates
+   *
+   * @since 0.0.1
+   */
   readonly SafeDate: SafeDate.SchemableParams1<S>
 }
 
@@ -118,33 +694,321 @@ export interface SchemableExt1<S extends URIS> extends Schemable1<S> {
  * @category Instances
  */
 export interface SchemableExt2<S extends URIS2> extends Schemable2<S> {
+  /**
+   * - Integer branded newtype.
+   *
+   * Represents integers:
+   *
+   * ```math
+   *  { z | z ∈ ℤ, z >= -2 ** 53 + 1, z <= 2 ** 53 - 1 }
+   * ```
+   *
+   * @since 0.0.1
+   */
   readonly Int: Int.SchemableParams2<S>
+
+  /**
+   * - Natural branded newtype.
+   *
+   * Represents integers:
+   *
+   * ```math
+   *  { z | z ∈ ℤ, z >= 0, z <= 2 ** 53 - 1 }
+   * ```
+   *
+   * @since 0.0.1
+   */
   readonly Natural: Natural.SchemableParams2<S>
+
+  /**
+   * - Negative floating point branded newtype.
+   *
+   * Represents negative floating point numbers:
+   *
+   * ```math
+   *  { f | f ∈ ℝ, f < 0, f >= -Number.MAX_VALUE }
+   * ```
+   *
+   * @since 0.0.2
+   */
   readonly NegativeFloat: NegativeFloat.SchemableParams2<S>
+
+  /**
+   * - Negative integer branded newtype.
+   *
+   * Represents negative integers:
+   *
+   * ```math
+   *  { z | z ∈ ℤ, z >= -2 ** 53 + 1, z < 0 }
+   * ```
+   *
+   * @since 0.0.1
+   */
   readonly NegativeInt: NegativeInt.SchemableParams2<S>
+
+  /**
+   * - Non-negative floating point branded newtype.
+   *
+   * Represents non-negative floating point numbers:
+   *
+   * ```math
+   *  { f | f ∈ ℝ, f >= 0, f <= Number.MAX_VALUE }
+   * ```
+   *
+   * @since 0.0.2
+   */
   readonly NonNegativeFloat: NonNegativeFloat.SchemableParams2<S>
+
+  /**
+   * - Positive Float branded newtype.
+   *
+   * Represents floating point numbers:
+   *
+   * ```math
+   *  { f | f ∈ R, f > 0, f <= Number.MAX_VALUE }
+   * ```
+   *
+   * @since 0.0.2
+   */
   readonly PositiveFloat: PositiveFloat.SchemableParams2<S>
+
+  /**
+   * - Positive integer branded newtype.
+   *
+   * Represents positive integers:
+   *
+   * ```math
+   *  { z | z ∈ ℤ, z > 0, z <= 2 ** 53 - 1 }
+   * ```
+   *
+   * @since 0.0.1
+   */
   readonly PositiveInt: PositiveInt.SchemableParams2<S>
+
+  /**
+   * - A string in which every character is valid ASCII.
+   *
+   * This is heavily inspired by the `validator.js` module
+   * [`isAscii`](https://github.com/validatorjs/validator.js/blob/master/src/lib/isAscii.js).
+   *
+   * @since 0.0.1
+   */
   readonly ASCII: ASCII.SchemableParams2<S>
+
+  /**
+   * - Representing a Base64-encoded string.
+   *
+   * For a URL-safe version, @see Base64UrlSafe module
+   *
+   * This module is heavily inspired by the `validator.js` module
+   * [`isBase64`](https://github.com/validatorjs/validator.js/blob/master/src/lib/isBase64.js).
+   *
+   * @since 0.0.2
+   */
   readonly Base64: Base64.SchemableParams2<S>
+
+  /**
+   * - Representing a URL-safe, Base64 encoded string.
+   *
+   * For a non-URL-safe alternative, @see Base64
+   *
+   * This module is heavily inspired by the `validator.js` module
+   * [`isBase64`](https://github.com/validatorjs/validator.js/blob/master/src/lib/isBase64.js).
+   *
+   * @since 0.0.2
+   */
   readonly Base64Url: Base64Url.SchemableParams2<S>
+
+  /**
+   * - Represents strings which are valid Bitcoin addresses.
+   *
+   * This is heavily inspired by the `validator.js` module
+   * [`isBtcAddress`](https://github.com/validatorjs/validator.js/blob/master/src/lib/isBtcAddress.js).
+   *
+   * @since 0.0.2
+   */
   readonly BtcAddress: BtcAddress.SchemableParams2<S>
+
+  /**
+   * - Represents (some) valid credit card numbers.
+   *
+   * At the moment, this mostly handles Visa, Mastercard, American Express, Diners Club,
+   * Discover, and JCB.
+   *
+   * @since 0.0.3
+   */
   readonly CreditCard: CreditCard.SchemableParams2<S>
+
+  /**
+   * - Represents strings (email addresses) that conform to the RFC 5322 standard.
+   *
+   * See: https://emailregex.com/
+   *
+   * **Note: Does not validate international addresses**
+   *
+   * @since 0.0.1
+   */
   readonly EmailAddress: EmailAddress.SchemableParams2<S>
+
+  /**
+   * - A valid hexadecimal color value.
+   *
+   * Inspired by
+   * [isHexColor](https://github.com/validatorjs/validator.js/blob/master/src/lib/isHexColor.js)
+   *
+   * @since 0.0.3
+   */
   readonly HexColor: HexColor.SchemableParams2<S>
+
+  /**
+   * - A string of hexadecimal characters.
+   *
+   * Inspired by
+   * [isHexadecimal](https://github.com/validatorjs/validator.js/blob/master/src/lib/isHexadecimal.js)
+   *
+   * @since 0.0.3
+   */
   readonly Hexadecimal: Hexadecimal.SchemableParams2<S>
+
+  /**
+   * - An HSL string. Commonly in CSS.
+   *
+   * @since 0.0.3
+   * @example
+   *   background-color: hsl(270 60% 70% / 0.7);
+   */
   readonly HslColor: HslColor.SchemableParams2<S>
+
+  /**
+   * - Represents strings that conform to the ISO 8601 standard.
+   *
+   * @since 0.0.1
+   */
   readonly ISODateString: ISODateString.SchemableParams2<S>
+
+  /**
+   * - Integer branded newtype.
+   *
+   * Represents integers:
+   *
+   * ```math
+   *  { z | z ∈ ℤ, z >= -2 ** 53 + 1, z <= 2 ** 53 - 1 }
+   * ```
+   *
+   * @since 0.0.1
+   */
   readonly IntString: IntString.SchemableParams2<S>
+
+  /**
+   * - A valid, Base64-encoded JWT.
+   *
+   * Inspired by validator.js' [JWT
+   * module](https://github.com/validatorjs/validator.js/blob/master/src/lib/isJWT.js).
+   *
+   * @since 0.0.2
+   */
   readonly JWT: JWT.SchemableParams2<S>
+
+  /**
+   * - Natural branded newtype string.
+   *
+   * Represents integers:
+   *
+   * ```math
+   *  { z | z ∈ ℤ, z >= 0, z <= 2 ** 53 - 1 }
+   * ```
+   *
+   * @since 0.0.1
+   */
   readonly NaturalString: NaturalString.SchemableParams2<S>
+
+  /**
+   * - Negative floating point branded newtype string.
+   *
+   * Represents negative floating point number strings:
+   *
+   * ```math
+   *  { f | f ∈ ℝ, f < 0, f >= -Number.MAX_VALUE }
+   * ```
+   *
+   * @since 0.0.2
+   */
   readonly NegativeFloatString: NegativeFloatString.SchemableParams2<S>
+
+  /**
+   * - Negative integer branded newtype string.
+   *
+   * Represents negative integers:
+   *
+   * ```math
+   *  { z | z ∈ ℤ, z >= -2 ** 53 + 1, z < 0 }
+   * ```
+   *
+   * @since 0.0.1
+   */
   readonly NegativeIntString: NegativeIntString.SchemableParams2<S>
+
+  /**
+   * - Non-negative floating point branded newtype string.
+   *
+   * Represents non-negative floating point numbers:
+   *
+   * ```math
+   *  { f | f ∈ ℝ, f >= 0, f <= Number.MAX_VALUE }
+   * ```
+   *
+   * @since 0.0.2
+   */
   readonly NonNegativeFloatString: NonNegativeFloatString.SchemableParams2<S>
+
+  /**
+   * - Represents strings that are not empty strings.
+   *
+   * @since 0.0.1
+   */
   readonly NonemptyString: NonemptyString.SchemableParams2<S>
+
+  /**
+   * - Positive floating point branded newtype string.
+   *
+   * Represents positive floating point numbers:
+   *
+   * ```math
+   *  { f | f ∈ ℝ, f > 0, f <= Number.MAX_VALUE }
+   * ```
+   *
+   * @since 0.0.2
+   */
   readonly PositiveFloatString: PositiveFloatString.SchemableParams2<S>
+
+  /**
+   * - Positive integer branded newtype string.
+   *
+   * Represents positive integers:
+   *
+   * ```math
+   *  { z | z ∈ ℤ, z > 0, z <= 2 ** 53 - 1 }
+   * ```
+   *
+   * @since 0.0.1
+   */
   readonly PositiveIntString: PositiveIntString.SchemableParams2<S>
+
+  /**
+   * - Represents strings that are UUIDs.
+   *
+   * This is heavily inspired by the `validator.js` module
+   * [`isUUID`](https://github.com/validatorjs/validator.js/blob/master/src/lib/isUUID.js).
+   *
+   * @since 0.0.1
+   */
   readonly UUID: UUID.SchemableParams2<S>
+
+  /**
+   * - Represents Date objects which are not invalid dates
+   *
+   * @since 0.0.1
+   */
   readonly SafeDate: SafeDate.SchemableParams2<S>
 }
 
@@ -153,32 +1017,320 @@ export interface SchemableExt2<S extends URIS2> extends Schemable2<S> {
  * @category Instances
  */
 export interface SchemableExt2C<S extends URIS2> extends Schemable2C<S, unknown> {
+  /**
+   * - Integer branded newtype.
+   *
+   * Represents integers:
+   *
+   * ```math
+   *  { z | z ∈ ℤ, z >= -2 ** 53 + 1, z <= 2 ** 53 - 1 }
+   * ```
+   *
+   * @since 0.0.1
+   */
   readonly Int: Int.SchemableParams2C<S>
+
+  /**
+   * - Natural branded newtype.
+   *
+   * Represents integers:
+   *
+   * ```math
+   *  { z | z ∈ ℤ, z >= 0, z <= 2 ** 53 - 1 }
+   * ```
+   *
+   * @since 0.0.1
+   */
   readonly Natural: Natural.SchemableParams2C<S>
+
+  /**
+   * - Negative floating point branded newtype.
+   *
+   * Represents negative floating point numbers:
+   *
+   * ```math
+   *  { f | f ∈ ℝ, f < 0, f >= -Number.MAX_VALUE }
+   * ```
+   *
+   * @since 0.0.2
+   */
   readonly NegativeFloat: NegativeFloat.SchemableParams2C<S>
+
+  /**
+   * - Negative integer branded newtype.
+   *
+   * Represents negative integers:
+   *
+   * ```math
+   *  { z | z ∈ ℤ, z >= -2 ** 53 + 1, z < 0 }
+   * ```
+   *
+   * @since 0.0.1
+   */
   readonly NegativeInt: NegativeInt.SchemableParams2C<S>
+
+  /**
+   * - Non-negative floating point branded newtype.
+   *
+   * Represents non-negative floating point numbers:
+   *
+   * ```math
+   *  { f | f ∈ ℝ, f >= 0, f <= Number.MAX_VALUE }
+   * ```
+   *
+   * @since 0.0.2
+   */
   readonly NonNegativeFloat: NonNegativeFloat.SchemableParams2C<S>
+
+  /**
+   * - Positive Float branded newtype.
+   *
+   * Represents floating point numbers:
+   *
+   * ```math
+   *  { f | f ∈ R, f > 0, f <= Number.MAX_VALUE }
+   * ```
+   *
+   * @since 0.0.2
+   */
   readonly PositiveFloat: PositiveFloat.SchemableParams2C<S>
+
+  /**
+   * - Positive integer branded newtype.
+   *
+   * Represents positive integers:
+   *
+   * ```math
+   *  { z | z ∈ ℤ, z > 0, z <= 2 ** 53 - 1 }
+   * ```
+   *
+   * @since 0.0.1
+   */
   readonly PositiveInt: PositiveInt.SchemableParams2C<S>
+
+  /**
+   * - A string in which every character is valid ASCII.
+   *
+   * This is heavily inspired by the `validator.js` module
+   * [`isAscii`](https://github.com/validatorjs/validator.js/blob/master/src/lib/isAscii.js).
+   *
+   * @since 0.0.1
+   */
   readonly ASCII: ASCII.SchemableParams2C<S>
+
+  /**
+   * - Representing a Base64-encoded string.
+   *
+   * For a URL-safe version, @see Base64UrlSafe module
+   *
+   * This module is heavily inspired by the `validator.js` module
+   * [`isBase64`](https://github.com/validatorjs/validator.js/blob/master/src/lib/isBase64.js).
+   *
+   * @since 0.0.2
+   */
   readonly Base64: Base64.SchemableParams2C<S>
+
+  /**
+   * - Representing a URL-safe, Base64 encoded string.
+   *
+   * For a non-URL-safe alternative, @see Base64
+   *
+   * This module is heavily inspired by the `validator.js` module
+   * [`isBase64`](https://github.com/validatorjs/validator.js/blob/master/src/lib/isBase64.js).
+   *
+   * @since 0.0.2
+   */
   readonly Base64Url: Base64Url.SchemableParams2C<S>
+
+  /**
+   * - Represents strings which are valid Bitcoin addresses.
+   *
+   * This is heavily inspired by the `validator.js` module
+   * [`isBtcAddress`](https://github.com/validatorjs/validator.js/blob/master/src/lib/isBtcAddress.js).
+   *
+   * @since 0.0.2
+   */
   readonly BtcAddress: BtcAddress.SchemableParams2C<S>
+
+  /**
+   * - Represents (some) valid credit card numbers.
+   *
+   * At the moment, this mostly handles Visa, Mastercard, American Express, Diners Club,
+   * Discover, and JCB.
+   *
+   * @since 0.0.3
+   */
   readonly CreditCard: CreditCard.SchemableParams2C<S>
+
+  /**
+   * - Represents strings (email addresses) that conform to the RFC 5322 standard.
+   *
+   * See: https://emailregex.com/
+   *
+   * **Note: Does not validate international addresses**
+   *
+   * @since 0.0.1
+   */
   readonly EmailAddress: EmailAddress.SchemableParams2C<S>
+
+  /**
+   * - A valid hexadecimal color value.
+   *
+   * Inspired by
+   * [isHexColor](https://github.com/validatorjs/validator.js/blob/master/src/lib/isHexColor.js)
+   *
+   * @since 0.0.3
+   */
   readonly HexColor: HexColor.SchemableParams2C<S>
+
+  /**
+   * - A string of hexadecimal characters.
+   *
+   * Inspired by
+   * [isHexadecimal](https://github.com/validatorjs/validator.js/blob/master/src/lib/isHexadecimal.js)
+   *
+   * @since 0.0.3
+   */
   readonly Hexadecimal: Hexadecimal.SchemableParams2C<S>
+
+  /**
+   * - An HSL string. Commonly in CSS.
+   *
+   * @since 0.0.3
+   * @example
+   *   background-color: hsl(270 60% 70% / 0.7);
+   */
   readonly HslColor: HslColor.SchemableParams2C<S>
+
+  /**
+   * - Represents strings that conform to the ISO 8601 standard.
+   *
+   * @since 0.0.1
+   */
   readonly ISODateString: ISODateString.SchemableParams2C<S>
+
+  /**
+   * - Integer branded newtype.
+   *
+   * Represents integers:
+   *
+   * ```math
+   *  { z | z ∈ ℤ, z >= -2 ** 53 + 1, z <= 2 ** 53 - 1 }
+   * ```
+   *
+   * @since 0.0.1
+   */
   readonly IntString: IntString.SchemableParams2C<S>
+
+  /**
+   * - A valid, Base64-encoded JWT.
+   *
+   * Inspired by validator.js' [JWT
+   * module](https://github.com/validatorjs/validator.js/blob/master/src/lib/isJWT.js).
+   *
+   * @since 0.0.2
+   */
   readonly JWT: JWT.SchemableParams2C<S>
+
+  /**
+   * - Natural branded newtype string.
+   *
+   * Represents integers:
+   *
+   * ```math
+   *  { z | z ∈ ℤ, z >= 0, z <= 2 ** 53 - 1 }
+   * ```
+   *
+   * @since 0.0.1
+   */
   readonly NaturalString: NaturalString.SchemableParams2C<S>
+
+  /**
+   * - Negative floating point branded newtype string.
+   *
+   * Represents negative floating point number strings:
+   *
+   * ```math
+   *  { f | f ∈ ℝ, f < 0, f >= -Number.MAX_VALUE }
+   * ```
+   *
+   * @since 0.0.2
+   */
   readonly NegativeFloatString: NegativeFloatString.SchemableParams2C<S>
+
+  /**
+   * - Negative integer branded newtype string.
+   *
+   * Represents negative integers:
+   *
+   * ```math
+   *  { z | z ∈ ℤ, z >= -2 ** 53 + 1, z < 0 }
+   * ```
+   *
+   * @since 0.0.1
+   */
   readonly NegativeIntString: NegativeIntString.SchemableParams2C<S>
+
+  /**
+   * - Non-negative floating point branded newtype string.
+   *
+   * Represents non-negative floating point numbers:
+   *
+   * ```math
+   *  { f | f ∈ ℝ, f >= 0, f <= Number.MAX_VALUE }
+   * ```
+   *
+   * @since 0.0.2
+   */
   readonly NonNegativeFloatString: NonNegativeFloatString.SchemableParams2C<S>
+
+  /**
+   * - Represents strings that are not empty strings.
+   *
+   * @since 0.0.1
+   */
   readonly NonemptyString: NonemptyString.SchemableParams2C<S>
+
+  /**
+   * - Positive floating point branded newtype string.
+   *
+   * Represents positive floating point numbers:
+   *
+   * ```math
+   *  { f | f ∈ ℝ, f > 0, f <= Number.MAX_VALUE }
+   * ```
+   *
+   * @since 0.0.2
+   */
   readonly PositiveFloatString: PositiveFloatString.SchemableParams2C<S>
+
+  /**
+   * - Positive integer branded newtype string.
+   *
+   * Represents positive integers:
+   *
+   * ```math
+   *  { z | z ∈ ℤ, z > 0, z <= 2 ** 53 - 1 }
+   * ```
+   *
+   * @since 0.0.1
+   */
   readonly PositiveIntString: PositiveIntString.SchemableParams2C<S>
+
+  /**
+   * - Represents strings that are UUIDs.
+   *
+   * This is heavily inspired by the `validator.js` module
+   * [`isUUID`](https://github.com/validatorjs/validator.js/blob/master/src/lib/isUUID.js).
+   *
+   * @since 0.0.1
+   */
   readonly UUID: UUID.SchemableParams2C<S>
+
+  /**
+   * - Represents Date objects which are not invalid dates
+   *
+   * @since 0.0.1
+   */
   readonly SafeDate: SafeDate.SchemableParams2C<S>
 }
