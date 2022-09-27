@@ -49,7 +49,7 @@ import * as SafeDate from './date/SafeDate'
  */
 export interface SchemableExt<S> extends SchemableHKT2<S> {
   /**
-   * - Integer branded newtype.
+   * Integer branded newtype.
    *
    * Represents integers:
    *
@@ -62,7 +62,7 @@ export interface SchemableExt<S> extends SchemableHKT2<S> {
   readonly Int: Int.SchemableParams<S>
 
   /**
-   * - Natural branded newtype.
+   * Natural branded newtype.
    *
    * Represents integers:
    *
@@ -75,7 +75,7 @@ export interface SchemableExt<S> extends SchemableHKT2<S> {
   readonly Natural: Natural.SchemableParams<S>
 
   /**
-   * - Negative floating point branded newtype.
+   * Negative floating point branded newtype.
    *
    * Represents negative floating point numbers:
    *
@@ -88,7 +88,7 @@ export interface SchemableExt<S> extends SchemableHKT2<S> {
   readonly NegativeFloat: NegativeFloat.SchemableParams<S>
 
   /**
-   * - Negative integer branded newtype.
+   * Negative integer branded newtype.
    *
    * Represents negative integers:
    *
@@ -101,7 +101,7 @@ export interface SchemableExt<S> extends SchemableHKT2<S> {
   readonly NegativeInt: NegativeInt.SchemableParams<S>
 
   /**
-   * - Non-negative floating point branded newtype.
+   * Non-negative floating point branded newtype.
    *
    * Represents non-negative floating point numbers:
    *
@@ -114,7 +114,7 @@ export interface SchemableExt<S> extends SchemableHKT2<S> {
   readonly NonNegativeFloat: NonNegativeFloat.SchemableParams<S>
 
   /**
-   * - Positive Float branded newtype.
+   * Positive Float branded newtype.
    *
    * Represents floating point numbers:
    *
@@ -127,7 +127,7 @@ export interface SchemableExt<S> extends SchemableHKT2<S> {
   readonly PositiveFloat: PositiveFloat.SchemableParams<S>
 
   /**
-   * - Positive integer branded newtype.
+   * Positive integer branded newtype.
    *
    * Represents positive integers:
    *
@@ -140,7 +140,7 @@ export interface SchemableExt<S> extends SchemableHKT2<S> {
   readonly PositiveInt: PositiveInt.SchemableParams<S>
 
   /**
-   * - A string in which every character is valid ASCII.
+   * A string in which every character is valid ASCII.
    *
    * This is heavily inspired by the `validator.js` module
    * [`isAscii`](https://github.com/validatorjs/validator.js/blob/master/src/lib/isAscii.js).
@@ -150,7 +150,7 @@ export interface SchemableExt<S> extends SchemableHKT2<S> {
   readonly ASCII: ASCII.SchemableParams<S>
 
   /**
-   * - Representing a Base64-encoded string.
+   * Representing a Base64-encoded string.
    *
    * For a URL-safe version, @see Base64UrlSafe module
    *
@@ -162,7 +162,7 @@ export interface SchemableExt<S> extends SchemableHKT2<S> {
   readonly Base64: Base64.SchemableParams<S>
 
   /**
-   * - Representing a URL-safe, Base64 encoded string.
+   * Representing a URL-safe, Base64 encoded string.
    *
    * For a non-URL-safe alternative, @see Base64
    *
@@ -174,7 +174,7 @@ export interface SchemableExt<S> extends SchemableHKT2<S> {
   readonly Base64Url: Base64Url.SchemableParams<S>
 
   /**
-   * - Represents strings which are valid Bitcoin addresses.
+   * Represents strings which are valid Bitcoin addresses.
    *
    * This is heavily inspired by the `validator.js` module
    * [`isBtcAddress`](https://github.com/validatorjs/validator.js/blob/master/src/lib/isBtcAddress.js).
@@ -184,7 +184,7 @@ export interface SchemableExt<S> extends SchemableHKT2<S> {
   readonly BtcAddress: BtcAddress.SchemableParams<S>
 
   /**
-   * - Represents (some) valid credit card numbers.
+   * Represents (some) valid credit card numbers.
    *
    * At the moment, this mostly handles Visa, Mastercard, American Express, Diners Club,
    * Discover, and JCB.
@@ -194,7 +194,7 @@ export interface SchemableExt<S> extends SchemableHKT2<S> {
   readonly CreditCard: CreditCard.SchemableParams<S>
 
   /**
-   * - Represents strings (email addresses) that conform to the RFC 5322 standard.
+   * Represents strings (email addresses) that conform to the RFC 5322 standard.
    *
    * See: https://emailregex.com/
    *
@@ -205,7 +205,7 @@ export interface SchemableExt<S> extends SchemableHKT2<S> {
   readonly EmailAddress: EmailAddress.SchemableParams<S>
 
   /**
-   * - A valid hexadecimal color value.
+   * A valid hexadecimal color value.
    *
    * Inspired by
    * [isHexColor](https://github.com/validatorjs/validator.js/blob/master/src/lib/isHexColor.js)
@@ -215,7 +215,7 @@ export interface SchemableExt<S> extends SchemableHKT2<S> {
   readonly HexColor: HexColor.SchemableParams<S>
 
   /**
-   * - A string of hexadecimal characters.
+   * A string of hexadecimal characters.
    *
    * Inspired by
    * [isHexadecimal](https://github.com/validatorjs/validator.js/blob/master/src/lib/isHexadecimal.js)
@@ -225,7 +225,7 @@ export interface SchemableExt<S> extends SchemableHKT2<S> {
   readonly Hexadecimal: Hexadecimal.SchemableParams<S>
 
   /**
-   * - An HSL string. Commonly in CSS.
+   * An HSL string. Commonly in CSS.
    *
    * @since 0.0.3
    * @example
@@ -234,14 +234,14 @@ export interface SchemableExt<S> extends SchemableHKT2<S> {
   readonly HslColor: HslColor.SchemableParams<S>
 
   /**
-   * - Represents strings that conform to the ISO 8601 standard.
+   * Represents strings that conform to the ISO 8601 standard.
    *
    * @since 0.0.1
    */
   readonly ISODateString: ISODateString.SchemableParams<S>
 
   /**
-   * - Integer branded newtype.
+   * Integer branded newtype.
    *
    * Represents integers:
    *
@@ -254,7 +254,7 @@ export interface SchemableExt<S> extends SchemableHKT2<S> {
   readonly IntString: IntString.SchemableParams<S>
 
   /**
-   * - A valid, Base64-encoded JWT.
+   * A valid, Base64-encoded JWT.
    *
    * Inspired by validator.js' [JWT
    * module](https://github.com/validatorjs/validator.js/blob/master/src/lib/isJWT.js).
@@ -264,7 +264,7 @@ export interface SchemableExt<S> extends SchemableHKT2<S> {
   readonly JWT: JWT.SchemableParams<S>
 
   /**
-   * - Natural branded newtype string.
+   * Natural branded newtype string.
    *
    * Represents integers:
    *
@@ -277,7 +277,7 @@ export interface SchemableExt<S> extends SchemableHKT2<S> {
   readonly NaturalString: NaturalString.SchemableParams<S>
 
   /**
-   * - Negative floating point branded newtype string.
+   * Negative floating point branded newtype string.
    *
    * Represents negative floating point number strings:
    *
@@ -290,7 +290,7 @@ export interface SchemableExt<S> extends SchemableHKT2<S> {
   readonly NegativeFloatString: NegativeFloatString.SchemableParams<S>
 
   /**
-   * - Negative integer branded newtype string.
+   * Negative integer branded newtype string.
    *
    * Represents negative integers:
    *
@@ -303,7 +303,7 @@ export interface SchemableExt<S> extends SchemableHKT2<S> {
   readonly NegativeIntString: NegativeIntString.SchemableParams<S>
 
   /**
-   * - Non-negative floating point branded newtype string.
+   * Non-negative floating point branded newtype string.
    *
    * Represents non-negative floating point numbers:
    *
@@ -316,14 +316,14 @@ export interface SchemableExt<S> extends SchemableHKT2<S> {
   readonly NonNegativeFloatString: NonNegativeFloatString.SchemableParams<S>
 
   /**
-   * - Represents strings that are not empty strings.
+   * Represents strings that are not empty strings.
    *
    * @since 0.0.1
    */
   readonly NonemptyString: NonemptyString.SchemableParams<S>
 
   /**
-   * - Positive floating point branded newtype string.
+   * Positive floating point branded newtype string.
    *
    * Represents positive floating point numbers:
    *
@@ -336,7 +336,7 @@ export interface SchemableExt<S> extends SchemableHKT2<S> {
   readonly PositiveFloatString: PositiveFloatString.SchemableParams<S>
 
   /**
-   * - Positive integer branded newtype string.
+   * Positive integer branded newtype string.
    *
    * Represents positive integers:
    *
@@ -349,7 +349,7 @@ export interface SchemableExt<S> extends SchemableHKT2<S> {
   readonly PositiveIntString: PositiveIntString.SchemableParams<S>
 
   /**
-   * - Represents strings that are UUIDs.
+   * Represents strings that are UUIDs.
    *
    * This is heavily inspired by the `validator.js` module
    * [`isUUID`](https://github.com/validatorjs/validator.js/blob/master/src/lib/isUUID.js).
@@ -359,7 +359,7 @@ export interface SchemableExt<S> extends SchemableHKT2<S> {
   readonly UUID: UUID.SchemableParams<S>
 
   /**
-   * - Represents Date objects which are not invalid dates
+   * Represents Date objects which are not invalid dates
    *
    * @since 0.0.1
    */
@@ -372,7 +372,7 @@ export interface SchemableExt<S> extends SchemableHKT2<S> {
  */
 export interface SchemableExt1<S extends URIS> extends Schemable1<S> {
   /**
-   * - Integer branded newtype.
+   * Integer branded newtype.
    *
    * Represents integers:
    *
@@ -385,7 +385,7 @@ export interface SchemableExt1<S extends URIS> extends Schemable1<S> {
   readonly Int: Int.SchemableParams1<S>
 
   /**
-   * - Natural branded newtype.
+   * Natural branded newtype.
    *
    * Represents integers:
    *
@@ -398,7 +398,7 @@ export interface SchemableExt1<S extends URIS> extends Schemable1<S> {
   readonly Natural: Natural.SchemableParams1<S>
 
   /**
-   * - Negative floating point branded newtype.
+   * Negative floating point branded newtype.
    *
    * Represents negative floating point numbers:
    *
@@ -411,7 +411,7 @@ export interface SchemableExt1<S extends URIS> extends Schemable1<S> {
   readonly NegativeFloat: NegativeFloat.SchemableParams1<S>
 
   /**
-   * - Negative integer branded newtype.
+   * Negative integer branded newtype.
    *
    * Represents negative integers:
    *
@@ -424,7 +424,7 @@ export interface SchemableExt1<S extends URIS> extends Schemable1<S> {
   readonly NegativeInt: NegativeInt.SchemableParams1<S>
 
   /**
-   * - Non-negative floating point branded newtype.
+   * Non-negative floating point branded newtype.
    *
    * Represents non-negative floating point numbers:
    *
@@ -437,7 +437,7 @@ export interface SchemableExt1<S extends URIS> extends Schemable1<S> {
   readonly NonNegativeFloat: NonNegativeFloat.SchemableParams1<S>
 
   /**
-   * - Positive Float branded newtype.
+   * Positive Float branded newtype.
    *
    * Represents floating point numbers:
    *
@@ -450,7 +450,7 @@ export interface SchemableExt1<S extends URIS> extends Schemable1<S> {
   readonly PositiveFloat: PositiveFloat.SchemableParams1<S>
 
   /**
-   * - Positive integer branded newtype.
+   * Positive integer branded newtype.
    *
    * Represents positive integers:
    *
@@ -463,7 +463,7 @@ export interface SchemableExt1<S extends URIS> extends Schemable1<S> {
   readonly PositiveInt: PositiveInt.SchemableParams1<S>
 
   /**
-   * - A string in which every character is valid ASCII.
+   * A string in which every character is valid ASCII.
    *
    * This is heavily inspired by the `validator.js` module
    * [`isAscii`](https://github.com/validatorjs/validator.js/blob/master/src/lib/isAscii.js).
@@ -473,7 +473,7 @@ export interface SchemableExt1<S extends URIS> extends Schemable1<S> {
   readonly ASCII: ASCII.SchemableParams1<S>
 
   /**
-   * - Representing a Base64-encoded string.
+   * Representing a Base64-encoded string.
    *
    * For a URL-safe version, @see Base64UrlSafe module
    *
@@ -485,7 +485,7 @@ export interface SchemableExt1<S extends URIS> extends Schemable1<S> {
   readonly Base64: Base64.SchemableParams1<S>
 
   /**
-   * - Representing a URL-safe, Base64 encoded string.
+   * Representing a URL-safe, Base64 encoded string.
    *
    * For a non-URL-safe alternative, @see Base64
    *
@@ -497,7 +497,7 @@ export interface SchemableExt1<S extends URIS> extends Schemable1<S> {
   readonly Base64Url: Base64Url.SchemableParams1<S>
 
   /**
-   * - Represents strings which are valid Bitcoin addresses.
+   * Represents strings which are valid Bitcoin addresses.
    *
    * This is heavily inspired by the `validator.js` module
    * [`isBtcAddress`](https://github.com/validatorjs/validator.js/blob/master/src/lib/isBtcAddress.js).
@@ -507,7 +507,7 @@ export interface SchemableExt1<S extends URIS> extends Schemable1<S> {
   readonly BtcAddress: BtcAddress.SchemableParams1<S>
 
   /**
-   * - Represents (some) valid credit card numbers.
+   * Represents (some) valid credit card numbers.
    *
    * At the moment, this mostly handles Visa, Mastercard, American Express, Diners Club,
    * Discover, and JCB.
@@ -517,7 +517,7 @@ export interface SchemableExt1<S extends URIS> extends Schemable1<S> {
   readonly CreditCard: CreditCard.SchemableParams1<S>
 
   /**
-   * - Represents strings (email addresses) that conform to the RFC 5322 standard.
+   * Represents strings (email addresses) that conform to the RFC 5322 standard.
    *
    * See: https://emailregex.com/
    *
@@ -528,7 +528,7 @@ export interface SchemableExt1<S extends URIS> extends Schemable1<S> {
   readonly EmailAddress: EmailAddress.SchemableParams1<S>
 
   /**
-   * - A valid hexadecimal color value.
+   * A valid hexadecimal color value.
    *
    * Inspired by
    * [isHexColor](https://github.com/validatorjs/validator.js/blob/master/src/lib/isHexColor.js)
@@ -538,7 +538,7 @@ export interface SchemableExt1<S extends URIS> extends Schemable1<S> {
   readonly HexColor: HexColor.SchemableParams1<S>
 
   /**
-   * - A string of hexadecimal characters.
+   * A string of hexadecimal characters.
    *
    * Inspired by
    * [isHexadecimal](https://github.com/validatorjs/validator.js/blob/master/src/lib/isHexadecimal.js)
@@ -548,7 +548,7 @@ export interface SchemableExt1<S extends URIS> extends Schemable1<S> {
   readonly Hexadecimal: Hexadecimal.SchemableParams1<S>
 
   /**
-   * - An HSL string. Commonly in CSS.
+   * An HSL string. Commonly in CSS.
    *
    * @since 0.0.3
    * @example
@@ -557,14 +557,14 @@ export interface SchemableExt1<S extends URIS> extends Schemable1<S> {
   readonly HslColor: HslColor.SchemableParams1<S>
 
   /**
-   * - Represents strings that conform to the ISO 8601 standard.
+   * Represents strings that conform to the ISO 8601 standard.
    *
    * @since 0.0.1
    */
   readonly ISODateString: ISODateString.SchemableParams1<S>
 
   /**
-   * - Integer branded newtype.
+   * Integer branded newtype.
    *
    * Represents integers:
    *
@@ -577,7 +577,7 @@ export interface SchemableExt1<S extends URIS> extends Schemable1<S> {
   readonly IntString: IntString.SchemableParams1<S>
 
   /**
-   * - A valid, Base64-encoded JWT.
+   * A valid, Base64-encoded JWT.
    *
    * Inspired by validator.js' [JWT
    * module](https://github.com/validatorjs/validator.js/blob/master/src/lib/isJWT.js).
@@ -587,7 +587,7 @@ export interface SchemableExt1<S extends URIS> extends Schemable1<S> {
   readonly JWT: JWT.SchemableParams1<S>
 
   /**
-   * - Natural branded newtype string.
+   * Natural branded newtype string.
    *
    * Represents integers:
    *
@@ -600,7 +600,7 @@ export interface SchemableExt1<S extends URIS> extends Schemable1<S> {
   readonly NaturalString: NaturalString.SchemableParams1<S>
 
   /**
-   * - Negative floating point branded newtype string.
+   * Negative floating point branded newtype string.
    *
    * Represents negative floating point number strings:
    *
@@ -613,7 +613,7 @@ export interface SchemableExt1<S extends URIS> extends Schemable1<S> {
   readonly NegativeFloatString: NegativeFloatString.SchemableParams1<S>
 
   /**
-   * - Negative integer branded newtype string.
+   * Negative integer branded newtype string.
    *
    * Represents negative integers:
    *
@@ -626,7 +626,7 @@ export interface SchemableExt1<S extends URIS> extends Schemable1<S> {
   readonly NegativeIntString: NegativeIntString.SchemableParams1<S>
 
   /**
-   * - Non-negative floating point branded newtype string.
+   * Non-negative floating point branded newtype string.
    *
    * Represents non-negative floating point numbers:
    *
@@ -639,14 +639,14 @@ export interface SchemableExt1<S extends URIS> extends Schemable1<S> {
   readonly NonNegativeFloatString: NonNegativeFloatString.SchemableParams1<S>
 
   /**
-   * - Represents strings that are not empty strings.
+   * Represents strings that are not empty strings.
    *
    * @since 0.0.1
    */
   readonly NonemptyString: NonemptyString.SchemableParams1<S>
 
   /**
-   * - Positive floating point branded newtype string.
+   * Positive floating point branded newtype string.
    *
    * Represents positive floating point numbers:
    *
@@ -659,7 +659,7 @@ export interface SchemableExt1<S extends URIS> extends Schemable1<S> {
   readonly PositiveFloatString: PositiveFloatString.SchemableParams1<S>
 
   /**
-   * - Positive integer branded newtype string.
+   * Positive integer branded newtype string.
    *
    * Represents positive integers:
    *
@@ -672,7 +672,7 @@ export interface SchemableExt1<S extends URIS> extends Schemable1<S> {
   readonly PositiveIntString: PositiveIntString.SchemableParams1<S>
 
   /**
-   * - Represents strings that are UUIDs.
+   * Represents strings that are UUIDs.
    *
    * This is heavily inspired by the `validator.js` module
    * [`isUUID`](https://github.com/validatorjs/validator.js/blob/master/src/lib/isUUID.js).
@@ -682,7 +682,7 @@ export interface SchemableExt1<S extends URIS> extends Schemable1<S> {
   readonly UUID: UUID.SchemableParams1<S>
 
   /**
-   * - Represents Date objects which are not invalid dates
+   * Represents Date objects which are not invalid dates
    *
    * @since 0.0.1
    */
@@ -695,7 +695,7 @@ export interface SchemableExt1<S extends URIS> extends Schemable1<S> {
  */
 export interface SchemableExt2<S extends URIS2> extends Schemable2<S> {
   /**
-   * - Integer branded newtype.
+   * Integer branded newtype.
    *
    * Represents integers:
    *
@@ -708,7 +708,7 @@ export interface SchemableExt2<S extends URIS2> extends Schemable2<S> {
   readonly Int: Int.SchemableParams2<S>
 
   /**
-   * - Natural branded newtype.
+   * Natural branded newtype.
    *
    * Represents integers:
    *
@@ -721,7 +721,7 @@ export interface SchemableExt2<S extends URIS2> extends Schemable2<S> {
   readonly Natural: Natural.SchemableParams2<S>
 
   /**
-   * - Negative floating point branded newtype.
+   * Negative floating point branded newtype.
    *
    * Represents negative floating point numbers:
    *
@@ -734,7 +734,7 @@ export interface SchemableExt2<S extends URIS2> extends Schemable2<S> {
   readonly NegativeFloat: NegativeFloat.SchemableParams2<S>
 
   /**
-   * - Negative integer branded newtype.
+   * Negative integer branded newtype.
    *
    * Represents negative integers:
    *
@@ -747,7 +747,7 @@ export interface SchemableExt2<S extends URIS2> extends Schemable2<S> {
   readonly NegativeInt: NegativeInt.SchemableParams2<S>
 
   /**
-   * - Non-negative floating point branded newtype.
+   * Non-negative floating point branded newtype.
    *
    * Represents non-negative floating point numbers:
    *
@@ -760,7 +760,7 @@ export interface SchemableExt2<S extends URIS2> extends Schemable2<S> {
   readonly NonNegativeFloat: NonNegativeFloat.SchemableParams2<S>
 
   /**
-   * - Positive Float branded newtype.
+   * Positive Float branded newtype.
    *
    * Represents floating point numbers:
    *
@@ -773,7 +773,7 @@ export interface SchemableExt2<S extends URIS2> extends Schemable2<S> {
   readonly PositiveFloat: PositiveFloat.SchemableParams2<S>
 
   /**
-   * - Positive integer branded newtype.
+   * Positive integer branded newtype.
    *
    * Represents positive integers:
    *
@@ -786,7 +786,7 @@ export interface SchemableExt2<S extends URIS2> extends Schemable2<S> {
   readonly PositiveInt: PositiveInt.SchemableParams2<S>
 
   /**
-   * - A string in which every character is valid ASCII.
+   * A string in which every character is valid ASCII.
    *
    * This is heavily inspired by the `validator.js` module
    * [`isAscii`](https://github.com/validatorjs/validator.js/blob/master/src/lib/isAscii.js).
@@ -796,7 +796,7 @@ export interface SchemableExt2<S extends URIS2> extends Schemable2<S> {
   readonly ASCII: ASCII.SchemableParams2<S>
 
   /**
-   * - Representing a Base64-encoded string.
+   * Representing a Base64-encoded string.
    *
    * For a URL-safe version, @see Base64UrlSafe module
    *
@@ -808,7 +808,7 @@ export interface SchemableExt2<S extends URIS2> extends Schemable2<S> {
   readonly Base64: Base64.SchemableParams2<S>
 
   /**
-   * - Representing a URL-safe, Base64 encoded string.
+   * Representing a URL-safe, Base64 encoded string.
    *
    * For a non-URL-safe alternative, @see Base64
    *
@@ -820,7 +820,7 @@ export interface SchemableExt2<S extends URIS2> extends Schemable2<S> {
   readonly Base64Url: Base64Url.SchemableParams2<S>
 
   /**
-   * - Represents strings which are valid Bitcoin addresses.
+   * Represents strings which are valid Bitcoin addresses.
    *
    * This is heavily inspired by the `validator.js` module
    * [`isBtcAddress`](https://github.com/validatorjs/validator.js/blob/master/src/lib/isBtcAddress.js).
@@ -830,7 +830,7 @@ export interface SchemableExt2<S extends URIS2> extends Schemable2<S> {
   readonly BtcAddress: BtcAddress.SchemableParams2<S>
 
   /**
-   * - Represents (some) valid credit card numbers.
+   * Represents (some) valid credit card numbers.
    *
    * At the moment, this mostly handles Visa, Mastercard, American Express, Diners Club,
    * Discover, and JCB.
@@ -840,7 +840,7 @@ export interface SchemableExt2<S extends URIS2> extends Schemable2<S> {
   readonly CreditCard: CreditCard.SchemableParams2<S>
 
   /**
-   * - Represents strings (email addresses) that conform to the RFC 5322 standard.
+   * Represents strings (email addresses) that conform to the RFC 5322 standard.
    *
    * See: https://emailregex.com/
    *
@@ -851,7 +851,7 @@ export interface SchemableExt2<S extends URIS2> extends Schemable2<S> {
   readonly EmailAddress: EmailAddress.SchemableParams2<S>
 
   /**
-   * - A valid hexadecimal color value.
+   * A valid hexadecimal color value.
    *
    * Inspired by
    * [isHexColor](https://github.com/validatorjs/validator.js/blob/master/src/lib/isHexColor.js)
@@ -861,7 +861,7 @@ export interface SchemableExt2<S extends URIS2> extends Schemable2<S> {
   readonly HexColor: HexColor.SchemableParams2<S>
 
   /**
-   * - A string of hexadecimal characters.
+   * A string of hexadecimal characters.
    *
    * Inspired by
    * [isHexadecimal](https://github.com/validatorjs/validator.js/blob/master/src/lib/isHexadecimal.js)
@@ -871,7 +871,7 @@ export interface SchemableExt2<S extends URIS2> extends Schemable2<S> {
   readonly Hexadecimal: Hexadecimal.SchemableParams2<S>
 
   /**
-   * - An HSL string. Commonly in CSS.
+   * An HSL string. Commonly in CSS.
    *
    * @since 0.0.3
    * @example
@@ -880,14 +880,14 @@ export interface SchemableExt2<S extends URIS2> extends Schemable2<S> {
   readonly HslColor: HslColor.SchemableParams2<S>
 
   /**
-   * - Represents strings that conform to the ISO 8601 standard.
+   * Represents strings that conform to the ISO 8601 standard.
    *
    * @since 0.0.1
    */
   readonly ISODateString: ISODateString.SchemableParams2<S>
 
   /**
-   * - Integer branded newtype.
+   * Integer branded newtype.
    *
    * Represents integers:
    *
@@ -900,7 +900,7 @@ export interface SchemableExt2<S extends URIS2> extends Schemable2<S> {
   readonly IntString: IntString.SchemableParams2<S>
 
   /**
-   * - A valid, Base64-encoded JWT.
+   * A valid, Base64-encoded JWT.
    *
    * Inspired by validator.js' [JWT
    * module](https://github.com/validatorjs/validator.js/blob/master/src/lib/isJWT.js).
@@ -910,7 +910,7 @@ export interface SchemableExt2<S extends URIS2> extends Schemable2<S> {
   readonly JWT: JWT.SchemableParams2<S>
 
   /**
-   * - Natural branded newtype string.
+   * Natural branded newtype string.
    *
    * Represents integers:
    *
@@ -923,7 +923,7 @@ export interface SchemableExt2<S extends URIS2> extends Schemable2<S> {
   readonly NaturalString: NaturalString.SchemableParams2<S>
 
   /**
-   * - Negative floating point branded newtype string.
+   * Negative floating point branded newtype string.
    *
    * Represents negative floating point number strings:
    *
@@ -936,7 +936,7 @@ export interface SchemableExt2<S extends URIS2> extends Schemable2<S> {
   readonly NegativeFloatString: NegativeFloatString.SchemableParams2<S>
 
   /**
-   * - Negative integer branded newtype string.
+   * Negative integer branded newtype string.
    *
    * Represents negative integers:
    *
@@ -949,7 +949,7 @@ export interface SchemableExt2<S extends URIS2> extends Schemable2<S> {
   readonly NegativeIntString: NegativeIntString.SchemableParams2<S>
 
   /**
-   * - Non-negative floating point branded newtype string.
+   * Non-negative floating point branded newtype string.
    *
    * Represents non-negative floating point numbers:
    *
@@ -962,14 +962,14 @@ export interface SchemableExt2<S extends URIS2> extends Schemable2<S> {
   readonly NonNegativeFloatString: NonNegativeFloatString.SchemableParams2<S>
 
   /**
-   * - Represents strings that are not empty strings.
+   * Represents strings that are not empty strings.
    *
    * @since 0.0.1
    */
   readonly NonemptyString: NonemptyString.SchemableParams2<S>
 
   /**
-   * - Positive floating point branded newtype string.
+   * Positive floating point branded newtype string.
    *
    * Represents positive floating point numbers:
    *
@@ -982,7 +982,7 @@ export interface SchemableExt2<S extends URIS2> extends Schemable2<S> {
   readonly PositiveFloatString: PositiveFloatString.SchemableParams2<S>
 
   /**
-   * - Positive integer branded newtype string.
+   * Positive integer branded newtype string.
    *
    * Represents positive integers:
    *
@@ -995,7 +995,7 @@ export interface SchemableExt2<S extends URIS2> extends Schemable2<S> {
   readonly PositiveIntString: PositiveIntString.SchemableParams2<S>
 
   /**
-   * - Represents strings that are UUIDs.
+   * Represents strings that are UUIDs.
    *
    * This is heavily inspired by the `validator.js` module
    * [`isUUID`](https://github.com/validatorjs/validator.js/blob/master/src/lib/isUUID.js).
@@ -1005,7 +1005,7 @@ export interface SchemableExt2<S extends URIS2> extends Schemable2<S> {
   readonly UUID: UUID.SchemableParams2<S>
 
   /**
-   * - Represents Date objects which are not invalid dates
+   * Represents Date objects which are not invalid dates
    *
    * @since 0.0.1
    */
@@ -1018,7 +1018,7 @@ export interface SchemableExt2<S extends URIS2> extends Schemable2<S> {
  */
 export interface SchemableExt2C<S extends URIS2> extends Schemable2C<S, unknown> {
   /**
-   * - Integer branded newtype.
+   * Integer branded newtype.
    *
    * Represents integers:
    *
@@ -1031,7 +1031,7 @@ export interface SchemableExt2C<S extends URIS2> extends Schemable2C<S, unknown>
   readonly Int: Int.SchemableParams2C<S>
 
   /**
-   * - Natural branded newtype.
+   * Natural branded newtype.
    *
    * Represents integers:
    *
@@ -1044,7 +1044,7 @@ export interface SchemableExt2C<S extends URIS2> extends Schemable2C<S, unknown>
   readonly Natural: Natural.SchemableParams2C<S>
 
   /**
-   * - Negative floating point branded newtype.
+   * Negative floating point branded newtype.
    *
    * Represents negative floating point numbers:
    *
@@ -1057,7 +1057,7 @@ export interface SchemableExt2C<S extends URIS2> extends Schemable2C<S, unknown>
   readonly NegativeFloat: NegativeFloat.SchemableParams2C<S>
 
   /**
-   * - Negative integer branded newtype.
+   * Negative integer branded newtype.
    *
    * Represents negative integers:
    *
@@ -1070,7 +1070,7 @@ export interface SchemableExt2C<S extends URIS2> extends Schemable2C<S, unknown>
   readonly NegativeInt: NegativeInt.SchemableParams2C<S>
 
   /**
-   * - Non-negative floating point branded newtype.
+   * Non-negative floating point branded newtype.
    *
    * Represents non-negative floating point numbers:
    *
@@ -1083,7 +1083,7 @@ export interface SchemableExt2C<S extends URIS2> extends Schemable2C<S, unknown>
   readonly NonNegativeFloat: NonNegativeFloat.SchemableParams2C<S>
 
   /**
-   * - Positive Float branded newtype.
+   * Positive Float branded newtype.
    *
    * Represents floating point numbers:
    *
@@ -1096,7 +1096,7 @@ export interface SchemableExt2C<S extends URIS2> extends Schemable2C<S, unknown>
   readonly PositiveFloat: PositiveFloat.SchemableParams2C<S>
 
   /**
-   * - Positive integer branded newtype.
+   * Positive integer branded newtype.
    *
    * Represents positive integers:
    *
@@ -1109,7 +1109,7 @@ export interface SchemableExt2C<S extends URIS2> extends Schemable2C<S, unknown>
   readonly PositiveInt: PositiveInt.SchemableParams2C<S>
 
   /**
-   * - A string in which every character is valid ASCII.
+   * A string in which every character is valid ASCII.
    *
    * This is heavily inspired by the `validator.js` module
    * [`isAscii`](https://github.com/validatorjs/validator.js/blob/master/src/lib/isAscii.js).
@@ -1119,7 +1119,7 @@ export interface SchemableExt2C<S extends URIS2> extends Schemable2C<S, unknown>
   readonly ASCII: ASCII.SchemableParams2C<S>
 
   /**
-   * - Representing a Base64-encoded string.
+   * Representing a Base64-encoded string.
    *
    * For a URL-safe version, @see Base64UrlSafe module
    *
@@ -1131,7 +1131,7 @@ export interface SchemableExt2C<S extends URIS2> extends Schemable2C<S, unknown>
   readonly Base64: Base64.SchemableParams2C<S>
 
   /**
-   * - Representing a URL-safe, Base64 encoded string.
+   * Representing a URL-safe, Base64 encoded string.
    *
    * For a non-URL-safe alternative, @see Base64
    *
@@ -1143,7 +1143,7 @@ export interface SchemableExt2C<S extends URIS2> extends Schemable2C<S, unknown>
   readonly Base64Url: Base64Url.SchemableParams2C<S>
 
   /**
-   * - Represents strings which are valid Bitcoin addresses.
+   * Represents strings which are valid Bitcoin addresses.
    *
    * This is heavily inspired by the `validator.js` module
    * [`isBtcAddress`](https://github.com/validatorjs/validator.js/blob/master/src/lib/isBtcAddress.js).
@@ -1153,7 +1153,7 @@ export interface SchemableExt2C<S extends URIS2> extends Schemable2C<S, unknown>
   readonly BtcAddress: BtcAddress.SchemableParams2C<S>
 
   /**
-   * - Represents (some) valid credit card numbers.
+   * Represents (some) valid credit card numbers.
    *
    * At the moment, this mostly handles Visa, Mastercard, American Express, Diners Club,
    * Discover, and JCB.
@@ -1163,7 +1163,7 @@ export interface SchemableExt2C<S extends URIS2> extends Schemable2C<S, unknown>
   readonly CreditCard: CreditCard.SchemableParams2C<S>
 
   /**
-   * - Represents strings (email addresses) that conform to the RFC 5322 standard.
+   * Represents strings (email addresses) that conform to the RFC 5322 standard.
    *
    * See: https://emailregex.com/
    *
@@ -1174,7 +1174,7 @@ export interface SchemableExt2C<S extends URIS2> extends Schemable2C<S, unknown>
   readonly EmailAddress: EmailAddress.SchemableParams2C<S>
 
   /**
-   * - A valid hexadecimal color value.
+   * A valid hexadecimal color value.
    *
    * Inspired by
    * [isHexColor](https://github.com/validatorjs/validator.js/blob/master/src/lib/isHexColor.js)
@@ -1184,7 +1184,7 @@ export interface SchemableExt2C<S extends URIS2> extends Schemable2C<S, unknown>
   readonly HexColor: HexColor.SchemableParams2C<S>
 
   /**
-   * - A string of hexadecimal characters.
+   * A string of hexadecimal characters.
    *
    * Inspired by
    * [isHexadecimal](https://github.com/validatorjs/validator.js/blob/master/src/lib/isHexadecimal.js)
@@ -1194,7 +1194,7 @@ export interface SchemableExt2C<S extends URIS2> extends Schemable2C<S, unknown>
   readonly Hexadecimal: Hexadecimal.SchemableParams2C<S>
 
   /**
-   * - An HSL string. Commonly in CSS.
+   * An HSL string. Commonly in CSS.
    *
    * @since 0.0.3
    * @example
@@ -1203,14 +1203,14 @@ export interface SchemableExt2C<S extends URIS2> extends Schemable2C<S, unknown>
   readonly HslColor: HslColor.SchemableParams2C<S>
 
   /**
-   * - Represents strings that conform to the ISO 8601 standard.
+   * Represents strings that conform to the ISO 8601 standard.
    *
    * @since 0.0.1
    */
   readonly ISODateString: ISODateString.SchemableParams2C<S>
 
   /**
-   * - Integer branded newtype.
+   * Integer branded newtype.
    *
    * Represents integers:
    *
@@ -1223,7 +1223,7 @@ export interface SchemableExt2C<S extends URIS2> extends Schemable2C<S, unknown>
   readonly IntString: IntString.SchemableParams2C<S>
 
   /**
-   * - A valid, Base64-encoded JWT.
+   * A valid, Base64-encoded JWT.
    *
    * Inspired by validator.js' [JWT
    * module](https://github.com/validatorjs/validator.js/blob/master/src/lib/isJWT.js).
@@ -1233,7 +1233,7 @@ export interface SchemableExt2C<S extends URIS2> extends Schemable2C<S, unknown>
   readonly JWT: JWT.SchemableParams2C<S>
 
   /**
-   * - Natural branded newtype string.
+   * Natural branded newtype string.
    *
    * Represents integers:
    *
@@ -1246,7 +1246,7 @@ export interface SchemableExt2C<S extends URIS2> extends Schemable2C<S, unknown>
   readonly NaturalString: NaturalString.SchemableParams2C<S>
 
   /**
-   * - Negative floating point branded newtype string.
+   * Negative floating point branded newtype string.
    *
    * Represents negative floating point number strings:
    *
@@ -1259,7 +1259,7 @@ export interface SchemableExt2C<S extends URIS2> extends Schemable2C<S, unknown>
   readonly NegativeFloatString: NegativeFloatString.SchemableParams2C<S>
 
   /**
-   * - Negative integer branded newtype string.
+   * Negative integer branded newtype string.
    *
    * Represents negative integers:
    *
@@ -1272,7 +1272,7 @@ export interface SchemableExt2C<S extends URIS2> extends Schemable2C<S, unknown>
   readonly NegativeIntString: NegativeIntString.SchemableParams2C<S>
 
   /**
-   * - Non-negative floating point branded newtype string.
+   * Non-negative floating point branded newtype string.
    *
    * Represents non-negative floating point numbers:
    *
@@ -1285,14 +1285,14 @@ export interface SchemableExt2C<S extends URIS2> extends Schemable2C<S, unknown>
   readonly NonNegativeFloatString: NonNegativeFloatString.SchemableParams2C<S>
 
   /**
-   * - Represents strings that are not empty strings.
+   * Represents strings that are not empty strings.
    *
    * @since 0.0.1
    */
   readonly NonemptyString: NonemptyString.SchemableParams2C<S>
 
   /**
-   * - Positive floating point branded newtype string.
+   * Positive floating point branded newtype string.
    *
    * Represents positive floating point numbers:
    *
@@ -1305,7 +1305,7 @@ export interface SchemableExt2C<S extends URIS2> extends Schemable2C<S, unknown>
   readonly PositiveFloatString: PositiveFloatString.SchemableParams2C<S>
 
   /**
-   * - Positive integer branded newtype string.
+   * Positive integer branded newtype string.
    *
    * Represents positive integers:
    *
@@ -1318,7 +1318,7 @@ export interface SchemableExt2C<S extends URIS2> extends Schemable2C<S, unknown>
   readonly PositiveIntString: PositiveIntString.SchemableParams2C<S>
 
   /**
-   * - Represents strings that are UUIDs.
+   * Represents strings that are UUIDs.
    *
    * This is heavily inspired by the `validator.js` module
    * [`isUUID`](https://github.com/validatorjs/validator.js/blob/master/src/lib/isUUID.js).
@@ -1328,7 +1328,7 @@ export interface SchemableExt2C<S extends URIS2> extends Schemable2C<S, unknown>
   readonly UUID: UUID.SchemableParams2C<S>
 
   /**
-   * - Represents Date objects which are not invalid dates
+   * Represents Date objects which are not invalid dates
    *
    * @since 0.0.1
    */

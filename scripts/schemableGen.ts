@@ -1,6 +1,7 @@
 import * as ts from 'typescript'
 import * as Cons from 'fp-ts/Console'
 import { flow, pipe, tuple } from 'fp-ts/function'
+import * as O from 'fp-ts/Option'
 import * as RA from 'fp-ts/ReadonlyArray'
 import * as RNEA from 'fp-ts/ReadonlyNonEmptyArray'
 import * as RTE from 'fp-ts/ReaderTaskEither'
@@ -376,7 +377,8 @@ export const extractJSDocHeaderTextFromFileContents: (
     RNEA.head,
     Str.split('/**'),
     RNEA.tail,
-    RA.foldMap(Str.Monoid)(Str.trim)
+    RA.head,
+    O.getOrElse(() => '')
   )
 
 const getModuleJSDocComment: (filePath: string) => Build<string> = filePath => C =>
