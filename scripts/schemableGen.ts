@@ -366,8 +366,10 @@ const writeToDisk: (path: string) => (contents: string) => Build<void> =
 
 // #endregion
 
-/** Extracts module name, e.g. ASCII.ts -> ASCII */
-export const getJSDocHeaderText: (fileContents: string) => string = fileContents =>
+/** Strips JSDoc comment's leading ** and trailing * */
+export const extractJSDocHeaderTextFromFileContents: (
+  fileContents: string
+) => string = fileContents =>
   pipe(
     fileContents,
     Str.split('*/'),
@@ -384,7 +386,7 @@ const getModuleJSDocComment: (filePath: string) => Build<string> = filePath => C
       file => file.startsWith('/**'),
       () => new Error(`File ${filePath} does not start with a JSDoc comment`)
     ),
-    TE.map(getJSDocHeaderText)
+    TE.map(extractJSDocHeaderTextFromFileContents)
   )
 
 /** Extracts module name, e.g. ASCII.ts -> ASCII */
