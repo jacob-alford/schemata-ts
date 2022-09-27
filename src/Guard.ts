@@ -26,6 +26,7 @@ import * as CreditCard from './string/CreditCard'
 import * as EmailAddress from './string/EmailAddress'
 import * as HexColor from './string/HexColor'
 import * as Hexadecimal from './string/Hexadecimal'
+import * as HslColor from './string/HslColor'
 import * as ISODateString from './string/ISODateString'
 import * as IntString from './string/IntString'
 import * as JWT from './string/JWT'
@@ -62,6 +63,7 @@ export const Schemable: SchemableExt1<G.URI> = {
   EmailAddress: EmailAddress.Guard,
   HexColor: HexColor.Guard,
   Hexadecimal: Hexadecimal.Guard,
+  HslColor: HslColor.Guard,
   ISODateString: ISODateString.Guard,
   IntString: IntString.Guard,
   JWT: JWT.Guard,

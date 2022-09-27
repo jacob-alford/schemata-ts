@@ -26,6 +26,7 @@ import * as CreditCard from './string/CreditCard'
 import * as EmailAddress from './string/EmailAddress'
 import * as HexColor from './string/HexColor'
 import * as Hexadecimal from './string/Hexadecimal'
+import * as HslColor from './string/HslColor'
 import * as ISODateString from './string/ISODateString'
 import * as IntString from './string/IntString'
 import * as JWT from './string/JWT'
@@ -62,6 +63,7 @@ export const Schemable: SchemableExt2C<TD.URI> = {
   EmailAddress: EmailAddress.TaskDecoder,
   HexColor: HexColor.TaskDecoder,
   Hexadecimal: Hexadecimal.TaskDecoder,
+  HslColor: HslColor.TaskDecoder,
   ISODateString: ISODateString.TaskDecoder,
   IntString: IntString.TaskDecoder,
   JWT: JWT.TaskDecoder,
