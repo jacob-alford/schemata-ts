@@ -1,3 +1,5 @@
+# 0.0.3
+
 ## New Modules
 
 - [#20] Add string module: ASCII by @newswim in https://github.com/jacob-alford/schemable-ts-types/pull/24
@@ -42,3 +44,30 @@
 - @skeate made their first contribution in https://github.com/jacob-alford/schemable-ts-types/pull/60
 
 **Full Changelog**: https://github.com/jacob-alford/schemable-ts-types/compare/0.0.1...0.0.3
+
+# 0.0.1
+
+Initial NPM release! 🎉
+
+1. Add date > SafeDate
+2. Add number > Int
+3. Add number > Natural
+4. Add number > NegativeInt
+5. Add number > PositiveInt
+6. Add string > EmailAddress
+7. Add string > IntString
+8. Add string > ISODateString
+9. Add string > NaturalString
+10. Add string > NegativeIntString
+11. Add string > NonemptyString
+12. Add string > PositiveIntString
+13. Add string > UUID
+14. Add Decoder
+15. Add Eq
+16. Add Guard
+17. Add index common namespace exports
+18. Add SchemableExt
+19. Add SchamaExt
+20. Add TaskDecoder
+21. Add Type
+22. Add tests
