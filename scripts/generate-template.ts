@@ -4,18 +4,18 @@ import { flow, pipe } from 'fp-ts/function'
 import * as E from 'fp-ts/Either'
 import * as O from 'fp-ts/Option'
 import * as RA from 'fp-ts/ReadonlyArray'
-import * as RNEA from 'fp-ts/ReadonlyNonEmptyArray'
 import * as RTE from 'fp-ts/ReaderTaskEither'
+import * as RNEA from 'fp-ts/ReadonlyNonEmptyArray'
 import * as Str from 'fp-ts/string'
 import * as Json from 'fp-ts/Json'
 import * as TE from 'fp-ts/TaskEither'
-import { FileSystem, fileSystem } from './FS'
-import { cli, CLI } from './CLI'
+import { fileSystem } from './FS'
+import { cli } from './CLI'
 import { run } from './run'
 import { makeDestructureImport, makeModuleStarImport } from './ts-helpers'
 import { D, SC } from '../src/.'
-
-interface Build<A> extends RTE.ReaderTaskEither<FileSystem & CLI, Error, A> {}
+import { checkTestModuleUniqueness, makeTestFile } from './generator-helpers'
+import { Build } from './build'
 
 const _ = ts.factory
 
@@ -54,6 +54,7 @@ const makeCombinatorModule: (
       makeModuleStarImport(primitiveModule[0], `fp-ts/${primitiveModule[1]}`),
       makeModuleStarImport('TD', 'io-ts/TaskDecoder'),
       makeModuleStarImport('t', 'io-ts/Type'),
+      makeModuleStarImport('Arb', '../internal/ArbitraryBase'),
       makeDestructureImport(['pipe'], 'fp-ts/function'),
       sinceAndCategory('Internal', packageVersion),
       _.createInterfaceDeclaration(
@@ -400,6 +401,42 @@ const makeCombinatorModule: (
           ts.NodeFlags.Const
         )
       ),
+      sinceAndCategory('Instances', packageVersion),
+      _.createVariableStatement(
+        [_.createModifier(ts.SyntaxKind.ExportKeyword)],
+        _.createVariableDeclarationList(
+          [
+            _.createVariableDeclaration(
+              _.createIdentifier('Arbitrary'),
+              undefined,
+              _.createTypeReferenceNode(_.createIdentifier('SchemableParams1'), [
+                _.createTypeReferenceNode(
+                  _.createQualifiedName(
+                    _.createIdentifier('Arb'),
+                    _.createIdentifier('URI')
+                  ),
+                  undefined
+                ),
+              ]),
+              _.createCallExpression(_.createIdentifier('pipe'), undefined, [
+                _.createPropertyAccessExpression(
+                  _.createIdentifier('Arb'),
+                  _.createIdentifier(primitiveModule[1])
+                ),
+                _.createCallExpression(
+                  _.createPropertyAccessExpression(
+                    _.createIdentifier('Arb'),
+                    _.createIdentifier('refine')
+                  ),
+                  undefined,
+                  [_.createIdentifier(`is${name}`)]
+                ),
+              ])
+            ),
+          ],
+          ts.NodeFlags.Const
+        )
+      ),
     ],
     _.createNodeArray,
     nodes => printer.printList(ts.ListFormat.MultiLine, nodes, sourceFile),
@@ -466,21 +503,16 @@ const writeToDisk: (path: string) => (contents: string) => Build<void> =
 
 const format: Build<void> = C => C.exec('yarn format')
 
+const Args = SC.make(S => S.tuple(S.literal('string', 'number'), S.string))
+
+const decodeArgs = SC.interpreter(D.Schemable)(Args)
+
 const main: Build<void> = pipe(
   process.argv,
   RA.dropLeft(2),
-  RTE.fromPredicate(
-    (args): args is [string, string] => args.length === 2,
-    () =>
-      new Error(
-        'Must provide primitive type (string | number), and capitalized module name (e.g. SafeDate)'
-      )
-  ),
-  RTE.filterOrElse(
-    (args): args is ['string' | 'number', string] =>
-      args[0] === 'string' || args[0] === 'number',
-    () => new Error('Primitive must be one of "string", or "number"')
-  ),
+  decodeArgs.decode,
+  E.mapLeft(e => E.toError(e)),
+  RTE.fromEither,
   RTE.filterOrElse(
     ([, module]) => /^[A-Z]/g.test(module),
     () => new Error('Module name must be capitalized')
@@ -488,19 +520,27 @@ const main: Build<void> = pipe(
   RTE.bindTo('args'),
   RTE.chainFirstIOK(() => Cons.log("Checking that module doesn't already exist...")),
   RTE.chainFirst(({ args: [, module] }) => checkModuleUniqueness(module)),
+  RTE.chainFirst(({ args: [, module] }) => checkTestModuleUniqueness(module)),
   RTE.chainFirstIOK(() => Cons.log('Getting package version...')),
   RTE.apS('packageVersion', getPackageJson),
-  RTE.chainFirstIOK(({ args: [, module] }) => Cons.log(`Generating ${module}.ts...`)),
   RTE.bind(
     'moduleContents',
     ({ args: [primitive, module], packageVersion: { version } }) =>
       RTE.of(makeCombinatorModule(primitive, module, version))
   ),
-  RTE.chainFirstIOK(({ args: [primitive, module] }) =>
-    Cons.log(`Writing ${primitive}/${module}.ts to disk`)
+  RTE.bind('testModuleContents', ({ args: [primitive, module] }) =>
+    RTE.of(makeTestFile(primitive, module))
   ),
-  RTE.chain(({ args: [primitive, module], moduleContents }) =>
+  RTE.chainFirstIOK(({ args: [primitive, module] }) =>
+    Cons.log(
+      `Writing ./src/${primitive}/${module}.ts and ./tests/${primitive}/${module}.test.ts to disk`
+    )
+  ),
+  RTE.chainFirst(({ args: [primitive, module], moduleContents }) =>
     pipe(moduleContents, writeToDisk(`./src/${primitive}/${module}.ts`))
+  ),
+  RTE.chain(({ args: [primitive, module], testModuleContents }) =>
+    pipe(testModuleContents, writeToDisk(`./tests/${primitive}/${module}.test.ts`))
   ),
   RTE.chainFirstIOK(() => Cons.log('Formatting with Prettier...')),
   RTE.apFirst(format),
