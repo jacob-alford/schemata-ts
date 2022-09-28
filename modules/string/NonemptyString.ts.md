@@ -1,6 +1,6 @@
 ---
 title: string/NonemptyString.ts
-nav_order: 31
+nav_order: 32
 parent: Modules
 ---
 
