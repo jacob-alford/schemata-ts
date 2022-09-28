@@ -216,6 +216,7 @@ And now we can guarantee that a user's email will conform to RFC 5322, their id 
 | `string`  | EmailAddress.ts           |
 | `string`  | HexColor.ts               |
 | `string`  | Hexadecimal.ts            |
+| `string`  | HslColor.ts               |
 | `string`  | ISODateString.ts          |
 | `string`  | IntString.ts              |
 | `string`  | JWT.ts                    |
