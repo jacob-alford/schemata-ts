@@ -1,6 +1,7 @@
 import * as ts from 'typescript'
 import * as Cons from 'fp-ts/Console'
-import { flow, pipe } from 'fp-ts/function'
+import { flow, pipe, tuple } from 'fp-ts/function'
+import * as O from 'fp-ts/Option'
 import * as RA from 'fp-ts/ReadonlyArray'
 import * as RNEA from 'fp-ts/ReadonlyNonEmptyArray'
 import * as RTE from 'fp-ts/ReaderTaskEither'
@@ -21,9 +22,9 @@ const _ = ts.factory
  * Category: List TypeName
  */
 type SchemableCombinators = {
-  date: ReadonlyArray<string>
-  number: ReadonlyArray<string>
-  string: ReadonlyArray<string>
+  date: ReadonlyArray<readonly [string, string]>
+  number: ReadonlyArray<readonly [string, string]>
+  string: ReadonlyArray<readonly [string, string]>
 }
 
 // #region SchemableExt
@@ -78,52 +79,67 @@ export const makeSchemableExtTypeclass: (
     [
       ...pipe(
         combinators.number,
-        RA.map(combinator =>
-          _.createPropertySignature(
-            [_.createModifier(ts.SyntaxKind.ReadonlyKeyword)],
-            _.createIdentifier(combinator),
-            undefined,
-            _.createTypeReferenceNode(
-              _.createQualifiedName(
-                _.createIdentifier(combinator),
-                _.createIdentifier(`SchemableParams${suffix}`)
-              ),
-              [_.createTypeReferenceNode(_.createIdentifier('S'), undefined)]
-            )
+        RA.map(([combinator, comment]) =>
+          ts.addSyntheticLeadingComment(
+            _.createPropertySignature(
+              [_.createModifier(ts.SyntaxKind.ReadonlyKeyword)],
+              _.createIdentifier(combinator),
+              undefined,
+              _.createTypeReferenceNode(
+                _.createQualifiedName(
+                  _.createIdentifier(combinator),
+                  _.createIdentifier(`SchemableParams${suffix}`)
+                ),
+                [_.createTypeReferenceNode(_.createIdentifier('S'), undefined)]
+              )
+            ),
+            ts.SyntaxKind.MultiLineCommentTrivia,
+            `* ${comment}`,
+            true
           )
         )
       ),
       ...pipe(
         combinators.string,
-        RA.map(combinator =>
-          _.createPropertySignature(
-            [_.createModifier(ts.SyntaxKind.ReadonlyKeyword)],
-            _.createIdentifier(combinator),
-            undefined,
-            _.createTypeReferenceNode(
-              _.createQualifiedName(
-                _.createIdentifier(combinator),
-                _.createIdentifier(`SchemableParams${suffix}`)
-              ),
-              [_.createTypeReferenceNode(_.createIdentifier('S'), undefined)]
-            )
+        RA.map(([combinator, comment]) =>
+          ts.addSyntheticLeadingComment(
+            _.createPropertySignature(
+              [_.createModifier(ts.SyntaxKind.ReadonlyKeyword)],
+              _.createIdentifier(combinator),
+              undefined,
+              _.createTypeReferenceNode(
+                _.createQualifiedName(
+                  _.createIdentifier(combinator),
+                  _.createIdentifier(`SchemableParams${suffix}`)
+                ),
+                [_.createTypeReferenceNode(_.createIdentifier('S'), undefined)]
+              )
+            ),
+            ts.SyntaxKind.MultiLineCommentTrivia,
+            `* ${comment}`,
+            true
           )
         )
       ),
       ...pipe(
         combinators.date,
-        RA.map(combinator =>
-          _.createPropertySignature(
-            [_.createModifier(ts.SyntaxKind.ReadonlyKeyword)],
-            _.createIdentifier(combinator),
-            undefined,
-            _.createTypeReferenceNode(
-              _.createQualifiedName(
-                _.createIdentifier(combinator),
-                _.createIdentifier(`SchemableParams${suffix}`)
-              ),
-              [_.createTypeReferenceNode(_.createIdentifier('S'), undefined)]
-            )
+        RA.map(([combinator, comment]) =>
+          ts.addSyntheticLeadingComment(
+            _.createPropertySignature(
+              [_.createModifier(ts.SyntaxKind.ReadonlyKeyword)],
+              _.createIdentifier(combinator),
+              undefined,
+              _.createTypeReferenceNode(
+                _.createQualifiedName(
+                  _.createIdentifier(combinator),
+                  _.createIdentifier(`SchemableParams${suffix}`)
+                ),
+                [_.createTypeReferenceNode(_.createIdentifier('S'), undefined)]
+              )
+            ),
+            ts.SyntaxKind.MultiLineCommentTrivia,
+            `* ${comment}`,
+            true
           )
         )
       ),
@@ -153,17 +169,21 @@ const makeSchemableExtContents: (
       _.createJSDocComment('number'),
       ...pipe(
         combinators.number,
-        RA.map(combinator => makeModuleStarImport(combinator, `./number/${combinator}`))
+        RA.map(([combinator]) =>
+          makeModuleStarImport(combinator, `./number/${combinator}`)
+        )
       ),
       _.createJSDocComment('string'),
       ...pipe(
         combinators.string,
-        RA.map(combinator => makeModuleStarImport(combinator, `./string/${combinator}`))
+        RA.map(([combinator]) =>
+          makeModuleStarImport(combinator, `./string/${combinator}`)
+        )
       ),
       _.createJSDocComment('date'),
       ...pipe(
         combinators.date,
-        RA.map(combinator => makeModuleStarImport(combinator, `./date/${combinator}`))
+        RA.map(([combinator]) => makeModuleStarImport(combinator, `./date/${combinator}`))
       ),
 
       instanceComment,
@@ -246,7 +266,7 @@ const makeSchemableInstance: (
                 ),
                 ...pipe(
                   schemableCombinators.number,
-                  RA.map(schemableCombinatorName =>
+                  RA.map(([schemableCombinatorName]) =>
                     _.createPropertyAssignment(
                       _.createIdentifier(schemableCombinatorName),
                       _.createPropertyAccessExpression(
@@ -258,7 +278,7 @@ const makeSchemableInstance: (
                 ),
                 ...pipe(
                   schemableCombinators.string,
-                  RA.map(schemableCombinatorName =>
+                  RA.map(([schemableCombinatorName]) =>
                     _.createPropertyAssignment(
                       _.createIdentifier(schemableCombinatorName),
                       _.createPropertyAccessExpression(
@@ -270,7 +290,7 @@ const makeSchemableInstance: (
                 ),
                 ...pipe(
                   schemableCombinators.date,
-                  RA.map(schemableCombinatorName =>
+                  RA.map(([schemableCombinatorName]) =>
                     _.createPropertyAssignment(
                       _.createIdentifier(schemableCombinatorName),
                       _.createPropertyAccessExpression(
@@ -316,17 +336,21 @@ const makeSchemableInstanceModuleContents: (
       _.createJSDocComment('number'),
       ...pipe(
         combinators.number,
-        RA.map(combinator => makeModuleStarImport(combinator, `./number/${combinator}`))
+        RA.map(([combinator]) =>
+          makeModuleStarImport(combinator, `./number/${combinator}`)
+        )
       ),
       _.createJSDocComment('string'),
       ...pipe(
         combinators.string,
-        RA.map(combinator => makeModuleStarImport(combinator, `./string/${combinator}`))
+        RA.map(([combinator]) =>
+          makeModuleStarImport(combinator, `./string/${combinator}`)
+        )
       ),
       _.createJSDocComment('date'),
       ...pipe(
         combinators.date,
-        RA.map(combinator => makeModuleStarImport(combinator, `./date/${combinator}`))
+        RA.map(([combinator]) => makeModuleStarImport(combinator, `./date/${combinator}`))
       ),
       instanceComment,
       makeSchemableInstance(typeclass)(combinators),
@@ -343,21 +367,81 @@ const writeToDisk: (path: string) => (contents: string) => Build<void> =
 
 // #endregion
 
+/** Strips JSDoc comment's leading ** and trailing * */
+export const extractJSDocHeaderTextFromFileContents: (
+  fileContents: string
+) => string = fileContents =>
+  pipe(
+    fileContents,
+    Str.split('*/'),
+    RNEA.head,
+    Str.split('/**'),
+    RNEA.tail,
+    RA.head,
+    O.getOrElse(() => '')
+  )
+
+const getModuleJSDocComment: (filePath: string) => Build<string> = filePath => C =>
+  pipe(
+    C.readFile(filePath),
+    TE.filterOrElse(
+      file => file.startsWith('/**'),
+      () => new Error(`File ${filePath} does not start with a JSDoc comment`)
+    ),
+    TE.map(extractJSDocHeaderTextFromFileContents)
+  )
+
+/** Extracts module name, e.g. ASCII.ts -> ASCII */
+const getModuleName: (file: string) => string = flow(Str.split('.'), RNEA.head)
+
 /** Retrieve modules found in category folders */
 const getSchemableCombinators: Build<SchemableCombinators> = C =>
   pipe(
     TE.Do,
     TE.apS(
       'date',
-      pipe(C.readFiles('./src/date'), TE.map(RA.map(flow(Str.split('.'), RNEA.head))))
+      pipe(
+        C.readFiles('./src/date'),
+        TE.chain(
+          TE.traverseArray(file =>
+            pipe(
+              C,
+              getModuleJSDocComment(`./src/date/${file}`),
+              TE.map(comment => tuple(getModuleName(file), comment))
+            )
+          )
+        )
+      )
     ),
     TE.apS(
       'number',
-      pipe(C.readFiles('./src/number'), TE.map(RA.map(flow(Str.split('.'), RNEA.head))))
+      pipe(
+        C.readFiles('./src/number'),
+        TE.chain(
+          TE.traverseArray(file =>
+            pipe(
+              C,
+              getModuleJSDocComment(`./src/number/${file}`),
+              TE.map(comment => tuple(getModuleName(file), comment))
+            )
+          )
+        )
+      )
     ),
     TE.apS(
       'string',
-      pipe(C.readFiles('./src/string'), TE.map(RA.map(flow(Str.split('.'), RNEA.head))))
+      pipe(
+        C.readFiles('./src/string'),
+        TE.chain(
+          TE.traverseArray(file =>
+            pipe(
+              C,
+              getModuleJSDocComment(`./src/string/${file}`),
+              TE.map(comment => tuple(getModuleName(file), comment))
+            )
+          )
+        )
+      )
     )
   )
 
