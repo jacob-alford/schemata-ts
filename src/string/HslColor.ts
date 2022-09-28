@@ -3,7 +3,16 @@
  *
  * @since 0.0.3
  * @example
- *   background-color: hsl(270 60% 70% / 0.7);
+ *   import { Guard } from 'schemable-ts-types/string/HslColor'
+ *
+ *   const hue = 270
+ *   const saturation = 60
+ *   const lightness = 70
+ *   const alpha = 0.7
+ *
+ *   const hslString = `hsl(${hue} ${saturation}% ${lightness}% / ${alpha})`
+ *
+ *   assert.equal(Guard.is(hslString), true)
  */
 import { Kind, Kind2, URIS, URIS2, HKT2 } from 'fp-ts/HKT'
 import * as D from 'io-ts/Decoder'
@@ -32,7 +41,16 @@ interface HslColorBrand {
  *
  * @since 0.0.3
  * @example
- *   background-color: hsl(270 60% 70% / 0.7);
+ *   import { Guard } from 'schemable-ts-types/string/HslColor'
+ *
+ *   const hue = 270
+ *   const saturation = 60
+ *   const lightness = 70
+ *   const alpha = 0.7
+ *
+ *   const hslString = `hsl(${hue} ${saturation}% ${lightness}% / ${alpha})`
+ *
+ *   assert.equal(Guard.is(hslString), true)
  */
 export type HslColor = string & HslColorBrand
 
