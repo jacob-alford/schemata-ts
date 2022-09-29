@@ -1,6 +1,8 @@
 import * as ts from 'typescript'
 import * as Cons from 'fp-ts/Console'
+import * as Color from 'colorette'
 import { flow, pipe } from 'fp-ts/function'
+import { draw as drawDecodeError } from 'io-ts/Decoder'
 import * as E from 'fp-ts/Either'
 import * as O from 'fp-ts/Option'
 import * as RA from 'fp-ts/ReadonlyArray'
@@ -8,6 +10,7 @@ import * as RTE from 'fp-ts/ReaderTaskEither'
 import * as RNEA from 'fp-ts/ReadonlyNonEmptyArray'
 import * as Str from 'fp-ts/string'
 import * as Json from 'fp-ts/Json'
+import * as T from 'fp-ts/Task'
 import * as TE from 'fp-ts/TaskEither'
 import { fileSystem } from './FS'
 import { cli } from './CLI'
@@ -507,44 +510,79 @@ const Args = SC.make(S => S.tuple(S.literal('string', 'number'), S.string))
 
 const decodeArgs = SC.interpreter(D.Schemable)(Args)
 
+const delay = (n: number) => () => pipe(T.of(void 0), T.delay(n))
+
 const main: Build<void> = pipe(
   process.argv,
   RA.dropLeft(2),
   decodeArgs.decode,
-  E.mapLeft(e => E.toError(e)),
+  E.mapLeft(flow(drawDecodeError, E.toError)),
   RTE.fromEither,
   RTE.filterOrElse(
     ([, module]) => /^[A-Z]/g.test(module),
     () => new Error('Module name must be capitalized')
   ),
   RTE.bindTo('args'),
-  RTE.chainFirstIOK(() => Cons.log("Checking that module doesn't already exist...")),
-  RTE.chainFirst(({ args: [, module] }) => checkModuleUniqueness(module)),
-  RTE.chainFirst(({ args: [, module] }) => checkTestModuleUniqueness(module)),
-  RTE.chainFirstIOK(() => Cons.log('Getting package version...')),
-  RTE.apS('packageVersion', getPackageJson),
-  RTE.bind(
-    'moduleContents',
-    ({ args: [primitive, module], packageVersion: { version } }) =>
-      RTE.of(makeCombinatorModule(primitive, module, version))
-  ),
-  RTE.bind('testModuleContents', ({ args: [primitive, module] }) =>
-    RTE.of(makeTestFile(primitive, module))
-  ),
   RTE.chainFirstIOK(({ args: [primitive, module] }) =>
     Cons.log(
-      `Writing ./src/${primitive}/${module}.ts and ./tests/${primitive}/${module}.test.ts to disk`
+      Color.whiteBright(`\n\n💻 Generating ${Color.bold(module)} ${primitive} module`)
     )
   ),
-  RTE.chainFirst(({ args: [primitive, module], moduleContents }) =>
-    pipe(moduleContents, writeToDisk(`./src/${primitive}/${module}.ts`))
+  RTE.chainFirstTaskK(delay(600)),
+  RTE.chainFirstIOK(() =>
+    Cons.log(Color.cyan("\n🔎 Checking that module doesn't already exist..."))
   ),
-  RTE.chain(({ args: [primitive, module], testModuleContents }) =>
-    pipe(testModuleContents, writeToDisk(`./tests/${primitive}/${module}.test.ts`))
+  RTE.chainFirstTaskK(delay(400)),
+  RTE.chainFirst(({ args: [, module] }) => checkModuleUniqueness(module)),
+  RTE.chainFirstIOK(() =>
+    Cons.log(Color.cyan("🔎 Checking that test module doesn't already exist..."))
   ),
-  RTE.chainFirstIOK(() => Cons.log('Formatting with Prettier...')),
-  RTE.apFirst(format),
-  RTE.chainFirstIOK(() => Cons.log('Done!'))
+  RTE.chainFirstTaskK(delay(400)),
+  RTE.chainFirst(({ args: [, module] }) => checkTestModuleUniqueness(module)),
+  RTE.chainFirstIOK(() => Cons.log(Color.cyan('\n📦 Getting package version...'))),
+  RTE.chainFirstTaskK(delay(400)),
+  RTE.apS('packageVersion', getPackageJson),
+  RTE.chainFirstIOK(({ args: [, module] }) =>
+    Cons.log(Color.cyan(`\n🖊️  Generating ${module}...`))
+  ),
+  flow(
+    RTE.chainFirstTaskK(delay(400)),
+
+    RTE.bind(
+      'moduleContents',
+      ({ args: [primitive, module], packageVersion: { version } }) =>
+        RTE.of(makeCombinatorModule(primitive, module, version))
+    ),
+    RTE.chainFirstIOK(({ args: [, module] }) =>
+      Cons.log(Color.cyan(`🖊️  Generating ${module} test file...`))
+    ),
+    RTE.chainFirstTaskK(delay(400)),
+    RTE.bind('testModuleContents', ({ args: [primitive, module] }) =>
+      RTE.of(makeTestFile(primitive, module))
+    ),
+    RTE.chainFirstIOK(({ args: [primitive, module] }) =>
+      Cons.log(Color.cyan(`\n💾 Writing ./src/${primitive}/${module}.ts to disk`))
+    ),
+    RTE.chainFirstTaskK(delay(400)),
+    flow(
+      RTE.chainFirst(({ args: [primitive, module], moduleContents }) =>
+        pipe(moduleContents, writeToDisk(`./src/${primitive}/${module}.ts`))
+      ),
+      RTE.chainFirstIOK(({ args: [primitive, module] }) =>
+        Cons.log(Color.cyan(`💾 Writing ./tests/${primitive}/${module}.test.ts to disk`))
+      ),
+      RTE.chainFirstTaskK(delay(400)),
+      RTE.chain(({ args: [primitive, module], testModuleContents }) =>
+        pipe(testModuleContents, writeToDisk(`./tests/${primitive}/${module}.test.ts`))
+      ),
+      RTE.chainFirstIOK(() => Cons.log(Color.cyan('\n💅 Formatting with Prettier...'))),
+      RTE.chainFirstTaskK(delay(400)),
+      flow(
+        RTE.apFirst(format),
+        RTE.chainFirstIOK(() => Cons.log(Color.green('\n\nDone!')))
+      )
+    )
+  )
 )
 
 run(
