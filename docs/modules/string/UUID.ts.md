@@ -1,6 +1,6 @@
 ---
 title: string/UUID.ts
-nav_order: 30
+nav_order: 40
 parent: Modules
 ---
 
@@ -18,7 +18,9 @@ Added in v0.0.1
 <h2 class="text-delta">Table of contents</h2>
 
 - [Instances](#instances)
+  - [Arbitrary](#arbitrary)
   - [Decoder](#decoder)
+  - [Encoder](#encoder)
   - [Eq](#eq)
   - [Guard](#guard)
   - [TaskDecoder](#taskdecoder)
@@ -26,6 +28,7 @@ Added in v0.0.1
 - [Model](#model)
   - [SchemableParams (type alias)](#schemableparams-type-alias)
   - [SchemableParams1 (type alias)](#schemableparams1-type-alias)
+  - [SchemableParams2 (type alias)](#schemableparams2-type-alias)
   - [SchemableParams2C (type alias)](#schemableparams2c-type-alias)
   - [UUID (type alias)](#uuid-type-alias)
   - [UUIDSchemableOptions (type alias)](#uuidschemableoptions-type-alias)
@@ -36,6 +39,16 @@ Added in v0.0.1
 
 # Instances
 
+## Arbitrary
+
+**Signature**
+
+```ts
+export declare const Arbitrary: SchemableParams1<'Arbitrary'>
+```
+
+Added in v0.0.3
+
 ## Decoder
 
 **Signature**
@@ -45,6 +58,16 @@ export declare const Decoder: SchemableParams2C<'io-ts/Decoder'>
 ```
 
 Added in v0.0.1
+
+## Encoder
+
+**Signature**
+
+```ts
+export declare const Encoder: SchemableParams2<'io-ts/Encoder'>
+```
+
+Added in v0.0.3
 
 ## Eq
 
@@ -93,7 +116,7 @@ Added in v0.0.1
 **Signature**
 
 ```ts
-export type SchemableParams<S> = (options: UUIDSchemableOptions) => HKT<S, UUID>
+export type SchemableParams<S> = (options: UUIDSchemableOptions) => HKT2<S, string, UUID>
 ```
 
 Added in v0.0.1
@@ -107,6 +130,16 @@ export type SchemableParams1<S extends URIS> = (options: UUIDSchemableOptions) =
 ```
 
 Added in v0.0.1
+
+## SchemableParams2 (type alias)
+
+**Signature**
+
+```ts
+export type SchemableParams2<S extends URIS2> = (options: UUIDSchemableOptions) => Kind2<S, string, UUID>
+```
+
+Added in v0.0.3
 
 ## SchemableParams2C (type alias)
 

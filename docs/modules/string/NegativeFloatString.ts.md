@@ -1,6 +1,6 @@
 ---
 title: string/NegativeFloatString.ts
-nav_order: 24
+nav_order: 32
 parent: Modules
 ---
 
@@ -11,7 +11,7 @@ Negative floating point branded newtype string.
 Represents negative floating point number strings:
 
 ```math
- { f | f ∈ ℝ, f < 0, f >= -2 ** 53 + 1 }
+ { f | f ∈ ℝ, f < 0, f >= -Number.MAX_VALUE }
 ```
 
 Added in v0.0.2
@@ -21,7 +21,9 @@ Added in v0.0.2
 <h2 class="text-delta">Table of contents</h2>
 
 - [Instances](#instances)
+  - [Arbitrary](#arbitrary)
   - [Decoder](#decoder)
+  - [Encoder](#encoder)
   - [Eq](#eq)
   - [Guard](#guard)
   - [TaskDecoder](#taskdecoder)
@@ -30,6 +32,7 @@ Added in v0.0.2
   - [NegativeFloatString (type alias)](#negativefloatstring-type-alias)
   - [SchemableParams (type alias)](#schemableparams-type-alias)
   - [SchemableParams1 (type alias)](#schemableparams1-type-alias)
+  - [SchemableParams2 (type alias)](#schemableparams2-type-alias)
   - [SchemableParams2C (type alias)](#schemableparams2c-type-alias)
 - [Refinements](#refinements)
   - [isNegativeFloatString](#isnegativefloatstring)
@@ -40,6 +43,16 @@ Added in v0.0.2
 
 # Instances
 
+## Arbitrary
+
+**Signature**
+
+```ts
+export declare const Arbitrary: Arb.Arbitrary<NegativeFloatString>
+```
+
+Added in v0.0.3
+
 ## Decoder
 
 **Signature**
@@ -49,6 +62,16 @@ export declare const Decoder: D.Decoder<unknown, NegativeFloatString>
 ```
 
 Added in v0.0.2
+
+## Encoder
+
+**Signature**
+
+```ts
+export declare const Encoder: Enc.Encoder<string, NegativeFloatString>
+```
+
+Added in v0.0.3
 
 ## Eq
 
@@ -99,7 +122,7 @@ Negative floating point branded newtype string.
 Represents negative floating point number strings:
 
 ```math
- { f | f ∈ ℝ, f < 0, f >= -2 ** 53 + 1 }
+ { f | f ∈ ℝ, f < 0, f >= -Number.MAX_VALUE }
 ```
 
 **Signature**
@@ -115,7 +138,7 @@ Added in v0.0.2
 **Signature**
 
 ```ts
-export type SchemableParams<S> = HKT<S, NegativeFloatString>
+export type SchemableParams<S> = HKT2<S, string, NegativeFloatString>
 ```
 
 Added in v0.0.2
@@ -129,6 +152,16 @@ export type SchemableParams1<S extends URIS> = Kind<S, NegativeFloatString>
 ```
 
 Added in v0.0.2
+
+## SchemableParams2 (type alias)
+
+**Signature**
+
+```ts
+export type SchemableParams2<S extends URIS2> = Kind2<S, string, NegativeFloatString>
+```
+
+Added in v0.0.3
 
 ## SchemableParams2C (type alias)
 
@@ -159,7 +192,7 @@ Added in v0.0.2
 **Signature**
 
 ```ts
-export declare const toNegativeFloat: (s: NegativeFloatString) => NegativeFloat
+export declare const toNegativeFloat: (s: NegativeFloatString) => NegativeFloat.NegativeFloat
 ```
 
 Added in v0.0.2

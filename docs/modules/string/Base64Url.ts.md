@@ -1,6 +1,6 @@
 ---
 title: string/Base64Url.ts
-nav_order: 17
+nav_order: 21
 parent: Modules
 ---
 
@@ -20,7 +20,9 @@ Added in v0.0.2
 <h2 class="text-delta">Table of contents</h2>
 
 - [Instances](#instances)
+  - [Arbitrary](#arbitrary)
   - [Decoder](#decoder)
+  - [Encoder](#encoder)
   - [Eq](#eq)
   - [Guard](#guard)
   - [TaskDecoder](#taskdecoder)
@@ -29,6 +31,7 @@ Added in v0.0.2
   - [Base64Url (type alias)](#base64url-type-alias)
   - [SchemableParams (type alias)](#schemableparams-type-alias)
   - [SchemableParams1 (type alias)](#schemableparams1-type-alias)
+  - [SchemableParams2 (type alias)](#schemableparams2-type-alias)
   - [SchemableParams2C (type alias)](#schemableparams2c-type-alias)
 - [Refinements](#refinements)
   - [isBase64Url](#isbase64url)
@@ -36,6 +39,16 @@ Added in v0.0.2
 ---
 
 # Instances
+
+## Arbitrary
+
+**Signature**
+
+```ts
+export declare const Arbitrary: Arb.Arbitrary<Base64Url>
+```
+
+Added in v0.0.3
 
 ## Decoder
 
@@ -46,6 +59,16 @@ export declare const Decoder: D.Decoder<unknown, Base64Url>
 ```
 
 Added in v0.0.2
+
+## Encoder
+
+**Signature**
+
+```ts
+export declare const Encoder: Enc.Encoder<string, Base64Url>
+```
+
+Added in v0.0.3
 
 ## Eq
 
@@ -111,7 +134,7 @@ Added in v0.0.2
 **Signature**
 
 ```ts
-export type SchemableParams<S> = HKT<S, Base64Url>
+export type SchemableParams<S> = HKT2<S, string, Base64Url>
 ```
 
 Added in v0.0.2
@@ -125,6 +148,16 @@ export type SchemableParams1<S extends URIS> = Kind<S, Base64Url>
 ```
 
 Added in v0.0.2
+
+## SchemableParams2 (type alias)
+
+**Signature**
+
+```ts
+export type SchemableParams2<S extends URIS2> = Kind2<S, string, Base64Url>
+```
+
+Added in v0.0.3
 
 ## SchemableParams2C (type alias)
 
