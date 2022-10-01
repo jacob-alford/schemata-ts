@@ -100,4 +100,10 @@ describe('NonPositiveFloatString', () => {
       )
     })
   })
+
+  it('converts to a NonPositiveFloat', () => {
+    const numStr = '0'
+    if (!NonPositiveFloatString.Guard.is(numStr)) throw new Error('Unexpected result')
+    expect(NonPositiveFloatString.toNonPositiveFloat(numStr)).toBe(0)
+  })
 })

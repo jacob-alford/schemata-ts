@@ -88,4 +88,10 @@ describe('NonPositiveIntString', () => {
       validateArbitrary(NonPositiveIntString, NonPositiveIntString.isNonPositiveIntString)
     })
   })
+
+  it('converts to a NonPositiveInt', () => {
+    const numStr = '0'
+    if (!NonPositiveIntString.Guard.is(numStr)) throw new Error('Unexpected result')
+    expect(NonPositiveIntString.toNonPositiveInt(numStr)).toBe(0)
+  })
 })

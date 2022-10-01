@@ -118,14 +118,6 @@ export const Type: SchemableParams1<t.URI> = pipe(
 )
 
 /**
- * @since 0.0.2
- * @category Utilities
- */
-export const toNonNegativeFloat: (
-  s: NonNegativeFloatString
-) => NonNegativeFloat.NonNegativeFloat = s => unsafeCoerce(Number(s))
-
-/**
  * @since 0.0.3
  * @category Instances
  */
@@ -138,3 +130,11 @@ export const Encoder: SchemableParams2<Enc.URI> = Enc.id()
 export const Arbitrary: SchemableParams1<Arb.URI> = NonNegativeFloat.Arbitrary.map(f =>
   f.toString()
 ) as Arb.Arbitrary<NonNegativeFloatString>
+
+/**
+ * @since 0.0.2
+ * @category Utilities
+ */
+export const toNonNegativeFloat: (
+  s: NonNegativeFloatString
+) => NonNegativeFloat.NonNegativeFloat = s => unsafeCoerce(Number(s))

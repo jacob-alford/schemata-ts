@@ -18,7 +18,7 @@ import * as Str from 'fp-ts/string'
 import * as TD from 'io-ts/TaskDecoder'
 import * as t from 'io-ts/Type'
 import * as Arb from '../internal/ArbitraryBase'
-import { pipe } from 'fp-ts/function'
+import { pipe, unsafeCoerce } from 'fp-ts/function'
 import * as NonPositiveFloat from '../number/NonPositiveFloat'
 
 /**
@@ -129,3 +129,11 @@ export const Type: SchemableParams1<t.URI> = pipe(
 export const Arbitrary: SchemableParams1<Arb.URI> = NonPositiveFloat.Arbitrary.map(f =>
   f.toString()
 ) as Arb.Arbitrary<NonPositiveFloatString>
+
+/**
+ * @since 0.0.4
+ * @category Utilities
+ */
+export const toNonPositiveFloat: (
+  s: NonPositiveFloatString
+) => NonPositiveFloat.NonPositiveFloat = s => unsafeCoerce(Number(s))
