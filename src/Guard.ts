@@ -14,6 +14,8 @@ import * as Natural from './number/Natural'
 import * as NegativeFloat from './number/NegativeFloat'
 import * as NegativeInt from './number/NegativeInt'
 import * as NonNegativeFloat from './number/NonNegativeFloat'
+import * as NonPositiveFloat from './number/NonPositiveFloat'
+import * as NonPositiveInt from './number/NonPositiveInt'
 import * as PositiveFloat from './number/PositiveFloat'
 import * as PositiveInt from './number/PositiveInt'
 
@@ -34,6 +36,8 @@ import * as NaturalString from './string/NaturalString'
 import * as NegativeFloatString from './string/NegativeFloatString'
 import * as NegativeIntString from './string/NegativeIntString'
 import * as NonNegativeFloatString from './string/NonNegativeFloatString'
+import * as NonPositiveFloatString from './string/NonPositiveFloatString'
+import * as NonPositiveIntString from './string/NonPositiveIntString'
 import * as NonemptyString from './string/NonemptyString'
 import * as PositiveFloatString from './string/PositiveFloatString'
 import * as PositiveIntString from './string/PositiveIntString'
@@ -53,6 +57,8 @@ export const Schemable: SchemableExt1<G.URI> = {
   NegativeFloat: NegativeFloat.Guard,
   NegativeInt: NegativeInt.Guard,
   NonNegativeFloat: NonNegativeFloat.Guard,
+  NonPositiveFloat: NonPositiveFloat.Guard,
+  NonPositiveInt: NonPositiveInt.Guard,
   PositiveFloat: PositiveFloat.Guard,
   PositiveInt: PositiveInt.Guard,
   ASCII: ASCII.Guard,
@@ -71,6 +77,8 @@ export const Schemable: SchemableExt1<G.URI> = {
   NegativeFloatString: NegativeFloatString.Guard,
   NegativeIntString: NegativeIntString.Guard,
   NonNegativeFloatString: NonNegativeFloatString.Guard,
+  NonPositiveFloatString: NonPositiveFloatString.Guard,
+  NonPositiveIntString: NonPositiveIntString.Guard,
   NonemptyString: NonemptyString.Guard,
   PositiveFloatString: PositiveFloatString.Guard,
   PositiveIntString: PositiveIntString.Guard,

@@ -14,6 +14,8 @@ import * as Natural from './number/Natural'
 import * as NegativeFloat from './number/NegativeFloat'
 import * as NegativeInt from './number/NegativeInt'
 import * as NonNegativeFloat from './number/NonNegativeFloat'
+import * as NonPositiveFloat from './number/NonPositiveFloat'
+import * as NonPositiveInt from './number/NonPositiveInt'
 import * as PositiveFloat from './number/PositiveFloat'
 import * as PositiveInt from './number/PositiveInt'
 
@@ -34,6 +36,8 @@ import * as NaturalString from './string/NaturalString'
 import * as NegativeFloatString from './string/NegativeFloatString'
 import * as NegativeIntString from './string/NegativeIntString'
 import * as NonNegativeFloatString from './string/NonNegativeFloatString'
+import * as NonPositiveFloatString from './string/NonPositiveFloatString'
+import * as NonPositiveIntString from './string/NonPositiveIntString'
 import * as NonemptyString from './string/NonemptyString'
 import * as PositiveFloatString from './string/PositiveFloatString'
 import * as PositiveIntString from './string/PositiveIntString'
@@ -53,6 +57,8 @@ export const Schemable: SchemableExt1<Arb.URI> = {
   NegativeFloat: NegativeFloat.Arbitrary,
   NegativeInt: NegativeInt.Arbitrary,
   NonNegativeFloat: NonNegativeFloat.Arbitrary,
+  NonPositiveFloat: NonPositiveFloat.Arbitrary,
+  NonPositiveInt: NonPositiveInt.Arbitrary,
   PositiveFloat: PositiveFloat.Arbitrary,
   PositiveInt: PositiveInt.Arbitrary,
   ASCII: ASCII.Arbitrary,
@@ -71,6 +77,8 @@ export const Schemable: SchemableExt1<Arb.URI> = {
   NegativeFloatString: NegativeFloatString.Arbitrary,
   NegativeIntString: NegativeIntString.Arbitrary,
   NonNegativeFloatString: NonNegativeFloatString.Arbitrary,
+  NonPositiveFloatString: NonPositiveFloatString.Arbitrary,
+  NonPositiveIntString: NonPositiveIntString.Arbitrary,
   NonemptyString: NonemptyString.Arbitrary,
   PositiveFloatString: PositiveFloatString.Arbitrary,
   PositiveIntString: PositiveIntString.Arbitrary,
