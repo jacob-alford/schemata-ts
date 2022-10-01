@@ -1,6 +1,6 @@
 ---
 title: SchemableExt.ts
-nav_order: 15
+nav_order: 17
 parent: Modules
 ---
 
@@ -96,6 +96,32 @@ export interface SchemableExt<S> extends SchemableHKT2<S> {
    * @since 0.0.2
    */
   readonly NonNegativeFloat: NonNegativeFloat.SchemableParams<S>
+
+  /**
+   * Non-positive floating point branded newtype.
+   *
+   * Represents non-positive floating point numbers:
+   *
+   * ```math
+   *  { f | f ∈ ℝ, f <= 0, f >= -Number.MAX_VALUE }
+   * ```
+   *
+   * @since 0.0.4
+   */
+  readonly NonPositiveFloat: NonPositiveFloat.SchemableParams<S>
+
+  /**
+   * NonPositive integer branded newtype.
+   *
+   * Represents integers which are negative or zero.
+   *
+   * ```math
+   *  { z | z ∈ ℤ, z >= -2 ** 53 + 1, z <= 0 }
+   * ```
+   *
+   * @since 0.0.4
+   */
+  readonly NonPositiveInt: NonPositiveInt.SchemableParams<S>
 
   /**
    * Positive Float branded newtype.
@@ -210,7 +236,16 @@ export interface SchemableExt<S> extends SchemableHKT2<S> {
    *
    * @since 0.0.3
    * @example
-   *   background-color: hsl(270 60% 70% / 0.7);
+   *   import { Guard } from 'schemable-ts-types/string/HslColor'
+   *
+   *   const hue = 270
+   *   const saturation = 60
+   *   const lightness = 70
+   *   const alpha = 0.7
+   *
+   *   const hslString = `hsl(${hue} ${saturation}% ${lightness}% / ${alpha})`
+   *
+   *   assert.equal(Guard.is(hslString), true)
    */
   readonly HslColor: HslColor.SchemableParams<S>
 
@@ -294,6 +329,32 @@ export interface SchemableExt<S> extends SchemableHKT2<S> {
    * @since 0.0.2
    */
   readonly NonNegativeFloatString: NonNegativeFloatString.SchemableParams<S>
+
+  /**
+   * Non-positive floating point branded newtype string.
+   *
+   * Represents non-positive floating point number strings:
+   *
+   * ```math
+   *  { f | f ∈ ℝ, f <= 0, f >= -Number.MAX_VALUE }
+   * ```
+   *
+   * @since 0.0.4
+   */
+  readonly NonPositiveFloatString: NonPositiveFloatString.SchemableParams<S>
+
+  /**
+   * NonPositive integer branded newtype string.
+   *
+   * Represents integer strings which are negative or zero.
+   *
+   * ```math
+   *  { z | z ∈ ℤ, z >= -2 ** 53 + 1, z <= 0 }
+   * ```
+   *
+   * @since 0.0.4
+   */
+  readonly NonPositiveIntString: NonPositiveIntString.SchemableParams<S>
 
   /**
    * Represents strings that are not empty strings.
@@ -421,6 +482,32 @@ export interface SchemableExt1<S extends URIS> extends Schemable1<S> {
   readonly NonNegativeFloat: NonNegativeFloat.SchemableParams1<S>
 
   /**
+   * Non-positive floating point branded newtype.
+   *
+   * Represents non-positive floating point numbers:
+   *
+   * ```math
+   *  { f | f ∈ ℝ, f <= 0, f >= -Number.MAX_VALUE }
+   * ```
+   *
+   * @since 0.0.4
+   */
+  readonly NonPositiveFloat: NonPositiveFloat.SchemableParams1<S>
+
+  /**
+   * NonPositive integer branded newtype.
+   *
+   * Represents integers which are negative or zero.
+   *
+   * ```math
+   *  { z | z ∈ ℤ, z >= -2 ** 53 + 1, z <= 0 }
+   * ```
+   *
+   * @since 0.0.4
+   */
+  readonly NonPositiveInt: NonPositiveInt.SchemableParams1<S>
+
+  /**
    * Positive Float branded newtype.
    *
    * Represents floating point numbers:
@@ -533,7 +620,16 @@ export interface SchemableExt1<S extends URIS> extends Schemable1<S> {
    *
    * @since 0.0.3
    * @example
-   *   background-color: hsl(270 60% 70% / 0.7);
+   *   import { Guard } from 'schemable-ts-types/string/HslColor'
+   *
+   *   const hue = 270
+   *   const saturation = 60
+   *   const lightness = 70
+   *   const alpha = 0.7
+   *
+   *   const hslString = `hsl(${hue} ${saturation}% ${lightness}% / ${alpha})`
+   *
+   *   assert.equal(Guard.is(hslString), true)
    */
   readonly HslColor: HslColor.SchemableParams1<S>
 
@@ -617,6 +713,32 @@ export interface SchemableExt1<S extends URIS> extends Schemable1<S> {
    * @since 0.0.2
    */
   readonly NonNegativeFloatString: NonNegativeFloatString.SchemableParams1<S>
+
+  /**
+   * Non-positive floating point branded newtype string.
+   *
+   * Represents non-positive floating point number strings:
+   *
+   * ```math
+   *  { f | f ∈ ℝ, f <= 0, f >= -Number.MAX_VALUE }
+   * ```
+   *
+   * @since 0.0.4
+   */
+  readonly NonPositiveFloatString: NonPositiveFloatString.SchemableParams1<S>
+
+  /**
+   * NonPositive integer branded newtype string.
+   *
+   * Represents integer strings which are negative or zero.
+   *
+   * ```math
+   *  { z | z ∈ ℤ, z >= -2 ** 53 + 1, z <= 0 }
+   * ```
+   *
+   * @since 0.0.4
+   */
+  readonly NonPositiveIntString: NonPositiveIntString.SchemableParams1<S>
 
   /**
    * Represents strings that are not empty strings.
@@ -744,6 +866,32 @@ export interface SchemableExt2<S extends URIS2> extends Schemable2<S> {
   readonly NonNegativeFloat: NonNegativeFloat.SchemableParams2<S>
 
   /**
+   * Non-positive floating point branded newtype.
+   *
+   * Represents non-positive floating point numbers:
+   *
+   * ```math
+   *  { f | f ∈ ℝ, f <= 0, f >= -Number.MAX_VALUE }
+   * ```
+   *
+   * @since 0.0.4
+   */
+  readonly NonPositiveFloat: NonPositiveFloat.SchemableParams2<S>
+
+  /**
+   * NonPositive integer branded newtype.
+   *
+   * Represents integers which are negative or zero.
+   *
+   * ```math
+   *  { z | z ∈ ℤ, z >= -2 ** 53 + 1, z <= 0 }
+   * ```
+   *
+   * @since 0.0.4
+   */
+  readonly NonPositiveInt: NonPositiveInt.SchemableParams2<S>
+
+  /**
    * Positive Float branded newtype.
    *
    * Represents floating point numbers:
@@ -856,7 +1004,16 @@ export interface SchemableExt2<S extends URIS2> extends Schemable2<S> {
    *
    * @since 0.0.3
    * @example
-   *   background-color: hsl(270 60% 70% / 0.7);
+   *   import { Guard } from 'schemable-ts-types/string/HslColor'
+   *
+   *   const hue = 270
+   *   const saturation = 60
+   *   const lightness = 70
+   *   const alpha = 0.7
+   *
+   *   const hslString = `hsl(${hue} ${saturation}% ${lightness}% / ${alpha})`
+   *
+   *   assert.equal(Guard.is(hslString), true)
    */
   readonly HslColor: HslColor.SchemableParams2<S>
 
@@ -940,6 +1097,32 @@ export interface SchemableExt2<S extends URIS2> extends Schemable2<S> {
    * @since 0.0.2
    */
   readonly NonNegativeFloatString: NonNegativeFloatString.SchemableParams2<S>
+
+  /**
+   * Non-positive floating point branded newtype string.
+   *
+   * Represents non-positive floating point number strings:
+   *
+   * ```math
+   *  { f | f ∈ ℝ, f <= 0, f >= -Number.MAX_VALUE }
+   * ```
+   *
+   * @since 0.0.4
+   */
+  readonly NonPositiveFloatString: NonPositiveFloatString.SchemableParams2<S>
+
+  /**
+   * NonPositive integer branded newtype string.
+   *
+   * Represents integer strings which are negative or zero.
+   *
+   * ```math
+   *  { z | z ∈ ℤ, z >= -2 ** 53 + 1, z <= 0 }
+   * ```
+   *
+   * @since 0.0.4
+   */
+  readonly NonPositiveIntString: NonPositiveIntString.SchemableParams2<S>
 
   /**
    * Represents strings that are not empty strings.
@@ -1067,6 +1250,32 @@ export interface SchemableExt2C<S extends URIS2> extends Schemable2C<S, unknown>
   readonly NonNegativeFloat: NonNegativeFloat.SchemableParams2C<S>
 
   /**
+   * Non-positive floating point branded newtype.
+   *
+   * Represents non-positive floating point numbers:
+   *
+   * ```math
+   *  { f | f ∈ ℝ, f <= 0, f >= -Number.MAX_VALUE }
+   * ```
+   *
+   * @since 0.0.4
+   */
+  readonly NonPositiveFloat: NonPositiveFloat.SchemableParams2C<S>
+
+  /**
+   * NonPositive integer branded newtype.
+   *
+   * Represents integers which are negative or zero.
+   *
+   * ```math
+   *  { z | z ∈ ℤ, z >= -2 ** 53 + 1, z <= 0 }
+   * ```
+   *
+   * @since 0.0.4
+   */
+  readonly NonPositiveInt: NonPositiveInt.SchemableParams2C<S>
+
+  /**
    * Positive Float branded newtype.
    *
    * Represents floating point numbers:
@@ -1179,7 +1388,16 @@ export interface SchemableExt2C<S extends URIS2> extends Schemable2C<S, unknown>
    *
    * @since 0.0.3
    * @example
-   *   background-color: hsl(270 60% 70% / 0.7);
+   *   import { Guard } from 'schemable-ts-types/string/HslColor'
+   *
+   *   const hue = 270
+   *   const saturation = 60
+   *   const lightness = 70
+   *   const alpha = 0.7
+   *
+   *   const hslString = `hsl(${hue} ${saturation}% ${lightness}% / ${alpha})`
+   *
+   *   assert.equal(Guard.is(hslString), true)
    */
   readonly HslColor: HslColor.SchemableParams2C<S>
 
@@ -1263,6 +1481,32 @@ export interface SchemableExt2C<S extends URIS2> extends Schemable2C<S, unknown>
    * @since 0.0.2
    */
   readonly NonNegativeFloatString: NonNegativeFloatString.SchemableParams2C<S>
+
+  /**
+   * Non-positive floating point branded newtype string.
+   *
+   * Represents non-positive floating point number strings:
+   *
+   * ```math
+   *  { f | f ∈ ℝ, f <= 0, f >= -Number.MAX_VALUE }
+   * ```
+   *
+   * @since 0.0.4
+   */
+  readonly NonPositiveFloatString: NonPositiveFloatString.SchemableParams2C<S>
+
+  /**
+   * NonPositive integer branded newtype string.
+   *
+   * Represents integer strings which are negative or zero.
+   *
+   * ```math
+   *  { z | z ∈ ℤ, z >= -2 ** 53 + 1, z <= 0 }
+   * ```
+   *
+   * @since 0.0.4
+   */
+  readonly NonPositiveIntString: NonPositiveIntString.SchemableParams2C<S>
 
   /**
    * Represents strings that are not empty strings.
