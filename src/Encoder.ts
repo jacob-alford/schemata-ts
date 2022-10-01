@@ -14,6 +14,8 @@ import * as Natural from './number/Natural'
 import * as NegativeFloat from './number/NegativeFloat'
 import * as NegativeInt from './number/NegativeInt'
 import * as NonNegativeFloat from './number/NonNegativeFloat'
+import * as NonPositiveFloat from './number/NonPositiveFloat'
+import * as NonPositiveInt from './number/NonPositiveInt'
 import * as PositiveFloat from './number/PositiveFloat'
 import * as PositiveInt from './number/PositiveInt'
 
@@ -34,6 +36,8 @@ import * as NaturalString from './string/NaturalString'
 import * as NegativeFloatString from './string/NegativeFloatString'
 import * as NegativeIntString from './string/NegativeIntString'
 import * as NonNegativeFloatString from './string/NonNegativeFloatString'
+import * as NonPositiveFloatString from './string/NonPositiveFloatString'
+import * as NonPositiveIntString from './string/NonPositiveIntString'
 import * as NonemptyString from './string/NonemptyString'
 import * as PositiveFloatString from './string/PositiveFloatString'
 import * as PositiveIntString from './string/PositiveIntString'
@@ -53,6 +57,8 @@ export const Schemable: SchemableExt2<Enc.URI> = {
   NegativeFloat: NegativeFloat.Encoder,
   NegativeInt: NegativeInt.Encoder,
   NonNegativeFloat: NonNegativeFloat.Encoder,
+  NonPositiveFloat: NonPositiveFloat.Encoder,
+  NonPositiveInt: NonPositiveInt.Encoder,
   PositiveFloat: PositiveFloat.Encoder,
   PositiveInt: PositiveInt.Encoder,
   ASCII: ASCII.Encoder,
@@ -71,6 +77,8 @@ export const Schemable: SchemableExt2<Enc.URI> = {
   NegativeFloatString: NegativeFloatString.Encoder,
   NegativeIntString: NegativeIntString.Encoder,
   NonNegativeFloatString: NonNegativeFloatString.Encoder,
+  NonPositiveFloatString: NonPositiveFloatString.Encoder,
+  NonPositiveIntString: NonPositiveIntString.Encoder,
   NonemptyString: NonemptyString.Encoder,
   PositiveFloatString: PositiveFloatString.Encoder,
   PositiveIntString: PositiveIntString.Encoder,

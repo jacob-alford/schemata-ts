@@ -1,6 +1,6 @@
 ---
 title: number/NonNegativeFloat.ts
-nav_order: 10
+nav_order: 12
 parent: Modules
 ---
 
@@ -11,7 +11,7 @@ Non-negative floating point branded newtype.
 Represents non-negative floating point numbers:
 
 ```math
- { f | f ∈ ℝ, f >= 0, f <= 2 ** 53 - 1 }
+ { f | f ∈ ℝ, f >= 0, f <= Number.MAX_VALUE }
 ```
 
 Added in v0.0.2
@@ -21,7 +21,9 @@ Added in v0.0.2
 <h2 class="text-delta">Table of contents</h2>
 
 - [Instances](#instances)
+  - [Arbitrary](#arbitrary)
   - [Decoder](#decoder)
+  - [Encoder](#encoder)
   - [Eq](#eq)
   - [Guard](#guard)
   - [TaskDecoder](#taskdecoder)
@@ -30,6 +32,7 @@ Added in v0.0.2
   - [NonNegativeFloat (type alias)](#nonnegativefloat-type-alias)
   - [SchemableParams (type alias)](#schemableparams-type-alias)
   - [SchemableParams1 (type alias)](#schemableparams1-type-alias)
+  - [SchemableParams2 (type alias)](#schemableparams2-type-alias)
   - [SchemableParams2C (type alias)](#schemableparams2c-type-alias)
 - [Refinements](#refinements)
   - [isNonNegativeFloat](#isnonnegativefloat)
@@ -37,6 +40,16 @@ Added in v0.0.2
 ---
 
 # Instances
+
+## Arbitrary
+
+**Signature**
+
+```ts
+export declare const Arbitrary: Arb.Arbitrary<NonNegativeFloat>
+```
+
+Added in v0.0.3
 
 ## Decoder
 
@@ -47,6 +60,16 @@ export declare const Decoder: D.Decoder<unknown, NonNegativeFloat>
 ```
 
 Added in v0.0.2
+
+## Encoder
+
+**Signature**
+
+```ts
+export declare const Encoder: Enc.Encoder<number, NonNegativeFloat>
+```
+
+Added in v0.0.3
 
 ## Eq
 
@@ -97,7 +120,7 @@ Non-negative floating point branded newtype.
 Represents non-negative floating point numbers:
 
 ```math
- { f | f ∈ ℝ, f >= 0, f <= 2 ** 53 - 1 }
+ { f | f ∈ ℝ, f >= 0, f <= Number.MAX_VALUE }
 ```
 
 **Signature**
@@ -113,7 +136,7 @@ Added in v0.0.2
 **Signature**
 
 ```ts
-export type SchemableParams<S> = HKT<S, NonNegativeFloat>
+export type SchemableParams<S> = HKT2<S, number, NonNegativeFloat>
 ```
 
 Added in v0.0.2
@@ -127,6 +150,16 @@ export type SchemableParams1<S extends URIS> = Kind<S, NonNegativeFloat>
 ```
 
 Added in v0.0.2
+
+## SchemableParams2 (type alias)
+
+**Signature**
+
+```ts
+export type SchemableParams2<S extends URIS2> = Kind2<S, number, NonNegativeFloat>
+```
+
+Added in v0.0.3
 
 ## SchemableParams2C (type alias)
 

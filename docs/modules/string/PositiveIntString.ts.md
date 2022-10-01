@@ -1,6 +1,6 @@
 ---
 title: string/PositiveIntString.ts
-nav_order: 29
+nav_order: 39
 parent: Modules
 ---
 
@@ -23,7 +23,9 @@ Added in v0.0.1
 - [Destructors](#destructors)
   - [toPositiveInt](#topositiveint)
 - [Instances](#instances)
+  - [Arbitrary](#arbitrary)
   - [Decoder](#decoder)
+  - [Encoder](#encoder)
   - [Eq](#eq)
   - [Guard](#guard)
   - [TaskDecoder](#taskdecoder)
@@ -32,6 +34,7 @@ Added in v0.0.1
   - [PositiveIntString (type alias)](#positiveintstring-type-alias)
   - [SchemableParams (type alias)](#schemableparams-type-alias)
   - [SchemableParams1 (type alias)](#schemableparams1-type-alias)
+  - [SchemableParams2 (type alias)](#schemableparams2-type-alias)
   - [SchemableParams2C (type alias)](#schemableparams2c-type-alias)
 - [Refinements](#refinements)
   - [isPositiveIntString](#ispositiveintstring)
@@ -45,12 +48,22 @@ Added in v0.0.1
 **Signature**
 
 ```ts
-export declare const toPositiveInt: (n: PositiveIntString) => PositiveInt
+export declare const toPositiveInt: (n: PositiveIntString) => PositiveInt.PositiveInt
 ```
 
 Added in v0.0.1
 
 # Instances
+
+## Arbitrary
+
+**Signature**
+
+```ts
+export declare const Arbitrary: Arb.Arbitrary<PositiveIntString>
+```
+
+Added in v0.0.3
 
 ## Decoder
 
@@ -61,6 +74,16 @@ export declare const Decoder: D.Decoder<unknown, PositiveIntString>
 ```
 
 Added in v0.0.1
+
+## Encoder
+
+**Signature**
+
+```ts
+export declare const Encoder: Enc.Encoder<string, PositiveIntString>
+```
+
+Added in v0.0.3
 
 ## Eq
 
@@ -127,7 +150,7 @@ Added in v0.0.1
 **Signature**
 
 ```ts
-export type SchemableParams<S> = HKT<S, PositiveIntString>
+export type SchemableParams<S> = HKT2<S, string, PositiveIntString>
 ```
 
 Added in v0.0.1
@@ -141,6 +164,16 @@ export type SchemableParams1<S extends URIS> = Kind<S, PositiveIntString>
 ```
 
 Added in v0.0.1
+
+## SchemableParams2 (type alias)
+
+**Signature**
+
+```ts
+export type SchemableParams2<S extends URIS2> = Kind2<S, string, PositiveIntString>
+```
+
+Added in v0.0.3
 
 ## SchemableParams2C (type alias)
 

@@ -578,7 +578,7 @@ const main: Build<void> = pipe(
       RTE.chainFirstIOK(() => Cons.log(Color.cyan('\n💅 Formatting with Prettier...'))),
       RTE.chainFirstTaskK(delay(400)),
       flow(
-        RTE.apFirst(format),
+        RTE.chainFirst(() => format),
         RTE.chainFirstIOK(() => Cons.log(Color.green('\n\nDone!')))
       )
     )
