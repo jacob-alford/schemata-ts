@@ -1,5 +1,11 @@
 /**
- * TODO: Add module comment
+ * Non-positive floating point branded newtype string.
+ *
+ * Represents non-positive floating point number strings:
+ *
+ * ```math
+ *  { f | f ∈ ℝ, f <= 0, f >= -Number.MAX_VALUE }
+ * ```
  *
  * @since 0.0.4
  */
@@ -24,7 +30,13 @@ interface NonPositiveFloatStringBrand {
 }
 
 /**
- * TODO: Add module comment
+ * Non-positive floating point branded newtype string.
+ *
+ * Represents non-positive floating point number strings:
+ *
+ * ```math
+ *  { f | f ∈ ℝ, f <= 0, f >= -Number.MAX_VALUE }
+ * ```
  *
  * @since 0.0.4
  * @category Model
