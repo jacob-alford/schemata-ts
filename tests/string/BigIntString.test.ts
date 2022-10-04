@@ -75,6 +75,12 @@ describe('BigIntString', () => {
     )
   })
 
+  it('converts to bigint', () => {
+    const str = '123'
+    if (!BigIntString.Guard.is(str)) throw new Error('Unexpected result')
+    expect(BigIntString.toBigInt(str)).toEqual(BigInt(123))
+  })
+
   describe('Arbitrary', () => {
     it('generates valid BigIntString', () => {
       validateArbitrary(BigIntString, BigIntString.isBigIntString)
