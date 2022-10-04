@@ -18,7 +18,7 @@ import * as Arb from '../internal/ArbitraryBase'
 
 /**
  * @since 0.0.1
- * @category Internal
+ * @internal
  */
 interface SafeDateBrand {
   readonly SafeDate: unique symbol

@@ -24,7 +24,7 @@ import { isInt } from './Int'
 
 /**
  * @since 0.0.4
- * @category Internal
+ * @internal
  */
 interface NonPositiveIntBrand {
   readonly NonPositiveInt: unique symbol

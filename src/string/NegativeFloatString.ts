@@ -24,7 +24,7 @@ import * as NegativeFloat from '../number/NegativeFloat'
 
 /**
  * @since 0.0.2
- * @category Internal
+ * @internal
  */
 interface NegativeFloatStringBrand {
   readonly NegativeFloatString: unique symbol

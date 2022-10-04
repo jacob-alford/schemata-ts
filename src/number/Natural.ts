@@ -25,7 +25,7 @@ import { isInt } from './Int'
 
 /**
  * @since 0.0.1
- * @category Internal
+ * @internal
  */
 interface NaturalBrand {
   readonly Natural: unique symbol

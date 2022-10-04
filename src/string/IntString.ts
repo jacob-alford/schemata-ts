@@ -24,7 +24,7 @@ import * as Int from '../number/Int'
 
 /**
  * @since 0.0.1
- * @category Internal
+ * @internal
  */
 interface IntStringBrand {
   readonly IntString: unique symbol

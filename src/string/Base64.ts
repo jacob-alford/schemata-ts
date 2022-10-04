@@ -23,7 +23,7 @@ import * as Arb from '../internal/ArbitraryBase'
 
 /**
  * @since 0.0.2
- * @category Internal
+ * @internal
  */
 interface Base64Brand {
   readonly Base64: unique symbol
@@ -68,7 +68,7 @@ export type SchemableParams2C<S extends URIS2> = Kind2<S, unknown, Base64>
 
 /**
  * @since 0.0.2
- * @category Internal
+ * @internal
  */
 const notBase64 = /[^A-Z0-9+/=]/i
 

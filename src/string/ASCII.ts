@@ -21,7 +21,7 @@ import * as Arb from '../internal/ArbitraryBase'
 
 /**
  * @since 0.0.1
- * @category Internal
+ * @internal
  */
 interface ASCIIBrand {
   readonly ASCII: unique symbol
@@ -29,7 +29,7 @@ interface ASCIIBrand {
 
 /**
  * @since 0.0.1
- * @category Internal
+ * @internal
  * @note Control characters are banned by ESLint by default, however
  * these special characters are valid ASCII (codes 0-31).
  * @see https://eslint.org/docs/latest/rules/no-control-regex

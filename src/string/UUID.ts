@@ -21,7 +21,7 @@ import * as Arb from '../internal/ArbitraryBase'
 
 /**
  * @since 0.0.1
- * @category Internal
+ * @internal
  */
 interface UUIDBrand {
   readonly UUID: unique symbol
@@ -31,7 +31,7 @@ interface UUIDBrand {
  * See: https://github.com/validatorjs/validator.js/blob/master/src/lib/isUUID.js
  *
  * @since 0.0.1
- * @category Internal
+ * @internal
  */
 const uuidRegex = {
   1: /^[0-9A-F]{8}-[0-9A-F]{4}-1[0-9A-F]{3}-[0-9A-F]{4}-[0-9A-F]{12}$/i,

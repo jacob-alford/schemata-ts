@@ -23,7 +23,7 @@ import { luhn } from '../internal/algorithms'
 
 /**
  * @since 0.0.3
- * @category Internal
+ * @internal
  */
 interface CreditCardBrand {
   readonly CreditCard: unique symbol
