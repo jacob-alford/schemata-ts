@@ -55,7 +55,7 @@ export type UUID = string & UUIDBrand
  * @category Model
  */
 export type UUIDSchemableOptions = {
-  version: keyof typeof uuidRegex
+  version: 1 | 2 | 3 | 4 | 5 | 'all'
 }
 
 /**
