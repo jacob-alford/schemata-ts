@@ -16,7 +16,7 @@ import { fileSystem } from './FS'
 import { cli } from './CLI'
 import { run } from './run'
 import { makeDestructureImport, makeModuleStarImport } from './ts-helpers'
-import { D, SC } from '../src/.'
+import { decoder as D, schemaExt as SC } from '../src/.'
 import { checkTestModuleUniqueness, makeTestFile } from './generator-helpers'
 import { Build } from './build'
 

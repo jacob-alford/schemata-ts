@@ -1,5 +1,5 @@
 import { interpreter, make } from '../src/SchemaExt'
-import { D } from '../src'
+import { decoder as D } from '../src'
 
 describe('Decoder', () => {
   const User = make(S => S.struct({ name: S.string }))
