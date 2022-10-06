@@ -122,12 +122,6 @@ export const Type: SchemableParams1<t.URI> = pipe(
 )
 
 /**
- * @since 0.0.1
- * @category Destructors
- */
-export const toNatural: (n: NaturalString) => Natural = n => unsafeCoerce(parseInt(n))
-
-/**
  * @since 0.0.3
  * @category Instances
  */
@@ -140,3 +134,9 @@ export const Encoder: SchemableParams2<Enc.URI> = Enc.id()
 export const Arbitrary: SchemableParams1<Arb.URI> = Nat.Arbitrary.map(n =>
   n.toString()
 ) as Arb.Arbitrary<NaturalString>
+
+/**
+ * @since 0.0.1
+ * @category Destructors
+ */
+export const toNatural: (n: NaturalString) => Natural = n => unsafeCoerce(parseInt(n))
