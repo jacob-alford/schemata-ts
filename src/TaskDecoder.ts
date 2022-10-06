@@ -8,6 +8,10 @@
 import * as TD from 'io-ts/TaskDecoder'
 import { SchemableExt2C } from './SchemableExt'
 
+/** Generic */
+import * as OptionFromNullable from './generic/OptionFromNullable'
+import * as OptionFromUndefined from './generic/OptionFromUndefined'
+
 /** Number */
 import * as Int from './number/Int'
 import * as Natural from './number/Natural'
@@ -41,6 +45,7 @@ import * as NonPositiveIntString from './string/NonPositiveIntString'
 import * as NonemptyString from './string/NonemptyString'
 import * as PositiveFloatString from './string/PositiveFloatString'
 import * as PositiveIntString from './string/PositiveIntString'
+import * as RGB from './string/RGB'
 import * as UUID from './string/UUID'
 
 /** Date */
@@ -52,6 +57,8 @@ import * as SafeDate from './date/SafeDate'
  */
 export const Schemable: SchemableExt2C<TD.URI> = {
   ...TD.Schemable,
+  OptionFromNullable: OptionFromNullable.TaskDecoder,
+  OptionFromUndefined: OptionFromUndefined.TaskDecoder,
   Int: Int.TaskDecoder,
   Natural: Natural.TaskDecoder,
   NegativeFloat: NegativeFloat.TaskDecoder,
@@ -82,6 +89,7 @@ export const Schemable: SchemableExt2C<TD.URI> = {
   NonemptyString: NonemptyString.TaskDecoder,
   PositiveFloatString: PositiveFloatString.TaskDecoder,
   PositiveIntString: PositiveIntString.TaskDecoder,
+  RGB: RGB.TaskDecoder,
   UUID: UUID.TaskDecoder,
   SafeDate: SafeDate.TaskDecoder,
 }

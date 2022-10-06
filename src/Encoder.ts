@@ -8,6 +8,10 @@
 import * as Enc from './internal/EncoderBase'
 import { SchemableExt2 } from './SchemableExt'
 
+/** Generic */
+import * as OptionFromNullable from './generic/OptionFromNullable'
+import * as OptionFromUndefined from './generic/OptionFromUndefined'
+
 /** Number */
 import * as Int from './number/Int'
 import * as Natural from './number/Natural'
@@ -41,6 +45,7 @@ import * as NonPositiveIntString from './string/NonPositiveIntString'
 import * as NonemptyString from './string/NonemptyString'
 import * as PositiveFloatString from './string/PositiveFloatString'
 import * as PositiveIntString from './string/PositiveIntString'
+import * as RGB from './string/RGB'
 import * as UUID from './string/UUID'
 
 /** Date */
@@ -52,6 +57,8 @@ import * as SafeDate from './date/SafeDate'
  */
 export const Schemable: SchemableExt2<Enc.URI> = {
   ...Enc.Schemable,
+  OptionFromNullable: OptionFromNullable.Encoder,
+  OptionFromUndefined: OptionFromUndefined.Encoder,
   Int: Int.Encoder,
   Natural: Natural.Encoder,
   NegativeFloat: NegativeFloat.Encoder,
@@ -82,6 +89,7 @@ export const Schemable: SchemableExt2<Enc.URI> = {
   NonemptyString: NonemptyString.Encoder,
   PositiveFloatString: PositiveFloatString.Encoder,
   PositiveIntString: PositiveIntString.Encoder,
+  RGB: RGB.Encoder,
   UUID: UUID.Encoder,
   SafeDate: SafeDate.Encoder,
 }

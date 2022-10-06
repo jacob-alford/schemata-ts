@@ -8,6 +8,10 @@
 import * as D from 'io-ts/Decoder'
 import { SchemableExt2C } from './SchemableExt'
 
+/** Generic */
+import * as OptionFromNullable from './generic/OptionFromNullable'
+import * as OptionFromUndefined from './generic/OptionFromUndefined'
+
 /** Number */
 import * as Int from './number/Int'
 import * as Natural from './number/Natural'
@@ -41,6 +45,7 @@ import * as NonPositiveIntString from './string/NonPositiveIntString'
 import * as NonemptyString from './string/NonemptyString'
 import * as PositiveFloatString from './string/PositiveFloatString'
 import * as PositiveIntString from './string/PositiveIntString'
+import * as RGB from './string/RGB'
 import * as UUID from './string/UUID'
 
 /** Date */
@@ -52,6 +57,8 @@ import * as SafeDate from './date/SafeDate'
  */
 export const Schemable: SchemableExt2C<D.URI> = {
   ...D.Schemable,
+  OptionFromNullable: OptionFromNullable.Decoder,
+  OptionFromUndefined: OptionFromUndefined.Decoder,
   Int: Int.Decoder,
   Natural: Natural.Decoder,
   NegativeFloat: NegativeFloat.Decoder,
@@ -82,6 +89,7 @@ export const Schemable: SchemableExt2C<D.URI> = {
   NonemptyString: NonemptyString.Decoder,
   PositiveFloatString: PositiveFloatString.Decoder,
   PositiveIntString: PositiveIntString.Decoder,
+  RGB: RGB.Decoder,
   UUID: UUID.Decoder,
   SafeDate: SafeDate.Decoder,
 }

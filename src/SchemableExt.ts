@@ -9,6 +9,10 @@ import { URIS, URIS2 } from 'fp-ts/HKT'
 import { Schemable1, Schemable2C } from 'io-ts/Schemable'
 import { Schemable2, SchemableHKT2 } from './internal/Schemable2'
 
+/** Generic */
+import * as OptionFromNullable from './generic/OptionFromNullable'
+import * as OptionFromUndefined from './generic/OptionFromUndefined'
+
 /** Number */
 import * as Int from './number/Int'
 import * as Natural from './number/Natural'
@@ -42,6 +46,7 @@ import * as NonPositiveIntString from './string/NonPositiveIntString'
 import * as NonemptyString from './string/NonemptyString'
 import * as PositiveFloatString from './string/PositiveFloatString'
 import * as PositiveIntString from './string/PositiveIntString'
+import * as RGB from './string/RGB'
 import * as UUID from './string/UUID'
 
 /** Date */
@@ -52,6 +57,20 @@ import * as SafeDate from './date/SafeDate'
  * @category Instances
  */
 export interface SchemableExt<S> extends SchemableHKT2<S> {
+  /**
+   * Represents a conversion from a nullable value to an Optional type
+   *
+   * @since 0.0.4
+   */
+  readonly OptionFromNullable: OptionFromNullable.SchemableParams<S>
+
+  /**
+   * Represents a conversion from an value that can be undefined to an Optional type
+   *
+   * @since 0.0.4
+   */
+  readonly OptionFromUndefined: OptionFromUndefined.SchemableParams<S>
+
   /**
    * Integer branded newtype.
    *
@@ -414,6 +433,14 @@ export interface SchemableExt<S> extends SchemableHKT2<S> {
   readonly PositiveIntString: PositiveIntString.SchemableParams<S>
 
   /**
+   * Represents strings which are valid RGB colors. Permits both absolute and percentage
+   * based values.
+   *
+   * @since 0.0.4
+   */
+  readonly RGB: RGB.SchemableParams<S>
+
+  /**
    * Represents strings that are UUIDs.
    *
    * This is heavily inspired by the `validator.js` module
@@ -436,6 +463,20 @@ export interface SchemableExt<S> extends SchemableHKT2<S> {
  * @category Instances
  */
 export interface SchemableExt1<S extends URIS> extends Schemable1<S> {
+  /**
+   * Represents a conversion from a nullable value to an Optional type
+   *
+   * @since 0.0.4
+   */
+  readonly OptionFromNullable: OptionFromNullable.SchemableParams1<S>
+
+  /**
+   * Represents a conversion from an value that can be undefined to an Optional type
+   *
+   * @since 0.0.4
+   */
+  readonly OptionFromUndefined: OptionFromUndefined.SchemableParams1<S>
+
   /**
    * Integer branded newtype.
    *
@@ -798,6 +839,14 @@ export interface SchemableExt1<S extends URIS> extends Schemable1<S> {
   readonly PositiveIntString: PositiveIntString.SchemableParams1<S>
 
   /**
+   * Represents strings which are valid RGB colors. Permits both absolute and percentage
+   * based values.
+   *
+   * @since 0.0.4
+   */
+  readonly RGB: RGB.SchemableParams1<S>
+
+  /**
    * Represents strings that are UUIDs.
    *
    * This is heavily inspired by the `validator.js` module
@@ -820,6 +869,20 @@ export interface SchemableExt1<S extends URIS> extends Schemable1<S> {
  * @category Instances
  */
 export interface SchemableExt2<S extends URIS2> extends Schemable2<S> {
+  /**
+   * Represents a conversion from a nullable value to an Optional type
+   *
+   * @since 0.0.4
+   */
+  readonly OptionFromNullable: OptionFromNullable.SchemableParams2<S>
+
+  /**
+   * Represents a conversion from an value that can be undefined to an Optional type
+   *
+   * @since 0.0.4
+   */
+  readonly OptionFromUndefined: OptionFromUndefined.SchemableParams2<S>
+
   /**
    * Integer branded newtype.
    *
@@ -1182,6 +1245,14 @@ export interface SchemableExt2<S extends URIS2> extends Schemable2<S> {
   readonly PositiveIntString: PositiveIntString.SchemableParams2<S>
 
   /**
+   * Represents strings which are valid RGB colors. Permits both absolute and percentage
+   * based values.
+   *
+   * @since 0.0.4
+   */
+  readonly RGB: RGB.SchemableParams2<S>
+
+  /**
    * Represents strings that are UUIDs.
    *
    * This is heavily inspired by the `validator.js` module
@@ -1204,6 +1275,20 @@ export interface SchemableExt2<S extends URIS2> extends Schemable2<S> {
  * @category Instances
  */
 export interface SchemableExt2C<S extends URIS2> extends Schemable2C<S, unknown> {
+  /**
+   * Represents a conversion from a nullable value to an Optional type
+   *
+   * @since 0.0.4
+   */
+  readonly OptionFromNullable: OptionFromNullable.SchemableParams2C<S>
+
+  /**
+   * Represents a conversion from an value that can be undefined to an Optional type
+   *
+   * @since 0.0.4
+   */
+  readonly OptionFromUndefined: OptionFromUndefined.SchemableParams2C<S>
+
   /**
    * Integer branded newtype.
    *
@@ -1564,6 +1649,14 @@ export interface SchemableExt2C<S extends URIS2> extends Schemable2C<S, unknown>
    * @since 0.0.1
    */
   readonly PositiveIntString: PositiveIntString.SchemableParams2C<S>
+
+  /**
+   * Represents strings which are valid RGB colors. Permits both absolute and percentage
+   * based values.
+   *
+   * @since 0.0.4
+   */
+  readonly RGB: RGB.SchemableParams2C<S>
 
   /**
    * Represents strings that are UUIDs.
