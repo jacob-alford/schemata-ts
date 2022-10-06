@@ -23,7 +23,7 @@ import { base64Encode, urlifyBase64 } from '../internal/util'
 
 /**
  * @since 0.0.2
- * @category Internal
+ * @internal
  */
 interface JWTBrand {
   readonly JWT: unique symbol

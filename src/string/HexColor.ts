@@ -21,7 +21,7 @@ import * as Arb from '../internal/ArbitraryBase'
 
 /**
  * @since 0.0.3
- * @category Internal
+ * @internal
  */
 interface HexColorBrand {
   readonly HexColor: unique symbol
@@ -64,7 +64,7 @@ export type SchemableParams2C<S extends URIS2> = Kind2<S, unknown, HexColor>
 
 /**
  * @since 0.0.3
- * @category Internal
+ * @internal
  */
 const hexcolor = /^#?([0-9A-F]{3}|[0-9A-F]{4}|[0-9A-F]{6}|[0-9A-F]{8})$/i
 

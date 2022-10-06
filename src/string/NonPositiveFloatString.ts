@@ -23,7 +23,7 @@ import * as NonPositiveFloat from '../number/NonPositiveFloat'
 
 /**
  * @since 0.0.4
- * @category Internal
+ * @internal
  */
 interface NonPositiveFloatStringBrand {
   readonly NonPositiveFloatString: unique symbol

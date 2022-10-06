@@ -25,7 +25,7 @@ import { isIntString, toInt } from './IntString'
 
 /**
  * @since 0.0.1
- * @category Internal
+ * @internal
  */
 interface PositiveIntStringBrand {
   readonly PositiveIntString: unique symbol

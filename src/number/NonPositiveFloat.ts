@@ -23,7 +23,7 @@ import { pipe } from 'fp-ts/function'
 
 /**
  * @since 0.0.4
- * @category Internal
+ * @internal
  */
 interface NonPositiveFloatBrand {
   readonly NonPositiveFloat: unique symbol

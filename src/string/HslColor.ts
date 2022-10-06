@@ -30,7 +30,7 @@ import * as Arb from '../internal/ArbitraryBase'
 
 /**
  * @since 0.0.3
- * @category Internal
+ * @internal
  */
 interface HslColorBrand {
   readonly HslColor: unique symbol

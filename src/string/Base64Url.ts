@@ -24,7 +24,7 @@ import { urlifyBase64 } from '../internal/util'
 
 /**
  * @since 0.0.2
- * @category Internal
+ * @internal
  */
 interface Base64UrlBrand {
   readonly Base64Url: unique symbol
@@ -69,7 +69,7 @@ export type SchemableParams2C<S extends URIS2> = Kind2<S, unknown, Base64Url>
 
 /**
  * @since 0.0.2
- * @category Internal
+ * @internal
  */
 const urlSafeBase64 = /^[A-Z0-9_-]*$/i
 

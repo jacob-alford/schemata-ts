@@ -2,7 +2,7 @@
  * An instance of `Schemable` for `fast-check` arbitraries that emit valid values
  *
  * @since 0.0.2
- * @category Internal
+ * @internal
  */
 import * as fc from 'fast-check'
 import { identity, pipe } from 'fp-ts/function'
@@ -147,13 +147,13 @@ export const tuple = <A extends ReadonlyArray<unknown>>(
 
 /**
  * @since 0.0.2
- * @category Internal
+ * @internal
  */
 export const typeOf = (x: unknown): string => (x === null ? 'null' : typeof x)
 
 /**
  * @since 0.0.2
- * @category Internal
+ * @internal
  */
 const intersect_ = <A, B>(a: A, b: B): A & B => {
   if (a !== undefined && b !== undefined) {

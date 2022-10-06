@@ -23,7 +23,7 @@ import * as NonPositiveInt from '../number/NonPositiveInt'
 
 /**
  * @since 0.0.4
- * @category Internal
+ * @internal
  */
 interface NonPositiveIntStringBrand {
   readonly NonPositiveIntString: unique symbol

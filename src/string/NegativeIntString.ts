@@ -25,7 +25,7 @@ import * as NegativeInt from '../number/NegativeInt'
 
 /**
  * @since 0.0.1
- * @category Internal
+ * @internal
  */
 interface NegativeIntStringBrand {
   readonly NegativeIntString: unique symbol

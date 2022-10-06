@@ -21,7 +21,7 @@ import * as Arb from '../internal/ArbitraryBase'
 
 /**
  * @since 0.0.3
- * @category Internal
+ * @internal
  */
 interface HexadecimalBrand {
   readonly Hexadecimal: unique symbol
@@ -64,7 +64,7 @@ export type SchemableParams2C<S extends URIS2> = Kind2<S, unknown, Hexadecimal>
 
 /**
  * @since 0.0.3
- * @category Internal
+ * @internal
  */
 const reHex = /^(0x|0h)?[0-9A-F]+$/i
 

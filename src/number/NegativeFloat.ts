@@ -24,7 +24,7 @@ import * as Arb from '../internal/ArbitraryBase'
 
 /**
  * @since 0.0.2
- * @category Internal
+ * @internal
  */
 interface NegativeFloatBrand {
   readonly NegativeFloat: unique symbol

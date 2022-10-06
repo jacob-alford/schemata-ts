@@ -22,7 +22,7 @@ import * as Arb from '../internal/ArbitraryBase'
 
 /**
  * @since 0.0.1
- * @category Internal
+ * @internal
  */
 interface EmailAddressBrand {
   readonly EmailAddress: unique symbol
@@ -32,7 +32,7 @@ interface EmailAddressBrand {
  * See: https://emailregex.com/
  *
  * @since 0.0.1
- * @category Internal
+ * @internal
  */
 const emailAddressRegex =
   /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/

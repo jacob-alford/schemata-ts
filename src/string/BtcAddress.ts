@@ -21,7 +21,7 @@ import * as Arb from '../internal/ArbitraryBase'
 
 /**
  * @since 0.0.2
- * @category Internal
+ * @internal
  */
 interface BtcAddressBrand {
   readonly BtcAddress: unique symbol
@@ -64,13 +64,13 @@ export type SchemableParams2C<S extends URIS2> = Kind2<S, unknown, BtcAddress>
 
 /**
  * @since 0.0.2
- * @category Internal
+ * @internal
  */
 const bech32 = /^(bc1)[a-z0-9]{25,39}$/
 
 /**
  * @since 0.0.2
- * @category Internal
+ * @internal
  */
 const base58 = /^(1|3)[A-HJ-NP-Za-km-z1-9]{25,39}$/
 
