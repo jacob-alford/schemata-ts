@@ -10,8 +10,8 @@ import { Schemable1, Schemable2C } from 'io-ts/Schemable'
 import { Schemable2, SchemableHKT2 } from './internal/Schemable2'
 
 /** Generic */
-import * as OptionFromNullable from './generic/OptionFromNullable'
-import * as OptionFromUndefined from './generic/OptionFromUndefined'
+import * as optionFromNullable from './generic/optionFromNullable'
+import * as optionFromUndefined from './generic/optionFromUndefined'
 
 /** Number */
 import * as Int from './number/Int'
@@ -62,14 +62,14 @@ export interface SchemableExt<S> extends SchemableHKT2<S> {
    *
    * @since 0.0.4
    */
-  readonly OptionFromNullable: OptionFromNullable.SchemableParams<S>
+  readonly optionFromNullable: optionFromNullable.SchemableParams<S>
 
   /**
    * Represents a conversion from an value that can be undefined to an Optional type
    *
    * @since 0.0.4
    */
-  readonly OptionFromUndefined: OptionFromUndefined.SchemableParams<S>
+  readonly optionFromUndefined: optionFromUndefined.SchemableParams<S>
 
   /**
    * Integer branded newtype.
@@ -468,14 +468,14 @@ export interface SchemableExt1<S extends URIS> extends Schemable1<S> {
    *
    * @since 0.0.4
    */
-  readonly OptionFromNullable: OptionFromNullable.SchemableParams1<S>
+  readonly optionFromNullable: optionFromNullable.SchemableParams1<S>
 
   /**
    * Represents a conversion from an value that can be undefined to an Optional type
    *
    * @since 0.0.4
    */
-  readonly OptionFromUndefined: OptionFromUndefined.SchemableParams1<S>
+  readonly optionFromUndefined: optionFromUndefined.SchemableParams1<S>
 
   /**
    * Integer branded newtype.
@@ -874,14 +874,14 @@ export interface SchemableExt2<S extends URIS2> extends Schemable2<S> {
    *
    * @since 0.0.4
    */
-  readonly OptionFromNullable: OptionFromNullable.SchemableParams2<S>
+  readonly optionFromNullable: optionFromNullable.SchemableParams2<S>
 
   /**
    * Represents a conversion from an value that can be undefined to an Optional type
    *
    * @since 0.0.4
    */
-  readonly OptionFromUndefined: OptionFromUndefined.SchemableParams2<S>
+  readonly optionFromUndefined: optionFromUndefined.SchemableParams2<S>
 
   /**
    * Integer branded newtype.
@@ -1280,14 +1280,14 @@ export interface SchemableExt2C<S extends URIS2> extends Schemable2C<S, unknown>
    *
    * @since 0.0.4
    */
-  readonly OptionFromNullable: OptionFromNullable.SchemableParams2C<S>
+  readonly optionFromNullable: optionFromNullable.SchemableParams2C<S>
 
   /**
    * Represents a conversion from an value that can be undefined to an Optional type
    *
    * @since 0.0.4
    */
-  readonly OptionFromUndefined: OptionFromUndefined.SchemableParams2C<S>
+  readonly optionFromUndefined: optionFromUndefined.SchemableParams2C<S>
 
   /**
    * Integer branded newtype.

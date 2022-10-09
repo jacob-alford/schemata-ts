@@ -9,8 +9,8 @@ import * as Enc from './internal/EncoderBase'
 import { SchemableExt2 } from './SchemableExt'
 
 /** Generic */
-import * as OptionFromNullable from './generic/OptionFromNullable'
-import * as OptionFromUndefined from './generic/OptionFromUndefined'
+import * as optionFromNullable from './generic/optionFromNullable'
+import * as optionFromUndefined from './generic/optionFromUndefined'
 
 /** Number */
 import * as Int from './number/Int'
@@ -57,8 +57,8 @@ import * as SafeDate from './date/SafeDate'
  */
 export const Schemable: SchemableExt2<Enc.URI> = {
   ...Enc.Schemable,
-  OptionFromNullable: OptionFromNullable.Encoder,
-  OptionFromUndefined: OptionFromUndefined.Encoder,
+  optionFromNullable: optionFromNullable.Encoder,
+  optionFromUndefined: optionFromUndefined.Encoder,
   Int: Int.Encoder,
   Natural: Natural.Encoder,
   NegativeFloat: NegativeFloat.Encoder,
