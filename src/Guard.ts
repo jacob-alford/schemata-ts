@@ -9,6 +9,7 @@ import * as G from 'io-ts/Guard'
 import { SchemableExt1 } from './SchemableExt'
 
 /** Generic */
+import * as optionFromExclude from './generic/optionFromExclude'
 import * as optionFromNullable from './generic/optionFromNullable'
 import * as optionFromUndefined from './generic/optionFromUndefined'
 
@@ -57,6 +58,7 @@ import * as SafeDate from './date/SafeDate'
  */
 export const Schemable: SchemableExt1<G.URI> = {
   ...G.Schemable,
+  optionFromExclude: optionFromExclude.Guard,
   optionFromNullable: optionFromNullable.Guard,
   optionFromUndefined: optionFromUndefined.Guard,
   Int: Int.Guard,

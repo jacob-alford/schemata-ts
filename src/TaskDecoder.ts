@@ -9,6 +9,7 @@ import * as TD from 'io-ts/TaskDecoder'
 import { SchemableExt2C } from './SchemableExt'
 
 /** Generic */
+import * as optionFromExclude from './generic/optionFromExclude'
 import * as optionFromNullable from './generic/optionFromNullable'
 import * as optionFromUndefined from './generic/optionFromUndefined'
 
@@ -57,6 +58,7 @@ import * as SafeDate from './date/SafeDate'
  */
 export const Schemable: SchemableExt2C<TD.URI> = {
   ...TD.Schemable,
+  optionFromExclude: optionFromExclude.TaskDecoder,
   optionFromNullable: optionFromNullable.TaskDecoder,
   optionFromUndefined: optionFromUndefined.TaskDecoder,
   Int: Int.TaskDecoder,

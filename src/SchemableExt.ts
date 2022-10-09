@@ -10,6 +10,7 @@ import { Schemable1, Schemable2C } from 'io-ts/Schemable'
 import { Schemable2, SchemableHKT2 } from './internal/Schemable2'
 
 /** Generic */
+import * as optionFromExclude from './generic/optionFromExclude'
 import * as optionFromNullable from './generic/optionFromNullable'
 import * as optionFromUndefined from './generic/optionFromUndefined'
 
@@ -57,6 +58,14 @@ import * as SafeDate from './date/SafeDate'
  * @category Instances
  */
 export interface SchemableExt<S> extends SchemableHKT2<S> {
+  /**
+   * Represents an exclusion of a supplied value where the exclusion is mapped to `None`.
+   * Requires an inner schemable, and an Eq instance which defaults to strict equality.
+   *
+   * @since 0.0.4
+   */
+  readonly optionFromExclude: optionFromExclude.SchemableParams<S>
+
   /**
    * Represents a conversion from a nullable value to an Optional type
    *
@@ -464,6 +473,14 @@ export interface SchemableExt<S> extends SchemableHKT2<S> {
  */
 export interface SchemableExt1<S extends URIS> extends Schemable1<S> {
   /**
+   * Represents an exclusion of a supplied value where the exclusion is mapped to `None`.
+   * Requires an inner schemable, and an Eq instance which defaults to strict equality.
+   *
+   * @since 0.0.4
+   */
+  readonly optionFromExclude: optionFromExclude.SchemableParams1<S>
+
+  /**
    * Represents a conversion from a nullable value to an Optional type
    *
    * @since 0.0.4
@@ -870,6 +887,14 @@ export interface SchemableExt1<S extends URIS> extends Schemable1<S> {
  */
 export interface SchemableExt2<S extends URIS2> extends Schemable2<S> {
   /**
+   * Represents an exclusion of a supplied value where the exclusion is mapped to `None`.
+   * Requires an inner schemable, and an Eq instance which defaults to strict equality.
+   *
+   * @since 0.0.4
+   */
+  readonly optionFromExclude: optionFromExclude.SchemableParams2<S>
+
+  /**
    * Represents a conversion from a nullable value to an Optional type
    *
    * @since 0.0.4
@@ -1275,6 +1300,14 @@ export interface SchemableExt2<S extends URIS2> extends Schemable2<S> {
  * @category Instances
  */
 export interface SchemableExt2C<S extends URIS2> extends Schemable2C<S, unknown> {
+  /**
+   * Represents an exclusion of a supplied value where the exclusion is mapped to `None`.
+   * Requires an inner schemable, and an Eq instance which defaults to strict equality.
+   *
+   * @since 0.0.4
+   */
+  readonly optionFromExclude: optionFromExclude.SchemableParams2C<S>
+
   /**
    * Represents a conversion from a nullable value to an Optional type
    *

@@ -9,6 +9,7 @@ import * as Arb from './internal/ArbitraryBase'
 import { SchemableExt1 } from './SchemableExt'
 
 /** Generic */
+import * as optionFromExclude from './generic/optionFromExclude'
 import * as optionFromNullable from './generic/optionFromNullable'
 import * as optionFromUndefined from './generic/optionFromUndefined'
 
@@ -57,6 +58,7 @@ import * as SafeDate from './date/SafeDate'
  */
 export const Schemable: SchemableExt1<Arb.URI> = {
   ...Arb.Schemable,
+  optionFromExclude: optionFromExclude.Arbitrary,
   optionFromNullable: optionFromNullable.Arbitrary,
   optionFromUndefined: optionFromUndefined.Arbitrary,
   Int: Int.Arbitrary,

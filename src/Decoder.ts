@@ -9,6 +9,7 @@ import * as D from 'io-ts/Decoder'
 import { SchemableExt2C } from './SchemableExt'
 
 /** Generic */
+import * as optionFromExclude from './generic/optionFromExclude'
 import * as optionFromNullable from './generic/optionFromNullable'
 import * as optionFromUndefined from './generic/optionFromUndefined'
 
@@ -57,6 +58,7 @@ import * as SafeDate from './date/SafeDate'
  */
 export const Schemable: SchemableExt2C<D.URI> = {
   ...D.Schemable,
+  optionFromExclude: optionFromExclude.Decoder,
   optionFromNullable: optionFromNullable.Decoder,
   optionFromUndefined: optionFromUndefined.Decoder,
   Int: Int.Decoder,

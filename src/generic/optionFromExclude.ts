@@ -1,6 +1,6 @@
 /**
  * Represents an exclusion of a supplied value where the exclusion is mapped to `None`.
- * Requires an inner schemable, and Eq instance which defaults to strict equality.
+ * Requires an inner schemable, and an Eq instance which defaults to strict equality.
  *
  * @since 0.0.4
  */
