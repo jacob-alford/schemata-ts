@@ -8,7 +8,7 @@ import * as fc from 'fast-check'
 import * as TD from 'io-ts/TaskDecoder'
 import * as t from 'io-ts/Type'
 import * as Str from 'fp-ts/string'
-import * as OptionFromUndefined from '../../src/generic/OptionFromUndefined'
+import * as OptionFromUndefined from '../../src/generic/optionFromUndefined'
 import { validateArbitrary } from '../../test-utils'
 import { flow } from 'fp-ts/function'
 
