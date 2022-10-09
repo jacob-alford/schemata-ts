@@ -1,10 +1,10 @@
 ---
-title: generic/OptionFromNullable.ts
-nav_order: 6
+title: generic/optionFromNullable.ts
+nav_order: 7
 parent: Modules
 ---
 
-## OptionFromNullable overview
+## optionFromNullable overview
 
 Represents a conversion from a nullable value to an Optional type
 

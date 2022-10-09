@@ -1,12 +1,13 @@
 ---
-title: generic/optionFromUndefined.ts
-nav_order: 8
+title: generic/optionFromExclude.ts
+nav_order: 6
 parent: Modules
 ---
 
-## optionFromUndefined overview
+## optionFromExclude overview
 
-Represents a conversion from an value that can be undefined to an Optional type
+Represents an exclusion of a supplied value where the exclusion is mapped to `None`.
+Requires an inner schemable, and an Eq instance which defaults to strict equality.
 
 Added in v0.0.4
 
@@ -109,7 +110,7 @@ Added in v0.0.4
 **Signature**
 
 ```ts
-export type SchemableParams<S> = <A, E>(sa: HKT2<S, E, A>) => HKT2<S, E | undefined, O.Option<A>>
+export type SchemableParams<S> = <A, E>(exclude: A, sa: HKT2<S, E, A>, eqA?: Eq_.Eq<A>) => HKT2<S, E, O.Option<A>>
 ```
 
 Added in v0.0.4
@@ -119,7 +120,7 @@ Added in v0.0.4
 **Signature**
 
 ```ts
-export type SchemableParams1<S extends URIS> = <A>(sa: Kind<S, A>) => Kind<S, O.Option<A>>
+export type SchemableParams1<S extends URIS> = <A>(exclude: A, sa: Kind<S, A>, eqA?: Eq_.Eq<A>) => Kind<S, O.Option<A>>
 ```
 
 Added in v0.0.4
@@ -129,7 +130,11 @@ Added in v0.0.4
 **Signature**
 
 ```ts
-export type SchemableParams2<S extends URIS2> = <A, E>(sa: Kind2<S, E, A>) => Kind2<S, E | undefined, O.Option<A>>
+export type SchemableParams2<S extends URIS2> = <A, E>(
+  exclude: A,
+  sa: Kind2<S, E, A>,
+  eqA?: Eq_.Eq<A>
+) => Kind2<S, E, O.Option<A>>
 ```
 
 Added in v0.0.4
@@ -139,7 +144,11 @@ Added in v0.0.4
 **Signature**
 
 ```ts
-export type SchemableParams2C<S extends URIS2> = <A>(sa: Kind2<S, unknown, A>) => Kind2<S, unknown, O.Option<A>>
+export type SchemableParams2C<S extends URIS2> = <A>(
+  exclude: A,
+  sa: Kind2<S, unknown, A>,
+  eqA?: Eq_.Eq<A>
+) => Kind2<S, unknown, O.Option<A>>
 ```
 
 Added in v0.0.4
