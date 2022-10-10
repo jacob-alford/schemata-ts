@@ -8,6 +8,11 @@
 import * as Eq from 'io-ts/Eq'
 import { SchemableExt1 } from './SchemableExt'
 
+/** Generic */
+import * as optionFromExclude from './generic/optionFromExclude'
+import * as optionFromNullable from './generic/optionFromNullable'
+import * as optionFromUndefined from './generic/optionFromUndefined'
+
 /** Number */
 import * as Int from './number/Int'
 import * as Natural from './number/Natural'
@@ -41,6 +46,7 @@ import * as NonPositiveIntString from './string/NonPositiveIntString'
 import * as NonemptyString from './string/NonemptyString'
 import * as PositiveFloatString from './string/PositiveFloatString'
 import * as PositiveIntString from './string/PositiveIntString'
+import * as RGB from './string/RGB'
 import * as UUID from './string/UUID'
 
 /** Date */
@@ -52,6 +58,9 @@ import * as SafeDate from './date/SafeDate'
  */
 export const Schemable: SchemableExt1<Eq.URI> = {
   ...Eq.Schemable,
+  optionFromExclude: optionFromExclude.Eq,
+  optionFromNullable: optionFromNullable.Eq,
+  optionFromUndefined: optionFromUndefined.Eq,
   Int: Int.Eq,
   Natural: Natural.Eq,
   NegativeFloat: NegativeFloat.Eq,
@@ -82,6 +91,7 @@ export const Schemable: SchemableExt1<Eq.URI> = {
   NonemptyString: NonemptyString.Eq,
   PositiveFloatString: PositiveFloatString.Eq,
   PositiveIntString: PositiveIntString.Eq,
+  RGB: RGB.Eq,
   UUID: UUID.Eq,
   SafeDate: SafeDate.Eq,
 }
