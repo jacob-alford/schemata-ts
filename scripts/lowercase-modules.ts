@@ -45,6 +45,9 @@ const renameToLowercase: (prim: Primitive, name: ModuleWithExtension) => Build<v
   (prim, name) => C =>
     pipe(
       C.exec(`git mv src/${prim}/${name} src/${prim}/${camelFromPascal(name)}`),
+      TE.apFirst(
+        C.exec(`git mv tests/${prim}/${name} tests/${prim}/${camelFromPascal(name)}`)
+      ),
       TE.chainFirstIOK(() =>
         Cons.log(Color.green(`✔️ Renamed ${name} to ${camelFromPascal(name)}`))
       )
