@@ -16,6 +16,9 @@ type ModuleWithExtension = string
 const camelFromPascal: (s: string) => string = s =>
   `${Str.toLowerCase(s.slice(0, 1))}${s.slice(1, s.length)}`
 
+const suffixWithTest: (s: string) => string = s =>
+  `${s.slice(0, -3)}.test.${s.slice(-2, s.length)}`
+
 const getLowercaseModules: Build<
   ReadonlyArray<readonly [Primitive, ModuleWithExtension]>
 > = C =>
@@ -46,7 +49,12 @@ const renameToLowercase: (prim: Primitive, name: ModuleWithExtension) => Build<v
     pipe(
       C.exec(`git mv src/${prim}/${name} src/${prim}/${camelFromPascal(name)}`),
       TE.apFirst(
-        C.exec(`git mv tests/${prim}/${name} tests/${prim}/${camelFromPascal(name)}`)
+        C.exec(
+          `git mv tests/${prim}/${suffixWithTest(name)} tests/${prim}/${pipe(
+            camelFromPascal(name),
+            suffixWithTest
+          )}`
+        )
       ),
       TE.chainFirstIOK(() =>
         Cons.log(Color.green(`✔️ Renamed ${name} to ${camelFromPascal(name)}`))
