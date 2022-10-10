@@ -1,79 +1,99 @@
 import * as Cons from 'fp-ts/Console'
 import * as Color from 'colorette'
-import { pipe, tuple } from 'fp-ts/function'
+import { flow, pipe, tuple } from 'fp-ts/function'
 import * as RA from 'fp-ts/ReadonlyArray'
+import * as RNEA from 'fp-ts/ReadonlyNonEmptyArray'
 import * as RTE from 'fp-ts/ReaderTaskEither'
 import * as Str from 'fp-ts/string'
 import * as TE from 'fp-ts/TaskEither'
-import { fileSystem } from './FS'
-import { cli } from './CLI'
+import { fileSystemTest } from './FS'
+import { cliTest } from './CLI'
 import { run } from './run'
 import { Build } from './build'
 
 type Primitive = 'string' | 'number' | 'date'
 type ModuleWithExtension = string
 
+const isUppercase: (s: string) => boolean = s => /^[A-Z]/.test(s)
+
+const isAllCaps: (s: string) => boolean = flow(
+  Str.split('.'),
+  RNEA.head,
+  name => name === name.toUpperCase()
+)
+
 const camelFromPascal: (s: string) => string = s =>
-  `${Str.toLowerCase(s.slice(0, 1))}${s.slice(1, s.length)}`
+  isAllCaps(s)
+    ? s.toLowerCase()
+    : `${Str.toLowerCase(s.slice(0, 1))}${s.slice(1, s.length)}`
 
-const suffixWithTest: (s: string) => string = s =>
-  `${s.slice(0, -3)}.test.${s.slice(-2, s.length)}`
-
-const getLowercaseModules: Build<
-  ReadonlyArray<readonly [Primitive, ModuleWithExtension]>
-> = C =>
+const getUppercaseModules: (
+  subdir: string
+) => Build<ReadonlyArray<readonly [Primitive, ModuleWithExtension]>> = subdir => C =>
   pipe(
     TE.Do,
-    TE.chainFirstIOK(() => Cons.log('Discovering files...')),
-    TE.apS('date', pipe(C.readFiles('./src/date'))),
-    TE.apS('number', pipe(C.readFiles('./src/number'))),
-    TE.apS('string', pipe(C.readFiles('./src/string'))),
-    TE.map(({ string: s, number: n, date: d }) => [
-      ...pipe(
-        s,
-        RA.map(name => tuple('string' as const, name))
-      ),
-      ...pipe(
-        n,
-        RA.map(name => tuple('number' as const, name))
-      ),
-      ...pipe(
-        d,
-        RA.map(name => tuple('date' as const, name))
-      ),
-    ])
+    TE.chainFirstIOK(() => Cons.log(`Checking ${subdir} for uppercase modules...`)),
+    TE.apS('date', pipe(C.readFiles(`./${subdir}/date`))),
+    TE.apS('number', pipe(C.readFiles(`./${subdir}/number`))),
+    TE.apS('string', pipe(C.readFiles(`./${subdir}/string`))),
+    TE.map(({ string: s, number: n, date: d }) =>
+      pipe(
+        [
+          ...pipe(
+            s,
+            RA.map(name => tuple('string' as const, name))
+          ),
+          ...pipe(
+            n,
+            RA.map(name => tuple('number' as const, name))
+          ),
+          ...pipe(
+            d,
+            RA.map(name => tuple('date' as const, name))
+          ),
+        ],
+        RA.filter(([, name]) => isUppercase(name))
+      )
+    )
   )
 
-const renameToLowercase: (prim: Primitive, name: ModuleWithExtension) => Build<void> =
-  (prim, name) => C =>
+const renameToLowercase: (
+  subdir: string
+) => (mod: readonly [Primitive, ModuleWithExtension]) => Build<void> =
+  subdir =>
+  ([prim, name]) =>
+  C =>
     pipe(
-      /^[A-Z]/.test(name)
-        ? C.exec(`git mv src/${prim}/${name} src/${prim}/${camelFromPascal(name)}`)
-        : TE.of(void 0),
-      TE.apFirst(
-        C.exec(
-          `git mv tests/${prim}/${suffixWithTest(name)} tests/${prim}/${pipe(
-            camelFromPascal(name),
-            suffixWithTest
-          )}`
-        )
+      C.exec(
+        `git mv ${subdir}/${prim}/${name} ${subdir}/${prim}/${camelFromPascal(name)}`
       ),
       TE.chainFirstIOK(() =>
-        Cons.log(Color.green(`✔️ Renamed ${name} to ${camelFromPascal(name)}`))
+        Cons.log(
+          Color.green(
+            `✔️ Renamed ${subdir}/${prim}/${name} to ${subdir}/${prim}/${camelFromPascal(
+              name
+            )}`
+          )
+        )
       )
     )
 
 const main: Build<void> = pipe(
-  getLowercaseModules,
-  RTE.chainFirst(
-    RA.traverse(RTE.ApplicativePar)(([prim, name]) => renameToLowercase(prim, name))
+  RTE.Do,
+  RTE.apS('modules', getUppercaseModules('src')),
+  RTE.apS('testModules', getUppercaseModules('tests')),
+  RTE.chainFirst(({ modules }) =>
+    pipe(modules, RA.traverse(RTE.ApplicativePar)(renameToLowercase('src')))
+  ),
+  RTE.chainFirst(({ testModules }) =>
+    pipe(testModules, RA.traverse(RTE.ApplicativePar)(renameToLowercase('test')))
   ),
   RTE.chainIOK(() => Cons.log(Color.green('Done!')))
 )
 
 run(
   main({
-    ...fileSystem,
-    ...cli,
+    ...fileSystemTest,
+    ...cliTest,
   })
 )
