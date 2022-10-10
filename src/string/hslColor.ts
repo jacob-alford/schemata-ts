@@ -3,7 +3,7 @@
  *
  * @since 0.0.3
  * @example
- *   import { Guard } from 'schemable-ts-types/string/HslColor'
+ *   import { Guard } from 'schemable-ts-types/string/hslColor'
  *
  *   const hue = 270
  *   const saturation = 60
