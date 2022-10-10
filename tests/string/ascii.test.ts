@@ -1,5 +1,17 @@
+import * as E from 'fp-ts/Either'
+import * as RA from 'fp-ts/ReadonlyArray'
+import { pipe, tuple } from 'fp-ts/function'
 import * as ASCII from '../../src/string/ascii'
-import { validateArbitrary } from '../../test-utils'
+import { cat, combineExpected, validateArbitrary } from '../../test-utils'
+
+const valid: ReadonlyArray<string> = [
+  'foobar',
+  '0987654321',
+  'test@example.com',
+  '1234abcDEF',
+]
+
+const invalid: ReadonlyArray<string> = ['ｆｏｏbar', 'ｘｙｚ０９８', '１２３456', 'ｶﾀｶﾅ']
 
 describe('ASCII', () => {
   describe('Decoder', () => {

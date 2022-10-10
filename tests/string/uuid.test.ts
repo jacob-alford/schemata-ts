@@ -1,6 +1,9 @@
+import * as E from 'fp-ts/Either'
+import { pipe, tuple } from 'fp-ts/function'
 import * as RA from 'fp-ts/ReadonlyArray'
+import * as RNEA from 'fp-ts/ReadonlyNonEmptyArray'
 import * as UUID from '../../src/string/uuid'
-import { validateArbitrary } from '../../test-utils'
+import { cat, combineExpected, validateArbitrary } from '../../test-utils'
 
 const valid_: Readonly<
   Record<UUID.UUIDSchemableOptions['version'], ReadonlyArray<string>>
