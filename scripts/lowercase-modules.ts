@@ -6,8 +6,8 @@ import * as RNEA from 'fp-ts/ReadonlyNonEmptyArray'
 import * as RTE from 'fp-ts/ReaderTaskEither'
 import * as Str from 'fp-ts/string'
 import * as TE from 'fp-ts/TaskEither'
-import { fileSystemTest } from './FS'
-import { cliTest } from './CLI'
+import { fileSystem } from './FS'
+import { cli } from './CLI'
 import { run } from './run'
 import { Build } from './build'
 
@@ -83,17 +83,17 @@ const main: Build<void> = pipe(
   RTE.apS('modules', getUppercaseModules('src')),
   RTE.apS('testModules', getUppercaseModules('tests')),
   RTE.chainFirst(({ modules }) =>
-    pipe(modules, RA.traverse(RTE.ApplicativePar)(renameToLowercase('src')))
+    pipe(modules, RA.traverse(RTE.ApplicativeSeq)(renameToLowercase('src')))
   ),
   RTE.chainFirst(({ testModules }) =>
-    pipe(testModules, RA.traverse(RTE.ApplicativePar)(renameToLowercase('test')))
+    pipe(testModules, RA.traverse(RTE.ApplicativeSeq)(renameToLowercase('test')))
   ),
   RTE.chainIOK(() => Cons.log(Color.green('Done!')))
 )
 
 run(
   main({
-    ...fileSystemTest,
-    ...cliTest,
+    ...fileSystem,
+    ...cli,
   })
 )
