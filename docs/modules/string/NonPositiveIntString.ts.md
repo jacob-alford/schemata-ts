@@ -1,10 +1,10 @@
 ---
-title: string/NonPositiveIntString.ts
-nav_order: 37
+title: string/nonPositiveIntString.ts
+nav_order: 38
 parent: Modules
 ---
 
-## NonPositiveIntString overview
+## nonPositiveIntString overview
 
 NonPositive integer branded newtype string.
 

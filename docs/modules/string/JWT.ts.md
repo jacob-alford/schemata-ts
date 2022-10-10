@@ -1,10 +1,10 @@
 ---
-title: string/JWT.ts
-nav_order: 30
+title: string/jwt.ts
+nav_order: 31
 parent: Modules
 ---
 
-## JWT overview
+## jwt overview
 
 A valid, Base64-encoded JWT.
 

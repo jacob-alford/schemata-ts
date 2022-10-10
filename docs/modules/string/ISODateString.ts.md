@@ -1,10 +1,10 @@
 ---
-title: string/ISODateString.ts
-nav_order: 29
+title: string/isoDateString.ts
+nav_order: 30
 parent: Modules
 ---
 
-## ISODateString overview
+## isoDateString overview
 
 Represents strings that conform to the ISO 8601 standard.
 
@@ -16,6 +16,7 @@ Added in v0.0.1
 
 - [Constructors](#constructors)
   - [fromDate](#fromdate)
+  - [fromSafeDate](#fromsafedate)
 - [Destructors](#destructors)
   - [toSafeDate](#tosafedate)
 - [Instances](#instances)
@@ -27,7 +28,7 @@ Added in v0.0.1
   - [TaskDecoder](#taskdecoder)
   - [Type](#type)
 - [Model](#model)
-  - [ISODate (type alias)](#isodate-type-alias)
+  - [ISODateString (type alias)](#isodatestring-type-alias)
   - [SchemableParams (type alias)](#schemableparams-type-alias)
   - [SchemableParams1 (type alias)](#schemableparams1-type-alias)
   - [SchemableParams2 (type alias)](#schemableparams2-type-alias)
@@ -44,7 +45,17 @@ Added in v0.0.1
 **Signature**
 
 ```ts
-export declare const fromDate: (d: Date) => O.Option<ISODate>
+export declare const fromDate: (d: Date) => O.Option<ISODateString>
+```
+
+Added in v0.0.1
+
+## fromSafeDate
+
+**Signature**
+
+```ts
+export declare const fromSafeDate: (d: SafeDate) => ISODateString
 ```
 
 Added in v0.0.1
@@ -56,7 +67,7 @@ Added in v0.0.1
 **Signature**
 
 ```ts
-export declare const toSafeDate: (iso: ISODate) => SafeDate
+export declare const toSafeDate: (iso: ISODateString) => SafeDate
 ```
 
 Added in v0.0.1
@@ -68,7 +79,7 @@ Added in v0.0.1
 **Signature**
 
 ```ts
-export declare const Arbitrary: Arb.Arbitrary<ISODate>
+export declare const Arbitrary: Arb.Arbitrary<ISODateString>
 ```
 
 Added in v0.0.3
@@ -78,7 +89,7 @@ Added in v0.0.3
 **Signature**
 
 ```ts
-export declare const Decoder: D.Decoder<unknown, ISODate>
+export declare const Decoder: D.Decoder<unknown, ISODateString>
 ```
 
 Added in v0.0.1
@@ -88,7 +99,7 @@ Added in v0.0.1
 **Signature**
 
 ```ts
-export declare const Encoder: Enc.Encoder<string, ISODate>
+export declare const Encoder: Enc.Encoder<string, ISODateString>
 ```
 
 Added in v0.0.3
@@ -98,7 +109,7 @@ Added in v0.0.3
 **Signature**
 
 ```ts
-export declare const Eq: Eq_.Eq<ISODate>
+export declare const Eq: Eq_.Eq<ISODateString>
 ```
 
 Added in v0.0.1
@@ -108,7 +119,7 @@ Added in v0.0.1
 **Signature**
 
 ```ts
-export declare const Guard: G.Guard<unknown, ISODate>
+export declare const Guard: G.Guard<unknown, ISODateString>
 ```
 
 Added in v0.0.1
@@ -118,7 +129,7 @@ Added in v0.0.1
 **Signature**
 
 ```ts
-export declare const TaskDecoder: TD.TaskDecoder<unknown, ISODate>
+export declare const TaskDecoder: TD.TaskDecoder<unknown, ISODateString>
 ```
 
 Added in v0.0.1
@@ -128,21 +139,21 @@ Added in v0.0.1
 **Signature**
 
 ```ts
-export declare const Type: t.Type<ISODate>
+export declare const Type: t.Type<ISODateString>
 ```
 
 Added in v0.0.1
 
 # Model
 
-## ISODate (type alias)
+## ISODateString (type alias)
 
 Represents strings that conform to the ISO 8601 standard.
 
 **Signature**
 
 ```ts
-export type ISODate = string & ISODateBrand
+export type ISODateString = string & ISODateBrand
 ```
 
 Added in v0.0.1
@@ -152,7 +163,7 @@ Added in v0.0.1
 **Signature**
 
 ```ts
-export type SchemableParams<S> = HKT2<S, string, ISODate>
+export type SchemableParams<S> = HKT2<S, string, ISODateString>
 ```
 
 Added in v0.0.1
@@ -162,7 +173,7 @@ Added in v0.0.1
 **Signature**
 
 ```ts
-export type SchemableParams1<S extends URIS> = Kind<S, ISODate>
+export type SchemableParams1<S extends URIS> = Kind<S, ISODateString>
 ```
 
 Added in v0.0.1
@@ -172,7 +183,7 @@ Added in v0.0.1
 **Signature**
 
 ```ts
-export type SchemableParams2<S extends URIS2> = Kind2<S, string, ISODate>
+export type SchemableParams2<S extends URIS2> = Kind2<S, string, ISODateString>
 ```
 
 Added in v0.0.3
@@ -182,7 +193,7 @@ Added in v0.0.3
 **Signature**
 
 ```ts
-export type SchemableParams2C<S extends URIS2> = Kind2<S, unknown, ISODate>
+export type SchemableParams2C<S extends URIS2> = Kind2<S, unknown, ISODateString>
 ```
 
 Added in v0.0.1
@@ -194,7 +205,7 @@ Added in v0.0.1
 **Signature**
 
 ```ts
-export declare function isISODate(s: string): s is ISODate
+export declare const isISODate: (s: string) => s is ISODateString
 ```
 
 Added in v0.0.1

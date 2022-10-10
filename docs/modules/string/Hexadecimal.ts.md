@@ -1,10 +1,10 @@
 ---
-title: string/Hexadecimal.ts
-nav_order: 25
+title: string/hexadecimal.ts
+nav_order: 26
 parent: Modules
 ---
 
-## Hexadecimal overview
+## hexadecimal overview
 
 A string of hexadecimal characters.
 

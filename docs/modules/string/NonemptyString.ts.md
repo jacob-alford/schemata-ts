@@ -1,10 +1,10 @@
 ---
-title: string/NonemptyString.ts
-nav_order: 34
+title: string/nonemptyString.ts
+nav_order: 35
 parent: Modules
 ---
 
-## NonemptyString overview
+## nonemptyString overview
 
 Represents strings that are not empty strings.
 

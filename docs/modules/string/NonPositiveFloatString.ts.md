@@ -1,10 +1,10 @@
 ---
-title: string/NonPositiveFloatString.ts
-nav_order: 36
+title: string/nonPositiveFloatString.ts
+nav_order: 37
 parent: Modules
 ---
 
-## NonPositiveFloatString overview
+## nonPositiveFloatString overview
 
 Non-positive floating point branded newtype string.
 

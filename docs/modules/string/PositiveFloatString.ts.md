@@ -1,10 +1,10 @@
 ---
-title: string/PositiveFloatString.ts
-nav_order: 38
+title: string/positiveFloatString.ts
+nav_order: 39
 parent: Modules
 ---
 
-## PositiveFloatString overview
+## positiveFloatString overview
 
 Positive floating point branded newtype string.
 

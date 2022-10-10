@@ -1,10 +1,10 @@
 ---
-title: string/UUID.ts
-nav_order: 40
+title: string/uuid.ts
+nav_order: 42
 parent: Modules
 ---
 
-## UUID overview
+## uuid overview
 
 Represents strings that are UUIDs.
 
@@ -169,7 +169,7 @@ Added in v0.0.1
 
 ```ts
 export type UUIDSchemableOptions = {
-  version: keyof typeof uuidRegex
+  version: 1 | 2 | 3 | 4 | 5 | 'all'
 }
 ```
 

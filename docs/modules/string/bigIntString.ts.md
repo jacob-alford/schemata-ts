@@ -1,18 +1,12 @@
 ---
-title: number/nonPositiveInt.ts
-nav_order: 14
+title: string/bigIntString.ts
+nav_order: 22
 parent: Modules
 ---
 
-## nonPositiveInt overview
+## bigIntString overview
 
-NonPositive integer branded newtype.
-
-Represents integers which are negative or zero.
-
-```math
- { z | z ∈ ℤ, z >= -2 ** 53 + 1, z <= 0 }
-```
+Represents strings which can be converted into `BitInt`.
 
 Added in v0.0.4
 
@@ -20,6 +14,8 @@ Added in v0.0.4
 
 <h2 class="text-delta">Table of contents</h2>
 
+- [Destructors](#destructors)
+  - [toBigInt](#tobigint)
 - [Instances](#instances)
   - [Arbitrary](#arbitrary)
   - [Decoder](#decoder)
@@ -29,15 +25,27 @@ Added in v0.0.4
   - [TaskDecoder](#taskdecoder)
   - [Type](#type)
 - [Model](#model)
-  - [NonPositiveInt (type alias)](#nonpositiveint-type-alias)
+  - [BigIntString (type alias)](#bigintstring-type-alias)
   - [SchemableParams (type alias)](#schemableparams-type-alias)
   - [SchemableParams1 (type alias)](#schemableparams1-type-alias)
   - [SchemableParams2 (type alias)](#schemableparams2-type-alias)
   - [SchemableParams2C (type alias)](#schemableparams2c-type-alias)
 - [Refinements](#refinements)
-  - [isNonPositiveInt](#isnonpositiveint)
+  - [isBigIntString](#isbigintstring)
 
 ---
+
+# Destructors
+
+## toBigInt
+
+**Signature**
+
+```ts
+export declare const toBigInt: (n: BigIntString) => bigint
+```
+
+Added in v0.0.1
 
 # Instances
 
@@ -46,7 +54,7 @@ Added in v0.0.4
 **Signature**
 
 ```ts
-export declare const Arbitrary: Arb.Arbitrary<NonPositiveInt>
+export declare const Arbitrary: Arb.Arbitrary<BigIntString>
 ```
 
 Added in v0.0.4
@@ -56,7 +64,7 @@ Added in v0.0.4
 **Signature**
 
 ```ts
-export declare const Decoder: D.Decoder<unknown, NonPositiveInt>
+export declare const Decoder: D.Decoder<unknown, BigIntString>
 ```
 
 Added in v0.0.4
@@ -66,7 +74,7 @@ Added in v0.0.4
 **Signature**
 
 ```ts
-export declare const Encoder: Enc.Encoder<number, NonPositiveInt>
+export declare const Encoder: Enc.Encoder<string, BigIntString>
 ```
 
 Added in v0.0.4
@@ -76,7 +84,7 @@ Added in v0.0.4
 **Signature**
 
 ```ts
-export declare const Eq: Eq_.Eq<NonPositiveInt>
+export declare const Eq: Eq_.Eq<BigIntString>
 ```
 
 Added in v0.0.4
@@ -86,7 +94,7 @@ Added in v0.0.4
 **Signature**
 
 ```ts
-export declare const Guard: G.Guard<unknown, NonPositiveInt>
+export declare const Guard: G.Guard<unknown, BigIntString>
 ```
 
 Added in v0.0.4
@@ -96,7 +104,7 @@ Added in v0.0.4
 **Signature**
 
 ```ts
-export declare const TaskDecoder: TD.TaskDecoder<unknown, NonPositiveInt>
+export declare const TaskDecoder: TD.TaskDecoder<unknown, BigIntString>
 ```
 
 Added in v0.0.4
@@ -106,27 +114,21 @@ Added in v0.0.4
 **Signature**
 
 ```ts
-export declare const Type: t.Type<NonPositiveInt>
+export declare const Type: t.Type<BigIntString>
 ```
 
 Added in v0.0.4
 
 # Model
 
-## NonPositiveInt (type alias)
+## BigIntString (type alias)
 
-NonPositive integer branded newtype.
-
-Represents integers which are negative or zero.
-
-```math
- { z | z ∈ ℤ, z >= -2 ** 53 + 1, z <= 0 }
-```
+Represents strings which can be converted into `BitInt`
 
 **Signature**
 
 ```ts
-export type NonPositiveInt = number & NonPositiveIntBrand
+export type BigIntString = string & BigIntStringBrand
 ```
 
 Added in v0.0.4
@@ -136,7 +138,7 @@ Added in v0.0.4
 **Signature**
 
 ```ts
-export type SchemableParams<S> = HKT2<S, number, NonPositiveInt>
+export type SchemableParams<S> = HKT2<S, string, BigIntString>
 ```
 
 Added in v0.0.4
@@ -146,7 +148,7 @@ Added in v0.0.4
 **Signature**
 
 ```ts
-export type SchemableParams1<S extends URIS> = Kind<S, NonPositiveInt>
+export type SchemableParams1<S extends URIS> = Kind<S, BigIntString>
 ```
 
 Added in v0.0.4
@@ -156,7 +158,7 @@ Added in v0.0.4
 **Signature**
 
 ```ts
-export type SchemableParams2<S extends URIS2> = Kind2<S, number, NonPositiveInt>
+export type SchemableParams2<S extends URIS2> = Kind2<S, string, BigIntString>
 ```
 
 Added in v0.0.4
@@ -166,19 +168,19 @@ Added in v0.0.4
 **Signature**
 
 ```ts
-export type SchemableParams2C<S extends URIS2> = Kind2<S, unknown, NonPositiveInt>
+export type SchemableParams2C<S extends URIS2> = Kind2<S, unknown, BigIntString>
 ```
 
 Added in v0.0.4
 
 # Refinements
 
-## isNonPositiveInt
+## isBigIntString
 
 **Signature**
 
 ```ts
-export declare const isNonPositiveInt: (n: number) => n is NonPositiveInt
+export declare const isBigIntString: (s: string) => s is BigIntString
 ```
 
 Added in v0.0.4

@@ -1,10 +1,10 @@
 ---
-title: string/EmailAddress.ts
-nav_order: 24
+title: string/emailAddress.ts
+nav_order: 25
 parent: Modules
 ---
 
-## EmailAddress overview
+## emailAddress overview
 
 Represents strings (email addresses) that conform to the RFC 5322 standard.
 

@@ -1,10 +1,10 @@
 ---
-title: number/Int.ts
+title: number/int.ts
 nav_order: 8
 parent: Modules
 ---
 
-## Int overview
+## int overview
 
 Integer branded newtype.
 

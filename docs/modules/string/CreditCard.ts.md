@@ -1,10 +1,10 @@
 ---
-title: string/CreditCard.ts
-nav_order: 23
+title: string/creditCard.ts
+nav_order: 24
 parent: Modules
 ---
 
-## CreditCard overview
+## creditCard overview
 
 Represents (some) valid credit card numbers.
 

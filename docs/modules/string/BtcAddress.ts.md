@@ -1,10 +1,10 @@
 ---
-title: string/BtcAddress.ts
-nav_order: 22
+title: string/btcAddress.ts
+nav_order: 23
 parent: Modules
 ---
 
-## BtcAddress overview
+## btcAddress overview
 
 Represents strings which are valid Bitcoin addresses.
 

@@ -1,10 +1,10 @@
 ---
-title: string/Base64Url.ts
+title: string/base64Url.ts
 nav_order: 21
 parent: Modules
 ---
 
-## Base64Url overview
+## base64Url overview
 
 Representing a URL-safe, Base64 encoded string.
 

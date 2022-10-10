@@ -1,10 +1,10 @@
 ---
-title: date/SafeDate.ts
+title: date/safeDate.ts
 nav_order: 2
 parent: Modules
 ---
 
-## SafeDate overview
+## safeDate overview
 
 Represents Date objects which are not invalid dates
 

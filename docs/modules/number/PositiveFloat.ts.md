@@ -1,10 +1,10 @@
 ---
-title: number/PositiveFloat.ts
+title: number/positiveFloat.ts
 nav_order: 15
 parent: Modules
 ---
 
-## PositiveFloat overview
+## positiveFloat overview
 
 Positive Float branded newtype.
 

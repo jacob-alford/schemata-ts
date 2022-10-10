@@ -1,10 +1,10 @@
 ---
-title: string/HexColor.ts
-nav_order: 26
+title: string/hexColor.ts
+nav_order: 27
 parent: Modules
 ---
 
-## HexColor overview
+## hexColor overview
 
 A valid hexadecimal color value.
 

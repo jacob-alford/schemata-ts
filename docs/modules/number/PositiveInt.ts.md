@@ -1,10 +1,10 @@
 ---
-title: number/PositiveInt.ts
+title: number/positiveInt.ts
 nav_order: 16
 parent: Modules
 ---
 
-## PositiveInt overview
+## positiveInt overview
 
 Positive integer branded newtype.
 

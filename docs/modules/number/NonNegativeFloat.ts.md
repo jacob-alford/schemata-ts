@@ -1,10 +1,10 @@
 ---
-title: number/NonNegativeFloat.ts
+title: number/nonNegativeFloat.ts
 nav_order: 12
 parent: Modules
 ---
 
-## NonNegativeFloat overview
+## nonNegativeFloat overview
 
 Non-negative floating point branded newtype.
 

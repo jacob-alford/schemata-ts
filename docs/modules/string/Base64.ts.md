@@ -1,10 +1,10 @@
 ---
-title: string/Base64.ts
+title: string/base64.ts
 nav_order: 20
 parent: Modules
 ---
 
-## Base64 overview
+## base64 overview
 
 Representing a Base64-encoded string.
 

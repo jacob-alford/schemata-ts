@@ -1,10 +1,10 @@
 ---
-title: string/IntString.ts
-nav_order: 28
+title: string/intString.ts
+nav_order: 29
 parent: Modules
 ---
 
-## IntString overview
+## intString overview
 
 Integer branded newtype.
 

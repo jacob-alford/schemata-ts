@@ -1,10 +1,10 @@
 ---
-title: number/Natural.ts
+title: number/natural.ts
 nav_order: 9
 parent: Modules
 ---
 
-## Natural overview
+## natural overview
 
 Natural branded newtype.
 

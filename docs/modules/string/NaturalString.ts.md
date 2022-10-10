@@ -1,10 +1,10 @@
 ---
-title: string/NaturalString.ts
-nav_order: 31
+title: string/naturalString.ts
+nav_order: 32
 parent: Modules
 ---
 
-## NaturalString overview
+## naturalString overview
 
 Natural branded newtype string.
 

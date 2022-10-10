@@ -1,10 +1,10 @@
 ---
-title: number/NegativeInt.ts
+title: number/negativeInt.ts
 nav_order: 11
 parent: Modules
 ---
 
-## NegativeInt overview
+## negativeInt overview
 
 Negative integer branded newtype.
 

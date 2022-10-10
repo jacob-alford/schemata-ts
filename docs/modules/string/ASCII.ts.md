@@ -1,10 +1,10 @@
 ---
-title: string/ASCII.ts
+title: string/ascii.ts
 nav_order: 19
 parent: Modules
 ---
 
-## ASCII overview
+## ascii overview
 
 A string in which every character is valid ASCII.
 

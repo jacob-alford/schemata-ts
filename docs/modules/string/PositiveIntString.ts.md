@@ -1,10 +1,10 @@
 ---
-title: string/PositiveIntString.ts
-nav_order: 39
+title: string/positiveIntString.ts
+nav_order: 40
 parent: Modules
 ---
 
-## PositiveIntString overview
+## positiveIntString overview
 
 Positive integer branded newtype string.
 

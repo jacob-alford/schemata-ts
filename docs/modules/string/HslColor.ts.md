@@ -1,10 +1,10 @@
 ---
-title: string/HslColor.ts
-nav_order: 27
+title: string/hslColor.ts
+nav_order: 28
 parent: Modules
 ---
 
-## HslColor overview
+## hslColor overview
 
 An HSL string. Commonly in CSS.
 
