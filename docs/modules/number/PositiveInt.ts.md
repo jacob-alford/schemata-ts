@@ -1,6 +1,6 @@
 ---
 title: number/positiveInt.ts
-nav_order: 16
+nav_order: 19
 parent: Modules
 ---
 

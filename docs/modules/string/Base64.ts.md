@@ -1,6 +1,6 @@
 ---
 title: string/base64.ts
-nav_order: 20
+nav_order: 23
 parent: Modules
 ---
 

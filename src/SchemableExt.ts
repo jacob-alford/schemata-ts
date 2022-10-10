@@ -9,6 +9,11 @@ import { URIS, URIS2 } from 'fp-ts/HKT'
 import { Schemable1, Schemable2C } from 'io-ts/Schemable'
 import { Schemable2, SchemableHKT2 } from './internal/Schemable2'
 
+/** Generic */
+import * as optionFromExclude from './generic/optionFromExclude'
+import * as optionFromNullable from './generic/optionFromNullable'
+import * as optionFromUndefined from './generic/optionFromUndefined'
+
 /** Number */
 import * as int from './number/int'
 import * as natural from './number/natural'
@@ -54,6 +59,28 @@ import * as safeDate from './date/safeDate'
  * @category Instances
  */
 export interface SchemableExt<S> extends SchemableHKT2<S> {
+  /**
+   * Represents an exclusion of a supplied value where the exclusion is mapped to `None`.
+   * Requires an inner schemable, and an Eq instance which defaults to strict equality.
+   *
+   * @since 0.0.4
+   */
+  readonly optionFromExclude: optionFromExclude.SchemableParams<S>
+
+  /**
+   * Represents a conversion from a nullable value to an Optional type
+   *
+   * @since 0.0.4
+   */
+  readonly optionFromNullable: optionFromNullable.SchemableParams<S>
+
+  /**
+   * Represents a conversion from an value that can be undefined to an Optional type
+   *
+   * @since 0.0.4
+   */
+  readonly optionFromUndefined: optionFromUndefined.SchemableParams<S>
+
   /**
    * Integer branded newtype.
    *
@@ -268,7 +295,7 @@ export interface SchemableExt<S> extends SchemableHKT2<S> {
    *
    * @since 0.0.3
    * @example
-   *   import { Guard } from 'schemable-ts-types/string/HslColor'
+   *   import { Guard } from 'schemable-ts-types/string/hslColor'
    *
    *   const hue = 270
    *   const saturation = 60
@@ -453,6 +480,28 @@ export interface SchemableExt<S> extends SchemableHKT2<S> {
  * @category Instances
  */
 export interface SchemableExt1<S extends URIS> extends Schemable1<S> {
+  /**
+   * Represents an exclusion of a supplied value where the exclusion is mapped to `None`.
+   * Requires an inner schemable, and an Eq instance which defaults to strict equality.
+   *
+   * @since 0.0.4
+   */
+  readonly optionFromExclude: optionFromExclude.SchemableParams1<S>
+
+  /**
+   * Represents a conversion from a nullable value to an Optional type
+   *
+   * @since 0.0.4
+   */
+  readonly optionFromNullable: optionFromNullable.SchemableParams1<S>
+
+  /**
+   * Represents a conversion from an value that can be undefined to an Optional type
+   *
+   * @since 0.0.4
+   */
+  readonly optionFromUndefined: optionFromUndefined.SchemableParams1<S>
+
   /**
    * Integer branded newtype.
    *
@@ -667,7 +716,7 @@ export interface SchemableExt1<S extends URIS> extends Schemable1<S> {
    *
    * @since 0.0.3
    * @example
-   *   import { Guard } from 'schemable-ts-types/string/HslColor'
+   *   import { Guard } from 'schemable-ts-types/string/hslColor'
    *
    *   const hue = 270
    *   const saturation = 60
@@ -852,6 +901,28 @@ export interface SchemableExt1<S extends URIS> extends Schemable1<S> {
  * @category Instances
  */
 export interface SchemableExt2<S extends URIS2> extends Schemable2<S> {
+  /**
+   * Represents an exclusion of a supplied value where the exclusion is mapped to `None`.
+   * Requires an inner schemable, and an Eq instance which defaults to strict equality.
+   *
+   * @since 0.0.4
+   */
+  readonly optionFromExclude: optionFromExclude.SchemableParams2<S>
+
+  /**
+   * Represents a conversion from a nullable value to an Optional type
+   *
+   * @since 0.0.4
+   */
+  readonly optionFromNullable: optionFromNullable.SchemableParams2<S>
+
+  /**
+   * Represents a conversion from an value that can be undefined to an Optional type
+   *
+   * @since 0.0.4
+   */
+  readonly optionFromUndefined: optionFromUndefined.SchemableParams2<S>
+
   /**
    * Integer branded newtype.
    *
@@ -1066,7 +1137,7 @@ export interface SchemableExt2<S extends URIS2> extends Schemable2<S> {
    *
    * @since 0.0.3
    * @example
-   *   import { Guard } from 'schemable-ts-types/string/HslColor'
+   *   import { Guard } from 'schemable-ts-types/string/hslColor'
    *
    *   const hue = 270
    *   const saturation = 60
@@ -1251,6 +1322,28 @@ export interface SchemableExt2<S extends URIS2> extends Schemable2<S> {
  * @category Instances
  */
 export interface SchemableExt2C<S extends URIS2> extends Schemable2C<S, unknown> {
+  /**
+   * Represents an exclusion of a supplied value where the exclusion is mapped to `None`.
+   * Requires an inner schemable, and an Eq instance which defaults to strict equality.
+   *
+   * @since 0.0.4
+   */
+  readonly optionFromExclude: optionFromExclude.SchemableParams2C<S>
+
+  /**
+   * Represents a conversion from a nullable value to an Optional type
+   *
+   * @since 0.0.4
+   */
+  readonly optionFromNullable: optionFromNullable.SchemableParams2C<S>
+
+  /**
+   * Represents a conversion from an value that can be undefined to an Optional type
+   *
+   * @since 0.0.4
+   */
+  readonly optionFromUndefined: optionFromUndefined.SchemableParams2C<S>
+
   /**
    * Integer branded newtype.
    *
@@ -1465,7 +1558,7 @@ export interface SchemableExt2C<S extends URIS2> extends Schemable2C<S, unknown>
    *
    * @since 0.0.3
    * @example
-   *   import { Guard } from 'schemable-ts-types/string/HslColor'
+   *   import { Guard } from 'schemable-ts-types/string/hslColor'
    *
    *   const hue = 270
    *   const saturation = 60

@@ -1,6 +1,6 @@
 ---
 title: number/positiveFloat.ts
-nav_order: 15
+nav_order: 18
 parent: Modules
 ---
 

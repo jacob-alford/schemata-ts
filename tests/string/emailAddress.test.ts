@@ -3,61 +3,73 @@ import { validateArbitrary } from '../../test-utils'
 
 describe('EmailAddress', () => {
   describe('Decoder', () => {
-    it('catches an invalid email', () => {
-      const result = EmailAddress.Decoder.decode('abc')
-      expect(result._tag).toBe('Left')
-    })
-    it('validates a valid email', () => {
-      const result = EmailAddress.Decoder.decode('abc@abc.abc')
-      expect(result._tag).toBe('Right')
+    test.each(cat(combineExpected(valid, 'Right'), combineExpected(invalid, 'Left')))(
+      'validates valid strings, and catches bad strings',
+      (str, expectedTag) => {
+        const result = EmailAddress.Decoder.decode(str)
+        expect(result._tag).toBe(expectedTag)
+      }
+    )
+  })
+
+  describe('Encoder', () => {
+    test.each(valid)('encoding a decoded value yields original value', original => {
+      const roundtrip = pipe(
+        original,
+        EmailAddress.Decoder.decode,
+        E.map(EmailAddress.Encoder.encode),
+        E.getOrElseW(() => 'unexpected')
+      )
+      expect(original).toEqual(roundtrip)
     })
   })
+
   describe('Eq', () => {
-    it('returns true for similar email addresses', () => {
-      const email1 = 'abc@abc.com'
-      const email2 = 'abc@abc.com'
-      if (!EmailAddress.Guard.is(email1) || !EmailAddress.Guard.is(email2))
-        throw new Error('Unexpected result')
-      expect(EmailAddress.Eq.equals(email1, email2)).toBe(true)
-    })
-    it('returns false for dissimilar email addresses', () => {
-      const email1 = 'abc@abc.com'
-      const email2 = 'def@def.com'
-      if (!EmailAddress.Guard.is(email1) || !EmailAddress.Guard.is(email2))
-        throw new Error('Unexpected result')
-      expect(EmailAddress.Eq.equals(email1, email2)).toBe(false)
-    })
+    test.each(RA.zipWith(valid, valid, tuple))(
+      'determines two strings are equal',
+      (str1, str2) => {
+        const guard = EmailAddress.Guard.is
+        const eq = EmailAddress.Eq.equals
+        if (!guard(str1) || !guard(str2)) {
+          throw new Error('Unexpected result')
+        }
+        expect(eq(str1, str2)).toBe(true)
+      }
+    )
   })
+
   describe('Guard', () => {
-    it('guards against invalid email', () => {
-      expect(EmailAddress.Guard.is('abc')).toBe(false)
-    })
-    it('permits a valid email', () => {
-      expect(EmailAddress.Guard.is('abc@abc.abc')).toBe(true)
-    })
+    test.each(cat(combineExpected(valid, true), combineExpected(invalid, false)))(
+      'validates valid strings, and catches bad strings',
+      (str, expectedTag) => {
+        const result = EmailAddress.Guard.is(str)
+        expect(result).toBe(expectedTag)
+      }
+    )
   })
+
   describe('TaskDecoder', () => {
-    it('invalidates an invalid email', async () => {
-      const result = await EmailAddress.TaskDecoder.decode('abc')()
-      expect(result._tag).toBe('Left')
-    })
-    it('validates an valid email', async () => {
-      const result = await EmailAddress.TaskDecoder.decode('abc@abc.abc')()
-      expect(result._tag).toBe('Right')
-    })
+    test.each(cat(combineExpected(valid, 'Right'), combineExpected(invalid, 'Left')))(
+      'validates valid string, and catches bad string',
+      async (str, expectedTag) => {
+        const result = await EmailAddress.TaskDecoder.decode(str)()
+        expect(result._tag).toBe(expectedTag)
+      }
+    )
   })
+
   describe('Type', () => {
-    it('decodes an invalid email', () => {
-      const result = EmailAddress.Type.decode('abc')
-      expect(result._tag).toBe('Left')
-    })
-    it('decodes an valid email', () => {
-      const result = EmailAddress.Type.decode('abc@abc.abc')
-      expect(result._tag).toBe('Right')
-    })
+    test.each(cat(combineExpected(valid, 'Right'), combineExpected(invalid, 'Left')))(
+      'validates valid strings, and catches bad strings',
+      (str, expectedTag) => {
+        const result = EmailAddress.Type.decode(str)
+        expect(result._tag).toBe(expectedTag)
+      }
+    )
   })
+
   describe('Arbitrary', () => {
-    it('generates valid EmailAddresses', () => {
+    it('generates valid EmailAddress', () => {
       validateArbitrary(EmailAddress, EmailAddress.isEmailAddress)
     })
   })

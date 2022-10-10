@@ -8,6 +8,11 @@
 import * as t from 'io-ts/Type'
 import { SchemableExt1 } from './SchemableExt'
 
+/** Generic */
+import * as optionFromExclude from './generic/optionFromExclude'
+import * as optionFromNullable from './generic/optionFromNullable'
+import * as optionFromUndefined from './generic/optionFromUndefined'
+
 /** Number */
 import * as int from './number/int'
 import * as natural from './number/natural'
@@ -54,6 +59,9 @@ import * as safeDate from './date/safeDate'
  */
 export const Schemable: SchemableExt1<t.URI> = {
   ...t.Schemable,
+  optionFromExclude: optionFromExclude.Type,
+  optionFromNullable: optionFromNullable.Type,
+  optionFromUndefined: optionFromUndefined.Type,
   int: int.Type,
   natural: natural.Type,
   negativeFloat: negativeFloat.Type,

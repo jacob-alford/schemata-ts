@@ -1,6 +1,6 @@
 ---
 title: number/nonNegativeFloat.ts
-nav_order: 12
+nav_order: 15
 parent: Modules
 ---
 

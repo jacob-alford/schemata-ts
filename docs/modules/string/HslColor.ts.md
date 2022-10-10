@@ -1,6 +1,6 @@
 ---
 title: string/hslColor.ts
-nav_order: 28
+nav_order: 31
 parent: Modules
 ---
 
@@ -11,7 +11,7 @@ An HSL string. Commonly in CSS.
 **Example**
 
 ```ts
-import { Guard } from 'schemable-ts-types/string/HslColor'
+import { Guard } from 'schemable-ts-types/string/hslColor'
 
 const hue = 270
 const saturation = 60
@@ -190,7 +190,7 @@ export type HslColor = string & HslColorBrand
 **Example**
 
 ```ts
-import { Guard } from 'schemable-ts-types/string/HslColor'
+import { Guard } from 'schemable-ts-types/string/hslColor'
 
 const hue = 270
 const saturation = 60

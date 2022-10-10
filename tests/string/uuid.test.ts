@@ -1,387 +1,163 @@
-import { pipe, unsafeCoerce } from 'fp-ts/function'
-import * as E from 'fp-ts/Either'
 import * as RA from 'fp-ts/ReadonlyArray'
 import * as UUID from '../../src/string/uuid'
 import { validateArbitrary } from '../../test-utils'
 
-const _: (n: string) => UUID.UUID = unsafeCoerce
+const valid_: Readonly<
+  Record<UUID.UUIDSchemableOptions['version'], ReadonlyArray<string>>
+> = {
+  1: ['E034B584-7D89-11E9-9669-1AECF481A97B'],
+  2: ['A987FBC9-4BED-2078-CF07-9141BA07C9F3'],
+  3: ['A987FBC9-4BED-3078-CF07-9141BA07C9F3'],
+  4: [
+    '713ae7e3-cb32-45f9-adcb-7c4fa86b90c1',
+    '625e63f3-58f5-40b7-83a1-a72ad31acffb',
+    '57b73598-8764-4ad0-a76a-679bb6640eb1',
+    '9c858901-8a57-4791-81fe-4c455b099bc9',
+  ],
+  5: [
+    '987FBC97-4BED-5078-AF07-9141BA07C9F3',
+    '987FBC97-4BED-5078-BF07-9141BA07C9F3',
+    '987FBC97-4BED-5078-8F07-9141BA07C9F3',
+    '987FBC97-4BED-5078-9F07-9141BA07C9F3',
+  ],
+  all: [
+    'A987FBC9-4BED-3078-CF07-9141BA07C9F3',
+    'A117FBC9-4BED-3078-CF07-9141BA07C9F3',
+    'A127FBC9-4BED-3078-CF07-9141BA07C9F3',
+  ],
+}
 
-const hexa: () => string = () => Math.random().toString(16).slice(-1).toUpperCase()
-const hexaN: (n: number) => () => string = n => () => RA.makeBy(n, hexa).join('')
-const v4v5: () => string = () =>
-  unsafeCoerce(['8', '9', 'A', 'B'][Math.floor(Math.random() * 4)])
+const invalid_: Readonly<
+  Record<UUID.UUIDSchemableOptions['version'], ReadonlyArray<string>>
+> = {
+  1: [
+    'xxxA987FBC9-4BED-3078-CF07-9141BA07C9F3',
+    'AAAAAAAA-1111-2222-AAAG',
+    'AAAAAAAA-1111-2222-AAAG-111111111111',
+    'A987FBC9-4BED-4078-8F07-9141BA07C9F3',
+    'A987FBC9-4BED-5078-AF07-9141BA07C9F3',
+  ],
+  2: [
+    '',
+    'xxxA987FBC9-4BED-3078-CF07-9141BA07C9F3',
+    '11111',
+    'AAAAAAAA-1111-1111-AAAG-111111111111',
+    'A987FBC9-4BED-4078-8F07-9141BA07C9F3',
+    'A987FBC9-4BED-5078-AF07-9141BA07C9F3',
+  ],
+  3: [
+    '',
+    'xxxA987FBC9-4BED-3078-CF07-9141BA07C9F3',
+    '934859',
+    'AAAAAAAA-1111-1111-AAAG-111111111111',
+    'A987FBC9-4BED-4078-8F07-9141BA07C9F3',
+    'A987FBC9-4BED-5078-AF07-9141BA07C9F3',
+  ],
+  4: [
+    '',
+    'xxxA987FBC9-4BED-3078-CF07-9141BA07C9F3',
+    '934859',
+    'AAAAAAAA-1111-1111-AAAG-111111111111',
+    'A987FBC9-4BED-5078-AF07-9141BA07C9F3',
+    'A987FBC9-4BED-3078-CF07-9141BA07C9F3',
+  ],
+  5: [
+    '',
+    'xxxA987FBC9-4BED-3078-CF07-9141BA07C9F3',
+    '934859',
+    'AAAAAAAA-1111-1111-AAAG-111111111111',
+    '9c858901-8a57-4791-81fe-4c455b099bc9',
+    'A987FBC9-4BED-3078-CF07-9141BA07C9F3',
+  ],
+  all: [
+    '',
+    'xxxA987FBC9-4BED-3078-CF07-9141BA07C9F3',
+    'A987FBC9-4BED-3078-CF07-9141BA07C9F3xxx',
+    'A987FBC94BED3078CF079141BA07C9F3',
+    '934859',
+    '987FBC9-4BED-3078-CF07A-9141BA07C9F3',
+    'AAAAAAAA-1111-1111-AAAG-111111111111',
+  ],
+}
 
-const makev1: () => UUID.UUID = () =>
-  _(`${hexaN(8)()}-${hexaN(4)()}-1${hexaN(3)()}-${hexaN(4)()}-${hexaN(12)()}`)
-const makev2: () => UUID.UUID = () =>
-  _(`${hexaN(8)()}-${hexaN(4)()}-2${hexaN(3)()}-${hexaN(4)()}-${hexaN(12)()}`)
-const makev3: () => UUID.UUID = () =>
-  _(`${hexaN(8)()}-${hexaN(4)()}-3${hexaN(3)()}-${hexaN(4)()}-${hexaN(12)()}`)
-const makev4: () => UUID.UUID = () =>
-  _(`${hexaN(8)()}-${hexaN(4)()}-4${hexaN(3)()}-${v4v5()}${hexaN(3)()}-${hexaN(12)()}`)
-const makev5: () => UUID.UUID = () =>
-  _(`${hexaN(8)()}-${hexaN(4)()}-5${hexaN(3)()}-${v4v5()}${hexaN(3)()}-${hexaN(12)()}`)
+for (const i of RNEA.range(0, 5)) {
+  const version = (i || 'all') as UUID.UUIDSchemableOptions['version']
+  const valid = valid_[version]
+  const invalid = invalid_[version]
+  describe(`UUID > ${version === 'all' ? '' : 'v'}${version}`, () => {
+    describe('Decoder', () => {
+      test.each(cat(combineExpected(valid, 'Right'), combineExpected(invalid, 'Left')))(
+        'validates valid strings, and catches bad strings',
+        (str, expectedTag) => {
+          const result = UUID.Decoder({ version }).decode(str)
+          expect(result._tag).toBe(expectedTag)
+        }
+      )
+    })
 
-describe('UUID', () => {
-  describe('v1', () => {
-    describe('Decoder', () => {
-      it('catches an invalid UUID', () => {
-        const result = UUID.Decoder({ version: 1 }).decode('1.1')
-        expect(result._tag).toBe('Left')
-      })
-      it('validates a valid UUID', () => {
-        const result = UUID.Decoder({ version: 1 }).decode(makev1())
-        expect(result._tag).toBe('Right')
-      })
-    })
     describe('Encoder', () => {
-      const original: string = makev1()
-      const roundtrip = pipe(
-        original,
-        UUID.Decoder({ version: 1 }).decode,
-        E.map(UUID.Encoder({ version: 1 }).encode),
-        E.getOrElse(() => 'invalid')
-      )
-      expect(original).toEqual(roundtrip)
-    })
-    describe('Eq', () => {
-      it('returns true for similar UUIDs', () => {
-        const test = makev1()
-        expect(UUID.Eq({ version: 1 }).equals(test, test)).toBe(true)
-      })
-      it('returns false for dissimilar UUIDs', () => {
-        expect(UUID.Eq({ version: 1 }).equals(_('1'), _('2'))).toBe(false)
+      test.each(valid)('encoding a decoded value yields original value', original => {
+        const roundtrip = pipe(
+          original,
+          UUID.Decoder({ version }).decode,
+          E.map(UUID.Encoder({ version }).encode),
+          E.getOrElseW(() => 'unexpected')
+        )
+        expect(original).toEqual(roundtrip)
       })
     })
-    describe('Guard', () => {
-      it('guards against invalid UUID', () => {
-        expect(UUID.Guard({ version: 1 }).is('')).toBe(false)
-      })
-      it('permits a valid UUID', () => {
-        expect(UUID.Guard({ version: 1 }).is(makev1())).toBe(true)
-      })
-    })
-    describe('Type', () => {
-      it('decodes an invalid UUID', () => {
-        const result = UUID.Type({ version: 1 }).decode('1.1')
-        expect(result._tag).toBe('Left')
-      })
-      it('decodes an valid UUID', () => {
-        const result = UUID.Type({ version: 1 }).decode(makev1())
-        expect(result._tag).toBe('Right')
-      })
-    })
-    describe('TaskDecoder', () => {
-      it('invalidates an invalid date', async () => {
-        const result = await UUID.TaskDecoder({ version: 1 }).decode('')()
-        expect(result._tag).toBe('Left')
-      })
-      it('validates an valid date', async () => {
-        const result = await UUID.TaskDecoder({ version: 1 }).decode(makev1())()
-        expect(result._tag).toBe('Right')
-      })
-    })
-  })
-  describe('v2', () => {
-    describe('Decoder', () => {
-      it('catches an invalid UUID', () => {
-        const result = UUID.Decoder({ version: 2 }).decode('1.1')
-        expect(result._tag).toBe('Left')
-      })
-      it('validates a valid UUID', () => {
-        const result = UUID.Decoder({ version: 2 }).decode(makev2())
-        expect(result._tag).toBe('Right')
-      })
-    })
-    describe('Encoder', () => {
-      const original: string = makev2()
-      const roundtrip = pipe(
-        original,
-        UUID.Decoder({ version: 2 }).decode,
-        E.map(UUID.Encoder({ version: 2 }).encode),
-        E.getOrElse(() => 'invalid')
-      )
-      expect(original).toEqual(roundtrip)
-    })
-    describe('Eq', () => {
-      it('returns true for similar UUIDs', () => {
-        const test = makev2()
-        expect(UUID.Eq({ version: 2 }).equals(test, test)).toBe(true)
-      })
-      it('returns false for dissimilar UUIDs', () => {
-        expect(UUID.Eq({ version: 2 }).equals(_('1'), _('2'))).toBe(false)
-      })
-    })
-    describe('Guard', () => {
-      it('guards against invalid UUID', () => {
-        expect(UUID.Guard({ version: 2 }).is('')).toBe(false)
-      })
-      it('permits a valid UUID', () => {
-        expect(UUID.Guard({ version: 2 }).is(makev2())).toBe(true)
-      })
-    })
-    describe('TaskDecoder', () => {
-      it('invalidates an invalid date', async () => {
-        const result = await UUID.TaskDecoder({ version: 2 }).decode('')()
-        expect(result._tag).toBe('Left')
-      })
-      it('validates an valid date', async () => {
-        const result = await UUID.TaskDecoder({ version: 2 }).decode(makev2())()
-        expect(result._tag).toBe('Right')
-      })
-    })
-    describe('Type', () => {
-      it('decodes an invalid UUID', () => {
-        const result = UUID.Type({ version: 2 }).decode('1.1')
-        expect(result._tag).toBe('Left')
-      })
-      it('decodes an valid UUID', () => {
-        const result = UUID.Type({ version: 2 }).decode(makev2())
-        expect(result._tag).toBe('Right')
-      })
-    })
-  })
-  describe('v3', () => {
-    describe('Decoder', () => {
-      it('catches an invalid UUID', () => {
-        const result = UUID.Decoder({ version: 3 }).decode('1.1')
-        expect(result._tag).toBe('Left')
-      })
-      it('validates a valid UUID', () => {
-        const result = UUID.Decoder({ version: 3 }).decode(makev3())
-        expect(result._tag).toBe('Right')
-      })
-    })
-    describe('Encoder', () => {
-      const original: string = makev3()
-      const roundtrip = pipe(
-        original,
-        UUID.Decoder({ version: 3 }).decode,
-        E.map(UUID.Encoder({ version: 3 }).encode),
-        E.getOrElse(() => 'invalid')
-      )
-      expect(original).toEqual(roundtrip)
-    })
-    describe('Eq', () => {
-      it('returns true for similar UUIDs', () => {
-        const test = makev3()
-        expect(UUID.Eq({ version: 3 }).equals(test, test)).toBe(true)
-      })
-      it('returns false for dissimilar UUIDs', () => {
-        expect(UUID.Eq({ version: 3 }).equals(_('1'), _('2'))).toBe(false)
-      })
-    })
-    describe('Guard', () => {
-      it('guards against invalid UUID', () => {
-        expect(UUID.Guard({ version: 3 }).is('')).toBe(false)
-      })
-      it('permits a valid UUID', () => {
-        expect(UUID.Guard({ version: 3 }).is(makev3())).toBe(true)
-      })
-    })
-    describe('TaskDecoder', () => {
-      it('invalidates an invalid date', async () => {
-        const result = await UUID.TaskDecoder({ version: 2 }).decode('')()
-        expect(result._tag).toBe('Left')
-      })
-      it('validates an valid date', async () => {
-        const result = await UUID.TaskDecoder({ version: 2 }).decode(makev2())()
-        expect(result._tag).toBe('Right')
-      })
-    })
-    describe('Type', () => {
-      it('decodes an invalid UUID', () => {
-        const result = UUID.Type({ version: 3 }).decode('1.1')
-        expect(result._tag).toBe('Left')
-      })
-      it('decodes an valid UUID', () => {
-        const result = UUID.Type({ version: 3 }).decode(makev3())
-        expect(result._tag).toBe('Right')
-      })
-    })
-  })
-  describe('v4', () => {
-    describe('Decoder', () => {
-      it('catches an invalid UUID', () => {
-        const result = UUID.Decoder({ version: 4 }).decode('1.1')
-        expect(result._tag).toBe('Left')
-      })
-      it('validates a valid UUID', () => {
-        const result = UUID.Decoder({ version: 4 }).decode(makev4())
-        expect(result._tag).toBe('Right')
-      })
-    })
-    describe('Encoder', () => {
-      const original: string = makev4()
-      const roundtrip = pipe(
-        original,
-        UUID.Decoder({ version: 4 }).decode,
-        E.map(UUID.Encoder({ version: 4 }).encode),
-        E.getOrElse(() => 'invalid')
-      )
-      expect(original).toEqual(roundtrip)
-    })
-    describe('Eq', () => {
-      it('returns true for similar UUIDs', () => {
-        const test = makev4()
-        expect(UUID.Eq({ version: 4 }).equals(test, test)).toBe(true)
-      })
-      it('returns false for dissimilar UUIDs', () => {
-        expect(UUID.Eq({ version: 4 }).equals(_('1'), _('2'))).toBe(false)
-      })
-    })
-    describe('Guard', () => {
-      it('guards against invalid UUID', () => {
-        expect(UUID.Guard({ version: 4 }).is('')).toBe(false)
-      })
-      it('permits a valid UUID', () => {
-        expect(UUID.Guard({ version: 4 }).is(makev4())).toBe(true)
-      })
-    })
-    describe('TaskDecoder', () => {
-      it('invalidates an invalid date', async () => {
-        const result = await UUID.TaskDecoder({ version: 4 }).decode('')()
-        expect(result._tag).toBe('Left')
-      })
-      it('validates an valid date', async () => {
-        const result = await UUID.TaskDecoder({ version: 4 }).decode(makev4())()
-        expect(result._tag).toBe('Right')
-      })
-    })
-    describe('Type', () => {
-      it('decodes an invalid UUID', () => {
-        const result = UUID.Type({ version: 4 }).decode('1.1')
-        expect(result._tag).toBe('Left')
-      })
-      it('decodes an valid UUID', () => {
-        const result = UUID.Type({ version: 4 }).decode(makev4())
-        expect(result._tag).toBe('Right')
-      })
-    })
-  })
-  describe('v5', () => {
-    describe('Decoder', () => {
-      it('catches an invalid UUID', () => {
-        const result = UUID.Decoder({ version: 5 }).decode('1.1')
-        expect(result._tag).toBe('Left')
-      })
-      it('validates a valid UUID', () => {
-        const result = UUID.Decoder({ version: 5 }).decode(makev5())
-        expect(result._tag).toBe('Right')
-      })
-    })
-    describe('Encoder', () => {
-      const original: string = makev5()
-      const roundtrip = pipe(
-        original,
-        UUID.Decoder({ version: 5 }).decode,
-        E.map(UUID.Encoder({ version: 5 }).encode),
-        E.getOrElse(() => 'invalid')
-      )
-      expect(original).toEqual(roundtrip)
-    })
-    describe('Eq', () => {
-      it('returns true for similar UUIDs', () => {
-        const test = makev5()
-        expect(UUID.Eq({ version: 5 }).equals(test, test)).toBe(true)
-      })
-      it('returns false for dissimilar UUIDs', () => {
-        expect(UUID.Eq({ version: 5 }).equals(_('1'), _('2'))).toBe(false)
-      })
-    })
-    describe('Guard', () => {
-      it('guards against invalid UUID', () => {
-        expect(UUID.Guard({ version: 5 }).is('')).toBe(false)
-      })
-      it('permits a valid UUID', () => {
-        expect(UUID.Guard({ version: 5 }).is(makev5())).toBe(true)
-      })
-    })
-    describe('TaskDecoder', () => {
-      it('invalidates an invalid date', async () => {
-        const result = await UUID.TaskDecoder({ version: 5 }).decode('')()
-        expect(result._tag).toBe('Left')
-      })
-      it('validates an valid date', async () => {
-        const result = await UUID.TaskDecoder({ version: 5 }).decode(makev5())()
-        expect(result._tag).toBe('Right')
-      })
-    })
-    describe('Type', () => {
-      it('decodes an invalid UUID', () => {
-        const result = UUID.Type({ version: 5 }).decode('1.1')
-        expect(result._tag).toBe('Left')
-      })
-      it('decodes an valid UUID', () => {
-        const result = UUID.Type({ version: 5 }).decode(makev5())
-        expect(result._tag).toBe('Right')
-      })
-    })
-  })
-  describe('all', () => {
-    describe('Decoder', () => {
-      it('catches an invalid UUID', () => {
-        const result = UUID.Decoder({ version: 'all' }).decode('1.1')
-        expect(result._tag).toBe('Left')
-      })
-      it('validates a valid UUID', () => {
-        const result = UUID.Decoder({ version: 'all' }).decode(makev1())
-        expect(result._tag).toBe('Right')
-      })
-    })
-    describe('Encoder', () => {
-      const original: string = makev1()
-      const roundtrip = pipe(
-        original,
-        UUID.Decoder({ version: 'all' }).decode,
-        E.map(UUID.Encoder({ version: 'all' }).encode),
-        E.getOrElse(() => 'invalid')
-      )
-      expect(original).toEqual(roundtrip)
-    })
-    describe('Eq', () => {
-      it('returns true for similar UUIDs', () => {
-        const test = makev5()
-        expect(UUID.Eq({ version: 'all' }).equals(test, test)).toBe(true)
-      })
-      it('returns false for dissimilar UUIDs', () => {
-        expect(UUID.Eq({ version: 'all' }).equals(_('1'), _('2'))).toBe(false)
-      })
-    })
-    describe('Guard', () => {
-      it('guards against invalid UUID', () => {
-        expect(UUID.Guard({ version: 'all' }).is('')).toBe(false)
-      })
-      it('permits a valid UUID', () => {
-        expect(UUID.Guard({ version: 'all' }).is(makev2())).toBe(true)
-      })
-    })
-    describe('TaskDecoder', () => {
-      it('invalidates an invalid date', async () => {
-        const result = await UUID.TaskDecoder({ version: 'all' }).decode('')()
-        expect(result._tag).toBe('Left')
-      })
-      it('validates an valid date', async () => {
-        const result = await UUID.TaskDecoder({ version: 'all' }).decode(makev4())()
-        expect(result._tag).toBe('Right')
-      })
-    })
-    describe('Type', () => {
-      it('decodes an invalid UUID', () => {
-        const result = UUID.Type({ version: 'all' }).decode('1.1')
-        expect(result._tag).toBe('Left')
-      })
-      it('decodes an valid UUID', () => {
-        const result = UUID.Type({ version: 'all' }).decode(makev5())
-        expect(result._tag).toBe('Right')
-      })
-    })
-  })
 
-  describe('Arbitrary', () => {
-    it('generates valid UUIDs', () => {
-      const Arbitrary = UUID.Arbitrary({ version: 'all' })
-      validateArbitrary({ Arbitrary }, UUID.isUUID({ version: 'all' }))
+    describe('Eq', () => {
+      test.each(RA.zipWith(valid, valid, tuple))(
+        'determines two strings are equal',
+        (str1, str2) => {
+          const guard = UUID.Guard({ version }).is
+          const eq = UUID.Eq({ version }).equals
+          if (!guard(str1) || !guard(str2)) {
+            throw new Error('Unexpected result')
+          }
+          expect(eq(str1, str2)).toBe(true)
+        }
+      )
+    })
+
+    describe('Guard', () => {
+      test.each(cat(combineExpected(valid, true), combineExpected(invalid, false)))(
+        'validates valid strings, and catches bad strings',
+        (str, expectedTag) => {
+          const result = UUID.Guard({ version }).is(str)
+          expect(result).toBe(expectedTag)
+        }
+      )
+    })
+
+    describe('TaskDecoder', () => {
+      test.each(cat(combineExpected(valid, 'Right'), combineExpected(invalid, 'Left')))(
+        'validates valid string, and catches bad string',
+        async (str, expectedTag) => {
+          const result = await UUID.TaskDecoder({ version }).decode(str)()
+          expect(result._tag).toBe(expectedTag)
+        }
+      )
+    })
+
+    describe('Type', () => {
+      test.each(cat(combineExpected(valid, 'Right'), combineExpected(invalid, 'Left')))(
+        'validates valid strings, and catches bad strings',
+        (str, expectedTag) => {
+          const result = UUID.Type({ version }).decode(str)
+          expect(result._tag).toBe(expectedTag)
+        }
+      )
+    })
+
+    describe('Arbitrary', () => {
+      it('generates valid UUID', () => {
+        validateArbitrary(
+          { Arbitrary: UUID.Arbitrary({ version }) },
+          UUID.isUUID({ version })
+        )
+      })
     })
   })
-})
+}
