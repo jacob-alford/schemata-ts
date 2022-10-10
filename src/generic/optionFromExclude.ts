@@ -22,18 +22,18 @@ import { flow, SK } from 'fp-ts/function'
  * @since 0.0.4
  * @category Model
  */
-export type SchemableParams<S> = <A, E>(
-  exclude: A,
+export type SchemableParams<S> = <A, B extends A, E>(
+  exclude: B,
   sa: HKT2<S, E, A>,
   eqA?: Eq_.Eq<A>
-) => HKT2<S, E, O.Option<A>>
+) => HKT2<S, E | B, O.Option<A>>
 
 /**
  * @since 0.0.4
  * @category Model
  */
-export type SchemableParams1<S extends URIS> = <A>(
-  exclude: A,
+export type SchemableParams1<S extends URIS> = <A, B extends A>(
+  exclude: B,
   sa: Kind<S, A>,
   eqA?: Eq_.Eq<A>
 ) => Kind<S, O.Option<A>>
@@ -42,18 +42,18 @@ export type SchemableParams1<S extends URIS> = <A>(
  * @since 0.0.4
  * @category Model
  */
-export type SchemableParams2<S extends URIS2> = <A, E>(
-  exclude: A,
+export type SchemableParams2<S extends URIS2> = <A, B extends A, E>(
+  exclude: B,
   sa: Kind2<S, E, A>,
   eqA?: Eq_.Eq<A>
-) => Kind2<S, E, O.Option<A>>
+) => Kind2<S, E | B, O.Option<A>>
 
 /**
  * @since 0.0.4
  * @category Model
  */
-export type SchemableParams2C<S extends URIS2> = <A>(
-  exclude: A,
+export type SchemableParams2C<S extends URIS2> = <A, B extends A>(
+  exclude: B,
   sa: Kind2<S, unknown, A>,
   eqA?: Eq_.Eq<A>
 ) => Kind2<S, unknown, O.Option<A>>
@@ -72,7 +72,7 @@ export const Decoder: SchemableParams2C<D.URI> = (exclude, sa, eqA = Eq_.eqStric
  */
 export const Encoder: SchemableParams2<Enc.URI> = (exclude, sa) => ({
   encode: flow(
-    O.getOrElse(() => exclude),
+    O.getOrElseW(() => exclude),
     sa.encode
   ),
 })
