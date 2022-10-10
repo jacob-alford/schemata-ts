@@ -1,6 +1,6 @@
 ---
 title: SchemableExt.ts
-nav_order: 17
+nav_order: 20
 parent: Modules
 ---
 
@@ -32,6 +32,28 @@ Added in v0.0.1
 
 ````ts
 export interface SchemableExt<S> extends SchemableHKT2<S> {
+  /**
+   * Represents an exclusion of a supplied value where the exclusion is mapped to `None`. Requires an inner schemable,
+   * and an Eq instance which defaults to strict equality.
+   *
+   * @since 0.0.4
+   */
+  readonly optionFromExclude: optionFromExclude.SchemableParams<S>
+
+  /**
+   * Represents a conversion from a nullable value to an Optional type
+   *
+   * @since 0.0.4
+   */
+  readonly optionFromNullable: optionFromNullable.SchemableParams<S>
+
+  /**
+   * Represents a conversion from an value that can be undefined to an Optional type
+   *
+   * @since 0.0.4
+   */
+  readonly optionFromUndefined: optionFromUndefined.SchemableParams<S>
+
   /**
    * Integer branded newtype.
    *
@@ -390,6 +412,13 @@ export interface SchemableExt<S> extends SchemableHKT2<S> {
   readonly PositiveIntString: PositiveIntString.SchemableParams<S>
 
   /**
+   * Represents strings which are valid RGB colors. Permits both absolute and percentage based values.
+   *
+   * @since 0.0.4
+   */
+  readonly RGB: RGB.SchemableParams<S>
+
+  /**
    * Represents strings that are UUIDs.
    *
    * This is heavily inspired by the `validator.js` module
@@ -416,6 +445,28 @@ Added in v0.0.1
 
 ````ts
 export interface SchemableExt1<S extends URIS> extends Schemable1<S> {
+  /**
+   * Represents an exclusion of a supplied value where the exclusion is mapped to `None`. Requires an inner schemable,
+   * and an Eq instance which defaults to strict equality.
+   *
+   * @since 0.0.4
+   */
+  readonly optionFromExclude: optionFromExclude.SchemableParams1<S>
+
+  /**
+   * Represents a conversion from a nullable value to an Optional type
+   *
+   * @since 0.0.4
+   */
+  readonly optionFromNullable: optionFromNullable.SchemableParams1<S>
+
+  /**
+   * Represents a conversion from an value that can be undefined to an Optional type
+   *
+   * @since 0.0.4
+   */
+  readonly optionFromUndefined: optionFromUndefined.SchemableParams1<S>
+
   /**
    * Integer branded newtype.
    *
@@ -774,6 +825,13 @@ export interface SchemableExt1<S extends URIS> extends Schemable1<S> {
   readonly PositiveIntString: PositiveIntString.SchemableParams1<S>
 
   /**
+   * Represents strings which are valid RGB colors. Permits both absolute and percentage based values.
+   *
+   * @since 0.0.4
+   */
+  readonly RGB: RGB.SchemableParams1<S>
+
+  /**
    * Represents strings that are UUIDs.
    *
    * This is heavily inspired by the `validator.js` module
@@ -800,6 +858,28 @@ Added in v0.0.1
 
 ````ts
 export interface SchemableExt2<S extends URIS2> extends Schemable2<S> {
+  /**
+   * Represents an exclusion of a supplied value where the exclusion is mapped to `None`. Requires an inner schemable,
+   * and an Eq instance which defaults to strict equality.
+   *
+   * @since 0.0.4
+   */
+  readonly optionFromExclude: optionFromExclude.SchemableParams2<S>
+
+  /**
+   * Represents a conversion from a nullable value to an Optional type
+   *
+   * @since 0.0.4
+   */
+  readonly optionFromNullable: optionFromNullable.SchemableParams2<S>
+
+  /**
+   * Represents a conversion from an value that can be undefined to an Optional type
+   *
+   * @since 0.0.4
+   */
+  readonly optionFromUndefined: optionFromUndefined.SchemableParams2<S>
+
   /**
    * Integer branded newtype.
    *
@@ -1158,6 +1238,13 @@ export interface SchemableExt2<S extends URIS2> extends Schemable2<S> {
   readonly PositiveIntString: PositiveIntString.SchemableParams2<S>
 
   /**
+   * Represents strings which are valid RGB colors. Permits both absolute and percentage based values.
+   *
+   * @since 0.0.4
+   */
+  readonly RGB: RGB.SchemableParams2<S>
+
+  /**
    * Represents strings that are UUIDs.
    *
    * This is heavily inspired by the `validator.js` module
@@ -1184,6 +1271,28 @@ Added in v0.0.1
 
 ````ts
 export interface SchemableExt2C<S extends URIS2> extends Schemable2C<S, unknown> {
+  /**
+   * Represents an exclusion of a supplied value where the exclusion is mapped to `None`. Requires an inner schemable,
+   * and an Eq instance which defaults to strict equality.
+   *
+   * @since 0.0.4
+   */
+  readonly optionFromExclude: optionFromExclude.SchemableParams2C<S>
+
+  /**
+   * Represents a conversion from a nullable value to an Optional type
+   *
+   * @since 0.0.4
+   */
+  readonly optionFromNullable: optionFromNullable.SchemableParams2C<S>
+
+  /**
+   * Represents a conversion from an value that can be undefined to an Optional type
+   *
+   * @since 0.0.4
+   */
+  readonly optionFromUndefined: optionFromUndefined.SchemableParams2C<S>
+
   /**
    * Integer branded newtype.
    *
@@ -1540,6 +1649,13 @@ export interface SchemableExt2C<S extends URIS2> extends Schemable2C<S, unknown>
    * @since 0.0.1
    */
   readonly PositiveIntString: PositiveIntString.SchemableParams2C<S>
+
+  /**
+   * Represents strings which are valid RGB colors. Permits both absolute and percentage based values.
+   *
+   * @since 0.0.4
+   */
+  readonly RGB: RGB.SchemableParams2C<S>
 
   /**
    * Represents strings that are UUIDs.

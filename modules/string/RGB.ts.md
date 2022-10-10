@@ -1,6 +1,6 @@
 ---
 title: string/RGB.ts
-nav_order: 41
+nav_order: 44
 parent: Modules
 ---
 

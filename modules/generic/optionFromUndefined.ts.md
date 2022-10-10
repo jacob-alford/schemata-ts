@@ -1,17 +1,14 @@
 ---
-title: string/UUID.ts
-nav_order: 45
+title: generic/optionFromUndefined.ts
+nav_order: 8
 parent: Modules
 ---
 
-## UUID overview
+## optionFromUndefined overview
 
-Represents strings that are UUIDs.
+Represents a conversion from an value that can be undefined to an Optional type
 
-This is heavily inspired by the `validator.js` module
-[`isUUID`](https://github.com/validatorjs/validator.js/blob/master/src/lib/isUUID.js).
-
-Added in v0.0.1
+Added in v0.0.4
 
 ---
 
@@ -30,10 +27,6 @@ Added in v0.0.1
   - [SchemableParams1 (type alias)](#schemableparams1-type-alias)
   - [SchemableParams2 (type alias)](#schemableparams2-type-alias)
   - [SchemableParams2C (type alias)](#schemableparams2c-type-alias)
-  - [UUID (type alias)](#uuid-type-alias)
-  - [UUIDSchemableOptions (type alias)](#uuidschemableoptions-type-alias)
-- [Refinements](#refinements)
-  - [isUUID](#isuuid)
 
 ---
 
@@ -47,7 +40,7 @@ Added in v0.0.1
 export declare const Arbitrary: SchemableParams1<'Arbitrary'>
 ```
 
-Added in v0.0.3
+Added in v0.0.4
 
 ## Decoder
 
@@ -57,7 +50,7 @@ Added in v0.0.3
 export declare const Decoder: SchemableParams2C<'io-ts/Decoder'>
 ```
 
-Added in v0.0.1
+Added in v0.0.4
 
 ## Encoder
 
@@ -67,7 +60,7 @@ Added in v0.0.1
 export declare const Encoder: SchemableParams2<'io-ts/Encoder'>
 ```
 
-Added in v0.0.3
+Added in v0.0.4
 
 ## Eq
 
@@ -77,7 +70,7 @@ Added in v0.0.3
 export declare const Eq: SchemableParams1<'Eq'>
 ```
 
-Added in v0.0.1
+Added in v0.0.4
 
 ## Guard
 
@@ -87,7 +80,7 @@ Added in v0.0.1
 export declare const Guard: SchemableParams1<'io-ts/Guard'>
 ```
 
-Added in v0.0.1
+Added in v0.0.4
 
 ## TaskDecoder
 
@@ -97,7 +90,7 @@ Added in v0.0.1
 export declare const TaskDecoder: SchemableParams2C<'io-ts/TaskDecoder'>
 ```
 
-Added in v0.0.1
+Added in v0.0.4
 
 ## Type
 
@@ -107,7 +100,7 @@ Added in v0.0.1
 export declare const Type: SchemableParams1<'io-ts/Type'>
 ```
 
-Added in v0.0.1
+Added in v0.0.4
 
 # Model
 
@@ -116,73 +109,37 @@ Added in v0.0.1
 **Signature**
 
 ```ts
-export type SchemableParams<S> = (options: UUIDSchemableOptions) => HKT2<S, string, UUID>
+export type SchemableParams<S> = <A, E>(sa: HKT2<S, E, A>) => HKT2<S, E | undefined, O.Option<A>>
 ```
 
-Added in v0.0.1
+Added in v0.0.4
 
 ## SchemableParams1 (type alias)
 
 **Signature**
 
 ```ts
-export type SchemableParams1<S extends URIS> = (options: UUIDSchemableOptions) => Kind<S, UUID>
+export type SchemableParams1<S extends URIS> = <A>(sa: Kind<S, A>) => Kind<S, O.Option<A>>
 ```
 
-Added in v0.0.1
+Added in v0.0.4
 
 ## SchemableParams2 (type alias)
 
 **Signature**
 
 ```ts
-export type SchemableParams2<S extends URIS2> = (options: UUIDSchemableOptions) => Kind2<S, string, UUID>
+export type SchemableParams2<S extends URIS2> = <A, E>(sa: Kind2<S, E, A>) => Kind2<S, E | undefined, O.Option<A>>
 ```
 
-Added in v0.0.3
+Added in v0.0.4
 
 ## SchemableParams2C (type alias)
 
 **Signature**
 
 ```ts
-export type SchemableParams2C<S extends URIS2> = (options: UUIDSchemableOptions) => Kind2<S, unknown, UUID>
+export type SchemableParams2C<S extends URIS2> = <A>(sa: Kind2<S, unknown, A>) => Kind2<S, unknown, O.Option<A>>
 ```
 
-Added in v0.0.1
-
-## UUID (type alias)
-
-Represents strings that are UUIDs.
-
-**Signature**
-
-```ts
-export type UUID = string & UUIDBrand
-```
-
-Added in v0.0.1
-
-## UUIDSchemableOptions (type alias)
-
-**Signature**
-
-```ts
-export type UUIDSchemableOptions = {
-  version: 1 | 2 | 3 | 4 | 5 | 'all'
-}
-```
-
-Added in v0.0.1
-
-# Refinements
-
-## isUUID
-
-**Signature**
-
-```ts
-export declare const isUUID: (options: UUIDSchemableOptions) => (s: string) => s is UUID
-```
-
-Added in v0.0.1
+Added in v0.0.4
