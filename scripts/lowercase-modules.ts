@@ -47,7 +47,9 @@ const getLowercaseModules: Build<
 const renameToLowercase: (prim: Primitive, name: ModuleWithExtension) => Build<void> =
   (prim, name) => C =>
     pipe(
-      C.exec(`git mv src/${prim}/${name} src/${prim}/${camelFromPascal(name)}`),
+      /^[A-Z]/.test(name)
+        ? C.exec(`git mv src/${prim}/${name} src/${prim}/${camelFromPascal(name)}`)
+        : TE.of(void 0),
       TE.apFirst(
         C.exec(
           `git mv tests/${prim}/${suffixWithTest(name)} tests/${prim}/${pipe(
