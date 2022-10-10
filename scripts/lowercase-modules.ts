@@ -86,7 +86,7 @@ const main: Build<void> = pipe(
     pipe(modules, RA.traverse(RTE.ApplicativeSeq)(renameToLowercase('src')))
   ),
   RTE.chainFirst(({ testModules }) =>
-    pipe(testModules, RA.traverse(RTE.ApplicativeSeq)(renameToLowercase('test')))
+    pipe(testModules, RA.traverse(RTE.ApplicativeSeq)(renameToLowercase('tests')))
   ),
   RTE.chainIOK(() => Cons.log(Color.green('Done!')))
 )
