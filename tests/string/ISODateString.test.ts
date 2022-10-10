@@ -1,83 +1,93 @@
+import * as RA from 'fp-ts/ReadonlyArray'
+import * as E from 'fp-ts/Either'
+import { pipe, tuple } from 'fp-ts/function'
 import * as ISODateString from '../../src/string/ISODateString'
-import { validateArbitrary } from '../../test-utils'
+import { cat, combineExpected, validateArbitrary } from '../../test-utils'
+
+const valid: ReadonlyArray<string> = [
+  '2000-02-29',
+  '2009-123',
+  '2009-222',
+  '2020-366',
+  '2400-366',
+]
+
+const invalid: ReadonlyArray<string> = [
+  '2010-02-30',
+  '2009-02-29',
+  '2009-366',
+  '2019-02-31',
+]
 
 describe('ISODateString', () => {
   describe('Decoder', () => {
-    it('catches an invalid date', () => {
-      const result = ISODateString.Decoder.decode('abc')
-      expect(result._tag).toBe('Left')
-    })
-    it('validates a valid date', () => {
-      const result = ISODateString.Decoder.decode(new Date().toISOString())
-      expect(result._tag).toBe('Right')
+    test.each(cat(combineExpected(valid, 'Right'), combineExpected(invalid, 'Left')))(
+      'validates valid strings, and catches bad strings',
+      (str, expectedTag) => {
+        const result = ISODateString.Decoder.decode(str)
+        expect(result._tag).toBe(expectedTag)
+      }
+    )
+  })
+
+  describe('Encoder', () => {
+    test.each(valid)('encoding a decoded value yields original value', original => {
+      const roundtrip = pipe(
+        original,
+        ISODateString.Decoder.decode,
+        E.map(ISODateString.Encoder.encode),
+        E.getOrElseW(() => 'unexpected')
+      )
+      expect(original).toEqual(roundtrip)
     })
   })
+
   describe('Eq', () => {
-    it('returns true for similar dates', () => {
-      const date = new Date().toISOString()
-      if (!ISODateString.Guard.is(date)) throw new Error('Unexpected result')
-      expect(ISODateString.Eq.equals(date, date)).toBe(true)
-    })
-    it('returns false for dissimilar dates', () => {
-      const date1 = new Date()
-      const date1Iso = date1.toISOString()
-      const date2 = new Date(date1.getTime() + 1)
-      const date2Iso = date2.toISOString()
-      if (!ISODateString.Guard.is(date1Iso) || !ISODateString.Guard.is(date2Iso))
-        throw new Error('Unexpected result')
-      expect(ISODateString.Eq.equals(date1Iso, date2Iso)).toBe(false)
-    })
+    test.each(RA.zipWith(valid, valid, tuple))(
+      'determines two strings are equal',
+      (str1, str2) => {
+        const guard = ISODateString.Guard.is
+        const eq = ISODateString.Eq.equals
+        if (!guard(str1) || !guard(str2)) {
+          throw new Error('Unexpected result')
+        }
+        expect(eq(str1, str2)).toBe(true)
+      }
+    )
   })
+
   describe('Guard', () => {
-    it('guards against invalid date', () => {
-      expect(ISODateString.Guard.is('abc')).toBe(false)
-    })
-    it('permits a valid date', () => {
-      const date = new Date()
-      expect(ISODateString.Guard.is(date.toISOString())).toBe(true)
-    })
+    test.each(cat(combineExpected(valid, true), combineExpected(invalid, false)))(
+      'validates valid strings, and catches bad strings',
+      (str, expectedTag) => {
+        const result = ISODateString.Guard.is(str)
+        expect(result).toBe(expectedTag)
+      }
+    )
   })
+
   describe('TaskDecoder', () => {
-    it('invalidates an invalid date', async () => {
-      const result = await ISODateString.TaskDecoder.decode('abc')()
-      expect(result._tag).toBe('Left')
-    })
-    it('validates an valid date', async () => {
-      const date = new Date().toISOString()
-      const result = await ISODateString.TaskDecoder.decode(date)()
-      expect(result._tag).toBe('Right')
-    })
+    test.each(cat(combineExpected(valid, 'Right'), combineExpected(invalid, 'Left')))(
+      'validates valid string, and catches bad string',
+      async (str, expectedTag) => {
+        const result = await ISODateString.TaskDecoder.decode(str)()
+        expect(result._tag).toBe(expectedTag)
+      }
+    )
   })
+
   describe('Type', () => {
-    it('decodes an invalid date', () => {
-      const result = ISODateString.Type.decode('abc')
-      expect(result._tag).toBe('Left')
-    })
-    it('decodes an invalid date', () => {
-      const date = new Date().toISOString()
-      const result = ISODateString.Type.decode(date)
-      expect(result._tag).toBe('Right')
-    })
-  })
-  it('converts to safe-date', () => {
-    const date = new Date().toISOString()
-    if (!ISODateString.Guard.is(date)) throw new Error('Unexpected result')
-    const result = ISODateString.toSafeDate(date)
-    expect(result.toISOString()).toBe(date)
-  })
-  it('returns O.some for a valid Date', () => {
-    const date = new Date()
-    const result = ISODateString.fromDate(date)
-    expect(result._tag).toBe('Some')
-  })
-  it('returns O.none for an invalid Date', () => {
-    const date = new Date('abc')
-    const result = ISODateString.fromDate(date)
-    expect(result._tag).toBe('None')
+    test.each(cat(combineExpected(valid, 'Right'), combineExpected(invalid, 'Left')))(
+      'validates valid strings, and catches bad strings',
+      (str, expectedTag) => {
+        const result = ISODateString.Type.decode(str)
+        expect(result._tag).toBe(expectedTag)
+      }
+    )
   })
 
   describe('Arbitrary', () => {
-    it('generates valid ISODateStrings', () => {
+    it('generates valid ISODateString', () => {
       validateArbitrary(ISODateString, ISODateString.isISODate)
     })
   })
