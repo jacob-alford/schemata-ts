@@ -20,8 +20,8 @@ import * as Str from 'fp-ts/string'
 import { pipe, unsafeCoerce } from 'fp-ts/function'
 
 import * as Arb from '../internal/ArbitraryBase'
-import * as PositiveInt from '../number/PositiveInt'
-import { isIntString, toInt } from './IntString'
+import * as PositiveInt from '../number/positiveInt'
+import { isIntString, toInt } from './intString'
 
 /**
  * @since 0.0.1

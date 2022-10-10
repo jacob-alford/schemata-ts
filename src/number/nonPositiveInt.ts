@@ -20,7 +20,7 @@ import * as t from 'io-ts/Type'
 import * as Arb from '../internal/ArbitraryBase'
 import { pipe } from 'fp-ts/function'
 import * as fc from 'fast-check'
-import { isInt } from './Int'
+import { isInt } from './int'
 
 /**
  * @since 0.0.4

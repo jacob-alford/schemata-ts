@@ -21,7 +21,7 @@ import { pipe } from 'fp-ts/function'
 import * as fc from 'fast-check'
 
 import * as Arb from '../internal/ArbitraryBase'
-import { isInt } from './Int'
+import { isInt } from './int'
 
 /**
  * @since 0.0.1

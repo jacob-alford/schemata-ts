@@ -423,7 +423,8 @@ export interface SchemableExt<S> extends SchemableHKT2<S> {
   readonly positiveIntString: positiveIntString.SchemableParams<S>
 
   /**
-   * Represents strings which are valid RGB colors. Permits both absolute and percentage based values.
+   * Represents strings which are valid RGB colors. Permits both absolute and percentage
+   * based values.
    *
    * @since 0.0.4
    */
@@ -821,7 +822,8 @@ export interface SchemableExt1<S extends URIS> extends Schemable1<S> {
   readonly positiveIntString: positiveIntString.SchemableParams1<S>
 
   /**
-   * Represents strings which are valid RGB colors. Permits both absolute and percentage based values.
+   * Represents strings which are valid RGB colors. Permits both absolute and percentage
+   * based values.
    *
    * @since 0.0.4
    */
@@ -1219,7 +1221,8 @@ export interface SchemableExt2<S extends URIS2> extends Schemable2<S> {
   readonly positiveIntString: positiveIntString.SchemableParams2<S>
 
   /**
-   * Represents strings which are valid RGB colors. Permits both absolute and percentage based values.
+   * Represents strings which are valid RGB colors. Permits both absolute and percentage
+   * based values.
    *
    * @since 0.0.4
    */
@@ -1617,7 +1620,8 @@ export interface SchemableExt2C<S extends URIS2> extends Schemable2C<S, unknown>
   readonly positiveIntString: positiveIntString.SchemableParams2C<S>
 
   /**
-   * Represents strings which are valid RGB colors. Permits both absolute and percentage based values.
+   * Represents strings which are valid RGB colors. Permits both absolute and percentage
+   * based values.
    *
    * @since 0.0.4
    */

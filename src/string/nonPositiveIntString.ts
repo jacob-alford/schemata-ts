@@ -19,7 +19,7 @@ import * as TD from 'io-ts/TaskDecoder'
 import * as t from 'io-ts/Type'
 import * as Arb from '../internal/ArbitraryBase'
 import { pipe, unsafeCoerce } from 'fp-ts/function'
-import * as NonPositiveInt from '../number/NonPositiveInt'
+import * as NonPositiveInt from '../number/nonPositiveInt'
 
 /**
  * @since 0.0.4

@@ -18,7 +18,7 @@ import { pipe } from 'fp-ts/function'
 import * as fc from 'fast-check'
 
 import * as Arb from '../internal/ArbitraryBase'
-import { isBase64Url } from './Base64Url'
+import { isBase64Url } from './base64Url'
 import { base64Encode, urlifyBase64 } from '../internal/util'
 
 /**

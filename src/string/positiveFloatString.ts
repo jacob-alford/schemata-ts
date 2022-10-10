@@ -19,7 +19,7 @@ import * as TD from 'io-ts/TaskDecoder'
 import * as t from 'io-ts/Type'
 import { pipe, unsafeCoerce } from 'fp-ts/function'
 
-import * as PositiveFloat from '../number/PositiveFloat'
+import * as PositiveFloat from '../number/positiveFloat'
 import * as Arb from '../internal/ArbitraryBase'
 
 /**

@@ -20,7 +20,7 @@ import * as Str from 'fp-ts/string'
 import { pipe, unsafeCoerce } from 'fp-ts/function'
 
 import * as Arb from '../internal/ArbitraryBase'
-import * as Int from '../number/Int'
+import * as Int from '../number/int'
 
 /**
  * @since 0.0.1

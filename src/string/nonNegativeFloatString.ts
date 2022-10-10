@@ -20,7 +20,7 @@ import * as t from 'io-ts/Type'
 import { pipe, unsafeCoerce } from 'fp-ts/function'
 
 import * as Arb from '../internal/ArbitraryBase'
-import * as NonNegativeFloat from '../number/NonNegativeFloat'
+import * as NonNegativeFloat from '../number/nonNegativeFloat'
 
 /**
  * @since 0.0.2

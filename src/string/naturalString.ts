@@ -21,9 +21,9 @@ import * as Str from 'fp-ts/string'
 import { pipe, unsafeCoerce } from 'fp-ts/function'
 
 import * as Arb from '../internal/ArbitraryBase'
-import * as Nat from '../number/Natural'
-import { Natural } from '../number/Natural'
-import { isInt } from '../number/Int'
+import * as Nat from '../number/natural'
+import { Natural } from '../number/natural'
+import { isInt } from '../number/int'
 
 /**
  * @since 0.0.1

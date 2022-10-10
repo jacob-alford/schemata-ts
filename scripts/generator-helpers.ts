@@ -52,10 +52,15 @@ export const checkTestModuleUniqueness: (test: string) => Build<ReadonlyArray<st
       )
     )
 
+const capitalize: (s: string) => string = s =>
+  `${Str.toUpperCase(s.slice(0, 1))}${s.slice(1, s.length)}`
+
 export const makeTestFile: (
   primitive: 'number' | 'string',
-  moduleName: string
-) => string = (primitive, moduleName) => {
+  moduleName_: string
+) => string = (primitive, moduleName_) => {
+  const moduleName = capitalize(moduleName_)
+
   const printer = ts.createPrinter({ newLine: ts.NewLineKind.LineFeed })
   const sourceFile = ts.createSourceFile(
     `${moduleName}.ts`,
@@ -107,7 +112,7 @@ export const makeTestFile: (
           undefined,
           _.createNamespaceImport(_.createIdentifier(moduleName))
         ),
-        _.createStringLiteral(`../../src/${primitive}/${moduleName}`),
+        _.createStringLiteral(`../../src/${primitive}/${moduleName_}`),
         undefined
       ),
       _.createImportDeclaration(
