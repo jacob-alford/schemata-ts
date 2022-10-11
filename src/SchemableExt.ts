@@ -15,43 +15,44 @@ import * as optionFromNullable from './generic/optionFromNullable'
 import * as optionFromUndefined from './generic/optionFromUndefined'
 
 /** Number */
-import * as Int from './number/Int'
-import * as Natural from './number/Natural'
-import * as NegativeFloat from './number/NegativeFloat'
-import * as NegativeInt from './number/NegativeInt'
-import * as NonNegativeFloat from './number/NonNegativeFloat'
-import * as NonPositiveFloat from './number/NonPositiveFloat'
-import * as NonPositiveInt from './number/NonPositiveInt'
-import * as PositiveFloat from './number/PositiveFloat'
-import * as PositiveInt from './number/PositiveInt'
+import * as int from './number/int'
+import * as natural from './number/natural'
+import * as negativeFloat from './number/negativeFloat'
+import * as negativeInt from './number/negativeInt'
+import * as nonNegativeFloat from './number/nonNegativeFloat'
+import * as nonPositiveFloat from './number/nonPositiveFloat'
+import * as nonPositiveInt from './number/nonPositiveInt'
+import * as positiveFloat from './number/positiveFloat'
+import * as positiveInt from './number/positiveInt'
 
 /** String */
-import * as ASCII from './string/ASCII'
-import * as Base64 from './string/Base64'
-import * as Base64Url from './string/Base64Url'
-import * as BtcAddress from './string/BtcAddress'
-import * as CreditCard from './string/CreditCard'
-import * as EmailAddress from './string/EmailAddress'
-import * as HexColor from './string/HexColor'
-import * as Hexadecimal from './string/Hexadecimal'
-import * as HslColor from './string/HslColor'
-import * as ISODateString from './string/ISODateString'
-import * as IntString from './string/IntString'
-import * as JWT from './string/JWT'
-import * as NaturalString from './string/NaturalString'
-import * as NegativeFloatString from './string/NegativeFloatString'
-import * as NegativeIntString from './string/NegativeIntString'
-import * as NonNegativeFloatString from './string/NonNegativeFloatString'
-import * as NonPositiveFloatString from './string/NonPositiveFloatString'
-import * as NonPositiveIntString from './string/NonPositiveIntString'
-import * as NonemptyString from './string/NonemptyString'
-import * as PositiveFloatString from './string/PositiveFloatString'
-import * as PositiveIntString from './string/PositiveIntString'
-import * as RGB from './string/RGB'
-import * as UUID from './string/UUID'
+import * as ascii from './string/ascii'
+import * as base64 from './string/base64'
+import * as base64Url from './string/base64Url'
+import * as bigIntString from './string/bigIntString'
+import * as btcAddress from './string/btcAddress'
+import * as creditCard from './string/creditCard'
+import * as emailAddress from './string/emailAddress'
+import * as hexColor from './string/hexColor'
+import * as hexadecimal from './string/hexadecimal'
+import * as hslColor from './string/hslColor'
+import * as intString from './string/intString'
+import * as isoDateString from './string/isoDateString'
+import * as jwt from './string/jwt'
+import * as naturalString from './string/naturalString'
+import * as negativeFloatString from './string/negativeFloatString'
+import * as negativeIntString from './string/negativeIntString'
+import * as nonNegativeFloatString from './string/nonNegativeFloatString'
+import * as nonPositiveFloatString from './string/nonPositiveFloatString'
+import * as nonPositiveIntString from './string/nonPositiveIntString'
+import * as nonemptyString from './string/nonemptyString'
+import * as positiveFloatString from './string/positiveFloatString'
+import * as positiveIntString from './string/positiveIntString'
+import * as rgb from './string/rgb'
+import * as uuid from './string/uuid'
 
 /** Date */
-import * as SafeDate from './date/SafeDate'
+import * as safeDate from './date/safeDate'
 
 /**
  * @since 0.0.1
@@ -91,7 +92,7 @@ export interface SchemableExt<S> extends SchemableHKT2<S> {
    *
    * @since 0.0.1
    */
-  readonly Int: Int.SchemableParams<S>
+  readonly int: int.SchemableParams<S>
 
   /**
    * Natural branded newtype.
@@ -104,7 +105,7 @@ export interface SchemableExt<S> extends SchemableHKT2<S> {
    *
    * @since 0.0.1
    */
-  readonly Natural: Natural.SchemableParams<S>
+  readonly natural: natural.SchemableParams<S>
 
   /**
    * Negative floating point branded newtype.
@@ -117,7 +118,7 @@ export interface SchemableExt<S> extends SchemableHKT2<S> {
    *
    * @since 0.0.2
    */
-  readonly NegativeFloat: NegativeFloat.SchemableParams<S>
+  readonly negativeFloat: negativeFloat.SchemableParams<S>
 
   /**
    * Negative integer branded newtype.
@@ -130,7 +131,7 @@ export interface SchemableExt<S> extends SchemableHKT2<S> {
    *
    * @since 0.0.1
    */
-  readonly NegativeInt: NegativeInt.SchemableParams<S>
+  readonly negativeInt: negativeInt.SchemableParams<S>
 
   /**
    * Non-negative floating point branded newtype.
@@ -143,7 +144,7 @@ export interface SchemableExt<S> extends SchemableHKT2<S> {
    *
    * @since 0.0.2
    */
-  readonly NonNegativeFloat: NonNegativeFloat.SchemableParams<S>
+  readonly nonNegativeFloat: nonNegativeFloat.SchemableParams<S>
 
   /**
    * Non-positive floating point branded newtype.
@@ -156,7 +157,7 @@ export interface SchemableExt<S> extends SchemableHKT2<S> {
    *
    * @since 0.0.4
    */
-  readonly NonPositiveFloat: NonPositiveFloat.SchemableParams<S>
+  readonly nonPositiveFloat: nonPositiveFloat.SchemableParams<S>
 
   /**
    * NonPositive integer branded newtype.
@@ -169,7 +170,7 @@ export interface SchemableExt<S> extends SchemableHKT2<S> {
    *
    * @since 0.0.4
    */
-  readonly NonPositiveInt: NonPositiveInt.SchemableParams<S>
+  readonly nonPositiveInt: nonPositiveInt.SchemableParams<S>
 
   /**
    * Positive Float branded newtype.
@@ -182,7 +183,7 @@ export interface SchemableExt<S> extends SchemableHKT2<S> {
    *
    * @since 0.0.2
    */
-  readonly PositiveFloat: PositiveFloat.SchemableParams<S>
+  readonly positiveFloat: positiveFloat.SchemableParams<S>
 
   /**
    * Positive integer branded newtype.
@@ -195,7 +196,7 @@ export interface SchemableExt<S> extends SchemableHKT2<S> {
    *
    * @since 0.0.1
    */
-  readonly PositiveInt: PositiveInt.SchemableParams<S>
+  readonly positiveInt: positiveInt.SchemableParams<S>
 
   /**
    * A string in which every character is valid ASCII.
@@ -205,7 +206,7 @@ export interface SchemableExt<S> extends SchemableHKT2<S> {
    *
    * @since 0.0.1
    */
-  readonly ASCII: ASCII.SchemableParams<S>
+  readonly ascii: ascii.SchemableParams<S>
 
   /**
    * Representing a Base64-encoded string.
@@ -217,7 +218,7 @@ export interface SchemableExt<S> extends SchemableHKT2<S> {
    *
    * @since 0.0.2
    */
-  readonly Base64: Base64.SchemableParams<S>
+  readonly base64: base64.SchemableParams<S>
 
   /**
    * Representing a URL-safe, Base64 encoded string.
@@ -229,7 +230,14 @@ export interface SchemableExt<S> extends SchemableHKT2<S> {
    *
    * @since 0.0.2
    */
-  readonly Base64Url: Base64Url.SchemableParams<S>
+  readonly base64Url: base64Url.SchemableParams<S>
+
+  /**
+   * Represents strings which can be converted into `BitInt`.
+   *
+   * @since 0.0.4
+   */
+  readonly bigIntString: bigIntString.SchemableParams<S>
 
   /**
    * Represents strings which are valid Bitcoin addresses.
@@ -239,7 +247,7 @@ export interface SchemableExt<S> extends SchemableHKT2<S> {
    *
    * @since 0.0.2
    */
-  readonly BtcAddress: BtcAddress.SchemableParams<S>
+  readonly btcAddress: btcAddress.SchemableParams<S>
 
   /**
    * Represents (some) valid credit card numbers.
@@ -249,7 +257,7 @@ export interface SchemableExt<S> extends SchemableHKT2<S> {
    *
    * @since 0.0.3
    */
-  readonly CreditCard: CreditCard.SchemableParams<S>
+  readonly creditCard: creditCard.SchemableParams<S>
 
   /**
    * Represents strings (email addresses) that conform to the RFC 5322 standard.
@@ -260,7 +268,7 @@ export interface SchemableExt<S> extends SchemableHKT2<S> {
    *
    * @since 0.0.1
    */
-  readonly EmailAddress: EmailAddress.SchemableParams<S>
+  readonly emailAddress: emailAddress.SchemableParams<S>
 
   /**
    * A valid hexadecimal color value.
@@ -270,7 +278,7 @@ export interface SchemableExt<S> extends SchemableHKT2<S> {
    *
    * @since 0.0.3
    */
-  readonly HexColor: HexColor.SchemableParams<S>
+  readonly hexColor: hexColor.SchemableParams<S>
 
   /**
    * A string of hexadecimal characters.
@@ -280,14 +288,14 @@ export interface SchemableExt<S> extends SchemableHKT2<S> {
    *
    * @since 0.0.3
    */
-  readonly Hexadecimal: Hexadecimal.SchemableParams<S>
+  readonly hexadecimal: hexadecimal.SchemableParams<S>
 
   /**
    * An HSL string. Commonly in CSS.
    *
    * @since 0.0.3
    * @example
-   *   import { Guard } from 'schemable-ts-types/string/HslColor'
+   *   import { Guard } from 'schemable-ts-types/string/hslColor'
    *
    *   const hue = 270
    *   const saturation = 60
@@ -298,14 +306,7 @@ export interface SchemableExt<S> extends SchemableHKT2<S> {
    *
    *   assert.equal(Guard.is(hslString), true)
    */
-  readonly HslColor: HslColor.SchemableParams<S>
-
-  /**
-   * Represents strings that conform to the ISO 8601 standard.
-   *
-   * @since 0.0.1
-   */
-  readonly ISODateString: ISODateString.SchemableParams<S>
+  readonly hslColor: hslColor.SchemableParams<S>
 
   /**
    * Integer branded newtype.
@@ -318,7 +319,14 @@ export interface SchemableExt<S> extends SchemableHKT2<S> {
    *
    * @since 0.0.1
    */
-  readonly IntString: IntString.SchemableParams<S>
+  readonly intString: intString.SchemableParams<S>
+
+  /**
+   * Represents strings that conform to the ISO 8601 standard.
+   *
+   * @since 0.0.1
+   */
+  readonly isoDateString: isoDateString.SchemableParams<S>
 
   /**
    * A valid, Base64-encoded JWT.
@@ -328,7 +336,7 @@ export interface SchemableExt<S> extends SchemableHKT2<S> {
    *
    * @since 0.0.2
    */
-  readonly JWT: JWT.SchemableParams<S>
+  readonly jwt: jwt.SchemableParams<S>
 
   /**
    * Natural branded newtype string.
@@ -341,7 +349,7 @@ export interface SchemableExt<S> extends SchemableHKT2<S> {
    *
    * @since 0.0.1
    */
-  readonly NaturalString: NaturalString.SchemableParams<S>
+  readonly naturalString: naturalString.SchemableParams<S>
 
   /**
    * Negative floating point branded newtype string.
@@ -354,7 +362,7 @@ export interface SchemableExt<S> extends SchemableHKT2<S> {
    *
    * @since 0.0.2
    */
-  readonly NegativeFloatString: NegativeFloatString.SchemableParams<S>
+  readonly negativeFloatString: negativeFloatString.SchemableParams<S>
 
   /**
    * Negative integer branded newtype string.
@@ -367,7 +375,7 @@ export interface SchemableExt<S> extends SchemableHKT2<S> {
    *
    * @since 0.0.1
    */
-  readonly NegativeIntString: NegativeIntString.SchemableParams<S>
+  readonly negativeIntString: negativeIntString.SchemableParams<S>
 
   /**
    * Non-negative floating point branded newtype string.
@@ -380,7 +388,7 @@ export interface SchemableExt<S> extends SchemableHKT2<S> {
    *
    * @since 0.0.2
    */
-  readonly NonNegativeFloatString: NonNegativeFloatString.SchemableParams<S>
+  readonly nonNegativeFloatString: nonNegativeFloatString.SchemableParams<S>
 
   /**
    * Non-positive floating point branded newtype string.
@@ -393,7 +401,7 @@ export interface SchemableExt<S> extends SchemableHKT2<S> {
    *
    * @since 0.0.4
    */
-  readonly NonPositiveFloatString: NonPositiveFloatString.SchemableParams<S>
+  readonly nonPositiveFloatString: nonPositiveFloatString.SchemableParams<S>
 
   /**
    * NonPositive integer branded newtype string.
@@ -406,14 +414,14 @@ export interface SchemableExt<S> extends SchemableHKT2<S> {
    *
    * @since 0.0.4
    */
-  readonly NonPositiveIntString: NonPositiveIntString.SchemableParams<S>
+  readonly nonPositiveIntString: nonPositiveIntString.SchemableParams<S>
 
   /**
    * Represents strings that are not empty strings.
    *
    * @since 0.0.1
    */
-  readonly NonemptyString: NonemptyString.SchemableParams<S>
+  readonly nonemptyString: nonemptyString.SchemableParams<S>
 
   /**
    * Positive floating point branded newtype string.
@@ -426,7 +434,7 @@ export interface SchemableExt<S> extends SchemableHKT2<S> {
    *
    * @since 0.0.2
    */
-  readonly PositiveFloatString: PositiveFloatString.SchemableParams<S>
+  readonly positiveFloatString: positiveFloatString.SchemableParams<S>
 
   /**
    * Positive integer branded newtype string.
@@ -439,7 +447,7 @@ export interface SchemableExt<S> extends SchemableHKT2<S> {
    *
    * @since 0.0.1
    */
-  readonly PositiveIntString: PositiveIntString.SchemableParams<S>
+  readonly positiveIntString: positiveIntString.SchemableParams<S>
 
   /**
    * Represents strings which are valid RGB colors. Permits both absolute and percentage
@@ -447,7 +455,7 @@ export interface SchemableExt<S> extends SchemableHKT2<S> {
    *
    * @since 0.0.4
    */
-  readonly RGB: RGB.SchemableParams<S>
+  readonly rgb: rgb.SchemableParams<S>
 
   /**
    * Represents strings that are UUIDs.
@@ -457,14 +465,14 @@ export interface SchemableExt<S> extends SchemableHKT2<S> {
    *
    * @since 0.0.1
    */
-  readonly UUID: UUID.SchemableParams<S>
+  readonly uuid: uuid.SchemableParams<S>
 
   /**
    * Represents Date objects which are not invalid dates
    *
    * @since 0.0.1
    */
-  readonly SafeDate: SafeDate.SchemableParams<S>
+  readonly safeDate: safeDate.SchemableParams<S>
 }
 
 /**
@@ -505,7 +513,7 @@ export interface SchemableExt1<S extends URIS> extends Schemable1<S> {
    *
    * @since 0.0.1
    */
-  readonly Int: Int.SchemableParams1<S>
+  readonly int: int.SchemableParams1<S>
 
   /**
    * Natural branded newtype.
@@ -518,7 +526,7 @@ export interface SchemableExt1<S extends URIS> extends Schemable1<S> {
    *
    * @since 0.0.1
    */
-  readonly Natural: Natural.SchemableParams1<S>
+  readonly natural: natural.SchemableParams1<S>
 
   /**
    * Negative floating point branded newtype.
@@ -531,7 +539,7 @@ export interface SchemableExt1<S extends URIS> extends Schemable1<S> {
    *
    * @since 0.0.2
    */
-  readonly NegativeFloat: NegativeFloat.SchemableParams1<S>
+  readonly negativeFloat: negativeFloat.SchemableParams1<S>
 
   /**
    * Negative integer branded newtype.
@@ -544,7 +552,7 @@ export interface SchemableExt1<S extends URIS> extends Schemable1<S> {
    *
    * @since 0.0.1
    */
-  readonly NegativeInt: NegativeInt.SchemableParams1<S>
+  readonly negativeInt: negativeInt.SchemableParams1<S>
 
   /**
    * Non-negative floating point branded newtype.
@@ -557,7 +565,7 @@ export interface SchemableExt1<S extends URIS> extends Schemable1<S> {
    *
    * @since 0.0.2
    */
-  readonly NonNegativeFloat: NonNegativeFloat.SchemableParams1<S>
+  readonly nonNegativeFloat: nonNegativeFloat.SchemableParams1<S>
 
   /**
    * Non-positive floating point branded newtype.
@@ -570,7 +578,7 @@ export interface SchemableExt1<S extends URIS> extends Schemable1<S> {
    *
    * @since 0.0.4
    */
-  readonly NonPositiveFloat: NonPositiveFloat.SchemableParams1<S>
+  readonly nonPositiveFloat: nonPositiveFloat.SchemableParams1<S>
 
   /**
    * NonPositive integer branded newtype.
@@ -583,7 +591,7 @@ export interface SchemableExt1<S extends URIS> extends Schemable1<S> {
    *
    * @since 0.0.4
    */
-  readonly NonPositiveInt: NonPositiveInt.SchemableParams1<S>
+  readonly nonPositiveInt: nonPositiveInt.SchemableParams1<S>
 
   /**
    * Positive Float branded newtype.
@@ -596,7 +604,7 @@ export interface SchemableExt1<S extends URIS> extends Schemable1<S> {
    *
    * @since 0.0.2
    */
-  readonly PositiveFloat: PositiveFloat.SchemableParams1<S>
+  readonly positiveFloat: positiveFloat.SchemableParams1<S>
 
   /**
    * Positive integer branded newtype.
@@ -609,7 +617,7 @@ export interface SchemableExt1<S extends URIS> extends Schemable1<S> {
    *
    * @since 0.0.1
    */
-  readonly PositiveInt: PositiveInt.SchemableParams1<S>
+  readonly positiveInt: positiveInt.SchemableParams1<S>
 
   /**
    * A string in which every character is valid ASCII.
@@ -619,7 +627,7 @@ export interface SchemableExt1<S extends URIS> extends Schemable1<S> {
    *
    * @since 0.0.1
    */
-  readonly ASCII: ASCII.SchemableParams1<S>
+  readonly ascii: ascii.SchemableParams1<S>
 
   /**
    * Representing a Base64-encoded string.
@@ -631,7 +639,7 @@ export interface SchemableExt1<S extends URIS> extends Schemable1<S> {
    *
    * @since 0.0.2
    */
-  readonly Base64: Base64.SchemableParams1<S>
+  readonly base64: base64.SchemableParams1<S>
 
   /**
    * Representing a URL-safe, Base64 encoded string.
@@ -643,7 +651,14 @@ export interface SchemableExt1<S extends URIS> extends Schemable1<S> {
    *
    * @since 0.0.2
    */
-  readonly Base64Url: Base64Url.SchemableParams1<S>
+  readonly base64Url: base64Url.SchemableParams1<S>
+
+  /**
+   * Represents strings which can be converted into `BitInt`.
+   *
+   * @since 0.0.4
+   */
+  readonly bigIntString: bigIntString.SchemableParams1<S>
 
   /**
    * Represents strings which are valid Bitcoin addresses.
@@ -653,7 +668,7 @@ export interface SchemableExt1<S extends URIS> extends Schemable1<S> {
    *
    * @since 0.0.2
    */
-  readonly BtcAddress: BtcAddress.SchemableParams1<S>
+  readonly btcAddress: btcAddress.SchemableParams1<S>
 
   /**
    * Represents (some) valid credit card numbers.
@@ -663,7 +678,7 @@ export interface SchemableExt1<S extends URIS> extends Schemable1<S> {
    *
    * @since 0.0.3
    */
-  readonly CreditCard: CreditCard.SchemableParams1<S>
+  readonly creditCard: creditCard.SchemableParams1<S>
 
   /**
    * Represents strings (email addresses) that conform to the RFC 5322 standard.
@@ -674,7 +689,7 @@ export interface SchemableExt1<S extends URIS> extends Schemable1<S> {
    *
    * @since 0.0.1
    */
-  readonly EmailAddress: EmailAddress.SchemableParams1<S>
+  readonly emailAddress: emailAddress.SchemableParams1<S>
 
   /**
    * A valid hexadecimal color value.
@@ -684,7 +699,7 @@ export interface SchemableExt1<S extends URIS> extends Schemable1<S> {
    *
    * @since 0.0.3
    */
-  readonly HexColor: HexColor.SchemableParams1<S>
+  readonly hexColor: hexColor.SchemableParams1<S>
 
   /**
    * A string of hexadecimal characters.
@@ -694,14 +709,14 @@ export interface SchemableExt1<S extends URIS> extends Schemable1<S> {
    *
    * @since 0.0.3
    */
-  readonly Hexadecimal: Hexadecimal.SchemableParams1<S>
+  readonly hexadecimal: hexadecimal.SchemableParams1<S>
 
   /**
    * An HSL string. Commonly in CSS.
    *
    * @since 0.0.3
    * @example
-   *   import { Guard } from 'schemable-ts-types/string/HslColor'
+   *   import { Guard } from 'schemable-ts-types/string/hslColor'
    *
    *   const hue = 270
    *   const saturation = 60
@@ -712,14 +727,7 @@ export interface SchemableExt1<S extends URIS> extends Schemable1<S> {
    *
    *   assert.equal(Guard.is(hslString), true)
    */
-  readonly HslColor: HslColor.SchemableParams1<S>
-
-  /**
-   * Represents strings that conform to the ISO 8601 standard.
-   *
-   * @since 0.0.1
-   */
-  readonly ISODateString: ISODateString.SchemableParams1<S>
+  readonly hslColor: hslColor.SchemableParams1<S>
 
   /**
    * Integer branded newtype.
@@ -732,7 +740,14 @@ export interface SchemableExt1<S extends URIS> extends Schemable1<S> {
    *
    * @since 0.0.1
    */
-  readonly IntString: IntString.SchemableParams1<S>
+  readonly intString: intString.SchemableParams1<S>
+
+  /**
+   * Represents strings that conform to the ISO 8601 standard.
+   *
+   * @since 0.0.1
+   */
+  readonly isoDateString: isoDateString.SchemableParams1<S>
 
   /**
    * A valid, Base64-encoded JWT.
@@ -742,7 +757,7 @@ export interface SchemableExt1<S extends URIS> extends Schemable1<S> {
    *
    * @since 0.0.2
    */
-  readonly JWT: JWT.SchemableParams1<S>
+  readonly jwt: jwt.SchemableParams1<S>
 
   /**
    * Natural branded newtype string.
@@ -755,7 +770,7 @@ export interface SchemableExt1<S extends URIS> extends Schemable1<S> {
    *
    * @since 0.0.1
    */
-  readonly NaturalString: NaturalString.SchemableParams1<S>
+  readonly naturalString: naturalString.SchemableParams1<S>
 
   /**
    * Negative floating point branded newtype string.
@@ -768,7 +783,7 @@ export interface SchemableExt1<S extends URIS> extends Schemable1<S> {
    *
    * @since 0.0.2
    */
-  readonly NegativeFloatString: NegativeFloatString.SchemableParams1<S>
+  readonly negativeFloatString: negativeFloatString.SchemableParams1<S>
 
   /**
    * Negative integer branded newtype string.
@@ -781,7 +796,7 @@ export interface SchemableExt1<S extends URIS> extends Schemable1<S> {
    *
    * @since 0.0.1
    */
-  readonly NegativeIntString: NegativeIntString.SchemableParams1<S>
+  readonly negativeIntString: negativeIntString.SchemableParams1<S>
 
   /**
    * Non-negative floating point branded newtype string.
@@ -794,7 +809,7 @@ export interface SchemableExt1<S extends URIS> extends Schemable1<S> {
    *
    * @since 0.0.2
    */
-  readonly NonNegativeFloatString: NonNegativeFloatString.SchemableParams1<S>
+  readonly nonNegativeFloatString: nonNegativeFloatString.SchemableParams1<S>
 
   /**
    * Non-positive floating point branded newtype string.
@@ -807,7 +822,7 @@ export interface SchemableExt1<S extends URIS> extends Schemable1<S> {
    *
    * @since 0.0.4
    */
-  readonly NonPositiveFloatString: NonPositiveFloatString.SchemableParams1<S>
+  readonly nonPositiveFloatString: nonPositiveFloatString.SchemableParams1<S>
 
   /**
    * NonPositive integer branded newtype string.
@@ -820,14 +835,14 @@ export interface SchemableExt1<S extends URIS> extends Schemable1<S> {
    *
    * @since 0.0.4
    */
-  readonly NonPositiveIntString: NonPositiveIntString.SchemableParams1<S>
+  readonly nonPositiveIntString: nonPositiveIntString.SchemableParams1<S>
 
   /**
    * Represents strings that are not empty strings.
    *
    * @since 0.0.1
    */
-  readonly NonemptyString: NonemptyString.SchemableParams1<S>
+  readonly nonemptyString: nonemptyString.SchemableParams1<S>
 
   /**
    * Positive floating point branded newtype string.
@@ -840,7 +855,7 @@ export interface SchemableExt1<S extends URIS> extends Schemable1<S> {
    *
    * @since 0.0.2
    */
-  readonly PositiveFloatString: PositiveFloatString.SchemableParams1<S>
+  readonly positiveFloatString: positiveFloatString.SchemableParams1<S>
 
   /**
    * Positive integer branded newtype string.
@@ -853,7 +868,7 @@ export interface SchemableExt1<S extends URIS> extends Schemable1<S> {
    *
    * @since 0.0.1
    */
-  readonly PositiveIntString: PositiveIntString.SchemableParams1<S>
+  readonly positiveIntString: positiveIntString.SchemableParams1<S>
 
   /**
    * Represents strings which are valid RGB colors. Permits both absolute and percentage
@@ -861,7 +876,7 @@ export interface SchemableExt1<S extends URIS> extends Schemable1<S> {
    *
    * @since 0.0.4
    */
-  readonly RGB: RGB.SchemableParams1<S>
+  readonly rgb: rgb.SchemableParams1<S>
 
   /**
    * Represents strings that are UUIDs.
@@ -871,14 +886,14 @@ export interface SchemableExt1<S extends URIS> extends Schemable1<S> {
    *
    * @since 0.0.1
    */
-  readonly UUID: UUID.SchemableParams1<S>
+  readonly uuid: uuid.SchemableParams1<S>
 
   /**
    * Represents Date objects which are not invalid dates
    *
    * @since 0.0.1
    */
-  readonly SafeDate: SafeDate.SchemableParams1<S>
+  readonly safeDate: safeDate.SchemableParams1<S>
 }
 
 /**
@@ -919,7 +934,7 @@ export interface SchemableExt2<S extends URIS2> extends Schemable2<S> {
    *
    * @since 0.0.1
    */
-  readonly Int: Int.SchemableParams2<S>
+  readonly int: int.SchemableParams2<S>
 
   /**
    * Natural branded newtype.
@@ -932,7 +947,7 @@ export interface SchemableExt2<S extends URIS2> extends Schemable2<S> {
    *
    * @since 0.0.1
    */
-  readonly Natural: Natural.SchemableParams2<S>
+  readonly natural: natural.SchemableParams2<S>
 
   /**
    * Negative floating point branded newtype.
@@ -945,7 +960,7 @@ export interface SchemableExt2<S extends URIS2> extends Schemable2<S> {
    *
    * @since 0.0.2
    */
-  readonly NegativeFloat: NegativeFloat.SchemableParams2<S>
+  readonly negativeFloat: negativeFloat.SchemableParams2<S>
 
   /**
    * Negative integer branded newtype.
@@ -958,7 +973,7 @@ export interface SchemableExt2<S extends URIS2> extends Schemable2<S> {
    *
    * @since 0.0.1
    */
-  readonly NegativeInt: NegativeInt.SchemableParams2<S>
+  readonly negativeInt: negativeInt.SchemableParams2<S>
 
   /**
    * Non-negative floating point branded newtype.
@@ -971,7 +986,7 @@ export interface SchemableExt2<S extends URIS2> extends Schemable2<S> {
    *
    * @since 0.0.2
    */
-  readonly NonNegativeFloat: NonNegativeFloat.SchemableParams2<S>
+  readonly nonNegativeFloat: nonNegativeFloat.SchemableParams2<S>
 
   /**
    * Non-positive floating point branded newtype.
@@ -984,7 +999,7 @@ export interface SchemableExt2<S extends URIS2> extends Schemable2<S> {
    *
    * @since 0.0.4
    */
-  readonly NonPositiveFloat: NonPositiveFloat.SchemableParams2<S>
+  readonly nonPositiveFloat: nonPositiveFloat.SchemableParams2<S>
 
   /**
    * NonPositive integer branded newtype.
@@ -997,7 +1012,7 @@ export interface SchemableExt2<S extends URIS2> extends Schemable2<S> {
    *
    * @since 0.0.4
    */
-  readonly NonPositiveInt: NonPositiveInt.SchemableParams2<S>
+  readonly nonPositiveInt: nonPositiveInt.SchemableParams2<S>
 
   /**
    * Positive Float branded newtype.
@@ -1010,7 +1025,7 @@ export interface SchemableExt2<S extends URIS2> extends Schemable2<S> {
    *
    * @since 0.0.2
    */
-  readonly PositiveFloat: PositiveFloat.SchemableParams2<S>
+  readonly positiveFloat: positiveFloat.SchemableParams2<S>
 
   /**
    * Positive integer branded newtype.
@@ -1023,7 +1038,7 @@ export interface SchemableExt2<S extends URIS2> extends Schemable2<S> {
    *
    * @since 0.0.1
    */
-  readonly PositiveInt: PositiveInt.SchemableParams2<S>
+  readonly positiveInt: positiveInt.SchemableParams2<S>
 
   /**
    * A string in which every character is valid ASCII.
@@ -1033,7 +1048,7 @@ export interface SchemableExt2<S extends URIS2> extends Schemable2<S> {
    *
    * @since 0.0.1
    */
-  readonly ASCII: ASCII.SchemableParams2<S>
+  readonly ascii: ascii.SchemableParams2<S>
 
   /**
    * Representing a Base64-encoded string.
@@ -1045,7 +1060,7 @@ export interface SchemableExt2<S extends URIS2> extends Schemable2<S> {
    *
    * @since 0.0.2
    */
-  readonly Base64: Base64.SchemableParams2<S>
+  readonly base64: base64.SchemableParams2<S>
 
   /**
    * Representing a URL-safe, Base64 encoded string.
@@ -1057,7 +1072,14 @@ export interface SchemableExt2<S extends URIS2> extends Schemable2<S> {
    *
    * @since 0.0.2
    */
-  readonly Base64Url: Base64Url.SchemableParams2<S>
+  readonly base64Url: base64Url.SchemableParams2<S>
+
+  /**
+   * Represents strings which can be converted into `BitInt`.
+   *
+   * @since 0.0.4
+   */
+  readonly bigIntString: bigIntString.SchemableParams2<S>
 
   /**
    * Represents strings which are valid Bitcoin addresses.
@@ -1067,7 +1089,7 @@ export interface SchemableExt2<S extends URIS2> extends Schemable2<S> {
    *
    * @since 0.0.2
    */
-  readonly BtcAddress: BtcAddress.SchemableParams2<S>
+  readonly btcAddress: btcAddress.SchemableParams2<S>
 
   /**
    * Represents (some) valid credit card numbers.
@@ -1077,7 +1099,7 @@ export interface SchemableExt2<S extends URIS2> extends Schemable2<S> {
    *
    * @since 0.0.3
    */
-  readonly CreditCard: CreditCard.SchemableParams2<S>
+  readonly creditCard: creditCard.SchemableParams2<S>
 
   /**
    * Represents strings (email addresses) that conform to the RFC 5322 standard.
@@ -1088,7 +1110,7 @@ export interface SchemableExt2<S extends URIS2> extends Schemable2<S> {
    *
    * @since 0.0.1
    */
-  readonly EmailAddress: EmailAddress.SchemableParams2<S>
+  readonly emailAddress: emailAddress.SchemableParams2<S>
 
   /**
    * A valid hexadecimal color value.
@@ -1098,7 +1120,7 @@ export interface SchemableExt2<S extends URIS2> extends Schemable2<S> {
    *
    * @since 0.0.3
    */
-  readonly HexColor: HexColor.SchemableParams2<S>
+  readonly hexColor: hexColor.SchemableParams2<S>
 
   /**
    * A string of hexadecimal characters.
@@ -1108,14 +1130,14 @@ export interface SchemableExt2<S extends URIS2> extends Schemable2<S> {
    *
    * @since 0.0.3
    */
-  readonly Hexadecimal: Hexadecimal.SchemableParams2<S>
+  readonly hexadecimal: hexadecimal.SchemableParams2<S>
 
   /**
    * An HSL string. Commonly in CSS.
    *
    * @since 0.0.3
    * @example
-   *   import { Guard } from 'schemable-ts-types/string/HslColor'
+   *   import { Guard } from 'schemable-ts-types/string/hslColor'
    *
    *   const hue = 270
    *   const saturation = 60
@@ -1126,14 +1148,7 @@ export interface SchemableExt2<S extends URIS2> extends Schemable2<S> {
    *
    *   assert.equal(Guard.is(hslString), true)
    */
-  readonly HslColor: HslColor.SchemableParams2<S>
-
-  /**
-   * Represents strings that conform to the ISO 8601 standard.
-   *
-   * @since 0.0.1
-   */
-  readonly ISODateString: ISODateString.SchemableParams2<S>
+  readonly hslColor: hslColor.SchemableParams2<S>
 
   /**
    * Integer branded newtype.
@@ -1146,7 +1161,14 @@ export interface SchemableExt2<S extends URIS2> extends Schemable2<S> {
    *
    * @since 0.0.1
    */
-  readonly IntString: IntString.SchemableParams2<S>
+  readonly intString: intString.SchemableParams2<S>
+
+  /**
+   * Represents strings that conform to the ISO 8601 standard.
+   *
+   * @since 0.0.1
+   */
+  readonly isoDateString: isoDateString.SchemableParams2<S>
 
   /**
    * A valid, Base64-encoded JWT.
@@ -1156,7 +1178,7 @@ export interface SchemableExt2<S extends URIS2> extends Schemable2<S> {
    *
    * @since 0.0.2
    */
-  readonly JWT: JWT.SchemableParams2<S>
+  readonly jwt: jwt.SchemableParams2<S>
 
   /**
    * Natural branded newtype string.
@@ -1169,7 +1191,7 @@ export interface SchemableExt2<S extends URIS2> extends Schemable2<S> {
    *
    * @since 0.0.1
    */
-  readonly NaturalString: NaturalString.SchemableParams2<S>
+  readonly naturalString: naturalString.SchemableParams2<S>
 
   /**
    * Negative floating point branded newtype string.
@@ -1182,7 +1204,7 @@ export interface SchemableExt2<S extends URIS2> extends Schemable2<S> {
    *
    * @since 0.0.2
    */
-  readonly NegativeFloatString: NegativeFloatString.SchemableParams2<S>
+  readonly negativeFloatString: negativeFloatString.SchemableParams2<S>
 
   /**
    * Negative integer branded newtype string.
@@ -1195,7 +1217,7 @@ export interface SchemableExt2<S extends URIS2> extends Schemable2<S> {
    *
    * @since 0.0.1
    */
-  readonly NegativeIntString: NegativeIntString.SchemableParams2<S>
+  readonly negativeIntString: negativeIntString.SchemableParams2<S>
 
   /**
    * Non-negative floating point branded newtype string.
@@ -1208,7 +1230,7 @@ export interface SchemableExt2<S extends URIS2> extends Schemable2<S> {
    *
    * @since 0.0.2
    */
-  readonly NonNegativeFloatString: NonNegativeFloatString.SchemableParams2<S>
+  readonly nonNegativeFloatString: nonNegativeFloatString.SchemableParams2<S>
 
   /**
    * Non-positive floating point branded newtype string.
@@ -1221,7 +1243,7 @@ export interface SchemableExt2<S extends URIS2> extends Schemable2<S> {
    *
    * @since 0.0.4
    */
-  readonly NonPositiveFloatString: NonPositiveFloatString.SchemableParams2<S>
+  readonly nonPositiveFloatString: nonPositiveFloatString.SchemableParams2<S>
 
   /**
    * NonPositive integer branded newtype string.
@@ -1234,14 +1256,14 @@ export interface SchemableExt2<S extends URIS2> extends Schemable2<S> {
    *
    * @since 0.0.4
    */
-  readonly NonPositiveIntString: NonPositiveIntString.SchemableParams2<S>
+  readonly nonPositiveIntString: nonPositiveIntString.SchemableParams2<S>
 
   /**
    * Represents strings that are not empty strings.
    *
    * @since 0.0.1
    */
-  readonly NonemptyString: NonemptyString.SchemableParams2<S>
+  readonly nonemptyString: nonemptyString.SchemableParams2<S>
 
   /**
    * Positive floating point branded newtype string.
@@ -1254,7 +1276,7 @@ export interface SchemableExt2<S extends URIS2> extends Schemable2<S> {
    *
    * @since 0.0.2
    */
-  readonly PositiveFloatString: PositiveFloatString.SchemableParams2<S>
+  readonly positiveFloatString: positiveFloatString.SchemableParams2<S>
 
   /**
    * Positive integer branded newtype string.
@@ -1267,7 +1289,7 @@ export interface SchemableExt2<S extends URIS2> extends Schemable2<S> {
    *
    * @since 0.0.1
    */
-  readonly PositiveIntString: PositiveIntString.SchemableParams2<S>
+  readonly positiveIntString: positiveIntString.SchemableParams2<S>
 
   /**
    * Represents strings which are valid RGB colors. Permits both absolute and percentage
@@ -1275,7 +1297,7 @@ export interface SchemableExt2<S extends URIS2> extends Schemable2<S> {
    *
    * @since 0.0.4
    */
-  readonly RGB: RGB.SchemableParams2<S>
+  readonly rgb: rgb.SchemableParams2<S>
 
   /**
    * Represents strings that are UUIDs.
@@ -1285,14 +1307,14 @@ export interface SchemableExt2<S extends URIS2> extends Schemable2<S> {
    *
    * @since 0.0.1
    */
-  readonly UUID: UUID.SchemableParams2<S>
+  readonly uuid: uuid.SchemableParams2<S>
 
   /**
    * Represents Date objects which are not invalid dates
    *
    * @since 0.0.1
    */
-  readonly SafeDate: SafeDate.SchemableParams2<S>
+  readonly safeDate: safeDate.SchemableParams2<S>
 }
 
 /**
@@ -1333,7 +1355,7 @@ export interface SchemableExt2C<S extends URIS2> extends Schemable2C<S, unknown>
    *
    * @since 0.0.1
    */
-  readonly Int: Int.SchemableParams2C<S>
+  readonly int: int.SchemableParams2C<S>
 
   /**
    * Natural branded newtype.
@@ -1346,7 +1368,7 @@ export interface SchemableExt2C<S extends URIS2> extends Schemable2C<S, unknown>
    *
    * @since 0.0.1
    */
-  readonly Natural: Natural.SchemableParams2C<S>
+  readonly natural: natural.SchemableParams2C<S>
 
   /**
    * Negative floating point branded newtype.
@@ -1359,7 +1381,7 @@ export interface SchemableExt2C<S extends URIS2> extends Schemable2C<S, unknown>
    *
    * @since 0.0.2
    */
-  readonly NegativeFloat: NegativeFloat.SchemableParams2C<S>
+  readonly negativeFloat: negativeFloat.SchemableParams2C<S>
 
   /**
    * Negative integer branded newtype.
@@ -1372,7 +1394,7 @@ export interface SchemableExt2C<S extends URIS2> extends Schemable2C<S, unknown>
    *
    * @since 0.0.1
    */
-  readonly NegativeInt: NegativeInt.SchemableParams2C<S>
+  readonly negativeInt: negativeInt.SchemableParams2C<S>
 
   /**
    * Non-negative floating point branded newtype.
@@ -1385,7 +1407,7 @@ export interface SchemableExt2C<S extends URIS2> extends Schemable2C<S, unknown>
    *
    * @since 0.0.2
    */
-  readonly NonNegativeFloat: NonNegativeFloat.SchemableParams2C<S>
+  readonly nonNegativeFloat: nonNegativeFloat.SchemableParams2C<S>
 
   /**
    * Non-positive floating point branded newtype.
@@ -1398,7 +1420,7 @@ export interface SchemableExt2C<S extends URIS2> extends Schemable2C<S, unknown>
    *
    * @since 0.0.4
    */
-  readonly NonPositiveFloat: NonPositiveFloat.SchemableParams2C<S>
+  readonly nonPositiveFloat: nonPositiveFloat.SchemableParams2C<S>
 
   /**
    * NonPositive integer branded newtype.
@@ -1411,7 +1433,7 @@ export interface SchemableExt2C<S extends URIS2> extends Schemable2C<S, unknown>
    *
    * @since 0.0.4
    */
-  readonly NonPositiveInt: NonPositiveInt.SchemableParams2C<S>
+  readonly nonPositiveInt: nonPositiveInt.SchemableParams2C<S>
 
   /**
    * Positive Float branded newtype.
@@ -1424,7 +1446,7 @@ export interface SchemableExt2C<S extends URIS2> extends Schemable2C<S, unknown>
    *
    * @since 0.0.2
    */
-  readonly PositiveFloat: PositiveFloat.SchemableParams2C<S>
+  readonly positiveFloat: positiveFloat.SchemableParams2C<S>
 
   /**
    * Positive integer branded newtype.
@@ -1437,7 +1459,7 @@ export interface SchemableExt2C<S extends URIS2> extends Schemable2C<S, unknown>
    *
    * @since 0.0.1
    */
-  readonly PositiveInt: PositiveInt.SchemableParams2C<S>
+  readonly positiveInt: positiveInt.SchemableParams2C<S>
 
   /**
    * A string in which every character is valid ASCII.
@@ -1447,7 +1469,7 @@ export interface SchemableExt2C<S extends URIS2> extends Schemable2C<S, unknown>
    *
    * @since 0.0.1
    */
-  readonly ASCII: ASCII.SchemableParams2C<S>
+  readonly ascii: ascii.SchemableParams2C<S>
 
   /**
    * Representing a Base64-encoded string.
@@ -1459,7 +1481,7 @@ export interface SchemableExt2C<S extends URIS2> extends Schemable2C<S, unknown>
    *
    * @since 0.0.2
    */
-  readonly Base64: Base64.SchemableParams2C<S>
+  readonly base64: base64.SchemableParams2C<S>
 
   /**
    * Representing a URL-safe, Base64 encoded string.
@@ -1471,7 +1493,14 @@ export interface SchemableExt2C<S extends URIS2> extends Schemable2C<S, unknown>
    *
    * @since 0.0.2
    */
-  readonly Base64Url: Base64Url.SchemableParams2C<S>
+  readonly base64Url: base64Url.SchemableParams2C<S>
+
+  /**
+   * Represents strings which can be converted into `BitInt`.
+   *
+   * @since 0.0.4
+   */
+  readonly bigIntString: bigIntString.SchemableParams2C<S>
 
   /**
    * Represents strings which are valid Bitcoin addresses.
@@ -1481,7 +1510,7 @@ export interface SchemableExt2C<S extends URIS2> extends Schemable2C<S, unknown>
    *
    * @since 0.0.2
    */
-  readonly BtcAddress: BtcAddress.SchemableParams2C<S>
+  readonly btcAddress: btcAddress.SchemableParams2C<S>
 
   /**
    * Represents (some) valid credit card numbers.
@@ -1491,7 +1520,7 @@ export interface SchemableExt2C<S extends URIS2> extends Schemable2C<S, unknown>
    *
    * @since 0.0.3
    */
-  readonly CreditCard: CreditCard.SchemableParams2C<S>
+  readonly creditCard: creditCard.SchemableParams2C<S>
 
   /**
    * Represents strings (email addresses) that conform to the RFC 5322 standard.
@@ -1502,7 +1531,7 @@ export interface SchemableExt2C<S extends URIS2> extends Schemable2C<S, unknown>
    *
    * @since 0.0.1
    */
-  readonly EmailAddress: EmailAddress.SchemableParams2C<S>
+  readonly emailAddress: emailAddress.SchemableParams2C<S>
 
   /**
    * A valid hexadecimal color value.
@@ -1512,7 +1541,7 @@ export interface SchemableExt2C<S extends URIS2> extends Schemable2C<S, unknown>
    *
    * @since 0.0.3
    */
-  readonly HexColor: HexColor.SchemableParams2C<S>
+  readonly hexColor: hexColor.SchemableParams2C<S>
 
   /**
    * A string of hexadecimal characters.
@@ -1522,14 +1551,14 @@ export interface SchemableExt2C<S extends URIS2> extends Schemable2C<S, unknown>
    *
    * @since 0.0.3
    */
-  readonly Hexadecimal: Hexadecimal.SchemableParams2C<S>
+  readonly hexadecimal: hexadecimal.SchemableParams2C<S>
 
   /**
    * An HSL string. Commonly in CSS.
    *
    * @since 0.0.3
    * @example
-   *   import { Guard } from 'schemable-ts-types/string/HslColor'
+   *   import { Guard } from 'schemable-ts-types/string/hslColor'
    *
    *   const hue = 270
    *   const saturation = 60
@@ -1540,14 +1569,7 @@ export interface SchemableExt2C<S extends URIS2> extends Schemable2C<S, unknown>
    *
    *   assert.equal(Guard.is(hslString), true)
    */
-  readonly HslColor: HslColor.SchemableParams2C<S>
-
-  /**
-   * Represents strings that conform to the ISO 8601 standard.
-   *
-   * @since 0.0.1
-   */
-  readonly ISODateString: ISODateString.SchemableParams2C<S>
+  readonly hslColor: hslColor.SchemableParams2C<S>
 
   /**
    * Integer branded newtype.
@@ -1560,7 +1582,14 @@ export interface SchemableExt2C<S extends URIS2> extends Schemable2C<S, unknown>
    *
    * @since 0.0.1
    */
-  readonly IntString: IntString.SchemableParams2C<S>
+  readonly intString: intString.SchemableParams2C<S>
+
+  /**
+   * Represents strings that conform to the ISO 8601 standard.
+   *
+   * @since 0.0.1
+   */
+  readonly isoDateString: isoDateString.SchemableParams2C<S>
 
   /**
    * A valid, Base64-encoded JWT.
@@ -1570,7 +1599,7 @@ export interface SchemableExt2C<S extends URIS2> extends Schemable2C<S, unknown>
    *
    * @since 0.0.2
    */
-  readonly JWT: JWT.SchemableParams2C<S>
+  readonly jwt: jwt.SchemableParams2C<S>
 
   /**
    * Natural branded newtype string.
@@ -1583,7 +1612,7 @@ export interface SchemableExt2C<S extends URIS2> extends Schemable2C<S, unknown>
    *
    * @since 0.0.1
    */
-  readonly NaturalString: NaturalString.SchemableParams2C<S>
+  readonly naturalString: naturalString.SchemableParams2C<S>
 
   /**
    * Negative floating point branded newtype string.
@@ -1596,7 +1625,7 @@ export interface SchemableExt2C<S extends URIS2> extends Schemable2C<S, unknown>
    *
    * @since 0.0.2
    */
-  readonly NegativeFloatString: NegativeFloatString.SchemableParams2C<S>
+  readonly negativeFloatString: negativeFloatString.SchemableParams2C<S>
 
   /**
    * Negative integer branded newtype string.
@@ -1609,7 +1638,7 @@ export interface SchemableExt2C<S extends URIS2> extends Schemable2C<S, unknown>
    *
    * @since 0.0.1
    */
-  readonly NegativeIntString: NegativeIntString.SchemableParams2C<S>
+  readonly negativeIntString: negativeIntString.SchemableParams2C<S>
 
   /**
    * Non-negative floating point branded newtype string.
@@ -1622,7 +1651,7 @@ export interface SchemableExt2C<S extends URIS2> extends Schemable2C<S, unknown>
    *
    * @since 0.0.2
    */
-  readonly NonNegativeFloatString: NonNegativeFloatString.SchemableParams2C<S>
+  readonly nonNegativeFloatString: nonNegativeFloatString.SchemableParams2C<S>
 
   /**
    * Non-positive floating point branded newtype string.
@@ -1635,7 +1664,7 @@ export interface SchemableExt2C<S extends URIS2> extends Schemable2C<S, unknown>
    *
    * @since 0.0.4
    */
-  readonly NonPositiveFloatString: NonPositiveFloatString.SchemableParams2C<S>
+  readonly nonPositiveFloatString: nonPositiveFloatString.SchemableParams2C<S>
 
   /**
    * NonPositive integer branded newtype string.
@@ -1648,14 +1677,14 @@ export interface SchemableExt2C<S extends URIS2> extends Schemable2C<S, unknown>
    *
    * @since 0.0.4
    */
-  readonly NonPositiveIntString: NonPositiveIntString.SchemableParams2C<S>
+  readonly nonPositiveIntString: nonPositiveIntString.SchemableParams2C<S>
 
   /**
    * Represents strings that are not empty strings.
    *
    * @since 0.0.1
    */
-  readonly NonemptyString: NonemptyString.SchemableParams2C<S>
+  readonly nonemptyString: nonemptyString.SchemableParams2C<S>
 
   /**
    * Positive floating point branded newtype string.
@@ -1668,7 +1697,7 @@ export interface SchemableExt2C<S extends URIS2> extends Schemable2C<S, unknown>
    *
    * @since 0.0.2
    */
-  readonly PositiveFloatString: PositiveFloatString.SchemableParams2C<S>
+  readonly positiveFloatString: positiveFloatString.SchemableParams2C<S>
 
   /**
    * Positive integer branded newtype string.
@@ -1681,7 +1710,7 @@ export interface SchemableExt2C<S extends URIS2> extends Schemable2C<S, unknown>
    *
    * @since 0.0.1
    */
-  readonly PositiveIntString: PositiveIntString.SchemableParams2C<S>
+  readonly positiveIntString: positiveIntString.SchemableParams2C<S>
 
   /**
    * Represents strings which are valid RGB colors. Permits both absolute and percentage
@@ -1689,7 +1718,7 @@ export interface SchemableExt2C<S extends URIS2> extends Schemable2C<S, unknown>
    *
    * @since 0.0.4
    */
-  readonly RGB: RGB.SchemableParams2C<S>
+  readonly rgb: rgb.SchemableParams2C<S>
 
   /**
    * Represents strings that are UUIDs.
@@ -1699,12 +1728,12 @@ export interface SchemableExt2C<S extends URIS2> extends Schemable2C<S, unknown>
    *
    * @since 0.0.1
    */
-  readonly UUID: UUID.SchemableParams2C<S>
+  readonly uuid: uuid.SchemableParams2C<S>
 
   /**
    * Represents Date objects which are not invalid dates
    *
    * @since 0.0.1
    */
-  readonly SafeDate: SafeDate.SchemableParams2C<S>
+  readonly safeDate: safeDate.SchemableParams2C<S>
 }

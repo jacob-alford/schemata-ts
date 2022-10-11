@@ -14,43 +14,44 @@ import * as optionFromNullable from './generic/optionFromNullable'
 import * as optionFromUndefined from './generic/optionFromUndefined'
 
 /** Number */
-import * as Int from './number/Int'
-import * as Natural from './number/Natural'
-import * as NegativeFloat from './number/NegativeFloat'
-import * as NegativeInt from './number/NegativeInt'
-import * as NonNegativeFloat from './number/NonNegativeFloat'
-import * as NonPositiveFloat from './number/NonPositiveFloat'
-import * as NonPositiveInt from './number/NonPositiveInt'
-import * as PositiveFloat from './number/PositiveFloat'
-import * as PositiveInt from './number/PositiveInt'
+import * as int from './number/int'
+import * as natural from './number/natural'
+import * as negativeFloat from './number/negativeFloat'
+import * as negativeInt from './number/negativeInt'
+import * as nonNegativeFloat from './number/nonNegativeFloat'
+import * as nonPositiveFloat from './number/nonPositiveFloat'
+import * as nonPositiveInt from './number/nonPositiveInt'
+import * as positiveFloat from './number/positiveFloat'
+import * as positiveInt from './number/positiveInt'
 
 /** String */
-import * as ASCII from './string/ASCII'
-import * as Base64 from './string/Base64'
-import * as Base64Url from './string/Base64Url'
-import * as BtcAddress from './string/BtcAddress'
-import * as CreditCard from './string/CreditCard'
-import * as EmailAddress from './string/EmailAddress'
-import * as HexColor from './string/HexColor'
-import * as Hexadecimal from './string/Hexadecimal'
-import * as HslColor from './string/HslColor'
-import * as ISODateString from './string/ISODateString'
-import * as IntString from './string/IntString'
-import * as JWT from './string/JWT'
-import * as NaturalString from './string/NaturalString'
-import * as NegativeFloatString from './string/NegativeFloatString'
-import * as NegativeIntString from './string/NegativeIntString'
-import * as NonNegativeFloatString from './string/NonNegativeFloatString'
-import * as NonPositiveFloatString from './string/NonPositiveFloatString'
-import * as NonPositiveIntString from './string/NonPositiveIntString'
-import * as NonemptyString from './string/NonemptyString'
-import * as PositiveFloatString from './string/PositiveFloatString'
-import * as PositiveIntString from './string/PositiveIntString'
-import * as RGB from './string/RGB'
-import * as UUID from './string/UUID'
+import * as ascii from './string/ascii'
+import * as base64 from './string/base64'
+import * as base64Url from './string/base64Url'
+import * as bigIntString from './string/bigIntString'
+import * as btcAddress from './string/btcAddress'
+import * as creditCard from './string/creditCard'
+import * as emailAddress from './string/emailAddress'
+import * as hexColor from './string/hexColor'
+import * as hexadecimal from './string/hexadecimal'
+import * as hslColor from './string/hslColor'
+import * as intString from './string/intString'
+import * as isoDateString from './string/isoDateString'
+import * as jwt from './string/jwt'
+import * as naturalString from './string/naturalString'
+import * as negativeFloatString from './string/negativeFloatString'
+import * as negativeIntString from './string/negativeIntString'
+import * as nonNegativeFloatString from './string/nonNegativeFloatString'
+import * as nonPositiveFloatString from './string/nonPositiveFloatString'
+import * as nonPositiveIntString from './string/nonPositiveIntString'
+import * as nonemptyString from './string/nonemptyString'
+import * as positiveFloatString from './string/positiveFloatString'
+import * as positiveIntString from './string/positiveIntString'
+import * as rgb from './string/rgb'
+import * as uuid from './string/uuid'
 
 /** Date */
-import * as SafeDate from './date/SafeDate'
+import * as safeDate from './date/safeDate'
 
 /**
  * @since 0.0.1
@@ -61,37 +62,38 @@ export const Schemable: SchemableExt1<t.URI> = {
   optionFromExclude: optionFromExclude.Type,
   optionFromNullable: optionFromNullable.Type,
   optionFromUndefined: optionFromUndefined.Type,
-  Int: Int.Type,
-  Natural: Natural.Type,
-  NegativeFloat: NegativeFloat.Type,
-  NegativeInt: NegativeInt.Type,
-  NonNegativeFloat: NonNegativeFloat.Type,
-  NonPositiveFloat: NonPositiveFloat.Type,
-  NonPositiveInt: NonPositiveInt.Type,
-  PositiveFloat: PositiveFloat.Type,
-  PositiveInt: PositiveInt.Type,
-  ASCII: ASCII.Type,
-  Base64: Base64.Type,
-  Base64Url: Base64Url.Type,
-  BtcAddress: BtcAddress.Type,
-  CreditCard: CreditCard.Type,
-  EmailAddress: EmailAddress.Type,
-  HexColor: HexColor.Type,
-  Hexadecimal: Hexadecimal.Type,
-  HslColor: HslColor.Type,
-  ISODateString: ISODateString.Type,
-  IntString: IntString.Type,
-  JWT: JWT.Type,
-  NaturalString: NaturalString.Type,
-  NegativeFloatString: NegativeFloatString.Type,
-  NegativeIntString: NegativeIntString.Type,
-  NonNegativeFloatString: NonNegativeFloatString.Type,
-  NonPositiveFloatString: NonPositiveFloatString.Type,
-  NonPositiveIntString: NonPositiveIntString.Type,
-  NonemptyString: NonemptyString.Type,
-  PositiveFloatString: PositiveFloatString.Type,
-  PositiveIntString: PositiveIntString.Type,
-  RGB: RGB.Type,
-  UUID: UUID.Type,
-  SafeDate: SafeDate.Type,
+  int: int.Type,
+  natural: natural.Type,
+  negativeFloat: negativeFloat.Type,
+  negativeInt: negativeInt.Type,
+  nonNegativeFloat: nonNegativeFloat.Type,
+  nonPositiveFloat: nonPositiveFloat.Type,
+  nonPositiveInt: nonPositiveInt.Type,
+  positiveFloat: positiveFloat.Type,
+  positiveInt: positiveInt.Type,
+  ascii: ascii.Type,
+  base64: base64.Type,
+  base64Url: base64Url.Type,
+  bigIntString: bigIntString.Type,
+  btcAddress: btcAddress.Type,
+  creditCard: creditCard.Type,
+  emailAddress: emailAddress.Type,
+  hexColor: hexColor.Type,
+  hexadecimal: hexadecimal.Type,
+  hslColor: hslColor.Type,
+  intString: intString.Type,
+  isoDateString: isoDateString.Type,
+  jwt: jwt.Type,
+  naturalString: naturalString.Type,
+  negativeFloatString: negativeFloatString.Type,
+  negativeIntString: negativeIntString.Type,
+  nonNegativeFloatString: nonNegativeFloatString.Type,
+  nonPositiveFloatString: nonPositiveFloatString.Type,
+  nonPositiveIntString: nonPositiveIntString.Type,
+  nonemptyString: nonemptyString.Type,
+  positiveFloatString: positiveFloatString.Type,
+  positiveIntString: positiveIntString.Type,
+  rgb: rgb.Type,
+  uuid: uuid.Type,
+  safeDate: safeDate.Type,
 }

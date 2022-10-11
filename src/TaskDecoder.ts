@@ -14,43 +14,44 @@ import * as optionFromNullable from './generic/optionFromNullable'
 import * as optionFromUndefined from './generic/optionFromUndefined'
 
 /** Number */
-import * as Int from './number/Int'
-import * as Natural from './number/Natural'
-import * as NegativeFloat from './number/NegativeFloat'
-import * as NegativeInt from './number/NegativeInt'
-import * as NonNegativeFloat from './number/NonNegativeFloat'
-import * as NonPositiveFloat from './number/NonPositiveFloat'
-import * as NonPositiveInt from './number/NonPositiveInt'
-import * as PositiveFloat from './number/PositiveFloat'
-import * as PositiveInt from './number/PositiveInt'
+import * as int from './number/int'
+import * as natural from './number/natural'
+import * as negativeFloat from './number/negativeFloat'
+import * as negativeInt from './number/negativeInt'
+import * as nonNegativeFloat from './number/nonNegativeFloat'
+import * as nonPositiveFloat from './number/nonPositiveFloat'
+import * as nonPositiveInt from './number/nonPositiveInt'
+import * as positiveFloat from './number/positiveFloat'
+import * as positiveInt from './number/positiveInt'
 
 /** String */
-import * as ASCII from './string/ASCII'
-import * as Base64 from './string/Base64'
-import * as Base64Url from './string/Base64Url'
-import * as BtcAddress from './string/BtcAddress'
-import * as CreditCard from './string/CreditCard'
-import * as EmailAddress from './string/EmailAddress'
-import * as HexColor from './string/HexColor'
-import * as Hexadecimal from './string/Hexadecimal'
-import * as HslColor from './string/HslColor'
-import * as ISODateString from './string/ISODateString'
-import * as IntString from './string/IntString'
-import * as JWT from './string/JWT'
-import * as NaturalString from './string/NaturalString'
-import * as NegativeFloatString from './string/NegativeFloatString'
-import * as NegativeIntString from './string/NegativeIntString'
-import * as NonNegativeFloatString from './string/NonNegativeFloatString'
-import * as NonPositiveFloatString from './string/NonPositiveFloatString'
-import * as NonPositiveIntString from './string/NonPositiveIntString'
-import * as NonemptyString from './string/NonemptyString'
-import * as PositiveFloatString from './string/PositiveFloatString'
-import * as PositiveIntString from './string/PositiveIntString'
-import * as RGB from './string/RGB'
-import * as UUID from './string/UUID'
+import * as ascii from './string/ascii'
+import * as base64 from './string/base64'
+import * as base64Url from './string/base64Url'
+import * as bigIntString from './string/bigIntString'
+import * as btcAddress from './string/btcAddress'
+import * as creditCard from './string/creditCard'
+import * as emailAddress from './string/emailAddress'
+import * as hexColor from './string/hexColor'
+import * as hexadecimal from './string/hexadecimal'
+import * as hslColor from './string/hslColor'
+import * as intString from './string/intString'
+import * as isoDateString from './string/isoDateString'
+import * as jwt from './string/jwt'
+import * as naturalString from './string/naturalString'
+import * as negativeFloatString from './string/negativeFloatString'
+import * as negativeIntString from './string/negativeIntString'
+import * as nonNegativeFloatString from './string/nonNegativeFloatString'
+import * as nonPositiveFloatString from './string/nonPositiveFloatString'
+import * as nonPositiveIntString from './string/nonPositiveIntString'
+import * as nonemptyString from './string/nonemptyString'
+import * as positiveFloatString from './string/positiveFloatString'
+import * as positiveIntString from './string/positiveIntString'
+import * as rgb from './string/rgb'
+import * as uuid from './string/uuid'
 
 /** Date */
-import * as SafeDate from './date/SafeDate'
+import * as safeDate from './date/safeDate'
 
 /**
  * @since 0.0.1
@@ -61,37 +62,38 @@ export const Schemable: SchemableExt2C<TD.URI> = {
   optionFromExclude: optionFromExclude.TaskDecoder,
   optionFromNullable: optionFromNullable.TaskDecoder,
   optionFromUndefined: optionFromUndefined.TaskDecoder,
-  Int: Int.TaskDecoder,
-  Natural: Natural.TaskDecoder,
-  NegativeFloat: NegativeFloat.TaskDecoder,
-  NegativeInt: NegativeInt.TaskDecoder,
-  NonNegativeFloat: NonNegativeFloat.TaskDecoder,
-  NonPositiveFloat: NonPositiveFloat.TaskDecoder,
-  NonPositiveInt: NonPositiveInt.TaskDecoder,
-  PositiveFloat: PositiveFloat.TaskDecoder,
-  PositiveInt: PositiveInt.TaskDecoder,
-  ASCII: ASCII.TaskDecoder,
-  Base64: Base64.TaskDecoder,
-  Base64Url: Base64Url.TaskDecoder,
-  BtcAddress: BtcAddress.TaskDecoder,
-  CreditCard: CreditCard.TaskDecoder,
-  EmailAddress: EmailAddress.TaskDecoder,
-  HexColor: HexColor.TaskDecoder,
-  Hexadecimal: Hexadecimal.TaskDecoder,
-  HslColor: HslColor.TaskDecoder,
-  ISODateString: ISODateString.TaskDecoder,
-  IntString: IntString.TaskDecoder,
-  JWT: JWT.TaskDecoder,
-  NaturalString: NaturalString.TaskDecoder,
-  NegativeFloatString: NegativeFloatString.TaskDecoder,
-  NegativeIntString: NegativeIntString.TaskDecoder,
-  NonNegativeFloatString: NonNegativeFloatString.TaskDecoder,
-  NonPositiveFloatString: NonPositiveFloatString.TaskDecoder,
-  NonPositiveIntString: NonPositiveIntString.TaskDecoder,
-  NonemptyString: NonemptyString.TaskDecoder,
-  PositiveFloatString: PositiveFloatString.TaskDecoder,
-  PositiveIntString: PositiveIntString.TaskDecoder,
-  RGB: RGB.TaskDecoder,
-  UUID: UUID.TaskDecoder,
-  SafeDate: SafeDate.TaskDecoder,
+  int: int.TaskDecoder,
+  natural: natural.TaskDecoder,
+  negativeFloat: negativeFloat.TaskDecoder,
+  negativeInt: negativeInt.TaskDecoder,
+  nonNegativeFloat: nonNegativeFloat.TaskDecoder,
+  nonPositiveFloat: nonPositiveFloat.TaskDecoder,
+  nonPositiveInt: nonPositiveInt.TaskDecoder,
+  positiveFloat: positiveFloat.TaskDecoder,
+  positiveInt: positiveInt.TaskDecoder,
+  ascii: ascii.TaskDecoder,
+  base64: base64.TaskDecoder,
+  base64Url: base64Url.TaskDecoder,
+  bigIntString: bigIntString.TaskDecoder,
+  btcAddress: btcAddress.TaskDecoder,
+  creditCard: creditCard.TaskDecoder,
+  emailAddress: emailAddress.TaskDecoder,
+  hexColor: hexColor.TaskDecoder,
+  hexadecimal: hexadecimal.TaskDecoder,
+  hslColor: hslColor.TaskDecoder,
+  intString: intString.TaskDecoder,
+  isoDateString: isoDateString.TaskDecoder,
+  jwt: jwt.TaskDecoder,
+  naturalString: naturalString.TaskDecoder,
+  negativeFloatString: negativeFloatString.TaskDecoder,
+  negativeIntString: negativeIntString.TaskDecoder,
+  nonNegativeFloatString: nonNegativeFloatString.TaskDecoder,
+  nonPositiveFloatString: nonPositiveFloatString.TaskDecoder,
+  nonPositiveIntString: nonPositiveIntString.TaskDecoder,
+  nonemptyString: nonemptyString.TaskDecoder,
+  positiveFloatString: positiveFloatString.TaskDecoder,
+  positiveIntString: positiveIntString.TaskDecoder,
+  rgb: rgb.TaskDecoder,
+  uuid: uuid.TaskDecoder,
+  safeDate: safeDate.TaskDecoder,
 }

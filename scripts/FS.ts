@@ -1,3 +1,4 @@
+import * as Cons from 'fp-ts/Console'
 import * as O from 'fp-ts/Option'
 import * as RA from 'fp-ts/ReadonlyArray'
 import * as TE from 'fp-ts/TaskEither'
@@ -84,4 +85,76 @@ export const fileSystem: FileSystem = {
     TE.map(() => undefined)
   ),
   moveFile,
+}
+
+export const fileSystemTest: FileSystem = {
+  exists: flow(
+    Cons.log,
+    T.fromIO,
+    T.map(() => true)
+  ),
+  readDirs: flow(
+    Cons.log,
+    TE.fromIO,
+    TE.bimap(
+      e => new Error(String(e)),
+      () => []
+    )
+  ),
+  readFile: flow(
+    Cons.log,
+    TE.fromIO,
+    TE.bimap(
+      e => new Error(String(e)),
+      () => ''
+    )
+  ),
+  readFiles: flow(
+    Cons.log,
+    TE.fromIO,
+    TE.bimap(
+      e => new Error(String(e)),
+      () => ['ASCII.ts', 'ASCII.test.ts']
+    )
+  ),
+  writeFile: flow(
+    Cons.log,
+    TE.fromIO,
+    TE.bimap(
+      e => new Error(String(e)),
+      () => void 0
+    )
+  ),
+  copyFile: flow(
+    Cons.log,
+    TE.fromIO,
+    TE.bimap(
+      e => new Error(String(e)),
+      () => void 0
+    )
+  ),
+  glob: flow(
+    Cons.log,
+    TE.fromIO,
+    TE.bimap(
+      e => new Error(String(e)),
+      () => []
+    )
+  ),
+  mkdir: flow(
+    Cons.log,
+    TE.fromIO,
+    TE.bimap(
+      e => new Error(String(e)),
+      () => void 0
+    )
+  ),
+  moveFile: flow(
+    Cons.log,
+    TE.fromIO,
+    TE.bimap(
+      e => new Error(String(e)),
+      () => void 0
+    )
+  ),
 }

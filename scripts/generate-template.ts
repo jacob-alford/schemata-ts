@@ -27,6 +27,9 @@ const sinceAndCategory: (category: string, version: string) => ts.JSDoc = (
   version
 ) => _.createJSDocComment(`@since ${version}\n\n@category ${category}`)
 
+const capitalize: (s: string) => string = s =>
+  `${Str.toUpperCase(s.slice(0, 1))}${s.slice(1, s.length)}`
+
 const makeCombinatorModule: (
   primitive: 'string' | 'number',
   name: string,
@@ -519,8 +522,8 @@ const main: Build<void> = pipe(
   E.mapLeft(flow(drawDecodeError, E.toError)),
   RTE.fromEither,
   RTE.filterOrElse(
-    ([, module]) => /^[A-Z]/g.test(module),
-    () => new Error('Module name must be capitalized')
+    ([, module]) => /^[a-z]/g.test(module),
+    () => new Error('Module name must be lowercase')
   ),
   RTE.bindTo('args'),
   RTE.chainFirstIOK(({ args: [primitive, module] }) =>
@@ -551,7 +554,7 @@ const main: Build<void> = pipe(
     RTE.bind(
       'moduleContents',
       ({ args: [primitive, module], packageVersion: { version } }) =>
-        RTE.of(makeCombinatorModule(primitive, module, version))
+        RTE.of(makeCombinatorModule(primitive, capitalize(module), version))
     ),
     RTE.chainFirstIOK(({ args: [, module] }) =>
       Cons.log(Color.cyan(`🖊️  Generating ${module} test file...`))

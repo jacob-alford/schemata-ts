@@ -1,7 +1,7 @@
 import { pipe } from 'fp-ts/function'
 import * as fc from 'fast-check'
 import * as Arb from '../src/internal/ArbitraryBase'
-import { isPositiveFloat } from '../src/number/PositiveFloat'
+import { isPositiveFloat } from '../src/number/positiveFloat'
 
 describe('ArbitraryBase', () => {
   describe('constructors', () => {
