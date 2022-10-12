@@ -233,10 +233,7 @@ declare module 'fp-ts/lib/HKT' {
  * @since 0.0.2
  * @category Instances
  */
-export const Schemable: S.Schemable1<URI> &
-  S.WithUnknownContainers1<URI> &
-  S.WithUnion1<URI> &
-  S.WithRefine1<URI> = {
+export const Schemable: S.Schemable1<URI> = {
   URI,
   literal,
   string,
@@ -253,8 +250,29 @@ export const Schemable: S.Schemable1<URI> &
   sum,
   lazy: (_, f) => lazy(f),
   readonly,
+}
+
+/**
+ * @since 0.0.5
+ * @category Instances
+ */
+export const WithUnknownContainers: S.WithUnknownContainers1<URI> = {
   UnknownArray,
   UnknownRecord,
+}
+
+/**
+ * @since 0.0.5
+ * @category Instances
+ */
+export const WithUnion: S.WithUnion1<URI> = {
   union: union as S.WithUnion1<URI>['union'],
+}
+
+/**
+ * @since 0.0.5
+ * @category Instances
+ */
+export const WithRefine: S.WithRefine1<URI> = {
   refine: refine as S.WithRefine1<URI>['refine'],
 }

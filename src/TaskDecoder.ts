@@ -59,6 +59,7 @@ import * as safeDate from './date/safeDate'
  */
 export const Schemable: SchemableExt2C<TD.URI> = {
   ...TD.Schemable,
+  ...TD.WithUnknownContainers,
   optionFromExclude: optionFromExclude.TaskDecoder,
   optionFromNullable: optionFromNullable.TaskDecoder,
   optionFromUndefined: optionFromUndefined.TaskDecoder,
