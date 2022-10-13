@@ -9,14 +9,18 @@ import { URIS, URIS2 } from 'fp-ts/HKT'
 import {
   Schemable1,
   Schemable2C,
+  WithRefine1,
+  WithRefine2C,
   WithUnknownContainers1,
   WithUnknownContainers2C,
 } from 'io-ts/Schemable'
 import {
   Schemable2,
   SchemableHKT2,
-  WithUnknownContainersHKT2,
+  WithRefine2,
+  WithRefineHKT2,
   WithUnknownContainers2,
+  WithUnknownContainersHKT2,
 } from './internal/Schemable2'
 import {
   WithPattern1,
@@ -78,6 +82,7 @@ import * as safeDate from './date/safeDate'
 export interface SchemableExt<S>
   extends SchemableHKT2<S>,
     WithPatternHKT2<S>,
+    WithRefineHKT2<S>,
     WithUnknownContainersHKT2<S> {
   /**
    * Represents a ReadonlyMap converted from an expected array of entries.
@@ -509,6 +514,7 @@ export interface SchemableExt<S>
 export interface SchemableExt1<S extends URIS>
   extends Schemable1<S>,
     WithPattern1<S>,
+    WithRefine1<S>,
     WithUnknownContainers1<S> {
   /**
    * Represents a ReadonlyMap converted from an expected array of entries.
@@ -940,6 +946,7 @@ export interface SchemableExt1<S extends URIS>
 export interface SchemableExt2<S extends URIS2>
   extends Schemable2<S>,
     WithPattern2<S>,
+    WithRefine2<S>,
     WithUnknownContainers2<S> {
   /**
    * Represents a ReadonlyMap converted from an expected array of entries.
@@ -1371,6 +1378,7 @@ export interface SchemableExt2<S extends URIS2>
 export interface SchemableExt2C<S extends URIS2>
   extends Schemable2C<S, unknown>,
     WithPattern2C<S, unknown>,
+    WithRefine2C<S, unknown>,
     WithUnknownContainers2C<S, unknown> {
   /**
    * Represents a ReadonlyMap converted from an expected array of entries.

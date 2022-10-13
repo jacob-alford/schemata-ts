@@ -62,6 +62,7 @@ export const Schemable: SchemableExt2C<D.URI> = {
   ...D.Schemable,
   ...D.WithUnknownContainers,
   ...D.WithPattern,
+  ...D.WithRefine,
   mapFromEntries: mapFromEntries.Decoder,
   optionFromExclude: optionFromExclude.Decoder,
   optionFromNullable: optionFromNullable.Decoder,
