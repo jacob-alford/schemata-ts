@@ -76,6 +76,15 @@ export const makeSchemableExtTypeclass: (
           ]
         ),
         _.createExpressionWithTypeArguments(
+          _.createIdentifier(`WithPattern${suffix === '' ? 'HKT2' : suffix}`),
+          [
+            _.createTypeReferenceNode(_.createIdentifier('S'), undefined),
+            ...(suffix === '2C'
+              ? [_.createKeywordTypeNode(ts.SyntaxKind.UnknownKeyword)]
+              : []),
+          ]
+        ),
+        _.createExpressionWithTypeArguments(
           _.createIdentifier(`WithUnknownContainers${suffix === '' ? 'HKT2' : suffix}`),
           [
             _.createTypeReferenceNode(_.createIdentifier('S'), undefined),
@@ -213,6 +222,10 @@ const makeSchemableExtContents: (
         ],
         './internal/Schemable2'
       ),
+      makeDestructureImport(
+        ['WithPattern1', 'WithPattern2', 'WithPattern2C', 'WithPatternHKT2'],
+        './internal/WithPattern'
+      ),
 
       _.createJSDocComment('generic'),
       ...pipe(
@@ -325,6 +338,12 @@ const makeSchemableInstance: (
                   _.createPropertyAccessExpression(
                     _.createIdentifier(accessor),
                     _.createIdentifier('WithUnknownContainers')
+                  )
+                ),
+                _.createSpreadAssignment(
+                  _.createPropertyAccessExpression(
+                    _.createIdentifier(accessor),
+                    _.createIdentifier('WithPattern')
                   )
                 ),
                 ...pipe(

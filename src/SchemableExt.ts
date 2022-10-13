@@ -18,6 +18,12 @@ import {
   WithUnknownContainersHKT2,
   WithUnknownContainers2,
 } from './internal/Schemable2'
+import {
+  WithPattern1,
+  WithPattern2,
+  WithPattern2C,
+  WithPatternHKT2,
+} from './internal/WithPattern'
 
 /** Generic */
 import * as mapFromEntries from './generic/mapFromEntries'
@@ -69,7 +75,10 @@ import * as safeDate from './date/safeDate'
  * @since 0.0.1
  * @category Instances
  */
-export interface SchemableExt<S> extends SchemableHKT2<S>, WithUnknownContainersHKT2<S> {
+export interface SchemableExt<S>
+  extends SchemableHKT2<S>,
+    WithPatternHKT2<S>,
+    WithUnknownContainersHKT2<S> {
   /**
    * Represents a ReadonlyMap converted from an expected array of entries.
    *
@@ -499,6 +508,7 @@ export interface SchemableExt<S> extends SchemableHKT2<S>, WithUnknownContainers
  */
 export interface SchemableExt1<S extends URIS>
   extends Schemable1<S>,
+    WithPattern1<S>,
     WithUnknownContainers1<S> {
   /**
    * Represents a ReadonlyMap converted from an expected array of entries.
@@ -929,6 +939,7 @@ export interface SchemableExt1<S extends URIS>
  */
 export interface SchemableExt2<S extends URIS2>
   extends Schemable2<S>,
+    WithPattern2<S>,
     WithUnknownContainers2<S> {
   /**
    * Represents a ReadonlyMap converted from an expected array of entries.
@@ -1359,6 +1370,7 @@ export interface SchemableExt2<S extends URIS2>
  */
 export interface SchemableExt2C<S extends URIS2>
   extends Schemable2C<S, unknown>,
+    WithPattern2C<S, unknown>,
     WithUnknownContainers2C<S, unknown> {
   /**
    * Represents a ReadonlyMap converted from an expected array of entries.

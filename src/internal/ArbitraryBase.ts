@@ -10,6 +10,8 @@ import * as RA from 'fp-ts/ReadonlyArray'
 import * as RR from 'fp-ts/ReadonlyRecord'
 import * as RTup from 'fp-ts/ReadonlyTuple'
 import * as S from 'io-ts/Schemable'
+import { arbitraryFromPattern } from '../PatternBuilder'
+import { WithPattern1 } from './WithPattern'
 
 /**
  * @since 0.0.2
@@ -270,4 +272,12 @@ export const WithUnion: S.WithUnion1<URI> = {
  */
 export const WithRefine: S.WithRefine1<URI> = {
   refine,
+}
+
+/**
+ * @since 1.0.0
+ * @category Instances
+ */
+export const WithPattern: WithPattern1<URI> = {
+  pattern: arbitraryFromPattern,
 }

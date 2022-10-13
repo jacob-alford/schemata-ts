@@ -61,6 +61,7 @@ import * as safeDate from './date/safeDate'
 export const Schemable: SchemableExt1<Eq.URI> = {
   ...Eq.Schemable,
   ...Eq.WithUnknownContainers,
+  ...Eq.WithPattern,
   mapFromEntries: mapFromEntries.Eq,
   optionFromExclude: optionFromExclude.Eq,
   optionFromNullable: optionFromNullable.Eq,

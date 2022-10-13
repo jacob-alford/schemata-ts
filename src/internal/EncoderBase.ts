@@ -1,5 +1,6 @@
 import * as Enc from 'io-ts/Encoder'
 import { Schemable2, WithUnknownContainers2 } from './Schemable2'
+import { WithPattern2 } from './WithPattern'
 
 export { URI } from 'io-ts/Encoder'
 
@@ -28,4 +29,8 @@ export const Schemable: Schemable2<Enc.URI> & WithUnknownContainers2<Enc.URI> = 
 export const WithUnknownContainers: WithUnknownContainers2<Enc.URI> = {
   UnknownArray: Enc.id(),
   UnknownRecord: Enc.id(),
+}
+
+export const WithPattern: WithPattern2<Enc.URI> = {
+  pattern: () => Enc.id(),
 }
