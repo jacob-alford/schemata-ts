@@ -6,7 +6,6 @@
  */
 import * as fc from 'fast-check'
 import { identity, pipe } from 'fp-ts/function'
-import { Refinement } from 'fp-ts/Refinement'
 import * as RA from 'fp-ts/ReadonlyArray'
 import * as RR from 'fp-ts/ReadonlyRecord'
 import * as RTup from 'fp-ts/ReadonlyTuple'
@@ -84,10 +83,8 @@ export const UnknownRecord: Arbitrary<Record<string, unknown>> = fc.dictionary(
  * @since 0.0.2
  * @category Combinators
  */
-export const refine =
-  <A, B extends A>(refinement: Refinement<A, B>) =>
-  (from: Arbitrary<A>): Arbitrary<B> =>
-    from.filter(refinement)
+export const refine: S.WithRefine1<URI>['refine'] = refinement => from =>
+  from.filter(refinement)
 
 /**
  * @since 0.0.2
@@ -207,9 +204,7 @@ export const readonly: <A>(arb: Arbitrary<A>) => Arbitrary<Readonly<A>> = identi
  * @since 0.0.2
  * @category Combinators
  */
-export const union = <A extends [Arbitrary<unknown>, ...Array<Arbitrary<unknown>>]>(
-  ...members: A
-): Arbitrary<A[number]> => fc.oneof(...members) as unknown as Arbitrary<A[number]>
+export const union: S.WithUnion1<URI>['union'] = (...members) => fc.oneof(...members)
 
 // -------------------------------------------------------------------------------------
 // instances
@@ -233,10 +228,7 @@ declare module 'fp-ts/lib/HKT' {
  * @since 0.0.2
  * @category Instances
  */
-export const Schemable: S.Schemable1<URI> &
-  S.WithUnknownContainers1<URI> &
-  S.WithUnion1<URI> &
-  S.WithRefine1<URI> = {
+export const Schemable: S.Schemable1<URI> = {
   URI,
   literal,
   string,
@@ -253,8 +245,29 @@ export const Schemable: S.Schemable1<URI> &
   sum,
   lazy: (_, f) => lazy(f),
   readonly,
+}
+
+/**
+ * @since 0.0.5
+ * @category Instances
+ */
+export const WithUnknownContainers: S.WithUnknownContainers1<URI> = {
   UnknownArray,
   UnknownRecord,
-  union: union as S.WithUnion1<URI>['union'],
-  refine: refine as S.WithRefine1<URI>['refine'],
+}
+
+/**
+ * @since 0.0.5
+ * @category Instances
+ */
+export const WithUnion: S.WithUnion1<URI> = {
+  union,
+}
+
+/**
+ * @since 0.0.5
+ * @category Instances
+ */
+export const WithRefine: S.WithRefine1<URI> = {
+  refine,
 }

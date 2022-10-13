@@ -75,6 +75,15 @@ export const makeSchemableExtTypeclass: (
               : []),
           ]
         ),
+        _.createExpressionWithTypeArguments(
+          _.createIdentifier(`WithUnknownContainers${suffix === '' ? 'HKT2' : suffix}`),
+          [
+            _.createTypeReferenceNode(_.createIdentifier('S'), undefined),
+            ...(suffix === '2C'
+              ? [_.createKeywordTypeNode(ts.SyntaxKind.UnknownKeyword)]
+              : []),
+          ]
+        ),
       ]),
     ],
     [
@@ -186,8 +195,24 @@ const makeSchemableExtContents: (
     [
       schemableExtHeaderComment,
       makeDestructureImport(['URIS', 'URIS2'], 'fp-ts/HKT'),
-      makeDestructureImport(['Schemable1', 'Schemable2C'], 'io-ts/Schemable'),
-      makeDestructureImport(['Schemable2', 'SchemableHKT2'], './internal/Schemable2'),
+      makeDestructureImport(
+        [
+          'Schemable1',
+          'Schemable2C',
+          'WithUnknownContainers1',
+          'WithUnknownContainers2C',
+        ],
+        'io-ts/Schemable'
+      ),
+      makeDestructureImport(
+        [
+          'Schemable2',
+          'SchemableHKT2',
+          'WithUnknownContainersHKT2',
+          'WithUnknownContainers2',
+        ],
+        './internal/Schemable2'
+      ),
 
       _.createJSDocComment('generic'),
       ...pipe(
@@ -292,6 +317,12 @@ const makeSchemableInstance: (
                   _.createPropertyAccessExpression(
                     _.createIdentifier(accessor),
                     _.createIdentifier('Schemable')
+                  )
+                ),
+                _.createSpreadAssignment(
+                  _.createPropertyAccessExpression(
+                    _.createIdentifier(accessor),
+                    _.createIdentifier('WithUnknownContainers')
                   )
                 ),
                 ...pipe(

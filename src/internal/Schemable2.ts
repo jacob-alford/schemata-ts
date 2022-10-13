@@ -115,3 +115,13 @@ export interface Schemable2<S extends URIS2> {
   readonly lazy: <O, A>(id: string, f: () => Kind2<S, O, A>) => Kind2<S, O, A>
   readonly readonly: <O, A>(soa: Kind2<S, O, A>) => Kind2<S, O, Readonly<A>>
 }
+
+export interface WithUnknownContainersHKT2<S> {
+  readonly UnknownArray: HKT2<S, Array<unknown>, Array<unknown>>
+  readonly UnknownRecord: HKT2<S, Record<string, unknown>, Record<string, unknown>>
+}
+
+export interface WithUnknownContainers2<S extends URIS2> {
+  readonly UnknownArray: Kind2<S, Array<unknown>, Array<unknown>>
+  readonly UnknownRecord: Kind2<S, Record<string, unknown>, Record<string, unknown>>
+}
