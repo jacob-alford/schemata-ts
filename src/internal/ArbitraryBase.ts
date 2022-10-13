@@ -11,6 +11,7 @@ import * as RR from 'fp-ts/ReadonlyRecord'
 import * as RTup from 'fp-ts/ReadonlyTuple'
 import * as S from 'io-ts/Schemable'
 import { arbitraryFromPattern } from '../PatternBuilder'
+import { WithBrand1 } from './WithBrand'
 import { WithPattern1 } from './WithPattern'
 
 /**
@@ -280,4 +281,13 @@ export const WithRefine: S.WithRefine1<URI> = {
  */
 export const WithPattern: WithPattern1<URI> = {
   pattern: arbitraryFromPattern,
+}
+
+/**
+ * @since 1.0.0
+ * @category Instances
+ */
+export const WithBrand: WithBrand1<URI> = {
+  // @ts-expect-error -- Branding is only type change, implicit cast here
+  brand: () => identity,
 }

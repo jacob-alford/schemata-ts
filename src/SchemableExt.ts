@@ -22,6 +22,7 @@ import {
   WithUnknownContainers2,
   WithUnknownContainersHKT2,
 } from './internal/Schemable2'
+import { WithBrand1, WithBrand2, WithBrand2C, WithBrandHKT2 } from './internal/WithBrand'
 import {
   WithPattern1,
   WithPattern2,
@@ -81,6 +82,7 @@ import * as safeDate from './date/safeDate'
  */
 export interface SchemableExt<S>
   extends SchemableHKT2<S>,
+    WithBrandHKT2<S>,
     WithPatternHKT2<S>,
     WithRefineHKT2<S>,
     WithUnknownContainersHKT2<S> {
@@ -513,6 +515,7 @@ export interface SchemableExt<S>
  */
 export interface SchemableExt1<S extends URIS>
   extends Schemable1<S>,
+    WithBrand1<S>,
     WithPattern1<S>,
     WithRefine1<S>,
     WithUnknownContainers1<S> {
@@ -945,6 +948,7 @@ export interface SchemableExt1<S extends URIS>
  */
 export interface SchemableExt2<S extends URIS2>
   extends Schemable2<S>,
+    WithBrand2<S>,
     WithPattern2<S>,
     WithRefine2<S>,
     WithUnknownContainers2<S> {
@@ -1377,6 +1381,7 @@ export interface SchemableExt2<S extends URIS2>
  */
 export interface SchemableExt2C<S extends URIS2>
   extends Schemable2C<S, unknown>,
+    WithBrand2C<S, unknown>,
     WithPattern2C<S, unknown>,
     WithRefine2C<S, unknown>,
     WithUnknownContainers2C<S, unknown> {

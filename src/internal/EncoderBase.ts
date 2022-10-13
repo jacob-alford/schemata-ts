@@ -1,5 +1,7 @@
+import { identity } from 'fp-ts/function'
 import * as Enc from 'io-ts/Encoder'
 import { Schemable2, WithRefine2, WithUnknownContainers2 } from './Schemable2'
+import { WithBrand2 } from './WithBrand'
 import { WithPattern2 } from './WithPattern'
 
 export { URI } from 'io-ts/Encoder'
@@ -38,4 +40,8 @@ export const WithPattern: WithPattern2<Enc.URI> = {
 export const WithRefine: WithRefine2<Enc.URI> = {
   // @ts-expect-error -- refinement only changes type-level information, but types don't check out here
   refine: () => Enc.id,
+}
+
+export const WithBrand: WithBrand2<Enc.URI> = {
+  brand: () => identity,
 }
