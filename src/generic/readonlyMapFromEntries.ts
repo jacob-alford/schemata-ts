@@ -1,8 +1,7 @@
 /**
- * Represents an exclusion of a supplied value where the exclusion is mapped to `None`.
- * Requires an inner schemable, and an Eq instance which defaults to strict equality.
+ * Represents a ReadonlyMap converted from an expected array of entries.
  *
- * @since 0.0.4
+ * @since 1.0.0
  */
 import { Kind, Kind2, URIS, URIS2, HKT2 } from 'fp-ts/HKT'
 import * as B from 'fp-ts/boolean'
@@ -28,7 +27,7 @@ import * as Arb from '../internal/ArbitraryBase'
 import { flow, pipe } from 'fp-ts/function'
 
 /**
- * @since 0.0.4
+ * @since 1.0.0
  * @category Model
  */
 export type SchemableParams<S> = <K, A, EK, EA>(
@@ -38,7 +37,7 @@ export type SchemableParams<S> = <K, A, EK, EA>(
 ) => HKT2<S, ReadonlyArray<readonly [K, A]>, ReadonlyMap<K, A>>
 
 /**
- * @since 0.0.4
+ * @since 1.0.0
  * @category Model
  */
 export type SchemableParams1<S extends URIS> = <K, A>(
@@ -48,7 +47,7 @@ export type SchemableParams1<S extends URIS> = <K, A>(
 ) => Kind<S, ReadonlyMap<K, A>>
 
 /**
- * @since 0.0.4
+ * @since 1.0.0
  * @category Model
  */
 export type SchemableParams2<S extends URIS2> = <K, A, EK, EA>(
@@ -58,7 +57,7 @@ export type SchemableParams2<S extends URIS2> = <K, A, EK, EA>(
 ) => Kind2<S, ReadonlyArray<readonly [EK, EA]>, ReadonlyMap<K, A>>
 
 /**
- * @since 0.0.4
+ * @since 1.0.0
  * @category Model
  */
 export type SchemableParams2C<S extends URIS2> = <K, A>(
@@ -68,7 +67,7 @@ export type SchemableParams2C<S extends URIS2> = <K, A>(
 ) => Kind2<S, unknown, ReadonlyMap<K, A>>
 
 /**
- * @since 0.0.4
+ * @since 1.0.0
  * @category Instances
  */
 export const Decoder: SchemableParams2C<D.URI> = (ordK, sk, sa) => ({
@@ -79,7 +78,7 @@ export const Decoder: SchemableParams2C<D.URI> = (ordK, sk, sa) => ({
 })
 
 /**
- * @since 0.0.4
+ * @since 1.0.0
  * @category Instances
  */
 export const Encoder: SchemableParams2<Enc.URI> = (ordK, sk, sa) => ({
@@ -87,13 +86,13 @@ export const Encoder: SchemableParams2<Enc.URI> = (ordK, sk, sa) => ({
 })
 
 /**
- * @since 0.0.4
+ * @since 1.0.0
  * @category Instances
  */
 export const Eq: SchemableParams1<Eq_.URI> = (_, sk, sa) => RM.getEq(sk, sa)
 
 /**
- * @since 0.0.4
+ * @since 1.0.0
  * @category Instances
  */
 export const Guard: SchemableParams1<G.URI> = <K, A>(
@@ -113,7 +112,7 @@ export const Guard: SchemableParams1<G.URI> = <K, A>(
 })
 
 /**
- * @since 0.0.4
+ * @since 1.0.0
  * @category Instances
  */
 export const TaskDecoder: SchemableParams2C<TD.URI> = (ordK, sk, sa) => ({
@@ -124,7 +123,7 @@ export const TaskDecoder: SchemableParams2C<TD.URI> = (ordK, sk, sa) => ({
 })
 
 /**
- * @since 0.0.4
+ * @since 1.0.0
  * @category Instances
  */
 export const Type: SchemableParams1<t.URI> = <K, A>(
@@ -184,7 +183,7 @@ export const Type: SchemableParams1<t.URI> = <K, A>(
   )
 
 /**
- * @since 0.0.4
+ * @since 1.0.0
  * @category Instances
  */
 export const Arbitrary: SchemableParams1<Arb.URI> = (ordK, arbK, arbA) =>
