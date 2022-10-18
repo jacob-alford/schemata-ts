@@ -6,10 +6,8 @@
 import { Kind, Kind2, URIS, URIS2, HKT2 } from 'fp-ts/HKT'
 import * as B from 'fp-ts/boolean'
 import * as D from 'io-ts/Decoder'
-import * as DE from 'io-ts/DecodeError'
 import * as Enc from 'io-ts/Encoder'
 import * as Eq_ from 'fp-ts/Eq'
-import * as FS from 'io-ts/FreeSemigroup'
 import * as E from 'fp-ts/Either'
 import * as fc from 'fast-check'
 import * as TE from 'fp-ts/TaskEither'
@@ -19,9 +17,8 @@ import * as RA from 'fp-ts/ReadonlyArray'
 import * as RM from 'fp-ts/ReadonlyMap'
 import * as RTup from 'fp-ts/ReadonlyTuple'
 import * as Sg from 'fp-ts/Semigroup'
-import * as Str from 'fp-ts/string'
 import * as t from 'io-ts/Type'
-import { ContextEntry, Errors, Type as Type_ } from 'io-ts'
+import { Type as Type_ } from 'io-ts'
 import * as Ord from 'fp-ts/Ord'
 import * as Arb from '../internal/ArbitraryBase'
 import { flow, pipe } from 'fp-ts/function'
@@ -104,10 +101,7 @@ export const Guard: SchemableParams1<G.URI> = <K, A>(
     a instanceof Map &&
     pipe(
       a,
-      RM.foldMap(ordK)(B.MonoidAll)(
-        entry =>
-          Array.isArray(entry) && entry.length === 2 && sk.is(entry[0]) && sa.is(entry[1])
-      )
+      RM.foldMapWithIndex(ordK)(B.MonoidAll)((key, value) => sk.is(key) && sa.is(value))
     ),
 })
 
@@ -133,51 +127,10 @@ export const Type: SchemableParams1<t.URI> = <K, A>(
 ) =>
   new Type_(
     `ReadonlyMap<${typeK.name},${typeA.name}>`,
-    Guard<K, A>(ordK, { is: typeK.is }, { is: typeA.is }).is,
+    Guard<K, A>(ordK, typeK, typeA).is,
     flow(
-      Decoder<K, A>(
-        ordK,
-        {
-          decode: flow(
-            typeK.decode,
-            E.mapLeft<Errors, D.DecodeError>(errs =>
-              FS.of(
-                DE.leaf(
-                  errs,
-                  pipe(
-                    errs,
-                    RA.foldMap(Str.Monoid)(e => `${e.message ?? ''}\n`)
-                  )
-                )
-              )
-            )
-          ),
-        },
-        {
-          decode: flow(
-            typeA.decode,
-            E.mapLeft<Errors, D.DecodeError>(errs =>
-              FS.of(
-                DE.leaf(
-                  errs,
-                  pipe(
-                    errs,
-                    RA.foldMap(Str.Monoid)(e => `${e.message ?? ''}\n`)
-                  )
-                )
-              )
-            )
-          ),
-        }
-      ).decode,
-      E.mapLeft(
-        flow(
-          D.draw,
-          (errMsg): Errors => [
-            { message: errMsg, context: RA.zero<ContextEntry>(), value: undefined },
-          ]
-        )
-      )
+      t.array(t.tuple(typeK, typeA)).decode,
+      E.map(RM.fromFoldable(ordK, Sg.last(), RA.Foldable))
     ),
     Encoder(ordK, typeK, typeA).encode
   )

@@ -53,7 +53,7 @@ describe('ArbitraryBase', () => {
   describe('combinators', () => {
     test('refine', () => {
       fc.assert(
-        fc.property(pipe(Arb.number, Arb.refine(isPositiveFloat)), num => {
+        fc.property(pipe(Arb.number, Arb.refine(isPositiveFloat, '')), num => {
           expect(num).toBeGreaterThan(0)
         })
       )
@@ -135,7 +135,7 @@ describe('ArbitraryBase', () => {
         fc.property(
           pipe(
             fc.anything(),
-            Arb.refine((a): a is undefined => a === undefined),
+            Arb.refine((a): a is undefined => a === undefined, ''),
             Arb.intersect(Arb.struct({ a: Arb.number }))
           ),
           result => {

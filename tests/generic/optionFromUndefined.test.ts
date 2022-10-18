@@ -105,7 +105,7 @@ describe('OptionFromUndefined', () => {
   })
 
   describe('Arbitrary', () => {
-    it('generates valid Base64Urls', () => {
+    it('generates valid options', () => {
       validateArbitrary(
         { Arbitrary: OptionFromUndefined.Arbitrary(Arb.string) },
         OptionFromUndefined.Guard(G.string).is
