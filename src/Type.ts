@@ -9,6 +9,7 @@ import * as t from 'io-ts/Type'
 import { SchemableExt1 } from './SchemableExt'
 
 /** Generic */
+import * as mapFromEntries from './generic/mapFromEntries'
 import * as optionFromExclude from './generic/optionFromExclude'
 import * as optionFromNullable from './generic/optionFromNullable'
 import * as optionFromUndefined from './generic/optionFromUndefined'
@@ -60,6 +61,7 @@ import * as safeDate from './date/safeDate'
 export const Schemable: SchemableExt1<t.URI> = {
   ...t.Schemable,
   ...t.WithUnknownContainers,
+  mapFromEntries: mapFromEntries.Type,
   optionFromExclude: optionFromExclude.Type,
   optionFromNullable: optionFromNullable.Type,
   optionFromUndefined: optionFromUndefined.Type,

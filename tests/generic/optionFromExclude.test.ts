@@ -109,7 +109,7 @@ describe('OptionFromExclude', () => {
   })
 
   describe('Arbitrary', () => {
-    it('generates valid Base64Urls', () => {
+    it('generates valid options', () => {
       validateArbitrary(
         { Arbitrary: OptionFromExclude.Arbitrary('', Arb.string) },
         OptionFromExclude.Guard('', G.string).is

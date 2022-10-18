@@ -1,14 +1,14 @@
 ---
-title: generic/optionFromNullable.ts
-nav_order: 8
+title: generic/mapFromEntries.ts
+nav_order: 6
 parent: Modules
 ---
 
-## optionFromNullable overview
+## mapFromEntries overview
 
-Represents a conversion from a nullable value to an Optional type
+Represents a ReadonlyMap converted from an expected array of entries.
 
-Added in v0.0.4
+Added in v1.0.0
 
 ---
 
@@ -40,7 +40,7 @@ Added in v0.0.4
 export declare const Arbitrary: SchemableParams1<'Arbitrary'>
 ```
 
-Added in v0.0.4
+Added in v1.0.0
 
 ## Decoder
 
@@ -50,7 +50,7 @@ Added in v0.0.4
 export declare const Decoder: SchemableParams2C<'io-ts/Decoder'>
 ```
 
-Added in v0.0.4
+Added in v1.0.0
 
 ## Encoder
 
@@ -60,7 +60,7 @@ Added in v0.0.4
 export declare const Encoder: SchemableParams2<'io-ts/Encoder'>
 ```
 
-Added in v0.0.4
+Added in v1.0.0
 
 ## Eq
 
@@ -70,7 +70,7 @@ Added in v0.0.4
 export declare const Eq: SchemableParams1<'Eq'>
 ```
 
-Added in v0.0.4
+Added in v1.0.0
 
 ## Guard
 
@@ -80,7 +80,7 @@ Added in v0.0.4
 export declare const Guard: SchemableParams1<'io-ts/Guard'>
 ```
 
-Added in v0.0.4
+Added in v1.0.0
 
 ## TaskDecoder
 
@@ -90,7 +90,7 @@ Added in v0.0.4
 export declare const TaskDecoder: SchemableParams2C<'io-ts/TaskDecoder'>
 ```
 
-Added in v0.0.4
+Added in v1.0.0
 
 ## Type
 
@@ -100,7 +100,7 @@ Added in v0.0.4
 export declare const Type: SchemableParams1<'io-ts/Type'>
 ```
 
-Added in v0.0.4
+Added in v1.0.0
 
 # Model
 
@@ -109,37 +109,53 @@ Added in v0.0.4
 **Signature**
 
 ```ts
-export type SchemableParams<S> = <A, E>(sa: HKT2<S, E, A>) => HKT2<S, E | null, O.Option<A>>
+export type SchemableParams<S> = <K, A, EK, EA>(
+  ordEK: Ord.Ord<K>,
+  sk: HKT2<S, EK, K>,
+  sa: HKT2<S, EA, A>
+) => HKT2<S, ReadonlyArray<readonly [K, A]>, ReadonlyMap<K, A>>
 ```
 
-Added in v0.0.4
+Added in v1.0.0
 
 ## SchemableParams1 (type alias)
 
 **Signature**
 
 ```ts
-export type SchemableParams1<S extends URIS> = <A>(sa: Kind<S, A>) => Kind<S, O.Option<A>>
+export type SchemableParams1<S extends URIS> = <K, A>(
+  ordK: Ord.Ord<K>,
+  sk: Kind<S, K>,
+  sa: Kind<S, A>
+) => Kind<S, ReadonlyMap<K, A>>
 ```
 
-Added in v0.0.4
+Added in v1.0.0
 
 ## SchemableParams2 (type alias)
 
 **Signature**
 
 ```ts
-export type SchemableParams2<S extends URIS2> = <A, E>(sa: Kind2<S, E, A>) => Kind2<S, E | null, O.Option<A>>
+export type SchemableParams2<S extends URIS2> = <K, A, EK, EA>(
+  ordEK: Ord.Ord<K>,
+  sk: Kind2<S, EK, K>,
+  sa: Kind2<S, EA, A>
+) => Kind2<S, ReadonlyArray<readonly [EK, EA]>, ReadonlyMap<K, A>>
 ```
 
-Added in v0.0.4
+Added in v1.0.0
 
 ## SchemableParams2C (type alias)
 
 **Signature**
 
 ```ts
-export type SchemableParams2C<S extends URIS2> = <A>(sa: Kind2<S, unknown, A>) => Kind2<S, unknown, O.Option<A>>
+export type SchemableParams2C<S extends URIS2> = <K, A>(
+  ordK: Ord.Ord<K>,
+  sk: Kind2<S, unknown, K>,
+  sa: Kind2<S, unknown, A>
+) => Kind2<S, unknown, ReadonlyMap<K, A>>
 ```
 
-Added in v0.0.4
+Added in v1.0.0

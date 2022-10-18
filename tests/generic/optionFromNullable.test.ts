@@ -101,7 +101,7 @@ describe('OptionFromNullable', () => {
   })
 
   describe('Arbitrary', () => {
-    it('generates valid Base64Urls', () => {
+    it('generates valid options', () => {
       validateArbitrary(
         { Arbitrary: OptionFromNullable.Arbitrary(Arb.string) },
         OptionFromNullable.Guard(G.string).is
