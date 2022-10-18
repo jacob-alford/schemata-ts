@@ -20,6 +20,7 @@ import {
 } from './internal/Schemable2'
 
 /** Generic */
+import * as mapFromEntries from './generic/mapFromEntries'
 import * as optionFromExclude from './generic/optionFromExclude'
 import * as optionFromNullable from './generic/optionFromNullable'
 import * as optionFromUndefined from './generic/optionFromUndefined'
@@ -69,6 +70,13 @@ import * as safeDate from './date/safeDate'
  * @category Instances
  */
 export interface SchemableExt<S> extends SchemableHKT2<S>, WithUnknownContainersHKT2<S> {
+  /**
+   * Represents a ReadonlyMap converted from an expected array of entries.
+   *
+   * @since 1.0.0
+   */
+  readonly mapFromEntries: mapFromEntries.SchemableParams<S>
+
   /**
    * Represents an exclusion of a supplied value where the exclusion is mapped to `None`.
    * Requires an inner schemable, and an Eq instance which defaults to strict equality.
@@ -493,6 +501,13 @@ export interface SchemableExt1<S extends URIS>
   extends Schemable1<S>,
     WithUnknownContainers1<S> {
   /**
+   * Represents a ReadonlyMap converted from an expected array of entries.
+   *
+   * @since 1.0.0
+   */
+  readonly mapFromEntries: mapFromEntries.SchemableParams1<S>
+
+  /**
    * Represents an exclusion of a supplied value where the exclusion is mapped to `None`.
    * Requires an inner schemable, and an Eq instance which defaults to strict equality.
    *
@@ -916,6 +931,13 @@ export interface SchemableExt2<S extends URIS2>
   extends Schemable2<S>,
     WithUnknownContainers2<S> {
   /**
+   * Represents a ReadonlyMap converted from an expected array of entries.
+   *
+   * @since 1.0.0
+   */
+  readonly mapFromEntries: mapFromEntries.SchemableParams2<S>
+
+  /**
    * Represents an exclusion of a supplied value where the exclusion is mapped to `None`.
    * Requires an inner schemable, and an Eq instance which defaults to strict equality.
    *
@@ -1338,6 +1360,13 @@ export interface SchemableExt2<S extends URIS2>
 export interface SchemableExt2C<S extends URIS2>
   extends Schemable2C<S, unknown>,
     WithUnknownContainers2C<S, unknown> {
+  /**
+   * Represents a ReadonlyMap converted from an expected array of entries.
+   *
+   * @since 1.0.0
+   */
+  readonly mapFromEntries: mapFromEntries.SchemableParams2C<S>
+
   /**
    * Represents an exclusion of a supplied value where the exclusion is mapped to `None`.
    * Requires an inner schemable, and an Eq instance which defaults to strict equality.
