@@ -1,3 +1,35 @@
+/**
+ * The `PatternBuilder` module contains utilities to construct regular expressions,
+ * fast-check arbitraries, and (potentially) other things that match some pattern. These
+ * `Pattern`s can be used directly or via the `pattern` addition to the `Schemable`
+ * interface. They can also be composed together to create more readable descriptions of a
+ * regular expression.
+ *
+ * @since 1.0.0
+ * @example
+ *   import * as PB from 'schemable-ts-types/PatternBuilder'
+ *   import { pipe } from 'fp-ts/function'
+ *
+ *   const digit = PB.characterClass(false, ['0', '9'])
+ *
+ *   const areaCode = pipe(
+ *     pipe(PB.char('('), PB.then(PB.times(3)(digit)), PB.then(PB.char(')'))),
+ *     PB.or(PB.times(3)(digit)),
+ *     PB.subgroup
+ *   )
+ *
+ *   const prefix = PB.times(3)(digit)
+ *
+ *   const lineNumber = PB.times(4)(digit)
+ *
+ *   export const usPhoneNumber = pipe(
+ *     areaCode,
+ *     PB.then(PB.char('-')),
+ *     PB.then(prefix),
+ *     PB.then(PB.char('-')),
+ *     PB.then(lineNumber)
+ *   )
+ */
 import * as fc from 'fast-check'
 import { pipe } from 'fp-ts/function'
 import * as RA from 'fp-ts/ReadonlyArray'
@@ -163,7 +195,6 @@ const repr = (n: number): string =>
   // 94 -> '^' which might get parsed as class exclusion marker, so escape just in case
   // 127 -> del
   // >127 -> outside normal ascii range. escape 'em
-
   n < 32 || n === 45 || n === 94 || n >= 127
     ? n > 255
       ? `\\u${n.toString(16).padStart(4, '0')}`
