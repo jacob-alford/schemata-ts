@@ -105,7 +105,7 @@ export const times =
   (atom: Atom): QuantifiedAtom => ({
     tag: 'quantifiedAtom',
     atom,
-    greedy: false,
+    greedy: true,
     kind: 'exactly',
     count,
   })
@@ -116,7 +116,7 @@ export const atLeast =
   (atom: Atom): QuantifiedAtom => ({
     tag: 'quantifiedAtom',
     atom,
-    greedy: false,
+    greedy: true,
     kind: 'minimum',
     min,
   })
@@ -127,7 +127,7 @@ export const between =
   (atom: Atom): QuantifiedAtom => ({
     tag: 'quantifiedAtom',
     atom,
-    greedy: false,
+    greedy: true,
     kind: 'between',
     min,
     max,
@@ -135,7 +135,7 @@ export const between =
 
 /** @since 1.0.0 */
 export const or =
-  (right: TermSequence | Atom) =>
+  (right: TermSequence | Atom | QuantifiedAtom) =>
   (left: Pattern): Disjunction => ({
     tag: 'disjunction',
     left,
@@ -267,121 +267,3 @@ export const arbitraryFromPattern: (pattern: Pattern) => fc.Arbitrary<string> = 
   quantifiedAtom: arbitraryFromQuantifiedAtom,
   termSequence: ({ terms }) => pipe(terms.map(arbitraryFromTerm), chainConcatAll),
 })
-
-// declare const Quantifier: Parser
-
-// declare const Assertion: Parser
-
-// const Term: Parser = pipe(
-//   Assertion,
-//   P.alt(() => Atom),
-//   P.alt(() =>
-//     pipe(
-//       Atom,
-//       P.chain(_ => Quantifier)
-//     )
-//   )
-// )
-
-// const termSequence: Parser = pipe(
-//   P.zero<string, fc.Arbitrary<string>>(),
-//   P.alt(() =>
-//     pipe(
-//       termSequence,
-//       P.chain(_ => Term)
-//     )
-//   )
-// )
-
-// const Disjunction: Parser = pipe(
-//   termSequence,
-//   P.alt(() =>
-//     pipe(
-//       termSequence,
-//       P.chain(_ => P.surroundedBy(S.spaces)(C.char('|'))),
-//       P.chain(_ => Disjunction)
-//     )
-//   )
-// )
-
-// const Pattern: Parser = Disjunction
-
-// const charClasses = {
-//   digits: '0123456789'.split(''),
-//   lower: 'abcdefghijklmnopqrstuvwxyz'.split(''),
-//   upper: 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'.split(''),
-//   alpha: 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ'.split(''),
-//   alphanum: 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789'.split(''),
-//   space:
-//     ' \f\n\r\t\v\u00a0\u1680\u2000\u2001\u2002\u2003\u2004\u2005\u2006\u2007\u2008\u2009\u200a\u2028\u2029\u202f\u205f\u3000\ufeff',
-// }
-
-// // CHARACTER CLASSES
-// const any: Parser = pipe(
-//   C.char('.'),
-//   P.map(_ => fc.char())
-// )
-
-// const digit: Parser = pipe(
-//   S.string('\\d'),
-//   P.map(_ => fc.constantFrom(...charClasses.digits))
-// )
-// const nonDigit: Parser = pipe(
-//   S.string('\\D'),
-//   P.map(_ => fc.char().filter(c => /\\D/.test(c)))
-// )
-
-// const word: Parser = pipe(
-//   S.string('\\w'),
-//   P.map(_ => fc.constantFrom('_', ...charClasses.alphanum))
-// )
-// const nonWord: Parser = pipe(
-//   S.string('\\W'),
-//   P.map(_ => fc.char().filter(c => /\\W/.test(c)))
-// )
-
-// const space: Parser = pipe(
-//   S.string('\\s'),
-//   P.map(_ => fc.constantFrom(...charClasses.space))
-// )
-// const nonSpace: Parser = pipe(
-//   S.string('\\S'),
-//   P.map(_ => fc.char().filter(c => /\\S/.test(c)))
-// )
-
-// const tab: Parser = pipe(
-//   S.string('\\t'),
-//   P.map(_ => fc.constant('\t'))
-// )
-// const carriageReturn: Parser = pipe(
-//   S.string('\\r'),
-//   P.map(_ => fc.constant('\r'))
-// )
-// const lineFeed: Parser = pipe(
-//   S.string('\\n'),
-//   P.map(_ => fc.constant('\n'))
-// )
-
-// const hex = C.oneOf('0123456789ACBDEFabcdef')
-// const hex2: Parser = pipe(
-//   S.string('\\x'),
-//   P.chain(_ => S.fold([hex, hex])),
-//   P.map(hh => fc.constant(String.fromCharCode(parseInt(hh, 16))))
-// )
-// const hex4: Parser = pipe(
-//   S.string('\\u'),
-//   P.chain(_ => S.fold([hex, hex, hex, hex])),
-//   P.map(hhhh => fc.constant(String.fromCharCode(parseInt(hhhh, 16))))
-// )
-
-// const literal: Parser = pipe(
-//   C.char('\\'),
-//   P.chain(_ => P.item()),
-//   P.map(lit => fc.constant(lit))
-// )
-
-// export const arbitraryFromRegex = (regex: RegExp): Arbitrary<string> => {
-//   const { flags, source } = regex
-
-//   return
-// }
