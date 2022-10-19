@@ -60,6 +60,7 @@ import * as hslColor from './string/hslColor'
 import * as intString from './string/intString'
 import * as isoDateString from './string/isoDateString'
 import * as jwt from './string/jwt'
+import * as latLong from './string/latLong'
 import * as naturalString from './string/naturalString'
 import * as negativeFloatString from './string/negativeFloatString'
 import * as negativeIntString from './string/negativeIntString'
@@ -362,6 +363,16 @@ export interface SchemableExt<S>
   readonly jwt: jwt.SchemableParams<S>
 
   /**
+   * Representing a Lat/Long coordinate.
+   *
+   * Inspired by
+   * [validator.js::isLatLong](https://github.com/validatorjs/validator.js/blob/master/src/lib/isLatLong.js)
+   *
+   * @since 0.0.4
+   */
+  readonly latLong: latLong.SchemableParams<S>
+
+  /**
    * Natural branded newtype string.
    *
    * Represents integers:
@@ -473,8 +484,7 @@ export interface SchemableExt<S>
   readonly positiveIntString: positiveIntString.SchemableParams<S>
 
   /**
-   * Represents strings which are valid RGB colors. Permits both absolute and percentage
-   * based values.
+   * Represents strings which are valid RGB colors. Permits both absolute and percentage based values.
    *
    * @since 0.0.4
    */
@@ -785,6 +795,16 @@ export interface SchemableExt1<S extends URIS>
   readonly jwt: jwt.SchemableParams1<S>
 
   /**
+   * Representing a Lat/Long coordinate.
+   *
+   * Inspired by
+   * [validator.js::isLatLong](https://github.com/validatorjs/validator.js/blob/master/src/lib/isLatLong.js)
+   *
+   * @since 0.0.4
+   */
+  readonly latLong: latLong.SchemableParams1<S>
+
+  /**
    * Natural branded newtype string.
    *
    * Represents integers:
@@ -896,8 +916,7 @@ export interface SchemableExt1<S extends URIS>
   readonly positiveIntString: positiveIntString.SchemableParams1<S>
 
   /**
-   * Represents strings which are valid RGB colors. Permits both absolute and percentage
-   * based values.
+   * Represents strings which are valid RGB colors. Permits both absolute and percentage based values.
    *
    * @since 0.0.4
    */
@@ -1208,6 +1227,16 @@ export interface SchemableExt2<S extends URIS2>
   readonly jwt: jwt.SchemableParams2<S>
 
   /**
+   * Representing a Lat/Long coordinate.
+   *
+   * Inspired by
+   * [validator.js::isLatLong](https://github.com/validatorjs/validator.js/blob/master/src/lib/isLatLong.js)
+   *
+   * @since 0.0.4
+   */
+  readonly latLong: latLong.SchemableParams2<S>
+
+  /**
    * Natural branded newtype string.
    *
    * Represents integers:
@@ -1319,8 +1348,7 @@ export interface SchemableExt2<S extends URIS2>
   readonly positiveIntString: positiveIntString.SchemableParams2<S>
 
   /**
-   * Represents strings which are valid RGB colors. Permits both absolute and percentage
-   * based values.
+   * Represents strings which are valid RGB colors. Permits both absolute and percentage based values.
    *
    * @since 0.0.4
    */
@@ -1631,6 +1659,16 @@ export interface SchemableExt2C<S extends URIS2>
   readonly jwt: jwt.SchemableParams2C<S>
 
   /**
+   * Representing a Lat/Long coordinate.
+   *
+   * Inspired by
+   * [validator.js::isLatLong](https://github.com/validatorjs/validator.js/blob/master/src/lib/isLatLong.js)
+   *
+   * @since 0.0.4
+   */
+  readonly latLong: latLong.SchemableParams2C<S>
+
+  /**
    * Natural branded newtype string.
    *
    * Represents integers:
@@ -1742,8 +1780,7 @@ export interface SchemableExt2C<S extends URIS2>
   readonly positiveIntString: positiveIntString.SchemableParams2C<S>
 
   /**
-   * Represents strings which are valid RGB colors. Permits both absolute and percentage
-   * based values.
+   * Represents strings which are valid RGB colors. Permits both absolute and percentage based values.
    *
    * @since 0.0.4
    */

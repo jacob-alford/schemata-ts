@@ -38,6 +38,7 @@ import * as hslColor from './string/hslColor'
 import * as intString from './string/intString'
 import * as isoDateString from './string/isoDateString'
 import * as jwt from './string/jwt'
+import * as latLong from './string/latLong'
 import * as naturalString from './string/naturalString'
 import * as negativeFloatString from './string/negativeFloatString'
 import * as negativeIntString from './string/negativeIntString'
@@ -88,6 +89,7 @@ export const Schemable: SchemableExt2<Enc.URI> = {
   intString: intString.Encoder,
   isoDateString: isoDateString.Encoder,
   jwt: jwt.Encoder,
+  latLong: latLong.Encoder,
   naturalString: naturalString.Encoder,
   negativeFloatString: negativeFloatString.Encoder,
   negativeIntString: negativeIntString.Encoder,

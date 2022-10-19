@@ -1,7 +1,7 @@
 import * as RA from 'fp-ts/ReadonlyArray'
 import * as E from 'fp-ts/Either'
 import { pipe, tuple } from 'fp-ts/function'
-import * as LatLong from '../../src/string/LatLong'
+import * as LatLong from '../../src/string/latLong'
 import { cat, combineExpected, validateArbitrary } from '../../test-utils'
 
 const valid: ReadonlyArray<string> = [
