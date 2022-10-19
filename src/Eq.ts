@@ -5,7 +5,7 @@
  *
  * @since 0.0.1
  */
-import * as Eq from 'io-ts/Eq'
+import * as Eq from './internal/EqBase'
 import { SchemableExt1 } from './SchemableExt'
 
 /** Generic */

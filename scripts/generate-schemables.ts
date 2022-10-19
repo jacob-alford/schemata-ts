@@ -261,20 +261,22 @@ const makeSchemableExtContents: (
 
 // #endregion
 
-/**
- * Different typeclasses which express a Schemable instance, follows:
- *
- * ["InstanceName", "I", "Schemable"] where index 0 is the proper name of the instance and
- * index 1 is the module accessor, and index 2 is the arity of the SchemableInstance
- */
+type SchemableTypeclass<
+  Name extends string,
+  Accessor extends string,
+  Arity extends `SchemableExt${'1' | '2' | '2C'}`,
+  Version extends string
+> = [name: Name, accessor: Accessor, arity: Arity, version: Version]
+
+/** Different typeclasses which express a Schemable instance */
 export type SchemableTypeclasses =
-  | ['Decoder', 'D', 'SchemableExt2C', '0.0.1']
-  | ['Eq', 'Eq', 'SchemableExt1', '0.0.1']
-  | ['Guard', 'G', 'SchemableExt1', '0.0.1']
-  | ['TaskDecoder', 'TD', 'SchemableExt2C', '0.0.1']
-  | ['Type', 't', 'SchemableExt1', '0.0.1']
-  | ['Encoder', 'Enc', 'SchemableExt2', '0.0.3']
-  | ['Arbitrary', 'Arb', 'SchemableExt1', '0.0.3']
+  | SchemableTypeclass<'Decoder', 'D', 'SchemableExt2C', '0.0.1'>
+  | SchemableTypeclass<'Eq', 'Eq', 'SchemableExt1', '0.0.1'>
+  | SchemableTypeclass<'Guard', 'G', 'SchemableExt1', '0.0.1'>
+  | SchemableTypeclass<'TaskDecoder', 'TD', 'SchemableExt2C', '0.0.1'>
+  | SchemableTypeclass<'Type', 't', 'SchemableExt1', '0.0.1'>
+  | SchemableTypeclass<'Encoder', 'Enc', 'SchemableExt2', '0.0.3'>
+  | SchemableTypeclass<'Arbitrary', 'Arb', 'SchemableExt1', '0.0.3'>
 
 // #region Typeclass modules
 
@@ -386,7 +388,7 @@ const makeSchemableInstance: (
 const makeSchemableInstanceModuleContents: (
   typeclass: SchemableTypeclasses
 ) => (combinators: SchemableCombinators) => string = typeclass => combinators => {
-  const [module, accessor, schemableInstance] = typeclass
+  const [module, accessor, schemableInstance, sinceVersion] = typeclass
 
   const printer = ts.createPrinter({ newLine: ts.NewLineKind.LineFeed })
   const sourceFile = ts.createSourceFile(
@@ -399,12 +401,8 @@ const makeSchemableInstanceModuleContents: (
 
   return pipe(
     [
-      moduleHeaderComment(module, typeclass[3]),
-      accessor === 'Enc'
-        ? makeModuleStarImport(accessor, `./internal/EncoderBase`)
-        : accessor === 'Arb'
-        ? makeModuleStarImport(accessor, `./internal/ArbitraryBase`)
-        : makeModuleStarImport(accessor, `io-ts/${module}`),
+      moduleHeaderComment(module, sinceVersion),
+      makeModuleStarImport(accessor, `./internal/${module}Base`),
       makeDestructureImport([schemableInstance], './SchemableExt'),
       _.createJSDocComment('generic'),
       ...pipe(

@@ -5,7 +5,7 @@
  *
  * @since 0.0.1
  */
-import * as G from 'io-ts/Guard'
+import * as G from './internal/GuardBase'
 import { SchemableExt1 } from './SchemableExt'
 
 /** Generic */

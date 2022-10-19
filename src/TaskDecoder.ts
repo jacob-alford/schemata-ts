@@ -5,7 +5,7 @@
  *
  * @since 0.0.1
  */
-import * as TD from 'io-ts/TaskDecoder'
+import * as TD from './internal/TaskDecoderBase'
 import { SchemableExt2C } from './SchemableExt'
 
 /** Generic */

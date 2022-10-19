@@ -5,7 +5,7 @@
  *
  * @since 0.0.1
  */
-import * as t from 'io-ts/Type'
+import * as t from './internal/TypeBase'
 import { SchemableExt1 } from './SchemableExt'
 
 /** Generic */

@@ -5,7 +5,7 @@
  *
  * @since 0.0.1
  */
-import * as D from 'io-ts/Decoder'
+import * as D from './internal/DecoderBase'
 import { SchemableExt2C } from './SchemableExt'
 
 /** Generic */
