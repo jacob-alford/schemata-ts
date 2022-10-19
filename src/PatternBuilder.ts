@@ -48,14 +48,20 @@ export const anything: Atom = { tag: 'atom', kind: 'anything' }
 /** @since 1.0.0 */
 export const characterClass = (
   exclude: boolean,
-  ...ranges: ReadonlyArray<readonly [Char, Char]>
+  ...ranges: ReadonlyArray<readonly [Char, Char] | Char | readonly [number, number]>
 ): Atom => ({
   tag: 'atom',
   kind: 'characterClass',
   exclude,
-  ranges: ranges.map(
-    ([c1, c2]) => ({ lower: c1.charCodeAt(0), upper: c2.charCodeAt(0) } as const)
-  ),
+  ranges: ranges.map(range => {
+    if (typeof range === 'string') {
+      return { lower: range.charCodeAt(0), upper: range.charCodeAt(0) } as const
+    }
+    const [c1, c2] = range
+    const lower = typeof c1 === 'string' ? c1.charCodeAt(0) : c1
+    const upper = typeof c2 === 'string' ? c2.charCodeAt(0) : c2
+    return { lower, upper } as const
+  }),
 })
 
 /** @since 1.0.0 */
