@@ -56,7 +56,6 @@ import * as btcAddress from './string/btcAddress'
 import * as creditCard from './string/creditCard'
 import * as emailAddress from './string/emailAddress'
 import * as hexColor from './string/hexColor'
-import * as hexadecimal from './string/hexadecimal'
 import * as hslColor from './string/hslColor'
 import * as intString from './string/intString'
 import * as isoDateString from './string/isoDateString'
@@ -313,16 +312,6 @@ export interface SchemableExt<S>
    * @since 0.0.3
    */
   readonly hexColor: hexColor.SchemableParams<S>
-
-  /**
-   * A string of hexadecimal characters.
-   *
-   * Inspired by
-   * [isHexadecimal](https://github.com/validatorjs/validator.js/blob/master/src/lib/isHexadecimal.js)
-   *
-   * @since 0.0.3
-   */
-  readonly hexadecimal: hexadecimal.SchemableParams<S>
 
   /**
    * An HSL string. Commonly in CSS.
@@ -748,16 +737,6 @@ export interface SchemableExt1<S extends URIS>
   readonly hexColor: hexColor.SchemableParams1<S>
 
   /**
-   * A string of hexadecimal characters.
-   *
-   * Inspired by
-   * [isHexadecimal](https://github.com/validatorjs/validator.js/blob/master/src/lib/isHexadecimal.js)
-   *
-   * @since 0.0.3
-   */
-  readonly hexadecimal: hexadecimal.SchemableParams1<S>
-
-  /**
    * An HSL string. Commonly in CSS.
    *
    * @since 0.0.3
@@ -1181,16 +1160,6 @@ export interface SchemableExt2<S extends URIS2>
   readonly hexColor: hexColor.SchemableParams2<S>
 
   /**
-   * A string of hexadecimal characters.
-   *
-   * Inspired by
-   * [isHexadecimal](https://github.com/validatorjs/validator.js/blob/master/src/lib/isHexadecimal.js)
-   *
-   * @since 0.0.3
-   */
-  readonly hexadecimal: hexadecimal.SchemableParams2<S>
-
-  /**
    * An HSL string. Commonly in CSS.
    *
    * @since 0.0.3
@@ -1612,16 +1581,6 @@ export interface SchemableExt2C<S extends URIS2>
    * @since 0.0.3
    */
   readonly hexColor: hexColor.SchemableParams2C<S>
-
-  /**
-   * A string of hexadecimal characters.
-   *
-   * Inspired by
-   * [isHexadecimal](https://github.com/validatorjs/validator.js/blob/master/src/lib/isHexadecimal.js)
-   *
-   * @since 0.0.3
-   */
-  readonly hexadecimal: hexadecimal.SchemableParams2C<S>
 
   /**
    * An HSL string. Commonly in CSS.

@@ -4,6 +4,15 @@ import * as N from 'fp-ts/number'
 import * as Mn from 'fp-ts/Monoid'
 import * as RA from 'fp-ts/ReadonlyArray'
 
+import { interpreter, SchemaExt } from '../src/SchemaExt'
+import * as Arb from '../src/Arbitrary'
+import * as D from '../src/Decoder'
+import * as E from '../src/Encoder'
+import * as Eq from '../src/Eq'
+import * as G from '../src/Guard'
+import * as TD from '../src/TaskDecoder'
+import * as T from '../src/Type'
+
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 type Any = any
 
@@ -51,3 +60,14 @@ export const zipN: ZipN = (...args: ReadonlyArray<ReadonlyArray<Any>>) => {
   }
   return RA.fromArray(zipped) as Any
 }
+
+// eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
+export const getAllInstances = <E, A>(schema: SchemaExt<E, A>) => ({
+  Arbitrary: interpreter(Arb.Schemable)(schema),
+  decoder: interpreter(D.Schemable)(schema),
+  encoder: interpreter(E.Schemable)(schema),
+  eq: interpreter(Eq.Schemable)(schema),
+  guard: interpreter(G.Schemable)(schema),
+  taskDecoder: interpreter(TD.Schemable)(schema),
+  type: interpreter(T.Schemable)(schema),
+})

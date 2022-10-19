@@ -34,7 +34,6 @@ import * as btcAddress from './string/btcAddress'
 import * as creditCard from './string/creditCard'
 import * as emailAddress from './string/emailAddress'
 import * as hexColor from './string/hexColor'
-import * as hexadecimal from './string/hexadecimal'
 import * as hslColor from './string/hslColor'
 import * as intString from './string/intString'
 import * as isoDateString from './string/isoDateString'
@@ -85,7 +84,6 @@ export const Schemable: SchemableExt1<G.URI> = {
   creditCard: creditCard.Guard,
   emailAddress: emailAddress.Guard,
   hexColor: hexColor.Guard,
-  hexadecimal: hexadecimal.Guard,
   hslColor: hslColor.Guard,
   intString: intString.Guard,
   isoDateString: isoDateString.Guard,
