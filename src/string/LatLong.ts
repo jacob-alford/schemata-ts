@@ -16,6 +16,7 @@ import * as TD from 'io-ts/TaskDecoder'
 import * as t from 'io-ts/Type'
 import * as Arb from '../internal/ArbitraryBase'
 import { pipe } from 'fp-ts/function'
+import * as fc from 'fast-check'
 
 /**
  * @since 0.0.4
@@ -57,8 +58,8 @@ export type SchemableParams2<S extends URIS2> = Kind2<S, string, LatLong>
  */
 export type SchemableParams2C<S extends URIS2> = Kind2<S, unknown, LatLong>
 
-const lat = /^\(?[+-]?(90(\.0+)?|[1-8]?\d(\.\d+)?)$/
-const long = /^\s?[+-]?(180(\.0+)?|1[0-7]\d(\.\d+)?|\d{1,2}(\.\d+)?)\)?$/
+const latRg = /^\(?[+-]?(90(\.0+)?|[1-8]?\d(\.\d+)?)$/
+const longRg = /^\s?[+-]?(180(\.0+)?|1[0-7]\d(\.\d+)?|\d{1,2}(\.\d+)?)\)?$/
 
 /**
  * @since 0.0.4
@@ -79,7 +80,7 @@ export const isLatLong = (str: string): str is LatLong => {
       return false
     }
 
-    return lat.test(pair[0]) && long.test(pair[1])
+    return latRg.test(pair[0]) && longRg.test(pair[1])
   }
 
   return false
@@ -134,7 +135,6 @@ export const Type: SchemableParams1<t.URI> = pipe(
  * @since 0.0.4
  * @category Instances
  */
-export const Arbitrary: SchemableParams1<Arb.URI> = pipe(
-  Arb.string,
-  Arb.refine(isLatLong)
-)
+export const Arbitrary: SchemableParams1<Arb.URI> = fc
+  .tuple(fc.float({ min: -90, max: 90 }), fc.float({ min: -180, max: 180 }))
+  .map(([lat, long]) => '(' + lat + ',' + long + ')') as Arb.Arbitrary<LatLong>
