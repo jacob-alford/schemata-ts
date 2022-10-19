@@ -5,7 +5,7 @@
  *
  * @since 0.0.1
  */
-import * as TD from 'io-ts/TaskDecoder'
+import * as TD from './internal/TaskDecoderBase'
 import { SchemableExt2C } from './SchemableExt'
 
 /** Generic */
@@ -34,7 +34,6 @@ import * as btcAddress from './string/btcAddress'
 import * as creditCard from './string/creditCard'
 import * as emailAddress from './string/emailAddress'
 import * as hexColor from './string/hexColor'
-import * as hexadecimal from './string/hexadecimal'
 import * as hslColor from './string/hslColor'
 import * as intString from './string/intString'
 import * as isoDateString from './string/isoDateString'
@@ -60,6 +59,9 @@ import * as safeDate from './date/safeDate'
  */
 export const Schemable: SchemableExt2C<TD.URI> = {
   ...TD.Schemable,
+  ...TD.WithBrand,
+  ...TD.WithPattern,
+  ...TD.WithRefine,
   ...TD.WithUnknownContainers,
   mapFromEntries: mapFromEntries.TaskDecoder,
   optionFromExclude: optionFromExclude.TaskDecoder,
@@ -82,7 +84,6 @@ export const Schemable: SchemableExt2C<TD.URI> = {
   creditCard: creditCard.TaskDecoder,
   emailAddress: emailAddress.TaskDecoder,
   hexColor: hexColor.TaskDecoder,
-  hexadecimal: hexadecimal.TaskDecoder,
   hslColor: hslColor.TaskDecoder,
   intString: intString.TaskDecoder,
   isoDateString: isoDateString.TaskDecoder,

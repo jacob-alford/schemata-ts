@@ -34,7 +34,6 @@ import * as btcAddress from './string/btcAddress'
 import * as creditCard from './string/creditCard'
 import * as emailAddress from './string/emailAddress'
 import * as hexColor from './string/hexColor'
-import * as hexadecimal from './string/hexadecimal'
 import * as hslColor from './string/hslColor'
 import * as intString from './string/intString'
 import * as isoDateString from './string/isoDateString'
@@ -60,6 +59,9 @@ import * as safeDate from './date/safeDate'
  */
 export const Schemable: SchemableExt1<Arb.URI> = {
   ...Arb.Schemable,
+  ...Arb.WithBrand,
+  ...Arb.WithPattern,
+  ...Arb.WithRefine,
   ...Arb.WithUnknownContainers,
   mapFromEntries: mapFromEntries.Arbitrary,
   optionFromExclude: optionFromExclude.Arbitrary,
@@ -82,7 +84,6 @@ export const Schemable: SchemableExt1<Arb.URI> = {
   creditCard: creditCard.Arbitrary,
   emailAddress: emailAddress.Arbitrary,
   hexColor: hexColor.Arbitrary,
-  hexadecimal: hexadecimal.Arbitrary,
   hslColor: hslColor.Arbitrary,
   intString: intString.Arbitrary,
   isoDateString: isoDateString.Arbitrary,

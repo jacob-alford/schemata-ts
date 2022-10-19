@@ -5,7 +5,7 @@
  *
  * @since 0.0.1
  */
-import * as t from 'io-ts/Type'
+import * as t from './internal/TypeBase'
 import { SchemableExt1 } from './SchemableExt'
 
 /** Generic */
@@ -34,7 +34,6 @@ import * as btcAddress from './string/btcAddress'
 import * as creditCard from './string/creditCard'
 import * as emailAddress from './string/emailAddress'
 import * as hexColor from './string/hexColor'
-import * as hexadecimal from './string/hexadecimal'
 import * as hslColor from './string/hslColor'
 import * as intString from './string/intString'
 import * as isoDateString from './string/isoDateString'
@@ -60,6 +59,9 @@ import * as safeDate from './date/safeDate'
  */
 export const Schemable: SchemableExt1<t.URI> = {
   ...t.Schemable,
+  ...t.WithBrand,
+  ...t.WithPattern,
+  ...t.WithRefine,
   ...t.WithUnknownContainers,
   mapFromEntries: mapFromEntries.Type,
   optionFromExclude: optionFromExclude.Type,
@@ -82,7 +84,6 @@ export const Schemable: SchemableExt1<t.URI> = {
   creditCard: creditCard.Type,
   emailAddress: emailAddress.Type,
   hexColor: hexColor.Type,
-  hexadecimal: hexadecimal.Type,
   hslColor: hslColor.Type,
   intString: intString.Type,
   isoDateString: isoDateString.Type,

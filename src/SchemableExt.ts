@@ -9,15 +9,26 @@ import { URIS, URIS2 } from 'fp-ts/HKT'
 import {
   Schemable1,
   Schemable2C,
+  WithRefine1,
+  WithRefine2C,
   WithUnknownContainers1,
   WithUnknownContainers2C,
 } from 'io-ts/Schemable'
 import {
   Schemable2,
   SchemableHKT2,
-  WithUnknownContainersHKT2,
+  WithRefine2,
+  WithRefineHKT2,
   WithUnknownContainers2,
+  WithUnknownContainersHKT2,
 } from './internal/Schemable2'
+import { WithBrand1, WithBrand2, WithBrand2C, WithBrandHKT2 } from './internal/WithBrand'
+import {
+  WithPattern1,
+  WithPattern2,
+  WithPattern2C,
+  WithPatternHKT2,
+} from './internal/WithPattern'
 
 /** Generic */
 import * as mapFromEntries from './generic/mapFromEntries'
@@ -45,7 +56,6 @@ import * as btcAddress from './string/btcAddress'
 import * as creditCard from './string/creditCard'
 import * as emailAddress from './string/emailAddress'
 import * as hexColor from './string/hexColor'
-import * as hexadecimal from './string/hexadecimal'
 import * as hslColor from './string/hslColor'
 import * as intString from './string/intString'
 import * as isoDateString from './string/isoDateString'
@@ -69,7 +79,12 @@ import * as safeDate from './date/safeDate'
  * @since 0.0.1
  * @category Instances
  */
-export interface SchemableExt<S> extends SchemableHKT2<S>, WithUnknownContainersHKT2<S> {
+export interface SchemableExt<S>
+  extends SchemableHKT2<S>,
+    WithBrandHKT2<S>,
+    WithPatternHKT2<S>,
+    WithRefineHKT2<S>,
+    WithUnknownContainersHKT2<S> {
   /**
    * Represents a ReadonlyMap converted from an expected array of entries.
    *
@@ -299,16 +314,6 @@ export interface SchemableExt<S> extends SchemableHKT2<S>, WithUnknownContainers
   readonly hexColor: hexColor.SchemableParams<S>
 
   /**
-   * A string of hexadecimal characters.
-   *
-   * Inspired by
-   * [isHexadecimal](https://github.com/validatorjs/validator.js/blob/master/src/lib/isHexadecimal.js)
-   *
-   * @since 0.0.3
-   */
-  readonly hexadecimal: hexadecimal.SchemableParams<S>
-
-  /**
    * An HSL string. Commonly in CSS.
    *
    * @since 0.0.3
@@ -499,6 +504,9 @@ export interface SchemableExt<S> extends SchemableHKT2<S>, WithUnknownContainers
  */
 export interface SchemableExt1<S extends URIS>
   extends Schemable1<S>,
+    WithBrand1<S>,
+    WithPattern1<S>,
+    WithRefine1<S>,
     WithUnknownContainers1<S> {
   /**
    * Represents a ReadonlyMap converted from an expected array of entries.
@@ -729,16 +737,6 @@ export interface SchemableExt1<S extends URIS>
   readonly hexColor: hexColor.SchemableParams1<S>
 
   /**
-   * A string of hexadecimal characters.
-   *
-   * Inspired by
-   * [isHexadecimal](https://github.com/validatorjs/validator.js/blob/master/src/lib/isHexadecimal.js)
-   *
-   * @since 0.0.3
-   */
-  readonly hexadecimal: hexadecimal.SchemableParams1<S>
-
-  /**
    * An HSL string. Commonly in CSS.
    *
    * @since 0.0.3
@@ -929,6 +927,9 @@ export interface SchemableExt1<S extends URIS>
  */
 export interface SchemableExt2<S extends URIS2>
   extends Schemable2<S>,
+    WithBrand2<S>,
+    WithPattern2<S>,
+    WithRefine2<S>,
     WithUnknownContainers2<S> {
   /**
    * Represents a ReadonlyMap converted from an expected array of entries.
@@ -1159,16 +1160,6 @@ export interface SchemableExt2<S extends URIS2>
   readonly hexColor: hexColor.SchemableParams2<S>
 
   /**
-   * A string of hexadecimal characters.
-   *
-   * Inspired by
-   * [isHexadecimal](https://github.com/validatorjs/validator.js/blob/master/src/lib/isHexadecimal.js)
-   *
-   * @since 0.0.3
-   */
-  readonly hexadecimal: hexadecimal.SchemableParams2<S>
-
-  /**
    * An HSL string. Commonly in CSS.
    *
    * @since 0.0.3
@@ -1359,6 +1350,9 @@ export interface SchemableExt2<S extends URIS2>
  */
 export interface SchemableExt2C<S extends URIS2>
   extends Schemable2C<S, unknown>,
+    WithBrand2C<S, unknown>,
+    WithPattern2C<S, unknown>,
+    WithRefine2C<S, unknown>,
     WithUnknownContainers2C<S, unknown> {
   /**
    * Represents a ReadonlyMap converted from an expected array of entries.
@@ -1587,16 +1581,6 @@ export interface SchemableExt2C<S extends URIS2>
    * @since 0.0.3
    */
   readonly hexColor: hexColor.SchemableParams2C<S>
-
-  /**
-   * A string of hexadecimal characters.
-   *
-   * Inspired by
-   * [isHexadecimal](https://github.com/validatorjs/validator.js/blob/master/src/lib/isHexadecimal.js)
-   *
-   * @since 0.0.3
-   */
-  readonly hexadecimal: hexadecimal.SchemableParams2C<S>
 
   /**
    * An HSL string. Commonly in CSS.

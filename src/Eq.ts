@@ -5,7 +5,7 @@
  *
  * @since 0.0.1
  */
-import * as Eq from 'io-ts/Eq'
+import * as Eq from './internal/EqBase'
 import { SchemableExt1 } from './SchemableExt'
 
 /** Generic */
@@ -34,7 +34,6 @@ import * as btcAddress from './string/btcAddress'
 import * as creditCard from './string/creditCard'
 import * as emailAddress from './string/emailAddress'
 import * as hexColor from './string/hexColor'
-import * as hexadecimal from './string/hexadecimal'
 import * as hslColor from './string/hslColor'
 import * as intString from './string/intString'
 import * as isoDateString from './string/isoDateString'
@@ -60,6 +59,9 @@ import * as safeDate from './date/safeDate'
  */
 export const Schemable: SchemableExt1<Eq.URI> = {
   ...Eq.Schemable,
+  ...Eq.WithBrand,
+  ...Eq.WithPattern,
+  ...Eq.WithRefine,
   ...Eq.WithUnknownContainers,
   mapFromEntries: mapFromEntries.Eq,
   optionFromExclude: optionFromExclude.Eq,
@@ -82,7 +84,6 @@ export const Schemable: SchemableExt1<Eq.URI> = {
   creditCard: creditCard.Eq,
   emailAddress: emailAddress.Eq,
   hexColor: hexColor.Eq,
-  hexadecimal: hexadecimal.Eq,
   hslColor: hslColor.Eq,
   intString: intString.Eq,
   isoDateString: isoDateString.Eq,

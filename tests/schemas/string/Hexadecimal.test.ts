@@ -3,9 +3,14 @@ import * as E from 'fp-ts/Either'
 
 import { pipe, tuple } from 'fp-ts/function'
 
-import * as Hexadecimal from '../../src/string/hexadecimal'
+import { Hexadecimal } from '../../../src/schemas/string/Hexadecimal'
 
-import { cat, combineExpected, validateArbitrary } from '../../test-utils'
+import {
+  cat,
+  combineExpected,
+  getAllInstances,
+  validateArbitrary,
+} from '../../../test-utils'
 
 const validStrings = [
   'deadBEEF',
@@ -31,11 +36,13 @@ const invalidStrings = [
 ]
 
 describe('Hexadecimal', () => {
+  const instances = getAllInstances(Hexadecimal)
+
   describe('Decoder', () => {
     test.each(
       cat(combineExpected(validStrings, 'Right'), combineExpected(invalidStrings, 'Left'))
     )('validates valid strings, and catches bad strings', (str, expectedTag) => {
-      const result = Hexadecimal.Decoder.decode(str)
+      const result = instances.decoder.decode(str)
 
       expect(result._tag).toBe(expectedTag)
     })
@@ -47,8 +54,8 @@ describe('Hexadecimal', () => {
       original => {
         const roundtrip = pipe(
           original,
-          Hexadecimal.Decoder.decode,
-          E.map(Hexadecimal.Encoder.encode),
+          instances.decoder.decode,
+          E.map(instances.encoder.encode),
           E.getOrElse(() => 'invalid')
         )
 
@@ -62,14 +69,11 @@ describe('Hexadecimal', () => {
       'determines two strings are equal',
 
       (str1, str2) => {
-        const guard = Hexadecimal.Guard.is
-        const eq = Hexadecimal.Eq.equals
-
-        if (!guard(str1) || !guard(str2)) {
+        if (!instances.guard.is(str1) || !instances.guard.is(str2)) {
           throw new Error('Unexpected result')
         }
 
-        expect(eq(str1, str2)).toBe(true)
+        expect(instances.eq.equals(str1, str2)).toBe(true)
       }
     )
   })
@@ -78,7 +82,7 @@ describe('Hexadecimal', () => {
     test.each(
       cat(combineExpected(validStrings, true), combineExpected(invalidStrings, false))
     )('validates valid strings, and catches bad strings', (str, expectedTag) => {
-      const result = Hexadecimal.Guard.is(str)
+      const result = instances.guard.is(str)
 
       expect(result).toBe(expectedTag)
     })
@@ -88,7 +92,7 @@ describe('Hexadecimal', () => {
     test.each(
       cat(combineExpected(validStrings, 'Right'), combineExpected(invalidStrings, 'Left'))
     )('validates valid strings, and catches bad strings', async (str, expectedTag) => {
-      const result = await Hexadecimal.TaskDecoder.decode(str)()
+      const result = await instances.taskDecoder.decode(str)()
 
       expect(result._tag).toBe(expectedTag)
     })
@@ -98,7 +102,7 @@ describe('Hexadecimal', () => {
     test.each(
       cat(combineExpected(validStrings, 'Right'), combineExpected(invalidStrings, 'Left'))
     )('validates valid strings, and catches bad strings', (str, expectedTag) => {
-      const result = Hexadecimal.Type.decode(str)
+      const result = instances.type.decode(str)
 
       expect(result._tag).toBe(expectedTag)
     })
@@ -106,7 +110,7 @@ describe('Hexadecimal', () => {
 
   describe('Arbitrary', () => {
     it('generates valid Hexadecimals', () => {
-      validateArbitrary(Hexadecimal, Hexadecimal.isHexadecimal)
+      validateArbitrary(instances, instances.guard.is)
     })
   })
 })
