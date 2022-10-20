@@ -66,15 +66,16 @@ describe('EncoderBase', () => {
       ).toStrictEqual({ a: 'a', b: 5, c: true })
     })
     test('sum', () => {
-      type SumType = 'A' | 'B' | 'C'
-      const sumType: SumType = 'A'
-      expect(
-        _.sum(sumType)({
-          A: _.record(_.literal('A')),
-          B: _.record(_.literal('B')),
-          // @ts-expect-error -- typelevel difference
-        }).encode({ A: 'A', B: 'B' })
-      ).toStrictEqual({ A: 'A', B: 'B' })
+      // TODO @jacob-alford 22-10-20: Figure out why Schemable2 / Encoder Sum is whacky
+      const sum = _.sum('tag')
+      const encoder = sum({
+        // @ts-expect-error -- typelevel difference
+        a: _.struct({ tag: _.literal('a'), a: _.string }),
+        // @ts-expect-error -- typelevel difference
+        b: _.struct({ tag: _.literal('b'), b: _.number }),
+      })
+      // @ts-expect-error -- typelevel difference
+      expect(encoder.encode({ tag: 'a', a: 'a' })).toStrictEqual({ tag: 'a', a: 'a' })
     })
     test('lazy', () => {
       const enc = _.lazy('', () => _.number)
@@ -82,6 +83,13 @@ describe('EncoderBase', () => {
     })
     test('readonly', () => {
       expect(_.readonly(_.string).encode('a')).toEqual('a')
+    })
+    test('WithRefine', () => {
+      const enc = Enc.WithRefine.refine(
+        (a: string): a is 'foo' => a === 'foo',
+        'isFoo'
+      )(_.string)
+      expect(enc.encode('foo')).toEqual('foo')
     })
   })
 })
