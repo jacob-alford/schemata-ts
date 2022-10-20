@@ -128,15 +128,15 @@ export interface WithUnknownContainers2<S extends URIS2> {
 }
 
 export interface WithRefineHKT2<S> {
-  readonly refine: <O, A, B extends A>(
+  readonly refine: <A, B extends A>(
     refinement: Refinement<A, B>,
     id: string
-  ) => (from: HKT2<S, O, A>) => HKT2<S, O, B>
+  ) => <O>(from: HKT2<S, O, A>) => HKT2<S, O, B>
 }
 
 export interface WithRefine2<S extends URIS2> {
-  readonly refine: <O, A, B extends A>(
+  readonly refine: <A, B extends A>(
     refinement: Refinement<A, B>,
     id: string
-  ) => (from: Kind2<S, O, A>) => Kind2<S, O, B>
+  ) => <O>(from: Kind2<S, O, A>) => Kind2<S, O, B>
 }
