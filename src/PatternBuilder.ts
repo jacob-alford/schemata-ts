@@ -212,17 +212,16 @@ const regexStringFromAtom: (atom: Atom) => string = matchK({
 })
 
 // TODO: figure out a way to test these cases
-export const regexStringFromQuantifiedAtom: (quantifiedAtom: QuantifiedAtom) => string =
-  matchK({
-    star: ({ atom, greedy }) => `${regexStringFromAtom(atom)}*${greedy ? '' : '?'}`,
-    plus: ({ atom, greedy }) => `${regexStringFromAtom(atom)}+${greedy ? '' : '?'}`,
-    question: ({ atom }) => `${regexStringFromAtom(atom)}?`,
-    exactly: ({ atom, count }) => `${regexStringFromAtom(atom)}{${count}}`,
-    between: ({ atom, min, max, greedy }) =>
-      `${regexStringFromAtom(atom)}{${min},${max}}${greedy ? '' : '?'}`,
-    minimum: ({ atom, min, greedy }) =>
-      `${regexStringFromAtom(atom)}{${min},}${greedy ? '' : '?'}`,
-  })
+const regexStringFromQuantifiedAtom: (quantifiedAtom: QuantifiedAtom) => string = matchK({
+  star: ({ atom, greedy }) => `${regexStringFromAtom(atom)}*${greedy ? '' : '?'}`,
+  plus: ({ atom, greedy }) => `${regexStringFromAtom(atom)}+${greedy ? '' : '?'}`,
+  question: ({ atom }) => `${regexStringFromAtom(atom)}?`,
+  exactly: ({ atom, count }) => `${regexStringFromAtom(atom)}{${count}}`,
+  between: ({ atom, min, max, greedy }) =>
+    `${regexStringFromAtom(atom)}{${min},${max}}${greedy ? '' : '?'}`,
+  minimum: ({ atom, min, greedy }) =>
+    `${regexStringFromAtom(atom)}{${min},}${greedy ? '' : '?'}`,
+})
 
 const regexStringFromTerm: (term: Term) => string = match({
   atom: regexStringFromAtom,
