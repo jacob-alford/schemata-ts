@@ -86,8 +86,18 @@ export const Struct: S2.Schemable2<URI>['struct'] = props =>
     return _.struct(out) as Any
   })
 
-// TODO @jacob-alford 2022-10-20: add Partial
-// Not quite sure how to do this yet, since undefined is not part of Schemable
+/**
+ * @since 1.0.0
+ * @category Combinators
+ */
+export const Partial: S2.Schemable2<URI>['partial'] = props =>
+  SC.make(_ => {
+    const out = {} as Any
+    for (const [key, schemaKey] of Object.entries(props)) {
+      out[key] = schemaKey(_)
+    }
+    return _.partial(out) as Any
+  })
 
 /**
  * @since 1.0.0

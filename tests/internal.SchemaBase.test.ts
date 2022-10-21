@@ -65,6 +65,16 @@ describe('SchemaBase', () => {
     expect(decode.decode(test)).toStrictEqual(E.right(test))
     expect(decode.decode({ foo: 'foo' })._tag).toStrictEqual('Left')
   })
+  test('Partial', () => {
+    const Schema = SC.Partial({
+      foo: SC.String,
+      bar: SC.Number,
+    })
+    const decode = interpreter(D.Schemable)(Schema)
+    const test = { foo: 'foo' }
+    expect(decode.decode(test)).toStrictEqual(E.right(test))
+    expect(decode.decode({ bar: 'foo' })._tag).toStrictEqual('Left')
+  })
   test('Array', () => {
     const Schema = SC.Array(SC.String)
     const decode = interpreter(D.Schemable)(Schema)
