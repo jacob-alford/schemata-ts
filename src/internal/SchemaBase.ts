@@ -1,7 +1,10 @@
+import { Brand as Brand_ } from 'io-ts'
+import { identity } from 'fp-ts/function'
+
 import * as SC from '../SchemaExt'
 import { Refinement } from 'fp-ts/Refinement'
 import * as S2 from './Schemable2'
-import { identity } from 'fp-ts/function'
+import { WithPattern2 } from './WithPattern'
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 type Any = any
@@ -155,6 +158,22 @@ export const Lazy: S2.Schemable2<URI>['lazy'] = (id, f) =>
  * @category Combinators
  */
 export const Readonly: S2.Schemable2<URI>['readonly'] = identity
+
+/**
+ * @since 1.0.0
+ * @category Combinators
+ */
+export const Brand =
+  <B extends Brand_<symbol>>() =>
+  <O, A>(target: SC.SchemaExt<O, A>): SC.SchemaExt<O, A & B> =>
+    SC.make(_ => _.brand<B>()<O, A>(target(_)))
+
+/**
+ * @since 1.0.0
+ * @category Combinators
+ */
+export const Pattern: WithPattern2<URI>['pattern'] = (pattern, description) =>
+  SC.make(S => S.pattern(pattern, description))
 
 /**
  * @since 1.0.0
