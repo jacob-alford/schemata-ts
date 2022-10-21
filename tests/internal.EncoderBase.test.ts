@@ -66,15 +66,11 @@ describe('EncoderBase', () => {
       ).toStrictEqual({ a: 'a', b: 5, c: true })
     })
     test('sum', () => {
-      // TODO @jacob-alford 22-10-20: Figure out why Schemable2 / Encoder Sum is whacky
       const sum = _.sum('tag')
       const encoder = sum({
-        // @ts-expect-error -- typelevel difference
         a: _.struct({ tag: _.literal('a'), a: _.string }),
-        // @ts-expect-error -- typelevel difference
         b: _.struct({ tag: _.literal('b'), b: _.number }),
       })
-      // @ts-expect-error -- typelevel difference
       expect(encoder.encode({ tag: 'a', a: 'a' })).toStrictEqual({ tag: 'a', a: 'a' })
     })
     test('lazy', () => {

@@ -12,11 +12,11 @@ type AofKind2<S extends URIS2, X> = [X] extends [Kind2<S, Any, infer A>] ? A : n
 type EofKind2<S extends URIS2, X> = [X] extends [Kind2<S, infer E, Any>] ? E : never
 
 type EnsureTagHKT2<S, T extends string, M> = {
-  [K in keyof M]: HKT2<S, Any, { [_ in T]: K }>
+  [K in keyof M]: HKT2<S, { [_ in T]: K }, Any>
 }
 
 type EnsureTagKind2<S extends URIS2, T extends string, M> = {
-  [K in keyof M]: Kind2<S, Any, { [_ in T]: K }>
+  [K in keyof M]: Kind2<S, { [_ in T]: K }, Any>
 }
 
 export interface SchemableHKT2<S> {
@@ -63,7 +63,11 @@ export interface SchemableHKT2<S> {
     tag: T
   ) => <Members extends Record<PropertyKey, HKT2<S, Any, Any>>>(
     members: EnsureTagHKT2<S, T, Members> & Members
-  ) => HKT2<S, EofHKT2<S, Members[keyof Members]>, AofHKT2<S, Members[keyof Members]>>
+  ) => HKT2<
+    S,
+    { [K in keyof Members]: EofHKT2<S, Members[K]> }[keyof Members],
+    { [K in keyof Members]: AofHKT2<S, Members[K]> }[keyof Members]
+  >
   readonly lazy: <O, A>(id: string, f: () => HKT2<S, O, A>) => HKT2<S, O, A>
   readonly readonly: <O, A>(soa: HKT2<S, O, A>) => HKT2<S, O, Readonly<A>>
 }
@@ -112,7 +116,11 @@ export interface Schemable2<S extends URIS2> {
     tag: T
   ) => <Members extends Record<PropertyKey, Kind2<S, Any, Any>>>(
     members: EnsureTagKind2<S, T, Members> & Members
-  ) => Kind2<S, EofKind2<S, Members[keyof Members]>, AofKind2<S, Members[keyof Members]>>
+  ) => Kind2<
+    S,
+    { [K in keyof Members]: EofKind2<S, Members[K]> }[keyof Members],
+    { [K in keyof Members]: AofKind2<S, Members[K]> }[keyof Members]
+  >
   readonly lazy: <O, A>(id: string, f: () => Kind2<S, O, A>) => Kind2<S, O, A>
   readonly readonly: <O, A>(soa: Kind2<S, O, A>) => Kind2<S, O, Readonly<A>>
 }
