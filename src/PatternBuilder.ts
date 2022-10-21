@@ -211,6 +211,7 @@ const regexStringFromAtom: (atom: Atom) => string = matchK({
   subgroup: ({ subpattern }) => `(${regexStringFromPattern(subpattern)})`,
 })
 
+// TODO: figure out a way to test these cases
 const regexStringFromQuantifiedAtom: (quantifiedAtom: QuantifiedAtom) => string = matchK({
   star: ({ atom, greedy }) => `${regexStringFromAtom(atom)}*${greedy ? '' : '?'}`,
   plus: ({ atom, greedy }) => `${regexStringFromAtom(atom)}+${greedy ? '' : '?'}`,

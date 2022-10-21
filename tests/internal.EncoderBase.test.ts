@@ -66,15 +66,12 @@ describe('EncoderBase', () => {
       ).toStrictEqual({ a: 'a', b: 5, c: true })
     })
     test('sum', () => {
-      type SumType = 'A' | 'B' | 'C'
-      const sumType: SumType = 'A'
-      expect(
-        _.sum(sumType)({
-          A: _.record(_.literal('A')),
-          B: _.record(_.literal('B')),
-          // @ts-expect-error -- typelevel difference
-        }).encode({ A: 'A', B: 'B' })
-      ).toStrictEqual({ A: 'A', B: 'B' })
+      const sum = _.sum('tag')
+      const encoder = sum({
+        a: _.struct({ tag: _.literal('a'), a: _.string }),
+        b: _.struct({ tag: _.literal('b'), b: _.number }),
+      })
+      expect(encoder.encode({ tag: 'a', a: 'a' })).toStrictEqual({ tag: 'a', a: 'a' })
     })
     test('lazy', () => {
       const enc = _.lazy('', () => _.number)
@@ -82,6 +79,13 @@ describe('EncoderBase', () => {
     })
     test('readonly', () => {
       expect(_.readonly(_.string).encode('a')).toEqual('a')
+    })
+    test('WithRefine', () => {
+      const enc = Enc.WithRefine.refine(
+        (a: string): a is 'foo' => a === 'foo',
+        'isFoo'
+      )(_.string)
+      expect(enc.encode('foo')).toEqual('foo')
     })
   })
 })

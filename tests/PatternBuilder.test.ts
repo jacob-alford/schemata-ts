@@ -10,8 +10,21 @@ describe('PatternBuilder', () => {
     PB.subgroup,
     PB.maybe,
     PB.then(pipe(PB.anything, PB.anyNumber({ greedy: true }))),
+    PB.then(pipe(PB.anything, PB.anyNumber({ greedy: false }))),
+    PB.then(pipe(PB.anything, PB.anyNumber())),
     PB.then(PB.times(3)(PB.characterClass(true, ['a', 'z']))),
-    PB.then(PB.characterClass(false, ['0', '4'], 'A', [35, 39], ['Q', 'T'])),
+    PB.then(
+      PB.characterClass(
+        false,
+        ['0', '4'],
+        'A',
+        [35, 39],
+        ['Q', 'T'],
+        [31, 45],
+        [94, 127],
+        [255, 256]
+      )
+    ),
     PB.subgroup,
     PB.or(PB.atLeast(2)(PB.exactString('bar')))
   )
@@ -19,7 +32,17 @@ describe('PatternBuilder', () => {
   it('can create RegExps', () => {
     const actual = PB.regexFromPattern(pattern).source
 
-    expect(actual).toEqual("^(((foo){5,9}z+?)?.*[^a-z]{3}[0-4A-A#-'Q-T])|(bar){2,}$")
+    expect(actual).toEqual(
+      "^(((foo){5,9}z+?)?.*.*?.*?[^a-z]{3}[0-4A-A#-'Q-T\\x1f-\\x2d\\x5e-\\x7f\\xff-\\u0100])|(bar){2,}$"
+    )
+  })
+
+  it('can create case-sensitive RegExps', () => {
+    const actual = PB.regexFromPattern(pattern, true).source
+
+    expect(actual).toEqual(
+      "^(((foo){5,9}z+?)?.*.*?.*?[^a-z]{3}[0-4A-A#-'Q-T\\x1f-\\x2d\\x5e-\\x7f\\xff-\\u0100])|(bar){2,}$"
+    )
   })
 
   it('can create Arbitraries', () => {

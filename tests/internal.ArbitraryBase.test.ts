@@ -145,19 +145,15 @@ describe('ArbitraryBase', () => {
       )
     })
     test('sum', () => {
-      type SumType = 'A' | 'B' | 'C'
-      const sumType: SumType = 'A'
+      const sum = Arb.sum('tag')
+      const arb = sum({
+        a: Arb.struct({ tag: Arb.literal('a'), a: Arb.string }),
+        b: Arb.struct({ tag: Arb.literal('b'), b: Arb.number }),
+      })
       fc.assert(
-        fc.property(
-          Arb.sum(sumType)({
-            A: Arb.record(Arb.literal('A')),
-            B: Arb.record(Arb.literal('B')),
-            C: Arb.record(Arb.literal('C')),
-          }),
-          obj => {
-            expect(Arb.typeOf(obj)).toBe('object')
-          }
-        )
+        fc.property(arb, obj => {
+          expect(Arb.typeOf(obj)).toBe('object')
+        })
       )
     })
     test('lazy', () => {
