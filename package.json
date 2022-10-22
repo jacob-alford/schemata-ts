@@ -1,9 +1,12 @@
 {
-  "name": "schemable-ts-types",
-  "version": "0.0.4",
-  "description": "This package exposes io-ts-types built for use with Schema and Schemable in io-ts.",
+  "name": "schema-ts",
+  "version": "0.1.0",
+  "description": "A collection of Schemas inspired by io-ts-types and validators.js",
   "homepage": "https://jacob-alford.github.io/schemable-ts-types/",
-  "repository": "https://github.com/jacob-alford/schemable-ts-types",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/jacob-alford/schemable-ts-types.git"
+  },
   "license": "MIT",
   "author": "Jacob Alford <jacob.alford@me.com>",
   "sideEffects": false,
