@@ -47,66 +47,74 @@ type TermSequence = { tag: 'termSequence'; terms: ReadonlyArray<Term> }
 
 type Term = Atom | QuantifiedAtom
 
-type QuantifiedAtom = { tag: 'quantifiedAtom'; atom: Atom; greedy: boolean } & (
-  | { kind: 'star' }
-  | { kind: 'plus' }
+type QuantifiedAtom = { tag: 'quantifiedAtom'; atom: Atom } & (
+  | { kind: 'star'; greedy: boolean }
+  | { kind: 'plus'; greedy: boolean }
   | { kind: 'question' }
   | { kind: 'exactly'; count: number }
   | { kind: 'minimum'; min: number }
   | { kind: 'between'; min: number; max: number }
 )
 
-type Atom = { tag: 'atom' } & (
-  | { kind: 'character'; char: string }
-  | { kind: 'anything' }
-  | {
-      kind: 'characterClass'
-      exclude: boolean
-      ranges: ReadonlyArray<{ lower: number; upper: number }>
-    }
-  | { kind: 'subgroup'; subpattern: Pattern }
-)
+type CharacterClass = {
+  tag: 'atom'
+  kind: 'characterClass'
+  exclude: boolean
+  ranges: ReadonlyArray<{ lower: number; upper: number }>
+}
+
+type Atom =
+  | CharacterClass
+  | ({ tag: 'atom' } & (
+      | { kind: 'character'; char: string }
+      | { kind: 'anything' }
+      | { kind: 'subgroup'; subpattern: Pattern }
+    ))
 
 type Char = string
 
 const matchK = matchOn('kind')
 
 /** @since 1.0.0 */
-export const char = (c: Char): Atom => ({ tag: 'atom', kind: 'character', char: c })
+export const char: (c: Char) => Atom = c => ({ tag: 'atom', kind: 'character', char: c })
 
 /** @since 1.0.0 */
 export const anything: Atom = { tag: 'atom', kind: 'anything' }
 
-/** @since 1.0.0 */
-export const characterClass = (
-  exclude: boolean,
-  ...ranges: ReadonlyArray<readonly [Char, Char] | Char | readonly [number, number]>
-): Atom => ({
-  tag: 'atom',
-  kind: 'characterClass',
-  exclude,
-  ranges: ranges.map(range => {
-    if (typeof range === 'string') {
-      return { lower: range.charCodeAt(0), upper: range.charCodeAt(0) } as const
-    }
-    const [c1, c2] = range
-    const lower = typeof c1 === 'string' ? c1.charCodeAt(0) : c1
-    const upper = typeof c2 === 'string' ? c2.charCodeAt(0) : c2
-    return { lower, upper } as const
-  }),
+const convertRanges: (
+  ranges: ReadonlyArray<readonly [Char, Char] | Char | readonly [number, number]>
+) => CharacterClass['ranges'] = RA.map(range => {
+  if (typeof range === 'string') {
+    return { lower: range.charCodeAt(0), upper: range.charCodeAt(0) } as const
+  }
+  const [c1, c2] = range
+  const lower = typeof c1 === 'string' ? c1.charCodeAt(0) : c1
+  const upper = typeof c2 === 'string' ? c2.charCodeAt(0) : c2
+  return { lower, upper } as const
 })
 
 /** @since 1.0.0 */
-export const subgroup = (subpattern: Pattern): Atom => ({
+export const characterClass: (
+  exclude: boolean,
+  ...ranges: ReadonlyArray<readonly [Char, Char] | Char | readonly [number, number]>
+) => CharacterClass = (exclude, ...ranges) => ({
+  tag: 'atom',
+  kind: 'characterClass',
+  exclude,
+  ranges: convertRanges(ranges),
+})
+
+/** @since 1.0.0 */
+export const subgroup: (subpattern: Pattern) => Atom = subpattern => ({
   tag: 'atom',
   kind: 'subgroup',
   subpattern,
 })
 
 /** @since 1.0.0 */
-export const anyNumber =
-  (opts: { greedy: boolean } = { greedy: false }) =>
-  (atom: Atom): QuantifiedAtom => ({
+export const anyNumber: (opts?: { greedy: boolean }) => (atom: Atom) => QuantifiedAtom =
+  (opts = { greedy: false }) =>
+  atom => ({
     tag: 'quantifiedAtom',
     atom,
     greedy: opts.greedy,
@@ -114,9 +122,9 @@ export const anyNumber =
   })
 
 /** @since 1.0.0 */
-export const atLeastOne =
-  (opts: { greedy: boolean } = { greedy: false }) =>
-  (atom: Atom): QuantifiedAtom => ({
+export const atLeastOne: (opts?: { greedy: boolean }) => (atom: Atom) => QuantifiedAtom =
+  (opts = { greedy: false }) =>
+  atom => ({
     tag: 'quantifiedAtom',
     atom,
     greedy: opts.greedy,
@@ -124,7 +132,7 @@ export const atLeastOne =
   })
 
 /** @since 1.0.0 */
-export const maybe = (atom: Atom): QuantifiedAtom => ({
+export const maybe: (atom: Atom) => QuantifiedAtom = atom => ({
   tag: 'quantifiedAtom',
   atom,
   greedy: false,
@@ -132,9 +140,8 @@ export const maybe = (atom: Atom): QuantifiedAtom => ({
 })
 
 /** @since 1.0.0 */
-export const times =
-  (count: number) =>
-  (atom: Atom): QuantifiedAtom => ({
+export const times: (count: number) => (atom: Atom) => QuantifiedAtom =
+  count => atom => ({
     tag: 'quantifiedAtom',
     atom,
     greedy: true,
@@ -142,21 +149,24 @@ export const times =
     count,
   })
 
-/** @since 1.0.0 */
-export const atLeast =
-  (min: number) =>
-  (atom: Atom): QuantifiedAtom => ({
-    tag: 'quantifiedAtom',
-    atom,
-    greedy: true,
-    kind: 'minimum',
-    min,
-  })
+/**
+ * Alias of `times`
+ *
+ * @since 1.0.0
+ */
+export const exactly: (count: number) => (atom: Atom) => QuantifiedAtom = times
 
 /** @since 1.0.0 */
-export const between =
-  (min: number, max: number) =>
-  (atom: Atom): QuantifiedAtom => ({
+export const atLeast: (min: number) => (atom: Atom) => QuantifiedAtom = min => atom => ({
+  tag: 'quantifiedAtom',
+  atom,
+  kind: 'minimum',
+  min,
+})
+
+/** @since 1.0.0 */
+export const between: (min: number, max: number) => (atom: Atom) => QuantifiedAtom =
+  (min, max) => atom => ({
     tag: 'quantifiedAtom',
     atom,
     greedy: true,
@@ -166,28 +176,43 @@ export const between =
   })
 
 /** @since 1.0.0 */
-export const or =
-  (right: TermSequence | Atom | QuantifiedAtom) =>
-  (left: Pattern): Disjunction => ({
-    tag: 'disjunction',
-    left,
-    right,
-  })
+export const or: (
+  right: TermSequence | Atom | QuantifiedAtom
+) => (left: Pattern) => Disjunction = right => left => ({
+  tag: 'disjunction',
+  left,
+  right,
+})
+
+const getTerms: (termOrSeq: Term | TermSequence) => TermSequence['terms'] = match({
+  termSequence: ({ terms }) => terms,
+  atom: atom => [atom],
+  quantifiedAtom: qatom => [qatom],
+})
 
 /** @since 1.0.0 */
-export const then =
-  (term: Term) =>
-  (alt: TermSequence | Term): TermSequence => ({
-    tag: 'termSequence',
-    terms: alt.tag === 'termSequence' ? [...alt.terms, term] : [alt, term],
-  })
+export const then: (
+  term: Term | TermSequence
+) => (alt: TermSequence | Term) => TermSequence = term => alt => ({
+  tag: 'termSequence',
+  terms: [...getTerms(alt), ...getTerms(term)],
+})
 
 /** @since 1.0.0 */
-export const exactString = (s: string): Atom =>
+export const exactString: (s: string) => Atom = s =>
   subgroup({
     tag: 'termSequence',
     terms: s.split('').map(char),
   })
+
+/** @since 1.0.0 */
+export const sequence: (term: Term, ...terms: ReadonlyArray<Term>) => TermSequence = (
+  term,
+  ...terms
+) => ({
+  tag: 'termSequence',
+  terms: [term, ...terms],
+})
 
 const repr = (n: number): string =>
   // < 32 -> control characters
@@ -211,16 +236,13 @@ const regexStringFromAtom: (atom: Atom) => string = matchK({
   subgroup: ({ subpattern }) => `(${regexStringFromPattern(subpattern)})`,
 })
 
-// TODO: figure out a way to test these cases
 const regexStringFromQuantifiedAtom: (quantifiedAtom: QuantifiedAtom) => string = matchK({
   star: ({ atom, greedy }) => `${regexStringFromAtom(atom)}*${greedy ? '' : '?'}`,
   plus: ({ atom, greedy }) => `${regexStringFromAtom(atom)}+${greedy ? '' : '?'}`,
   question: ({ atom }) => `${regexStringFromAtom(atom)}?`,
   exactly: ({ atom, count }) => `${regexStringFromAtom(atom)}{${count}}`,
-  between: ({ atom, min, max, greedy }) =>
-    `${regexStringFromAtom(atom)}{${min},${max}}${greedy ? '' : '?'}`,
-  minimum: ({ atom, min, greedy }) =>
-    `${regexStringFromAtom(atom)}{${min},}${greedy ? '' : '?'}`,
+  between: ({ atom, min, max }) => `${regexStringFromAtom(atom)}{${min},${max}}`,
+  minimum: ({ atom, min }) => `${regexStringFromAtom(atom)}{${min},}`,
 })
 
 const regexStringFromTerm: (term: Term) => string = match({
@@ -299,3 +321,73 @@ export const arbitraryFromPattern: (pattern: Pattern) => fc.Arbitrary<string> = 
   quantifiedAtom: arbitraryFromQuantifiedAtom,
   termSequence: ({ terms }) => pipe(terms.map(arbitraryFromTerm), chainConcatAll),
 })
+
+/** @since 1.0.0 */
+export const and: {
+  (...ranges: ReadonlyArray<readonly [Char, Char] | Char | readonly [number, number]>): (
+    cc: CharacterClass
+  ) => CharacterClass
+  (ccb: CharacterClass): (cca: CharacterClass) => CharacterClass
+} =
+  (
+    first,
+    ...addl: ReadonlyArray<readonly [Char, Char] | Char | readonly [number, number]>
+  ) =>
+  cc => ({
+    tag: 'atom',
+    kind: 'characterClass',
+    exclude: cc.exclude,
+    ranges: cc.ranges.concat(
+      typeof first === 'string' || first instanceof Array
+        ? convertRanges([first, ...addl])
+        : first.ranges
+    ),
+  })
+
+/** @since 1.0.0 */
+export const non: (cc: CharacterClass) => CharacterClass = cc => ({
+  ...cc,
+  exclude: !cc.exclude,
+})
+
+/** @since 1.0.0 */
+export const upper: CharacterClass = characterClass(false, ['A', 'Z'])
+
+/** @since 1.0.0 */
+export const lower: CharacterClass = characterClass(false, ['a', 'z'])
+
+/** @since 1.0.0 */
+export const alpha: CharacterClass = pipe(upper, and(lower))
+
+/** @since 1.0.0 */
+export const digit: CharacterClass = characterClass(false, ['0', '9'])
+
+/** @since 1.0.0 */
+export const xdigit: CharacterClass = pipe(digit, and(['A', 'F'], ['a', 'f']))
+
+/** @since 1.0.0 */
+export const alnum: CharacterClass = pipe(alpha, and(digit))
+
+/** @since 1.0.0 */
+export const word: CharacterClass = pipe(alnum, and('_'))
+
+/** @since 1.0.0 */
+export const punct: CharacterClass = characterClass(
+  false,
+  ['!', '/'],
+  [':', '@'],
+  ['[', '_'],
+  ['{', '~']
+)
+
+/** @since 1.0.0 */
+export const blank: CharacterClass = characterClass(false, ' ', '\t')
+
+/** @since 1.0.0 */
+export const space: CharacterClass = pipe(blank, and('\n', '\r', '\f', '\v'))
+
+/** @since 1.0.0 */
+export const graph: CharacterClass = characterClass(false, [33, 127])
+
+/** @since 1.0.0 */
+export const print: CharacterClass = pipe(graph, and(' '))
