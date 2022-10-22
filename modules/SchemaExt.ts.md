@@ -41,8 +41,7 @@ Added in v0.0.1
 
 ## interpreter
 
-Derives a typeclass instance from a Schema by supplying Schemable. i.e.
-`schemable-ts-types/Decoder`
+Derives a typeclass instance from a Schema by supplying Schemable. i.e. `schema-ts/Decoder`
 
 **Signature**
 

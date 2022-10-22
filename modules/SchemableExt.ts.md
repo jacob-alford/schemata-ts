@@ -206,6 +206,13 @@ export interface SchemableExt<S> extends SchemableHKT2<S> {
   readonly Base64Url: Base64Url.SchemableParams<S>
 
   /**
+   * Represents strings which can be converted into `BitInt`.
+   *
+   * @since 0.0.4
+   */
+  readonly BigIntString: BigIntString.SchemableParams<S>
+
+  /**
    * Represents strings which are valid Bitcoin addresses.
    *
    * This is heavily inspired by the `validator.js` module
@@ -258,7 +265,7 @@ export interface SchemableExt<S> extends SchemableHKT2<S> {
    *
    * @since 0.0.3
    * @example
-   *   import { Guard } from 'schemable-ts-types/string/HslColor'
+   *   import { Guard } from 'schema-ts/string/HslColor'
    *
    *   const hue = 270
    *   const saturation = 60
@@ -619,6 +626,13 @@ export interface SchemableExt1<S extends URIS> extends Schemable1<S> {
   readonly Base64Url: Base64Url.SchemableParams1<S>
 
   /**
+   * Represents strings which can be converted into `BitInt`.
+   *
+   * @since 0.0.4
+   */
+  readonly BigIntString: BigIntString.SchemableParams1<S>
+
+  /**
    * Represents strings which are valid Bitcoin addresses.
    *
    * This is heavily inspired by the `validator.js` module
@@ -671,7 +685,7 @@ export interface SchemableExt1<S extends URIS> extends Schemable1<S> {
    *
    * @since 0.0.3
    * @example
-   *   import { Guard } from 'schemable-ts-types/string/HslColor'
+   *   import { Guard } from 'schema-ts/string/HslColor'
    *
    *   const hue = 270
    *   const saturation = 60
@@ -1032,6 +1046,13 @@ export interface SchemableExt2<S extends URIS2> extends Schemable2<S> {
   readonly Base64Url: Base64Url.SchemableParams2<S>
 
   /**
+   * Represents strings which can be converted into `BitInt`.
+   *
+   * @since 0.0.4
+   */
+  readonly BigIntString: BigIntString.SchemableParams2<S>
+
+  /**
    * Represents strings which are valid Bitcoin addresses.
    *
    * This is heavily inspired by the `validator.js` module
@@ -1084,7 +1105,7 @@ export interface SchemableExt2<S extends URIS2> extends Schemable2<S> {
    *
    * @since 0.0.3
    * @example
-   *   import { Guard } from 'schemable-ts-types/string/HslColor'
+   *   import { Guard } from 'schema-ts/string/HslColor'
    *
    *   const hue = 270
    *   const saturation = 60
@@ -1445,6 +1466,13 @@ export interface SchemableExt2C<S extends URIS2> extends Schemable2C<S, unknown>
   readonly Base64Url: Base64Url.SchemableParams2C<S>
 
   /**
+   * Represents strings which can be converted into `BitInt`.
+   *
+   * @since 0.0.4
+   */
+  readonly BigIntString: BigIntString.SchemableParams2C<S>
+
+  /**
    * Represents strings which are valid Bitcoin addresses.
    *
    * This is heavily inspired by the `validator.js` module
@@ -1497,7 +1525,7 @@ export interface SchemableExt2C<S extends URIS2> extends Schemable2C<S, unknown>
    *
    * @since 0.0.3
    * @example
-   *   import { Guard } from 'schemable-ts-types/string/HslColor'
+   *   import { Guard } from 'schema-ts/string/HslColor'
    *
    *   const hue = 270
    *   const saturation = 60
