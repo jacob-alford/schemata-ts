@@ -28,6 +28,7 @@ import * as PositiveInt from './number/PositiveInt'
 import * as ASCII from './string/ASCII'
 import * as Base64 from './string/Base64'
 import * as Base64Url from './string/Base64Url'
+import * as BigIntString from './string/BigIntString'
 import * as BtcAddress from './string/BtcAddress'
 import * as CreditCard from './string/CreditCard'
 import * as EmailAddress from './string/EmailAddress'
@@ -73,6 +74,7 @@ export const Schemable: SchemableExt1<Eq.URI> = {
   ASCII: ASCII.Eq,
   Base64: Base64.Eq,
   Base64Url: Base64Url.Eq,
+  BigIntString: BigIntString.Eq,
   BtcAddress: BtcAddress.Eq,
   CreditCard: CreditCard.Eq,
   EmailAddress: EmailAddress.Eq,
