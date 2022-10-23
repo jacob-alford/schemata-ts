@@ -7,12 +7,17 @@ describe('PatternBuilder', () => {
     PB.exactString('foo'),
     PB.between(5, 9),
     PB.then(PB.atLeastOne()(PB.char('z'))),
+    PB.then(PB.atLeastOne({ greedy: true })(PB.char('y'))),
     PB.subgroup,
     PB.maybe,
-    PB.then(pipe(PB.anything, PB.anyNumber({ greedy: true }))),
-    PB.then(pipe(PB.anything, PB.anyNumber({ greedy: false }))),
-    PB.then(pipe(PB.anything, PB.anyNumber())),
-    PB.then(PB.times(3)(PB.characterClass(true, ['a', 'z']))),
+    PB.then(
+      PB.sequence(
+        pipe(PB.anything, PB.anyNumber({ greedy: true })),
+        pipe(PB.anything, PB.anyNumber({ greedy: false })),
+        pipe(PB.anything, PB.anyNumber()),
+        PB.times(3)(PB.non(PB.lower))
+      )
+    ),
     PB.then(
       PB.characterClass(
         false,
@@ -30,19 +35,21 @@ describe('PatternBuilder', () => {
   )
 
   it('can create RegExps', () => {
-    const actual = PB.regexFromPattern(pattern).source
+    const actual = PB.regexFromPattern(pattern)
 
-    expect(actual).toEqual(
-      "^(((foo){5,9}z+?)?.*.*?.*?[^a-z]{3}[0-4A-A#-'Q-T\\x1f-\\x2d\\x5e-\\x7f\\xff-\\u0100])|(bar){2,}$"
+    expect(actual.source).toEqual(
+      "^(((foo){5,9}z+?y+)?.*.*?.*?[^a-z]{3}[0-4A-A#-'Q-T\\x1f-\\x2d\\x5e-\\x7f\\xff-\\u0100])|(bar){2,}$"
     )
+    expect(actual.flags).toEqual('')
   })
 
-  it('can create case-sensitive RegExps', () => {
-    const actual = PB.regexFromPattern(pattern, true).source
+  it('can create case-insensitive RegExps', () => {
+    const actual = PB.regexFromPattern(pattern, true)
 
-    expect(actual).toEqual(
-      "^(((foo){5,9}z+?)?.*.*?.*?[^a-z]{3}[0-4A-A#-'Q-T\\x1f-\\x2d\\x5e-\\x7f\\xff-\\u0100])|(bar){2,}$"
+    expect(actual.source).toEqual(
+      "^(((foo){5,9}z+?y+)?.*.*?.*?[^a-z]{3}[0-4A-A#-'Q-T\\x1f-\\x2d\\x5e-\\x7f\\xff-\\u0100])|(bar){2,}$"
     )
+    expect(actual.flags).toEqual('i')
   })
 
   it('can create Arbitraries', () => {
