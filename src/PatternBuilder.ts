@@ -75,10 +75,18 @@ type Char = string
 
 const matchK = matchOn('kind')
 
-/** @since 1.0.0 */
+/**
+ * A pattern of a single, specific character
+ *
+ * @since 1.0.0
+ */
 export const char: (c: Char) => Atom = c => ({ tag: 'atom', kind: 'character', char: c })
 
-/** @since 1.0.0 */
+/**
+ * A pattern of any single character
+ *
+ * @since 1.0.0
+ */
 export const anything: Atom = { tag: 'atom', kind: 'anything' }
 
 const convertRanges: (
@@ -93,7 +101,16 @@ const convertRanges: (
   return { lower, upper } as const
 })
 
-/** @since 1.0.0 */
+/**
+ * A pattern of a single character that matches a list of characters or ranges. The ranges
+ * can either be charcter to character (e.g. `['A', 'Z']`) or number to number (e.g.
+ * `[0x3040, 0x309F]` which matches the Hiragana range in Unicode.)
+ *
+ * If the first argument (`exclude`) is true, then the pattern is a single character that
+ * is _not_ in the given ranges.
+ *
+ * @since 1.0.0
+ */
 export const characterClass: (
   exclude: boolean,
   ...ranges: ReadonlyArray<readonly [Char, Char] | Char | readonly [number, number]>
@@ -104,14 +121,23 @@ export const characterClass: (
   ranges: convertRanges(ranges),
 })
 
-/** @since 1.0.0 */
+/**
+ * Turn a `Pattern` into an `Atom`. In regular expression terms, this is wrapping the
+ * pattern in parentheses.
+ *
+ * @since 1.0.0
+ */
 export const subgroup: (subpattern: Pattern) => Atom = subpattern => ({
   tag: 'atom',
   kind: 'subgroup',
   subpattern,
 })
 
-/** @since 1.0.0 */
+/**
+ * Repeat an `Atom` any number of times (including zero).
+ *
+ * @since 1.0.0
+ */
 export const anyNumber: (opts?: { greedy: boolean }) => (atom: Atom) => QuantifiedAtom =
   (opts = { greedy: false }) =>
   atom => ({
@@ -121,7 +147,11 @@ export const anyNumber: (opts?: { greedy: boolean }) => (atom: Atom) => Quantifi
     kind: 'star',
   })
 
-/** @since 1.0.0 */
+/**
+ * Repeat an `Atom` any number of times, but at least once.
+ *
+ * @since 1.0.0
+ */
 export const atLeastOne: (opts?: { greedy: boolean }) => (atom: Atom) => QuantifiedAtom =
   (opts = { greedy: false }) =>
   atom => ({
@@ -131,7 +161,11 @@ export const atLeastOne: (opts?: { greedy: boolean }) => (atom: Atom) => Quantif
     kind: 'plus',
   })
 
-/** @since 1.0.0 */
+/**
+ * Make an `Atom` optional -- it can occur in the pattern once or not at all.
+ *
+ * @since 1.0.0
+ */
 export const maybe: (atom: Atom) => QuantifiedAtom = atom => ({
   tag: 'quantifiedAtom',
   atom,
@@ -139,7 +173,12 @@ export const maybe: (atom: Atom) => QuantifiedAtom = atom => ({
   kind: 'question',
 })
 
-/** @since 1.0.0 */
+/**
+ * Repeat an `Atom` an exact number of times. (Aliased to `exactly` for better readability
+ * in some situations)
+ *
+ * @since 1.0.0
+ */
 export const times: (count: number) => (atom: Atom) => QuantifiedAtom =
   count => atom => ({
     tag: 'quantifiedAtom',
@@ -156,7 +195,12 @@ export const times: (count: number) => (atom: Atom) => QuantifiedAtom =
  */
 export const exactly: (count: number) => (atom: Atom) => QuantifiedAtom = times
 
-/** @since 1.0.0 */
+/**
+ * Repeat an `Atom` at least some number of times. For example, `atLeast(3)(char('a'))`
+ * represents `aaa`, `aaaaaa`, and `aaaaaaaaaaaaaaaaaaaaaaaa` but not `aa`
+ *
+ * @since 1.0.0
+ */
 export const atLeast: (min: number) => (atom: Atom) => QuantifiedAtom = min => atom => ({
   tag: 'quantifiedAtom',
   atom,
@@ -164,7 +208,11 @@ export const atLeast: (min: number) => (atom: Atom) => QuantifiedAtom = min => a
   min,
 })
 
-/** @since 1.0.0 */
+/**
+ * Repeat an `Atom` some number of times in the given range, inclusive.
+ *
+ * @since 1.0.0
+ */
 export const between: (min: number, max: number) => (atom: Atom) => QuantifiedAtom =
   (min, max) => atom => ({
     tag: 'quantifiedAtom',
@@ -175,7 +223,11 @@ export const between: (min: number, max: number) => (atom: Atom) => QuantifiedAt
     max,
   })
 
-/** @since 1.0.0 */
+/**
+ * Create a disjunction of two patterns. In regular expression terms, this corresponds to `|`.
+ *
+ * @since 1.0.0
+ */
 export const or: (
   right: TermSequence | Atom | QuantifiedAtom
 ) => (left: Pattern) => Disjunction = right => left => ({
@@ -190,7 +242,11 @@ const getTerms: (termOrSeq: Term | TermSequence) => TermSequence['terms'] = matc
   quantifiedAtom: qatom => [qatom],
 })
 
-/** @since 1.0.0 */
+/**
+ * Append a term or term sequence onto another.
+ *
+ * @since 1.0.0
+ */
 export const then: (
   term: Term | TermSequence
 ) => (alt: TermSequence | Term) => TermSequence = term => alt => ({
@@ -198,14 +254,22 @@ export const then: (
   terms: [...getTerms(alt), ...getTerms(term)],
 })
 
-/** @since 1.0.0 */
+/**
+ * Construct an `Atom` for a specific string.
+ *
+ * @since 1.0.0
+ */
 export const exactString: (s: string) => Atom = s =>
   subgroup({
     tag: 'termSequence',
     terms: s.split('').map(char),
   })
 
-/** @since 1.0.0 */
+/**
+ * Concatenate `Term`s
+ *
+ * @since 1.0.0
+ */
 export const sequence: (term: Term, ...terms: ReadonlyArray<Term>) => TermSequence = (
   term,
   ...terms
@@ -258,7 +322,11 @@ const regexStringFromPattern: (pattern: Pattern) => string = match({
   termSequence: ({ terms }) => terms.map(regexStringFromTerm).join(''),
 })
 
-/** @since 1.0.0 */
+/**
+ * Construct a regular expression (`RegExp`) from a given `Pattern`.
+ *
+ * @since 1.0.0
+ */
 export const regexFromPattern = (pattern: Pattern, caseInsensitive = false): RegExp =>
   new RegExp(`^${regexStringFromPattern(pattern)}$`, caseInsensitive ? 'i' : '')
 
@@ -313,7 +381,11 @@ const chainConcatAll: (fcs: ReadonlyArray<fc.Arbitrary<string>>) => fc.Arbitrary
       head.chain(headStr => chainConcatAll(tail).map(tailStr => headStr + tailStr))
   )
 
-/** @since 1.0.0 */
+/**
+ * Construct a `fast-check` `Arbitrary` instance from a given `Pattern`.
+ *
+ * @since 1.0.0
+ */
 export const arbitraryFromPattern: (pattern: Pattern) => fc.Arbitrary<string> = match({
   atom: arbitraryFromAtom,
   disjunction: ({ left, right }) =>
@@ -322,7 +394,11 @@ export const arbitraryFromPattern: (pattern: Pattern) => fc.Arbitrary<string> = 
   termSequence: ({ terms }) => pipe(terms.map(arbitraryFromTerm), chainConcatAll),
 })
 
-/** @since 1.0.0 */
+/**
+ * Modify a character class with more ranges, or combine two character classes together.
+ *
+ * @since 1.0.0
+ */
 export const and: {
   (...ranges: ReadonlyArray<readonly [Char, Char] | Char | readonly [number, number]>): (
     cc: CharacterClass
@@ -344,34 +420,78 @@ export const and: {
     ),
   })
 
-/** @since 1.0.0 */
+/**
+ * Invert a character class
+ *
+ * @since 1.0.0
+ */
 export const non: (cc: CharacterClass) => CharacterClass = cc => ({
   ...cc,
   exclude: !cc.exclude,
 })
 
-/** @since 1.0.0 */
+/**
+ * Any upper case letter in ASCII. See [POSIX
+ * equivalent](https://en.wikibooks.org/wiki/Regular_Expressions/POSIX_Basic_Regular_Expressions#Character_classes)
+ *
+ * @since 1.0.0
+ */
 export const upper: CharacterClass = characterClass(false, ['A', 'Z'])
 
-/** @since 1.0.0 */
+/**
+ * Any lower case letter in ASCII. See [POSIX
+ * equivalent](https://en.wikibooks.org/wiki/Regular_Expressions/POSIX_Basic_Regular_Expressions#Character_classes)
+ *
+ * @since 1.0.0
+ */
 export const lower: CharacterClass = characterClass(false, ['a', 'z'])
 
-/** @since 1.0.0 */
+/**
+ * Any upper or lower case letter in ASCII. See [POSIX
+ * equivalent](https://en.wikibooks.org/wiki/Regular_Expressions/POSIX_Basic_Regular_Expressions#Character_classes)
+ *
+ * @since 1.0.0
+ */
 export const alpha: CharacterClass = pipe(upper, and(lower))
 
-/** @since 1.0.0 */
+/**
+ * Any digit character in ASCII. See [POSIX
+ * equivalent](https://en.wikibooks.org/wiki/Regular_Expressions/POSIX_Basic_Regular_Expressions#Character_classes)
+ *
+ * @since 1.0.0
+ */
 export const digit: CharacterClass = characterClass(false, ['0', '9'])
 
-/** @since 1.0.0 */
+/**
+ * Any hexadecimal digit in ASCII. See [POSIX
+ * equivalent](https://en.wikibooks.org/wiki/Regular_Expressions/POSIX_Basic_Regular_Expressions#Character_classes)
+ *
+ * @since 1.0.0
+ */
 export const xdigit: CharacterClass = pipe(digit, and(['A', 'F'], ['a', 'f']))
 
-/** @since 1.0.0 */
+/**
+ * Any alphanumeric character in ASCII. See [POSIX
+ * equivalent](https://en.wikibooks.org/wiki/Regular_Expressions/POSIX_Basic_Regular_Expressions#Character_classes)
+ *
+ * @since 1.0.0
+ */
 export const alnum: CharacterClass = pipe(alpha, and(digit))
 
-/** @since 1.0.0 */
+/**
+ * Any alphanumeric character in ASCII, or an underscore ('_'). See [POSIX
+ * equivalent](https://en.wikibooks.org/wiki/Regular_Expressions/POSIX_Basic_Regular_Expressions#Character_classes)
+ *
+ * @since 1.0.0
+ */
 export const word: CharacterClass = pipe(alnum, and('_'))
 
-/** @since 1.0.0 */
+/**
+ * Any punctuation character in ASCII. See [POSIX
+ * equivalent](https://en.wikibooks.org/wiki/Regular_Expressions/POSIX_Basic_Regular_Expressions#Character_classes)
+ *
+ * @since 1.0.0
+ */
 export const punct: CharacterClass = characterClass(
   false,
   ['!', '/'],
@@ -380,14 +500,35 @@ export const punct: CharacterClass = characterClass(
   ['{', '~']
 )
 
-/** @since 1.0.0 */
+/**
+ * Space or tab. See [POSIX
+ * equivalent](https://en.wikibooks.org/wiki/Regular_Expressions/POSIX_Basic_Regular_Expressions#Character_classes)
+ *
+ * @since 1.0.0
+ */
 export const blank: CharacterClass = characterClass(false, ' ', '\t')
 
-/** @since 1.0.0 */
+/**
+ * Any whitespace character in ASCII. See [POSIX
+ * equivalent](https://en.wikibooks.org/wiki/Regular_Expressions/POSIX_Basic_Regular_Expressions#Character_classes)
+ *
+ * @since 1.0.0
+ */
 export const space: CharacterClass = pipe(blank, and('\n', '\r', '\f', '\v'))
 
-/** @since 1.0.0 */
+/**
+ * Any character in ASCII which has a graphical representation (i.e. not control
+ * characters or space). See [POSIX
+ * equivalent](https://en.wikibooks.org/wiki/Regular_Expressions/POSIX_Basic_Regular_Expressions#Character_classes)
+ *
+ * @since 1.0.0
+ */
 export const graph: CharacterClass = characterClass(false, [33, 127])
 
-/** @since 1.0.0 */
+/**
+ * Any non-control character in ASCII. See [POSIX
+ * equivalent](https://en.wikibooks.org/wiki/Regular_Expressions/POSIX_Basic_Regular_Expressions#Character_classes)
+ *
+ * @since 1.0.0
+ */
 export const print: CharacterClass = pipe(graph, and(' '))
