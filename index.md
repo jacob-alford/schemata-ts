@@ -5,15 +5,15 @@ has_children: false
 nav_order: 1
 ---
 
-# `schema-ts`
+# `schemata-ts`
 
 A collection of Schemas inspired by io-ts-types and validators.js.
 
-![Build Status](https://github.com/jacob-alford/schemable-ts-types/actions/workflows/build.yml/badge.svg)
-[![NPM Version](https://badge.fury.io/js/schemable-ts-types.svg)](https://badge.fury.io/js/schemable-ts-types)
-[![Coverage Status](https://coveralls.io/repos/github/jacob-alford/schemable-ts-types/badge.svg?branch=main)](https://coveralls.io/github/jacob-alford/schemable-ts-types?branch=main)
-![Vulnerabilities](https://img.shields.io/snyk/vulnerabilities/npm/schemable-ts-types)
-![License](https://img.shields.io/github/license/jacob-alford/schemable-ts-types)
+![Build Status](https://github.com/jacob-alford/schemata-ts/actions/workflows/build.yml/badge.svg)
+[![NPM Version](https://badge.fury.io/js/schemata-ts.svg)](https://badge.fury.io/js/schemata-ts)
+[![Coverage Status](https://coveralls.io/repos/github/jacob-alford/schemata-ts/badge.svg?branch=main)](https://coveralls.io/github/jacob-alford/schemata-ts?branch=main)
+![Vulnerabilities](https://img.shields.io/snyk/vulnerabilities/npm/schemata-ts)
+![License](https://img.shields.io/github/license/jacob-alford/schemata-ts)
 
 ## Table of Contents
 
@@ -39,8 +39,8 @@ A collection of Schemas inspired by io-ts-types and validators.js.
 Version 0.1.0 is a transitionary release that will contain breaking changes upon release of the full version 1.0.0. 0.1.0 released on NPM is intended to be used with `SchemaExt.make(S => S.Nullable(S.String))`, where version 1.0.0 is almost exclusively `Schema` based, and will look something like this:
 
 ```typescript
-import * as S from 'schema-ts/schemas'
-import * as I from 'schema-ts/interpreters'
+import * as S from 'schemata-ts/schemas'
+import * as I from 'schemata-ts/interpreters'
 
 const User = S.Struct({
   id: S.UUID({ version: 5 }),
@@ -66,7 +66,7 @@ This library currently has 100% jest coverage, contributions are highly encourag
 
 ### Module Structure
 
-The core API of `schema-ts` is using the exports of `src/schemas.ts`. It is planned for these to be generated based on the files in `src / schemas / (string | number) / [ModuleName].ts`. Adding a new module is a two step process:
+The core API of `schemata-ts` is using the exports of `src/schemas.ts`. It is planned for these to be generated based on the files in `src / schemas / (string | number) / [ModuleName].ts`. Adding a new module is a two step process:
 
 1. Build the Schema in the relevant directory
 2. Generate the schemas file using the script (WIP)
@@ -78,18 +78,18 @@ Uses `fp-ts`, and `io-ts` as peer dependencies. Read more about peer dependencie
 ### Yarn
 
 ```bash
-yarn add schema-ts
+yarn add schemata-ts
 ```
 
 ### NPM
 
 ```bash
-npm install schema-ts
+npm install schemata-ts
 ```
 
 ## Documentation
 
-- [schemable-ts-types](https://jacob-alford.github.io/schemable-ts-types/modules/)
+- [schemata-ts](https://jacob-alford.github.io/schemata-ts/modules/)
 - [fp-ts](https://gcanti.github.io/fp-ts/modules/)
 - [io-ts](https://gcanti.github.io/io-ts)
 - [docs-ts](https://github.com/gcanti/docs-ts)
@@ -188,13 +188,13 @@ And with this, the structure of domain types and operators come from a single so
 
 ### The value of schema
 
-`schema-ts` comes with many different exported schemas that aims to provide similar levels of functionality to `io-ts-types` and `validators.js`.
+`schemata-ts` comes with many different exported schemas that aims to provide similar levels of functionality to `io-ts-types` and `validators.js`.
 
 Let's refine our User type.
 
 ```typescript
-import * as S from 'schema-ts/schemas'
-import * as I from 'schema-ts/interpreters'
+import * as S from 'schemata-ts/schemas'
+import * as I from 'schemata-ts/interpreters'
 
 const User = S.Struct({
   id: S.UUID({ version: 5 }),
