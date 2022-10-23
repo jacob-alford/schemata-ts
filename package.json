@@ -1,11 +1,11 @@
 {
-  "name": "schema-ts",
+  "name": "schemata-ts",
   "version": "0.1.0",
   "description": "A collection of Schemas inspired by io-ts-types and validators.js",
-  "homepage": "https://jacob-alford.github.io/schemable-ts-types/",
+  "homepage": "https://jacob-alford.github.io/schemata-ts/",
   "repository": {
     "type": "git",
-    "url": "https://github.com/jacob-alford/schemable-ts-types.git"
+    "url": "https://github.com/jacob-alford/schemata-ts.git"
   },
   "license": "MIT",
   "author": "Jacob Alford <jacob.alford@me.com>",
@@ -29,7 +29,7 @@
     }
   },
   "bugs": {
-    "url": "https://github.com/jacob-alford/schemable-ts-types/issues"
+    "url": "https://github.com/jacob-alford/schemata-ts/issues"
   },
   "scripts": {
     "eslint": "eslint ./src/**/*.ts",

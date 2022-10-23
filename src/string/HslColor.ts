@@ -3,7 +3,7 @@
  *
  * @since 0.0.3
  * @example
- *   import { Guard } from 'schema-ts/string/HslColor'
+ *   import { Guard } from 'schemata-ts/string/HslColor'
  *
  *   const hue = 270
  *   const saturation = 60
@@ -41,7 +41,7 @@ interface HslColorBrand {
  *
  * @since 0.0.3
  * @example
- *   import { Guard } from 'schema-ts/string/HslColor'
+ *   import { Guard } from 'schemata-ts/string/HslColor'
  *
  *   const hue = 270
  *   const saturation = 60
