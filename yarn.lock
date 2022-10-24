@@ -3498,17 +3498,17 @@ extglob@^2.0.4:
     snapdragon "^0.8.1"
     to-regex "^3.0.1"
 
-fast-check@^2.13.0:
-  version "2.25.0"
-  resolved "https://registry.yarnpkg.com/fast-check/-/fast-check-2.25.0.tgz#5146601851bf3be0953bd17eb2b7d547936c6561"
-  integrity sha512-wRUT2KD2lAmT75WNIJIHECawoUUMHM0I5jrlLXGtGeqmPL8jl/EldUDjY1VCp6fDY8yflyfUeIOsOBrIbIiArg==
-  dependencies:
-    pure-rand "^5.0.1"
-
 fast-check@^3.0.0:
   version "3.1.4"
   resolved "https://registry.yarnpkg.com/fast-check/-/fast-check-3.1.4.tgz#e755623b4a63d0a26c285acbd1c1d8e3ea283a6e"
   integrity sha512-AC4o8U7riY668tHAcJ10PHWpmhaNDfyzs2THFwQ6FJMPP05EmHKEmYvup7B1DCS+kKAzzosjSF51TamUM5IyPA==
+  dependencies:
+    pure-rand "^5.0.2"
+
+fast-check@^3.1.4:
+  version "3.3.0"
+  resolved "https://registry.yarnpkg.com/fast-check/-/fast-check-3.3.0.tgz#002b7cc53166129545983ab4fe97a80fef6ac8b4"
+  integrity sha512-Zu6tZ4g0T4H9Tiz3tdNPEHrSbuICj7yhdOM9RCZKNMkpjZ9avDV3ORklXaEmh4zvkX24/bGZ9DxKKqWfXttUqw==
   dependencies:
     pure-rand "^5.0.2"
 
@@ -6290,7 +6290,7 @@ punycode@^2.1.0, punycode@^2.1.1:
   resolved "https://registry.yarnpkg.com/punycode/-/punycode-2.1.1.tgz#b58b010ac40c22c5657616c8d2c2c02c7bf479ec"
   integrity sha512-XRsRjdf+j5ml+y/6GKHPZbrF/8p2Yga0JPtdqTIY2Xe5ohJPD9saDJJLPvp9+NSBprVvevdXZybnj2cv8OEd0A==
 
-pure-rand@^5.0.1, pure-rand@^5.0.2:
+pure-rand@^5.0.2:
   version "5.0.3"
   resolved "https://registry.yarnpkg.com/pure-rand/-/pure-rand-5.0.3.tgz#a2f15dfbc3be8433d1d8ed67ee411aa83fb90406"
   integrity sha512-9N8x1h8dptBQpHyC7aZMS+iNOAm97WMGY0AFrguU1cpfW3I5jINkWe5BIY5md0ofy+1TCIELsVcm/GJXZSaPbw==

@@ -319,7 +319,7 @@ export interface SchemableExt<S>
    *
    * @since 0.0.3
    * @example
-   *   import { Guard } from 'schemable-ts-types/string/hslColor'
+   *   import { Guard } from 'schemata-ts/string/HslColor'
    *
    *   const hue = 270
    *   const saturation = 60
@@ -484,7 +484,8 @@ export interface SchemableExt<S>
   readonly positiveIntString: positiveIntString.SchemableParams<S>
 
   /**
-   * Represents strings which are valid RGB colors. Permits both absolute and percentage based values.
+   * Represents strings which are valid RGB colors. Permits both absolute and percentage
+   * based values.
    *
    * @since 0.0.4
    */
@@ -751,7 +752,7 @@ export interface SchemableExt1<S extends URIS>
    *
    * @since 0.0.3
    * @example
-   *   import { Guard } from 'schemable-ts-types/string/hslColor'
+   *   import { Guard } from 'schemata-ts/string/HslColor'
    *
    *   const hue = 270
    *   const saturation = 60
@@ -916,7 +917,8 @@ export interface SchemableExt1<S extends URIS>
   readonly positiveIntString: positiveIntString.SchemableParams1<S>
 
   /**
-   * Represents strings which are valid RGB colors. Permits both absolute and percentage based values.
+   * Represents strings which are valid RGB colors. Permits both absolute and percentage
+   * based values.
    *
    * @since 0.0.4
    */
@@ -1183,7 +1185,7 @@ export interface SchemableExt2<S extends URIS2>
    *
    * @since 0.0.3
    * @example
-   *   import { Guard } from 'schemable-ts-types/string/hslColor'
+   *   import { Guard } from 'schemata-ts/string/HslColor'
    *
    *   const hue = 270
    *   const saturation = 60
@@ -1348,7 +1350,8 @@ export interface SchemableExt2<S extends URIS2>
   readonly positiveIntString: positiveIntString.SchemableParams2<S>
 
   /**
-   * Represents strings which are valid RGB colors. Permits both absolute and percentage based values.
+   * Represents strings which are valid RGB colors. Permits both absolute and percentage
+   * based values.
    *
    * @since 0.0.4
    */
@@ -1615,7 +1618,7 @@ export interface SchemableExt2C<S extends URIS2>
    *
    * @since 0.0.3
    * @example
-   *   import { Guard } from 'schemable-ts-types/string/hslColor'
+   *   import { Guard } from 'schemata-ts/string/HslColor'
    *
    *   const hue = 270
    *   const saturation = 60
@@ -1780,7 +1783,8 @@ export interface SchemableExt2C<S extends URIS2>
   readonly positiveIntString: positiveIntString.SchemableParams2C<S>
 
   /**
-   * Represents strings which are valid RGB colors. Permits both absolute and percentage based values.
+   * Represents strings which are valid RGB colors. Permits both absolute and percentage
+   * based values.
    *
    * @since 0.0.4
    */

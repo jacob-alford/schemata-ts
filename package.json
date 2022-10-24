@@ -1,9 +1,12 @@
 {
-  "name": "schemable-ts-types",
-  "version": "0.0.4",
-  "description": "This package exposes io-ts-types built for use with Schema and Schemable in io-ts.",
-  "homepage": "https://jacob-alford.github.io/schemable-ts-types/",
-  "repository": "https://github.com/jacob-alford/schemable-ts-types",
+  "name": "schemata-ts",
+  "version": "1.0.0",
+  "description": "A collection of Schemas inspired by io-ts-types and validators.js",
+  "homepage": "https://jacob-alford.github.io/schemata-ts/",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/jacob-alford/schemata-ts.git"
+  },
   "license": "MIT",
   "author": "Jacob Alford <jacob.alford@me.com>",
   "sideEffects": false,
@@ -26,7 +29,7 @@
     }
   },
   "bugs": {
-    "url": "https://github.com/jacob-alford/schemable-ts-types/issues"
+    "url": "https://github.com/jacob-alford/schemata-ts/issues"
   },
   "scripts": {
     "eslint": "eslint ./src/**/*.ts",
@@ -86,7 +89,7 @@
     "eslint-import-resolver-typescript": "^3.1.1",
     "eslint-plugin-import": "^2.26.0",
     "eslint-plugin-simple-import-sort": "^7.0.0",
-    "fast-check": "^2.13.0",
+    "fast-check": "^3.1.4",
     "fp-ts": "^2.9.5",
     "fp-ts-laws": "^0.3.0",
     "glob": "^8.0.3",

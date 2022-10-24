@@ -37,8 +37,7 @@ export function make<E, A>(f: SchemaExt<E, A>): SchemaExt<E, A> {
 export type TypeOf<S> = S extends SchemaExt<unknown, infer A> ? A : never
 
 /**
- * Derives a typeclass instance from a Schema by supplying Schemable. i.e.
- * `schemable-ts-types/Decoder`
+ * Derives a typeclass instance from a Schema by supplying Schemable. i.e. `schemata-ts/Decoder`
  *
  * @since 0.0.1
  * @category Destructors

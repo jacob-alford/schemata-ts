@@ -3,7 +3,7 @@
  *
  * @since 0.0.3
  * @example
- *   import { Guard } from 'schemable-ts-types/string/hslColor'
+ *   import { Guard } from 'schemata-ts/string/HslColor'
  *
  *   const hue = 270
  *   const saturation = 60
@@ -41,7 +41,7 @@ interface HslColorBrand {
  *
  * @since 0.0.3
  * @example
- *   import { Guard } from 'schemable-ts-types/string/hslColor'
+ *   import { Guard } from 'schemata-ts/string/HslColor'
  *
  *   const hue = 270
  *   const saturation = 60
@@ -157,7 +157,7 @@ export const Arbitrary: SchemableParams1<Arb.URI> = fc
     fc.integer({ min: 0, max: 360 }),
     fc.integer({ min: 0, max: 100 }),
     fc.integer({ min: 0, max: 100 }),
-    fc.float()
+    fc.float({ noDefaultInfinity: true })
   )
   .map(
     ([hue, saturation, lightness, alpha]) =>

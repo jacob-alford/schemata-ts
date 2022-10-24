@@ -1,12 +1,20 @@
-# `schemable-ts-types`
+<h1 align="center">
+schemata-ts
+</h1>
 
-Exposes an extended Schemable typeclass `SchemableExt` with types inspired by `io-ts-types`, and `validators.js`.
+<p align="center">
+A collection of Schemas inspired by io-ts-types and validators.js.
+</p>
 
-![Build Status](https://github.com/jacob-alford/schemable-ts-types/actions/workflows/build.yml/badge.svg)
-[![NPM Version](https://badge.fury.io/js/schemable-ts-types.svg)](https://badge.fury.io/js/schemable-ts-types)
-[![Coverage Status](https://coveralls.io/repos/github/jacob-alford/schemable-ts-types/badge.svg?branch=main)](https://coveralls.io/github/jacob-alford/schemable-ts-types?branch=main)
-![Vulnerabilities](https://img.shields.io/snyk/vulnerabilities/npm/schemable-ts-types)
-![License](https://img.shields.io/github/license/jacob-alford/schemable-ts-types)
+<div align="center">
+
+![Build Status](https://github.com/jacob-alford/schemata-ts/actions/workflows/build.yml/badge.svg)
+[![NPM Version](https://badge.fury.io/js/schemata-ts.svg)](https://badge.fury.io/js/schemata-ts)
+[![Coverage Status](https://coveralls.io/repos/github/jacob-alford/schemata-ts/badge.svg?branch=main)](https://coveralls.io/github/jacob-alford/schemata-ts?branch=main)
+![Vulnerabilities](https://img.shields.io/snyk/vulnerabilities/npm/schemata-ts)
+![License](https://img.shields.io/github/license/jacob-alford/schemata-ts)
+
+</div>
 
 ## Table of Contents
 
@@ -15,9 +23,7 @@ Exposes an extended Schemable typeclass `SchemableExt` with types inspired by `i
 - [Disclaimer](#disclaimer)
 - [Contributing](#contributing)
   - [Test Coverage](#test-coverage)
-  - [Combinator Module Structure](#combinator-module-structure)
-  - [Generating SchemableExt/Instances](#generating-schemableextinstances)
-  - [Generating Documentation](#generating-documentation)
+  - [Module Structure](#module-structure)
 - [Installation](#installation)
   - [Yarn](#yarn)
   - [NPM](#npm)
@@ -25,13 +31,33 @@ Exposes an extended Schemable typeclass `SchemableExt` with types inspired by `i
 - [Schemable types explained](#schemable-types-explained)
   - [The problem:](#the-problem)
   - [The solution: Schema / Schemable](#the-solution-schema--schemable)
-  - [The value of an extended Schemable](#the-value-of-an-extended-schemable)
+  - [The value of schema](#the-value-of-schema)
 - [Currently supported modules:](#currently-supported-modules)
 <!-- AUTO-GENERATED-CONTENT:END -->
 
 ## Disclaimer
 
-This library is in its nascent stages (< 1.0.0) and still has a lot of work ahead before it's at feature parity with `io-ts-types`, or `validators.js`.
+Version 0.1.0 is a transitionary release that will contain breaking changes upon release of the full version 1.0.0. 0.1.0 released on NPM is intended to be used with `SchemaExt.make(S => S.Nullable(S.String))`, where version 1.0.0 is almost exclusively `Schema` based, and will look something like this:
+
+```typescript
+import * as S from 'schemata-ts/schemas'
+import * as I from 'schemata-ts/interpreters'
+
+const User = S.Struct({
+  id: S.UUID({ version: 5 }),
+  email: S.Email,
+  name: S.NonEmptyString,
+  username: S.ASCII,
+  age: S.NonNegativeInt,
+  favoriteColor: S.OptionFromNullable(S.HexColor),
+})
+
+const arbitraryUser = I.getArbitrary(User)
+const decoderUser = I.getDecoder(User)
+const eqUser = I.getEq(User)
+const guardUser = I.getGuard(User)
+const taskDecoderUser = I.getTaskDecoder(User)
+```
 
 ## Contributing
 
@@ -39,19 +65,12 @@ This library is in its nascent stages (< 1.0.0) and still has a lot of work ahea
 
 This library currently has 100% jest coverage, contributions are highly encouraged and we should seek to maintain this high level of test coverage. Send over a PR!
 
-### Combinator Module Structure
+### Module Structure
 
-Schemable combinator modules must have a unique name and can be found in the folder whose primitive they extend, i.e. string, number, or date. A Schemable combinator module must export `Decoder`, `Eq`, `Guard`, `TaskDecoder`, and `Type` instances (named exactly), along with type aliases: `SchemableParams`, `SchemableParams1`, and `SchemableParams2C` which are the types of the exported `Decoder`, etc instances with the HKT/Kind type argument for that particular instance. Optionally, combinator modules can export convenience functions to convert to stronger types, i.e. ISODateString to SafeDate with the assumption that the guard function (isISODateString) matches the strength of the target type.
+The core API of `schemata-ts` is using the exports of `src/schemas.ts`. It is planned for these to be generated based on the files in `src / schemas / (string | number) / [ModuleName].ts`. Adding a new module is a two step process:
 
-### Generating SchemableExt/Instances
-
-Create a new combinator file using `yarn generate:template [string | number] [NameOfCombinator]`. Note: the name of the new combinator must be unique, and begin with a capital letter.
-
-Once the new combinator modules are in place, run `yarn generate:schemables` and the ts script will update the typeclass instances and SchemableExt module with the newly created combinators. Don't forget to add tests!
-
-### Generating Documentation
-
-Our docs pages are automatically generated whenever a PR is merged into the `main` branch, so the following step is optional. If you want to manually re-generate the documentation pages, use `yarn docs`. This command uses [docs-ts](https://github.com/gcanti/docs-ts) and JSDoc-style annotations to parse code comments for metadata about each module.
+1. Build the Schema in the relevant directory
+2. Generate the schemas file using the script (WIP)
 
 ## Installation
 
@@ -60,18 +79,18 @@ Uses `fp-ts`, and `io-ts` as peer dependencies. Read more about peer dependencie
 ### Yarn
 
 ```bash
-yarn add schemable-ts-types
+yarn add schemata-ts
 ```
 
 ### NPM
 
 ```bash
-npm install schemable-ts-types
+npm install schemata-ts
 ```
 
 ## Documentation
 
-- [schemable-ts-types](https://jacob-alford.github.io/schemable-ts-types/modules/)
+- [schemata-ts](https://jacob-alford.github.io/schemata-ts/modules/)
 - [fp-ts](https://gcanti.github.io/fp-ts/modules/)
 - [io-ts](https://gcanti.github.io/io-ts)
 - [docs-ts](https://github.com/gcanti/docs-ts)
@@ -168,31 +187,30 @@ export const guardUser = interpreter(G.Schemable)(UserSchema)
 
 And with this, the structure of domain types and operators come from a single source, making future maintenance and extension trivial.
 
-### The value of an extended Schemable
+### The value of schema
 
-With an extended schemable typeclass you have the powerful features of `io-ts-types` (restricted to the older `Type` system) and `validators.js` (written in javascript, and more difficult to adopt in a purely functional environment) with a modern domain type declaration system, and the power of fp-ts.
+`schemata-ts` comes with many different exported schemas that aims to provide similar levels of functionality to `io-ts-types` and `validators.js`.
 
 Let's refine our User type.
 
 ```typescript
-import { D, Eq, G, SC } from 'schemable-ts-types'
+import * as S from 'schemata-ts/schemas'
+import * as I from 'schemata-ts/interpreters'
 
-const UserSchema = SC.make(S =>
-  S.struct({
-    name: S.NonemptyString,
-    email: S.Email,
-    age: S.Natural,
-    id: S.UUID({ version: 5 }),
-  })
-)
+const User = S.Struct({
+  id: S.UUID({ version: 5 }),
+  email: S.Email,
+  name: S.NonEmptyString,
+  username: S.ASCII,
+  age: S.NonNegativeInt,
+  favoriteColor: S.OptionFromNullable(S.HexColor),
+})
 
-export type User = SC.TypeOf<UserSchema>
-
-export const decodeUser = SC.interpreter(D.Schemable)(UserSchema)
-
-export const eqUser = SC.interpreter(Eq.Schemable)(UserSchema)
-
-export const guardUser = SC.interpreter(G.Schemable)(UserSchema)
+const arbitraryUser = I.getArbitrary(User)
+const decoderUser = I.getDecoder(User)
+const eqUser = I.getEq(User)
+const guardUser = I.getGuard(User)
+const taskDecoderUser = I.getTaskDecoder(User)
 ```
 
 And now we can guarantee that a user's email will conform to RFC 5322, their id will be a proper UUID-v5, and their age will not be negative.
@@ -205,6 +223,7 @@ And now we can guarantee that a user's email will conform to RFC 5322, their id 
 | `generic` | optionFromExclude.ts      |
 | `generic` | optionFromNullable.ts     |
 | `generic` | optionFromUndefined.ts    |
+| `generic` | mapFromEntries.ts         |
 | `number`  | Int.ts                    |
 | `number`  | Natural.ts                |
 | `number`  | NegativeFloat.ts          |
