@@ -136,7 +136,11 @@ export const Type: SchemableParams1<t.URI> = pipe(
  * @category Instances
  */
 export const Arbitrary: SchemableParams1<Arb.URI> = fc
-  .tuple(fc.float({ min: -90, max: 90 }), fc.float({ min: -180, max: 180 }), fc.boolean())
+  .tuple(
+    fc.float({ min: -90, max: 90, noDefaultInfinity: true, noNaN: true }),
+    fc.float({ min: -180, max: 180, noDefaultInfinity: true, noNaN: true }),
+    fc.boolean()
+  )
   .map(([lat, long, paren]) =>
     paren ? '(' + lat + ',' + long + ')' : lat + ',' + long
   ) as Arb.Arbitrary<LatLong>
