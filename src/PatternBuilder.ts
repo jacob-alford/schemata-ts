@@ -7,7 +7,7 @@
  *
  * @since 1.0.0
  * @example
- *   import * as PB from 'schema-ts-types/PatternBuilder'
+ *   import * as PB from 'schemata-ts/PatternBuilder'
  *   import { pipe } from 'fp-ts/function'
  *
  *   const digit = PB.characterClass(false, ['0', '9'])

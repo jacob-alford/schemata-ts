@@ -319,7 +319,7 @@ export interface SchemableExt<S>
    *
    * @since 0.0.3
    * @example
-   *   import { Guard } from 'schemata-ts/string/HslColor'
+   *   import { Guard } from 'schemata-ts/string/hslColor'
    *
    *   const hue = 270
    *   const saturation = 60
@@ -752,7 +752,7 @@ export interface SchemableExt1<S extends URIS>
    *
    * @since 0.0.3
    * @example
-   *   import { Guard } from 'schemata-ts/string/HslColor'
+   *   import { Guard } from 'schemata-ts/string/hslColor'
    *
    *   const hue = 270
    *   const saturation = 60
@@ -1185,7 +1185,7 @@ export interface SchemableExt2<S extends URIS2>
    *
    * @since 0.0.3
    * @example
-   *   import { Guard } from 'schemata-ts/string/HslColor'
+   *   import { Guard } from 'schemata-ts/string/hslColor'
    *
    *   const hue = 270
    *   const saturation = 60
@@ -1618,7 +1618,7 @@ export interface SchemableExt2C<S extends URIS2>
    *
    * @since 0.0.3
    * @example
-   *   import { Guard } from 'schemata-ts/string/HslColor'
+   *   import { Guard } from 'schemata-ts/string/hslColor'
    *
    *   const hue = 270
    *   const saturation = 60
