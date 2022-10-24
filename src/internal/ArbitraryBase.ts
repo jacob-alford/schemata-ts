@@ -53,7 +53,11 @@ export const string: Arbitrary<string> = fc.oneof(
  * @since 0.0.2
  * @category Primitives
  */
-export const number: Arbitrary<number> = fc.oneof(fc.float(), fc.double(), fc.integer())
+export const number: Arbitrary<number> = fc.oneof(
+  fc.float({ noDefaultInfinity: true, noNaN: true }),
+  fc.double({ noDefaultInfinity: true, noNaN: true }),
+  fc.integer()
+)
 
 /**
  * @since 0.0.2
