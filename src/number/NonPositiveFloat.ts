@@ -124,5 +124,5 @@ export const Type: SchemableParams1<t.URI> = pipe(
  * @category Instances
  */
 export const Arbitrary: SchemableParams1<Arb.URI> = fc
-  .float({ min: -Number.MAX_VALUE, max: 0 })
+  .float({ max: 0 })
   .filter(isNonPositiveFloat)

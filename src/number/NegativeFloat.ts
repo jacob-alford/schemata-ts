@@ -125,5 +125,5 @@ export const Encoder: SchemableParams2<Enc.URI> = Enc.id()
  * @category Instances
  */
 export const Arbitrary: SchemableParams1<Arb.URI> = fc
-  .float({ min: -Number.MAX_VALUE, max: 0 })
+  .float({ max: 0 })
   .filter(isNegativeFloat)
