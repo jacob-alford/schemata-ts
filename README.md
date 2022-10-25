@@ -1,8 +1,12 @@
-<h1 align="center">
+<div align="center">
+  <img src="./assets/the-school-of-athens-crop-2.jpg" style="margin-top: 48px; width: 100%; max-width: 846px; border: 5px solid rgba(205,127,50,0.5); filter: drop-shadow(0 0 0.5rem rgba(0,0,0,0.5));"/>
+</div>
+
+<h1 align="center" style="margin: 12px 0px 12px 0px; padding-bottom: 12px;">
 schemata-ts
 </h1>
 
-<p align="center">
+<p align="center" style="margin-bottom: 12px;">
 A collection of Schemas inspired by io-ts-types and validators.js.
 </p>
 
