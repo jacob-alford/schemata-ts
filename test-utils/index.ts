@@ -64,10 +64,10 @@ export const zipN: ZipN = (...args: ReadonlyArray<ReadonlyArray<Any>>) => {
 // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
 export const getAllInstances = <E, A>(schema: SchemaExt<E, A>) => ({
   Arbitrary: interpreter(Arb.Schemable)(schema),
-  decoder: interpreter(D.Schemable)(schema),
-  encoder: interpreter(E.Schemable)(schema),
-  eq: interpreter(Eq.Schemable)(schema),
-  guard: interpreter(G.Schemable)(schema),
-  taskDecoder: interpreter(TD.Schemable)(schema),
-  type: interpreter(T.Schemable)(schema),
+  Decoder: interpreter(D.Schemable)(schema),
+  Encoder: interpreter(E.Schemable)(schema),
+  Eq: interpreter(Eq.Schemable)(schema),
+  Guard: interpreter(G.Schemable)(schema),
+  TaskDecoder: interpreter(TD.Schemable)(schema),
+  Type: interpreter(T.Schemable)(schema),
 })

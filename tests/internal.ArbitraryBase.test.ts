@@ -1,7 +1,11 @@
 import { pipe } from 'fp-ts/function'
 import * as fc from 'fast-check'
 import * as Arb from '../src/internal/ArbitraryBase'
-import { isPositiveFloat } from '../src/number/positiveFloat'
+import * as G from '../src/Guard'
+import * as SC from '../src/SchemaExt'
+import { PositiveFloat } from '../src/schemas/number/PositiveFloat'
+
+const isPositiveFloat = SC.interpreter(G.Schemable)(PositiveFloat).is
 
 describe('ArbitraryBase', () => {
   describe('constructors', () => {

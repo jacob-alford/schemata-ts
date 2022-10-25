@@ -1,5 +1,5 @@
 /**
- * Integer branded newtype.
+ * Integer branded newtype. Parameters: min, max are inclusive.
  *
  * Represents integers:
  *
@@ -7,7 +7,7 @@
  *  { z | z ∈ ℤ, z >= -2 ** 53 + 1, z <= 2 ** 53 - 1 }
  * ```
  *
- * @since 0.0.1
+ * @since 1.0.0
  */
 import { Kind, Kind2, URIS, URIS2, HKT2 } from 'fp-ts/HKT'
 import * as Enc from 'io-ts/Encoder'
@@ -23,7 +23,7 @@ import * as fc from 'fast-check'
 import * as Arb from '../internal/ArbitraryBase'
 
 /**
- * @since 0.0.1
+ * @since 1.0.0
  * @internal
  */
 interface IntBrand {
@@ -31,7 +31,7 @@ interface IntBrand {
 }
 
 /**
- * Integer branded newtype.
+ * Integer branded newtype. Parameters: min, max are inclusive.
  *
  * Represents integers:
  *
@@ -39,83 +39,111 @@ interface IntBrand {
  *  { z | z ∈ ℤ, z >= -2 ** 53 + 1, z <= 2 ** 53 - 1 }
  * ```
  *
- * @since 0.0.1
+ * @since 1.0.0
  * @category Model
  */
 export type Int = number & IntBrand
 
 /**
- * @since 0.0.1
+ * @since 1.0.0
  * @category Model
  */
-export type SchemableParams<S> = HKT2<S, number, Int>
+export type IntParams = {
+  readonly min?: number
+  readonly max?: number
+}
 
 /**
- * @since 0.0.1
+ * @since 1.0.0
  * @category Model
  */
-export type SchemableParams1<S extends URIS> = Kind<S, Int>
+export type SchemableParams<S> = (params?: IntParams) => HKT2<S, number, Int>
 
 /**
- * @since 0.0.3
+ * @since 1.0.0
  * @category Model
  */
-export type SchemableParams2<S extends URIS2> = Kind2<S, number, Int>
+export type SchemableParams1<S extends URIS> = (params?: IntParams) => Kind<S, Int>
 
 /**
- * @since 0.0.1
+ * @since 1.0.0
  * @category Model
  */
-export type SchemableParams2C<S extends URIS2> = Kind2<S, unknown, Int>
+export type SchemableParams2<S extends URIS2> = (
+  params?: IntParams
+) => Kind2<S, number, Int>
 
 /**
- * @since 0.0.1
+ * @since 1.0.0
+ * @category Model
+ */
+export type SchemableParams2C<S extends URIS2> = (
+  params?: IntParams
+) => Kind2<S, unknown, Int>
+
+/**
+ * @since 1.0.0
  * @category Refinements
  */
-export const isInt = (n: number): n is Int =>
-  typeof n === 'number' && G.number.is(n) && Number.isSafeInteger(n)
+export const isInt =
+  ({ min = Number.MIN_SAFE_INTEGER, max = Number.MAX_SAFE_INTEGER }: IntParams = {}) =>
+  (n: number): n is Int =>
+    typeof n === 'number' &&
+    G.number.is(n) &&
+    Number.isSafeInteger(n) &&
+    n >= min &&
+    n <= max
 
 /**
- * @since 0.0.1
+ * @since 1.0.0
  * @category Instances
  */
-export const Decoder: SchemableParams2C<D.URI> = pipe(D.number, D.refine(isInt, 'Int'))
+export const Decoder: SchemableParams2C<D.URI> = params =>
+  pipe(D.number, D.refine(isInt(params), 'Int'))
 
 /**
- * @since 0.0.1
+ * @since 1.0.0
  * @category Instances
  */
-export const Eq: SchemableParams1<Eq_.URI> = N.Eq
+export const Eq: SchemableParams1<Eq_.URI> = () => N.Eq
 
 /**
- * @since 0.0.1
+ * @since 1.0.0
  * @category Instances
  */
-export const Guard: SchemableParams1<G.URI> = pipe(G.number, G.refine(isInt))
+export const Guard: SchemableParams1<G.URI> = params =>
+  pipe(G.number, G.refine(isInt(params)))
 
 /**
- * @since 0.0.1
+ * @since 1.0.0
  * @category Instances
  */
-export const TaskDecoder: SchemableParams2C<TD.URI> = pipe(
-  TD.number,
-  TD.refine(isInt, 'Int')
-)
+export const TaskDecoder: SchemableParams2C<TD.URI> = params =>
+  pipe(TD.number, TD.refine(isInt(params), 'Int'))
 
 /**
- * @since 0.0.1
+ * @since 1.0.0
  * @category Instances
  */
-export const Type: SchemableParams1<t.URI> = pipe(t.number, t.refine(isInt, 'Int'))
+export const Type: SchemableParams1<t.URI> = params =>
+  pipe(t.number, t.refine(isInt(params), 'Int'))
 
 /**
- * @since 0.0.3
+ * @since 1.0.0
  * @category Instances
  */
-export const Encoder: SchemableParams2<Enc.URI> = Enc.id()
+export const Encoder: SchemableParams2<Enc.URI> = () => Enc.id()
 
 /**
- * @since 0.0.3
+ * @since 1.0.0
  * @category Instances
  */
-export const Arbitrary: SchemableParams1<Arb.URI> = fc.integer().filter(isInt)
+export const Arbitrary: SchemableParams1<Arb.URI> = (params = {}) => {
+  const { min = Number.MIN_SAFE_INTEGER, max = Number.MAX_SAFE_INTEGER } = params
+  return fc
+    .integer({
+      min: Math.floor(Math.max(min, Number.MIN_SAFE_INTEGER)),
+      max: Math.floor(Math.min(max, Number.MAX_SAFE_INTEGER)),
+    })
+    .filter(isInt(params))
+}
