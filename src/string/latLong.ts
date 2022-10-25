@@ -141,6 +141,8 @@ export const Arbitrary: SchemableParams1<Arb.URI> = fc
     fc.float({ min: -180, max: 180, noDefaultInfinity: true, noNaN: true }),
     fc.boolean()
   )
-  .map(([lat, long, paren]) =>
-    paren ? '(' + lat + ',' + long + ')' : lat + ',' + long
-  ) as Arb.Arbitrary<LatLong>
+  .map(([lat_, long_, paren]) => {
+    const lat = lat_.toLocaleString(undefined, { maximumFractionDigits: 6 })
+    const long = long_.toLocaleString(undefined, { maximumFractionDigits: 6 })
+    return paren ? '(' + lat + ',' + long + ')' : lat + ',' + long
+  }) as Arb.Arbitrary<LatLong>

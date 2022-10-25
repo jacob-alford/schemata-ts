@@ -128,7 +128,7 @@ describe('LatLong', () => {
     )
   })
   // TODO: fix small exponentials from being generated
-  describe.skip('Arbitrary', () => {
+  describe('Arbitrary', () => {
     it('generates valid LatLong', () => {
       validateArbitrary(LatLong, LatLong.isLatLong)
     })
