@@ -1,8 +1,10 @@
 /**
  * Integer branded newtype from string. Parameters: min, max are inclusive.
  *
- * Note: has an optional `encodeToBase` parameter that strictly controls the output base
- * of the encoder, it does not affect decoding.
+ * Note: has an optional `encodeToBase` parameter that controls the output base of the
+ * encoded string. Currently only accepts 2, 8, 10, and 16 due to constraints using
+ * `Number` as a parser. It does not decode in this specified base, and accepts any base
+ * as input: 2, 8, 10, or 16.
  *
  * Represents string-integers:
  *
@@ -28,8 +30,9 @@ import * as Arb from '../internal/ArbitraryBase'
 import * as int from './int'
 
 /**
- * Represents all bases numbers can encode to using `Number.prototype.toString(base)`
- * which have a specified prefix. This is necessary for decoder / encoder laws to hold.
+ * Controls the output base of the encoded string. Currently only accepts 2, 8, 10, and 16
+ * due to constraints using `Number` as a parser. It does not decode in this specified
+ * base, and accepts any base as input: 2, 8, 10, or 16.
  *
  * @since 1.0.0
  */
