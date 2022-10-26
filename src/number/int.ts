@@ -89,7 +89,7 @@ export const isInt =
   ({ min = Number.MIN_SAFE_INTEGER, max = Number.MAX_SAFE_INTEGER }: IntParams = {}) =>
   (n: number): n is Int =>
     typeof n === 'number' &&
-    G.number.is(n) &&
+    !Number.isNaN(n) &&
     Number.isSafeInteger(n) &&
     n >= min &&
     n <= max
@@ -99,7 +99,7 @@ export const isInt =
  * @category Instances
  */
 export const Decoder: SchemableParams2C<D.URI> = params =>
-  pipe(D.number, D.refine(isInt(params), 'Int'))
+  pipe(D.number, D.refine(isInt(params), 'int'))
 
 /**
  * @since 1.0.0
@@ -119,14 +119,14 @@ export const Guard: SchemableParams1<G.URI> = params =>
  * @category Instances
  */
 export const TaskDecoder: SchemableParams2C<TD.URI> = params =>
-  pipe(TD.number, TD.refine(isInt(params), 'Int'))
+  pipe(TD.number, TD.refine(isInt(params), 'int'))
 
 /**
  * @since 1.0.0
  * @category Instances
  */
 export const Type: SchemableParams1<t.URI> = params =>
-  pipe(t.number, t.refine(isInt(params), 'Int'))
+  pipe(t.number, t.refine(isInt(params), 'int'))
 
 /**
  * @since 1.0.0

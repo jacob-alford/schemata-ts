@@ -16,9 +16,10 @@ import * as Eq_ from 'fp-ts/Eq'
 import * as G from 'io-ts/Guard'
 import * as TD from 'io-ts/TaskDecoder'
 import * as t from 'io-ts/Type'
+import * as Str from 'fp-ts/string'
 import * as N from 'fp-ts/number'
-import { flow } from 'fp-ts/function'
-import { Type as Type_ } from 'io-ts'
+import { pipe } from 'fp-ts/function'
+import { Type as Type_, failure } from 'io-ts'
 
 import * as Arb from '../internal/ArbitraryBase'
 import * as float from './float'
@@ -60,7 +61,10 @@ export type SchemableParams2C<S extends URIS2> = (
  * @category Instances
  */
 export const Decoder: SchemableParams2C<D.URI> = params => ({
-  decode: flow(Number, float.Decoder(params).decode),
+  decode: str =>
+    typeof str === 'string' && str.length > 0
+      ? pipe(str, Str.trim, Number, float.Decoder(params).decode)
+      : D.failure(str, 'nonempty string'),
 })
 
 /**
@@ -80,7 +84,10 @@ export const Guard: SchemableParams1<G.URI> = float.Guard
  * @category Instances
  */
 export const TaskDecoder: SchemableParams2C<TD.URI> = params => ({
-  decode: flow(Number, float.TaskDecoder(params).decode),
+  decode: str =>
+    typeof str === 'string' && str.length > 0
+      ? pipe(str, Str.trim, Number, float.TaskDecoder(params).decode)
+      : TD.failure(str, 'nonempty string'),
 })
 
 /**
@@ -89,9 +96,12 @@ export const TaskDecoder: SchemableParams2C<TD.URI> = params => ({
  */
 export const Type: SchemableParams1<t.URI> = params =>
   new Type_(
-    'IntFromString',
+    'FloatFromString',
     Guard(params).is,
-    flow(Number, float.Type(params).decode),
+    (str, ctx) =>
+      typeof str === 'string' && str.length > 0
+        ? pipe(str, Str.trim, Number, float.Type(params).decode)
+        : failure(str, ctx, 'nonempty string'),
     Encoder(params).encode
   )
 

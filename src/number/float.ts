@@ -88,14 +88,14 @@ export type SchemableParams2C<S extends URIS2> = (
 export const isFloat =
   ({ min = -Number.MAX_VALUE, max = Number.MAX_VALUE }: FloatParams = {}) =>
   (n: number): n is Float =>
-    typeof n === 'number' && G.number.is(n) && n >= min && n <= max
+    typeof n === 'number' && !Number.isNaN(n) && n >= min && n <= max
 
 /**
  * @since 1.0.0
  * @category Instances
  */
 export const Decoder: SchemableParams2C<D.URI> = params =>
-  pipe(D.number, D.refine(isFloat(params), 'Int'))
+  pipe(D.number, D.refine(isFloat(params), 'float'))
 
 /**
  * @since 1.0.0
@@ -115,14 +115,14 @@ export const Guard: SchemableParams1<G.URI> = params =>
  * @category Instances
  */
 export const TaskDecoder: SchemableParams2C<TD.URI> = params =>
-  pipe(TD.number, TD.refine(isFloat(params), 'Int'))
+  pipe(TD.number, TD.refine(isFloat(params), 'float'))
 
 /**
  * @since 1.0.0
  * @category Instances
  */
 export const Type: SchemableParams1<t.URI> = params =>
-  pipe(t.number, t.refine(isFloat(params), 'Int'))
+  pipe(t.number, t.refine(isFloat(params), 'float'))
 
 /**
  * @since 1.0.0
@@ -131,43 +131,17 @@ export const Type: SchemableParams1<t.URI> = params =>
 export const Encoder: SchemableParams2<Enc.URI> = () => Enc.id()
 
 /**
- * See:
- * https://github.com/dubzzz/fast-check/blob/685e4a95efed533cbcc8ec669f596a727dfd5efc/packages/fast-check/src/arbitrary/_internals/helpers/FloatHelpers.ts#L9
- *
- * @internal
- */
-const SAFE_ARB_MIN = 2 ** -126 * 2 ** -23
-
-/**
- * See:
- * https://github.com/dubzzz/fast-check/blob/685e4a95efed533cbcc8ec669f596a727dfd5efc/packages/fast-check/src/arbitrary/_internals/helpers/FloatHelpers.ts#L11
- *
- * @internal
- */
-const SAFE_ARB_MAX = 2 ** 127 * (1 + (2 ** 23 - 1) / 2 ** 23)
-
-/**
- * Guarantee that the value is mapped to a safe range for fast-check
- *
- * @internal
- */
-const ensure32BitFloat = (n: number): number => {
-  const outerSafe = n < 0 ? Math.max(n, -SAFE_ARB_MAX) : Math.min(n, SAFE_ARB_MAX)
-  return outerSafe < 0
-    ? Math.min(outerSafe, -SAFE_ARB_MIN)
-    : Math.max(outerSafe, SAFE_ARB_MIN)
-}
-
-/**
  * @since 1.0.0
  * @category Instances
  */
 export const Arbitrary: SchemableParams1<Arb.URI> = (params = {}) => {
-  const { min = -SAFE_ARB_MAX, max = SAFE_ARB_MAX } = params
+  const { min = -Number.MAX_VALUE, max = Number.MAX_VALUE } = params
   return fc
-    .float({
-      min: ensure32BitFloat(min),
-      max: ensure32BitFloat(max),
+    .double({
+      min,
+      max,
+      noDefaultInfinity: true,
+      noNaN: true,
     })
     .filter(isFloat(params))
 }
