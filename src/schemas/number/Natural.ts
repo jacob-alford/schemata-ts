@@ -10,7 +10,7 @@
  * @since 1.0.0
  */
 import { pipe } from 'fp-ts/function'
-import { make, TypeOf } from '../../SchemaExt'
+import { SchemaExt, make } from '../../SchemaExt'
 import { Brand } from 'io-ts'
 
 /** @internal */
@@ -18,9 +18,9 @@ type NaturalBrand = Brand<{ readonly Natural: unique symbol }['Natural']>
 
 /**
  * @since 1.0.0
- * @category Schema
+ * @category Model
  */
-export const Natural = make(S => pipe(S.int({ min: 0 }), S.brand<NaturalBrand>()))
+export type Natural = number & NaturalBrand
 
 /**
  * Natural branded newtype.
@@ -32,5 +32,8 @@ export const Natural = make(S => pipe(S.int({ min: 0 }), S.brand<NaturalBrand>()
  * ```
  *
  * @since 1.0.0
+ * @category Schema
  */
-export type Natural = TypeOf<typeof Natural>
+export const Natural: SchemaExt<number, Natural> = make(S =>
+  pipe(S.int({ min: 0 }), S.brand<NaturalBrand>())
+)

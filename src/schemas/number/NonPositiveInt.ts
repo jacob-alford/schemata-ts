@@ -10,7 +10,7 @@
  * @since 1.0.0
  */
 import { pipe } from 'fp-ts/function'
-import { make, TypeOf } from '../../SchemaExt'
+import { make, SchemaExt } from '../../SchemaExt'
 import { Brand } from 'io-ts'
 
 /** @internal */
@@ -20,11 +20,9 @@ type NonPositiveIntBrand = Brand<
 
 /**
  * @since 1.0.0
- * @category Schema
+ * @category Model
  */
-export const NonPositiveInt = make(S =>
-  pipe(S.int({ max: 0 }), S.brand<NonPositiveIntBrand>())
-)
+export type NonPositiveInt = number & NonPositiveIntBrand
 
 /**
  * NonPositive integer branded newtype.
@@ -36,5 +34,8 @@ export const NonPositiveInt = make(S =>
  * ```
  *
  * @since 1.0.0
+ * @category Schema
  */
-export type NonPositiveInt = TypeOf<typeof NonPositiveInt>
+export const NonPositiveInt: SchemaExt<number, NonPositiveInt> = make(S =>
+  pipe(S.int({ max: 0 }), S.brand<NonPositiveIntBrand>())
+)

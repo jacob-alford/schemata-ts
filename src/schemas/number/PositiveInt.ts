@@ -10,7 +10,7 @@
  * @since 1.0.0
  */
 import { pipe } from 'fp-ts/function'
-import { make, TypeOf } from '../../SchemaExt'
+import { make, SchemaExt } from '../../SchemaExt'
 import { Brand } from 'io-ts'
 
 /** @internal */
@@ -18,9 +18,9 @@ type PositiveIntBrand = Brand<{ readonly PositiveInt: unique symbol }['PositiveI
 
 /**
  * @since 1.0.0
- * @category Schema
+ * @category Model
  */
-export const PositiveInt = make(S => pipe(S.int({ min: 0 }), S.brand<PositiveIntBrand>()))
+export type PositiveInt = number & PositiveIntBrand
 
 /**
  * Positive integer branded newtype.
@@ -32,5 +32,8 @@ export const PositiveInt = make(S => pipe(S.int({ min: 0 }), S.brand<PositiveInt
  * ```
  *
  * @since 1.0.0
+ * @category Schema
  */
-export type PositiveInt = TypeOf<typeof PositiveInt>
+export const PositiveInt: SchemaExt<number, PositiveInt> = make(S =>
+  pipe(S.int({ min: 0 }), S.brand<PositiveIntBrand>())
+)
