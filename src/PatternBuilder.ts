@@ -281,10 +281,11 @@ export const sequence: (term: Term, ...terms: ReadonlyArray<Term>) => TermSequen
 const repr = (n: number): string =>
   // < 32 -> control characters
   // 45 -> '-'.. seems like `/[--z]/` for example actually works, but looks weird.
+  // 93 -> ']' which needs to be escaped
   // 94 -> '^' which might get parsed as class exclusion marker, so escape just in case
   // 127 -> del
   // >127 -> outside normal ascii range. escape 'em
-  n < 32 || n === 45 || n === 94 || n >= 127
+  n < 32 || n === 45 || n === 93 || n === 94 || n >= 127
     ? n > 255
       ? `\\u${n.toString(16).padStart(4, '0')}`
       : `\\x${n.toString(16).padStart(2, '0')}`
@@ -292,10 +293,13 @@ const repr = (n: number): string =>
 
 const regexStringFromAtom: (atom: Atom) => string = matchK({
   anything: () => '.',
-  character: ({ char }) => char,
+  character: ({ char }) =>
+    char === '[' ? '\\[' : char === ']' ? '\\]' : char === '.' ? '\\.' : char,
   characterClass: ({ exclude, ranges }) =>
     `[${exclude ? '^' : ''}${ranges
-      .map(({ lower, upper }) => `${repr(lower)}-${repr(upper)}`)
+      .map(({ lower, upper }) =>
+        lower === upper ? repr(lower) : `${repr(lower)}-${repr(upper)}`
+      )
       .join('')}]`,
   subgroup: ({ subpattern }) => `(${regexStringFromPattern(subpattern)})`,
 })

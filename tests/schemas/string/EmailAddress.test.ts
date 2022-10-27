@@ -1,8 +1,13 @@
 import * as E from 'fp-ts/Either'
 import { pipe, tuple } from 'fp-ts/function'
 import * as RA from 'fp-ts/ReadonlyArray'
-import { cat, combineExpected, validateArbitrary } from '../../test-utils'
-import * as EmailAddress from '../../src/string/emailAddress'
+import {
+  cat,
+  combineExpected,
+  getAllInstances,
+  validateArbitrary,
+} from '../../../test-utils'
+import { EmailAddress } from '../../../src/schemas/string/EmailAddress'
 
 const repeat: (s: string, times: number) => string = (s, times) => s.repeat(times)
 
@@ -68,22 +73,26 @@ const invalid: ReadonlyArray<string> = [
 ]
 
 describe('EmailAddress', () => {
+  const instances = getAllInstances(EmailAddress)
+
   describe('Decoder', () => {
-    test.each(cat(combineExpected(valid, 'Right'), combineExpected(invalid, 'Left')))(
-      'validates valid strings, and catches bad strings',
-      (str, expectedTag) => {
-        const result = EmailAddress.Decoder.decode(str)
-        expect(result._tag).toBe(expectedTag)
-      }
-    )
+    test.each(valid)('validates valid email %s', str => {
+      const result = instances.Decoder.decode(str)
+      expect(result._tag).toBe('Right')
+    })
+
+    test.each(invalid)('catches invalid email %s', str => {
+      const result = instances.Decoder.decode(str)
+      expect(result._tag).toBe('Left')
+    })
   })
 
   describe('Encoder', () => {
     test.each(valid)('encoding a decoded value yields original value', original => {
       const roundtrip = pipe(
         original,
-        EmailAddress.Decoder.decode,
-        E.map(EmailAddress.Encoder.encode),
+        instances.Decoder.decode,
+        E.map(instances.Encoder.encode),
         E.getOrElseW(() => 'unexpected')
       )
       expect(original).toEqual(roundtrip)
@@ -94,8 +103,8 @@ describe('EmailAddress', () => {
     test.each(RA.zipWith(valid, valid, tuple))(
       'determines two strings are equal',
       (str1, str2) => {
-        const guard = EmailAddress.Guard.is
-        const eq = EmailAddress.Eq.equals
+        const guard = instances.Guard.is
+        const eq = instances.Eq.equals
         if (!guard(str1) || !guard(str2)) {
           throw new Error('Unexpected result')
         }
@@ -108,35 +117,39 @@ describe('EmailAddress', () => {
     test.each(cat(combineExpected(valid, true), combineExpected(invalid, false)))(
       'validates valid strings, and catches bad strings',
       (str, expectedTag) => {
-        const result = EmailAddress.Guard.is(str)
+        const result = instances.Guard.is(str)
         expect(result).toBe(expectedTag)
       }
     )
   })
 
   describe('TaskDecoder', () => {
-    test.each(cat(combineExpected(valid, 'Right'), combineExpected(invalid, 'Left')))(
-      'validates valid string, and catches bad string',
-      async (str, expectedTag) => {
-        const result = await EmailAddress.TaskDecoder.decode(str)()
-        expect(result._tag).toBe(expectedTag)
-      }
-    )
+    test.each(valid)('validates valid email %s', async str => {
+      const result = await instances.TaskDecoder.decode(str)()
+      expect(result._tag).toBe('Right')
+    })
+
+    test.each(invalid)('catches invalid email %s', async str => {
+      const result = await instances.TaskDecoder.decode(str)()
+      expect(result._tag).toBe('Left')
+    })
   })
 
   describe('Type', () => {
-    test.each(cat(combineExpected(valid, 'Right'), combineExpected(invalid, 'Left')))(
-      'validates valid strings, and catches bad strings',
-      (str, expectedTag) => {
-        const result = EmailAddress.Type.decode(str)
-        expect(result._tag).toBe(expectedTag)
-      }
-    )
+    test.each(valid)('validates valid email %s', str => {
+      const result = instances.Type.decode(str)
+      expect(result._tag).toBe('Right')
+    })
+
+    test.each(invalid)('catches invalid email %s', str => {
+      const result = instances.Type.decode(str)
+      expect(result._tag).toBe('Left')
+    })
   })
 
   describe('Arbitrary', () => {
     it('generates valid EmailAddress', () => {
-      validateArbitrary(EmailAddress, EmailAddress.isEmailAddress)
+      validateArbitrary(instances, instances.Guard.is)
     })
   })
 })
