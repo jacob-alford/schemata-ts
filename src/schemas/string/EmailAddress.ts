@@ -104,8 +104,6 @@ export const emailAddress: PB.Pattern = pipe(
 )
 
 /**
- * Represents strings (email addresses) that conform to the RFC 5322 standard.
- *
  * @since 1.0.0
  * @category Schema
  */
