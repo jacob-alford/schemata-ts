@@ -21,7 +21,6 @@ import * as int from './number/int'
 import * as intFromString from './number/intFromString'
 
 /** String */
-import * as ascii from './string/ascii'
 import * as base64 from './string/base64'
 import * as base64Url from './string/base64Url'
 import * as bigIntString from './string/bigIntString'
@@ -58,7 +57,6 @@ export const Schemable: SchemableExt2C<D.URI> = {
   floatFromString: floatFromString.Decoder,
   int: int.Decoder,
   intFromString: intFromString.Decoder,
-  ascii: ascii.Decoder,
   base64: base64.Decoder,
   base64Url: base64Url.Decoder,
   bigIntString: bigIntString.Decoder,
