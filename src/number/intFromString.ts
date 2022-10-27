@@ -25,7 +25,8 @@ import * as N from 'fp-ts/number'
 import * as Str from 'fp-ts/string'
 import { pipe } from 'fp-ts/function'
 import { failure, Type as Type_ } from 'io-ts'
-
+import * as SC from '../SchemaExt'
+import { URI as SchemaURI } from '../internal/SchemaBase'
 import * as Arb from '../internal/ArbitraryBase'
 import * as int from './int'
 
@@ -151,3 +152,10 @@ export const Encoder: SchemableParams2<Enc.URI> = (params = {}) => {
  * @category Instances
  */
 export const Arbitrary: SchemableParams1<Arb.URI> = int.Arbitrary
+
+/**
+ * @since 1.0.0
+ * @category Instances
+ */
+export const Schema: SchemableParams2<SchemaURI> = params =>
+  SC.make(S => S.intFromString(params))

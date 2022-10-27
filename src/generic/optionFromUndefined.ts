@@ -14,6 +14,8 @@ import * as G from 'io-ts/Guard'
 import * as TD from 'io-ts/TaskDecoder'
 import * as t from 'io-ts/Type'
 import * as O from 'fp-ts/Option'
+import * as SC from '../SchemaExt'
+import { URI as SchemaURI } from '../internal/SchemaBase'
 import * as Arb from '../internal/ArbitraryBase'
 import { flow, pipe } from 'fp-ts/function'
 
@@ -118,3 +120,10 @@ export const Arbitrary: SchemableParams1<Arb.URI> = arbA =>
     Arb.struct({ _tag: Arb.literal('None') }),
     Arb.struct({ _tag: Arb.literal('Some'), value: arbA })
   )
+
+/**
+ * @since 1.0.0
+ * @category Instances
+ */
+export const Schema: SchemableParams2<SchemaURI> = sA =>
+  SC.make(S => S.optionFromUndefined(sA(S)))

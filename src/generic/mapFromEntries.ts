@@ -20,6 +20,7 @@ import * as Sg from 'fp-ts/Semigroup'
 import * as t from 'io-ts/Type'
 import { Type as Type_ } from 'io-ts'
 import * as Ord from 'fp-ts/Ord'
+import * as SC from '../SchemaExt'
 import * as Arb from '../internal/ArbitraryBase'
 import { flow, pipe } from 'fp-ts/function'
 
@@ -27,7 +28,7 @@ import { flow, pipe } from 'fp-ts/function'
  * @since 1.0.0
  * @category Model
  */
-export type SchemableParams<S> = <K, A, EK, EA>(
+export type SchemableParams<S> = <EK, EA, K extends EK, A extends EA>(
   ordEK: Ord.Ord<K>,
   sk: HKT2<S, EK, K>,
   sa: HKT2<S, EA, A>
@@ -47,7 +48,7 @@ export type SchemableParams1<S extends URIS> = <K, A>(
  * @since 1.0.0
  * @category Model
  */
-export type SchemableParams2<S extends URIS2> = <K, A, EK, EA>(
+export type SchemableParams2<S extends URIS2> = <EK, EA, K extends EK, A extends EA>(
   ordEK: Ord.Ord<K>,
   sk: Kind2<S, EK, K>,
   sa: Kind2<S, EA, A>
@@ -141,3 +142,14 @@ export const Type: SchemableParams1<t.URI> = <K, A>(
  */
 export const Arbitrary: SchemableParams1<Arb.URI> = (ordK, arbK, arbA) =>
   fc.array(fc.tuple(arbK, arbA)).map(RM.fromFoldable(ordK, Sg.last(), RA.Foldable))
+
+/**
+ * @since 1.0.0
+ * @category Instances
+ */
+export const Schema = <EK, EA, K extends EK, A extends EA>(
+  ordK: Ord.Ord<K>,
+  sK: SC.SchemaExt<EK, K>,
+  sA: SC.SchemaExt<EA, A>
+): SC.SchemaExt<ReadonlyArray<readonly [EK, EA]>, ReadonlyMap<K, A>> =>
+  SC.make(S => S.mapFromEntries(ordK, sK(S), sA(S)))

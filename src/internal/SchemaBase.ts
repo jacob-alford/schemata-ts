@@ -9,9 +9,9 @@ import { WithPattern2 } from './WithPattern'
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 type Any = any
 
-const URI = 'SchemaExt'
+export const URI = 'SchemaExt'
 
-type URI = typeof URI
+export type URI = typeof URI
 
 declare module 'fp-ts/lib/HKT' {
   interface URItoKind2<E, A> {
