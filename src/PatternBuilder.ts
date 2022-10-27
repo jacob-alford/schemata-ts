@@ -332,7 +332,7 @@ const regexStringFromPattern: (pattern: Pattern) => string = match({
  * @since 1.0.0
  */
 export const regexFromPattern = (pattern: Pattern, caseInsensitive = false): RegExp =>
-  new RegExp(`^${regexStringFromPattern(pattern)}$`, caseInsensitive ? 'i' : '')
+  new RegExp(`^(${regexStringFromPattern(pattern)})$`, caseInsensitive ? 'i' : '')
 
 /** @internal */
 export const arbitraryFromAtom: (atom: Atom) => fc.Arbitrary<string> = matchK({

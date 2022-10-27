@@ -38,7 +38,7 @@ describe('PatternBuilder', () => {
     const actual = PB.regexFromPattern(pattern)
 
     expect(actual.source).toEqual(
-      "^(((foo){5,9}z+?y+)?.*.*?.*?[^a-z]{3}[0-4A#-'Q-T\\x1f-\\x2d\\x5e-\\x7f\\xff-\\u0100])|(bar){2,}$"
+      "^((((foo){5,9}z+?y+)?.*.*?.*?[^a-z]{3}[0-4A#-'Q-T\\x1f-\\x2d\\x5e-\\x7f\\xff-\\u0100])|(bar){2,})$"
     )
     expect(actual.flags).toEqual('')
   })
@@ -47,7 +47,7 @@ describe('PatternBuilder', () => {
     const actual = PB.regexFromPattern(pattern, true)
 
     expect(actual.source).toEqual(
-      "^(((foo){5,9}z+?y+)?.*.*?.*?[^a-z]{3}[0-4A#-'Q-T\\x1f-\\x2d\\x5e-\\x7f\\xff-\\u0100])|(bar){2,}$"
+      "^((((foo){5,9}z+?y+)?.*.*?.*?[^a-z]{3}[0-4A#-'Q-T\\x1f-\\x2d\\x5e-\\x7f\\xff-\\u0100])|(bar){2,})$"
     )
     expect(actual.flags).toEqual('i')
   })

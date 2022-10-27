@@ -1,8 +1,5 @@
 /**
- * A string in which every character is valid ASCII.
- *
- * This is heavily inspired by the `validator.js` module
- * [`isAscii`](https://github.com/validatorjs/validator.js/blob/master/src/lib/isAscii.js).
+ * A string of ASCII characters.
  *
  * @since 1.0.0
  */

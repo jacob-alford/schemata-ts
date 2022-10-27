@@ -46,7 +46,6 @@ import * as intFromString from './number/intFromString'
 import * as base64 from './string/base64'
 import * as base64Url from './string/base64Url'
 import * as bigIntString from './string/bigIntString'
-import * as btcAddress from './string/btcAddress'
 import * as creditCard from './string/creditCard'
 import * as hexColor from './string/hexColor'
 import * as hslColor from './string/hslColor'
@@ -186,16 +185,6 @@ export interface SchemableExt<S>
    * @since 0.0.4
    */
   readonly bigIntString: bigIntString.SchemableParams<S>
-
-  /**
-   * Represents strings which are valid Bitcoin addresses.
-   *
-   * This is heavily inspired by the `validator.js` module
-   * [`isBtcAddress`](https://github.com/validatorjs/validator.js/blob/master/src/lib/isBtcAddress.js).
-   *
-   * @since 0.0.2
-   */
-  readonly btcAddress: btcAddress.SchemableParams<S>
 
   /**
    * Represents (some) valid credit card numbers.
@@ -423,16 +412,6 @@ export interface SchemableExt1<S extends URIS>
   readonly bigIntString: bigIntString.SchemableParams1<S>
 
   /**
-   * Represents strings which are valid Bitcoin addresses.
-   *
-   * This is heavily inspired by the `validator.js` module
-   * [`isBtcAddress`](https://github.com/validatorjs/validator.js/blob/master/src/lib/isBtcAddress.js).
-   *
-   * @since 0.0.2
-   */
-  readonly btcAddress: btcAddress.SchemableParams1<S>
-
-  /**
    * Represents (some) valid credit card numbers.
    *
    * At the moment, this mostly handles Visa, Mastercard, American Express, Diners Club,
@@ -658,16 +637,6 @@ export interface SchemableExt2<S extends URIS2>
   readonly bigIntString: bigIntString.SchemableParams2<S>
 
   /**
-   * Represents strings which are valid Bitcoin addresses.
-   *
-   * This is heavily inspired by the `validator.js` module
-   * [`isBtcAddress`](https://github.com/validatorjs/validator.js/blob/master/src/lib/isBtcAddress.js).
-   *
-   * @since 0.0.2
-   */
-  readonly btcAddress: btcAddress.SchemableParams2<S>
-
-  /**
    * Represents (some) valid credit card numbers.
    *
    * At the moment, this mostly handles Visa, Mastercard, American Express, Diners Club,
@@ -891,16 +860,6 @@ export interface SchemableExt2C<S extends URIS2>
    * @since 0.0.4
    */
   readonly bigIntString: bigIntString.SchemableParams2C<S>
-
-  /**
-   * Represents strings which are valid Bitcoin addresses.
-   *
-   * This is heavily inspired by the `validator.js` module
-   * [`isBtcAddress`](https://github.com/validatorjs/validator.js/blob/master/src/lib/isBtcAddress.js).
-   *
-   * @since 0.0.2
-   */
-  readonly btcAddress: btcAddress.SchemableParams2C<S>
 
   /**
    * Represents (some) valid credit card numbers.

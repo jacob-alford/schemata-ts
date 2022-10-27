@@ -24,7 +24,6 @@ import * as intFromString from './number/intFromString'
 import * as base64 from './string/base64'
 import * as base64Url from './string/base64Url'
 import * as bigIntString from './string/bigIntString'
-import * as btcAddress from './string/btcAddress'
 import * as creditCard from './string/creditCard'
 import * as hexColor from './string/hexColor'
 import * as hslColor from './string/hslColor'
@@ -59,7 +58,6 @@ export const Schemable: SchemableExt2C<TD.URI> = {
   base64: base64.TaskDecoder,
   base64Url: base64Url.TaskDecoder,
   bigIntString: bigIntString.TaskDecoder,
-  btcAddress: btcAddress.TaskDecoder,
   creditCard: creditCard.TaskDecoder,
   hexColor: hexColor.TaskDecoder,
   hslColor: hslColor.TaskDecoder,

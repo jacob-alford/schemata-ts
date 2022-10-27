@@ -5,7 +5,7 @@
  *
  * **Note: Does not validate international addresses**
  *
- * @since 0.0.1
+ * @since 1.0.0
  */
 import { pipe } from 'fp-ts/function'
 import * as PB from '../../PatternBuilder'
@@ -104,6 +104,8 @@ export const emailAddress: PB.Pattern = pipe(
 )
 
 /**
+ * Represents strings (email addresses) that conform to the RFC 5322 standard.
+ *
  * @since 1.0.0
  * @category Schema
  */
