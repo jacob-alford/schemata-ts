@@ -1,10 +1,10 @@
 /**
- * Integer branded newtype. Parameters: min, max are inclusive.
+ * Floating point branded newtype. Parameters: min, max are inclusive.
  *
- * Represents integers:
+ * Represents floating point numbers:
  *
  * ```math
- *  { z | z ∈ ℤ, z >= -2 ** 53 + 1, z <= 2 ** 53 - 1 }
+ *  { f | f ∈ ℝ, f >= -Number.MAX_VALUE, f <= Number.MAX_VALUE }
  * ```
  *
  * @since 1.0.0
@@ -26,29 +26,29 @@ import * as Arb from '../internal/ArbitraryBase'
  * @since 1.0.0
  * @internal
  */
-interface IntBrand {
-  readonly Int: unique symbol
+interface FloatBrand {
+  readonly Float: unique symbol
 }
 
 /**
- * Integer branded newtype. Parameters: min, max are inclusive.
+ * Floating point branded newtype. Parameters: min, max are inclusive.
  *
- * Represents integers:
+ * Represents floating point numbers:
  *
  * ```math
- *  { z | z ∈ ℤ, z >= -2 ** 53 + 1, z <= 2 ** 53 - 1 }
+ *  { f | f ∈ ℝ, f >= -Number.MAX_VALUE, f <= Number.MAX_VALUE }
  * ```
  *
  * @since 1.0.0
  * @category Model
  */
-export type Int = number & IntBrand
+export type Float = number & FloatBrand
 
 /**
  * @since 1.0.0
  * @category Model
  */
-export type IntParams = {
+export type FloatParams = {
   readonly min?: number
   readonly max?: number
 }
@@ -57,49 +57,45 @@ export type IntParams = {
  * @since 1.0.0
  * @category Model
  */
-export type SchemableParams<S> = (params?: IntParams) => HKT2<S, number, Int>
+export type SchemableParams<S> = (params?: FloatParams) => HKT2<S, number, Float>
 
 /**
  * @since 1.0.0
  * @category Model
  */
-export type SchemableParams1<S extends URIS> = (params?: IntParams) => Kind<S, Int>
+export type SchemableParams1<S extends URIS> = (params?: FloatParams) => Kind<S, Float>
 
 /**
  * @since 1.0.0
  * @category Model
  */
 export type SchemableParams2<S extends URIS2> = (
-  params?: IntParams
-) => Kind2<S, number, Int>
+  params?: FloatParams
+) => Kind2<S, number, Float>
 
 /**
  * @since 1.0.0
  * @category Model
  */
 export type SchemableParams2C<S extends URIS2> = (
-  params?: IntParams
-) => Kind2<S, unknown, Int>
+  params?: FloatParams
+) => Kind2<S, unknown, Float>
 
 /**
  * @since 1.0.0
  * @category Refinements
  */
-export const isInt =
-  ({ min = Number.MIN_SAFE_INTEGER, max = Number.MAX_SAFE_INTEGER }: IntParams = {}) =>
-  (n: number): n is Int =>
-    typeof n === 'number' &&
-    !Number.isNaN(n) &&
-    Number.isSafeInteger(n) &&
-    n >= min &&
-    n <= max
+export const isFloat =
+  ({ min = -Number.MAX_VALUE, max = Number.MAX_VALUE }: FloatParams = {}) =>
+  (n: number): n is Float =>
+    typeof n === 'number' && !Number.isNaN(n) && n >= min && n <= max
 
 /**
  * @since 1.0.0
  * @category Instances
  */
 export const Decoder: SchemableParams2C<D.URI> = params =>
-  pipe(D.number, D.refine(isInt(params), 'int'))
+  pipe(D.number, D.refine(isFloat(params), 'float'))
 
 /**
  * @since 1.0.0
@@ -112,21 +108,21 @@ export const Eq: SchemableParams1<Eq_.URI> = () => N.Eq
  * @category Instances
  */
 export const Guard: SchemableParams1<G.URI> = params =>
-  pipe(G.number, G.refine(isInt(params)))
+  pipe(G.number, G.refine(isFloat(params)))
 
 /**
  * @since 1.0.0
  * @category Instances
  */
 export const TaskDecoder: SchemableParams2C<TD.URI> = params =>
-  pipe(TD.number, TD.refine(isInt(params), 'int'))
+  pipe(TD.number, TD.refine(isFloat(params), 'float'))
 
 /**
  * @since 1.0.0
  * @category Instances
  */
 export const Type: SchemableParams1<t.URI> = params =>
-  pipe(t.number, t.refine(isInt(params), 'int'))
+  pipe(t.number, t.refine(isFloat(params), 'float'))
 
 /**
  * @since 1.0.0
@@ -139,11 +135,13 @@ export const Encoder: SchemableParams2<Enc.URI> = () => Enc.id()
  * @category Instances
  */
 export const Arbitrary: SchemableParams1<Arb.URI> = (params = {}) => {
-  const { min = Number.MIN_SAFE_INTEGER, max = Number.MAX_SAFE_INTEGER } = params
+  const { min = -Number.MAX_VALUE, max = Number.MAX_VALUE } = params
   return fc
-    .integer({
-      min: Math.floor(Math.max(min, Number.MIN_SAFE_INTEGER)),
-      max: Math.floor(Math.min(max, Number.MAX_SAFE_INTEGER)),
+    .double({
+      min,
+      max,
+      noDefaultInfinity: true,
+      noNaN: true,
     })
-    .filter(isInt(params))
+    .filter(isFloat(params))
 }

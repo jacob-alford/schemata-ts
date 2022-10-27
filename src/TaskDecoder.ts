@@ -15,15 +15,10 @@ import * as optionFromNullable from './generic/optionFromNullable'
 import * as optionFromUndefined from './generic/optionFromUndefined'
 
 /** Number */
+import * as float from './number/float'
+import * as floatFromString from './number/floatFromString'
 import * as int from './number/int'
-import * as natural from './number/natural'
-import * as negativeFloat from './number/negativeFloat'
-import * as negativeInt from './number/negativeInt'
-import * as nonNegativeFloat from './number/nonNegativeFloat'
-import * as nonPositiveFloat from './number/nonPositiveFloat'
-import * as nonPositiveInt from './number/nonPositiveInt'
-import * as positiveFloat from './number/positiveFloat'
-import * as positiveInt from './number/positiveInt'
+import * as intFromString from './number/intFromString'
 
 /** String */
 import * as ascii from './string/ascii'
@@ -35,19 +30,10 @@ import * as creditCard from './string/creditCard'
 import * as emailAddress from './string/emailAddress'
 import * as hexColor from './string/hexColor'
 import * as hslColor from './string/hslColor'
-import * as intString from './string/intString'
 import * as isoDateString from './string/isoDateString'
 import * as jwt from './string/jwt'
 import * as latLong from './string/latLong'
-import * as naturalString from './string/naturalString'
-import * as negativeFloatString from './string/negativeFloatString'
-import * as negativeIntString from './string/negativeIntString'
-import * as nonNegativeFloatString from './string/nonNegativeFloatString'
-import * as nonPositiveFloatString from './string/nonPositiveFloatString'
-import * as nonPositiveIntString from './string/nonPositiveIntString'
 import * as nonemptyString from './string/nonemptyString'
-import * as positiveFloatString from './string/positiveFloatString'
-import * as positiveIntString from './string/positiveIntString'
 import * as rgb from './string/rgb'
 import * as uuid from './string/uuid'
 
@@ -68,15 +54,10 @@ export const Schemable: SchemableExt2C<TD.URI> = {
   optionFromExclude: optionFromExclude.TaskDecoder,
   optionFromNullable: optionFromNullable.TaskDecoder,
   optionFromUndefined: optionFromUndefined.TaskDecoder,
+  float: float.TaskDecoder,
+  floatFromString: floatFromString.TaskDecoder,
   int: int.TaskDecoder,
-  natural: natural.TaskDecoder,
-  negativeFloat: negativeFloat.TaskDecoder,
-  negativeInt: negativeInt.TaskDecoder,
-  nonNegativeFloat: nonNegativeFloat.TaskDecoder,
-  nonPositiveFloat: nonPositiveFloat.TaskDecoder,
-  nonPositiveInt: nonPositiveInt.TaskDecoder,
-  positiveFloat: positiveFloat.TaskDecoder,
-  positiveInt: positiveInt.TaskDecoder,
+  intFromString: intFromString.TaskDecoder,
   ascii: ascii.TaskDecoder,
   base64: base64.TaskDecoder,
   base64Url: base64Url.TaskDecoder,
@@ -86,19 +67,10 @@ export const Schemable: SchemableExt2C<TD.URI> = {
   emailAddress: emailAddress.TaskDecoder,
   hexColor: hexColor.TaskDecoder,
   hslColor: hslColor.TaskDecoder,
-  intString: intString.TaskDecoder,
   isoDateString: isoDateString.TaskDecoder,
   jwt: jwt.TaskDecoder,
   latLong: latLong.TaskDecoder,
-  naturalString: naturalString.TaskDecoder,
-  negativeFloatString: negativeFloatString.TaskDecoder,
-  negativeIntString: negativeIntString.TaskDecoder,
-  nonNegativeFloatString: nonNegativeFloatString.TaskDecoder,
-  nonPositiveFloatString: nonPositiveFloatString.TaskDecoder,
-  nonPositiveIntString: nonPositiveIntString.TaskDecoder,
   nonemptyString: nonemptyString.TaskDecoder,
-  positiveFloatString: positiveFloatString.TaskDecoder,
-  positiveIntString: positiveIntString.TaskDecoder,
   rgb: rgb.TaskDecoder,
   uuid: uuid.TaskDecoder,
   safeDate: safeDate.TaskDecoder,

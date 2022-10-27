@@ -1,27 +1,34 @@
 import * as RA from 'fp-ts/ReadonlyArray'
 import * as E from 'fp-ts/Either'
 import { pipe, tuple } from 'fp-ts/function'
-import * as NonPositiveIntString from '../../src/string/nonPositiveIntString'
-import { cat, combineExpected, validateArbitrary } from '../../test-utils'
+import { NonPositiveInt } from '../../../src/schemas/number/NonPositiveInt'
+import {
+  cat,
+  combineExpected,
+  getAllInstances,
+  validateArbitrary,
+} from '../../../test-utils'
 
-const valid: ReadonlyArray<string> = ['-1', `${Number.MIN_SAFE_INTEGER}`, '0']
+const { Encoder, Decoder, Eq, Guard, Arbitrary, Type, TaskDecoder } =
+  getAllInstances(NonPositiveInt)
 
-const invalid: ReadonlyArray<string> = [
-  '-1.1',
-  'a',
-  `${-Math.random()}`,
-  `${Number.MAX_SAFE_INTEGER}`,
-  `${Infinity}`,
-  `${-Infinity}`,
-  `${NaN}`,
+const valid: ReadonlyArray<number> = [-1, Number.MIN_SAFE_INTEGER, 0]
+
+const invalid: ReadonlyArray<number> = [
+  -1.1,
+  -Math.random(),
+  Number.MAX_SAFE_INTEGER,
+  Infinity,
+  -Infinity,
+  NaN,
 ]
 
-describe('NonPositiveIntString', () => {
+describe('NonPositiveInt', () => {
   describe('Decoder', () => {
     test.each(cat(combineExpected(valid, 'Right'), combineExpected(invalid, 'Left')))(
-      'validates valid strings, and catches bad strings',
+      'validates valid numbers, and catches bad numbers',
       (str, expectedTag) => {
-        const result = NonPositiveIntString.Decoder.decode(str)
+        const result = Decoder.decode(str)
         expect(result._tag).toBe(expectedTag)
       }
     )
@@ -31,8 +38,8 @@ describe('NonPositiveIntString', () => {
     test.each(valid)('encoding a decoded value yields original value', original => {
       const roundtrip = pipe(
         original,
-        NonPositiveIntString.Decoder.decode,
-        E.map(NonPositiveIntString.Encoder.encode),
+        Decoder.decode,
+        E.map(Encoder.encode),
         E.getOrElseW(() => 'unexpected')
       )
       expect(original).toEqual(roundtrip)
@@ -41,10 +48,10 @@ describe('NonPositiveIntString', () => {
 
   describe('Eq', () => {
     test.each(RA.zipWith(valid, valid, tuple))(
-      'determines two strings are equal',
+      'determines two numbers are equal',
       (str1, str2) => {
-        const guard = NonPositiveIntString.Guard.is
-        const eq = NonPositiveIntString.Eq.equals
+        const guard = Guard.is
+        const eq = Eq.equals
         if (!guard(str1) || !guard(str2)) {
           throw new Error('Unexpected result')
         }
@@ -55,9 +62,9 @@ describe('NonPositiveIntString', () => {
 
   describe('Guard', () => {
     test.each(cat(combineExpected(valid, true), combineExpected(invalid, false)))(
-      'validates valid strings, and catches bad strings',
+      'validates valid numbers, and catches bad numbers',
       (str, expectedTag) => {
-        const result = NonPositiveIntString.Guard.is(str)
+        const result = Guard.is(str)
         expect(result).toBe(expectedTag)
       }
     )
@@ -65,9 +72,9 @@ describe('NonPositiveIntString', () => {
 
   describe('TaskDecoder', () => {
     test.each(cat(combineExpected(valid, 'Right'), combineExpected(invalid, 'Left')))(
-      'validates valid string, and catches bad string',
+      'validates valid number, and catches bad number',
       async (str, expectedTag) => {
-        const result = await NonPositiveIntString.TaskDecoder.decode(str)()
+        const result = await TaskDecoder.decode(str)()
         expect(result._tag).toBe(expectedTag)
       }
     )
@@ -77,21 +84,15 @@ describe('NonPositiveIntString', () => {
     test.each(cat(combineExpected(valid, 'Right'), combineExpected(invalid, 'Left')))(
       'validates valid strings, and catches bad strings',
       (str, expectedTag) => {
-        const result = NonPositiveIntString.Type.decode(str)
+        const result = Type.decode(str)
         expect(result._tag).toBe(expectedTag)
       }
     )
   })
 
   describe('Arbitrary', () => {
-    it('generates valid NonPositiveIntString', () => {
-      validateArbitrary(NonPositiveIntString, NonPositiveIntString.isNonPositiveIntString)
+    it('generates valid NonPositiveInt', () => {
+      validateArbitrary({ Arbitrary }, Guard.is)
     })
-  })
-
-  it('converts to a NonPositiveInt', () => {
-    const numStr = '0'
-    if (!NonPositiveIntString.Guard.is(numStr)) throw new Error('Unexpected result')
-    expect(NonPositiveIntString.toNonPositiveInt(numStr)).toBe(0)
   })
 })

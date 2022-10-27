@@ -15,15 +15,10 @@ import * as optionFromNullable from './generic/optionFromNullable'
 import * as optionFromUndefined from './generic/optionFromUndefined'
 
 /** Number */
+import * as float from './number/float'
+import * as floatFromString from './number/floatFromString'
 import * as int from './number/int'
-import * as natural from './number/natural'
-import * as negativeFloat from './number/negativeFloat'
-import * as negativeInt from './number/negativeInt'
-import * as nonNegativeFloat from './number/nonNegativeFloat'
-import * as nonPositiveFloat from './number/nonPositiveFloat'
-import * as nonPositiveInt from './number/nonPositiveInt'
-import * as positiveFloat from './number/positiveFloat'
-import * as positiveInt from './number/positiveInt'
+import * as intFromString from './number/intFromString'
 
 /** String */
 import * as ascii from './string/ascii'
@@ -35,19 +30,10 @@ import * as creditCard from './string/creditCard'
 import * as emailAddress from './string/emailAddress'
 import * as hexColor from './string/hexColor'
 import * as hslColor from './string/hslColor'
-import * as intString from './string/intString'
 import * as isoDateString from './string/isoDateString'
 import * as jwt from './string/jwt'
 import * as latLong from './string/latLong'
-import * as naturalString from './string/naturalString'
-import * as negativeFloatString from './string/negativeFloatString'
-import * as negativeIntString from './string/negativeIntString'
-import * as nonNegativeFloatString from './string/nonNegativeFloatString'
-import * as nonPositiveFloatString from './string/nonPositiveFloatString'
-import * as nonPositiveIntString from './string/nonPositiveIntString'
 import * as nonemptyString from './string/nonemptyString'
-import * as positiveFloatString from './string/positiveFloatString'
-import * as positiveIntString from './string/positiveIntString'
 import * as rgb from './string/rgb'
 import * as uuid from './string/uuid'
 
@@ -68,15 +54,10 @@ export const Schemable: SchemableExt1<Eq.URI> = {
   optionFromExclude: optionFromExclude.Eq,
   optionFromNullable: optionFromNullable.Eq,
   optionFromUndefined: optionFromUndefined.Eq,
+  float: float.Eq,
+  floatFromString: floatFromString.Eq,
   int: int.Eq,
-  natural: natural.Eq,
-  negativeFloat: negativeFloat.Eq,
-  negativeInt: negativeInt.Eq,
-  nonNegativeFloat: nonNegativeFloat.Eq,
-  nonPositiveFloat: nonPositiveFloat.Eq,
-  nonPositiveInt: nonPositiveInt.Eq,
-  positiveFloat: positiveFloat.Eq,
-  positiveInt: positiveInt.Eq,
+  intFromString: intFromString.Eq,
   ascii: ascii.Eq,
   base64: base64.Eq,
   base64Url: base64Url.Eq,
@@ -86,19 +67,10 @@ export const Schemable: SchemableExt1<Eq.URI> = {
   emailAddress: emailAddress.Eq,
   hexColor: hexColor.Eq,
   hslColor: hslColor.Eq,
-  intString: intString.Eq,
   isoDateString: isoDateString.Eq,
   jwt: jwt.Eq,
   latLong: latLong.Eq,
-  naturalString: naturalString.Eq,
-  negativeFloatString: negativeFloatString.Eq,
-  negativeIntString: negativeIntString.Eq,
-  nonNegativeFloatString: nonNegativeFloatString.Eq,
-  nonPositiveFloatString: nonPositiveFloatString.Eq,
-  nonPositiveIntString: nonPositiveIntString.Eq,
   nonemptyString: nonemptyString.Eq,
-  positiveFloatString: positiveFloatString.Eq,
-  positiveIntString: positiveIntString.Eq,
   rgb: rgb.Eq,
   uuid: uuid.Eq,
   safeDate: safeDate.Eq,

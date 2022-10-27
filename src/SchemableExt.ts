@@ -37,15 +37,10 @@ import * as optionFromNullable from './generic/optionFromNullable'
 import * as optionFromUndefined from './generic/optionFromUndefined'
 
 /** Number */
+import * as float from './number/float'
+import * as floatFromString from './number/floatFromString'
 import * as int from './number/int'
-import * as natural from './number/natural'
-import * as negativeFloat from './number/negativeFloat'
-import * as negativeInt from './number/negativeInt'
-import * as nonNegativeFloat from './number/nonNegativeFloat'
-import * as nonPositiveFloat from './number/nonPositiveFloat'
-import * as nonPositiveInt from './number/nonPositiveInt'
-import * as positiveFloat from './number/positiveFloat'
-import * as positiveInt from './number/positiveInt'
+import * as intFromString from './number/intFromString'
 
 /** String */
 import * as ascii from './string/ascii'
@@ -57,19 +52,10 @@ import * as creditCard from './string/creditCard'
 import * as emailAddress from './string/emailAddress'
 import * as hexColor from './string/hexColor'
 import * as hslColor from './string/hslColor'
-import * as intString from './string/intString'
 import * as isoDateString from './string/isoDateString'
 import * as jwt from './string/jwt'
 import * as latLong from './string/latLong'
-import * as naturalString from './string/naturalString'
-import * as negativeFloatString from './string/negativeFloatString'
-import * as negativeIntString from './string/negativeIntString'
-import * as nonNegativeFloatString from './string/nonNegativeFloatString'
-import * as nonPositiveFloatString from './string/nonPositiveFloatString'
-import * as nonPositiveIntString from './string/nonPositiveIntString'
 import * as nonemptyString from './string/nonemptyString'
-import * as positiveFloatString from './string/positiveFloatString'
-import * as positiveIntString from './string/positiveIntString'
 import * as rgb from './string/rgb'
 import * as uuid from './string/uuid'
 
@@ -116,7 +102,33 @@ export interface SchemableExt<S>
   readonly optionFromUndefined: optionFromUndefined.SchemableParams<S>
 
   /**
-   * Integer branded newtype.
+   * Floating point branded newtype. Parameters: min, max are inclusive.
+   *
+   * Represents floating point numbers:
+   *
+   * ```math
+   *  { f | f ∈ ℝ, f >= -Number.MAX_VALUE, f <= Number.MAX_VALUE }
+   * ```
+   *
+   * @since 1.0.0
+   */
+  readonly float: float.SchemableParams<S>
+
+  /**
+   * Floating point branded newtype from strings. Parameters: min, max are inclusive.
+   *
+   * Represents string floating point numbers:
+   *
+   * ```math
+   *  { f | f ∈ ℝ, f >= -Number.MAX_VALUE, f <= Number.MAX_VALUE }
+   * ```
+   *
+   * @since 1.0.0
+   */
+  readonly floatFromString: floatFromString.SchemableParams<S>
+
+  /**
+   * Integer branded newtype. Parameters: min, max are inclusive.
    *
    * Represents integers:
    *
@@ -124,113 +136,22 @@ export interface SchemableExt<S>
    *  { z | z ∈ ℤ, z >= -2 ** 53 + 1, z <= 2 ** 53 - 1 }
    * ```
    *
-   * @since 0.0.1
+   * @since 1.0.0
    */
   readonly int: int.SchemableParams<S>
 
   /**
-   * Natural branded newtype.
+   * Integer branded newtype from string. Parameters: min, max are inclusive.
    *
-   * Represents integers:
-   *
-   * ```math
-   *  { z | z ∈ ℤ, z >= 0, z <= 2 ** 53 - 1 }
-   * ```
-   *
-   * @since 0.0.1
-   */
-  readonly natural: natural.SchemableParams<S>
-
-  /**
-   * Negative floating point branded newtype.
-   *
-   * Represents negative floating point numbers:
+   * Represents string-integers:
    *
    * ```math
-   *  { f | f ∈ ℝ, f < 0, f >= -Number.MAX_VALUE }
+   *  { z | z ∈ ℤ, z >= -2 ** 53 + 1, z <= 2 ** 53 - 1 }
    * ```
    *
-   * @since 0.0.2
+   * @since 1.0.0
    */
-  readonly negativeFloat: negativeFloat.SchemableParams<S>
-
-  /**
-   * Negative integer branded newtype.
-   *
-   * Represents negative integers:
-   *
-   * ```math
-   *  { z | z ∈ ℤ, z >= -2 ** 53 + 1, z < 0 }
-   * ```
-   *
-   * @since 0.0.1
-   */
-  readonly negativeInt: negativeInt.SchemableParams<S>
-
-  /**
-   * Non-negative floating point branded newtype.
-   *
-   * Represents non-negative floating point numbers:
-   *
-   * ```math
-   *  { f | f ∈ ℝ, f >= 0, f <= Number.MAX_VALUE }
-   * ```
-   *
-   * @since 0.0.2
-   */
-  readonly nonNegativeFloat: nonNegativeFloat.SchemableParams<S>
-
-  /**
-   * Non-positive floating point branded newtype.
-   *
-   * Represents non-positive floating point numbers:
-   *
-   * ```math
-   *  { f | f ∈ ℝ, f <= 0, f >= -Number.MAX_VALUE }
-   * ```
-   *
-   * @since 0.0.4
-   */
-  readonly nonPositiveFloat: nonPositiveFloat.SchemableParams<S>
-
-  /**
-   * NonPositive integer branded newtype.
-   *
-   * Represents integers which are negative or zero.
-   *
-   * ```math
-   *  { z | z ∈ ℤ, z >= -2 ** 53 + 1, z <= 0 }
-   * ```
-   *
-   * @since 0.0.4
-   */
-  readonly nonPositiveInt: nonPositiveInt.SchemableParams<S>
-
-  /**
-   * Positive Float branded newtype.
-   *
-   * Represents floating point numbers:
-   *
-   * ```math
-   *  { f | f ∈ R, f > 0, f <= Number.MAX_VALUE }
-   * ```
-   *
-   * @since 0.0.2
-   */
-  readonly positiveFloat: positiveFloat.SchemableParams<S>
-
-  /**
-   * Positive integer branded newtype.
-   *
-   * Represents positive integers:
-   *
-   * ```math
-   *  { z | z ∈ ℤ, z > 0, z <= 2 ** 53 - 1 }
-   * ```
-   *
-   * @since 0.0.1
-   */
-  readonly positiveInt: positiveInt.SchemableParams<S>
+  readonly intFromString: intFromString.SchemableParams<S>
 
   /**
    * A string in which every character is valid ASCII.
@@ -333,19 +254,6 @@ export interface SchemableExt<S>
   readonly hslColor: hslColor.SchemableParams<S>
 
   /**
-   * Integer branded newtype.
-   *
-   * Represents integers:
-   *
-   * ```math
-   *  { z | z ∈ ℤ, z >= -2 ** 53 + 1, z <= 2 ** 53 - 1 }
-   * ```
-   *
-   * @since 0.0.1
-   */
-  readonly intString: intString.SchemableParams<S>
-
-  /**
    * Represents strings that conform to the ISO 8601 standard.
    *
    * @since 0.0.1
@@ -373,115 +281,11 @@ export interface SchemableExt<S>
   readonly latLong: latLong.SchemableParams<S>
 
   /**
-   * Natural branded newtype string.
-   *
-   * Represents integers:
-   *
-   * ```math
-   *  { z | z ∈ ℤ, z >= 0, z <= 2 ** 53 - 1 }
-   * ```
-   *
-   * @since 0.0.1
-   */
-  readonly naturalString: naturalString.SchemableParams<S>
-
-  /**
-   * Negative floating point branded newtype string.
-   *
-   * Represents negative floating point number strings:
-   *
-   * ```math
-   *  { f | f ∈ ℝ, f < 0, f >= -Number.MAX_VALUE }
-   * ```
-   *
-   * @since 0.0.2
-   */
-  readonly negativeFloatString: negativeFloatString.SchemableParams<S>
-
-  /**
-   * Negative integer branded newtype string.
-   *
-   * Represents negative integers:
-   *
-   * ```math
-   *  { z | z ∈ ℤ, z >= -2 ** 53 + 1, z < 0 }
-   * ```
-   *
-   * @since 0.0.1
-   */
-  readonly negativeIntString: negativeIntString.SchemableParams<S>
-
-  /**
-   * Non-negative floating point branded newtype string.
-   *
-   * Represents non-negative floating point numbers:
-   *
-   * ```math
-   *  { f | f ∈ ℝ, f >= 0, f <= Number.MAX_VALUE }
-   * ```
-   *
-   * @since 0.0.2
-   */
-  readonly nonNegativeFloatString: nonNegativeFloatString.SchemableParams<S>
-
-  /**
-   * Non-positive floating point branded newtype string.
-   *
-   * Represents non-positive floating point number strings:
-   *
-   * ```math
-   *  { f | f ∈ ℝ, f <= 0, f >= -Number.MAX_VALUE }
-   * ```
-   *
-   * @since 0.0.4
-   */
-  readonly nonPositiveFloatString: nonPositiveFloatString.SchemableParams<S>
-
-  /**
-   * NonPositive integer branded newtype string.
-   *
-   * Represents integer strings which are negative or zero.
-   *
-   * ```math
-   *  { z | z ∈ ℤ, z >= -2 ** 53 + 1, z <= 0 }
-   * ```
-   *
-   * @since 0.0.4
-   */
-  readonly nonPositiveIntString: nonPositiveIntString.SchemableParams<S>
-
-  /**
    * Represents strings that are not empty strings.
    *
    * @since 0.0.1
    */
   readonly nonemptyString: nonemptyString.SchemableParams<S>
-
-  /**
-   * Positive floating point branded newtype string.
-   *
-   * Represents positive floating point numbers:
-   *
-   * ```math
-   *  { f | f ∈ ℝ, f > 0, f <= Number.MAX_VALUE }
-   * ```
-   *
-   * @since 0.0.2
-   */
-  readonly positiveFloatString: positiveFloatString.SchemableParams<S>
-
-  /**
-   * Positive integer branded newtype string.
-   *
-   * Represents positive integers:
-   *
-   * ```math
-   *  { z | z ∈ ℤ, z > 0, z <= 2 ** 53 - 1 }
-   * ```
-   *
-   * @since 0.0.1
-   */
-  readonly positiveIntString: positiveIntString.SchemableParams<S>
 
   /**
    * Represents strings which are valid RGB colors. Permits both absolute and percentage
@@ -549,7 +353,33 @@ export interface SchemableExt1<S extends URIS>
   readonly optionFromUndefined: optionFromUndefined.SchemableParams1<S>
 
   /**
-   * Integer branded newtype.
+   * Floating point branded newtype. Parameters: min, max are inclusive.
+   *
+   * Represents floating point numbers:
+   *
+   * ```math
+   *  { f | f ∈ ℝ, f >= -Number.MAX_VALUE, f <= Number.MAX_VALUE }
+   * ```
+   *
+   * @since 1.0.0
+   */
+  readonly float: float.SchemableParams1<S>
+
+  /**
+   * Floating point branded newtype from strings. Parameters: min, max are inclusive.
+   *
+   * Represents string floating point numbers:
+   *
+   * ```math
+   *  { f | f ∈ ℝ, f >= -Number.MAX_VALUE, f <= Number.MAX_VALUE }
+   * ```
+   *
+   * @since 1.0.0
+   */
+  readonly floatFromString: floatFromString.SchemableParams1<S>
+
+  /**
+   * Integer branded newtype. Parameters: min, max are inclusive.
    *
    * Represents integers:
    *
@@ -557,113 +387,22 @@ export interface SchemableExt1<S extends URIS>
    *  { z | z ∈ ℤ, z >= -2 ** 53 + 1, z <= 2 ** 53 - 1 }
    * ```
    *
-   * @since 0.0.1
+   * @since 1.0.0
    */
   readonly int: int.SchemableParams1<S>
 
   /**
-   * Natural branded newtype.
+   * Integer branded newtype from string. Parameters: min, max are inclusive.
    *
-   * Represents integers:
-   *
-   * ```math
-   *  { z | z ∈ ℤ, z >= 0, z <= 2 ** 53 - 1 }
-   * ```
-   *
-   * @since 0.0.1
-   */
-  readonly natural: natural.SchemableParams1<S>
-
-  /**
-   * Negative floating point branded newtype.
-   *
-   * Represents negative floating point numbers:
+   * Represents string-integers:
    *
    * ```math
-   *  { f | f ∈ ℝ, f < 0, f >= -Number.MAX_VALUE }
+   *  { z | z ∈ ℤ, z >= -2 ** 53 + 1, z <= 2 ** 53 - 1 }
    * ```
    *
-   * @since 0.0.2
+   * @since 1.0.0
    */
-  readonly negativeFloat: negativeFloat.SchemableParams1<S>
-
-  /**
-   * Negative integer branded newtype.
-   *
-   * Represents negative integers:
-   *
-   * ```math
-   *  { z | z ∈ ℤ, z >= -2 ** 53 + 1, z < 0 }
-   * ```
-   *
-   * @since 0.0.1
-   */
-  readonly negativeInt: negativeInt.SchemableParams1<S>
-
-  /**
-   * Non-negative floating point branded newtype.
-   *
-   * Represents non-negative floating point numbers:
-   *
-   * ```math
-   *  { f | f ∈ ℝ, f >= 0, f <= Number.MAX_VALUE }
-   * ```
-   *
-   * @since 0.0.2
-   */
-  readonly nonNegativeFloat: nonNegativeFloat.SchemableParams1<S>
-
-  /**
-   * Non-positive floating point branded newtype.
-   *
-   * Represents non-positive floating point numbers:
-   *
-   * ```math
-   *  { f | f ∈ ℝ, f <= 0, f >= -Number.MAX_VALUE }
-   * ```
-   *
-   * @since 0.0.4
-   */
-  readonly nonPositiveFloat: nonPositiveFloat.SchemableParams1<S>
-
-  /**
-   * NonPositive integer branded newtype.
-   *
-   * Represents integers which are negative or zero.
-   *
-   * ```math
-   *  { z | z ∈ ℤ, z >= -2 ** 53 + 1, z <= 0 }
-   * ```
-   *
-   * @since 0.0.4
-   */
-  readonly nonPositiveInt: nonPositiveInt.SchemableParams1<S>
-
-  /**
-   * Positive Float branded newtype.
-   *
-   * Represents floating point numbers:
-   *
-   * ```math
-   *  { f | f ∈ R, f > 0, f <= Number.MAX_VALUE }
-   * ```
-   *
-   * @since 0.0.2
-   */
-  readonly positiveFloat: positiveFloat.SchemableParams1<S>
-
-  /**
-   * Positive integer branded newtype.
-   *
-   * Represents positive integers:
-   *
-   * ```math
-   *  { z | z ∈ ℤ, z > 0, z <= 2 ** 53 - 1 }
-   * ```
-   *
-   * @since 0.0.1
-   */
-  readonly positiveInt: positiveInt.SchemableParams1<S>
+  readonly intFromString: intFromString.SchemableParams1<S>
 
   /**
    * A string in which every character is valid ASCII.
@@ -766,19 +505,6 @@ export interface SchemableExt1<S extends URIS>
   readonly hslColor: hslColor.SchemableParams1<S>
 
   /**
-   * Integer branded newtype.
-   *
-   * Represents integers:
-   *
-   * ```math
-   *  { z | z ∈ ℤ, z >= -2 ** 53 + 1, z <= 2 ** 53 - 1 }
-   * ```
-   *
-   * @since 0.0.1
-   */
-  readonly intString: intString.SchemableParams1<S>
-
-  /**
    * Represents strings that conform to the ISO 8601 standard.
    *
    * @since 0.0.1
@@ -806,115 +532,11 @@ export interface SchemableExt1<S extends URIS>
   readonly latLong: latLong.SchemableParams1<S>
 
   /**
-   * Natural branded newtype string.
-   *
-   * Represents integers:
-   *
-   * ```math
-   *  { z | z ∈ ℤ, z >= 0, z <= 2 ** 53 - 1 }
-   * ```
-   *
-   * @since 0.0.1
-   */
-  readonly naturalString: naturalString.SchemableParams1<S>
-
-  /**
-   * Negative floating point branded newtype string.
-   *
-   * Represents negative floating point number strings:
-   *
-   * ```math
-   *  { f | f ∈ ℝ, f < 0, f >= -Number.MAX_VALUE }
-   * ```
-   *
-   * @since 0.0.2
-   */
-  readonly negativeFloatString: negativeFloatString.SchemableParams1<S>
-
-  /**
-   * Negative integer branded newtype string.
-   *
-   * Represents negative integers:
-   *
-   * ```math
-   *  { z | z ∈ ℤ, z >= -2 ** 53 + 1, z < 0 }
-   * ```
-   *
-   * @since 0.0.1
-   */
-  readonly negativeIntString: negativeIntString.SchemableParams1<S>
-
-  /**
-   * Non-negative floating point branded newtype string.
-   *
-   * Represents non-negative floating point numbers:
-   *
-   * ```math
-   *  { f | f ∈ ℝ, f >= 0, f <= Number.MAX_VALUE }
-   * ```
-   *
-   * @since 0.0.2
-   */
-  readonly nonNegativeFloatString: nonNegativeFloatString.SchemableParams1<S>
-
-  /**
-   * Non-positive floating point branded newtype string.
-   *
-   * Represents non-positive floating point number strings:
-   *
-   * ```math
-   *  { f | f ∈ ℝ, f <= 0, f >= -Number.MAX_VALUE }
-   * ```
-   *
-   * @since 0.0.4
-   */
-  readonly nonPositiveFloatString: nonPositiveFloatString.SchemableParams1<S>
-
-  /**
-   * NonPositive integer branded newtype string.
-   *
-   * Represents integer strings which are negative or zero.
-   *
-   * ```math
-   *  { z | z ∈ ℤ, z >= -2 ** 53 + 1, z <= 0 }
-   * ```
-   *
-   * @since 0.0.4
-   */
-  readonly nonPositiveIntString: nonPositiveIntString.SchemableParams1<S>
-
-  /**
    * Represents strings that are not empty strings.
    *
    * @since 0.0.1
    */
   readonly nonemptyString: nonemptyString.SchemableParams1<S>
-
-  /**
-   * Positive floating point branded newtype string.
-   *
-   * Represents positive floating point numbers:
-   *
-   * ```math
-   *  { f | f ∈ ℝ, f > 0, f <= Number.MAX_VALUE }
-   * ```
-   *
-   * @since 0.0.2
-   */
-  readonly positiveFloatString: positiveFloatString.SchemableParams1<S>
-
-  /**
-   * Positive integer branded newtype string.
-   *
-   * Represents positive integers:
-   *
-   * ```math
-   *  { z | z ∈ ℤ, z > 0, z <= 2 ** 53 - 1 }
-   * ```
-   *
-   * @since 0.0.1
-   */
-  readonly positiveIntString: positiveIntString.SchemableParams1<S>
 
   /**
    * Represents strings which are valid RGB colors. Permits both absolute and percentage
@@ -982,7 +604,33 @@ export interface SchemableExt2<S extends URIS2>
   readonly optionFromUndefined: optionFromUndefined.SchemableParams2<S>
 
   /**
-   * Integer branded newtype.
+   * Floating point branded newtype. Parameters: min, max are inclusive.
+   *
+   * Represents floating point numbers:
+   *
+   * ```math
+   *  { f | f ∈ ℝ, f >= -Number.MAX_VALUE, f <= Number.MAX_VALUE }
+   * ```
+   *
+   * @since 1.0.0
+   */
+  readonly float: float.SchemableParams2<S>
+
+  /**
+   * Floating point branded newtype from strings. Parameters: min, max are inclusive.
+   *
+   * Represents string floating point numbers:
+   *
+   * ```math
+   *  { f | f ∈ ℝ, f >= -Number.MAX_VALUE, f <= Number.MAX_VALUE }
+   * ```
+   *
+   * @since 1.0.0
+   */
+  readonly floatFromString: floatFromString.SchemableParams2<S>
+
+  /**
+   * Integer branded newtype. Parameters: min, max are inclusive.
    *
    * Represents integers:
    *
@@ -990,113 +638,22 @@ export interface SchemableExt2<S extends URIS2>
    *  { z | z ∈ ℤ, z >= -2 ** 53 + 1, z <= 2 ** 53 - 1 }
    * ```
    *
-   * @since 0.0.1
+   * @since 1.0.0
    */
   readonly int: int.SchemableParams2<S>
 
   /**
-   * Natural branded newtype.
+   * Integer branded newtype from string. Parameters: min, max are inclusive.
    *
-   * Represents integers:
-   *
-   * ```math
-   *  { z | z ∈ ℤ, z >= 0, z <= 2 ** 53 - 1 }
-   * ```
-   *
-   * @since 0.0.1
-   */
-  readonly natural: natural.SchemableParams2<S>
-
-  /**
-   * Negative floating point branded newtype.
-   *
-   * Represents negative floating point numbers:
+   * Represents string-integers:
    *
    * ```math
-   *  { f | f ∈ ℝ, f < 0, f >= -Number.MAX_VALUE }
+   *  { z | z ∈ ℤ, z >= -2 ** 53 + 1, z <= 2 ** 53 - 1 }
    * ```
    *
-   * @since 0.0.2
+   * @since 1.0.0
    */
-  readonly negativeFloat: negativeFloat.SchemableParams2<S>
-
-  /**
-   * Negative integer branded newtype.
-   *
-   * Represents negative integers:
-   *
-   * ```math
-   *  { z | z ∈ ℤ, z >= -2 ** 53 + 1, z < 0 }
-   * ```
-   *
-   * @since 0.0.1
-   */
-  readonly negativeInt: negativeInt.SchemableParams2<S>
-
-  /**
-   * Non-negative floating point branded newtype.
-   *
-   * Represents non-negative floating point numbers:
-   *
-   * ```math
-   *  { f | f ∈ ℝ, f >= 0, f <= Number.MAX_VALUE }
-   * ```
-   *
-   * @since 0.0.2
-   */
-  readonly nonNegativeFloat: nonNegativeFloat.SchemableParams2<S>
-
-  /**
-   * Non-positive floating point branded newtype.
-   *
-   * Represents non-positive floating point numbers:
-   *
-   * ```math
-   *  { f | f ∈ ℝ, f <= 0, f >= -Number.MAX_VALUE }
-   * ```
-   *
-   * @since 0.0.4
-   */
-  readonly nonPositiveFloat: nonPositiveFloat.SchemableParams2<S>
-
-  /**
-   * NonPositive integer branded newtype.
-   *
-   * Represents integers which are negative or zero.
-   *
-   * ```math
-   *  { z | z ∈ ℤ, z >= -2 ** 53 + 1, z <= 0 }
-   * ```
-   *
-   * @since 0.0.4
-   */
-  readonly nonPositiveInt: nonPositiveInt.SchemableParams2<S>
-
-  /**
-   * Positive Float branded newtype.
-   *
-   * Represents floating point numbers:
-   *
-   * ```math
-   *  { f | f ∈ R, f > 0, f <= Number.MAX_VALUE }
-   * ```
-   *
-   * @since 0.0.2
-   */
-  readonly positiveFloat: positiveFloat.SchemableParams2<S>
-
-  /**
-   * Positive integer branded newtype.
-   *
-   * Represents positive integers:
-   *
-   * ```math
-   *  { z | z ∈ ℤ, z > 0, z <= 2 ** 53 - 1 }
-   * ```
-   *
-   * @since 0.0.1
-   */
-  readonly positiveInt: positiveInt.SchemableParams2<S>
+  readonly intFromString: intFromString.SchemableParams2<S>
 
   /**
    * A string in which every character is valid ASCII.
@@ -1199,19 +756,6 @@ export interface SchemableExt2<S extends URIS2>
   readonly hslColor: hslColor.SchemableParams2<S>
 
   /**
-   * Integer branded newtype.
-   *
-   * Represents integers:
-   *
-   * ```math
-   *  { z | z ∈ ℤ, z >= -2 ** 53 + 1, z <= 2 ** 53 - 1 }
-   * ```
-   *
-   * @since 0.0.1
-   */
-  readonly intString: intString.SchemableParams2<S>
-
-  /**
    * Represents strings that conform to the ISO 8601 standard.
    *
    * @since 0.0.1
@@ -1239,115 +783,11 @@ export interface SchemableExt2<S extends URIS2>
   readonly latLong: latLong.SchemableParams2<S>
 
   /**
-   * Natural branded newtype string.
-   *
-   * Represents integers:
-   *
-   * ```math
-   *  { z | z ∈ ℤ, z >= 0, z <= 2 ** 53 - 1 }
-   * ```
-   *
-   * @since 0.0.1
-   */
-  readonly naturalString: naturalString.SchemableParams2<S>
-
-  /**
-   * Negative floating point branded newtype string.
-   *
-   * Represents negative floating point number strings:
-   *
-   * ```math
-   *  { f | f ∈ ℝ, f < 0, f >= -Number.MAX_VALUE }
-   * ```
-   *
-   * @since 0.0.2
-   */
-  readonly negativeFloatString: negativeFloatString.SchemableParams2<S>
-
-  /**
-   * Negative integer branded newtype string.
-   *
-   * Represents negative integers:
-   *
-   * ```math
-   *  { z | z ∈ ℤ, z >= -2 ** 53 + 1, z < 0 }
-   * ```
-   *
-   * @since 0.0.1
-   */
-  readonly negativeIntString: negativeIntString.SchemableParams2<S>
-
-  /**
-   * Non-negative floating point branded newtype string.
-   *
-   * Represents non-negative floating point numbers:
-   *
-   * ```math
-   *  { f | f ∈ ℝ, f >= 0, f <= Number.MAX_VALUE }
-   * ```
-   *
-   * @since 0.0.2
-   */
-  readonly nonNegativeFloatString: nonNegativeFloatString.SchemableParams2<S>
-
-  /**
-   * Non-positive floating point branded newtype string.
-   *
-   * Represents non-positive floating point number strings:
-   *
-   * ```math
-   *  { f | f ∈ ℝ, f <= 0, f >= -Number.MAX_VALUE }
-   * ```
-   *
-   * @since 0.0.4
-   */
-  readonly nonPositiveFloatString: nonPositiveFloatString.SchemableParams2<S>
-
-  /**
-   * NonPositive integer branded newtype string.
-   *
-   * Represents integer strings which are negative or zero.
-   *
-   * ```math
-   *  { z | z ∈ ℤ, z >= -2 ** 53 + 1, z <= 0 }
-   * ```
-   *
-   * @since 0.0.4
-   */
-  readonly nonPositiveIntString: nonPositiveIntString.SchemableParams2<S>
-
-  /**
    * Represents strings that are not empty strings.
    *
    * @since 0.0.1
    */
   readonly nonemptyString: nonemptyString.SchemableParams2<S>
-
-  /**
-   * Positive floating point branded newtype string.
-   *
-   * Represents positive floating point numbers:
-   *
-   * ```math
-   *  { f | f ∈ ℝ, f > 0, f <= Number.MAX_VALUE }
-   * ```
-   *
-   * @since 0.0.2
-   */
-  readonly positiveFloatString: positiveFloatString.SchemableParams2<S>
-
-  /**
-   * Positive integer branded newtype string.
-   *
-   * Represents positive integers:
-   *
-   * ```math
-   *  { z | z ∈ ℤ, z > 0, z <= 2 ** 53 - 1 }
-   * ```
-   *
-   * @since 0.0.1
-   */
-  readonly positiveIntString: positiveIntString.SchemableParams2<S>
 
   /**
    * Represents strings which are valid RGB colors. Permits both absolute and percentage
@@ -1415,7 +855,33 @@ export interface SchemableExt2C<S extends URIS2>
   readonly optionFromUndefined: optionFromUndefined.SchemableParams2C<S>
 
   /**
-   * Integer branded newtype.
+   * Floating point branded newtype. Parameters: min, max are inclusive.
+   *
+   * Represents floating point numbers:
+   *
+   * ```math
+   *  { f | f ∈ ℝ, f >= -Number.MAX_VALUE, f <= Number.MAX_VALUE }
+   * ```
+   *
+   * @since 1.0.0
+   */
+  readonly float: float.SchemableParams2C<S>
+
+  /**
+   * Floating point branded newtype from strings. Parameters: min, max are inclusive.
+   *
+   * Represents string floating point numbers:
+   *
+   * ```math
+   *  { f | f ∈ ℝ, f >= -Number.MAX_VALUE, f <= Number.MAX_VALUE }
+   * ```
+   *
+   * @since 1.0.0
+   */
+  readonly floatFromString: floatFromString.SchemableParams2C<S>
+
+  /**
+   * Integer branded newtype. Parameters: min, max are inclusive.
    *
    * Represents integers:
    *
@@ -1423,113 +889,22 @@ export interface SchemableExt2C<S extends URIS2>
    *  { z | z ∈ ℤ, z >= -2 ** 53 + 1, z <= 2 ** 53 - 1 }
    * ```
    *
-   * @since 0.0.1
+   * @since 1.0.0
    */
   readonly int: int.SchemableParams2C<S>
 
   /**
-   * Natural branded newtype.
+   * Integer branded newtype from string. Parameters: min, max are inclusive.
    *
-   * Represents integers:
-   *
-   * ```math
-   *  { z | z ∈ ℤ, z >= 0, z <= 2 ** 53 - 1 }
-   * ```
-   *
-   * @since 0.0.1
-   */
-  readonly natural: natural.SchemableParams2C<S>
-
-  /**
-   * Negative floating point branded newtype.
-   *
-   * Represents negative floating point numbers:
+   * Represents string-integers:
    *
    * ```math
-   *  { f | f ∈ ℝ, f < 0, f >= -Number.MAX_VALUE }
+   *  { z | z ∈ ℤ, z >= -2 ** 53 + 1, z <= 2 ** 53 - 1 }
    * ```
    *
-   * @since 0.0.2
+   * @since 1.0.0
    */
-  readonly negativeFloat: negativeFloat.SchemableParams2C<S>
-
-  /**
-   * Negative integer branded newtype.
-   *
-   * Represents negative integers:
-   *
-   * ```math
-   *  { z | z ∈ ℤ, z >= -2 ** 53 + 1, z < 0 }
-   * ```
-   *
-   * @since 0.0.1
-   */
-  readonly negativeInt: negativeInt.SchemableParams2C<S>
-
-  /**
-   * Non-negative floating point branded newtype.
-   *
-   * Represents non-negative floating point numbers:
-   *
-   * ```math
-   *  { f | f ∈ ℝ, f >= 0, f <= Number.MAX_VALUE }
-   * ```
-   *
-   * @since 0.0.2
-   */
-  readonly nonNegativeFloat: nonNegativeFloat.SchemableParams2C<S>
-
-  /**
-   * Non-positive floating point branded newtype.
-   *
-   * Represents non-positive floating point numbers:
-   *
-   * ```math
-   *  { f | f ∈ ℝ, f <= 0, f >= -Number.MAX_VALUE }
-   * ```
-   *
-   * @since 0.0.4
-   */
-  readonly nonPositiveFloat: nonPositiveFloat.SchemableParams2C<S>
-
-  /**
-   * NonPositive integer branded newtype.
-   *
-   * Represents integers which are negative or zero.
-   *
-   * ```math
-   *  { z | z ∈ ℤ, z >= -2 ** 53 + 1, z <= 0 }
-   * ```
-   *
-   * @since 0.0.4
-   */
-  readonly nonPositiveInt: nonPositiveInt.SchemableParams2C<S>
-
-  /**
-   * Positive Float branded newtype.
-   *
-   * Represents floating point numbers:
-   *
-   * ```math
-   *  { f | f ∈ R, f > 0, f <= Number.MAX_VALUE }
-   * ```
-   *
-   * @since 0.0.2
-   */
-  readonly positiveFloat: positiveFloat.SchemableParams2C<S>
-
-  /**
-   * Positive integer branded newtype.
-   *
-   * Represents positive integers:
-   *
-   * ```math
-   *  { z | z ∈ ℤ, z > 0, z <= 2 ** 53 - 1 }
-   * ```
-   *
-   * @since 0.0.1
-   */
-  readonly positiveInt: positiveInt.SchemableParams2C<S>
+  readonly intFromString: intFromString.SchemableParams2C<S>
 
   /**
    * A string in which every character is valid ASCII.
@@ -1632,19 +1007,6 @@ export interface SchemableExt2C<S extends URIS2>
   readonly hslColor: hslColor.SchemableParams2C<S>
 
   /**
-   * Integer branded newtype.
-   *
-   * Represents integers:
-   *
-   * ```math
-   *  { z | z ∈ ℤ, z >= -2 ** 53 + 1, z <= 2 ** 53 - 1 }
-   * ```
-   *
-   * @since 0.0.1
-   */
-  readonly intString: intString.SchemableParams2C<S>
-
-  /**
    * Represents strings that conform to the ISO 8601 standard.
    *
    * @since 0.0.1
@@ -1672,115 +1034,11 @@ export interface SchemableExt2C<S extends URIS2>
   readonly latLong: latLong.SchemableParams2C<S>
 
   /**
-   * Natural branded newtype string.
-   *
-   * Represents integers:
-   *
-   * ```math
-   *  { z | z ∈ ℤ, z >= 0, z <= 2 ** 53 - 1 }
-   * ```
-   *
-   * @since 0.0.1
-   */
-  readonly naturalString: naturalString.SchemableParams2C<S>
-
-  /**
-   * Negative floating point branded newtype string.
-   *
-   * Represents negative floating point number strings:
-   *
-   * ```math
-   *  { f | f ∈ ℝ, f < 0, f >= -Number.MAX_VALUE }
-   * ```
-   *
-   * @since 0.0.2
-   */
-  readonly negativeFloatString: negativeFloatString.SchemableParams2C<S>
-
-  /**
-   * Negative integer branded newtype string.
-   *
-   * Represents negative integers:
-   *
-   * ```math
-   *  { z | z ∈ ℤ, z >= -2 ** 53 + 1, z < 0 }
-   * ```
-   *
-   * @since 0.0.1
-   */
-  readonly negativeIntString: negativeIntString.SchemableParams2C<S>
-
-  /**
-   * Non-negative floating point branded newtype string.
-   *
-   * Represents non-negative floating point numbers:
-   *
-   * ```math
-   *  { f | f ∈ ℝ, f >= 0, f <= Number.MAX_VALUE }
-   * ```
-   *
-   * @since 0.0.2
-   */
-  readonly nonNegativeFloatString: nonNegativeFloatString.SchemableParams2C<S>
-
-  /**
-   * Non-positive floating point branded newtype string.
-   *
-   * Represents non-positive floating point number strings:
-   *
-   * ```math
-   *  { f | f ∈ ℝ, f <= 0, f >= -Number.MAX_VALUE }
-   * ```
-   *
-   * @since 0.0.4
-   */
-  readonly nonPositiveFloatString: nonPositiveFloatString.SchemableParams2C<S>
-
-  /**
-   * NonPositive integer branded newtype string.
-   *
-   * Represents integer strings which are negative or zero.
-   *
-   * ```math
-   *  { z | z ∈ ℤ, z >= -2 ** 53 + 1, z <= 0 }
-   * ```
-   *
-   * @since 0.0.4
-   */
-  readonly nonPositiveIntString: nonPositiveIntString.SchemableParams2C<S>
-
-  /**
    * Represents strings that are not empty strings.
    *
    * @since 0.0.1
    */
   readonly nonemptyString: nonemptyString.SchemableParams2C<S>
-
-  /**
-   * Positive floating point branded newtype string.
-   *
-   * Represents positive floating point numbers:
-   *
-   * ```math
-   *  { f | f ∈ ℝ, f > 0, f <= Number.MAX_VALUE }
-   * ```
-   *
-   * @since 0.0.2
-   */
-  readonly positiveFloatString: positiveFloatString.SchemableParams2C<S>
-
-  /**
-   * Positive integer branded newtype string.
-   *
-   * Represents positive integers:
-   *
-   * ```math
-   *  { z | z ∈ ℤ, z > 0, z <= 2 ** 53 - 1 }
-   * ```
-   *
-   * @since 0.0.1
-   */
-  readonly positiveIntString: positiveIntString.SchemableParams2C<S>
 
   /**
    * Represents strings which are valid RGB colors. Permits both absolute and percentage
