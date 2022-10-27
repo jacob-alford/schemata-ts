@@ -21,7 +21,6 @@ import * as int from './number/int'
 import * as intFromString from './number/intFromString'
 
 /** String */
-import * as ascii from './string/ascii'
 import * as base64 from './string/base64'
 import * as base64Url from './string/base64Url'
 import * as bigIntString from './string/bigIntString'
@@ -57,7 +56,6 @@ export const Schemable: SchemableExt1<Eq.URI> = {
   floatFromString: floatFromString.Eq,
   int: int.Eq,
   intFromString: intFromString.Eq,
-  ascii: ascii.Eq,
   base64: base64.Eq,
   base64Url: base64Url.Eq,
   bigIntString: bigIntString.Eq,

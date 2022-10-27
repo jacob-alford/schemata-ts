@@ -43,7 +43,6 @@ import * as int from './number/int'
 import * as intFromString from './number/intFromString'
 
 /** String */
-import * as ascii from './string/ascii'
 import * as base64 from './string/base64'
 import * as base64Url from './string/base64Url'
 import * as bigIntString from './string/bigIntString'
@@ -82,14 +81,14 @@ export interface SchemableExt<S>
    * Represents an exclusion of a supplied value where the exclusion is mapped to `None`.
    * Requires an inner schemable, and an Eq instance which defaults to strict equality.
    *
-   * @since 0.0.4
+   * @since 1.0.0
    */
   readonly optionFromExclude: optionFromExclude.SchemableParams<S>
 
   /**
    * Represents a conversion from a nullable value to an Optional type
    *
-   * @since 0.0.4
+   * @since 1.0.0
    */
   readonly optionFromNullable: optionFromNullable.SchemableParams<S>
 
@@ -142,6 +141,11 @@ export interface SchemableExt<S>
   /**
    * Integer branded newtype from string. Parameters: min, max are inclusive.
    *
+   * Note: has an optional `encodeToBase` parameter that controls the output base of the
+   * encoded string. Currently only accepts 2, 8, 10, and 16 due to constraints using
+   * `Number` as a parser. It does not decode in this specified base, and accepts any base
+   * as input: 2, 8, 10, or 16.
+   *
    * Represents string-integers:
    *
    * ```math
@@ -153,16 +157,6 @@ export interface SchemableExt<S>
   readonly intFromString: intFromString.SchemableParams<S>
 
   /**
-   * A string in which every character is valid ASCII.
-   *
-   * This is heavily inspired by the `validator.js` module
-   * [`isAscii`](https://github.com/validatorjs/validator.js/blob/master/src/lib/isAscii.js).
-   *
-   * @since 0.0.1
-   */
-  readonly ascii: ascii.SchemableParams<S>
-
-  /**
    * Representing a Base64-encoded string.
    *
    * For a URL-safe version, @see Base64UrlSafe module
@@ -170,7 +164,7 @@ export interface SchemableExt<S>
    * This module is heavily inspired by the `validator.js` module
    * [`isBase64`](https://github.com/validatorjs/validator.js/blob/master/src/lib/isBase64.js).
    *
-   * @since 0.0.2
+   * @since 1.0.0
    */
   readonly base64: base64.SchemableParams<S>
 
@@ -296,7 +290,7 @@ export interface SchemableExt<S>
   /**
    * Represents Date objects which are not invalid dates
    *
-   * @since 0.0.1
+   * @since 1.0.0
    */
   readonly safeDate: safeDate.SchemableParams<S>
 }
@@ -322,14 +316,14 @@ export interface SchemableExt1<S extends URIS>
    * Represents an exclusion of a supplied value where the exclusion is mapped to `None`.
    * Requires an inner schemable, and an Eq instance which defaults to strict equality.
    *
-   * @since 0.0.4
+   * @since 1.0.0
    */
   readonly optionFromExclude: optionFromExclude.SchemableParams1<S>
 
   /**
    * Represents a conversion from a nullable value to an Optional type
    *
-   * @since 0.0.4
+   * @since 1.0.0
    */
   readonly optionFromNullable: optionFromNullable.SchemableParams1<S>
 
@@ -382,6 +376,11 @@ export interface SchemableExt1<S extends URIS>
   /**
    * Integer branded newtype from string. Parameters: min, max are inclusive.
    *
+   * Note: has an optional `encodeToBase` parameter that controls the output base of the
+   * encoded string. Currently only accepts 2, 8, 10, and 16 due to constraints using
+   * `Number` as a parser. It does not decode in this specified base, and accepts any base
+   * as input: 2, 8, 10, or 16.
+   *
    * Represents string-integers:
    *
    * ```math
@@ -393,16 +392,6 @@ export interface SchemableExt1<S extends URIS>
   readonly intFromString: intFromString.SchemableParams1<S>
 
   /**
-   * A string in which every character is valid ASCII.
-   *
-   * This is heavily inspired by the `validator.js` module
-   * [`isAscii`](https://github.com/validatorjs/validator.js/blob/master/src/lib/isAscii.js).
-   *
-   * @since 0.0.1
-   */
-  readonly ascii: ascii.SchemableParams1<S>
-
-  /**
    * Representing a Base64-encoded string.
    *
    * For a URL-safe version, @see Base64UrlSafe module
@@ -410,7 +399,7 @@ export interface SchemableExt1<S extends URIS>
    * This module is heavily inspired by the `validator.js` module
    * [`isBase64`](https://github.com/validatorjs/validator.js/blob/master/src/lib/isBase64.js).
    *
-   * @since 0.0.2
+   * @since 1.0.0
    */
   readonly base64: base64.SchemableParams1<S>
 
@@ -536,7 +525,7 @@ export interface SchemableExt1<S extends URIS>
   /**
    * Represents Date objects which are not invalid dates
    *
-   * @since 0.0.1
+   * @since 1.0.0
    */
   readonly safeDate: safeDate.SchemableParams1<S>
 }
@@ -562,14 +551,14 @@ export interface SchemableExt2<S extends URIS2>
    * Represents an exclusion of a supplied value where the exclusion is mapped to `None`.
    * Requires an inner schemable, and an Eq instance which defaults to strict equality.
    *
-   * @since 0.0.4
+   * @since 1.0.0
    */
   readonly optionFromExclude: optionFromExclude.SchemableParams2<S>
 
   /**
    * Represents a conversion from a nullable value to an Optional type
    *
-   * @since 0.0.4
+   * @since 1.0.0
    */
   readonly optionFromNullable: optionFromNullable.SchemableParams2<S>
 
@@ -622,6 +611,11 @@ export interface SchemableExt2<S extends URIS2>
   /**
    * Integer branded newtype from string. Parameters: min, max are inclusive.
    *
+   * Note: has an optional `encodeToBase` parameter that controls the output base of the
+   * encoded string. Currently only accepts 2, 8, 10, and 16 due to constraints using
+   * `Number` as a parser. It does not decode in this specified base, and accepts any base
+   * as input: 2, 8, 10, or 16.
+   *
    * Represents string-integers:
    *
    * ```math
@@ -633,16 +627,6 @@ export interface SchemableExt2<S extends URIS2>
   readonly intFromString: intFromString.SchemableParams2<S>
 
   /**
-   * A string in which every character is valid ASCII.
-   *
-   * This is heavily inspired by the `validator.js` module
-   * [`isAscii`](https://github.com/validatorjs/validator.js/blob/master/src/lib/isAscii.js).
-   *
-   * @since 0.0.1
-   */
-  readonly ascii: ascii.SchemableParams2<S>
-
-  /**
    * Representing a Base64-encoded string.
    *
    * For a URL-safe version, @see Base64UrlSafe module
@@ -650,7 +634,7 @@ export interface SchemableExt2<S extends URIS2>
    * This module is heavily inspired by the `validator.js` module
    * [`isBase64`](https://github.com/validatorjs/validator.js/blob/master/src/lib/isBase64.js).
    *
-   * @since 0.0.2
+   * @since 1.0.0
    */
   readonly base64: base64.SchemableParams2<S>
 
@@ -776,7 +760,7 @@ export interface SchemableExt2<S extends URIS2>
   /**
    * Represents Date objects which are not invalid dates
    *
-   * @since 0.0.1
+   * @since 1.0.0
    */
   readonly safeDate: safeDate.SchemableParams2<S>
 }
@@ -802,14 +786,14 @@ export interface SchemableExt2C<S extends URIS2>
    * Represents an exclusion of a supplied value where the exclusion is mapped to `None`.
    * Requires an inner schemable, and an Eq instance which defaults to strict equality.
    *
-   * @since 0.0.4
+   * @since 1.0.0
    */
   readonly optionFromExclude: optionFromExclude.SchemableParams2C<S>
 
   /**
    * Represents a conversion from a nullable value to an Optional type
    *
-   * @since 0.0.4
+   * @since 1.0.0
    */
   readonly optionFromNullable: optionFromNullable.SchemableParams2C<S>
 
@@ -862,6 +846,11 @@ export interface SchemableExt2C<S extends URIS2>
   /**
    * Integer branded newtype from string. Parameters: min, max are inclusive.
    *
+   * Note: has an optional `encodeToBase` parameter that controls the output base of the
+   * encoded string. Currently only accepts 2, 8, 10, and 16 due to constraints using
+   * `Number` as a parser. It does not decode in this specified base, and accepts any base
+   * as input: 2, 8, 10, or 16.
+   *
    * Represents string-integers:
    *
    * ```math
@@ -873,16 +862,6 @@ export interface SchemableExt2C<S extends URIS2>
   readonly intFromString: intFromString.SchemableParams2C<S>
 
   /**
-   * A string in which every character is valid ASCII.
-   *
-   * This is heavily inspired by the `validator.js` module
-   * [`isAscii`](https://github.com/validatorjs/validator.js/blob/master/src/lib/isAscii.js).
-   *
-   * @since 0.0.1
-   */
-  readonly ascii: ascii.SchemableParams2C<S>
-
-  /**
    * Representing a Base64-encoded string.
    *
    * For a URL-safe version, @see Base64UrlSafe module
@@ -890,7 +869,7 @@ export interface SchemableExt2C<S extends URIS2>
    * This module is heavily inspired by the `validator.js` module
    * [`isBase64`](https://github.com/validatorjs/validator.js/blob/master/src/lib/isBase64.js).
    *
-   * @since 0.0.2
+   * @since 1.0.0
    */
   readonly base64: base64.SchemableParams2C<S>
 
@@ -1016,7 +995,7 @@ export interface SchemableExt2C<S extends URIS2>
   /**
    * Represents Date objects which are not invalid dates
    *
-   * @since 0.0.1
+   * @since 1.0.0
    */
   readonly safeDate: safeDate.SchemableParams2C<S>
 }
