@@ -20,7 +20,8 @@ import * as Str from 'fp-ts/string'
 import * as N from 'fp-ts/number'
 import { pipe } from 'fp-ts/function'
 import { Type as Type_, failure } from 'io-ts'
-
+import * as SC from '../SchemaExt'
+import { URI as SchemaURI } from '../internal/SchemaBase'
 import * as Arb from '../internal/ArbitraryBase'
 import * as float from './float'
 
@@ -118,3 +119,10 @@ export const Encoder: SchemableParams2<Enc.URI> = () => ({
  * @category Instances
  */
 export const Arbitrary: SchemableParams1<Arb.URI> = float.Arbitrary
+
+/**
+ * @since 1.0.0
+ * @category Instances
+ */
+export const Schema: SchemableParams2<SchemaURI> = params =>
+  SC.make(S => S.floatFromString(params))

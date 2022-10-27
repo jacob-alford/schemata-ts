@@ -1,10 +1,12 @@
 import * as RA from 'fp-ts/ReadonlyArray'
+import * as E from 'fp-ts/Either'
 
 import { tuple } from 'fp-ts/function'
 
 import * as Base64 from '../../src/string/base64'
 
 import { cat, combineExpected, validateArbitrary } from '../../test-utils'
+import { getDecoder } from '../../src/interpreters'
 
 const validStrings = [
   '',
@@ -123,6 +125,22 @@ IUqUviQNw7SX41v90N39iNP3JmczkN8J70+o7NLYlcvp4xXIFOcRaDrinbCcXT1WfQ==`
   describe('Arbitrary', () => {
     it('generates valid Base64s', () => {
       validateArbitrary(Base64, Base64.isBase64)
+    })
+  })
+
+  describe('Schema', () => {
+    it('derives an encoder', () => {
+      const decoder = getDecoder(Base64.Schema)
+      expect(decoder.decode('12345')._tag).toEqual('Left')
+      expect(
+        decoder.decode(
+          'TG9yZW0gaXBzdW0gZG9sb3Igc2l0IGFtZXQsIGNvbnNlY3RldHVyIGFkaXBpc2NpbmcgZWxpdC4='
+        )
+      ).toEqual(
+        E.right(
+          'TG9yZW0gaXBzdW0gZG9sb3Igc2l0IGFtZXQsIGNvbnNlY3RldHVyIGFkaXBpc2NpbmcgZWxpdC4='
+        )
+      )
     })
   })
 })

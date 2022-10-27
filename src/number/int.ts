@@ -19,7 +19,8 @@ import * as t from 'io-ts/Type'
 import * as N from 'fp-ts/number'
 import { pipe } from 'fp-ts/function'
 import * as fc from 'fast-check'
-
+import * as SC from '../SchemaExt'
+import { URI as SchemaURI } from '../internal/SchemaBase'
 import * as Arb from '../internal/ArbitraryBase'
 
 /**
@@ -147,3 +148,9 @@ export const Arbitrary: SchemableParams1<Arb.URI> = (params = {}) => {
     })
     .filter(isInt(params))
 }
+
+/**
+ * @since 1.0.0
+ * @category Instances
+ */
+export const Schema: SchemableParams2<SchemaURI> = params => SC.make(S => S.int(params))

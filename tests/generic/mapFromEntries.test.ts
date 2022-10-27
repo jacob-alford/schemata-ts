@@ -8,6 +8,8 @@ import * as fc from 'fast-check'
 import * as t from 'io-ts/Type'
 import * as Str from 'fp-ts/string'
 import * as MapFromEntries from '../../src/generic/mapFromEntries'
+import * as SC from '../../src/internal/SchemaBase'
+import { getDecoder } from '../../src/interpreters'
 import { validateArbitrary } from '../../test-utils'
 import { flow } from 'fp-ts/function'
 
@@ -177,5 +179,26 @@ describe('MapFromEntries', () => {
     )
     const dec = MapFromEntries.Decoder(Str.Ord, D.string, D.string)
     fc.assert(fc.property(arb, flow(enc.encode, dec.decode, E.isRight)))
+  })
+
+  describe('Schema', () => {
+    const Schema = MapFromEntries.Schema(Str.Ord, SC.String, SC.String)
+    it('derives a decoder', () => {
+      const decoder = getDecoder(Schema)
+      expect(decoder.decode([])).toStrictEqual(E.right(new Map()))
+      expect(
+        decoder.decode([
+          ['a', 'b'],
+          ['c', 'd'],
+        ])
+      ).toStrictEqual(
+        E.right(
+          new Map([
+            ['a', 'b'],
+            ['c', 'd'],
+          ])
+        )
+      )
+    })
   })
 })

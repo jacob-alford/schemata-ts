@@ -7,12 +7,14 @@ import {
   Eq,
   Guard,
   Arbitrary,
+  Schema,
   Type,
   TaskDecoder,
 } from '../../src/number/intFromString'
 import * as Int from '../../src/number/int'
 
 import { cat, combineExpected, validateArbitrary } from '../../test-utils'
+import { getEncoder } from '../../src/interpreters'
 
 const _: (n: number) => Int.Int = unsafeCoerce
 
@@ -124,6 +126,14 @@ describe('intFromString', () => {
   describe('Arbitrary', () => {
     it('generates valid NegativeFloats', () => {
       validateArbitrary({ Arbitrary: Arbitrary() }, Guard().is)
+    })
+  })
+
+  describe('Schema', () => {
+    const IntFromStringSchema = Schema({ encodeToBase: 16 })
+    it('derives an encoder', () => {
+      const encoder = getEncoder(IntFromStringSchema)
+      expect(encoder.encode(_(291))).toEqual('0x123')
     })
   })
 })

@@ -1,7 +1,7 @@
 /**
  * Represents a conversion from a nullable value to an Optional type
  *
- * @since 0.0.4
+ * @since 1.0.0
  */
 import { Kind, Kind2, URIS, URIS2, HKT2 } from 'fp-ts/HKT'
 import * as D from 'io-ts/Decoder'
@@ -14,11 +14,13 @@ import * as G from 'io-ts/Guard'
 import * as TD from 'io-ts/TaskDecoder'
 import * as t from 'io-ts/Type'
 import * as O from 'fp-ts/Option'
+import * as SC from '../SchemaExt'
+import { URI as SchemaURI } from '../internal/SchemaBase'
 import * as Arb from '../internal/ArbitraryBase'
 import { flow, pipe } from 'fp-ts/function'
 
 /**
- * @since 0.0.4
+ * @since 1.0.0
  * @category Model
  */
 export type SchemableParams<S> = <A, E>(
@@ -26,13 +28,13 @@ export type SchemableParams<S> = <A, E>(
 ) => HKT2<S, E | null, O.Option<A>>
 
 /**
- * @since 0.0.4
+ * @since 1.0.0
  * @category Model
  */
 export type SchemableParams1<S extends URIS> = <A>(sa: Kind<S, A>) => Kind<S, O.Option<A>>
 
 /**
- * @since 0.0.4
+ * @since 1.0.0
  * @category Model
  */
 export type SchemableParams2<S extends URIS2> = <A, E>(
@@ -40,7 +42,7 @@ export type SchemableParams2<S extends URIS2> = <A, E>(
 ) => Kind2<S, E | null, O.Option<A>>
 
 /**
- * @since 0.0.4
+ * @since 1.0.0
  * @category Model
  */
 export type SchemableParams2C<S extends URIS2> = <A>(
@@ -48,7 +50,7 @@ export type SchemableParams2C<S extends URIS2> = <A>(
 ) => Kind2<S, unknown, O.Option<A>>
 
 /**
- * @since 0.0.4
+ * @since 1.0.0
  * @category Instances
  */
 export const Decoder: SchemableParams2C<D.URI> = decoderA => ({
@@ -56,7 +58,7 @@ export const Decoder: SchemableParams2C<D.URI> = decoderA => ({
 })
 
 /**
- * @since 0.0.4
+ * @since 1.0.0
  * @category Instances
  */
 export const Encoder: SchemableParams2<Enc.URI> = encoderA => ({
@@ -64,13 +66,13 @@ export const Encoder: SchemableParams2<Enc.URI> = encoderA => ({
 })
 
 /**
- * @since 0.0.4
+ * @since 1.0.0
  * @category Instances
  */
 export const Eq: SchemableParams1<Eq_.URI> = O.getEq
 
 /**
- * @since 0.0.4
+ * @since 1.0.0
  * @category Instances
  */
 export const Guard: SchemableParams1<G.URI> = guardA =>
@@ -85,7 +87,7 @@ export const Guard: SchemableParams1<G.URI> = guardA =>
   )
 
 /**
- * @since 0.0.4
+ * @since 1.0.0
  * @category Instances
  */
 export const TaskDecoder: SchemableParams2C<TD.URI> = taskDecoderA => ({
@@ -94,7 +96,7 @@ export const TaskDecoder: SchemableParams2C<TD.URI> = taskDecoderA => ({
 })
 
 /**
- * @since 0.0.4
+ * @since 1.0.0
  * @category Instances
  */
 export const Type: SchemableParams1<t.URI> = typeA =>
@@ -109,7 +111,7 @@ export const Type: SchemableParams1<t.URI> = typeA =>
   )
 
 /**
- * @since 0.0.4
+ * @since 1.0.0
  * @category Instances
  */
 export const Arbitrary: SchemableParams1<Arb.URI> = arbA =>
@@ -117,3 +119,10 @@ export const Arbitrary: SchemableParams1<Arb.URI> = arbA =>
     Arb.struct({ _tag: Arb.literal('None') }),
     Arb.struct({ _tag: Arb.literal('Some'), value: arbA })
   )
+
+/**
+ * @since 1.0.0
+ * @category Instances
+ */
+export const Schema: SchemableParams2<SchemaURI> = sA =>
+  SC.make(S => S.optionFromNullable(sA(S)))

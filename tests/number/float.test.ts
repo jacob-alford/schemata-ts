@@ -1,7 +1,16 @@
 import * as RA from 'fp-ts/ReadonlyArray'
 import { tuple } from 'fp-ts/function'
-import { Decoder, Eq, Guard, Arbitrary, Type, TaskDecoder } from '../../src/number/float'
-
+import * as E from 'fp-ts/Either'
+import { getDecoder } from '../../src/interpreters'
+import {
+  Decoder,
+  Eq,
+  Guard,
+  Arbitrary,
+  Type,
+  TaskDecoder,
+  Schema,
+} from '../../src/number/float'
 import { cat, combineExpected, validateArbitrary } from '../../test-utils'
 
 const validNumbers = [
@@ -63,6 +72,15 @@ describe('NegativeFloat', () => {
   describe('Arbitrary', () => {
     it('generates valid NegativeFloats', () => {
       validateArbitrary({ Arbitrary: Arbitrary() }, Guard().is)
+    })
+  })
+
+  describe('Schema', () => {
+    const Float = Schema()
+    it('derives a decoder', () => {
+      const decoder = getDecoder(Float)
+      expect(decoder.decode(NaN)._tag).toEqual('Left')
+      expect(decoder.decode(-Number.MIN_VALUE)).toStrictEqual(E.right(-Number.MIN_VALUE))
     })
   })
 })

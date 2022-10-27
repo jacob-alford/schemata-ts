@@ -2,16 +2,18 @@ import * as E from 'fp-ts/Either'
 import * as RA from 'fp-ts/ReadonlyArray'
 import { pipe, tuple } from 'fp-ts/function'
 import {
+  Arbitrary,
   Decoder,
   Encoder,
   Eq,
   Guard,
-  Arbitrary,
-  Type,
+  Schema,
   TaskDecoder,
+  Type,
 } from '../../src/number/floatFromString'
 
 import { cat, combineExpected, validateArbitrary } from '../../test-utils'
+import { getDecoder } from '../../src/interpreters'
 
 type TestArray = ReadonlyArray<[unknown, 2 | 8 | 10 | 16]>
 
@@ -109,6 +111,17 @@ describe('floatFromString', () => {
   describe('Arbitrary', () => {
     it('generates valid NegativeFloats', () => {
       validateArbitrary({ Arbitrary: Arbitrary() }, Guard().is)
+    })
+  })
+
+  describe('Schema', () => {
+    const FloatFromString = Schema()
+    it('derives a decoder', () => {
+      const decoder = getDecoder(FloatFromString)
+      expect(decoder.decode('NaN')._tag).toEqual('Left')
+      expect(decoder.decode(`${Number.MAX_VALUE}`)).toStrictEqual(
+        E.right(Number.MAX_VALUE)
+      )
     })
   })
 })
