@@ -27,7 +27,6 @@ import * as base64Url from './string/base64Url'
 import * as bigIntString from './string/bigIntString'
 import * as btcAddress from './string/btcAddress'
 import * as creditCard from './string/creditCard'
-import * as emailAddress from './string/emailAddress'
 import * as hexColor from './string/hexColor'
 import * as hslColor from './string/hslColor'
 import * as isoDateString from './string/isoDateString'
@@ -64,7 +63,6 @@ export const Schemable: SchemableExt1<Eq.URI> = {
   bigIntString: bigIntString.Eq,
   btcAddress: btcAddress.Eq,
   creditCard: creditCard.Eq,
-  emailAddress: emailAddress.Eq,
   hexColor: hexColor.Eq,
   hslColor: hslColor.Eq,
   isoDateString: isoDateString.Eq,

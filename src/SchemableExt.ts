@@ -49,7 +49,6 @@ import * as base64Url from './string/base64Url'
 import * as bigIntString from './string/bigIntString'
 import * as btcAddress from './string/btcAddress'
 import * as creditCard from './string/creditCard'
-import * as emailAddress from './string/emailAddress'
 import * as hexColor from './string/hexColor'
 import * as hslColor from './string/hslColor'
 import * as isoDateString from './string/isoDateString'
@@ -213,17 +212,6 @@ export interface SchemableExt<S>
    * @since 0.0.3
    */
   readonly creditCard: creditCard.SchemableParams<S>
-
-  /**
-   * Represents strings (email addresses) that conform to the RFC 5322 standard.
-   *
-   * See: https://emailregex.com/
-   *
-   * **Note: Does not validate international addresses**
-   *
-   * @since 0.0.1
-   */
-  readonly emailAddress: emailAddress.SchemableParams<S>
 
   /**
    * A valid hexadecimal color value.
@@ -466,17 +454,6 @@ export interface SchemableExt1<S extends URIS>
   readonly creditCard: creditCard.SchemableParams1<S>
 
   /**
-   * Represents strings (email addresses) that conform to the RFC 5322 standard.
-   *
-   * See: https://emailregex.com/
-   *
-   * **Note: Does not validate international addresses**
-   *
-   * @since 0.0.1
-   */
-  readonly emailAddress: emailAddress.SchemableParams1<S>
-
-  /**
    * A valid hexadecimal color value.
    *
    * Inspired by
@@ -717,17 +694,6 @@ export interface SchemableExt2<S extends URIS2>
   readonly creditCard: creditCard.SchemableParams2<S>
 
   /**
-   * Represents strings (email addresses) that conform to the RFC 5322 standard.
-   *
-   * See: https://emailregex.com/
-   *
-   * **Note: Does not validate international addresses**
-   *
-   * @since 0.0.1
-   */
-  readonly emailAddress: emailAddress.SchemableParams2<S>
-
-  /**
    * A valid hexadecimal color value.
    *
    * Inspired by
@@ -966,17 +932,6 @@ export interface SchemableExt2C<S extends URIS2>
    * @since 0.0.3
    */
   readonly creditCard: creditCard.SchemableParams2C<S>
-
-  /**
-   * Represents strings (email addresses) that conform to the RFC 5322 standard.
-   *
-   * See: https://emailregex.com/
-   *
-   * **Note: Does not validate international addresses**
-   *
-   * @since 0.0.1
-   */
-  readonly emailAddress: emailAddress.SchemableParams2C<S>
 
   /**
    * A valid hexadecimal color value.
