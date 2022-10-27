@@ -27,7 +27,7 @@ export type BitcoinAddress = string & BitcoinAddressBrand
  *
  * @internal
  */
-export const bech32 = pipe(
+const bech32 = pipe(
   PB.exactString('bc1'),
   PB.then(pipe(PB.characterClass(false, ['a', 'z'], ['0', '9']), PB.between(25, 39)))
 )
@@ -37,7 +37,7 @@ export const bech32 = pipe(
  *
  * @internal
  */
-export const base58 = pipe(
+const base58 = pipe(
   PB.subgroup(PB.characterClass(false, ['1', '3'])),
   PB.then(
     pipe(
