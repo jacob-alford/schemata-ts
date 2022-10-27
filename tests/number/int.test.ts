@@ -1,4 +1,6 @@
 import { unsafeCoerce } from 'fp-ts/function'
+import * as E from 'fp-ts/Either'
+import { getDecoder } from '../../src/interpreters'
 import * as Int from '../../src/number/int'
 import { validateArbitrary } from '../../test-utils'
 
@@ -50,6 +52,17 @@ describe('Int', () => {
   describe('Arbitrary', () => {
     it('generates valid Ints', () => {
       validateArbitrary({ Arbitrary: Int.Arbitrary() }, Int.isInt())
+    })
+  })
+
+  describe('Schema', () => {
+    const IntSchema = Int.Schema()
+    it('derives a decoder', () => {
+      const decoder = getDecoder(IntSchema)
+      expect(decoder.decode(Infinity)._tag).toEqual('Left')
+      expect(decoder.decode(Number.MAX_SAFE_INTEGER)).toStrictEqual(
+        E.right(Number.MAX_SAFE_INTEGER)
+      )
     })
   })
 })

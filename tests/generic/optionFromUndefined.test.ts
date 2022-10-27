@@ -8,6 +8,8 @@ import * as fc from 'fast-check'
 import * as TD from 'io-ts/TaskDecoder'
 import * as t from 'io-ts/Type'
 import * as Str from 'fp-ts/string'
+import * as SC from '../../src/internal/SchemaBase'
+import { getDecoder } from '../../src/interpreters'
 import * as OptionFromUndefined from '../../src/generic/optionFromUndefined'
 import { validateArbitrary } from '../../test-utils'
 import { flow } from 'fp-ts/function'
@@ -118,5 +120,14 @@ describe('OptionFromUndefined', () => {
     const enc = OptionFromUndefined.Encoder(Enc.Schemable.string)
     const dec = OptionFromUndefined.Decoder(D.string)
     fc.assert(fc.property(arb, flow(enc.encode, dec.decode, E.isRight)))
+  })
+
+  describe('Schema', () => {
+    const Schema = OptionFromUndefined.Schema(SC.String)
+    it('derives a decoder', () => {
+      const decoder = getDecoder(Schema)
+      expect(decoder.decode(undefined)).toEqual(E.right(O.none))
+      expect(decoder.decode('a')).toEqual(E.right(O.some('a')))
+    })
   })
 })

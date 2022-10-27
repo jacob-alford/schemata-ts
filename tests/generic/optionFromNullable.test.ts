@@ -8,6 +8,8 @@ import * as fc from 'fast-check'
 import * as TD from 'io-ts/TaskDecoder'
 import * as t from 'io-ts/Type'
 import * as Str from 'fp-ts/string'
+import * as SC from '../../src/internal/SchemaBase'
+import { getDecoder } from '../../src/interpreters'
 import * as OptionFromNullable from '../../src/generic/optionFromNullable'
 import { validateArbitrary } from '../../test-utils'
 import { flow } from 'fp-ts/function'
@@ -114,5 +116,14 @@ describe('OptionFromNullable', () => {
     const enc = OptionFromNullable.Encoder(Enc.Schemable.string)
     const dec = OptionFromNullable.Decoder(D.string)
     fc.assert(fc.property(arb, flow(enc.encode, dec.decode, E.isRight)))
+  })
+
+  describe('Schema', () => {
+    const Schema = OptionFromNullable.Schema(SC.String)
+    it('derives a decoder', () => {
+      const decoder = getDecoder(Schema)
+      expect(decoder.decode(null)).toEqual(E.right(O.none))
+      expect(decoder.decode('a')).toEqual(E.right(O.some('a')))
+    })
   })
 })

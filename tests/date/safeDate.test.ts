@@ -1,4 +1,6 @@
+import * as E from 'fp-ts/Either'
 import * as SafeDate from '../../src/date/safeDate'
+import { getDecoder } from '../../src/interpreters'
 import { validateArbitrary } from '../../test-utils'
 
 describe('SafeDate', () => {
@@ -65,6 +67,15 @@ describe('SafeDate', () => {
   describe('Arbitrary', () => {
     it('generates valid SafeDates', () => {
       validateArbitrary(SafeDate, SafeDate.isSafeDate)
+    })
+  })
+
+  describe('Schema', () => {
+    it('derives a decoder', () => {
+      const decoder = getDecoder(SafeDate.Schema)
+      const validDate = new Date()
+      expect(decoder.decode(new Date('abc'))._tag).toEqual('Left')
+      expect(decoder.decode(validDate)).toStrictEqual(E.right(validDate))
     })
   })
 })
