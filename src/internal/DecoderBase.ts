@@ -7,7 +7,7 @@ import { WithPattern2C } from './WithPattern'
 export * from 'io-ts/Decoder'
 
 export const WithPattern: WithPattern2C<D.URI, unknown> = {
-  pattern: (p, desc) => D.fromGuard(pattern(p, desc), desc),
+  pattern: (p, desc, caseSensitive) => D.fromGuard(pattern(p, desc, caseSensitive), desc),
 }
 
 export const WithBrand: WithBrand2C<D.URI, unknown> = {
