@@ -37,6 +37,7 @@ import * as optionFromNullable from './generic/optionFromNullable'
 import * as optionFromUndefined from './generic/optionFromUndefined'
 
 /** Number */
+import * as bigIntFromString from './number/bigIntFromString'
 import * as float from './number/float'
 import * as floatFromString from './number/floatFromString'
 import * as int from './number/int'
@@ -45,7 +46,6 @@ import * as intFromString from './number/intFromString'
 /** String */
 import * as base64 from './string/base64'
 import * as base64Url from './string/base64Url'
-import * as bigIntString from './string/bigIntString'
 import * as creditCard from './string/creditCard'
 import * as hexColor from './string/hexColor'
 import * as hslColor from './string/hslColor'
@@ -97,6 +97,13 @@ export interface SchemableExt<S>
    * @since 0.0.4
    */
   readonly optionFromUndefined: optionFromUndefined.SchemableParams<S>
+
+  /**
+   * Represents bigints converted from strings
+   *
+   * @since 1.0.0
+   */
+  readonly bigIntFromString: bigIntFromString.SchemableParams<S>
 
   /**
    * Floating point branded newtype. Parameters: min, max are inclusive.
@@ -178,13 +185,6 @@ export interface SchemableExt<S>
    * @since 0.0.2
    */
   readonly base64Url: base64Url.SchemableParams<S>
-
-  /**
-   * Represents strings which can be converted into `BitInt`.
-   *
-   * @since 0.0.4
-   */
-  readonly bigIntString: bigIntString.SchemableParams<S>
 
   /**
    * Represents (some) valid credit card numbers.
@@ -324,6 +324,13 @@ export interface SchemableExt1<S extends URIS>
   readonly optionFromUndefined: optionFromUndefined.SchemableParams1<S>
 
   /**
+   * Represents bigints converted from strings
+   *
+   * @since 1.0.0
+   */
+  readonly bigIntFromString: bigIntFromString.SchemableParams1<S>
+
+  /**
    * Floating point branded newtype. Parameters: min, max are inclusive.
    *
    * Represents floating point numbers:
@@ -403,13 +410,6 @@ export interface SchemableExt1<S extends URIS>
    * @since 0.0.2
    */
   readonly base64Url: base64Url.SchemableParams1<S>
-
-  /**
-   * Represents strings which can be converted into `BitInt`.
-   *
-   * @since 0.0.4
-   */
-  readonly bigIntString: bigIntString.SchemableParams1<S>
 
   /**
    * Represents (some) valid credit card numbers.
@@ -549,6 +549,13 @@ export interface SchemableExt2<S extends URIS2>
   readonly optionFromUndefined: optionFromUndefined.SchemableParams2<S>
 
   /**
+   * Represents bigints converted from strings
+   *
+   * @since 1.0.0
+   */
+  readonly bigIntFromString: bigIntFromString.SchemableParams2<S>
+
+  /**
    * Floating point branded newtype. Parameters: min, max are inclusive.
    *
    * Represents floating point numbers:
@@ -628,13 +635,6 @@ export interface SchemableExt2<S extends URIS2>
    * @since 0.0.2
    */
   readonly base64Url: base64Url.SchemableParams2<S>
-
-  /**
-   * Represents strings which can be converted into `BitInt`.
-   *
-   * @since 0.0.4
-   */
-  readonly bigIntString: bigIntString.SchemableParams2<S>
 
   /**
    * Represents (some) valid credit card numbers.
@@ -774,6 +774,13 @@ export interface SchemableExt2C<S extends URIS2>
   readonly optionFromUndefined: optionFromUndefined.SchemableParams2C<S>
 
   /**
+   * Represents bigints converted from strings
+   *
+   * @since 1.0.0
+   */
+  readonly bigIntFromString: bigIntFromString.SchemableParams2C<S>
+
+  /**
    * Floating point branded newtype. Parameters: min, max are inclusive.
    *
    * Represents floating point numbers:
@@ -853,13 +860,6 @@ export interface SchemableExt2C<S extends URIS2>
    * @since 0.0.2
    */
   readonly base64Url: base64Url.SchemableParams2C<S>
-
-  /**
-   * Represents strings which can be converted into `BitInt`.
-   *
-   * @since 0.0.4
-   */
-  readonly bigIntString: bigIntString.SchemableParams2C<S>
 
   /**
    * Represents (some) valid credit card numbers.

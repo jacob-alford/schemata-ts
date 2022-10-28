@@ -15,6 +15,7 @@ import * as optionFromNullable from './generic/optionFromNullable'
 import * as optionFromUndefined from './generic/optionFromUndefined'
 
 /** Number */
+import * as bigIntFromString from './number/bigIntFromString'
 import * as float from './number/float'
 import * as floatFromString from './number/floatFromString'
 import * as int from './number/int'
@@ -23,7 +24,6 @@ import * as intFromString from './number/intFromString'
 /** String */
 import * as base64 from './string/base64'
 import * as base64Url from './string/base64Url'
-import * as bigIntString from './string/bigIntString'
 import * as creditCard from './string/creditCard'
 import * as hexColor from './string/hexColor'
 import * as hslColor from './string/hslColor'
@@ -51,13 +51,13 @@ export const Schemable: SchemableExt2<Enc.URI> = {
   optionFromExclude: optionFromExclude.Encoder,
   optionFromNullable: optionFromNullable.Encoder,
   optionFromUndefined: optionFromUndefined.Encoder,
+  bigIntFromString: bigIntFromString.Encoder,
   float: float.Encoder,
   floatFromString: floatFromString.Encoder,
   int: int.Encoder,
   intFromString: intFromString.Encoder,
   base64: base64.Encoder,
   base64Url: base64Url.Encoder,
-  bigIntString: bigIntString.Encoder,
   creditCard: creditCard.Encoder,
   hexColor: hexColor.Encoder,
   hslColor: hslColor.Encoder,
