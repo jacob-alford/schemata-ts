@@ -14,6 +14,8 @@ import * as Str from 'fp-ts/string'
 import * as TD from 'io-ts/TaskDecoder'
 import * as t from 'io-ts/Type'
 import * as Arb from '../internal/ArbitraryBase'
+import * as SC from '../SchemaExt'
+import { URI as SchemaURI } from '../internal/SchemaBase'
 import { success, failure, Type as Type_ } from 'io-ts'
 import { flow, pipe } from 'fp-ts/function'
 
@@ -116,3 +118,9 @@ export const Type: SchemableParams1<t.URI> = new Type_(
  * @category Instances
  */
 export const Arbitrary: SchemableParams1<Arb.URI> = fc.bigInt()
+
+/**
+ * @since 1.0.0
+ * @category Instances
+ */
+export const Schema: SchemableParams2<SchemaURI> = SC.make(S => S.bigIntFromString)
