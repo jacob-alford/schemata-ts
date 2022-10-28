@@ -35,8 +35,7 @@ describe('BtcAddress', () => {
   })
   describe('Eq', () => {
     test.each(validAddresses)('determines two addresses are equal', address1 => {
-      if (!BtcAddress.Guard.is(address1) || !BtcAddress.Guard.is(address1))
-        throw new Error('Unexpected result')
+      if (!BtcAddress.Guard.is(address1)) throw new Error('Unexpected result')
       expect(BtcAddress.Eq.equals(address1, address1)).toBe(true)
     })
   })
