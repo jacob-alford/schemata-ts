@@ -475,6 +475,13 @@ export const digit: CharacterClass = characterClass(false, ['0', '9'])
 export const xdigit: CharacterClass = pipe(digit, and(['A', 'F'], ['a', 'f']))
 
 /**
+ * Alias of `xdigit`
+ *
+ * @since 1.0.0
+ */
+export const hexDigit: CharacterClass = xdigit
+
+/**
  * Any alphanumeric character in ASCII. See [POSIX
  * equivalent](https://en.wikibooks.org/wiki/Regular_Expressions/POSIX_Basic_Regular_Expressions#Character_classes)
  *

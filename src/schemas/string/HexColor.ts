@@ -31,11 +31,9 @@ export const hexColor: PB.Pattern = pipe(
   PB.then(
     PB.subgroup(
       pipe(
-        PB.characterClass(false, ['0', '9'], ['A', 'F']),
-        PB.exactly(3),
-        PB.or(pipe(PB.characterClass(false, ['0', '9'], ['A', 'F']), PB.exactly(4))),
-        PB.or(pipe(PB.characterClass(false, ['0', '9'], ['A', 'F']), PB.exactly(6))),
-        PB.or(pipe(PB.characterClass(false, ['0', '9'], ['A', 'F']), PB.exactly(8)))
+        PB.between(3, 4)(PB.hexDigit),
+        PB.or(PB.exactly(6)(PB.hexDigit)),
+        PB.or(PB.exactly(8)(PB.hexDigit))
       )
     )
   )
