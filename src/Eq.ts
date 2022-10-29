@@ -34,7 +34,7 @@ import * as rgb from './string/rgb'
 import * as uuid from './string/uuid'
 
 /** Date */
-import * as safeDate from './date/safeDate'
+import * as date from './date/date'
 
 /**
  * @since 0.0.1
@@ -65,5 +65,5 @@ export const Schemable: SchemableExt1<Eq.URI> = {
   nonemptyString: nonemptyString.Eq,
   rgb: rgb.Eq,
   uuid: uuid.Eq,
-  safeDate: safeDate.Eq,
+  date: date.Eq,
 }

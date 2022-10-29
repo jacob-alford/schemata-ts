@@ -11,10 +11,10 @@ import * as G from 'io-ts/Guard'
 import * as O from 'fp-ts/Option'
 import * as TD from 'io-ts/TaskDecoder'
 import * as t from 'io-ts/Type'
-import { flow, pipe, unsafeCoerce } from 'fp-ts/function'
+import { flow, pipe } from 'fp-ts/function'
 import * as fc from 'fast-check'
 
-import { SafeDate, Decoder as decodeSafeDate } from '../date/safeDate'
+import { Decoder as decodeSafeDate } from '../date/date'
 import * as Arb from '../internal/ArbitraryBase'
 
 /**
@@ -70,17 +70,10 @@ export type SchemableParams2C<S extends URIS2> = Kind2<S, unknown, ISODateString
  * @since 0.0.1
  * @category Constructors
  */
-export const fromSafeDate: (d: SafeDate) => ISODateString = d =>
-  unsafeCoerce(d.toISOString())
-
-/**
- * @since 0.0.1
- * @category Constructors
- */
 export const fromDate: (d: Date) => O.Option<ISODateString> = flow(
   decodeSafeDate.decode,
   O.fromEither,
-  O.map(fromSafeDate)
+  O.map(d => d.toISOString() as ISODateString)
 )
 
 /**
@@ -144,10 +137,3 @@ export const Encoder: SchemableParams2<Enc.URI> = Enc.id()
 export const Arbitrary: SchemableParams1<Arb.URI> = fc
   .date()
   .map(d => d.toISOString()) as Arb.Arbitrary<ISODateString>
-
-/**
- * @since 0.0.1
- * @category Destructors
- */
-export const toSafeDate: (iso: ISODateString) => SafeDate = iso =>
-  unsafeCoerce(new Date(iso))

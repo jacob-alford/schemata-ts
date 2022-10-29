@@ -1,5 +1,5 @@
 /**
- * Represents Date objects which are not invalid dates
+ * Represents valid Date objects
  *
  * @since 1.0.0
  */
@@ -19,47 +19,33 @@ import * as Arb from '../internal/ArbitraryBase'
 
 /**
  * @since 1.0.0
- * @internal
+ * @category Model
  */
-interface SafeDateBrand {
-  readonly SafeDate: unique symbol
-}
+export type SchemableParams<S> = HKT2<S, Date, Date>
 
 /**
  * @since 1.0.0
  * @category Model
  */
-export type SafeDate = Date & SafeDateBrand
+export type SchemableParams1<S extends URIS> = Kind<S, Date>
 
 /**
  * @since 1.0.0
  * @category Model
  */
-export type SchemableParams<S> = HKT2<S, Date, SafeDate>
+export type SchemableParams2<S extends URIS2> = Kind2<S, Date, Date>
 
 /**
  * @since 1.0.0
  * @category Model
  */
-export type SchemableParams1<S extends URIS> = Kind<S, SafeDate>
-
-/**
- * @since 1.0.0
- * @category Model
- */
-export type SchemableParams2<S extends URIS2> = Kind2<S, Date, SafeDate>
-
-/**
- * @since 1.0.0
- * @category Model
- */
-export type SchemableParams2C<S extends URIS2> = Kind2<S, unknown, SafeDate>
+export type SchemableParams2C<S extends URIS2> = Kind2<S, unknown, Date>
 
 /**
  * @since 1.0.0
  * @category Refinements
  */
-export function isSafeDate(d: unknown): d is SafeDate {
+export function isSafeDate(d: unknown): d is Date {
   return d instanceof Date && !Number.isNaN(d.getTime())
 }
 
@@ -95,7 +81,7 @@ export const TaskDecoder: SchemableParams2C<TD.URI> = TD.fromDecoder(Decoder)
  * @since 1.0.0
  * @category Instances
  */
-export const Type: SchemableParams1<t.URI> = new t_.Type<SafeDate, unknown, unknown>(
+export const Type: SchemableParams1<t.URI> = new t_.Type<Date, unknown, unknown>(
   'SafeDate',
   isSafeDate,
   (u, c) => (isSafeDate(u) ? t_.success(u) : t_.failure(u, c)),
@@ -118,4 +104,4 @@ export const Arbitrary: SchemableParams1<Arb.URI> = fc.date().filter(isSafeDate)
  * @since 1.0.0
  * @category Instances
  */
-export const Schema: SchemableParams2<SchemaURI> = SC.make(S => S.safeDate)
+export const Schema: SchemableParams2<SchemaURI> = SC.make(S => S.date)

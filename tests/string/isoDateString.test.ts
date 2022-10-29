@@ -1,7 +1,6 @@
 import * as RA from 'fp-ts/ReadonlyArray'
 import * as E from 'fp-ts/Either'
 import { pipe, tuple } from 'fp-ts/function'
-import * as O from 'fp-ts/Option'
 import * as ISODateString from '../../src/string/isoDateString'
 import { cat, combineExpected, validateArbitrary } from '../../test-utils'
 
@@ -94,13 +93,5 @@ describe('ISODateString', () => {
       const isoDateString = ISODateString.fromDate(date)
       expect(isoDateString._tag).toBe('Some')
     })
-  })
-
-  it('converts to safe date', () => {
-    const date = new Date()
-    const isoDateString = ISODateString.fromDate(date)
-    const safeDate = pipe(isoDateString, O.map(ISODateString.toSafeDate))
-    if (safeDate._tag === 'None') throw new Error('Unexpected result')
-    expect(safeDate.value.getTime()).toEqual(date.getTime())
   })
 })

@@ -56,7 +56,7 @@ import * as rgb from './string/rgb'
 import * as uuid from './string/uuid'
 
 /** Date */
-import * as safeDate from './date/safeDate'
+import * as date from './date/date'
 
 /**
  * @since 0.0.1
@@ -266,11 +266,11 @@ export interface SchemableExt<S>
   readonly uuid: uuid.SchemableParams<S>
 
   /**
-   * Represents Date objects which are not invalid dates
+   * Represents valid Date objects
    *
    * @since 1.0.0
    */
-  readonly safeDate: safeDate.SchemableParams<S>
+  readonly date: date.SchemableParams<S>
 }
 
 /**
@@ -481,11 +481,11 @@ export interface SchemableExt1<S extends URIS>
   readonly uuid: uuid.SchemableParams1<S>
 
   /**
-   * Represents Date objects which are not invalid dates
+   * Represents valid Date objects
    *
    * @since 1.0.0
    */
-  readonly safeDate: safeDate.SchemableParams1<S>
+  readonly date: date.SchemableParams1<S>
 }
 
 /**
@@ -696,11 +696,11 @@ export interface SchemableExt2<S extends URIS2>
   readonly uuid: uuid.SchemableParams2<S>
 
   /**
-   * Represents Date objects which are not invalid dates
+   * Represents valid Date objects
    *
    * @since 1.0.0
    */
-  readonly safeDate: safeDate.SchemableParams2<S>
+  readonly date: date.SchemableParams2<S>
 }
 
 /**
@@ -911,9 +911,9 @@ export interface SchemableExt2C<S extends URIS2>
   readonly uuid: uuid.SchemableParams2C<S>
 
   /**
-   * Represents Date objects which are not invalid dates
+   * Represents valid Date objects
    *
    * @since 1.0.0
    */
-  readonly safeDate: safeDate.SchemableParams2C<S>
+  readonly date: date.SchemableParams2C<S>
 }
