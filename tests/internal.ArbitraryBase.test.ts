@@ -196,7 +196,7 @@ describe('ArbitraryBase', () => {
       expect(Arb.typeOf(1)).toBe('number')
       expect(Arb.typeOf('')).toBe('string')
     })
-    test('iso', () => {
+    test('WithInvariant', () => {
       const getDate = Arb.WithInvariant.imap(
         { is: (d): d is Date => d instanceof Date },
         'number'
