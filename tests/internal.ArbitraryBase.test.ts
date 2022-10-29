@@ -196,5 +196,21 @@ describe('ArbitraryBase', () => {
       expect(Arb.typeOf(1)).toBe('number')
       expect(Arb.typeOf('')).toBe('string')
     })
+    test('iso', () => {
+      const getDate = Arb.WithIso.iso<number, Date>(
+        { get: n => new Date(n), reverseGet: d => d.getTime() },
+        { is: (d): d is Date => d instanceof Date },
+        'number'
+      )
+
+      fc.assert(
+        fc.property(
+          getDate(fc.integer({ min: 8_640_000_000_000_000, max: 8_640_000_000_000_000 })),
+          a => {
+            expect(Number.isNaN(a.getTime())).toBe(false)
+          }
+        )
+      )
+    })
   })
 })
