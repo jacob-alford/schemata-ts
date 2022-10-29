@@ -35,9 +35,9 @@ export const WithBrand: WithBrand1<t.URI> = {
  * @category Instances
  */
 export const WithInvariant: WithInvariant1<t.URI> = {
-  imap: (gB, nameB) => (get, reverseGet) => tdA =>
+  imap: (gB, name) => (get, reverseGet) => tdA =>
     new Type_(
-      `Iso<${tdA.name}, ${nameB}>`,
+      name,
       gB.is,
       (i, c) => pipe(tdA.validate(i, c), E.map(get)),
       flow(reverseGet, tdA.encode)

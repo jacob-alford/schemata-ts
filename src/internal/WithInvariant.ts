@@ -8,7 +8,7 @@ import * as G from './GuardBase'
 export interface WithInvariantHKT2<S> {
   readonly imap: <B>(
     guardB: G.Guard<unknown, B>,
-    nameB: string
+    name: string
   ) => <A>(f: (a: A) => B, g: (b: B) => A) => <O>(target: HKT2<S, O, A>) => HKT2<S, O, B>
 }
 
@@ -19,7 +19,7 @@ export interface WithInvariantHKT2<S> {
 export interface WithInvariant1<S extends URIS> {
   readonly imap: <B>(
     guardB: G.Guard<unknown, B>,
-    nameB: string
+    name: string
   ) => <A>(f: (a: A) => B, g: (b: B) => A) => (target: Kind<S, A>) => Kind<S, B>
 }
 
@@ -30,7 +30,7 @@ export interface WithInvariant1<S extends URIS> {
 export interface WithInvariant2<S extends URIS2> {
   readonly imap: <B>(
     guardB: G.Guard<unknown, B>,
-    nameB: string
+    name: string
   ) => <A>(
     f: (a: A) => B,
     g: (b: B) => A
@@ -44,6 +44,6 @@ export interface WithInvariant2<S extends URIS2> {
 export interface WithInvariant2C<S extends URIS2, E> {
   readonly imap: <B>(
     guardB: G.Guard<unknown, B>,
-    nameB: string
+    name: string
   ) => <A>(f: (a: A) => B, g: (b: B) => A) => (target: Kind2<S, E, A>) => Kind2<S, E, B>
 }
