@@ -25,7 +25,6 @@ import * as intFromString from './number/intFromString'
 import * as base64 from './string/base64'
 import * as base64Url from './string/base64Url'
 import * as creditCard from './string/creditCard'
-import * as hexColor from './string/hexColor'
 import * as hslColor from './string/hslColor'
 import * as isoDateString from './string/isoDateString'
 import * as jwt from './string/jwt'
@@ -59,7 +58,6 @@ export const Schemable: SchemableExt1<Arb.URI> = {
   base64: base64.Arbitrary,
   base64Url: base64Url.Arbitrary,
   creditCard: creditCard.Arbitrary,
-  hexColor: hexColor.Arbitrary,
   hslColor: hslColor.Arbitrary,
   isoDateString: isoDateString.Arbitrary,
   jwt: jwt.Arbitrary,

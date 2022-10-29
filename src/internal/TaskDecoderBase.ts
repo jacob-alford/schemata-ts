@@ -7,7 +7,8 @@ import { WithPattern2C } from './WithPattern'
 export * from 'io-ts/TaskDecoder'
 
 export const WithPattern: WithPattern2C<TD.URI, unknown> = {
-  pattern: (p, desc) => TD.fromGuard(pattern(p, desc), desc),
+  pattern: (p, desc, caseInsensitive) =>
+    TD.fromGuard(pattern(p, desc, caseInsensitive), desc),
 }
 
 export const WithBrand: WithBrand2C<TD.URI, unknown> = {

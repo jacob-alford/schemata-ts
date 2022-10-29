@@ -9,9 +9,10 @@ export * from 'io-ts/Guard'
 /** @internal */
 export const pattern: (
   pattern: Pattern,
-  _: string
-) => G.Guard<unknown, string> = pattern => {
-  const regex = regexFromPattern(pattern)
+  _: string,
+  caseInsensitive?: boolean
+) => G.Guard<unknown, string> = (pattern, _, caseInsensitive) => {
+  const regex = regexFromPattern(pattern, caseInsensitive)
   return {
     is: (i): i is string => typeof i === 'string' && regex.test(i),
   }

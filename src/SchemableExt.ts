@@ -47,7 +47,6 @@ import * as intFromString from './number/intFromString'
 import * as base64 from './string/base64'
 import * as base64Url from './string/base64Url'
 import * as creditCard from './string/creditCard'
-import * as hexColor from './string/hexColor'
 import * as hslColor from './string/hslColor'
 import * as isoDateString from './string/isoDateString'
 import * as jwt from './string/jwt'
@@ -195,16 +194,6 @@ export interface SchemableExt<S>
    * @since 0.0.3
    */
   readonly creditCard: creditCard.SchemableParams<S>
-
-  /**
-   * A valid hexadecimal color value.
-   *
-   * Inspired by
-   * [isHexColor](https://github.com/validatorjs/validator.js/blob/master/src/lib/isHexColor.js)
-   *
-   * @since 0.0.3
-   */
-  readonly hexColor: hexColor.SchemableParams<S>
 
   /**
    * An HSL string. Commonly in CSS.
@@ -422,16 +411,6 @@ export interface SchemableExt1<S extends URIS>
   readonly creditCard: creditCard.SchemableParams1<S>
 
   /**
-   * A valid hexadecimal color value.
-   *
-   * Inspired by
-   * [isHexColor](https://github.com/validatorjs/validator.js/blob/master/src/lib/isHexColor.js)
-   *
-   * @since 0.0.3
-   */
-  readonly hexColor: hexColor.SchemableParams1<S>
-
-  /**
    * An HSL string. Commonly in CSS.
    *
    * @since 0.0.3
@@ -647,16 +626,6 @@ export interface SchemableExt2<S extends URIS2>
   readonly creditCard: creditCard.SchemableParams2<S>
 
   /**
-   * A valid hexadecimal color value.
-   *
-   * Inspired by
-   * [isHexColor](https://github.com/validatorjs/validator.js/blob/master/src/lib/isHexColor.js)
-   *
-   * @since 0.0.3
-   */
-  readonly hexColor: hexColor.SchemableParams2<S>
-
-  /**
    * An HSL string. Commonly in CSS.
    *
    * @since 0.0.3
@@ -870,16 +839,6 @@ export interface SchemableExt2C<S extends URIS2>
    * @since 0.0.3
    */
   readonly creditCard: creditCard.SchemableParams2C<S>
-
-  /**
-   * A valid hexadecimal color value.
-   *
-   * Inspired by
-   * [isHexColor](https://github.com/validatorjs/validator.js/blob/master/src/lib/isHexColor.js)
-   *
-   * @since 0.0.3
-   */
-  readonly hexColor: hexColor.SchemableParams2C<S>
 
   /**
    * An HSL string. Commonly in CSS.
