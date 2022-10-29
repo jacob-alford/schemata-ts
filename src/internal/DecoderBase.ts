@@ -1,8 +1,9 @@
-import { identity } from 'fp-ts/function'
+import { flow, identity } from 'fp-ts/function'
 import * as D from 'io-ts/Decoder'
+import * as E from 'fp-ts/Either'
 import { pattern } from './GuardBase'
 import { WithBrand2C } from './WithBrand'
-import { WithIso1, WithIso2C } from './WithIso'
+import { WithIso2C } from './WithIso'
 import { WithPattern2C } from './WithPattern'
 
 export * from 'io-ts/Decoder'
@@ -23,8 +24,8 @@ export const WithBrand: WithBrand2C<D.URI, unknown> = {
  */
 export const WithIso: WithIso2C<D.URI, unknown> = {
   iso:
-    ({ reverseGet }) =>
+    ({ get }) =>
     dA => ({
-      decode: b => ???,
-    })
+      decode: flow(dA.decode, E.map(get)),
+    }),
 }

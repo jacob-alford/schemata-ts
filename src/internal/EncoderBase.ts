@@ -1,7 +1,8 @@
-import { identity } from 'fp-ts/function'
+import { flow, identity } from 'fp-ts/function'
 import * as Enc from 'io-ts/Encoder'
 import { Schemable2, WithRefine2, WithUnknownContainers2 } from './Schemable2'
 import { WithBrand2 } from './WithBrand'
+import { WithIso2 } from './WithIso'
 import { WithPattern2 } from './WithPattern'
 
 export { URI } from 'io-ts/Encoder'
@@ -44,4 +45,16 @@ export const WithRefine: WithRefine2<Enc.URI> = {
 
 export const WithBrand: WithBrand2<Enc.URI> = {
   brand: () => identity,
+}
+
+/**
+ * @since 1.0.0
+ * @category Instances
+ */
+export const WithIso: WithIso2<Enc.URI> = {
+  iso:
+    ({ reverseGet }) =>
+    encA => ({
+      encode: flow(reverseGet, encA.encode),
+    }),
 }
