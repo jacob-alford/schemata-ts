@@ -205,7 +205,9 @@ describe('ArbitraryBase', () => {
 
       fc.assert(
         fc.property(
-          getDate(fc.integer({ min: 8_640_000_000_000_000, max: 8_640_000_000_000_000 })),
+          getDate(
+            fc.integer({ min: -8_640_000_000_000_000, max: 8_640_000_000_000_000 })
+          ),
           a => {
             expect(Number.isNaN(a.getTime())).toBe(false)
           }
