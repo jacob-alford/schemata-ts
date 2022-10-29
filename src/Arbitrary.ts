@@ -26,7 +26,6 @@ import * as base64 from './string/base64'
 import * as base64Url from './string/base64Url'
 import * as creditCard from './string/creditCard'
 import * as hslColor from './string/hslColor'
-import * as isoDateString from './string/isoDateString'
 import * as jwt from './string/jwt'
 import * as latLong from './string/latLong'
 import * as nonemptyString from './string/nonemptyString'
@@ -35,6 +34,7 @@ import * as uuid from './string/uuid'
 
 /** Date */
 import * as date from './date/date'
+import * as dateFromIsoString from './date/dateFromIsoString'
 
 /**
  * @since 0.0.1
@@ -59,11 +59,11 @@ export const Schemable: SchemableExt1<Arb.URI> = {
   base64Url: base64Url.Arbitrary,
   creditCard: creditCard.Arbitrary,
   hslColor: hslColor.Arbitrary,
-  isoDateString: isoDateString.Arbitrary,
   jwt: jwt.Arbitrary,
   latLong: latLong.Arbitrary,
   nonemptyString: nonemptyString.Arbitrary,
   rgb: rgb.Arbitrary,
   uuid: uuid.Arbitrary,
   date: date.Arbitrary,
+  dateFromIsoString: dateFromIsoString.Arbitrary,
 }

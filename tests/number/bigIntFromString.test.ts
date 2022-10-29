@@ -1,5 +1,6 @@
 import * as E from 'fp-ts/Either'
 import { pipe } from 'fp-ts/function'
+import { getDecoder } from '../../src/interpreters'
 import * as BigIntString from '../../src/number/bigIntFromString'
 import { validateArbitrary } from '../../test-utils'
 
@@ -80,6 +81,15 @@ describe('BigIntString', () => {
   describe('Arbitrary', () => {
     it('generates valid BigIntString', () => {
       validateArbitrary(BigIntString, BigIntString.Guard.is)
+    })
+  })
+
+  describe('Schema', () => {
+    it('derives a decoder', () => {
+      const decoder = getDecoder(BigIntString.Schema)
+      const valid = '123'
+      expect(decoder.decode(new Date('abc'))._tag).toEqual('Left')
+      expect(decoder.decode(valid)).toStrictEqual(E.right(BigInt(valid)))
     })
   })
 })
