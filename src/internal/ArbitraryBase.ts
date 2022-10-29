@@ -12,6 +12,7 @@ import * as RTup from 'fp-ts/ReadonlyTuple'
 import * as S from 'io-ts/Schemable'
 import { arbitraryFromPattern } from '../PatternBuilder'
 import { WithBrand1 } from './WithBrand'
+import { WithIso1 } from './WithIso'
 import { WithPattern1 } from './WithPattern'
 
 /**
@@ -294,4 +295,15 @@ export const WithPattern: WithPattern1<URI> = {
 export const WithBrand: WithBrand1<URI> = {
   // @ts-expect-error -- Branding is only type change, implicit cast here
   brand: () => identity,
+}
+
+/**
+ * @since 1.0.0
+ * @category Instances
+ */
+export const WithIso: WithIso1<URI> = {
+  iso:
+    ({ get }) =>
+    arb =>
+      arb.map(get),
 }
