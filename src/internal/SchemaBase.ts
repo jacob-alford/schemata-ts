@@ -181,8 +181,8 @@ export const Pattern: WithPattern2<URI>['pattern'] = (pattern, description) =>
  * @category Combinators
  */
 export const InvMap: WithInvariant2<URI>['imap'] =
-  (guardB, nameB) => (get, reverseGet) => target =>
-    SC.make(S => S.imap(guardB, nameB)(get, reverseGet)(target(S)))
+  (guardB, name) => (get, reverseGet) => target =>
+    SC.make(S => S.imap(guardB, name)(get, reverseGet)(target(S)))
 
 /**
  * @since 1.0.0
