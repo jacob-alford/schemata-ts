@@ -1,4 +1,5 @@
 import { HKT2, Kind, Kind2, URIS, URIS2 } from 'fp-ts/HKT'
+import * as G from './GuardBase'
 
 /**
  * This internal structure is compatible with `Iso` from `monocle-ts`.
@@ -16,7 +17,11 @@ type Iso<A, B> = {
  * @internal
  */
 export interface WithIsoHKT2<S> {
-  readonly iso: <A, B>(iso: Iso<A, B>) => <O>(target: HKT2<S, O, A>) => HKT2<S, O, B>
+  readonly iso: <A, B>(
+    iso: Iso<A, B>,
+    guardB: G.Guard<unknown, B>,
+    nameB: string
+  ) => <O>(target: HKT2<S, O, A>) => HKT2<S, O, B>
 }
 
 /**
@@ -24,7 +29,11 @@ export interface WithIsoHKT2<S> {
  * @internal
  */
 export interface WithIso1<S extends URIS> {
-  readonly iso: <A, B>(iso: Iso<A, B>) => (target: Kind<S, A>) => Kind<S, B>
+  readonly iso: <A, B>(
+    iso: Iso<A, B>,
+    guardB: G.Guard<unknown, B>,
+    nameB: string
+  ) => (target: Kind<S, A>) => Kind<S, B>
 }
 
 /**
@@ -32,7 +41,11 @@ export interface WithIso1<S extends URIS> {
  * @internal
  */
 export interface WithIso2<S extends URIS2> {
-  readonly iso: <A, B>(iso: Iso<A, B>) => <O>(target: Kind2<S, O, A>) => Kind2<S, O, B>
+  readonly iso: <A, B>(
+    iso: Iso<A, B>,
+    guardB: G.Guard<unknown, B>,
+    nameB: string
+  ) => <O>(target: Kind2<S, O, A>) => Kind2<S, O, B>
 }
 
 /**
@@ -40,5 +53,9 @@ export interface WithIso2<S extends URIS2> {
  * @internal
  */
 export interface WithIso2C<S extends URIS2, E> {
-  readonly iso: <A, B>(iso: Iso<A, B>) => (target: Kind2<S, E, A>) => Kind2<S, E, B>
+  readonly iso: <A, B>(
+    iso: Iso<A, B>,
+    guardB: G.Guard<unknown, B>,
+    nameB: string
+  ) => (target: Kind2<S, E, A>) => Kind2<S, E, B>
 }

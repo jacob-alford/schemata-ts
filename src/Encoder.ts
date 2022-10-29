@@ -44,6 +44,7 @@ export const Schemable: SchemableExt2<Enc.URI> = {
   ...Enc.Schemable,
   ...Enc.WithBrand,
   ...Enc.WithPattern,
+  ...Enc.WithIso,
   ...Enc.WithRefine,
   ...Enc.WithUnknownContainers,
   mapFromEntries: mapFromEntries.Encoder,
