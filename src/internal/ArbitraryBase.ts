@@ -12,7 +12,7 @@ import * as RTup from 'fp-ts/ReadonlyTuple'
 import * as S from 'io-ts/Schemable'
 import { arbitraryFromPattern } from '../PatternBuilder'
 import { WithBrand1 } from './WithBrand'
-import { WithIso1 } from './WithIso'
+import { WithInvariant1 } from './WithInvariant'
 import { WithPattern1 } from './WithPattern'
 
 /**
@@ -301,9 +301,6 @@ export const WithBrand: WithBrand1<URI> = {
  * @since 1.0.0
  * @category Instances
  */
-export const WithIso: WithIso1<URI> = {
-  iso:
-    ({ get }) =>
-    arb =>
-      arb.map(get),
+export const WithInvariant: WithInvariant1<URI> = {
+  imap: () => get => arb => arb.map(get),
 }

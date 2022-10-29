@@ -197,10 +197,12 @@ describe('ArbitraryBase', () => {
       expect(Arb.typeOf('')).toBe('string')
     })
     test('iso', () => {
-      const getDate = Arb.WithIso.iso<number, Date>(
-        { get: n => new Date(n), reverseGet: d => d.getTime() },
+      const getDate = Arb.WithInvariant.imap(
         { is: (d): d is Date => d instanceof Date },
         'number'
+      )<number>(
+        n => new Date(n),
+        d => d.getTime()
       )
 
       fc.assert(

@@ -94,7 +94,7 @@ export const makeSchemableExtTypeclass: (
           ]
         ),
         _.createExpressionWithTypeArguments(
-          _.createIdentifier(`WithIso${suffix === '' ? 'HKT2' : suffix}`),
+          _.createIdentifier(`WithInvariant${suffix === '' ? 'HKT2' : suffix}`),
           [
             _.createTypeReferenceNode(_.createIdentifier('S'), undefined),
             ...(suffix === '2C'
@@ -262,8 +262,8 @@ const makeSchemableExtContents: (
         './internal/WithPattern'
       ),
       makeDestructureImport(
-        ['WithIso1', 'WithIso2', 'WithIso2C', 'WithIsoHKT2'],
-        './internal/WithIso'
+        ['WithInvariant1', 'WithInvariant2', 'WithInvariant2C', 'WithInvariantHKT2'],
+        './internal/WithInvariant'
       ),
       _.createJSDocComment('generic'),
       ...pipe(
@@ -387,7 +387,7 @@ const makeSchemableInstance: (
                 _.createSpreadAssignment(
                   _.createPropertyAccessExpression(
                     _.createIdentifier(accessor),
-                    _.createIdentifier('WithIso')
+                    _.createIdentifier('WithInvariant')
                   )
                 ),
                 _.createSpreadAssignment(

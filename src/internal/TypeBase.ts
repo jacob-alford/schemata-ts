@@ -5,7 +5,7 @@ import * as E from 'fp-ts/Either'
 import { pattern as guardPattern } from './GuardBase'
 import { WithBrand1 } from './WithBrand'
 import { WithPattern1 } from './WithPattern'
-import { WithIso1 } from './WithIso'
+import { WithInvariant1 } from './WithInvariant'
 
 export * from 'io-ts/Type'
 
@@ -34,14 +34,12 @@ export const WithBrand: WithBrand1<t.URI> = {
  * @since 1.0.0
  * @category Instances
  */
-export const WithIso: WithIso1<t.URI> = {
-  iso:
-    ({ get, reverseGet }, gB, nameB) =>
-    tdA =>
-      new Type_(
-        `Iso<${tdA.name}, ${nameB}>`,
-        gB.is,
-        (i, c) => pipe(tdA.validate(i, c), E.map(get)),
-        flow(reverseGet, tdA.encode)
-      ),
+export const WithInvariant: WithInvariant1<t.URI> = {
+  imap: (gB, nameB) => (get, reverseGet) => tdA =>
+    new Type_(
+      `Iso<${tdA.name}, ${nameB}>`,
+      gB.is,
+      (i, c) => pipe(tdA.validate(i, c), E.map(get)),
+      flow(reverseGet, tdA.encode)
+    ),
 }

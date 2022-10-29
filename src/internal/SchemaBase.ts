@@ -5,7 +5,7 @@ import * as SC from '../SchemaExt'
 import { Refinement } from 'fp-ts/Refinement'
 import * as S2 from './Schemable2'
 import { WithPattern2 } from './WithPattern'
-import { WithIso2 } from './WithIso'
+import { WithInvariant2 } from './WithInvariant'
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 type Any = any
@@ -180,8 +180,9 @@ export const Pattern: WithPattern2<URI>['pattern'] = (pattern, description) =>
  * @since 1.0.0
  * @category Combinators
  */
-export const Iso: WithIso2<URI>['iso'] = (isoAb, guardB, nameB) => target =>
-  SC.make(S => S.iso(isoAb, guardB, nameB)(target(S)))
+export const InvMap: WithInvariant2<URI>['imap'] =
+  (guardB, nameB) => (get, reverseGet) => target =>
+    SC.make(S => S.imap(guardB, nameB)(get, reverseGet)(target(S)))
 
 /**
  * @since 1.0.0

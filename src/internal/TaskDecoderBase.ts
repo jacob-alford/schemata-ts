@@ -3,7 +3,7 @@ import * as TD from 'io-ts/TaskDecoder'
 import * as TE from 'fp-ts/TaskEither'
 import { pattern } from './GuardBase'
 import { WithBrand2C } from './WithBrand'
-import { WithIso2C } from './WithIso'
+import { WithInvariant2C } from './WithInvariant'
 import { WithPattern2C } from './WithPattern'
 
 export * from 'io-ts/TaskDecoder'
@@ -30,10 +30,8 @@ export const WithBrand: WithBrand2C<TD.URI, unknown> = {
  * @since 1.0.0
  * @category Instances
  */
-export const WithIso: WithIso2C<TD.URI, unknown> = {
-  iso:
-    ({ get }) =>
-    tdA => ({
-      decode: flow(tdA.decode, TE.map(get)),
-    }),
+export const WithInvariant: WithInvariant2C<TD.URI, unknown> = {
+  imap: () => get => tdA => ({
+    decode: flow(tdA.decode, TE.map(get)),
+  }),
 }

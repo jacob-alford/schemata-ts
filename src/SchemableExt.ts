@@ -29,7 +29,12 @@ import {
   WithPattern2C,
   WithPatternHKT2,
 } from './internal/WithPattern'
-import { WithIso1, WithIso2, WithIso2C, WithIsoHKT2 } from './internal/WithIso'
+import {
+  WithInvariant1,
+  WithInvariant2,
+  WithInvariant2C,
+  WithInvariantHKT2,
+} from './internal/WithInvariant'
 
 /** Generic */
 import * as mapFromEntries from './generic/mapFromEntries'
@@ -67,7 +72,7 @@ export interface SchemableExt<S>
   extends SchemableHKT2<S>,
     WithBrandHKT2<S>,
     WithPatternHKT2<S>,
-    WithIsoHKT2<S>,
+    WithInvariantHKT2<S>,
     WithRefineHKT2<S>,
     WithUnknownContainersHKT2<S> {
   /**
@@ -283,7 +288,7 @@ export interface SchemableExt1<S extends URIS>
   extends Schemable1<S>,
     WithBrand1<S>,
     WithPattern1<S>,
-    WithIso1<S>,
+    WithInvariant1<S>,
     WithRefine1<S>,
     WithUnknownContainers1<S> {
   /**
@@ -499,7 +504,7 @@ export interface SchemableExt2<S extends URIS2>
   extends Schemable2<S>,
     WithBrand2<S>,
     WithPattern2<S>,
-    WithIso2<S>,
+    WithInvariant2<S>,
     WithRefine2<S>,
     WithUnknownContainers2<S> {
   /**
@@ -715,7 +720,7 @@ export interface SchemableExt2C<S extends URIS2>
   extends Schemable2C<S, unknown>,
     WithBrand2C<S, unknown>,
     WithPattern2C<S, unknown>,
-    WithIso2C<S, unknown>,
+    WithInvariant2C<S, unknown>,
     WithRefine2C<S, unknown>,
     WithUnknownContainers2C<S, unknown> {
   /**

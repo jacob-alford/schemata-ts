@@ -2,7 +2,7 @@ import { identity } from 'fp-ts/function'
 import * as G from 'io-ts/Guard'
 import { Pattern, regexFromPattern } from '../PatternBuilder'
 import { WithBrand1 } from './WithBrand'
-import { WithIso1 } from './WithIso'
+import { WithInvariant1 } from './WithInvariant'
 import { WithPattern1 } from './WithPattern'
 
 export * from 'io-ts/Guard'
@@ -32,8 +32,6 @@ export const WithBrand: WithBrand1<G.URI> = {
  * @since 1.0.0
  * @category Instances
  */
-export const WithIso: WithIso1<G.URI> = {
-  iso: (_, gB) => () => ({
-    is: gB.is,
-  }),
+export const WithInvariant: WithInvariant1<G.URI> = {
+  imap: gB => () => () => gB,
 }

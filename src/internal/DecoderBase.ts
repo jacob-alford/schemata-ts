@@ -3,7 +3,7 @@ import * as D from 'io-ts/Decoder'
 import * as E from 'fp-ts/Either'
 import { pattern } from './GuardBase'
 import { WithBrand2C } from './WithBrand'
-import { WithIso2C } from './WithIso'
+import { WithInvariant2C } from './WithInvariant'
 import { WithPattern2C } from './WithPattern'
 
 export * from 'io-ts/Decoder'
@@ -22,10 +22,8 @@ export const WithBrand: WithBrand2C<D.URI, unknown> = {
  * @since 1.0.0
  * @category Instances
  */
-export const WithIso: WithIso2C<D.URI, unknown> = {
-  iso:
-    ({ get }) =>
-    dA => ({
-      decode: flow(dA.decode, E.map(get)),
-    }),
+export const WithInvariant: WithInvariant2C<D.URI, unknown> = {
+  imap: () => get => dA => ({
+    decode: flow(dA.decode, E.map(get)),
+  }),
 }

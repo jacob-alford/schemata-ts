@@ -1,7 +1,7 @@
 import { identity } from 'fp-ts/function'
 import * as Eq from 'io-ts/Eq'
 import { WithBrand1 } from './WithBrand'
-import { WithIso1 } from './WithIso'
+import { WithInvariant1 } from './WithInvariant'
 import { WithPattern1 } from './WithPattern'
 
 export * from 'io-ts/Eq'
@@ -26,10 +26,8 @@ export const WithBrand: WithBrand1<Eq.URI> = {
  * @since 1.0.0
  * @category Instances
  */
-export const WithIso: WithIso1<Eq.URI> = {
-  iso:
-    ({ reverseGet }) =>
-    eqA => ({
-      equals: (x, y) => eqA.equals(reverseGet(x), reverseGet(y)),
-    }),
+export const WithInvariant: WithInvariant1<Eq.URI> = {
+  imap: () => (_, reverseGet) => eqA => ({
+    equals: (x, y) => eqA.equals(reverseGet(x), reverseGet(y)),
+  }),
 }
