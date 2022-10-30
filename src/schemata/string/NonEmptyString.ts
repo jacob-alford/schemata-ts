@@ -27,7 +27,7 @@ export type NonEmptyString = string & NonEmptyStringBrand
 export type NonEmptyStringS = SchemaExt<string, NonEmptyString>
 
 /**
- * A valid hexadecimal color value.
+ * A string with length greater than one
  *
  * @since 1.0.0
  * @category Schema
