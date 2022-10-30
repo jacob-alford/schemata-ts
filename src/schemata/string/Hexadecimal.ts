@@ -5,7 +5,7 @@
  */
 import { pipe } from 'fp-ts/function'
 import * as PB from '../../PatternBuilder'
-import { make } from '../../SchemaExt'
+import { make, SchemaExt } from '../../SchemaExt'
 import { Brand } from 'io-ts'
 
 /** @internal */
@@ -18,6 +18,12 @@ type HexadecimalBrand = Brand<{ readonly x: unique symbol }['x']>
  * @category Model
  */
 export type Hexadecimal = string & HexadecimalBrand
+
+/**
+ * @since 1.0.0
+ * @category Model
+ */
+export type HexadecimalS = SchemaExt<string, Hexadecimal>
 
 /**
  * @since 1.0.0
@@ -36,9 +42,11 @@ export const hexadecimal: PB.Pattern = pipe(
 )
 
 /**
+ * A string of hexadecimal characters.
+ *
  * @since 1.0.0
  * @category Schema
  */
-export const Hexadecimal = make(s =>
+export const Hexadecimal: HexadecimalS = make(s =>
   s.brand<HexadecimalBrand>()(s.pattern(hexadecimal, 'Hexadecimal'))
 )

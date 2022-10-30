@@ -9,7 +9,7 @@
  */
 import { pipe } from 'fp-ts/function'
 import * as PB from '../../PatternBuilder'
-import { make } from '../../SchemaExt'
+import { make, SchemaExt } from '../../SchemaExt'
 import { Brand } from 'io-ts'
 
 /** @internal */
@@ -22,6 +22,12 @@ type EmailAddressBrand = Brand<{ readonly x: unique symbol }['x']>
  * @category Model
  */
 export type EmailAddress = string & EmailAddressBrand
+
+/**
+ * @since 1.0.0
+ * @category Model
+ */
+export type EmailAddressS = SchemaExt<string, EmailAddress>
 
 // (".+")
 const localPartQuoted = pipe(
@@ -104,9 +110,11 @@ export const emailAddress: PB.Pattern = pipe(
 )
 
 /**
+ * Represents strings (email addresses) that conform to the RFC 5322 standard.
+ *
  * @since 1.0.0
  * @category Schema
  */
-export const EmailAddress = make(s =>
+export const EmailAddress: EmailAddressS = make(s =>
   s.brand<EmailAddressBrand>()(s.pattern(emailAddress, 'EmailAddress'))
 )

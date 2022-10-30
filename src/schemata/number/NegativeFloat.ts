@@ -19,10 +19,24 @@ type NegativeFloatBrand = Brand<
 >
 
 /**
+ * Negative floating point branded newtype.
+ *
+ * Represents negative floating point numbers:
+ *
+ * ```math
+ *  { f | f ∈ ℝ, f < 0, f >= -Number.MAX_VALUE }
+ * ```
+ *
  * @since 1.0.0
  * @category Model
  */
 export type NegativeFloat = number & NegativeFloatBrand
+
+/**
+ * @since 1.0.0
+ * @category Model
+ */
+export type NegativeFloatS = SchemaExt<number, NegativeFloat>
 
 /**
  * Negative floating point branded newtype.
@@ -36,6 +50,6 @@ export type NegativeFloat = number & NegativeFloatBrand
  * @since 1.0.0
  * @category Schema
  */
-export const NegativeFloat: SchemaExt<number, NegativeFloat> = make(S =>
+export const NegativeFloat: NegativeFloatS = make(S =>
   pipe(S.float({ max: -Number.MIN_VALUE }), S.brand<NegativeFloatBrand>())
 )
