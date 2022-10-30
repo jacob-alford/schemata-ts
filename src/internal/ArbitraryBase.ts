@@ -1,7 +1,7 @@
 /**
  * An instance of `Schemable` for `fast-check` arbitraries that emit valid values
  *
- * @since 0.0.2
+ * @since 1.0.0
  * @internal
  */
 import * as fc from 'fast-check'
@@ -12,10 +12,11 @@ import * as RTup from 'fp-ts/ReadonlyTuple'
 import * as S from 'io-ts/Schemable'
 import { arbitraryFromPattern } from '../PatternBuilder'
 import { WithBrand1 } from './WithBrand'
+import { WithInvariant1 } from './WithInvariant'
 import { WithPattern1 } from './WithPattern'
 
 /**
- * @since 0.0.2
+ * @since 1.0.0
  * @category Model
  */
 export interface Arbitrary<A> extends fc.Arbitrary<A> {}
@@ -25,7 +26,7 @@ export interface Arbitrary<A> extends fc.Arbitrary<A> {}
 // -------------------------------------------------------------------------------------
 
 /**
- * @since 0.0.2
+ * @since 1.0.0
  * @category Constructors
  */
 export const literal = <
@@ -40,7 +41,7 @@ export const literal = <
 // -------------------------------------------------------------------------------------
 
 /**
- * @since 0.0.2
+ * @since 1.0.0
  * @category Primitives
  */
 export const string: Arbitrary<string> = fc.oneof(
@@ -52,7 +53,7 @@ export const string: Arbitrary<string> = fc.oneof(
 )
 
 /**
- * @since 0.0.2
+ * @since 1.0.0
  * @category Primitives
  */
 export const number: Arbitrary<number> = fc.oneof(
@@ -62,19 +63,19 @@ export const number: Arbitrary<number> = fc.oneof(
 )
 
 /**
- * @since 0.0.2
+ * @since 1.0.0
  * @category Primitives
  */
 export const boolean: Arbitrary<boolean> = fc.boolean()
 
 /**
- * @since 0.0.2
+ * @since 1.0.0
  * @category Primitives
  */
 export const UnknownArray: Arbitrary<Array<unknown>> = fc.array(fc.anything())
 
 /**
- * @since 0.0.2
+ * @since 1.0.0
  * @category Primitives
  */
 export const UnknownRecord: Arbitrary<Record<string, unknown>> = fc.dictionary(
@@ -87,21 +88,21 @@ export const UnknownRecord: Arbitrary<Record<string, unknown>> = fc.dictionary(
 // -------------------------------------------------------------------------------------
 
 /**
- * @since 0.0.2
+ * @since 1.0.0
  * @category Combinators
  */
 export const refine: S.WithRefine1<URI>['refine'] = refinement => from =>
   from.filter(refinement)
 
 /**
- * @since 0.0.2
+ * @since 1.0.0
  * @category Combinators
  */
 export const nullable = <A>(or: Arbitrary<A>): Arbitrary<null | A> =>
   fc.oneof(fc.constant(null), or)
 
 /**
- * @since 0.0.2
+ * @since 1.0.0
  * @category Combinators
  */
 export const struct = <A>(properties: {
@@ -109,7 +110,7 @@ export const struct = <A>(properties: {
 }): Arbitrary<A> => fc.record(properties)
 
 /**
- * @since 0.0.2
+ * @since 1.0.0
  * @category Combinators
  */
 export const partial = <A>(properties: { [K in keyof A]: Arbitrary<A[K]> }): Arbitrary<
@@ -124,20 +125,20 @@ export const partial = <A>(properties: { [K in keyof A]: Arbitrary<A[K]> }): Arb
 }
 
 /**
- * @since 0.0.2
+ * @since 1.0.0
  * @category Combinators
  */
 export const record = <A>(codomain: Arbitrary<A>): Arbitrary<Record<string, A>> =>
   fc.dictionary(string, codomain)
 
 /**
- * @since 0.0.2
+ * @since 1.0.0
  * @category Combinators
  */
 export const array = <A>(item: Arbitrary<A>): Arbitrary<Array<A>> => fc.array(item)
 
 /**
- * @since 0.0.2
+ * @since 1.0.0
  * @category Combinators
  */
 export const tuple = <A extends ReadonlyArray<unknown>>(
@@ -150,13 +151,13 @@ export const tuple = <A extends ReadonlyArray<unknown>>(
 }
 
 /**
- * @since 0.0.2
+ * @since 1.0.0
  * @internal
  */
 export const typeOf = (x: unknown): string => (x === null ? 'null' : typeof x)
 
 /**
- * @since 0.0.2
+ * @since 1.0.0
  * @internal
  */
 const intersect_ = <A, B>(a: A, b: B): A & B => {
@@ -171,7 +172,7 @@ const intersect_ = <A, B>(a: A, b: B): A & B => {
 }
 
 /**
- * @since 0.0.2
+ * @since 1.0.0
  * @category Combinators
  */
 export const intersect =
@@ -180,7 +181,7 @@ export const intersect =
     fc.tuple(left, right).map(([a, b]) => intersect_(a, b))
 
 /**
- * @since 0.0.2
+ * @since 1.0.0
  * @category Combinators
  */
 export const sum =
@@ -193,7 +194,7 @@ export const sum =
     fc.oneof(...pipe(members, RR.toReadonlyArray, RA.map(RTup.snd)))
 
 /**
- * @since 0.0.2
+ * @since 1.0.0
  * @category Combinators
  */
 export const lazy = <A>(f: () => Arbitrary<A>): Arbitrary<A> => {
@@ -202,13 +203,13 @@ export const lazy = <A>(f: () => Arbitrary<A>): Arbitrary<A> => {
 }
 
 /**
- * @since 0.0.2
+ * @since 1.0.0
  * @category Combintors
  */
 export const readonly: <A>(arb: Arbitrary<A>) => Arbitrary<Readonly<A>> = identity
 
 /**
- * @since 0.0.2
+ * @since 1.0.0
  * @category Combinators
  */
 export const union: S.WithUnion1<URI>['union'] = (...members) => fc.oneof(...members)
@@ -218,7 +219,7 @@ export const union: S.WithUnion1<URI>['union'] = (...members) => fc.oneof(...mem
 // -------------------------------------------------------------------------------------
 
 /**
- * @since 0.0.2
+ * @since 1.0.0
  * @category Instances
  */
 export const URI = 'Arbitrary'
@@ -232,7 +233,7 @@ declare module 'fp-ts/lib/HKT' {
 }
 
 /**
- * @since 0.0.2
+ * @since 1.0.0
  * @category Instances
  */
 export const Schemable: S.Schemable1<URI> = {
@@ -255,7 +256,7 @@ export const Schemable: S.Schemable1<URI> = {
 }
 
 /**
- * @since 0.0.5
+ * @since 1.0.0
  * @category Instances
  */
 export const WithUnknownContainers: S.WithUnknownContainers1<URI> = {
@@ -264,7 +265,7 @@ export const WithUnknownContainers: S.WithUnknownContainers1<URI> = {
 }
 
 /**
- * @since 0.0.5
+ * @since 1.0.0
  * @category Instances
  */
 export const WithUnion: S.WithUnion1<URI> = {
@@ -272,7 +273,7 @@ export const WithUnion: S.WithUnion1<URI> = {
 }
 
 /**
- * @since 0.0.5
+ * @since 1.0.0
  * @category Instances
  */
 export const WithRefine: S.WithRefine1<URI> = {
@@ -294,4 +295,12 @@ export const WithPattern: WithPattern1<URI> = {
 export const WithBrand: WithBrand1<URI> = {
   // @ts-expect-error -- Branding is only type change, implicit cast here
   brand: () => identity,
+}
+
+/**
+ * @since 1.0.0
+ * @category Instances
+ */
+export const WithInvariant: WithInvariant1<URI> = {
+  imap: () => get => arb => arb.map(get),
 }

@@ -183,4 +183,16 @@ describe('SchemaBase', () => {
     expect(decode.decode('foo')._tag).toStrictEqual('Left')
     expect(decode.decode('bar')._tag).toStrictEqual('Left')
   })
+  test('WithInvariant', () => {
+    const Schema = SC.InvMap<Date>(
+      { is: (a: unknown): a is Date => a instanceof Date },
+      'Date'
+    )<string>(
+      a => new Date(a),
+      a => a.toISOString()
+    )(SC.String)
+    const decoder = interpreter(D.Schemable)(Schema)
+    const test = new Date()
+    expect(decoder.decode(test.toISOString())).toStrictEqual(E.right(test))
+  })
 })

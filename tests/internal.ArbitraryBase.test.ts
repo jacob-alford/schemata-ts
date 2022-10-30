@@ -196,5 +196,25 @@ describe('ArbitraryBase', () => {
       expect(Arb.typeOf(1)).toBe('number')
       expect(Arb.typeOf('')).toBe('string')
     })
+    test('WithInvariant', () => {
+      const getDate = Arb.WithInvariant.imap(
+        { is: (d): d is Date => d instanceof Date },
+        'number'
+      )<number>(
+        n => new Date(n),
+        d => d.getTime()
+      )
+
+      fc.assert(
+        fc.property(
+          getDate(
+            fc.integer({ min: -8_640_000_000_000_000, max: 8_640_000_000_000_000 })
+          ),
+          a => {
+            expect(Number.isNaN(a.getTime())).toBe(false)
+          }
+        )
+      )
+    })
   })
 })

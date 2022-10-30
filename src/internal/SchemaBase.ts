@@ -5,6 +5,7 @@ import * as SC from '../SchemaExt'
 import { Refinement } from 'fp-ts/Refinement'
 import * as S2 from './Schemable2'
 import { WithPattern2 } from './WithPattern'
+import { WithInvariant2 } from './WithInvariant'
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 type Any = any
@@ -174,6 +175,14 @@ export const Brand =
  */
 export const Pattern: WithPattern2<URI>['pattern'] = (pattern, description) =>
   SC.make(S => S.pattern(pattern, description))
+
+/**
+ * @since 1.0.0
+ * @category Combinators
+ */
+export const InvMap: WithInvariant2<URI>['imap'] =
+  (guardB, name) => (get, reverseGet) => target =>
+    SC.make(S => S.imap(guardB, name)(get, reverseGet)(target(S)))
 
 /**
  * @since 1.0.0
