@@ -85,11 +85,11 @@ describe('BigIntString', () => {
   })
 
   describe('Schema', () => {
+    const Float = BigIntString.Schema
     it('derives a decoder', () => {
-      const decoder = getDecoder(BigIntString.Schema)
-      const valid = '123'
-      expect(decoder.decode(new Date('abc'))._tag).toEqual('Left')
-      expect(decoder.decode(valid)).toStrictEqual(E.right(BigInt(valid)))
+      const decoder = getDecoder(Float)
+      expect(decoder.decode('abc')._tag).toEqual('Left')
+      expect(decoder.decode('123456789')).toStrictEqual(E.right(123456789n))
     })
   })
 })
