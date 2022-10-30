@@ -19,10 +19,24 @@ type PositiveFloatBrand = Brand<
 >
 
 /**
+ * Positive Float branded newtype.
+ *
+ * Represents floating point numbers:
+ *
+ * ```math
+ *  { f | f ∈ R, f > 0, f <= Number.MAX_VALUE }
+ * ```
+ *
  * @since 1.0.0
  * @category Model
  */
 export type PositiveFloat = number & PositiveFloatBrand
+
+/**
+ * @since 1.0.0
+ * @category Model
+ */
+export type PositiveFloatS = SchemaExt<number, PositiveFloat>
 
 /**
  * Positive Float branded newtype.
@@ -36,6 +50,6 @@ export type PositiveFloat = number & PositiveFloatBrand
  * @since 1.0.0
  * @category Schema
  */
-export const PositiveFloat: SchemaExt<number, PositiveFloat> = make(S =>
+export const PositiveFloat: PositiveFloatS = make(S =>
   pipe(S.float({ min: Number.MIN_VALUE }), S.brand<PositiveFloatBrand>())
 )

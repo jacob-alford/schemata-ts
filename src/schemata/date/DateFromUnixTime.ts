@@ -9,18 +9,18 @@ import * as float from '../../number/float'
 import * as date from '../../date/date'
 
 /**
- * Represents Date objects derived from unix time.
- *
  * @since 1.0.0
  * @category Model
  */
-export type DateFromUnixTime = SchemaExt<number, Date>
+export type DateFromUnixTimeS = SchemaExt<number, Date>
 
 /**
+ * Represents Date objects derived from unix time.
+ *
  * @since 1.0.0
  * @category Schema
  */
-export const DateFromUnixTime: SchemaExt<number, Date> = make(S =>
+export const DateFromUnixTime: DateFromUnixTimeS = make(S =>
   pipe(
     S.float({ min: -8_640_000_000_000, max: 8_640_000_000_000 }),
     S.imap(date.Guard, 'DateFromUnixTime')(

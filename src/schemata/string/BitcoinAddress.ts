@@ -5,7 +5,7 @@
  */
 
 import * as PB from '../../PatternBuilder'
-import { make } from '../../SchemaExt'
+import { make, SchemaExt } from '../../SchemaExt'
 import { Brand } from 'io-ts'
 import { pipe } from 'fp-ts/function'
 
@@ -21,6 +21,12 @@ type BitcoinAddressBrand = Brand<
  * @category Model
  */
 export type BitcoinAddress = string & BitcoinAddressBrand
+
+/**
+ * @since 1.0.0
+ * @category Pattern
+ */
+export type BitcoinAddressS = SchemaExt<string, BitcoinAddress>
 
 /**
  * /^(bc1)[a-z0-9]{25,39}$/
@@ -62,9 +68,11 @@ const base58 = pipe(
 export const bitcoinAddress: PB.Pattern = pipe(bech32, PB.or(base58))
 
 /**
+ * Represents strings which are valid Bitcoin addresses.
+ *
  * @since 1.0.0
  * @category Schema
  */
-export const BitcoinAddress = make(s =>
+export const BitcoinAddress: BitcoinAddressS = make(s =>
   s.brand<BitcoinAddressBrand>()(s.pattern(bitcoinAddress, 'BitcoinAddress'))
 )

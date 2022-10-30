@@ -5,7 +5,7 @@
  */
 
 import * as PB from '../../PatternBuilder'
-import { make } from '../../SchemaExt'
+import { make, SchemaExt } from '../../SchemaExt'
 import { Brand } from 'io-ts'
 import { pipe } from 'fp-ts/function'
 
@@ -19,6 +19,12 @@ type HexColorBrand = Brand<{ readonly HexColor: unique symbol }['HexColor']>
  * @category Model
  */
 export type HexColor = string & HexColorBrand
+
+/**
+ * @since 1.0.0
+ * @category Model
+ */
+export type HexColorS = SchemaExt<string, HexColor>
 
 /**
  * /^#?([0-9A-F]{3}|[0-9A-F]{4}|[0-9A-F]{6}|[0-9A-F]{8})$/i
@@ -40,9 +46,11 @@ export const hexColor: PB.Pattern = pipe(
 )
 
 /**
+ * A valid hexadecimal color value.
+ *
  * @since 1.0.0
  * @category Schema
  */
-export const HexColor = make(s =>
+export const HexColor: HexColorS = make(s =>
   s.brand<HexColorBrand>()(s.pattern(hexColor, 'HexColor', true))
 )
