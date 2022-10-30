@@ -3,7 +3,7 @@ import * as fc from 'fast-check'
 import * as Arb from '../src/internal/ArbitraryBase'
 import * as G from '../src/Guard'
 import * as SC from '../src/SchemaExt'
-import { PositiveFloat } from '../src/schemas/number/PositiveFloat'
+import { PositiveFloat } from '../src/schemata/number/PositiveFloat'
 
 const isPositiveFloat = SC.interpreter(G.Schemable)(PositiveFloat).is
 

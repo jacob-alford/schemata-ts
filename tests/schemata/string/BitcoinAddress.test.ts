@@ -1,4 +1,4 @@
-import { BitcoinAddress } from '../../../src/schemas/string/BitcoinAddress'
+import { BitcoinAddress } from '../../../src/schemata/string/BitcoinAddress'
 
 import { getAllInstances, validateArbitrary } from '../../../test-utils'
 

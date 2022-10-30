@@ -7,7 +7,7 @@ schemata-ts
 </h1>
 
 <p align="center" style="margin-bottom: 12px;">
-A collection of Schemas inspired by io-ts-types and validators.js.
+A collection of Schemata inspired by io-ts-types and validators.js.
 </p>
 
 <div align="center">
@@ -44,7 +44,7 @@ A collection of Schemas inspired by io-ts-types and validators.js.
 Version 0.1.0 is a transitionary release that will contain breaking changes upon release of the full version 1.0.0. 0.1.0 released on NPM is intended to be used with `SchemaExt.make(S => S.Nullable(S.String))`, where version 1.0.0 is almost exclusively `Schema` based, and will look something like this:
 
 ```typescript
-import * as S from 'schemata-ts/schemas'
+import * as S from 'schemata-ts/schemata'
 import * as I from 'schemata-ts/interpreters'
 
 const User = S.Struct({
@@ -71,10 +71,10 @@ This library currently has 100% jest coverage, contributions are highly encourag
 
 ### Module Structure
 
-The core API of `schemata-ts` is using the exports of `src/schemas.ts`. It is planned for these to be generated based on the files in `src / schemas / (string | number) / [ModuleName].ts`. Adding a new module is a two step process:
+The core API of `schemata-ts` is using the exports of `src/schemata.ts`. It is planned for these to be generated based on the files in `src / schemata / (string | number) / [ModuleName].ts`. Adding a new module is a two step process:
 
 1. Build the Schema in the relevant directory
-2. Generate the schemas file using the script (WIP)
+2. Generate the schemata file using the script (WIP)
 
 ## Installation
 
@@ -193,12 +193,12 @@ And with this, the structure of domain types and operators come from a single so
 
 ### The value of schema
 
-`schemata-ts` comes with many different exported schemas that aims to provide similar levels of functionality to `io-ts-types` and `validators.js`.
+`schemata-ts` comes with many different exported schemata that aims to provide similar levels of functionality to `io-ts-types` and `validators.js`.
 
 Let's refine our User type.
 
 ```typescript
-import * as S from 'schemata-ts/schemas'
+import * as S from 'schemata-ts/schemata'
 import * as I from 'schemata-ts/interpreters'
 
 const User = S.Struct({
