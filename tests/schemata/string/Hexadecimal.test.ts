@@ -3,7 +3,7 @@ import * as E from 'fp-ts/Either'
 
 import { pipe, tuple } from 'fp-ts/function'
 
-import { Hexadecimal } from '../../../src/schemas/string/Hexadecimal'
+import { Hexadecimal } from '../../../src/schemata/string/Hexadecimal'
 
 import {
   cat,

@@ -7,7 +7,7 @@ import {
   getAllInstances,
   validateArbitrary,
 } from '../../../test-utils'
-import { EmailAddress } from '../../../src/schemas/string/EmailAddress'
+import { EmailAddress } from '../../../src/schemata/string/EmailAddress'
 
 const repeat: (s: string, times: number) => string = (s, times) => s.repeat(times)
 

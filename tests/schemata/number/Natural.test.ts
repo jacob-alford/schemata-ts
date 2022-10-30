@@ -1,5 +1,5 @@
 import { unsafeCoerce } from 'fp-ts/function'
-import { Natural } from '../../../src/schemas/number/Natural'
+import { Natural } from '../../../src/schemata/number/Natural'
 import { getAllInstances, validateArbitrary } from '../../../test-utils'
 
 const _: (n: number) => Natural = unsafeCoerce

@@ -1,6 +1,6 @@
 import * as RA from 'fp-ts/ReadonlyArray'
 import { tuple } from 'fp-ts/function'
-import { PositiveFloat } from '../../../src/schemas/number/PositiveFloat'
+import { NonNegativeFloat } from '../../../src/schemata/number/NonNegativeFloat'
 
 import {
   cat,
@@ -9,17 +9,16 @@ import {
   validateArbitrary,
 } from '../../../test-utils'
 
-const { Decoder, Eq, Guard, Arbitrary, Type, TaskDecoder } =
-  getAllInstances(PositiveFloat)
+const validNumbers = [0, 1, 1.1, Math.random() + 1, Number.MAX_SAFE_INTEGER]
 
-const validNumbers = [1, 1.1, Math.random() + 1, Number.MAX_SAFE_INTEGER]
+const { Decoder, Eq, Guard, Arbitrary, Type, TaskDecoder } =
+  getAllInstances(NonNegativeFloat)
 
 const invalidNumbers = [
-  0,
   -1,
   -1.1,
-  '2......',
   'a',
+  '2......',
   -Math.random(),
   Number.MIN_SAFE_INTEGER,
   Infinity,
@@ -27,7 +26,7 @@ const invalidNumbers = [
   NaN,
 ]
 
-describe('PositiveFloat', () => {
+describe('NonNegativeFloat', () => {
   describe('Decoder', () => {
     test.each(
       cat(combineExpected(validNumbers, 'Right'), combineExpected(invalidNumbers, 'Left'))
@@ -71,7 +70,7 @@ describe('PositiveFloat', () => {
   })
 
   describe('Arbitrary', () => {
-    it('generates valid PositiveFloats', () => {
+    it('generates valid NonNegativeFloats', () => {
       validateArbitrary({ Arbitrary }, Guard.is)
     })
   })

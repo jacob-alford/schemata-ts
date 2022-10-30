@@ -54,7 +54,6 @@ import * as base64 from './string/base64'
 import * as base64Url from './string/base64Url'
 import * as creditCard from './string/creditCard'
 import * as hslColor from './string/hslColor'
-import * as isoDateString from './string/isoDateString'
 import * as jwt from './string/jwt'
 import * as latLong from './string/latLong'
 import * as nonemptyString from './string/nonemptyString'
@@ -62,7 +61,8 @@ import * as rgb from './string/rgb'
 import * as uuid from './string/uuid'
 
 /** Date */
-import * as safeDate from './date/safeDate'
+import * as date from './date/date'
+import * as dateFromIsoString from './date/dateFromIsoString'
 
 /**
  * @since 0.0.1
@@ -221,13 +221,6 @@ export interface SchemableExt<S>
   readonly hslColor: hslColor.SchemableParams<S>
 
   /**
-   * Represents strings that conform to the ISO 8601 standard.
-   *
-   * @since 0.0.1
-   */
-  readonly isoDateString: isoDateString.SchemableParams<S>
-
-  /**
    * A valid, Base64-encoded JWT.
    *
    * Inspired by validator.js' [JWT
@@ -273,11 +266,20 @@ export interface SchemableExt<S>
   readonly uuid: uuid.SchemableParams<S>
 
   /**
-   * Represents Date objects which are not invalid dates
+   * Represents valid Date objects
    *
    * @since 1.0.0
    */
-  readonly safeDate: safeDate.SchemableParams<S>
+  readonly date: date.SchemableParams<S>
+
+  /**
+   * Represents a conversion from a valid dateString according to
+   * [ECMA262](https://tc39.es/ecma262/#sec-date-time-string-format) which is a particular
+   * subset of ISO8601 parsable with `Date.parse()`.
+   *
+   * @since 1.0.0
+   */
+  readonly dateFromIsoString: dateFromIsoString.SchemableParams<S>
 }
 
 /**
@@ -437,13 +439,6 @@ export interface SchemableExt1<S extends URIS>
   readonly hslColor: hslColor.SchemableParams1<S>
 
   /**
-   * Represents strings that conform to the ISO 8601 standard.
-   *
-   * @since 0.0.1
-   */
-  readonly isoDateString: isoDateString.SchemableParams1<S>
-
-  /**
    * A valid, Base64-encoded JWT.
    *
    * Inspired by validator.js' [JWT
@@ -489,11 +484,20 @@ export interface SchemableExt1<S extends URIS>
   readonly uuid: uuid.SchemableParams1<S>
 
   /**
-   * Represents Date objects which are not invalid dates
+   * Represents valid Date objects
    *
    * @since 1.0.0
    */
-  readonly safeDate: safeDate.SchemableParams1<S>
+  readonly date: date.SchemableParams1<S>
+
+  /**
+   * Represents a conversion from a valid dateString according to
+   * [ECMA262](https://tc39.es/ecma262/#sec-date-time-string-format) which is a particular
+   * subset of ISO8601 parsable with `Date.parse()`.
+   *
+   * @since 1.0.0
+   */
+  readonly dateFromIsoString: dateFromIsoString.SchemableParams1<S>
 }
 
 /**
@@ -653,13 +657,6 @@ export interface SchemableExt2<S extends URIS2>
   readonly hslColor: hslColor.SchemableParams2<S>
 
   /**
-   * Represents strings that conform to the ISO 8601 standard.
-   *
-   * @since 0.0.1
-   */
-  readonly isoDateString: isoDateString.SchemableParams2<S>
-
-  /**
    * A valid, Base64-encoded JWT.
    *
    * Inspired by validator.js' [JWT
@@ -705,11 +702,20 @@ export interface SchemableExt2<S extends URIS2>
   readonly uuid: uuid.SchemableParams2<S>
 
   /**
-   * Represents Date objects which are not invalid dates
+   * Represents valid Date objects
    *
    * @since 1.0.0
    */
-  readonly safeDate: safeDate.SchemableParams2<S>
+  readonly date: date.SchemableParams2<S>
+
+  /**
+   * Represents a conversion from a valid dateString according to
+   * [ECMA262](https://tc39.es/ecma262/#sec-date-time-string-format) which is a particular
+   * subset of ISO8601 parsable with `Date.parse()`.
+   *
+   * @since 1.0.0
+   */
+  readonly dateFromIsoString: dateFromIsoString.SchemableParams2<S>
 }
 
 /**
@@ -869,13 +875,6 @@ export interface SchemableExt2C<S extends URIS2>
   readonly hslColor: hslColor.SchemableParams2C<S>
 
   /**
-   * Represents strings that conform to the ISO 8601 standard.
-   *
-   * @since 0.0.1
-   */
-  readonly isoDateString: isoDateString.SchemableParams2C<S>
-
-  /**
    * A valid, Base64-encoded JWT.
    *
    * Inspired by validator.js' [JWT
@@ -921,9 +920,18 @@ export interface SchemableExt2C<S extends URIS2>
   readonly uuid: uuid.SchemableParams2C<S>
 
   /**
-   * Represents Date objects which are not invalid dates
+   * Represents valid Date objects
    *
    * @since 1.0.0
    */
-  readonly safeDate: safeDate.SchemableParams2C<S>
+  readonly date: date.SchemableParams2C<S>
+
+  /**
+   * Represents a conversion from a valid dateString according to
+   * [ECMA262](https://tc39.es/ecma262/#sec-date-time-string-format) which is a particular
+   * subset of ISO8601 parsable with `Date.parse()`.
+   *
+   * @since 1.0.0
+   */
+  readonly dateFromIsoString: dateFromIsoString.SchemableParams2C<S>
 }

@@ -1,5 +1,5 @@
 import * as E from 'fp-ts/Either'
-import * as SafeDate from '../../src/date/safeDate'
+import * as SafeDate from '../../src/date/date'
 import { getDecoder } from '../../src/interpreters'
 import { validateArbitrary } from '../../test-utils'
 
