@@ -23,7 +23,7 @@ export type DateFromInt = SchemaExt<number, Date>
 export const DateFromInt: SchemaExt<number, Date> = make(S =>
   pipe(
     S.int({ min: -8_640_000_000_000_000, max: 8_640_000_000_000_000 }),
-    S.imap(date.Guard, 'DateFromNumber')(
+    S.imap(date.Guard, 'DateFromInt')(
       n => new Date(n),
       d => d.getTime() as int.Int
     )
