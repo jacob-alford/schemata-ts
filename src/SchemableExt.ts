@@ -56,7 +56,6 @@ import * as creditCard from './string/creditCard'
 import * as hslColor from './string/hslColor'
 import * as jwt from './string/jwt'
 import * as latLong from './string/latLong'
-import * as nonemptyString from './string/nonemptyString'
 import * as rgb from './string/rgb'
 import * as uuid from './string/uuid'
 
@@ -239,13 +238,6 @@ export interface SchemableExt<S>
    * @since 0.0.4
    */
   readonly latLong: latLong.SchemableParams<S>
-
-  /**
-   * Represents strings that are not empty strings.
-   *
-   * @since 0.0.1
-   */
-  readonly nonemptyString: nonemptyString.SchemableParams<S>
 
   /**
    * Represents strings which are valid RGB colors. Permits both absolute and percentage
@@ -459,13 +451,6 @@ export interface SchemableExt1<S extends URIS>
   readonly latLong: latLong.SchemableParams1<S>
 
   /**
-   * Represents strings that are not empty strings.
-   *
-   * @since 0.0.1
-   */
-  readonly nonemptyString: nonemptyString.SchemableParams1<S>
-
-  /**
    * Represents strings which are valid RGB colors. Permits both absolute and percentage
    * based values.
    *
@@ -677,13 +662,6 @@ export interface SchemableExt2<S extends URIS2>
   readonly latLong: latLong.SchemableParams2<S>
 
   /**
-   * Represents strings that are not empty strings.
-   *
-   * @since 0.0.1
-   */
-  readonly nonemptyString: nonemptyString.SchemableParams2<S>
-
-  /**
    * Represents strings which are valid RGB colors. Permits both absolute and percentage
    * based values.
    *
@@ -893,13 +871,6 @@ export interface SchemableExt2C<S extends URIS2>
    * @since 0.0.4
    */
   readonly latLong: latLong.SchemableParams2C<S>
-
-  /**
-   * Represents strings that are not empty strings.
-   *
-   * @since 0.0.1
-   */
-  readonly nonemptyString: nonemptyString.SchemableParams2C<S>
 
   /**
    * Represents strings which are valid RGB colors. Permits both absolute and percentage
