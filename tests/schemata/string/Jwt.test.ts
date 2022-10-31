@@ -12,6 +12,8 @@ const validStrings = [
 ]
 
 const invalidStrings = [
+  'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJqb2huIjp7ImFnZSI6MjUsImhlaWdodCI6MTg1fSwiamFrZSI6eyJhZ2UiOjMwLCJoZWlnaHQiOjI3MH19.YRLPARDmhGMC3BBk_OhtwwK21PIkVCqQe8ncIRPKo-E.YRLPARDmhGMC3BBk_OhtwwK21PIkVCqQe8ncIRPKo-E',
+  'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJqb2huIjp7ImFnZSI6MjUsImhlaWdodCI6MTg1fSwiamFrZSI6eyJhZ2UiOjMwLCJoZWlnaHQiOjI3MH19.YRLPARDmhGMC3BBk_OhtwwK21PIkVCqQe8ncIRPKo-E.YRLPARDmhGMC3BBk_OhtwwK21PIkVCqQe8ncIRPKo-E.YRLPARDmhGMC3BBk_OhtwwK21PIkVCqQe8ncIRPKo-E',
   'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9',
   '$Zs.ewu.su84',
   'ks64$S/9.dy$§kz.3sd73b',
