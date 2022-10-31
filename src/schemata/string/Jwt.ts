@@ -28,7 +28,7 @@ export type Jwt = string & JwtBrand
 export type JwtS = SchemaExt<string, Jwt>
 
 /**
- * /^(base64).(base64).(base64)$/
+ * /^(base64).(base64)(.(base64)){0,1}$/
  *
  * @since 1.0.0
  * @category Pattern
