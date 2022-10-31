@@ -28,7 +28,7 @@ export type Jwt = string & JwtBrand
 export type JwtS = SchemaExt<string, Jwt>
 
 /**
- * /^(base64).(base64).(base64)$/
+ * /^(base64).(base64)(.(base64)){0,1}$/
  *
  * @since 1.0.0
  * @category Pattern
@@ -38,7 +38,7 @@ export const jwt: PB.Pattern = pipe(
   PB.then(PB.char('.')),
   PB.then(PB.subgroup(base64Url)),
   PB.then(
-    pipe(PB.char('.'), PB.then(PB.subgroup(base64Url)), PB.subgroup, PB.anyNumber())
+    pipe(PB.char('.'), PB.then(PB.subgroup(base64Url)), PB.subgroup, PB.between(0, 1))
   )
 )
 
