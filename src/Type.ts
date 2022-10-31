@@ -23,10 +23,8 @@ import * as intFromString from './number/intFromString'
 
 /** String */
 import * as base64 from './string/base64'
-import * as base64Url from './string/base64Url'
 import * as creditCard from './string/creditCard'
 import * as hslColor from './string/hslColor'
-import * as jwt from './string/jwt'
 import * as latLong from './string/latLong'
 import * as rgb from './string/rgb'
 import * as uuid from './string/uuid'
@@ -56,10 +54,8 @@ export const Schemable: SchemableExt1<t.URI> = {
   int: int.Type,
   intFromString: intFromString.Type,
   base64: base64.Type,
-  base64Url: base64Url.Type,
   creditCard: creditCard.Type,
   hslColor: hslColor.Type,
-  jwt: jwt.Type,
   latLong: latLong.Type,
   rgb: rgb.Type,
   uuid: uuid.Type,
