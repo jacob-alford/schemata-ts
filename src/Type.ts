@@ -28,7 +28,6 @@ import * as creditCard from './string/creditCard'
 import * as hslColor from './string/hslColor'
 import * as jwt from './string/jwt'
 import * as latLong from './string/latLong'
-import * as nonemptyString from './string/nonemptyString'
 import * as rgb from './string/rgb'
 import * as uuid from './string/uuid'
 
@@ -62,7 +61,6 @@ export const Schemable: SchemableExt1<t.URI> = {
   hslColor: hslColor.Type,
   jwt: jwt.Type,
   latLong: latLong.Type,
-  nonemptyString: nonemptyString.Type,
   rgb: rgb.Type,
   uuid: uuid.Type,
   date: date.Type,
