@@ -51,10 +51,8 @@ import * as intFromString from './number/intFromString'
 
 /** String */
 import * as base64 from './string/base64'
-import * as base64Url from './string/base64Url'
 import * as creditCard from './string/creditCard'
 import * as hslColor from './string/hslColor'
-import * as jwt from './string/jwt'
 import * as latLong from './string/latLong'
 import * as rgb from './string/rgb'
 import * as uuid from './string/uuid'
@@ -180,18 +178,6 @@ export interface SchemableExt<S>
   readonly base64: base64.SchemableParams<S>
 
   /**
-   * Representing a URL-safe, Base64 encoded string.
-   *
-   * For a non-URL-safe alternative, @see Base64
-   *
-   * This module is heavily inspired by the `validator.js` module
-   * [`isBase64`](https://github.com/validatorjs/validator.js/blob/master/src/lib/isBase64.js).
-   *
-   * @since 0.0.2
-   */
-  readonly base64Url: base64Url.SchemableParams<S>
-
-  /**
    * Represents (some) valid credit card numbers.
    *
    * At the moment, this mostly handles Visa, Mastercard, American Express, Diners Club,
@@ -218,16 +204,6 @@ export interface SchemableExt<S>
    *   assert.equal(Guard.is(hslString), true)
    */
   readonly hslColor: hslColor.SchemableParams<S>
-
-  /**
-   * A valid, Base64-encoded JWT.
-   *
-   * Inspired by validator.js' [JWT
-   * module](https://github.com/validatorjs/validator.js/blob/master/src/lib/isJWT.js).
-   *
-   * @since 0.0.2
-   */
-  readonly jwt: jwt.SchemableParams<S>
 
   /**
    * Representing a Lat/Long coordinate.
@@ -391,18 +367,6 @@ export interface SchemableExt1<S extends URIS>
   readonly base64: base64.SchemableParams1<S>
 
   /**
-   * Representing a URL-safe, Base64 encoded string.
-   *
-   * For a non-URL-safe alternative, @see Base64
-   *
-   * This module is heavily inspired by the `validator.js` module
-   * [`isBase64`](https://github.com/validatorjs/validator.js/blob/master/src/lib/isBase64.js).
-   *
-   * @since 0.0.2
-   */
-  readonly base64Url: base64Url.SchemableParams1<S>
-
-  /**
    * Represents (some) valid credit card numbers.
    *
    * At the moment, this mostly handles Visa, Mastercard, American Express, Diners Club,
@@ -429,16 +393,6 @@ export interface SchemableExt1<S extends URIS>
    *   assert.equal(Guard.is(hslString), true)
    */
   readonly hslColor: hslColor.SchemableParams1<S>
-
-  /**
-   * A valid, Base64-encoded JWT.
-   *
-   * Inspired by validator.js' [JWT
-   * module](https://github.com/validatorjs/validator.js/blob/master/src/lib/isJWT.js).
-   *
-   * @since 0.0.2
-   */
-  readonly jwt: jwt.SchemableParams1<S>
 
   /**
    * Representing a Lat/Long coordinate.
@@ -602,18 +556,6 @@ export interface SchemableExt2<S extends URIS2>
   readonly base64: base64.SchemableParams2<S>
 
   /**
-   * Representing a URL-safe, Base64 encoded string.
-   *
-   * For a non-URL-safe alternative, @see Base64
-   *
-   * This module is heavily inspired by the `validator.js` module
-   * [`isBase64`](https://github.com/validatorjs/validator.js/blob/master/src/lib/isBase64.js).
-   *
-   * @since 0.0.2
-   */
-  readonly base64Url: base64Url.SchemableParams2<S>
-
-  /**
    * Represents (some) valid credit card numbers.
    *
    * At the moment, this mostly handles Visa, Mastercard, American Express, Diners Club,
@@ -640,16 +582,6 @@ export interface SchemableExt2<S extends URIS2>
    *   assert.equal(Guard.is(hslString), true)
    */
   readonly hslColor: hslColor.SchemableParams2<S>
-
-  /**
-   * A valid, Base64-encoded JWT.
-   *
-   * Inspired by validator.js' [JWT
-   * module](https://github.com/validatorjs/validator.js/blob/master/src/lib/isJWT.js).
-   *
-   * @since 0.0.2
-   */
-  readonly jwt: jwt.SchemableParams2<S>
 
   /**
    * Representing a Lat/Long coordinate.
@@ -813,18 +745,6 @@ export interface SchemableExt2C<S extends URIS2>
   readonly base64: base64.SchemableParams2C<S>
 
   /**
-   * Representing a URL-safe, Base64 encoded string.
-   *
-   * For a non-URL-safe alternative, @see Base64
-   *
-   * This module is heavily inspired by the `validator.js` module
-   * [`isBase64`](https://github.com/validatorjs/validator.js/blob/master/src/lib/isBase64.js).
-   *
-   * @since 0.0.2
-   */
-  readonly base64Url: base64Url.SchemableParams2C<S>
-
-  /**
    * Represents (some) valid credit card numbers.
    *
    * At the moment, this mostly handles Visa, Mastercard, American Express, Diners Club,
@@ -851,16 +771,6 @@ export interface SchemableExt2C<S extends URIS2>
    *   assert.equal(Guard.is(hslString), true)
    */
   readonly hslColor: hslColor.SchemableParams2C<S>
-
-  /**
-   * A valid, Base64-encoded JWT.
-   *
-   * Inspired by validator.js' [JWT
-   * module](https://github.com/validatorjs/validator.js/blob/master/src/lib/isJWT.js).
-   *
-   * @since 0.0.2
-   */
-  readonly jwt: jwt.SchemableParams2C<S>
 
   /**
    * Representing a Lat/Long coordinate.

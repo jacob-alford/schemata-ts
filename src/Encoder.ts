@@ -23,10 +23,8 @@ import * as intFromString from './number/intFromString'
 
 /** String */
 import * as base64 from './string/base64'
-import * as base64Url from './string/base64Url'
 import * as creditCard from './string/creditCard'
 import * as hslColor from './string/hslColor'
-import * as jwt from './string/jwt'
 import * as latLong from './string/latLong'
 import * as rgb from './string/rgb'
 import * as uuid from './string/uuid'
@@ -56,10 +54,8 @@ export const Schemable: SchemableExt2<Enc.URI> = {
   int: int.Encoder,
   intFromString: intFromString.Encoder,
   base64: base64.Encoder,
-  base64Url: base64Url.Encoder,
   creditCard: creditCard.Encoder,
   hslColor: hslColor.Encoder,
-  jwt: jwt.Encoder,
   latLong: latLong.Encoder,
   rgb: rgb.Encoder,
   uuid: uuid.Encoder,
