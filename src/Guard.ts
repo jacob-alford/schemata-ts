@@ -8,6 +8,14 @@
 import * as G from './internal/GuardBase'
 import { SchemableExt1 } from './SchemableExt'
 
+/** Schemables */
+import * as WithBrand from './schemables/WithBrand'
+import * as WithInvariant from './schemables/WithInvariant'
+import * as WithPadding from './schemables/WithPadding'
+import * as WithPattern from './schemables/WithPattern'
+import * as WithRefine from './schemables/WithRefine'
+import * as WithUnknownContainers from './schemables/WithUnknownContainers'
+
 /** Generic */
 import * as mapFromEntries from './generic/mapFromEntries'
 import * as optionFromExclude from './generic/optionFromExclude'
@@ -39,11 +47,12 @@ import * as dateFromIsoString from './date/dateFromIsoString'
  */
 export const Schemable: SchemableExt1<G.URI> = {
   ...G.Schemable,
-  ...G.WithBrand,
-  ...G.WithPattern,
-  ...G.WithInvariant,
-  ...G.WithRefine,
-  ...G.WithUnknownContainers,
+  ...WithBrand.Guard,
+  ...WithInvariant.Guard,
+  ...WithPadding.Guard,
+  ...WithPattern.Guard,
+  ...WithRefine.Guard,
+  ...WithUnknownContainers.Guard,
   mapFromEntries: mapFromEntries.Guard,
   optionFromExclude: optionFromExclude.Guard,
   optionFromNullable: optionFromNullable.Guard,

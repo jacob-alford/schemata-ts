@@ -8,6 +8,14 @@
 import * as t from './internal/TypeBase'
 import { SchemableExt1 } from './SchemableExt'
 
+/** Schemables */
+import * as WithBrand from './schemables/WithBrand'
+import * as WithInvariant from './schemables/WithInvariant'
+import * as WithPadding from './schemables/WithPadding'
+import * as WithPattern from './schemables/WithPattern'
+import * as WithRefine from './schemables/WithRefine'
+import * as WithUnknownContainers from './schemables/WithUnknownContainers'
+
 /** Generic */
 import * as mapFromEntries from './generic/mapFromEntries'
 import * as optionFromExclude from './generic/optionFromExclude'
@@ -39,11 +47,12 @@ import * as dateFromIsoString from './date/dateFromIsoString'
  */
 export const Schemable: SchemableExt1<t.URI> = {
   ...t.Schemable,
-  ...t.WithBrand,
-  ...t.WithPattern,
-  ...t.WithInvariant,
-  ...t.WithRefine,
-  ...t.WithUnknownContainers,
+  ...WithBrand.Type,
+  ...WithInvariant.Type,
+  ...WithPadding.Type,
+  ...WithPattern.Type,
+  ...WithRefine.Type,
+  ...WithUnknownContainers.Type,
   mapFromEntries: mapFromEntries.Type,
   optionFromExclude: optionFromExclude.Type,
   optionFromNullable: optionFromNullable.Type,

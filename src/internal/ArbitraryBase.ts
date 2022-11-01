@@ -10,10 +10,6 @@ import * as RA from 'fp-ts/ReadonlyArray'
 import * as RR from 'fp-ts/ReadonlyRecord'
 import * as RTup from 'fp-ts/ReadonlyTuple'
 import * as S from 'io-ts/Schemable'
-import { arbitraryFromPattern } from '../PatternBuilder'
-import { WithBrand1 } from './WithBrand'
-import { WithInvariant1 } from './WithInvariant'
-import { WithPattern1 } from './WithPattern'
 
 /**
  * @since 1.0.0
@@ -278,29 +274,4 @@ export const WithUnion: S.WithUnion1<URI> = {
  */
 export const WithRefine: S.WithRefine1<URI> = {
   refine,
-}
-
-/**
- * @since 1.0.0
- * @category Instances
- */
-export const WithPattern: WithPattern1<URI> = {
-  pattern: arbitraryFromPattern,
-}
-
-/**
- * @since 1.0.0
- * @category Instances
- */
-export const WithBrand: WithBrand1<URI> = {
-  // @ts-expect-error -- Branding is only type change, implicit cast here
-  brand: () => identity,
-}
-
-/**
- * @since 1.0.0
- * @category Instances
- */
-export const WithInvariant: WithInvariant1<URI> = {
-  imap: () => get => arb => arb.map(get),
 }

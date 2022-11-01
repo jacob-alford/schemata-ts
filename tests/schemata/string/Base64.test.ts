@@ -1,12 +1,10 @@
-import * as RA from 'fp-ts/ReadonlyArray'
 import * as E from 'fp-ts/Either'
+import * as Base64 from '../../../src/schemata/string/Base64'
+import { getAllInstances, validateArbitrary } from '../../../test-utils'
 
-import { tuple } from 'fp-ts/function'
-
-import * as Base64 from '../../src/string/base64'
-
-import { cat, combineExpected, validateArbitrary } from '../../test-utils'
-import { getDecoder } from '../../src/interpreters'
+const { Arbitrary, Decoder, Eq, Guard, TaskDecoder, Type } = getAllInstances(
+  Base64.Base64
+)
 
 const validStrings = [
   '',
@@ -40,59 +38,59 @@ const invalidStrings = [
 
 describe('Base64', () => {
   describe('Decoder', () => {
-    test.each(
-      cat(combineExpected(validStrings, 'Right'), combineExpected(invalidStrings, 'Left'))
-    )('validates valid strings, and catches bad strings', (str, expectedTag) => {
-      const result = Base64.Decoder.decode(str)
-
-      expect(result._tag).toBe(expectedTag)
+    test.each(validStrings)('validates valid base64 strings, %s', str => {
+      const result = Decoder.decode(str)
+      expect(result).toStrictEqual(E.right(str))
+    })
+    test.each(invalidStrings)('invalidates invalid base64 strings, %s', str => {
+      const result = Decoder.decode(str)
+      expect(result._tag).toBe('Left')
     })
   })
 
   describe('Eq', () => {
-    test.each(RA.zipWith(validStrings, validStrings, tuple))(
-      'determines two strings are equal',
+    test.each(validStrings)('determines two strings are equal, %s', str1 => {
+      const guard = Guard.is
+      const eq = Eq.equals
 
-      (str1, str2) => {
-        const guard = Base64.Guard.is
-        const eq = Base64.Eq.equals
-
-        if (!guard(str1) || !guard(str2)) {
-          throw new Error('Unexpected result')
-        }
-
-        expect(eq(str1, str2)).toBe(true)
+      if (!guard(str1)) {
+        throw new Error('Unexpected result')
       }
-    )
+
+      expect(eq(str1, str1)).toBe(true)
+    })
   })
 
   describe('Guard', () => {
-    test.each(
-      cat(combineExpected(validStrings, true), combineExpected(invalidStrings, false))
-    )('validates valid strings, and catches bad strings', (str, expectedTag) => {
-      const result = Base64.Guard.is(str)
-
-      expect(result).toBe(expectedTag)
+    test.each(validStrings)('validates valid base64 strings, %s', str => {
+      const result = Guard.is(str)
+      expect(result).toBe(true)
+    })
+    test.each(invalidStrings)('invalidates invalid base64 strings, %s', str => {
+      const result = Guard.is(str)
+      expect(result).toBe(false)
     })
   })
 
   describe('TaskDecoder', () => {
-    test.each(
-      cat(combineExpected(validStrings, 'Right'), combineExpected(invalidStrings, 'Left'))
-    )('validates valid strings, and catches bad strings', async (str, expectedTag) => {
-      const result = await Base64.TaskDecoder.decode(str)()
-
-      expect(result._tag).toBe(expectedTag)
+    test.each(validStrings)('validates valid base64 strings, %s', async str => {
+      const result = await TaskDecoder.decode(str)()
+      expect(result).toStrictEqual(E.right(str))
+    })
+    test.each(invalidStrings)('invalidates invalid base64 strings, %s', async str => {
+      const result = await TaskDecoder.decode(str)()
+      expect(result._tag).toBe('Left')
     })
   })
 
   describe('Type', () => {
-    test.each(
-      cat(combineExpected(validStrings, 'Right'), combineExpected(invalidStrings, 'Left'))
-    )('validates valid strings, and catches bad strings', (str, expectedTag) => {
-      const result = Base64.Type.decode(str)
-
-      expect(result._tag).toBe(expectedTag)
+    test.each(validStrings)('validates valid base64 strings, %s', str => {
+      const result = Type.decode(str)
+      expect(result).toStrictEqual(E.right(str))
+    })
+    test.each(invalidStrings)('invalidates invalid base64 strings, %s', str => {
+      const result = Type.decode(str)
+      expect(result._tag).toBe('Left')
     })
   })
 
@@ -101,7 +99,7 @@ describe('Base64', () => {
       str += String.fromCharCode((Math.random() * 26) | 97)
       encoded = Buffer.from(str).toString('base64')
 
-      if (!Base64.isBase64(encoded)) {
+      if (!Guard.is(encoded)) {
         const msg = `validator.isBase64() failed with "${encoded}"`
         throw new Error(msg)
       }
@@ -119,21 +117,20 @@ Zy1dm3UxhX/Tir2Cg+5kTAVQ6qqliklhGSCcYw0rNMfl+q151zKu4/j9id5pHnrkjnjrV1odz3u/
 aBKxLpzf8cf2BlYdRooqvFIbdJULftmn0lABukKc0eaPclSdz//DzTU318fpHnFbzlUpi82UVNL4
 IUqUviQNw7SX41v90N39iNP3JmczkN8J70+o7NLYlcvp4xXIFOcRaDrinbCcXT1WfQ==`
 
-    expect(Base64.isBase64(str)).toBeTruthy
+    expect(Guard.is(str)).toBeTruthy
   })
 
   describe('Arbitrary', () => {
     it('generates valid Base64s', () => {
-      validateArbitrary(Base64, Base64.isBase64)
+      validateArbitrary({ Arbitrary }, Guard.is)
     })
   })
 
   describe('Schema', () => {
     it('derives an encoder', () => {
-      const decoder = getDecoder(Base64.Schema)
-      expect(decoder.decode('12345')._tag).toEqual('Left')
+      expect(Decoder.decode('12345')._tag).toEqual('Left')
       expect(
-        decoder.decode(
+        Decoder.decode(
           'TG9yZW0gaXBzdW0gZG9sb3Igc2l0IGFtZXQsIGNvbnNlY3RldHVyIGFkaXBpc2NpbmcgZWxpdC4='
         )
       ).toEqual(

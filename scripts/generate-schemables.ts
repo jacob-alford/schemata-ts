@@ -28,6 +28,8 @@ type SchemableCombinators = {
   string: ReadonlyArray<readonly [string, string]>
 }
 
+type Schemable = [name: `With${string}`, path: string]
+
 // #region SchemableExt
 
 export const schemableExtHeaderComment: ts.JSDoc = _.createJSDocComment(
@@ -51,8 +53,9 @@ const suffixToURIS = (suffix: Suffix) => {
 
 export const makeSchemableExtTypeclass: (
   combinators: SchemableCombinators,
+  schemables: ReadonlyArray<Schemable>,
   suffix: Suffix
-) => ts.InterfaceDeclaration = (combinators, suffix) =>
+) => ts.InterfaceDeclaration = (combinators, schemables, suffix) =>
   _.createInterfaceDeclaration(
     [_.createModifier(ts.SyntaxKind.ExportKeyword)],
     _.createIdentifier(`SchemableExt${suffix}`),
@@ -75,50 +78,19 @@ export const makeSchemableExtTypeclass: (
               : []),
           ]
         ),
-        _.createExpressionWithTypeArguments(
-          _.createIdentifier(`WithBrand${suffix === '' ? 'HKT2' : suffix}`),
-          [
-            _.createTypeReferenceNode(_.createIdentifier('S'), undefined),
-            ...(suffix === '2C'
-              ? [_.createKeywordTypeNode(ts.SyntaxKind.UnknownKeyword)]
-              : []),
-          ]
-        ),
-        _.createExpressionWithTypeArguments(
-          _.createIdentifier(`WithPattern${suffix === '' ? 'HKT2' : suffix}`),
-          [
-            _.createTypeReferenceNode(_.createIdentifier('S'), undefined),
-            ...(suffix === '2C'
-              ? [_.createKeywordTypeNode(ts.SyntaxKind.UnknownKeyword)]
-              : []),
-          ]
-        ),
-        _.createExpressionWithTypeArguments(
-          _.createIdentifier(`WithInvariant${suffix === '' ? 'HKT2' : suffix}`),
-          [
-            _.createTypeReferenceNode(_.createIdentifier('S'), undefined),
-            ...(suffix === '2C'
-              ? [_.createKeywordTypeNode(ts.SyntaxKind.UnknownKeyword)]
-              : []),
-          ]
-        ),
-        _.createExpressionWithTypeArguments(
-          _.createIdentifier(`WithRefine${suffix === '' ? 'HKT2' : suffix}`),
-          [
-            _.createTypeReferenceNode(_.createIdentifier('S'), undefined),
-            ...(suffix === '2C'
-              ? [_.createKeywordTypeNode(ts.SyntaxKind.UnknownKeyword)]
-              : []),
-          ]
-        ),
-        _.createExpressionWithTypeArguments(
-          _.createIdentifier(`WithUnknownContainers${suffix === '' ? 'HKT2' : suffix}`),
-          [
-            _.createTypeReferenceNode(_.createIdentifier('S'), undefined),
-            ...(suffix === '2C'
-              ? [_.createKeywordTypeNode(ts.SyntaxKind.UnknownKeyword)]
-              : []),
-          ]
+        ...pipe(
+          schemables,
+          RA.map(([schemable]) =>
+            _.createExpressionWithTypeArguments(
+              _.createIdentifier(`${schemable}${suffix === '' ? 'HKT2' : suffix}`),
+              [
+                _.createTypeReferenceNode(_.createIdentifier('S'), undefined),
+                ...(suffix === '2C'
+                  ? [_.createKeywordTypeNode(ts.SyntaxKind.UnknownKeyword)]
+                  : []),
+              ]
+            )
+          )
         ),
       ]),
     ],
@@ -216,8 +188,9 @@ export const makeSchemableExtTypeclass: (
 
 /** Generate TS code for SchemableExt.ts */
 const makeSchemableExtContents: (
-  schemableCombinators: SchemableCombinators
-) => string = combinators => {
+  schemableCombinators: SchemableCombinators,
+  schemables: ReadonlyArray<Schemable>
+) => string = (combinators, schemables) => {
   const printer = ts.createPrinter({ newLine: ts.NewLineKind.LineFeed })
   const sourceFile = ts.createSourceFile(
     `${module}.ts`,
@@ -231,39 +204,16 @@ const makeSchemableExtContents: (
     [
       schemableExtHeaderComment,
       makeDestructureImport(['URIS', 'URIS2'], 'fp-ts/HKT'),
-      makeDestructureImport(
-        [
-          'Schemable1',
-          'Schemable2C',
-          'WithRefine1',
-          'WithRefine2C',
-          'WithUnknownContainers1',
-          'WithUnknownContainers2C',
-        ],
-        'io-ts/Schemable'
-      ),
-      makeDestructureImport(
-        [
-          'Schemable2',
-          'SchemableHKT2',
-          'WithRefine2',
-          'WithRefineHKT2',
-          'WithUnknownContainers2',
-          'WithUnknownContainersHKT2',
-        ],
-        './internal/Schemable2'
-      ),
-      makeDestructureImport(
-        ['WithBrand1', 'WithBrand2', 'WithBrand2C', 'WithBrandHKT2'],
-        './internal/WithBrand'
-      ),
-      makeDestructureImport(
-        ['WithPattern1', 'WithPattern2', 'WithPattern2C', 'WithPatternHKT2'],
-        './internal/WithPattern'
-      ),
-      makeDestructureImport(
-        ['WithInvariant1', 'WithInvariant2', 'WithInvariant2C', 'WithInvariantHKT2'],
-        './internal/WithInvariant'
+      makeDestructureImport(['Schemable1', 'Schemable2C'], 'io-ts/Schemable'),
+      makeDestructureImport(['Schemable2', 'SchemableHKT2'], './internal/Schemable2'),
+      ...pipe(
+        schemables,
+        RA.map(([schemable, path]) =>
+          makeDestructureImport(
+            [`${schemable}1`, `${schemable}2`, `${schemable}2C`, `${schemable}HKT2`],
+            path
+          )
+        )
       ),
       _.createJSDocComment('generic'),
       ...pipe(
@@ -293,16 +243,16 @@ const makeSchemableExtContents: (
       ),
 
       instanceComment,
-      makeSchemableExtTypeclass(combinators, ''),
+      makeSchemableExtTypeclass(combinators, schemables, ''),
 
       instanceComment,
-      makeSchemableExtTypeclass(combinators, '1'),
+      makeSchemableExtTypeclass(combinators, schemables, '1'),
 
       instanceComment,
-      makeSchemableExtTypeclass(combinators, '2'),
+      makeSchemableExtTypeclass(combinators, schemables, '2'),
 
       instanceComment,
-      makeSchemableExtTypeclass(combinators, '2C'),
+      makeSchemableExtTypeclass(combinators, schemables, '2C'),
     ],
     _.createNodeArray,
     nodes => printer.printList(ts.ListFormat.MultiLine, nodes, sourceFile),
@@ -344,9 +294,10 @@ export const instanceComment: ts.JSDoc = _.createJSDocComment(
 )
 
 const makeSchemableInstance: (
-  tc: SchemableTypeclasses
+  tc: SchemableTypeclasses,
+  schemables: ReadonlyArray<Schemable>
 ) => (schemableCombinators: SchemableCombinators) => ts.VariableStatement =
-  ([instanceName, accessor, schemableInstance]) =>
+  ([instanceName, accessor, schemableInstance], schemables) =>
   schemableCombinators =>
     _.createVariableStatement(
       [_.createModifier(ts.SyntaxKind.ExportKeyword)],
@@ -372,34 +323,15 @@ const makeSchemableInstance: (
                     _.createIdentifier('Schemable')
                   )
                 ),
-                _.createSpreadAssignment(
-                  _.createPropertyAccessExpression(
-                    _.createIdentifier(accessor),
-                    _.createIdentifier('WithBrand')
-                  )
-                ),
-                _.createSpreadAssignment(
-                  _.createPropertyAccessExpression(
-                    _.createIdentifier(accessor),
-                    _.createIdentifier('WithPattern')
-                  )
-                ),
-                _.createSpreadAssignment(
-                  _.createPropertyAccessExpression(
-                    _.createIdentifier(accessor),
-                    _.createIdentifier('WithInvariant')
-                  )
-                ),
-                _.createSpreadAssignment(
-                  _.createPropertyAccessExpression(
-                    _.createIdentifier(accessor),
-                    _.createIdentifier('WithRefine')
-                  )
-                ),
-                _.createSpreadAssignment(
-                  _.createPropertyAccessExpression(
-                    _.createIdentifier(accessor),
-                    _.createIdentifier('WithUnknownContainers')
+                ...pipe(
+                  schemables,
+                  RA.map(([schemable]) =>
+                    _.createSpreadAssignment(
+                      _.createPropertyAccessExpression(
+                        _.createIdentifier(schemable),
+                        _.createIdentifier(instanceName)
+                      )
+                    )
                   )
                 ),
                 ...pipe(
@@ -461,58 +393,69 @@ const makeSchemableInstance: (
 
 /** Generate TS code for Decoder, Eq, Guard, TaskDecoder, Type, or Encoder */
 const makeSchemableInstanceModuleContents: (
-  typeclass: SchemableTypeclasses
-) => (combinators: SchemableCombinators) => string = typeclass => combinators => {
-  const [module, accessor, schemableInstance, sinceVersion] = typeclass
+  typeclass: SchemableTypeclasses,
+  schemables: ReadonlyArray<Schemable>
+) => (combinators: SchemableCombinators) => string =
+  (typeclass, schemables) => combinators => {
+    const [module, accessor, schemableInstance, sinceVersion] = typeclass
 
-  const printer = ts.createPrinter({ newLine: ts.NewLineKind.LineFeed })
-  const sourceFile = ts.createSourceFile(
-    `${module}.ts`,
-    '',
-    ts.ScriptTarget.Latest,
-    false,
-    ts.ScriptKind.TS
-  )
+    const printer = ts.createPrinter({ newLine: ts.NewLineKind.LineFeed })
+    const sourceFile = ts.createSourceFile(
+      `${module}.ts`,
+      '',
+      ts.ScriptTarget.Latest,
+      false,
+      ts.ScriptKind.TS
+    )
 
-  return pipe(
-    [
-      moduleHeaderComment(module, sinceVersion),
-      makeModuleStarImport(accessor, `./internal/${module}Base`),
-      makeDestructureImport([schemableInstance], './SchemableExt'),
-      _.createJSDocComment('generic'),
-      ...pipe(
-        combinators.generic,
-        RA.map(([combinator]) =>
-          makeModuleStarImport(combinator, `./generic/${combinator}`)
-        )
-      ),
-      _.createJSDocComment('number'),
-      ...pipe(
-        combinators.number,
-        RA.map(([combinator]) =>
-          makeModuleStarImport(combinator, `./number/${combinator}`)
-        )
-      ),
-      _.createJSDocComment('string'),
-      ...pipe(
-        combinators.string,
-        RA.map(([combinator]) =>
-          makeModuleStarImport(combinator, `./string/${combinator}`)
-        )
-      ),
-      _.createJSDocComment('date'),
-      ...pipe(
-        combinators.date,
-        RA.map(([combinator]) => makeModuleStarImport(combinator, `./date/${combinator}`))
-      ),
-      instanceComment,
-      makeSchemableInstance(typeclass)(combinators),
-    ],
-    _.createNodeArray,
-    nodes => printer.printList(ts.ListFormat.MultiLine, nodes, sourceFile),
-    Str.replace(/\/\*\*/gm, '\n/**')
-  )
-}
+    return pipe(
+      [
+        moduleHeaderComment(module, sinceVersion),
+        makeModuleStarImport(accessor, `./internal/${module}Base`),
+        makeDestructureImport([schemableInstance], './SchemableExt'),
+        _.createJSDocComment('schemables'),
+        ...pipe(
+          schemables,
+          RA.map(([schemable]) =>
+            makeModuleStarImport(schemable, `./schemables/${schemable}`)
+          )
+        ),
+        _.createJSDocComment('generic'),
+        ...pipe(
+          combinators.generic,
+          RA.map(([combinator]) =>
+            makeModuleStarImport(combinator, `./generic/${combinator}`)
+          )
+        ),
+        _.createJSDocComment('number'),
+        ...pipe(
+          combinators.number,
+          RA.map(([combinator]) =>
+            makeModuleStarImport(combinator, `./number/${combinator}`)
+          )
+        ),
+        _.createJSDocComment('string'),
+        ...pipe(
+          combinators.string,
+          RA.map(([combinator]) =>
+            makeModuleStarImport(combinator, `./string/${combinator}`)
+          )
+        ),
+        _.createJSDocComment('date'),
+        ...pipe(
+          combinators.date,
+          RA.map(([combinator]) =>
+            makeModuleStarImport(combinator, `./date/${combinator}`)
+          )
+        ),
+        instanceComment,
+        makeSchemableInstance(typeclass, schemables)(combinators),
+      ],
+      _.createNodeArray,
+      nodes => printer.printList(ts.ListFormat.MultiLine, nodes, sourceFile),
+      Str.replace(/\/\*\*/gm, '\n/**')
+    )
+  }
 
 const writeToDisk: (path: string) => (contents: string) => Build<void> =
   path => contents => C =>
@@ -623,6 +566,15 @@ const schemableTypeclasses: ReadonlyArray<SchemableTypeclasses> = [
   ['Arbitrary', 'Arb', 'SchemableExt1', '0.0.3'],
 ]
 
+const schemables: ReadonlyArray<Schemable> = [
+  ['WithBrand', './schemables/WithBrand'],
+  ['WithInvariant', './schemables/WithInvariant'],
+  ['WithPadding', './schemables/WithPadding'],
+  ['WithPattern', './schemables/WithPattern'],
+  ['WithRefine', './schemables/WithRefine'],
+  ['WithUnknownContainers', './schemables/WithUnknownContainers'],
+]
+
 const main: Build<void> = pipe(
   getSchemableCombinators,
   RTE.bindTo('combinators'),
@@ -633,7 +585,7 @@ const main: Build<void> = pipe(
       RTE.traverseArray(typeclass =>
         pipe(
           combinators,
-          makeSchemableInstanceModuleContents(typeclass),
+          makeSchemableInstanceModuleContents(typeclass, schemables),
           writeToDisk(`./src/${typeclass[0]}.ts`),
           RTE.chainFirstIOK(() => Cons.log(`  - Writing src/${typeclass[0]}.ts...`))
         )
@@ -642,7 +594,10 @@ const main: Build<void> = pipe(
   ),
   RTE.chainFirstIOK(() => Cons.log('Writing `SchemableExt`...')),
   RTE.chainFirst(({ combinators }) =>
-    pipe(makeSchemableExtContents(combinators), writeToDisk(`./src/SchemableExt.ts`))
+    pipe(
+      makeSchemableExtContents(combinators, schemables),
+      writeToDisk(`./src/SchemableExt.ts`)
+    )
   ),
   RTE.chainIOK(() => Cons.log('Done!'))
 )

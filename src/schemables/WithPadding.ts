@@ -11,13 +11,15 @@ import * as G from 'io-ts/Guard'
 import * as TD from 'io-ts/TaskDecoder'
 import * as t from 'io-ts/Type'
 import * as Arb from '../internal/ArbitraryBase'
+import { URI as SchemaURI } from '../internal/SchemaBase'
+import * as SC from '../SchemaExt'
 import { identity, pipe } from 'fp-ts/function'
 
 /**
  * @since 1.0.0
  * @category Model
  */
-export interface WithPadding<S> {
+export interface WithPaddingHKT2<S> {
   /** Adds a character to the left of a string until it reaches a certain length. */
   readonly padLeft: (
     modulus: number,
@@ -71,24 +73,24 @@ export interface WithPadding2<S extends URIS2> {
  * @since 1.0.0
  * @category Model
  */
-export interface WithPadding2C<S extends URIS2> {
+export interface WithPadding2C<S extends URIS2, E> {
   /** Adds a character to the left of a string until it reaches a certain length. */
   readonly padLeft: (
     modulus: number,
     char: string
-  ) => (sa: Kind2<S, unknown, string>) => Kind2<S, unknown, string>
+  ) => (sa: Kind2<S, E, string>) => Kind2<S, E, string>
   /** Adds a character to the right of a string until it reaches a certain length. */
   readonly padRight: (
     modulus: number,
     char: string
-  ) => (sa: Kind2<S, unknown, string>) => Kind2<S, unknown, string>
+  ) => (sa: Kind2<S, E, string>) => Kind2<S, E, string>
 }
 
 /**
  * @since 1.0.0
  * @category Instances
  */
-export const Decoder: WithPadding2C<D.URI> = {
+export const Decoder: WithPadding2C<D.URI, unknown> = {
   padLeft: (modulus, char) => da =>
     pipe(
       da,
@@ -146,7 +148,7 @@ export const Guard: WithPadding1<G.URI> = {
  * @since 1.0.0
  * @category Instances
  */
-export const TaskDecoder: WithPadding2C<TD.URI> = {
+export const TaskDecoder: WithPadding2C<TD.URI, unknown> = {
   padLeft: (modulus, char) => tdS =>
     pipe(
       tdS,
@@ -197,4 +199,13 @@ export const Arbitrary: WithPadding1<Arb.URI> = {
     aS.map(s => s.padStart(s.length + (modulus - (s.length % modulus)), char)),
   padRight: (modulus, char) => aS =>
     aS.map(s => s.padEnd(s.length + (modulus - (s.length % modulus)), char)),
+}
+
+/**
+ * @since 1.0.0
+ * @category Instances
+ */
+export const Schema: WithPadding2<SchemaURI> = {
+  padLeft: (modulus, char) => sS => SC.make(S => S.padLeft(modulus, char)(sS(S))),
+  padRight: (modulus, char) => sS => SC.make(S => S.padRight(modulus, char)(sS(S))),
 }

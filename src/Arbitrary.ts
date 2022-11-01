@@ -8,6 +8,14 @@
 import * as Arb from './internal/ArbitraryBase'
 import { SchemableExt1 } from './SchemableExt'
 
+/** Schemables */
+import * as WithBrand from './schemables/WithBrand'
+import * as WithInvariant from './schemables/WithInvariant'
+import * as WithPadding from './schemables/WithPadding'
+import * as WithPattern from './schemables/WithPattern'
+import * as WithRefine from './schemables/WithRefine'
+import * as WithUnknownContainers from './schemables/WithUnknownContainers'
+
 /** Generic */
 import * as mapFromEntries from './generic/mapFromEntries'
 import * as optionFromExclude from './generic/optionFromExclude'
@@ -39,11 +47,12 @@ import * as dateFromIsoString from './date/dateFromIsoString'
  */
 export const Schemable: SchemableExt1<Arb.URI> = {
   ...Arb.Schemable,
-  ...Arb.WithBrand,
-  ...Arb.WithPattern,
-  ...Arb.WithInvariant,
-  ...Arb.WithRefine,
-  ...Arb.WithUnknownContainers,
+  ...WithBrand.Arbitrary,
+  ...WithInvariant.Arbitrary,
+  ...WithPadding.Arbitrary,
+  ...WithPattern.Arbitrary,
+  ...WithRefine.Arbitrary,
+  ...WithUnknownContainers.Arbitrary,
   mapFromEntries: mapFromEntries.Arbitrary,
   optionFromExclude: optionFromExclude.Arbitrary,
   optionFromNullable: optionFromNullable.Arbitrary,

@@ -88,16 +88,4 @@ describe('EncoderBase', () => {
       expect(enc.encode('foo')).toEqual('foo')
     })
   })
-  test('WithInvariant', () => {
-    const enc = Enc.WithInvariant.imap<Date>(
-      { is: (a: unknown): a is Date => a instanceof Date },
-      'Date'
-    )<string>(
-      a => new Date(a),
-      a => a.toISOString()
-    )(_.string)
-
-    const test = new Date()
-    expect(enc.encode(test)).toEqual(test.toISOString())
-  })
 })

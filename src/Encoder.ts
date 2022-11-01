@@ -8,6 +8,14 @@
 import * as Enc from './internal/EncoderBase'
 import { SchemableExt2 } from './SchemableExt'
 
+/** Schemables */
+import * as WithBrand from './schemables/WithBrand'
+import * as WithInvariant from './schemables/WithInvariant'
+import * as WithPadding from './schemables/WithPadding'
+import * as WithPattern from './schemables/WithPattern'
+import * as WithRefine from './schemables/WithRefine'
+import * as WithUnknownContainers from './schemables/WithUnknownContainers'
+
 /** Generic */
 import * as mapFromEntries from './generic/mapFromEntries'
 import * as optionFromExclude from './generic/optionFromExclude'
@@ -39,11 +47,12 @@ import * as dateFromIsoString from './date/dateFromIsoString'
  */
 export const Schemable: SchemableExt2<Enc.URI> = {
   ...Enc.Schemable,
-  ...Enc.WithBrand,
-  ...Enc.WithPattern,
-  ...Enc.WithInvariant,
-  ...Enc.WithRefine,
-  ...Enc.WithUnknownContainers,
+  ...WithBrand.Encoder,
+  ...WithInvariant.Encoder,
+  ...WithPadding.Encoder,
+  ...WithPattern.Encoder,
+  ...WithRefine.Encoder,
+  ...WithUnknownContainers.Encoder,
   mapFromEntries: mapFromEntries.Encoder,
   optionFromExclude: optionFromExclude.Encoder,
   optionFromNullable: optionFromNullable.Encoder,
