@@ -10,6 +10,7 @@ import { SchemableExt2C } from './SchemableExt'
 
 /** Schemables */
 import * as WithBrand from './schemables/WithBrand'
+import * as WithCheckDigit from './schemables/WithCheckDigit'
 import * as WithInvariant from './schemables/WithInvariant'
 import * as WithPadding from './schemables/WithPadding'
 import * as WithPattern from './schemables/WithPattern'
@@ -47,6 +48,7 @@ import * as dateFromIsoString from './date/dateFromIsoString'
 export const Schemable: SchemableExt2C<D.URI> = {
   ...D.Schemable,
   ...WithBrand.Decoder,
+  ...WithCheckDigit.Decoder,
   ...WithInvariant.Decoder,
   ...WithPadding.Decoder,
   ...WithPattern.Decoder,

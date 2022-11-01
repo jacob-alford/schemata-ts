@@ -568,6 +568,7 @@ const schemableTypeclasses: ReadonlyArray<SchemableTypeclasses> = [
 
 const schemables: ReadonlyArray<Schemable> = [
   ['WithBrand', './schemables/WithBrand'],
+  ['WithCheckDigit', './schemables/WithCheckDigit'],
   ['WithInvariant', './schemables/WithInvariant'],
   ['WithPadding', './schemables/WithPadding'],
   ['WithPattern', './schemables/WithPattern'],

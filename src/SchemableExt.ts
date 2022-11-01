@@ -15,6 +15,12 @@ import {
   WithBrandHKT2,
 } from './schemables/WithBrand'
 import {
+  WithCheckDigit1,
+  WithCheckDigit2,
+  WithCheckDigit2C,
+  WithCheckDigitHKT2,
+} from './schemables/WithCheckDigit'
+import {
   WithInvariant1,
   WithInvariant2,
   WithInvariant2C,
@@ -76,6 +82,7 @@ import * as dateFromIsoString from './date/dateFromIsoString'
 export interface SchemableExt<S>
   extends SchemableHKT2<S>,
     WithBrandHKT2<S>,
+    WithCheckDigitHKT2<S>,
     WithInvariantHKT2<S>,
     WithPaddingHKT2<S>,
     WithPatternHKT2<S>,
@@ -254,6 +261,7 @@ export interface SchemableExt<S>
 export interface SchemableExt1<S extends URIS>
   extends Schemable1<S>,
     WithBrand1<S>,
+    WithCheckDigit1<S>,
     WithInvariant1<S>,
     WithPadding1<S>,
     WithPattern1<S>,
@@ -432,6 +440,7 @@ export interface SchemableExt1<S extends URIS>
 export interface SchemableExt2<S extends URIS2>
   extends Schemable2<S>,
     WithBrand2<S>,
+    WithCheckDigit2<S>,
     WithInvariant2<S>,
     WithPadding2<S>,
     WithPattern2<S>,
@@ -610,6 +619,7 @@ export interface SchemableExt2<S extends URIS2>
 export interface SchemableExt2C<S extends URIS2>
   extends Schemable2C<S, unknown>,
     WithBrand2C<S, unknown>,
+    WithCheckDigit2C<S, unknown>,
     WithInvariant2C<S, unknown>,
     WithPadding2C<S, unknown>,
     WithPattern2C<S, unknown>,
