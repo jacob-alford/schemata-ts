@@ -13,7 +13,7 @@ import * as t from 'io-ts/Type'
 import * as Arb from '../internal/ArbitraryBase'
 import { URI as SchemaURI } from '../internal/SchemaBase'
 import * as SC from '../SchemaExt'
-import { identity, pipe } from 'fp-ts/function'
+import { flow, identity, pipe } from 'fp-ts/function'
 
 /**
  * @since 1.0.0
@@ -132,16 +132,8 @@ export const Eq: WithPadding1<Eq_.URI> = {
  * @category Instances
  */
 export const Guard: WithPadding1<G.URI> = {
-  padLeft: modulus => gS =>
-    pipe(
-      gS,
-      G.refine((s): s is string => s.length % modulus === 0)
-    ),
-  padRight: modulus => gS =>
-    pipe(
-      gS,
-      G.refine((s): s is string => s.length % modulus === 0)
-    ),
+  padLeft: modulus => G.refine((s): s is string => s.length % modulus === 0),
+  padRight: modulus => G.refine((s): s is string => s.length % modulus === 0),
 }
 
 /**
@@ -191,14 +183,58 @@ export const Type: WithPadding1<t.URI> = {
 }
 
 /**
+ * Removes characters starting at the right while a condition is met
+ *
+ * @internal
+ */
+const stripRightWhile: (predicate: (char: string) => boolean) => (s: string) => string =
+  predicate => s => {
+    const out = s.split('')
+    for (let i = out.length - 1; i >= 0; --i) {
+      if (!predicate(out[i] as string)) {
+        break
+      }
+      out[i] = ''
+    }
+    return out.join('')
+  }
+
+/**
+ * Removes characters starting at the left while a condition is met
+ *
+ * @internal
+ */
+const stripLeftWhile: (predicate: (char: string) => boolean) => (s: string) => string =
+  predicate => s => {
+    const out = s.split('')
+    for (let i = 0; i < out.length; ++i) {
+      if (!predicate(out[i] as string)) {
+        break
+      }
+      out[i] = ''
+    }
+    return out.join('')
+  }
+
+/**
  * @since 1.0.0
  * @category Instances
  */
 export const Arbitrary: WithPadding1<Arb.URI> = {
   padLeft: (modulus, char) => aS =>
-    aS.map(s => s.padStart(s.length + (modulus - (s.length % modulus)), char)),
+    aS.map(
+      flow(
+        stripLeftWhile(c => c === char),
+        s => s.padStart(s.length + (modulus - (s.length % modulus)), char)
+      )
+    ),
   padRight: (modulus, char) => aS =>
-    aS.map(s => s.padEnd(s.length + (modulus - (s.length % modulus)), char)),
+    aS.map(
+      flow(
+        stripRightWhile(c => c === char),
+        s => s.padEnd(s.length + (modulus - (s.length % modulus)), char)
+      )
+    ),
 }
 
 /**

@@ -59,7 +59,6 @@ import * as int from './number/int'
 import * as intFromString from './number/intFromString'
 
 /** String */
-import * as base64 from './string/base64'
 import * as creditCard from './string/creditCard'
 import * as hslColor from './string/hslColor'
 import * as latLong from './string/latLong'
@@ -176,18 +175,6 @@ export interface SchemableExt<S>
   readonly intFromString: intFromString.SchemableParams<S>
 
   /**
-   * Representing a Base64-encoded string.
-   *
-   * For a URL-safe version, @see Base64UrlSafe module
-   *
-   * This module is heavily inspired by the `validator.js` module
-   * [`isBase64`](https://github.com/validatorjs/validator.js/blob/master/src/lib/isBase64.js).
-   *
-   * @since 1.0.0
-   */
-  readonly base64: base64.SchemableParams<S>
-
-  /**
    * Represents (some) valid credit card numbers.
    *
    * At the moment, this mostly handles Visa, Mastercard, American Express, Diners Club,
@@ -226,7 +213,8 @@ export interface SchemableExt<S>
   readonly latLong: latLong.SchemableParams<S>
 
   /**
-   * Represents strings which are valid RGB colors. Permits both absolute and percentage based values.
+   * Represents strings which are valid RGB colors. Permits both absolute and percentage
+   * based values.
    *
    * @since 0.0.4
    */
@@ -365,18 +353,6 @@ export interface SchemableExt1<S extends URIS>
   readonly intFromString: intFromString.SchemableParams1<S>
 
   /**
-   * Representing a Base64-encoded string.
-   *
-   * For a URL-safe version, @see Base64UrlSafe module
-   *
-   * This module is heavily inspired by the `validator.js` module
-   * [`isBase64`](https://github.com/validatorjs/validator.js/blob/master/src/lib/isBase64.js).
-   *
-   * @since 1.0.0
-   */
-  readonly base64: base64.SchemableParams1<S>
-
-  /**
    * Represents (some) valid credit card numbers.
    *
    * At the moment, this mostly handles Visa, Mastercard, American Express, Diners Club,
@@ -415,7 +391,8 @@ export interface SchemableExt1<S extends URIS>
   readonly latLong: latLong.SchemableParams1<S>
 
   /**
-   * Represents strings which are valid RGB colors. Permits both absolute and percentage based values.
+   * Represents strings which are valid RGB colors. Permits both absolute and percentage
+   * based values.
    *
    * @since 0.0.4
    */
@@ -554,18 +531,6 @@ export interface SchemableExt2<S extends URIS2>
   readonly intFromString: intFromString.SchemableParams2<S>
 
   /**
-   * Representing a Base64-encoded string.
-   *
-   * For a URL-safe version, @see Base64UrlSafe module
-   *
-   * This module is heavily inspired by the `validator.js` module
-   * [`isBase64`](https://github.com/validatorjs/validator.js/blob/master/src/lib/isBase64.js).
-   *
-   * @since 1.0.0
-   */
-  readonly base64: base64.SchemableParams2<S>
-
-  /**
    * Represents (some) valid credit card numbers.
    *
    * At the moment, this mostly handles Visa, Mastercard, American Express, Diners Club,
@@ -604,7 +569,8 @@ export interface SchemableExt2<S extends URIS2>
   readonly latLong: latLong.SchemableParams2<S>
 
   /**
-   * Represents strings which are valid RGB colors. Permits both absolute and percentage based values.
+   * Represents strings which are valid RGB colors. Permits both absolute and percentage
+   * based values.
    *
    * @since 0.0.4
    */
@@ -743,18 +709,6 @@ export interface SchemableExt2C<S extends URIS2>
   readonly intFromString: intFromString.SchemableParams2C<S>
 
   /**
-   * Representing a Base64-encoded string.
-   *
-   * For a URL-safe version, @see Base64UrlSafe module
-   *
-   * This module is heavily inspired by the `validator.js` module
-   * [`isBase64`](https://github.com/validatorjs/validator.js/blob/master/src/lib/isBase64.js).
-   *
-   * @since 1.0.0
-   */
-  readonly base64: base64.SchemableParams2C<S>
-
-  /**
    * Represents (some) valid credit card numbers.
    *
    * At the moment, this mostly handles Visa, Mastercard, American Express, Diners Club,
@@ -793,7 +747,8 @@ export interface SchemableExt2C<S extends URIS2>
   readonly latLong: latLong.SchemableParams2C<S>
 
   /**
-   * Represents strings which are valid RGB colors. Permits both absolute and percentage based values.
+   * Represents strings which are valid RGB colors. Permits both absolute and percentage
+   * based values.
    *
    * @since 0.0.4
    */

@@ -2,6 +2,7 @@ import { Kind2, URIS2, HKT2 } from 'fp-ts/HKT'
 import { Refinement } from 'fp-ts/Refinement'
 import * as SC from '../SchemaExt'
 import { URI as SchemaURI } from '../internal/SchemaBase'
+import * as Enc from 'io-ts/Encoder'
 
 /**
  * @since 1.0.0
@@ -57,13 +58,14 @@ export {
   WithRefine as Decoder,
 } from '../internal/DecoderBase'
 
-export {
-  /**
-   * @since 1.0.0
-   * @category Instances
-   */
-  WithRefine as Encoder,
-} from '../internal/EncoderBase'
+/**
+ * @since 1.0.0
+ * @category Instances
+ */
+export const Encoder: WithRefine2<Enc.URI> = {
+  // @ts-expect-error -- refinement only changes type-level information, but types don't check out here
+  refine: () => Enc.id,
+}
 
 export {
   /**

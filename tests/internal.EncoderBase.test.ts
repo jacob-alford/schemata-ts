@@ -80,12 +80,5 @@ describe('EncoderBase', () => {
     test('readonly', () => {
       expect(_.readonly(_.string).encode('a')).toEqual('a')
     })
-    test('WithRefine', () => {
-      const enc = Enc.WithRefine.refine(
-        (a: string): a is 'foo' => a === 'foo',
-        'isFoo'
-      )(_.string)
-      expect(enc.encode('foo')).toEqual('foo')
-    })
   })
 })

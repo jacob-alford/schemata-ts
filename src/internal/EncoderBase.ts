@@ -1,9 +1,9 @@
 import * as Enc from 'io-ts/Encoder'
-import { Schemable2, WithRefine2, WithUnknownContainers2 } from './Schemable2'
+import { Schemable2 } from './Schemable2'
 
 export { URI } from 'io-ts/Encoder'
 
-export const Schemable: Schemable2<Enc.URI> & WithUnknownContainers2<Enc.URI> = {
+export const Schemable: Schemable2<Enc.URI> = {
   URI: Enc.URI,
   literal: () => Enc.id(),
   string: Enc.id(),
@@ -23,14 +23,4 @@ export const Schemable: Schemable2<Enc.URI> & WithUnknownContainers2<Enc.URI> = 
   sum: Enc.sum,
   lazy: (_id, f) => Enc.lazy(f),
   readonly: Enc.readonly,
-}
-
-export const WithUnknownContainers: WithUnknownContainers2<Enc.URI> = {
-  UnknownArray: Enc.id(),
-  UnknownRecord: Enc.id(),
-}
-
-export const WithRefine: WithRefine2<Enc.URI> = {
-  // @ts-expect-error -- refinement only changes type-level information, but types don't check out here
-  refine: () => Enc.id,
 }

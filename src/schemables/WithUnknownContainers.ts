@@ -1,6 +1,7 @@
 import { Kind2, URIS2, HKT2 } from 'fp-ts/HKT'
 import { URI as SchemaURI } from '../internal/SchemaBase'
 import * as SC from '../SchemaExt'
+import * as Enc from 'io-ts/Encoder'
 
 /**
  * @since 1.0.0
@@ -52,13 +53,14 @@ export {
   WithUnknownContainers as Decoder,
 } from '../internal/DecoderBase'
 
-export {
-  /**
-   * @since 1.0.0
-   * @category Instances
-   */
-  WithUnknownContainers as Encoder,
-} from '../internal/EncoderBase'
+/**
+ * @since 1.0.0
+ * @category Instances
+ */
+export const Encoder: WithUnknownContainers2<Enc.URI> = {
+  UnknownArray: Enc.id(),
+  UnknownRecord: Enc.id(),
+}
 
 export {
   /**

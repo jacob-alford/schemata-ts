@@ -30,7 +30,6 @@ import * as int from './number/int'
 import * as intFromString from './number/intFromString'
 
 /** String */
-import * as base64 from './string/base64'
 import * as creditCard from './string/creditCard'
 import * as hslColor from './string/hslColor'
 import * as latLong from './string/latLong'
@@ -62,7 +61,6 @@ export const Schemable: SchemableExt1<t.URI> = {
   floatFromString: floatFromString.Type,
   int: int.Type,
   intFromString: intFromString.Type,
-  base64: base64.Type,
   creditCard: creditCard.Type,
   hslColor: hslColor.Type,
   latLong: latLong.Type,

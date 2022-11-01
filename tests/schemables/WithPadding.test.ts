@@ -9,6 +9,9 @@ import * as Arb from '../../src/internal/ArbitraryBase'
 import { pipe } from 'fp-ts/function'
 import * as WithPadding from '../../src/schemables/WithPadding'
 import { validateArbitrary } from '../../test-utils'
+import { interpreter } from '../../src/SchemaExt'
+import { Schemable as GuardSchemableExt } from '../../src/Guard'
+import * as SC from '../../src/internal/SchemaBase'
 
 const modulus = 4
 const char = '='
@@ -151,6 +154,29 @@ describe('WithPadding', () => {
     })
     it('generates validly right padded strings', () => {
       validateArbitrary({ Arbitrary: arbitraryR }, guardR.is)
+    })
+  })
+
+  describe('Schema', () => {
+    const L = WithPadding.Schema.padLeft(modulus, char)(SC.String)
+    const R = WithPadding.Schema.padRight(modulus, char)(SC.String)
+    const guardL = interpreter(GuardSchemableExt)(L)
+    const guardR = interpreter(GuardSchemableExt)(R)
+    test.each(validL)('validates validly padded strings, %s', str => {
+      const result = guardL.is(str)
+      expect(result).toBe(true)
+    })
+    test.each(validR)('validates validly padded strings, %s', str => {
+      const result = guardR.is(str)
+      expect(result).toBe(true)
+    })
+    test.each(invalidL)('invalidates invalidly padded strings, %s', str => {
+      const result = guardL.is(str)
+      expect(result).toBe(false)
+    })
+    test.each(invalidR)('invalidates invalidly padded strings, %s', str => {
+      const result = guardR.is(str)
+      expect(result).toBe(false)
     })
   })
 })

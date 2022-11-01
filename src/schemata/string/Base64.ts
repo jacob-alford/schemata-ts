@@ -31,14 +31,16 @@ export type Base64 = string & Base64Brand
 export type Base64S = SchemaExt<string, Base64>
 
 /**
- * /^[A-Za-z0-9_-]*$/
+ * /^([A-Za-z0-9+/]*?([=]{0,2}))$/
  *
  * @since 1.0.0
  * @category Pattern
  */
 export const base64: PB.Pattern = pipe(
   PB.alnum,
-  PB.and(PB.characterClass(false, '+', '/'))
+  PB.and(PB.characterClass(false, '+', '/')),
+  PB.anyNumber(),
+  PB.then(pipe(PB.characterClass(false, '='), PB.between(0, 2), PB.subgroup))
 )
 
 /**
@@ -50,5 +52,5 @@ export const base64: PB.Pattern = pipe(
  * @category Schema
  */
 export const Base64: Base64S = make(S =>
-  pipe(S.pattern(base64, 'Base64'), S.padLeft(4, '='), S.brand<Base64Brand>())
+  pipe(S.pattern(base64, 'Base64'), S.padRight(2, '='), S.brand<Base64Brand>())
 )
