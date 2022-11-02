@@ -1,3 +1,8 @@
+/**
+ * Re-export of `WithRefine` from `io-ts/Schemable/WithRefine`
+ *
+ * @since 1.0.0
+ */
 import { Kind2, URIS2, HKT2 } from 'fp-ts/HKT'
 import { Refinement } from 'fp-ts/Refinement'
 import * as SC from '../SchemaExt'

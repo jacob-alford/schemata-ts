@@ -32,13 +32,21 @@ export type PaddingLength =
  * @category Model
  */
 export interface WithPaddingHKT2<S> {
-  /** Adds a character to the left of a string until it reaches a certain length. */
+  /**
+   * Adds a character to the left of a string until it reaches a certain length.
+   *
+   * @since 1.0.0
+   */
   readonly padLeft: (
     length: PaddingLength,
     char: string
   ) => (sa: HKT2<S, string, string>) => HKT2<S, string, string>
 
-  /** Adds a character to the right of a string until it reaches a certain length. */
+  /**
+   * Adds a character to the right of a string until it reaches a certain length.
+   *
+   * @since 1.0.0
+   */
   readonly padRight: (
     length: PaddingLength,
     char: string
@@ -50,13 +58,21 @@ export interface WithPaddingHKT2<S> {
  * @category Model
  */
 export interface WithPadding1<S extends URIS> {
-  /** Adds a character to the left of a string until it reaches a certain length. */
+  /**
+   * Adds a character to the left of a string until it reaches a certain length.
+   *
+   * @since 1.0.0
+   */
   readonly padLeft: (
     length: PaddingLength,
     char: string
   ) => (sa: Kind<S, string>) => Kind<S, string>
 
-  /** Adds a character to the right of a string until it reaches a certain length. */
+  /**
+   * Adds a character to the right of a string until it reaches a certain length.
+   *
+   * @since 1.0.0
+   */
   readonly padRight: (
     length: PaddingLength,
     char: string
@@ -68,13 +84,21 @@ export interface WithPadding1<S extends URIS> {
  * @category Model
  */
 export interface WithPadding2<S extends URIS2> {
-  /** Adds a character to the left of a string until it reaches a certain length. */
+  /**
+   * Adds a character to the left of a string until it reaches a certain length.
+   *
+   * @since 1.0.0
+   */
   readonly padLeft: (
     length: PaddingLength,
     char: string
   ) => (sa: Kind2<S, string, string>) => Kind2<S, string, string>
 
-  /** Adds a character to the right of a string until it reaches a certain length. */
+  /**
+   * Adds a character to the right of a string until it reaches a certain length.
+   *
+   * @since 1.0.0
+   */
   readonly padRight: (
     length: PaddingLength,
     char: string
@@ -86,12 +110,20 @@ export interface WithPadding2<S extends URIS2> {
  * @category Model
  */
 export interface WithPadding2C<S extends URIS2, E> {
-  /** Adds a character to the left of a string until it reaches a certain length. */
+  /**
+   * Adds a character to the left of a string until it reaches a certain length.
+   *
+   * @since 1.0.0
+   */
   readonly padLeft: (
     length: PaddingLength,
     char: string
   ) => (sa: Kind2<S, E, string>) => Kind2<S, E, string>
-  /** Adds a character to the right of a string until it reaches a certain length. */
+  /**
+   * Adds a character to the right of a string until it reaches a certain length.
+   *
+   * @since 1.0.0
+   */
   readonly padRight: (
     length: PaddingLength,
     char: string

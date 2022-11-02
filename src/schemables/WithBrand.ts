@@ -1,3 +1,8 @@
+/**
+ * Schemable for constructing a branded newtype
+ *
+ * @since 1.0.0
+ */
 import { Kind, Kind2, URIS, URIS2, HKT2 } from 'fp-ts/HKT'
 import * as D from '../internal/DecoderBase'
 import * as Enc from '../internal/EncoderBase'
@@ -15,6 +20,11 @@ import { Brand } from 'io-ts'
  * @category Model
  */
 export interface WithBrandHKT2<S> {
+  /**
+   * Schemable for constructing a branded newtype
+   *
+   * @since 1.0.0
+   */
   readonly brand: <B extends Brand<symbol>>() => <O, A>(
     target: HKT2<S, O, A>
   ) => HKT2<S, O, A & B>
@@ -25,6 +35,11 @@ export interface WithBrandHKT2<S> {
  * @category Model
  */
 export interface WithBrand1<S extends URIS> {
+  /**
+   * Schemable for constructing a branded newtype
+   *
+   * @since 1.0.0
+   */
   readonly brand: <B extends Brand<symbol>>() => <A>(target: Kind<S, A>) => Kind<S, A & B>
 }
 
@@ -33,6 +48,11 @@ export interface WithBrand1<S extends URIS> {
  * @category Model
  */
 export interface WithBrand2<S extends URIS2> {
+  /**
+   * Schemable for constructing a branded newtype
+   *
+   * @since 1.0.0
+   */
   readonly brand: <B extends Brand<symbol>>() => <O, A>(
     target: Kind2<S, O, A>
   ) => Kind2<S, O, A & B>
@@ -43,6 +63,11 @@ export interface WithBrand2<S extends URIS2> {
  * @category Model
  */
 export interface WithBrand2C<S extends URIS2, E> {
+  /**
+   * Schemable for constructing a branded newtype
+   *
+   * @since 1.0.0
+   */
   readonly brand: <B extends Brand<symbol>>() => <A>(
     target: Kind2<S, E, A>
   ) => Kind2<S, E, A & B>

@@ -1,3 +1,8 @@
+/**
+ * Invariant mapping for schemable
+ *
+ * @since 1.0.0
+ */
 import { Kind, Kind2, URIS, URIS2, HKT2 } from 'fp-ts/HKT'
 import * as D from '../internal/DecoderBase'
 import * as Enc from '../internal/EncoderBase'
@@ -15,9 +20,14 @@ import { flow, pipe } from 'fp-ts/function'
 
 /**
  * @since 1.0.0
- * @internal
+ * @category Model
  */
 export interface WithInvariantHKT2<S> {
+  /**
+   * Invariant mapping for schemable
+   *
+   * @since 1.0.0
+   */
   readonly imap: <B>(
     guardB: G.Guard<unknown, B>,
     name: string
@@ -26,9 +36,14 @@ export interface WithInvariantHKT2<S> {
 
 /**
  * @since 1.0.0
- * @internal
+ * @category Model
  */
 export interface WithInvariant1<S extends URIS> {
+  /**
+   * Invariant mapping for schemable
+   *
+   * @since 1.0.0
+   */
   readonly imap: <B>(
     guardB: G.Guard<unknown, B>,
     name: string
@@ -37,9 +52,14 @@ export interface WithInvariant1<S extends URIS> {
 
 /**
  * @since 1.0.0
- * @internal
+ * @category Model
  */
 export interface WithInvariant2<S extends URIS2> {
+  /**
+   * Invariant mapping for schemable
+   *
+   * @since 1.0.0
+   */
   readonly imap: <B>(
     guardB: G.Guard<unknown, B>,
     name: string
@@ -51,9 +71,14 @@ export interface WithInvariant2<S extends URIS2> {
 
 /**
  * @since 1.0.0
- * @internal
+ * @category Model
  */
 export interface WithInvariant2C<S extends URIS2, E> {
+  /**
+   * Invariant mapping for schemable
+   *
+   * @since 1.0.0
+   */
   readonly imap: <B>(
     guardB: G.Guard<unknown, B>,
     name: string

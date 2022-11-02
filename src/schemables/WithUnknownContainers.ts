@@ -1,3 +1,8 @@
+/**
+ * Re-export of `WithUnknownContainers` from `io-ts/Schemable/WithUnknownContainers`
+ *
+ * @since 1.0.0
+ */
 import { Kind2, URIS2, HKT2 } from 'fp-ts/HKT'
 import { URI as SchemaURI } from '../internal/SchemaBase'
 import * as SC from '../SchemaExt'

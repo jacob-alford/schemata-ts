@@ -1,3 +1,8 @@
+/**
+ * Schemable construction based on Regex combinators
+ *
+ * @since 1.0.0
+ */
 import * as Arb from '../internal/ArbitraryBase'
 import * as D from '../internal/DecoderBase'
 import * as Enc from 'io-ts/Encoder'
@@ -16,6 +21,11 @@ import { pipe } from 'fp-ts/function'
  * @category Model
  */
 export interface WithPatternHKT2<S> {
+  /**
+   * Schemable construction based on Regex combinators
+   *
+   * @since 1.0.0
+   */
   readonly pattern: (
     pattern: Pattern,
     description: string,
@@ -28,6 +38,11 @@ export interface WithPatternHKT2<S> {
  * @category Model
  */
 export interface WithPattern2<S extends URIS2> {
+  /**
+   * Schemable construction based on Regex combinators
+   *
+   * @since 1.0.0
+   */
   readonly pattern: (
     pattern: Pattern,
     description: string,
@@ -40,6 +55,11 @@ export interface WithPattern2<S extends URIS2> {
  * @category Model
  */
 export interface WithPattern2C<S extends URIS2, E> {
+  /**
+   * Schemable construction based on Regex combinators
+   *
+   * @since 1.0.0
+   */
   readonly pattern: (
     pattern: Pattern,
     description: string,
@@ -52,6 +72,11 @@ export interface WithPattern2C<S extends URIS2, E> {
  * @category Model
  */
 export interface WithPattern1<S extends URIS> {
+  /**
+   * Schemable construction based on Regex combinators
+   *
+   * @since 1.0.0
+   */
   readonly pattern: (
     pattern: Pattern,
     description: string,
