@@ -52,5 +52,9 @@ export const base64: PB.Pattern = pipe(
  * @category Schema
  */
 export const Base64: Base64S = make(S =>
-  pipe(S.pattern(base64, 'Base64'), S.padRight(2, '='), S.brand<Base64Brand>())
+  pipe(
+    S.pattern(base64, 'Base64'),
+    S.padRight({ by: 'ExactLength', exactLength: s => s.length + (s.length % 2) }, '='),
+    S.brand<Base64Brand>()
+  )
 )

@@ -14,6 +14,18 @@ import * as Arb from '../internal/ArbitraryBase'
 import { URI as SchemaURI } from '../internal/SchemaBase'
 import * as SC from '../SchemaExt'
 import { flow, identity, pipe } from 'fp-ts/function'
+import { matchOn } from '../internal/match'
+
+/**
+ * @since 1.0.0
+ * @category Model
+ */
+export type PaddingLength =
+  | { readonly by: 'MaxLength'; readonly maxLength: number | ((s: string) => number) }
+  | {
+      readonly by: 'ExactLength'
+      readonly exactLength: number | ((s: string) => number)
+    }
 
 /**
  * @since 1.0.0
@@ -22,13 +34,13 @@ import { flow, identity, pipe } from 'fp-ts/function'
 export interface WithPaddingHKT2<S> {
   /** Adds a character to the left of a string until it reaches a certain length. */
   readonly padLeft: (
-    modulus: number,
+    length: PaddingLength,
     char: string
   ) => (sa: HKT2<S, string, string>) => HKT2<S, string, string>
 
   /** Adds a character to the right of a string until it reaches a certain length. */
   readonly padRight: (
-    modulus: number,
+    length: PaddingLength,
     char: string
   ) => (sa: HKT2<S, string, string>) => HKT2<S, string, string>
 }
@@ -40,13 +52,13 @@ export interface WithPaddingHKT2<S> {
 export interface WithPadding1<S extends URIS> {
   /** Adds a character to the left of a string until it reaches a certain length. */
   readonly padLeft: (
-    modulus: number,
+    length: PaddingLength,
     char: string
   ) => (sa: Kind<S, string>) => Kind<S, string>
 
   /** Adds a character to the right of a string until it reaches a certain length. */
   readonly padRight: (
-    modulus: number,
+    length: PaddingLength,
     char: string
   ) => (sa: Kind<S, string>) => Kind<S, string>
 }
@@ -58,13 +70,13 @@ export interface WithPadding1<S extends URIS> {
 export interface WithPadding2<S extends URIS2> {
   /** Adds a character to the left of a string until it reaches a certain length. */
   readonly padLeft: (
-    modulus: number,
+    length: PaddingLength,
     char: string
   ) => (sa: Kind2<S, string, string>) => Kind2<S, string, string>
 
   /** Adds a character to the right of a string until it reaches a certain length. */
   readonly padRight: (
-    modulus: number,
+    length: PaddingLength,
     char: string
   ) => (sa: Kind2<S, string, string>) => Kind2<S, string, string>
 }
@@ -76,37 +88,53 @@ export interface WithPadding2<S extends URIS2> {
 export interface WithPadding2C<S extends URIS2, E> {
   /** Adds a character to the left of a string until it reaches a certain length. */
   readonly padLeft: (
-    modulus: number,
+    length: PaddingLength,
     char: string
   ) => (sa: Kind2<S, E, string>) => Kind2<S, E, string>
   /** Adds a character to the right of a string until it reaches a certain length. */
   readonly padRight: (
-    modulus: number,
+    length: PaddingLength,
     char: string
   ) => (sa: Kind2<S, E, string>) => Kind2<S, E, string>
 }
+
+/** @internal */
+const match = matchOn('by')
+
+/** @internal */
+const foldUnion: (n: number | ((s: string) => number)) => (s: string) => number =
+  n => s =>
+    typeof n === 'function' ? n(s) : n
 
 /**
  * @since 1.0.0
  * @category Instances
  */
 export const Decoder: WithPadding2C<D.URI, unknown> = {
-  padLeft: (modulus, char) => da =>
-    pipe(
-      da,
+  padLeft: match({
+    MaxLength: ({ maxLength }) =>
       D.refine(
-        (s): s is string => s.length % modulus === 0,
-        `padLeft(${modulus}, ${char})`
-      )
-    ),
-  padRight: (modulus, char) => da =>
-    pipe(
-      da,
+        (s: string): s is string => s.length <= foldUnion(maxLength)(s),
+        `LeftPadding`
+      ),
+    ExactLength: ({ exactLength }) =>
       D.refine(
-        (s): s is string => s.length % modulus === 0,
-        `padRight(${modulus}, ${char})`
-      )
-    ),
+        (s: string): s is string => s.length === foldUnion(exactLength)(s),
+        `LeftPadding`
+      ),
+  }),
+  padRight: match({
+    MaxLength: ({ maxLength }) =>
+      D.refine(
+        (s: string): s is string => s.length <= foldUnion(maxLength)(s),
+        `RightPadding`
+      ),
+    ExactLength: ({ exactLength }) =>
+      D.refine(
+        (s: string): s is string => s.length === foldUnion(exactLength)(s),
+        `RightPadding`
+      ),
+  }),
 }
 
 /**
@@ -132,8 +160,18 @@ export const Eq: WithPadding1<Eq_.URI> = {
  * @category Instances
  */
 export const Guard: WithPadding1<G.URI> = {
-  padLeft: modulus => G.refine((s): s is string => s.length % modulus === 0),
-  padRight: modulus => G.refine((s): s is string => s.length % modulus === 0),
+  padLeft: match({
+    MaxLength: ({ maxLength }) =>
+      G.refine((s: string): s is string => s.length <= foldUnion(maxLength)(s)),
+    ExactLength: ({ exactLength }) =>
+      G.refine((s: string): s is string => s.length === foldUnion(exactLength)(s)),
+  }),
+  padRight: match({
+    MaxLength: ({ maxLength }) =>
+      G.refine((s: string): s is string => s.length <= foldUnion(maxLength)(s)),
+    ExactLength: ({ exactLength }) =>
+      G.refine((s: string): s is string => s.length === foldUnion(exactLength)(s)),
+  }),
 }
 
 /**
@@ -141,22 +179,30 @@ export const Guard: WithPadding1<G.URI> = {
  * @category Instances
  */
 export const TaskDecoder: WithPadding2C<TD.URI, unknown> = {
-  padLeft: (modulus, char) => tdS =>
-    pipe(
-      tdS,
+  padLeft: match({
+    MaxLength: ({ maxLength }) =>
       TD.refine(
-        (s): s is string => s.length % modulus === 0,
-        `padLeft(${modulus}, ${char})`
-      )
-    ),
-  padRight: (modulus, char) => tdS =>
-    pipe(
-      tdS,
+        (s: string): s is string => s.length <= foldUnion(maxLength)(s),
+        `LeftPadding`
+      ),
+    ExactLength: ({ exactLength }) =>
       TD.refine(
-        (s): s is string => s.length % modulus === 0,
-        `padRight(${modulus}, ${char})`
-      )
-    ),
+        (s: string): s is string => s.length === foldUnion(exactLength)(s),
+        `LeftPadding`
+      ),
+  }),
+  padRight: match({
+    MaxLength: ({ maxLength }) =>
+      TD.refine(
+        (s: string): s is string => s.length <= foldUnion(maxLength)(s),
+        `RightPadding`
+      ),
+    ExactLength: ({ exactLength }) =>
+      TD.refine(
+        (s: string): s is string => s.length === foldUnion(exactLength)(s),
+        `RightPadding`
+      ),
+  }),
 }
 
 /**
@@ -164,22 +210,30 @@ export const TaskDecoder: WithPadding2C<TD.URI, unknown> = {
  * @category Instances
  */
 export const Type: WithPadding1<t.URI> = {
-  padLeft: (modulus, char) => tS =>
-    pipe(
-      tS,
+  padLeft: match({
+    MaxLength: ({ maxLength }) =>
       t.refine(
-        (s): s is string => s.length % modulus === 0,
-        `padRight(${modulus}, ${char})`
-      )
-    ),
-  padRight: (modulus, char) => tS =>
-    pipe(
-      tS,
+        (s: string): s is string => s.length <= foldUnion(maxLength)(s),
+        `LeftPadding`
+      ),
+    ExactLength: ({ exactLength }) =>
       t.refine(
-        (s): s is string => s.length % modulus === 0,
-        `padRight(${modulus}, ${char})`
-      )
-    ),
+        (s: string): s is string => s.length === foldUnion(exactLength)(s),
+        `LeftPadding`
+      ),
+  }),
+  padRight: match({
+    MaxLength: ({ maxLength }) =>
+      t.refine(
+        (s: string): s is string => s.length <= foldUnion(maxLength)(s),
+        `RightPadding`
+      ),
+    ExactLength: ({ exactLength }) =>
+      t.refine(
+        (s: string): s is string => s.length === foldUnion(exactLength)(s),
+        `RightPadding`
+      ),
+  }),
 }
 
 /**
@@ -221,19 +275,42 @@ const stripLeftWhile: (predicate: (char: string) => boolean) => (s: string) => s
  * @category Instances
  */
 export const Arbitrary: WithPadding1<Arb.URI> = {
-  padLeft: (modulus, char) => aS =>
-    aS.map(
-      flow(
-        stripLeftWhile(c => c === char),
-        s => s.padStart(s.length + (modulus - (s.length % modulus)), char)
-      )
+  padLeft: (length, char) => aS =>
+    pipe(
+      length,
+      match({
+        MaxLength: ({ maxLength }) => maxLength,
+        ExactLength: ({ exactLength }) => exactLength,
+      }),
+      length =>
+        aS.map(
+          flow(
+            stripLeftWhile(c => c === char),
+            s =>
+              s.length > length
+                ? s.slice(0, foldUnion(length)(s))
+                : s.padStart(foldUnion(length)(s), char)
+          )
+        )
     ),
-  padRight: (modulus, char) => aS =>
-    aS.map(
-      flow(
-        stripRightWhile(c => c === char),
-        s => s.padEnd(s.length + (modulus - (s.length % modulus)), char)
-      )
+
+  padRight: (length, char) => aS =>
+    pipe(
+      length,
+      match({
+        MaxLength: ({ maxLength }) => maxLength,
+        ExactLength: ({ exactLength }) => exactLength,
+      }),
+      length =>
+        aS.map(
+          flow(
+            stripRightWhile(c => c === char),
+            s =>
+              s.length > length
+                ? s.slice(0, foldUnion(length)(s))
+                : s.padEnd(foldUnion(length)(s), char)
+          )
+        )
     ),
 }
 
