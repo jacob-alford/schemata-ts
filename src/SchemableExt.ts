@@ -65,7 +65,6 @@ import * as int from './number/int'
 import * as intFromString from './number/intFromString'
 
 /** String */
-import * as creditCard from './string/creditCard'
 import * as hslColor from './string/hslColor'
 import * as latLong from './string/latLong'
 import * as rgb from './string/rgb'
@@ -180,16 +179,6 @@ export interface SchemableExt<S>
    * @since 1.0.0
    */
   readonly intFromString: intFromString.SchemableParams<S>
-
-  /**
-   * Represents (some) valid credit card numbers.
-   *
-   * At the moment, this mostly handles Visa, Mastercard, American Express, Diners Club,
-   * Discover, and JCB.
-   *
-   * @since 0.0.3
-   */
-  readonly creditCard: creditCard.SchemableParams<S>
 
   /**
    * An HSL string. Commonly in CSS.
@@ -361,16 +350,6 @@ export interface SchemableExt1<S extends URIS>
   readonly intFromString: intFromString.SchemableParams1<S>
 
   /**
-   * Represents (some) valid credit card numbers.
-   *
-   * At the moment, this mostly handles Visa, Mastercard, American Express, Diners Club,
-   * Discover, and JCB.
-   *
-   * @since 0.0.3
-   */
-  readonly creditCard: creditCard.SchemableParams1<S>
-
-  /**
    * An HSL string. Commonly in CSS.
    *
    * @since 0.0.3
@@ -540,16 +519,6 @@ export interface SchemableExt2<S extends URIS2>
   readonly intFromString: intFromString.SchemableParams2<S>
 
   /**
-   * Represents (some) valid credit card numbers.
-   *
-   * At the moment, this mostly handles Visa, Mastercard, American Express, Diners Club,
-   * Discover, and JCB.
-   *
-   * @since 0.0.3
-   */
-  readonly creditCard: creditCard.SchemableParams2<S>
-
-  /**
    * An HSL string. Commonly in CSS.
    *
    * @since 0.0.3
@@ -717,16 +686,6 @@ export interface SchemableExt2C<S extends URIS2>
    * @since 1.0.0
    */
   readonly intFromString: intFromString.SchemableParams2C<S>
-
-  /**
-   * Represents (some) valid credit card numbers.
-   *
-   * At the moment, this mostly handles Visa, Mastercard, American Express, Diners Club,
-   * Discover, and JCB.
-   *
-   * @since 0.0.3
-   */
-  readonly creditCard: creditCard.SchemableParams2C<S>
 
   /**
    * An HSL string. Commonly in CSS.

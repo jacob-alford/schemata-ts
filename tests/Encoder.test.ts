@@ -8,5 +8,4 @@ describe('Encoder', () => {
   it('interprets a schema', () => {
     expect(encoder.encode({ name: 'John' })).toEqual({ name: 'John' })
   })
-
 })
