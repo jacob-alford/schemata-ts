@@ -45,7 +45,7 @@ export const base64: PB.Pattern = pipe(
   PB.subgroup,
   PB.anyNumber(),
   PB.then(pipe(base64Characters, PB.between(2, 4))),
-  PB.then(pipe(PB.characterClass(false, '='), PB.between(0, 2), PB.subgroup)),
+  PB.then(pipe(PB.char('='), PB.between(0, 2))),
   PB.subgroup,
   PB.maybe
 )
@@ -64,7 +64,7 @@ export const Base64: Base64S = make(S =>
     S.padRight(
       {
         by: 'ExactLength',
-        exactLength: s => (s.length === 0 ? 0 : s.length + (4 - (s.length % 4))),
+        exactLength: s => s.length + ((4 - (s.length % 4)) % 4),
       },
       '='
     ),
