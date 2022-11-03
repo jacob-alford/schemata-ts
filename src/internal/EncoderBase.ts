@@ -1,13 +1,9 @@
-import { flow, identity } from 'fp-ts/function'
 import * as Enc from 'io-ts/Encoder'
-import { Schemable2, WithRefine2, WithUnknownContainers2 } from './Schemable2'
-import { WithBrand2 } from './WithBrand'
-import { WithInvariant2 } from './WithInvariant'
-import { WithPattern2 } from './WithPattern'
+import { Schemable2 } from './Schemable2'
 
 export { URI } from 'io-ts/Encoder'
 
-export const Schemable: Schemable2<Enc.URI> & WithUnknownContainers2<Enc.URI> = {
+export const Schemable: Schemable2<Enc.URI> = {
   URI: Enc.URI,
   literal: () => Enc.id(),
   string: Enc.id(),
@@ -27,32 +23,4 @@ export const Schemable: Schemable2<Enc.URI> & WithUnknownContainers2<Enc.URI> = 
   sum: Enc.sum,
   lazy: (_id, f) => Enc.lazy(f),
   readonly: Enc.readonly,
-}
-
-export const WithUnknownContainers: WithUnknownContainers2<Enc.URI> = {
-  UnknownArray: Enc.id(),
-  UnknownRecord: Enc.id(),
-}
-
-export const WithPattern: WithPattern2<Enc.URI> = {
-  pattern: () => Enc.id(),
-}
-
-export const WithRefine: WithRefine2<Enc.URI> = {
-  // @ts-expect-error -- refinement only changes type-level information, but types don't check out here
-  refine: () => Enc.id,
-}
-
-export const WithBrand: WithBrand2<Enc.URI> = {
-  brand: () => identity,
-}
-
-/**
- * @since 1.0.0
- * @category Instances
- */
-export const WithInvariant: WithInvariant2<Enc.URI> = {
-  imap: () => (_, reverseGet) => encA => ({
-    encode: flow(reverseGet, encA.encode),
-  }),
 }

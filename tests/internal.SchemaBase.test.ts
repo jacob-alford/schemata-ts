@@ -2,9 +2,6 @@ import * as E from 'fp-ts/Either'
 import * as SC from '../src/internal/SchemaBase'
 import { interpreter, SchemaExt } from '../src/SchemaExt'
 import * as D from '../src/Decoder'
-import * as PB from '../src/PatternBuilder'
-import { pipe } from 'fp-ts/function'
-import { Brand } from 'io-ts'
 
 describe('SchemaBase', () => {
   test('Literal', () => {
@@ -30,26 +27,6 @@ describe('SchemaBase', () => {
     const decode = interpreter(D.Schemable)(Schema)
     expect(decode.decode(true)).toStrictEqual(E.right(true))
     expect(decode.decode('foo')._tag).toStrictEqual('Left')
-  })
-  test('UnknownArray', () => {
-    const Schema = SC.UnknownArray
-    const decode = interpreter(D.Schemable)(Schema)
-    const test = [1, 2, 3, 'foo', { bar: ['b', { a: ['z'] }] }]
-    expect(decode.decode(test)).toStrictEqual(E.right(test))
-    expect(decode.decode('foo')._tag).toStrictEqual('Left')
-  })
-  test('UnknownRecord', () => {
-    const Schema = SC.UnknownRecord
-    const decode = interpreter(D.Schemable)(Schema)
-    const test = { foo: 1, bar: 'baz' }
-    expect(decode.decode(test)).toStrictEqual(E.right(test))
-    expect(decode.decode('foo')._tag).toStrictEqual('Left')
-  })
-  test('Refine', () => {
-    const Schema = SC.Refine((s: string): s is 'foo' => s === 'foo', 'foo')(SC.String)
-    const decode = interpreter(D.Schemable)(Schema)
-    expect(decode.decode('foo')).toStrictEqual(E.right('foo'))
-    expect(decode.decode('bar')._tag).toStrictEqual('Left')
   })
   test('Nullable', () => {
     const Schema = SC.Nullable(SC.String)
@@ -164,35 +141,5 @@ describe('SchemaBase', () => {
     const test = { foo: 'foo', bar: 1 }
     expect(decode.decode(test)).toStrictEqual(E.right(test))
     expect(decode.decode({ foo: 'foo' })._tag).toStrictEqual('Left')
-  })
-  test('Brand', () => {
-    type FooBrand = Brand<{ readonly foo: unique symbol }['foo']>
-    const Schema = pipe(SC.String, SC.Brand<FooBrand>())
-    const decode = interpreter(D.Schemable)(Schema)
-    expect(decode.decode('foo')).toStrictEqual(E.right('foo'))
-    expect(decode.decode('bar')).toStrictEqual(E.right('bar'))
-  })
-  test('Pattern', () => {
-    const pattern = pipe(
-      PB.exactString('foo'),
-      PB.then(PB.characterClass(false, ['0', '9']))
-    )
-    const Schema = SC.Pattern(pattern, 'FooNum')
-    const decode = interpreter(D.Schemable)(Schema)
-    expect(decode.decode('foo1')).toStrictEqual(E.right('foo1'))
-    expect(decode.decode('foo')._tag).toStrictEqual('Left')
-    expect(decode.decode('bar')._tag).toStrictEqual('Left')
-  })
-  test('WithInvariant', () => {
-    const Schema = SC.InvMap<Date>(
-      { is: (a: unknown): a is Date => a instanceof Date },
-      'Date'
-    )<string>(
-      a => new Date(a),
-      a => a.toISOString()
-    )(SC.String)
-    const decoder = interpreter(D.Schemable)(Schema)
-    const test = new Date()
-    expect(decoder.decode(test.toISOString())).toStrictEqual(E.right(test))
   })
 })

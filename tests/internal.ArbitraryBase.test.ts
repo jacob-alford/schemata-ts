@@ -4,6 +4,7 @@ import * as Arb from '../src/internal/ArbitraryBase'
 import * as G from '../src/Guard'
 import * as SC from '../src/SchemaExt'
 import { PositiveFloat } from '../src/schemata/number/PositiveFloat'
+import { Arbitrary as WithInvariant } from '../src/schemables/WithInvariant'
 
 const isPositiveFloat = SC.interpreter(G.Schemable)(PositiveFloat).is
 
@@ -197,7 +198,7 @@ describe('ArbitraryBase', () => {
       expect(Arb.typeOf('')).toBe('string')
     })
     test('WithInvariant', () => {
-      const getDate = Arb.WithInvariant.imap(
+      const getDate = WithInvariant.imap(
         { is: (d): d is Date => d instanceof Date },
         'number'
       )<number>(

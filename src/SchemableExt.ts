@@ -6,35 +6,44 @@
  * @since 0.0.1
  */
 import { URIS, URIS2 } from 'fp-ts/HKT'
+import { Schemable1, Schemable2C } from 'io-ts/Schemable'
+import { Schemable2, SchemableHKT2 } from './internal/Schemable2'
 import {
-  Schemable1,
-  Schemable2C,
-  WithRefine1,
-  WithRefine2C,
-  WithUnknownContainers1,
-  WithUnknownContainers2C,
-} from 'io-ts/Schemable'
-import {
-  Schemable2,
-  SchemableHKT2,
-  WithRefine2,
-  WithRefineHKT2,
-  WithUnknownContainers2,
-  WithUnknownContainersHKT2,
-} from './internal/Schemable2'
-import { WithBrand1, WithBrand2, WithBrand2C, WithBrandHKT2 } from './internal/WithBrand'
-import {
-  WithPattern1,
-  WithPattern2,
-  WithPattern2C,
-  WithPatternHKT2,
-} from './internal/WithPattern'
+  WithBrand1,
+  WithBrand2,
+  WithBrand2C,
+  WithBrandHKT2,
+} from './schemables/WithBrand'
 import {
   WithInvariant1,
   WithInvariant2,
   WithInvariant2C,
   WithInvariantHKT2,
-} from './internal/WithInvariant'
+} from './schemables/WithInvariant'
+import {
+  WithPadding1,
+  WithPadding2,
+  WithPadding2C,
+  WithPaddingHKT2,
+} from './schemables/WithPadding'
+import {
+  WithPattern1,
+  WithPattern2,
+  WithPattern2C,
+  WithPatternHKT2,
+} from './schemables/WithPattern'
+import {
+  WithRefine1,
+  WithRefine2,
+  WithRefine2C,
+  WithRefineHKT2,
+} from './schemables/WithRefine'
+import {
+  WithUnknownContainers1,
+  WithUnknownContainers2,
+  WithUnknownContainers2C,
+  WithUnknownContainersHKT2,
+} from './schemables/WithUnknownContainers'
 
 /** Generic */
 import * as mapFromEntries from './generic/mapFromEntries'
@@ -50,7 +59,6 @@ import * as int from './number/int'
 import * as intFromString from './number/intFromString'
 
 /** String */
-import * as base64 from './string/base64'
 import * as creditCard from './string/creditCard'
 import * as hslColor from './string/hslColor'
 import * as latLong from './string/latLong'
@@ -68,8 +76,9 @@ import * as dateFromIsoString from './date/dateFromIsoString'
 export interface SchemableExt<S>
   extends SchemableHKT2<S>,
     WithBrandHKT2<S>,
-    WithPatternHKT2<S>,
     WithInvariantHKT2<S>,
+    WithPaddingHKT2<S>,
+    WithPatternHKT2<S>,
     WithRefineHKT2<S>,
     WithUnknownContainersHKT2<S> {
   /**
@@ -166,18 +175,6 @@ export interface SchemableExt<S>
   readonly intFromString: intFromString.SchemableParams<S>
 
   /**
-   * Representing a Base64-encoded string.
-   *
-   * For a URL-safe version, @see Base64UrlSafe module
-   *
-   * This module is heavily inspired by the `validator.js` module
-   * [`isBase64`](https://github.com/validatorjs/validator.js/blob/master/src/lib/isBase64.js).
-   *
-   * @since 1.0.0
-   */
-  readonly base64: base64.SchemableParams<S>
-
-  /**
    * Represents (some) valid credit card numbers.
    *
    * At the moment, this mostly handles Visa, Mastercard, American Express, Diners Club,
@@ -257,8 +254,9 @@ export interface SchemableExt<S>
 export interface SchemableExt1<S extends URIS>
   extends Schemable1<S>,
     WithBrand1<S>,
-    WithPattern1<S>,
     WithInvariant1<S>,
+    WithPadding1<S>,
+    WithPattern1<S>,
     WithRefine1<S>,
     WithUnknownContainers1<S> {
   /**
@@ -355,18 +353,6 @@ export interface SchemableExt1<S extends URIS>
   readonly intFromString: intFromString.SchemableParams1<S>
 
   /**
-   * Representing a Base64-encoded string.
-   *
-   * For a URL-safe version, @see Base64UrlSafe module
-   *
-   * This module is heavily inspired by the `validator.js` module
-   * [`isBase64`](https://github.com/validatorjs/validator.js/blob/master/src/lib/isBase64.js).
-   *
-   * @since 1.0.0
-   */
-  readonly base64: base64.SchemableParams1<S>
-
-  /**
    * Represents (some) valid credit card numbers.
    *
    * At the moment, this mostly handles Visa, Mastercard, American Express, Diners Club,
@@ -446,8 +432,9 @@ export interface SchemableExt1<S extends URIS>
 export interface SchemableExt2<S extends URIS2>
   extends Schemable2<S>,
     WithBrand2<S>,
-    WithPattern2<S>,
     WithInvariant2<S>,
+    WithPadding2<S>,
+    WithPattern2<S>,
     WithRefine2<S>,
     WithUnknownContainers2<S> {
   /**
@@ -544,18 +531,6 @@ export interface SchemableExt2<S extends URIS2>
   readonly intFromString: intFromString.SchemableParams2<S>
 
   /**
-   * Representing a Base64-encoded string.
-   *
-   * For a URL-safe version, @see Base64UrlSafe module
-   *
-   * This module is heavily inspired by the `validator.js` module
-   * [`isBase64`](https://github.com/validatorjs/validator.js/blob/master/src/lib/isBase64.js).
-   *
-   * @since 1.0.0
-   */
-  readonly base64: base64.SchemableParams2<S>
-
-  /**
    * Represents (some) valid credit card numbers.
    *
    * At the moment, this mostly handles Visa, Mastercard, American Express, Diners Club,
@@ -635,8 +610,9 @@ export interface SchemableExt2<S extends URIS2>
 export interface SchemableExt2C<S extends URIS2>
   extends Schemable2C<S, unknown>,
     WithBrand2C<S, unknown>,
-    WithPattern2C<S, unknown>,
     WithInvariant2C<S, unknown>,
+    WithPadding2C<S, unknown>,
+    WithPattern2C<S, unknown>,
     WithRefine2C<S, unknown>,
     WithUnknownContainers2C<S, unknown> {
   /**
@@ -731,18 +707,6 @@ export interface SchemableExt2C<S extends URIS2>
    * @since 1.0.0
    */
   readonly intFromString: intFromString.SchemableParams2C<S>
-
-  /**
-   * Representing a Base64-encoded string.
-   *
-   * For a URL-safe version, @see Base64UrlSafe module
-   *
-   * This module is heavily inspired by the `validator.js` module
-   * [`isBase64`](https://github.com/validatorjs/validator.js/blob/master/src/lib/isBase64.js).
-   *
-   * @since 1.0.0
-   */
-  readonly base64: base64.SchemableParams2C<S>
 
   /**
    * Represents (some) valid credit card numbers.

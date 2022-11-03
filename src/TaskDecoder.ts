@@ -8,6 +8,14 @@
 import * as TD from './internal/TaskDecoderBase'
 import { SchemableExt2C } from './SchemableExt'
 
+/** Schemables */
+import * as WithBrand from './schemables/WithBrand'
+import * as WithInvariant from './schemables/WithInvariant'
+import * as WithPadding from './schemables/WithPadding'
+import * as WithPattern from './schemables/WithPattern'
+import * as WithRefine from './schemables/WithRefine'
+import * as WithUnknownContainers from './schemables/WithUnknownContainers'
+
 /** Generic */
 import * as mapFromEntries from './generic/mapFromEntries'
 import * as optionFromExclude from './generic/optionFromExclude'
@@ -22,7 +30,6 @@ import * as int from './number/int'
 import * as intFromString from './number/intFromString'
 
 /** String */
-import * as base64 from './string/base64'
 import * as creditCard from './string/creditCard'
 import * as hslColor from './string/hslColor'
 import * as latLong from './string/latLong'
@@ -39,11 +46,12 @@ import * as dateFromIsoString from './date/dateFromIsoString'
  */
 export const Schemable: SchemableExt2C<TD.URI> = {
   ...TD.Schemable,
-  ...TD.WithBrand,
-  ...TD.WithPattern,
-  ...TD.WithInvariant,
-  ...TD.WithRefine,
-  ...TD.WithUnknownContainers,
+  ...WithBrand.TaskDecoder,
+  ...WithInvariant.TaskDecoder,
+  ...WithPadding.TaskDecoder,
+  ...WithPattern.TaskDecoder,
+  ...WithRefine.TaskDecoder,
+  ...WithUnknownContainers.TaskDecoder,
   mapFromEntries: mapFromEntries.TaskDecoder,
   optionFromExclude: optionFromExclude.TaskDecoder,
   optionFromNullable: optionFromNullable.TaskDecoder,
@@ -53,7 +61,6 @@ export const Schemable: SchemableExt2C<TD.URI> = {
   floatFromString: floatFromString.TaskDecoder,
   int: int.TaskDecoder,
   intFromString: intFromString.TaskDecoder,
-  base64: base64.TaskDecoder,
   creditCard: creditCard.TaskDecoder,
   hslColor: hslColor.TaskDecoder,
   latLong: latLong.TaskDecoder,

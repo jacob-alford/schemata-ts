@@ -8,6 +8,14 @@
 import * as D from './internal/DecoderBase'
 import { SchemableExt2C } from './SchemableExt'
 
+/** Schemables */
+import * as WithBrand from './schemables/WithBrand'
+import * as WithInvariant from './schemables/WithInvariant'
+import * as WithPadding from './schemables/WithPadding'
+import * as WithPattern from './schemables/WithPattern'
+import * as WithRefine from './schemables/WithRefine'
+import * as WithUnknownContainers from './schemables/WithUnknownContainers'
+
 /** Generic */
 import * as mapFromEntries from './generic/mapFromEntries'
 import * as optionFromExclude from './generic/optionFromExclude'
@@ -22,7 +30,6 @@ import * as int from './number/int'
 import * as intFromString from './number/intFromString'
 
 /** String */
-import * as base64 from './string/base64'
 import * as creditCard from './string/creditCard'
 import * as hslColor from './string/hslColor'
 import * as latLong from './string/latLong'
@@ -39,11 +46,12 @@ import * as dateFromIsoString from './date/dateFromIsoString'
  */
 export const Schemable: SchemableExt2C<D.URI> = {
   ...D.Schemable,
-  ...D.WithBrand,
-  ...D.WithPattern,
-  ...D.WithInvariant,
-  ...D.WithRefine,
-  ...D.WithUnknownContainers,
+  ...WithBrand.Decoder,
+  ...WithInvariant.Decoder,
+  ...WithPadding.Decoder,
+  ...WithPattern.Decoder,
+  ...WithRefine.Decoder,
+  ...WithUnknownContainers.Decoder,
   mapFromEntries: mapFromEntries.Decoder,
   optionFromExclude: optionFromExclude.Decoder,
   optionFromNullable: optionFromNullable.Decoder,
@@ -53,7 +61,6 @@ export const Schemable: SchemableExt2C<D.URI> = {
   floatFromString: floatFromString.Decoder,
   int: int.Decoder,
   intFromString: intFromString.Decoder,
-  base64: base64.Decoder,
   creditCard: creditCard.Decoder,
   hslColor: hslColor.Decoder,
   latLong: latLong.Decoder,

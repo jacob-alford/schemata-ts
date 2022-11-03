@@ -8,6 +8,14 @@
 import * as Eq from './internal/EqBase'
 import { SchemableExt1 } from './SchemableExt'
 
+/** Schemables */
+import * as WithBrand from './schemables/WithBrand'
+import * as WithInvariant from './schemables/WithInvariant'
+import * as WithPadding from './schemables/WithPadding'
+import * as WithPattern from './schemables/WithPattern'
+import * as WithRefine from './schemables/WithRefine'
+import * as WithUnknownContainers from './schemables/WithUnknownContainers'
+
 /** Generic */
 import * as mapFromEntries from './generic/mapFromEntries'
 import * as optionFromExclude from './generic/optionFromExclude'
@@ -22,7 +30,6 @@ import * as int from './number/int'
 import * as intFromString from './number/intFromString'
 
 /** String */
-import * as base64 from './string/base64'
 import * as creditCard from './string/creditCard'
 import * as hslColor from './string/hslColor'
 import * as latLong from './string/latLong'
@@ -39,11 +46,12 @@ import * as dateFromIsoString from './date/dateFromIsoString'
  */
 export const Schemable: SchemableExt1<Eq.URI> = {
   ...Eq.Schemable,
-  ...Eq.WithBrand,
-  ...Eq.WithPattern,
-  ...Eq.WithInvariant,
-  ...Eq.WithRefine,
-  ...Eq.WithUnknownContainers,
+  ...WithBrand.Eq,
+  ...WithInvariant.Eq,
+  ...WithPadding.Eq,
+  ...WithPattern.Eq,
+  ...WithRefine.Eq,
+  ...WithUnknownContainers.Eq,
   mapFromEntries: mapFromEntries.Eq,
   optionFromExclude: optionFromExclude.Eq,
   optionFromNullable: optionFromNullable.Eq,
@@ -53,7 +61,6 @@ export const Schemable: SchemableExt1<Eq.URI> = {
   floatFromString: floatFromString.Eq,
   int: int.Eq,
   intFromString: intFromString.Eq,
-  base64: base64.Eq,
   creditCard: creditCard.Eq,
   hslColor: hslColor.Eq,
   latLong: latLong.Eq,

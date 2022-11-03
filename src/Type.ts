@@ -8,6 +8,14 @@
 import * as t from './internal/TypeBase'
 import { SchemableExt1 } from './SchemableExt'
 
+/** Schemables */
+import * as WithBrand from './schemables/WithBrand'
+import * as WithInvariant from './schemables/WithInvariant'
+import * as WithPadding from './schemables/WithPadding'
+import * as WithPattern from './schemables/WithPattern'
+import * as WithRefine from './schemables/WithRefine'
+import * as WithUnknownContainers from './schemables/WithUnknownContainers'
+
 /** Generic */
 import * as mapFromEntries from './generic/mapFromEntries'
 import * as optionFromExclude from './generic/optionFromExclude'
@@ -22,7 +30,6 @@ import * as int from './number/int'
 import * as intFromString from './number/intFromString'
 
 /** String */
-import * as base64 from './string/base64'
 import * as creditCard from './string/creditCard'
 import * as hslColor from './string/hslColor'
 import * as latLong from './string/latLong'
@@ -39,11 +46,12 @@ import * as dateFromIsoString from './date/dateFromIsoString'
  */
 export const Schemable: SchemableExt1<t.URI> = {
   ...t.Schemable,
-  ...t.WithBrand,
-  ...t.WithPattern,
-  ...t.WithInvariant,
-  ...t.WithRefine,
-  ...t.WithUnknownContainers,
+  ...WithBrand.Type,
+  ...WithInvariant.Type,
+  ...WithPadding.Type,
+  ...WithPattern.Type,
+  ...WithRefine.Type,
+  ...WithUnknownContainers.Type,
   mapFromEntries: mapFromEntries.Type,
   optionFromExclude: optionFromExclude.Type,
   optionFromNullable: optionFromNullable.Type,
@@ -53,7 +61,6 @@ export const Schemable: SchemableExt1<t.URI> = {
   floatFromString: floatFromString.Type,
   int: int.Type,
   intFromString: intFromString.Type,
-  base64: base64.Type,
   creditCard: creditCard.Type,
   hslColor: hslColor.Type,
   latLong: latLong.Type,
