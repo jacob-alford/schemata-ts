@@ -30,6 +30,9 @@ export type Base64 = string & Base64Brand
  */
 export type Base64S = SchemaExt<string, Base64>
 
+/** @internal */
+const base64Characters = pipe(PB.alnum, PB.and(PB.characterClass(false, '+', '/')))
+
 /**
  * /^([A-Za-z0-9+/]*?([=]{0,2}))$/
  *
@@ -37,10 +40,14 @@ export type Base64S = SchemaExt<string, Base64>
  * @category Pattern
  */
 export const base64: PB.Pattern = pipe(
-  PB.alnum,
-  PB.and(PB.characterClass(false, '+', '/')),
+  base64Characters,
+  PB.exactly(4),
+  PB.subgroup,
   PB.anyNumber(),
-  PB.then(pipe(PB.characterClass(false, '='), PB.between(0, 2), PB.subgroup))
+  PB.then(pipe(base64Characters, PB.between(2, 4))),
+  PB.then(pipe(PB.characterClass(false, '='), PB.between(0, 2), PB.subgroup)),
+  PB.subgroup,
+  PB.maybe
 )
 
 /**
@@ -54,7 +61,13 @@ export const base64: PB.Pattern = pipe(
 export const Base64: Base64S = make(S =>
   pipe(
     S.pattern(base64, 'Base64'),
-    S.padRight({ by: 'ExactLength', exactLength: s => s.length + (s.length % 2) }, '='),
+    S.padRight(
+      {
+        by: 'ExactLength',
+        exactLength: s => (s.length === 0 ? 0 : s.length + (4 - (s.length % 4))),
+      },
+      '='
+    ),
     S.brand<Base64Brand>()
   )
 )

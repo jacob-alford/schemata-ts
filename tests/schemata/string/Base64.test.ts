@@ -1,6 +1,9 @@
 import * as E from 'fp-ts/Either'
 import * as Base64 from '../../../src/schemata/string/Base64'
+import * as PB from '../../../src/PatternBuilder'
 import { getAllInstances, validateArbitrary } from '../../../test-utils'
+
+console.log(PB.regexFromPattern(Base64.base64).source)
 
 const { Arbitrary, Decoder, Eq, Guard, TaskDecoder, Type } = getAllInstances(
   Base64.Base64
