@@ -13,7 +13,9 @@ import { make, SchemaExt } from '../../SchemaExt'
 import { Brand } from 'io-ts'
 
 /** @internal */
-type EmailAddressBrand = Brand<{ readonly x: unique symbol }['x']>
+type EmailAddressBrand = Brand<{
+  readonly EmailAddress: unique symbol
+}>
 
 /**
  * Represents strings (email addresses) that conform to the RFC 5322 standard.

@@ -543,3 +543,17 @@ export const graph: CharacterClass = characterClass(false, [33, 127])
  * @since 1.0.0
  */
 export const print: CharacterClass = pipe(graph, and(' '))
+
+/**
+ * Form a disjunction of multiple terms or term sequences.
+ *
+ * @since 1.0.0
+ */
+export const oneOf: (
+  pattern: Pattern,
+  ...terms: ReadonlyArray<Term | TermSequence>
+) => Pattern = (pattern, ...patterns) =>
+  pipe(
+    patterns,
+    RA.reduce(pattern, (ored, next) => pipe(ored, or(next)))
+  )

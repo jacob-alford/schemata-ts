@@ -10,6 +10,7 @@ import { SchemableExt2C } from './SchemableExt'
 
 /** Schemables */
 import * as WithBrand from './schemables/WithBrand'
+import * as WithCheckDigit from './schemables/WithCheckDigit'
 import * as WithInvariant from './schemables/WithInvariant'
 import * as WithPadding from './schemables/WithPadding'
 import * as WithPattern from './schemables/WithPattern'
@@ -30,7 +31,6 @@ import * as int from './number/int'
 import * as intFromString from './number/intFromString'
 
 /** String */
-import * as creditCard from './string/creditCard'
 import * as hslColor from './string/hslColor'
 import * as latLong from './string/latLong'
 import * as rgb from './string/rgb'
@@ -47,6 +47,7 @@ import * as dateFromIsoString from './date/dateFromIsoString'
 export const Schemable: SchemableExt2C<D.URI> = {
   ...D.Schemable,
   ...WithBrand.Decoder,
+  ...WithCheckDigit.Decoder,
   ...WithInvariant.Decoder,
   ...WithPadding.Decoder,
   ...WithPattern.Decoder,
@@ -61,7 +62,6 @@ export const Schemable: SchemableExt2C<D.URI> = {
   floatFromString: floatFromString.Decoder,
   int: int.Decoder,
   intFromString: intFromString.Decoder,
-  creditCard: creditCard.Decoder,
   hslColor: hslColor.Decoder,
   latLong: latLong.Decoder,
   rgb: rgb.Decoder,

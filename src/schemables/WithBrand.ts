@@ -25,7 +25,7 @@ export interface WithBrandHKT2<S> {
    *
    * @since 1.0.0
    */
-  readonly brand: <B extends Brand<symbol>>() => <O, A>(
+  readonly brand: <B extends Brand<unknown>>() => <O, A>(
     target: HKT2<S, O, A>
   ) => HKT2<S, O, A & B>
 }
@@ -40,7 +40,9 @@ export interface WithBrand1<S extends URIS> {
    *
    * @since 1.0.0
    */
-  readonly brand: <B extends Brand<symbol>>() => <A>(target: Kind<S, A>) => Kind<S, A & B>
+  readonly brand: <B extends Brand<unknown>>() => <A>(
+    target: Kind<S, A>
+  ) => Kind<S, A & B>
 }
 
 /**
@@ -53,7 +55,7 @@ export interface WithBrand2<S extends URIS2> {
    *
    * @since 1.0.0
    */
-  readonly brand: <B extends Brand<symbol>>() => <O, A>(
+  readonly brand: <B extends Brand<unknown>>() => <O, A>(
     target: Kind2<S, O, A>
   ) => Kind2<S, O, A & B>
 }
@@ -68,7 +70,7 @@ export interface WithBrand2C<S extends URIS2, E> {
    *
    * @since 1.0.0
    */
-  readonly brand: <B extends Brand<symbol>>() => <A>(
+  readonly brand: <B extends Brand<unknown>>() => <A>(
     target: Kind2<S, E, A>
   ) => Kind2<S, E, A & B>
 }
@@ -139,6 +141,6 @@ export const Type: WithBrand1<t.URI> = {
  * @category Combinators
  */
 export const Schema =
-  <B extends Brand<symbol>>() =>
+  <B extends Brand<unknown>>() =>
   <O, A>(target: SC.SchemaExt<O, A>): SC.SchemaExt<O, A & B> =>
     SC.make(_ => _.brand<B>()<O, A>(target(_)))
