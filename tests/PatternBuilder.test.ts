@@ -60,4 +60,121 @@ describe('PatternBuilder', () => {
 
     fc.assert(fc.property(arbitrary, s => regex.test(s)))
   })
+
+  describe('integerRange', () => {
+    describe('one digit ranges', () => {
+      test('1-9', () => {
+        const pattern = PB.integerRange(1, 9)
+        const actual = PB.regexFromPattern(pattern)
+        expect(actual.source).toEqual('^([1-9])$')
+      })
+
+      test('5-7', () => {
+        const pattern = PB.integerRange(5, 7)
+        const actual = PB.regexFromPattern(pattern)
+        expect(actual.source).toEqual('^([5-7])$')
+      })
+    })
+
+    describe('two digit ranges', () => {
+      test('10-99', () => {
+        const pattern = PB.integerRange(10, 99)
+        const actual = PB.regexFromPattern(pattern)
+        expect(actual.source).toEqual('^(1\\d|[2-8]\\d|9\\d)$')
+      })
+
+      test('41-74', () => {
+        const pattern = PB.integerRange(41, 74)
+        const actual = PB.regexFromPattern(pattern)
+        for (let i = 10; i < 100; i++) {
+          if (i >= 41 && i <= 74) {
+            expect([i.toString(), actual.test(i.toString())]).toEqual([
+              i.toString(),
+              true,
+            ])
+          } else {
+            expect([i.toString(), actual.test(i.toString())]).toEqual([
+              i.toString(),
+              false,
+            ])
+          }
+        }
+        // expect(actual.source).toEqual('^(4[1-9]|[5-6]\\d|7[0-4])$')
+      })
+    })
+
+    describe('three digit ranges', () => {
+      test('100-999', () => {
+        const pattern = PB.integerRange(100, 999)
+        const actual = PB.regexFromPattern(pattern)
+        expect(actual.source).toEqual(
+          '^(1(0\\d|[1-8]\\d|9\\d)|[2-8]\\d\\d|9(0\\d|[1-8]\\d|9\\d))$',
+        )
+      })
+
+      test('421-734', () => {
+        const pattern = PB.integerRange(421, 734)
+        const actual = PB.regexFromPattern(pattern)
+
+        for (let i = 100; i < 1000; i++) {
+          if (i >= 421 && i <= 734) {
+            expect([i.toString(), actual.test(i.toString())]).toEqual([
+              i.toString(),
+              true,
+            ])
+          } else {
+            expect([i.toString(), actual.test(i.toString())]).toEqual([
+              i.toString(),
+              false,
+            ])
+          }
+        }
+      })
+    })
+
+    describe('mixed digit ranges', () => {
+      test('5-226', () => {
+        const pattern = PB.integerRange(5, 226)
+        const actual = PB.regexFromPattern(pattern)
+
+        for (let i = 1; i < 500; i++) {
+          if (i >= 5 && i <= 226) {
+            expect([i.toString(), actual.test(i.toString())]).toEqual([
+              i.toString(),
+              true,
+            ])
+          } else {
+            expect([i.toString(), actual.test(i.toString())]).toEqual([
+              i.toString(),
+              false,
+            ])
+          }
+        }
+      })
+
+      test('arbitrary ranges', () => {
+        fc.assert(
+          fc.property(
+            fc.tuple(
+              fc.integer({ min: 0, max: 200 }),
+              fc.integer({ min: 1, max: 799 }),
+              fc.array(fc.integer({ min: 0, max: 1000 }), {
+                minLength: 1,
+                maxLength: 100,
+              }),
+            ),
+            ([min, addition, checks]) => {
+              const pattern = PB.integerRange(min, min + addition)
+              const actual = PB.regexFromPattern(pattern)
+              return checks.every(n =>
+                n >= min && n <= min + addition
+                  ? actual.test(n.toString())
+                  : !actual.test(n.toString()),
+              )
+            },
+          ),
+        )
+      })
+    })
+  })
 })
