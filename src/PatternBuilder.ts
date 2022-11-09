@@ -15,7 +15,7 @@
  *   const areaCode = pipe(
  *     pipe(PB.char('('), PB.then(PB.times(3)(digit)), PB.then(PB.char(')'))),
  *     PB.or(PB.times(3)(digit)),
- *     PB.subgroup
+ *     PB.subgroup,
  *   )
  *
  *   const prefix = PB.times(3)(digit)
@@ -27,7 +27,7 @@
  *     PB.then(PB.char('-')),
  *     PB.then(prefix),
  *     PB.then(PB.char('-')),
- *     PB.then(lineNumber)
+ *     PB.then(lineNumber),
  *   )
  */
 import * as fc from 'fast-check'
@@ -90,7 +90,7 @@ export const char: (c: Char) => Atom = c => ({ tag: 'atom', kind: 'character', c
 export const anything: Atom = { tag: 'atom', kind: 'anything' }
 
 const convertRanges: (
-  ranges: ReadonlyArray<readonly [Char, Char] | Char | readonly [number, number]>
+  ranges: ReadonlyArray<readonly [Char, Char] | Char | readonly [number, number]>,
 ) => CharacterClass['ranges'] = RA.map(range => {
   if (typeof range === 'string') {
     return { lower: range.charCodeAt(0), upper: range.charCodeAt(0) } as const
@@ -229,7 +229,7 @@ export const between: (min: number, max: number) => (atom: Atom) => QuantifiedAt
  * @since 1.0.0
  */
 export const or: (
-  right: TermSequence | Atom | QuantifiedAtom
+  right: TermSequence | Atom | QuantifiedAtom,
 ) => (left: Pattern) => Disjunction = right => left => ({
   tag: 'disjunction',
   left,
@@ -248,7 +248,7 @@ const getTerms: (termOrSeq: Term | TermSequence) => TermSequence['terms'] = matc
  * @since 1.0.0
  */
 export const then: (
-  term: Term | TermSequence
+  term: Term | TermSequence,
 ) => (alt: TermSequence | Term) => TermSequence = term => alt => ({
   tag: 'termSequence',
   terms: [...getTerms(alt), ...getTerms(term)],
@@ -298,7 +298,7 @@ const regexStringFromAtom: (atom: Atom) => string = matchK({
   characterClass: ({ exclude, ranges }) =>
     `[${exclude ? '^' : ''}${ranges
       .map(({ lower, upper }) =>
-        lower === upper ? repr(lower) : `${repr(lower)}-${repr(upper)}`
+        lower === upper ? repr(lower) : `${repr(lower)}-${repr(upper)}`,
       )
       .join('')}]`,
   subgroup: ({ subpattern }) => `(${regexStringFromPattern(subpattern)})`,
@@ -344,7 +344,7 @@ export const arbitraryFromAtom: (atom: Atom) => fc.Arbitrary<string> = matchK({
           .integer({ min: 1, max: 0xffff })
           .filter(i => ranges.every(({ lower, upper }) => i > upper || i < lower))
       : fc.oneof(
-          ...ranges.map(({ lower, upper }) => fc.integer({ min: lower, max: upper }))
+          ...ranges.map(({ lower, upper }) => fc.integer({ min: lower, max: upper })),
         )
     ).map(charCode => String.fromCharCode(charCode)),
   subgroup: ({ subpattern }) => arbitraryFromPattern(subpattern),
@@ -352,7 +352,7 @@ export const arbitraryFromAtom: (atom: Atom) => fc.Arbitrary<string> = matchK({
 
 /** @internal */
 export const arbitraryFromQuantifiedAtom: (
-  quantifiedAtom: QuantifiedAtom
+  quantifiedAtom: QuantifiedAtom,
 ) => fc.Arbitrary<string> = matchK({
   star: ({ atom }) => fc.array(arbitraryFromAtom(atom)).map(strs => strs.join('')),
   plus: ({ atom }) =>
@@ -382,7 +382,7 @@ const chainConcatAll: (fcs: ReadonlyArray<fc.Arbitrary<string>>) => fc.Arbitrary
   RA.foldLeft(
     () => fc.constant(''),
     (head, tail) =>
-      head.chain(headStr => chainConcatAll(tail).map(tailStr => headStr + tailStr))
+      head.chain(headStr => chainConcatAll(tail).map(tailStr => headStr + tailStr)),
   )
 
 /**
@@ -405,7 +405,7 @@ export const arbitraryFromPattern: (pattern: Pattern) => fc.Arbitrary<string> = 
  */
 export const and: {
   (...ranges: ReadonlyArray<readonly [Char, Char] | Char | readonly [number, number]>): (
-    cc: CharacterClass
+    cc: CharacterClass,
   ) => CharacterClass
   (ccb: CharacterClass): (cca: CharacterClass) => CharacterClass
 } =
@@ -420,7 +420,7 @@ export const and: {
     ranges: cc.ranges.concat(
       typeof first === 'string' || first instanceof Array
         ? convertRanges([first, ...addl])
-        : first.ranges
+        : first.ranges,
     ),
   })
 
@@ -508,7 +508,7 @@ export const punct: CharacterClass = characterClass(
   ['!', '/'],
   [':', '@'],
   ['[', '_'],
-  ['{', '~']
+  ['{', '~'],
 )
 
 /**
@@ -555,5 +555,5 @@ export const oneOf: (
 ) => Pattern = (pattern, ...patterns) =>
   pipe(
     patterns,
-    RA.reduce(pattern, (ored, next) => pipe(ored, or(next)))
+    RA.reduce(pattern, (ored, next) => pipe(ored, or(next))),
   )

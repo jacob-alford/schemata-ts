@@ -69,7 +69,7 @@ export type SchemableParams<S> = (options: UUIDSchemableOptions) => HKT2<S, stri
  * @category Model
  */
 export type SchemableParams1<S extends URIS> = (
-  options: UUIDSchemableOptions
+  options: UUIDSchemableOptions,
 ) => Kind<S, UUID>
 
 /**
@@ -77,7 +77,7 @@ export type SchemableParams1<S extends URIS> = (
  * @category Model
  */
 export type SchemableParams2<S extends URIS2> = (
-  options: UUIDSchemableOptions
+  options: UUIDSchemableOptions,
 ) => Kind2<S, string, UUID>
 
 /**
@@ -85,7 +85,7 @@ export type SchemableParams2<S extends URIS2> = (
  * @category Model
  */
 export type SchemableParams2C<S extends URIS2> = (
-  options: UUIDSchemableOptions
+  options: UUIDSchemableOptions,
 ) => Kind2<S, unknown, UUID>
 
 /**

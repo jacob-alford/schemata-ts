@@ -25,7 +25,7 @@ export const DateFromUnixTime: DateFromUnixTimeS = make(S =>
     S.float({ min: -8_640_000_000_000, max: 8_640_000_000_000 }),
     S.imap(date.Guard, 'DateFromUnixTime')(
       n => new Date(n * 1000),
-      d => (d.getTime() / 1000) as float.Float
-    )
-  )
+      d => (d.getTime() / 1000) as float.Float,
+    ),
+  ),
 )

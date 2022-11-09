@@ -38,8 +38,8 @@ export const jwt: PB.Pattern = pipe(
   PB.then(PB.char('.')),
   PB.then(PB.subgroup(base64Url)),
   PB.then(
-    pipe(PB.char('.'), PB.then(PB.subgroup(base64Url)), PB.subgroup, PB.between(0, 1))
-  )
+    pipe(PB.char('.'), PB.then(PB.subgroup(base64Url)), PB.subgroup, PB.between(0, 1)),
+  ),
 )
 
 /**

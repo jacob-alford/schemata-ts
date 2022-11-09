@@ -30,7 +30,7 @@ import * as float from './float'
  * @category Model
  */
 export type SchemableParams<S> = (
-  params?: float.FloatParams
+  params?: float.FloatParams,
 ) => HKT2<S, string, float.Float>
 
 /**
@@ -38,7 +38,7 @@ export type SchemableParams<S> = (
  * @category Model
  */
 export type SchemableParams1<S extends URIS> = (
-  params?: float.FloatParams
+  params?: float.FloatParams,
 ) => Kind<S, float.Float>
 
 /**
@@ -46,7 +46,7 @@ export type SchemableParams1<S extends URIS> = (
  * @category Model
  */
 export type SchemableParams2<S extends URIS2> = (
-  params?: float.FloatParams
+  params?: float.FloatParams,
 ) => Kind2<S, string, float.Float>
 
 /**
@@ -54,7 +54,7 @@ export type SchemableParams2<S extends URIS2> = (
  * @category Model
  */
 export type SchemableParams2C<S extends URIS2> = (
-  params?: float.FloatParams
+  params?: float.FloatParams,
 ) => Kind2<S, unknown, float.Float>
 
 /**
@@ -103,7 +103,7 @@ export const Type: SchemableParams1<t.URI> = params =>
       typeof str === 'string' && str.length > 0
         ? pipe(str, Str.trim, Number, float.Type(params).decode)
         : failure(str, ctx, 'nonempty string'),
-    Encoder(params).encode
+    Encoder(params).encode,
   )
 
 /**

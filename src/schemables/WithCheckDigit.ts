@@ -32,7 +32,7 @@ export interface CheckDigitVerified {
 export interface WithCheckDigitHKT2<S> {
   readonly checkDigit: (
     algorithm: (s: string) => string,
-    location: number | ((s: string) => number)
+    location: number | ((s: string) => number),
   ) => <O>(target: HKT2<S, O, string>) => HKT2<S, O, Branded<string, CheckDigitVerified>>
 }
 
@@ -43,7 +43,7 @@ export interface WithCheckDigitHKT2<S> {
 export interface WithCheckDigit1<S extends URIS> {
   readonly checkDigit: (
     algorithm: (s: string) => string,
-    location: number | ((s: string) => number)
+    location: number | ((s: string) => number),
   ) => (target: Kind<S, string>) => Kind<S, Branded<string, CheckDigitVerified>>
 }
 
@@ -54,9 +54,9 @@ export interface WithCheckDigit1<S extends URIS> {
 export interface WithCheckDigit2<S extends URIS2> {
   readonly checkDigit: (
     algorithm: (s: string) => string,
-    location: number | ((s: string) => number)
+    location: number | ((s: string) => number),
   ) => <O>(
-    target: Kind2<S, O, string>
+    target: Kind2<S, O, string>,
   ) => Kind2<S, O, Branded<string, CheckDigitVerified>>
 }
 
@@ -67,7 +67,7 @@ export interface WithCheckDigit2<S extends URIS2> {
 export interface WithCheckDigit2C<S extends URIS2, E> {
   readonly checkDigit: (
     algorithm: (s: string) => string,
-    location: number | ((s: string) => number)
+    location: number | ((s: string) => number),
   ) => (target: Kind2<S, E, string>) => Kind2<S, E, Branded<string, CheckDigitVerified>>
 }
 
@@ -88,7 +88,7 @@ export const Arbitrary: WithCheckDigit1<Arb.URI> = {
         replaceCharAt(s, locationToIndex(s, location), algorithm(s)) as Branded<
           string,
           CheckDigitVerified
-        >
+        >,
     ),
 }
 
@@ -105,9 +105,9 @@ export const Decoder: WithCheckDigit2C<D.URI, unknown> = {
           E.fromPredicate(
             (s): s is Branded<string, CheckDigitVerified> =>
               s[locationToIndex(s, location)] === algorithm(s),
-            s => D.error(s, replaceCharAt(s, locationToIndex(s, location), algorithm(s)))
-          )
-        )
+            s => D.error(s, replaceCharAt(s, locationToIndex(s, location), algorithm(s))),
+          ),
+        ),
       ),
   }),
 }
@@ -152,9 +152,10 @@ export const TaskDecoder: WithCheckDigit2C<TD.URI, unknown> = {
           TE.fromPredicate(
             (s): s is Branded<string, CheckDigitVerified> =>
               s[locationToIndex(s, location)] === algorithm(s),
-            s => TD.error(s, replaceCharAt(s, locationToIndex(s, location), algorithm(s)))
-          )
-        )
+            s =>
+              TD.error(s, replaceCharAt(s, locationToIndex(s, location), algorithm(s))),
+          ),
+        ),
       ),
   }),
 }
@@ -170,8 +171,8 @@ export const Type: WithCheckDigit1<t.URI> = {
       t.refine(
         (s): s is Branded<string, CheckDigitVerified> =>
           s[locationToIndex(s, location)] === algorithm(s),
-        'checkDigit'
-      )
+        'checkDigit',
+      ),
     ),
 }
 
@@ -182,6 +183,6 @@ export const Type: WithCheckDigit1<t.URI> = {
 export const Schema =
   (algorithm: (s: string) => string, location: number) =>
   <O>(
-    schema: SC.SchemaExt<O, string>
+    schema: SC.SchemaExt<O, string>,
   ): SC.SchemaExt<O, Branded<string, CheckDigitVerified>> =>
     SC.make(s => s.checkDigit(algorithm, location)<O>(schema(s)))

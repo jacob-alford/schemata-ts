@@ -49,5 +49,5 @@ export type PositiveIntS = SchemaExt<number, PositiveInt>
  * @category Schema
  */
 export const PositiveInt: PositiveIntS = make(S =>
-  pipe(S.int({ min: 0 }), S.brand<PositiveIntBrand>())
+  pipe(S.int({ min: 0 }), S.brand<PositiveIntBrand>()),
 )

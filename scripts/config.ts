@@ -19,7 +19,7 @@ const writeNpmIgnore: Build<void> = C =>
     TE.apS('gitignore', C.readFile('.gitignore')),
     TE.apS('npmIgnoreExists', TE.fromTask(C.exists('dist/.npmignore'))),
     TE.bindW('npmIgnoreContents', ({ npmIgnoreExists }) =>
-      npmIgnoreExists ? pipe(C.readFile('.npmignore'), TE.map(O.some)) : TE.of(O.none)
+      npmIgnoreExists ? pipe(C.readFile('.npmignore'), TE.map(O.some)) : TE.of(O.none),
     ),
     TE.chain(({ gitignore, npmIgnoreContents }) =>
       pipe(
@@ -27,10 +27,10 @@ const writeNpmIgnore: Build<void> = C =>
         O.fold(
           () => C.writeFile('dist/.npmignore', `${gitignore}\n.npmrc`),
           npmIgnore =>
-            C.writeFile('dist/.npmignore', `${gitignore}\n${npmIgnore}\n.npmrc`)
-        )
-      )
-    )
+            C.writeFile('dist/.npmignore', `${gitignore}\n${npmIgnore}\n.npmrc`),
+        ),
+      ),
+    ),
   )
 
 export const main: Build<void> = C =>
@@ -39,11 +39,11 @@ export const main: Build<void> = C =>
     TE.fromNullable(E.toError('Missing NODE_AUTH_TOKEN')),
     TE.chain(token => C.writeFile('dist/.npmrc', writeNpmrc(token))),
     TE.chain(() => writeNpmIgnore(C)),
-    TE.chainFirstIOK(() => Cons.log('Done!'))
+    TE.chainFirstIOK(() => Cons.log('Done!')),
   )
 
 run(
   main({
     ...fileSystem,
-  })
+  }),
 )

@@ -32,7 +32,7 @@ export type AsciiS = SchemaExt<string, Ascii>
  */
 export const ascii: PB.Pattern = pipe(
   PB.characterClass(false, [0x00, 0x7f]),
-  PB.atLeastOne()
+  PB.atLeastOne(),
 )
 
 /**

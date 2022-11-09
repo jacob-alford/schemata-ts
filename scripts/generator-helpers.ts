@@ -15,25 +15,28 @@ export const checkTestModuleUniqueness: (test: string) => Build<ReadonlyArray<st
       TE.Do,
       TE.apS(
         'date',
-        pipe(C.readFiles('./tests/date'), TE.map(RA.map(flow(Str.split('.'), RNEA.head))))
+        pipe(
+          C.readFiles('./tests/date'),
+          TE.map(RA.map(flow(Str.split('.'), RNEA.head))),
+        ),
       ),
       TE.apS(
         'number',
         pipe(
           C.readFiles('./tests/number'),
-          TE.map(RA.map(flow(Str.split('.'), RNEA.head)))
-        )
+          TE.map(RA.map(flow(Str.split('.'), RNEA.head))),
+        ),
       ),
       TE.apS(
         'string',
         pipe(
           C.readFiles('./tests/string'),
-          TE.map(RA.map(flow(Str.split('.'), RNEA.head)))
-        )
+          TE.map(RA.map(flow(Str.split('.'), RNEA.head))),
+        ),
       ),
       TE.apS(
         'root',
-        pipe(C.readFiles('./tests'), TE.map(RA.map(flow(Str.split('.'), RNEA.head))))
+        pipe(C.readFiles('./tests'), TE.map(RA.map(flow(Str.split('.'), RNEA.head)))),
       ),
       TE.map(({ date, number, string, root }) => [
         ...date,
@@ -44,12 +47,12 @@ export const checkTestModuleUniqueness: (test: string) => Build<ReadonlyArray<st
       TE.filterOrElse(
         flow(
           RA.findFirst(
-            existingModule => Str.toLowerCase(existingModule) === Str.toLowerCase(test)
+            existingModule => Str.toLowerCase(existingModule) === Str.toLowerCase(test),
           ),
-          O.isNone
+          O.isNone,
         ),
-        () => new Error(`Module ${test} already exists`)
-      )
+        () => new Error(`Module ${test} already exists`),
+      ),
     )
 
 const capitalize: (s: string) => string = s =>
@@ -57,7 +60,7 @@ const capitalize: (s: string) => string = s =>
 
 export const makeTestFile: (
   primitive: 'number' | 'string',
-  moduleName_: string
+  moduleName_: string,
 ) => string = (primitive, moduleName_) => {
   const moduleName = capitalize(moduleName_)
 
@@ -67,7 +70,7 @@ export const makeTestFile: (
     '',
     ts.ScriptTarget.Latest,
     false,
-    ts.ScriptKind.TS
+    ts.ScriptKind.TS,
   )
 
   return pipe(
@@ -77,20 +80,20 @@ export const makeTestFile: (
         _.createImportClause(
           false,
           undefined,
-          _.createNamespaceImport(_.createIdentifier('RA'))
+          _.createNamespaceImport(_.createIdentifier('RA')),
         ),
         _.createStringLiteral('fp-ts/ReadonlyArray'),
-        undefined
+        undefined,
       ),
       _.createImportDeclaration(
         undefined,
         _.createImportClause(
           false,
           undefined,
-          _.createNamespaceImport(_.createIdentifier('E'))
+          _.createNamespaceImport(_.createIdentifier('E')),
         ),
         _.createStringLiteral('fp-ts/Either'),
-        undefined
+        undefined,
       ),
       _.createImportDeclaration(
         undefined,
@@ -100,20 +103,20 @@ export const makeTestFile: (
           _.createNamedImports([
             _.createImportSpecifier(false, undefined, _.createIdentifier('pipe')),
             _.createImportSpecifier(false, undefined, _.createIdentifier('tuple')),
-          ])
+          ]),
         ),
         _.createStringLiteral('fp-ts/function'),
-        undefined
+        undefined,
       ),
       _.createImportDeclaration(
         undefined,
         _.createImportClause(
           false,
           undefined,
-          _.createNamespaceImport(_.createIdentifier(moduleName))
+          _.createNamespaceImport(_.createIdentifier(moduleName)),
         ),
         _.createStringLiteral(`../../src/${primitive}/${moduleName_}`),
-        undefined
+        undefined,
       ),
       _.createImportDeclaration(
         undefined,
@@ -125,17 +128,17 @@ export const makeTestFile: (
             _.createImportSpecifier(
               false,
               undefined,
-              _.createIdentifier('combineExpected')
+              _.createIdentifier('combineExpected'),
             ),
             _.createImportSpecifier(
               false,
               undefined,
-              _.createIdentifier('validateArbitrary')
+              _.createIdentifier('validateArbitrary'),
             ),
-          ])
+          ]),
         ),
         _.createStringLiteral('../../test-utils'),
-        undefined
+        undefined,
       ),
       _.createVariableStatement(
         undefined,
@@ -148,14 +151,14 @@ export const makeTestFile: (
                 _.createKeywordTypeNode(
                   primitive === 'string'
                     ? ts.SyntaxKind.StringKeyword
-                    : ts.SyntaxKind.NumberKeyword
+                    : ts.SyntaxKind.NumberKeyword,
                 ),
               ]),
-              _.createArrayLiteralExpression([], false)
+              _.createArrayLiteralExpression([], false),
             ),
           ],
-          ts.NodeFlags.Const
-        )
+          ts.NodeFlags.Const,
+        ),
       ),
       _.createVariableStatement(
         undefined,
@@ -168,14 +171,14 @@ export const makeTestFile: (
                 _.createKeywordTypeNode(
                   primitive === 'string'
                     ? ts.SyntaxKind.StringKeyword
-                    : ts.SyntaxKind.NumberKeyword
+                    : ts.SyntaxKind.NumberKeyword,
                 ),
               ]),
-              _.createArrayLiteralExpression([], false)
+              _.createArrayLiteralExpression([], false),
             ),
           ],
-          ts.NodeFlags.Const
-        )
+          ts.NodeFlags.Const,
+        ),
       ),
       _.createExpressionStatement(
         _.createCallExpression(_.createIdentifier('describe'), undefined, [
@@ -204,7 +207,7 @@ export const makeTestFile: (
                               _.createCallExpression(
                                 _.createPropertyAccessExpression(
                                   _.createIdentifier('test'),
-                                  _.createIdentifier('each')
+                                  _.createIdentifier('each'),
                                 ),
                                 undefined,
                                 [
@@ -218,7 +221,7 @@ export const makeTestFile: (
                                         [
                                           _.createIdentifier('valid'),
                                           _.createStringLiteral('Right'),
-                                        ]
+                                        ],
                                       ),
                                       _.createCallExpression(
                                         _.createIdentifier('combineExpected'),
@@ -226,16 +229,16 @@ export const makeTestFile: (
                                         [
                                           _.createIdentifier('invalid'),
                                           _.createStringLiteral('Left'),
-                                        ]
+                                        ],
                                       ),
-                                    ]
+                                    ],
                                   ),
-                                ]
+                                ],
                               ),
                               undefined,
                               [
                                 _.createStringLiteral(
-                                  `validates valid ${primitive}s, and catches bad ${primitive}s`
+                                  `validates valid ${primitive}s, and catches bad ${primitive}s`,
                                 ),
                                 _.createArrowFunction(
                                   undefined,
@@ -247,7 +250,7 @@ export const makeTestFile: (
                                       _.createIdentifier('str'),
                                       undefined,
                                       undefined,
-                                      undefined
+                                      undefined,
                                     ),
                                     _.createParameterDeclaration(
                                       undefined,
@@ -255,7 +258,7 @@ export const makeTestFile: (
                                       _.createIdentifier('expectedTag'),
                                       undefined,
                                       undefined,
-                                      undefined
+                                      undefined,
                                     ),
                                   ],
                                   undefined,
@@ -274,17 +277,17 @@ export const makeTestFile: (
                                                 _.createPropertyAccessExpression(
                                                   _.createPropertyAccessExpression(
                                                     _.createIdentifier(moduleName),
-                                                    _.createIdentifier('Decoder')
+                                                    _.createIdentifier('Decoder'),
                                                   ),
-                                                  _.createIdentifier('decode')
+                                                  _.createIdentifier('decode'),
                                                 ),
                                                 undefined,
-                                                [_.createIdentifier('str')]
-                                              )
+                                                [_.createIdentifier('str')],
+                                              ),
                                             ),
                                           ],
-                                          ts.NodeFlags.Const
-                                        )
+                                          ts.NodeFlags.Const,
+                                        ),
                                       ),
                                       _.createExpressionStatement(
                                         _.createCallExpression(
@@ -295,28 +298,28 @@ export const makeTestFile: (
                                               [
                                                 _.createPropertyAccessExpression(
                                                   _.createIdentifier('result'),
-                                                  _.createIdentifier('_tag')
+                                                  _.createIdentifier('_tag'),
                                                 ),
-                                              ]
+                                              ],
                                             ),
-                                            _.createIdentifier('toBe')
+                                            _.createIdentifier('toBe'),
                                           ),
                                           undefined,
-                                          [_.createIdentifier('expectedTag')]
-                                        )
+                                          [_.createIdentifier('expectedTag')],
+                                        ),
                                       ),
                                     ],
-                                    true
-                                  )
+                                    true,
+                                  ),
                                 ),
-                              ]
-                            )
+                              ],
+                            ),
                           ),
                         ],
-                        true
-                      )
+                        true,
+                      ),
                     ),
-                  ])
+                  ]),
                 ),
                 _.createExpressionStatement(
                   _.createCallExpression(_.createIdentifier('describe'), undefined, [
@@ -334,15 +337,15 @@ export const makeTestFile: (
                               _.createCallExpression(
                                 _.createPropertyAccessExpression(
                                   _.createIdentifier('test'),
-                                  _.createIdentifier('each')
+                                  _.createIdentifier('each'),
                                 ),
                                 undefined,
-                                [_.createIdentifier('valid')]
+                                [_.createIdentifier('valid')],
                               ),
                               undefined,
                               [
                                 _.createStringLiteral(
-                                  'encoding a decoded value yields original value'
+                                  'encoding a decoded value yields original value',
                                 ),
                                 _.createArrowFunction(
                                   undefined,
@@ -354,7 +357,7 @@ export const makeTestFile: (
                                       _.createIdentifier('original'),
                                       undefined,
                                       undefined,
-                                      undefined
+                                      undefined,
                                     ),
                                   ],
                                   undefined,
@@ -377,30 +380,30 @@ export const makeTestFile: (
                                                   _.createPropertyAccessExpression(
                                                     _.createPropertyAccessExpression(
                                                       _.createIdentifier(moduleName),
-                                                      _.createIdentifier('Decoder')
+                                                      _.createIdentifier('Decoder'),
                                                     ),
-                                                    _.createIdentifier('decode')
+                                                    _.createIdentifier('decode'),
                                                   ),
                                                   _.createCallExpression(
                                                     _.createPropertyAccessExpression(
                                                       _.createIdentifier('E'),
-                                                      _.createIdentifier('map')
+                                                      _.createIdentifier('map'),
                                                     ),
                                                     undefined,
                                                     [
                                                       _.createPropertyAccessExpression(
                                                         _.createPropertyAccessExpression(
                                                           _.createIdentifier(moduleName),
-                                                          _.createIdentifier('Encoder')
+                                                          _.createIdentifier('Encoder'),
                                                         ),
-                                                        _.createIdentifier('encode')
+                                                        _.createIdentifier('encode'),
                                                       ),
-                                                    ]
+                                                    ],
                                                   ),
                                                   _.createCallExpression(
                                                     _.createPropertyAccessExpression(
                                                       _.createIdentifier('E'),
-                                                      _.createIdentifier('getOrElseW')
+                                                      _.createIdentifier('getOrElseW'),
                                                     ),
                                                     undefined,
                                                     [
@@ -411,20 +414,20 @@ export const makeTestFile: (
                                                         undefined,
                                                         _.createToken(
                                                           ts.SyntaxKind
-                                                            .EqualsGreaterThanToken
+                                                            .EqualsGreaterThanToken,
                                                         ),
                                                         _.createStringLiteral(
-                                                          'unexpected'
-                                                        )
+                                                          'unexpected',
+                                                        ),
                                                       ),
-                                                    ]
+                                                    ],
                                                   ),
-                                                ]
-                                              )
+                                                ],
+                                              ),
                                             ),
                                           ],
-                                          ts.NodeFlags.Const
-                                        )
+                                          ts.NodeFlags.Const,
+                                        ),
                                       ),
                                       _.createExpressionStatement(
                                         _.createCallExpression(
@@ -432,26 +435,26 @@ export const makeTestFile: (
                                             _.createCallExpression(
                                               _.createIdentifier('expect'),
                                               undefined,
-                                              [_.createIdentifier('original')]
+                                              [_.createIdentifier('original')],
                                             ),
-                                            _.createIdentifier('toEqual')
+                                            _.createIdentifier('toEqual'),
                                           ),
                                           undefined,
-                                          [_.createIdentifier('roundtrip')]
-                                        )
+                                          [_.createIdentifier('roundtrip')],
+                                        ),
                                       ),
                                     ],
-                                    true
-                                  )
+                                    true,
+                                  ),
                                 ),
-                              ]
-                            )
+                              ],
+                            ),
                           ),
                         ],
-                        true
-                      )
+                        true,
+                      ),
                     ),
-                  ])
+                  ]),
                 ),
                 _.createExpressionStatement(
                   _.createCallExpression(_.createIdentifier('describe'), undefined, [
@@ -469,28 +472,28 @@ export const makeTestFile: (
                               _.createCallExpression(
                                 _.createPropertyAccessExpression(
                                   _.createIdentifier('test'),
-                                  _.createIdentifier('each')
+                                  _.createIdentifier('each'),
                                 ),
                                 undefined,
                                 [
                                   _.createCallExpression(
                                     _.createPropertyAccessExpression(
                                       _.createIdentifier('RA'),
-                                      _.createIdentifier('zipWith')
+                                      _.createIdentifier('zipWith'),
                                     ),
                                     undefined,
                                     [
                                       _.createIdentifier('valid'),
                                       _.createIdentifier('valid'),
                                       _.createIdentifier('tuple'),
-                                    ]
+                                    ],
                                   ),
-                                ]
+                                ],
                               ),
                               undefined,
                               [
                                 _.createStringLiteral(
-                                  `determines two ${primitive}s are equal`
+                                  `determines two ${primitive}s are equal`,
                                 ),
                                 _.createArrowFunction(
                                   undefined,
@@ -502,7 +505,7 @@ export const makeTestFile: (
                                       _.createIdentifier('str1'),
                                       undefined,
                                       undefined,
-                                      undefined
+                                      undefined,
                                     ),
                                     _.createParameterDeclaration(
                                       undefined,
@@ -510,7 +513,7 @@ export const makeTestFile: (
                                       _.createIdentifier('str2'),
                                       undefined,
                                       undefined,
-                                      undefined
+                                      undefined,
                                     ),
                                   ],
                                   undefined,
@@ -528,14 +531,14 @@ export const makeTestFile: (
                                               _.createPropertyAccessExpression(
                                                 _.createPropertyAccessExpression(
                                                   _.createIdentifier(moduleName),
-                                                  _.createIdentifier('Guard')
+                                                  _.createIdentifier('Guard'),
                                                 ),
-                                                _.createIdentifier('is')
-                                              )
+                                                _.createIdentifier('is'),
+                                              ),
                                             ),
                                           ],
-                                          ts.NodeFlags.Const
-                                        )
+                                          ts.NodeFlags.Const,
+                                        ),
                                       ),
                                       _.createVariableStatement(
                                         undefined,
@@ -548,14 +551,14 @@ export const makeTestFile: (
                                               _.createPropertyAccessExpression(
                                                 _.createPropertyAccessExpression(
                                                   _.createIdentifier(moduleName),
-                                                  _.createIdentifier('Eq')
+                                                  _.createIdentifier('Eq'),
                                                 ),
-                                                _.createIdentifier('equals')
-                                              )
+                                                _.createIdentifier('equals'),
+                                              ),
                                             ),
                                           ],
-                                          ts.NodeFlags.Const
-                                        )
+                                          ts.NodeFlags.Const,
+                                        ),
                                       ),
                                       _.createIfStatement(
                                         _.createBinaryExpression(
@@ -564,8 +567,8 @@ export const makeTestFile: (
                                             _.createCallExpression(
                                               _.createIdentifier('guard'),
                                               undefined,
-                                              [_.createIdentifier('str1')]
-                                            )
+                                              [_.createIdentifier('str1')],
+                                            ),
                                           ),
                                           _.createToken(ts.SyntaxKind.BarBarToken),
                                           _.createPrefixUnaryExpression(
@@ -573,9 +576,9 @@ export const makeTestFile: (
                                             _.createCallExpression(
                                               _.createIdentifier('guard'),
                                               undefined,
-                                              [_.createIdentifier('str2')]
-                                            )
-                                          )
+                                              [_.createIdentifier('str2')],
+                                            ),
+                                          ),
                                         ),
                                         _.createBlock(
                                           [
@@ -585,15 +588,15 @@ export const makeTestFile: (
                                                 undefined,
                                                 [
                                                   _.createStringLiteral(
-                                                    'Unexpected result'
+                                                    'Unexpected result',
                                                   ),
-                                                ]
-                                              )
+                                                ],
+                                              ),
                                             ),
                                           ],
-                                          true
+                                          true,
                                         ),
-                                        undefined
+                                        undefined,
                                       ),
                                       _.createExpressionStatement(
                                         _.createCallExpression(
@@ -608,28 +611,28 @@ export const makeTestFile: (
                                                   [
                                                     _.createIdentifier('str1'),
                                                     _.createIdentifier('str2'),
-                                                  ]
+                                                  ],
                                                 ),
-                                              ]
+                                              ],
                                             ),
-                                            _.createIdentifier('toBe')
+                                            _.createIdentifier('toBe'),
                                           ),
                                           undefined,
-                                          [_.createTrue()]
-                                        )
+                                          [_.createTrue()],
+                                        ),
                                       ),
                                     ],
-                                    true
-                                  )
+                                    true,
+                                  ),
                                 ),
-                              ]
-                            )
+                              ],
+                            ),
                           ),
                         ],
-                        true
-                      )
+                        true,
+                      ),
                     ),
-                  ])
+                  ]),
                 ),
                 _.createExpressionStatement(
                   _.createCallExpression(_.createIdentifier('describe'), undefined, [
@@ -647,7 +650,7 @@ export const makeTestFile: (
                               _.createCallExpression(
                                 _.createPropertyAccessExpression(
                                   _.createIdentifier('test'),
-                                  _.createIdentifier('each')
+                                  _.createIdentifier('each'),
                                 ),
                                 undefined,
                                 [
@@ -658,21 +661,21 @@ export const makeTestFile: (
                                       _.createCallExpression(
                                         _.createIdentifier('combineExpected'),
                                         undefined,
-                                        [_.createIdentifier('valid'), _.createTrue()]
+                                        [_.createIdentifier('valid'), _.createTrue()],
                                       ),
                                       _.createCallExpression(
                                         _.createIdentifier('combineExpected'),
                                         undefined,
-                                        [_.createIdentifier('invalid'), _.createFalse()]
+                                        [_.createIdentifier('invalid'), _.createFalse()],
                                       ),
-                                    ]
+                                    ],
                                   ),
-                                ]
+                                ],
                               ),
                               undefined,
                               [
                                 _.createStringLiteral(
-                                  `validates valid ${primitive}s, and catches bad ${primitive}s`
+                                  `validates valid ${primitive}s, and catches bad ${primitive}s`,
                                 ),
                                 _.createArrowFunction(
                                   undefined,
@@ -684,7 +687,7 @@ export const makeTestFile: (
                                       _.createIdentifier('str'),
                                       undefined,
                                       undefined,
-                                      undefined
+                                      undefined,
                                     ),
                                     _.createParameterDeclaration(
                                       undefined,
@@ -692,7 +695,7 @@ export const makeTestFile: (
                                       _.createIdentifier('expectedTag'),
                                       undefined,
                                       undefined,
-                                      undefined
+                                      undefined,
                                     ),
                                   ],
                                   undefined,
@@ -711,17 +714,17 @@ export const makeTestFile: (
                                                 _.createPropertyAccessExpression(
                                                   _.createPropertyAccessExpression(
                                                     _.createIdentifier(moduleName),
-                                                    _.createIdentifier('Guard')
+                                                    _.createIdentifier('Guard'),
                                                   ),
-                                                  _.createIdentifier('is')
+                                                  _.createIdentifier('is'),
                                                 ),
                                                 undefined,
-                                                [_.createIdentifier('str')]
-                                              )
+                                                [_.createIdentifier('str')],
+                                              ),
                                             ),
                                           ],
-                                          ts.NodeFlags.Const
-                                        )
+                                          ts.NodeFlags.Const,
+                                        ),
                                       ),
                                       _.createExpressionStatement(
                                         _.createCallExpression(
@@ -729,26 +732,26 @@ export const makeTestFile: (
                                             _.createCallExpression(
                                               _.createIdentifier('expect'),
                                               undefined,
-                                              [_.createIdentifier('result')]
+                                              [_.createIdentifier('result')],
                                             ),
-                                            _.createIdentifier('toBe')
+                                            _.createIdentifier('toBe'),
                                           ),
                                           undefined,
-                                          [_.createIdentifier('expectedTag')]
-                                        )
+                                          [_.createIdentifier('expectedTag')],
+                                        ),
                                       ),
                                     ],
-                                    true
-                                  )
+                                    true,
+                                  ),
                                 ),
-                              ]
-                            )
+                              ],
+                            ),
                           ),
                         ],
-                        true
-                      )
+                        true,
+                      ),
                     ),
-                  ])
+                  ]),
                 ),
                 _.createExpressionStatement(
                   _.createCallExpression(_.createIdentifier('describe'), undefined, [
@@ -766,7 +769,7 @@ export const makeTestFile: (
                               _.createCallExpression(
                                 _.createPropertyAccessExpression(
                                   _.createIdentifier('test'),
-                                  _.createIdentifier('each')
+                                  _.createIdentifier('each'),
                                 ),
                                 undefined,
                                 [
@@ -780,7 +783,7 @@ export const makeTestFile: (
                                         [
                                           _.createIdentifier('valid'),
                                           _.createStringLiteral('Right'),
-                                        ]
+                                        ],
                                       ),
                                       _.createCallExpression(
                                         _.createIdentifier('combineExpected'),
@@ -788,16 +791,16 @@ export const makeTestFile: (
                                         [
                                           _.createIdentifier('invalid'),
                                           _.createStringLiteral('Left'),
-                                        ]
+                                        ],
                                       ),
-                                    ]
+                                    ],
                                   ),
-                                ]
+                                ],
                               ),
                               undefined,
                               [
                                 _.createStringLiteral(
-                                  `validates valid ${primitive}, and catches bad ${primitive}`
+                                  `validates valid ${primitive}, and catches bad ${primitive}`,
                                 ),
                                 _.createArrowFunction(
                                   [_.createModifier(ts.SyntaxKind.AsyncKeyword)],
@@ -809,7 +812,7 @@ export const makeTestFile: (
                                       _.createIdentifier('str'),
                                       undefined,
                                       undefined,
-                                      undefined
+                                      undefined,
                                     ),
                                     _.createParameterDeclaration(
                                       undefined,
@@ -817,7 +820,7 @@ export const makeTestFile: (
                                       _.createIdentifier('expectedTag'),
                                       undefined,
                                       undefined,
-                                      undefined
+                                      undefined,
                                     ),
                                   ],
                                   undefined,
@@ -838,24 +841,24 @@ export const makeTestFile: (
                                                     _.createPropertyAccessExpression(
                                                       _.createPropertyAccessExpression(
                                                         _.createIdentifier(moduleName),
-                                                        _.createIdentifier('TaskDecoder')
+                                                        _.createIdentifier('TaskDecoder'),
                                                       ),
-                                                      _.createIdentifier('decode')
+                                                      _.createIdentifier('decode'),
                                                     ),
                                                     undefined,
-                                                    [_.createIdentifier('str')]
+                                                    [_.createIdentifier('str')],
                                                   ),
                                                   undefined,
-                                                  []
-                                                )
-                                              )
+                                                  [],
+                                                ),
+                                              ),
                                             ),
                                           ],
                                           ts.NodeFlags.Const |
                                             ts.NodeFlags.AwaitContext |
                                             ts.NodeFlags.ContextFlags |
-                                            ts.NodeFlags.TypeExcludesFlags
-                                        )
+                                            ts.NodeFlags.TypeExcludesFlags,
+                                        ),
                                       ),
                                       _.createExpressionStatement(
                                         _.createCallExpression(
@@ -866,28 +869,28 @@ export const makeTestFile: (
                                               [
                                                 _.createPropertyAccessExpression(
                                                   _.createIdentifier('result'),
-                                                  _.createIdentifier('_tag')
+                                                  _.createIdentifier('_tag'),
                                                 ),
-                                              ]
+                                              ],
                                             ),
-                                            _.createIdentifier('toBe')
+                                            _.createIdentifier('toBe'),
                                           ),
                                           undefined,
-                                          [_.createIdentifier('expectedTag')]
-                                        )
+                                          [_.createIdentifier('expectedTag')],
+                                        ),
                                       ),
                                     ],
-                                    true
-                                  )
+                                    true,
+                                  ),
                                 ),
-                              ]
-                            )
+                              ],
+                            ),
                           ),
                         ],
-                        true
-                      )
+                        true,
+                      ),
                     ),
-                  ])
+                  ]),
                 ),
                 _.createExpressionStatement(
                   _.createCallExpression(_.createIdentifier('describe'), undefined, [
@@ -905,7 +908,7 @@ export const makeTestFile: (
                               _.createCallExpression(
                                 _.createPropertyAccessExpression(
                                   _.createIdentifier('test'),
-                                  _.createIdentifier('each')
+                                  _.createIdentifier('each'),
                                 ),
                                 undefined,
                                 [
@@ -919,7 +922,7 @@ export const makeTestFile: (
                                         [
                                           _.createIdentifier('valid'),
                                           _.createStringLiteral('Right'),
-                                        ]
+                                        ],
                                       ),
                                       _.createCallExpression(
                                         _.createIdentifier('combineExpected'),
@@ -927,16 +930,16 @@ export const makeTestFile: (
                                         [
                                           _.createIdentifier('invalid'),
                                           _.createStringLiteral('Left'),
-                                        ]
+                                        ],
                                       ),
-                                    ]
+                                    ],
                                   ),
-                                ]
+                                ],
                               ),
                               undefined,
                               [
                                 _.createStringLiteral(
-                                  'validates valid strings, and catches bad strings'
+                                  'validates valid strings, and catches bad strings',
                                 ),
                                 _.createArrowFunction(
                                   undefined,
@@ -948,7 +951,7 @@ export const makeTestFile: (
                                       _.createIdentifier('str'),
                                       undefined,
                                       undefined,
-                                      undefined
+                                      undefined,
                                     ),
                                     _.createParameterDeclaration(
                                       undefined,
@@ -956,7 +959,7 @@ export const makeTestFile: (
                                       _.createIdentifier('expectedTag'),
                                       undefined,
                                       undefined,
-                                      undefined
+                                      undefined,
                                     ),
                                   ],
                                   undefined,
@@ -975,17 +978,17 @@ export const makeTestFile: (
                                                 _.createPropertyAccessExpression(
                                                   _.createPropertyAccessExpression(
                                                     _.createIdentifier(moduleName),
-                                                    _.createIdentifier('Type')
+                                                    _.createIdentifier('Type'),
                                                   ),
-                                                  _.createIdentifier('decode')
+                                                  _.createIdentifier('decode'),
                                                 ),
                                                 undefined,
-                                                [_.createIdentifier('str')]
-                                              )
+                                                [_.createIdentifier('str')],
+                                              ),
                                             ),
                                           ],
-                                          ts.NodeFlags.Const
-                                        )
+                                          ts.NodeFlags.Const,
+                                        ),
                                       ),
                                       _.createExpressionStatement(
                                         _.createCallExpression(
@@ -996,28 +999,28 @@ export const makeTestFile: (
                                               [
                                                 _.createPropertyAccessExpression(
                                                   _.createIdentifier('result'),
-                                                  _.createIdentifier('_tag')
+                                                  _.createIdentifier('_tag'),
                                                 ),
-                                              ]
+                                              ],
                                             ),
-                                            _.createIdentifier('toBe')
+                                            _.createIdentifier('toBe'),
                                           ),
                                           undefined,
-                                          [_.createIdentifier('expectedTag')]
-                                        )
+                                          [_.createIdentifier('expectedTag')],
+                                        ),
                                       ),
                                     ],
-                                    true
-                                  )
+                                    true,
+                                  ),
                                 ),
-                              ]
-                            )
+                              ],
+                            ),
                           ),
                         ],
-                        true
-                      )
+                        true,
+                      ),
                     ),
-                  ])
+                  ]),
                 ),
                 _.createExpressionStatement(
                   _.createCallExpression(_.createIdentifier('describe'), undefined, [
@@ -1049,34 +1052,34 @@ export const makeTestFile: (
                                           _.createIdentifier(moduleName),
                                           _.createPropertyAccessExpression(
                                             _.createIdentifier(moduleName),
-                                            _.createIdentifier(`is${moduleName}`)
+                                            _.createIdentifier(`is${moduleName}`),
                                           ),
-                                        ]
-                                      )
+                                        ],
+                                      ),
                                     ),
                                   ],
-                                  true
-                                )
+                                  true,
+                                ),
                               ),
-                            ])
+                            ]),
                           ),
                         ],
-                        true
-                      )
+                        true,
+                      ),
                     ),
-                  ])
+                  ]),
                 ),
               ],
-              true
-            )
+              true,
+            ),
           ),
-        ])
+        ]),
       ),
     ],
     _.createNodeArray,
     nodes => printer.printList(ts.ListFormat.MultiLine, nodes, sourceFile),
     Str.replace(/const valid/gm, '\nconst valid'),
     Str.replace(/const invalid/gm, '\nconst invalid'),
-    Str.replace(/describe/gm, '\ndescribe')
+    Str.replace(/describe/gm, '\ndescribe'),
   )
 }

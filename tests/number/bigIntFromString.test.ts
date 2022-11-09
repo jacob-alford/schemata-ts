@@ -26,7 +26,7 @@ describe('BigIntString', () => {
         original,
         BigIntString.Decoder.decode,
         E.map(BigIntString.Encoder.encode),
-        E.getOrElseW(() => 'unexpected')
+        E.getOrElseW(() => 'unexpected'),
       )
       expect(original).toEqual(roundtrip)
     })

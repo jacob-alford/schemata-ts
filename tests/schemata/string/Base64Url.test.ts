@@ -2,7 +2,7 @@ import * as Base64Url from '../../../src/schemata/string/Base64Url'
 import { getAllInstances, validateArbitrary } from '../../../test-utils'
 
 const { Arbitrary, Decoder, Eq, Guard, TaskDecoder, Type } = getAllInstances(
-  Base64Url.Base64Url
+  Base64Url.Base64Url,
 )
 
 const validStrings = [

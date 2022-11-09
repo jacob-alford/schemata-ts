@@ -15,8 +15,8 @@ describe('PatternBuilder', () => {
         pipe(PB.anything, PB.anyNumber({ greedy: true })),
         pipe(PB.anything, PB.anyNumber({ greedy: false })),
         pipe(PB.anything, PB.anyNumber()),
-        PB.times(3)(PB.non(PB.lower))
-      )
+        PB.times(3)(PB.non(PB.lower)),
+      ),
     ),
     PB.then(
       PB.characterClass(
@@ -27,18 +27,18 @@ describe('PatternBuilder', () => {
         ['Q', 'T'],
         [31, 45],
         [94, 127],
-        [255, 256]
-      )
+        [255, 256],
+      ),
     ),
     PB.subgroup,
-    PB.or(PB.atLeast(2)(PB.exactString('bar')))
+    PB.or(PB.atLeast(2)(PB.exactString('bar'))),
   )
 
   it('can create RegExps', () => {
     const actual = PB.regexFromPattern(pattern)
 
     expect(actual.source).toEqual(
-      "^((((foo){5,9}z+?y+)?.*.*?.*?[^a-z]{3}[0-4A#-'Q-T\\x1f-\\x2d\\x5e-\\x7f\\xff-\\u0100])|(bar){2,})$"
+      "^((((foo){5,9}z+?y+)?.*.*?.*?[^a-z]{3}[0-4A#-'Q-T\\x1f-\\x2d\\x5e-\\x7f\\xff-\\u0100])|(bar){2,})$",
     )
     expect(actual.flags).toEqual('')
   })
@@ -47,7 +47,7 @@ describe('PatternBuilder', () => {
     const actual = PB.regexFromPattern(pattern, true)
 
     expect(actual.source).toEqual(
-      "^((((foo){5,9}z+?y+)?.*.*?.*?[^a-z]{3}[0-4A#-'Q-T\\x1f-\\x2d\\x5e-\\x7f\\xff-\\u0100])|(bar){2,})$"
+      "^((((foo){5,9}z+?y+)?.*.*?.*?[^a-z]{3}[0-4A#-'Q-T\\x1f-\\x2d\\x5e-\\x7f\\xff-\\u0100])|(bar){2,})$",
     )
     expect(actual.flags).toEqual('i')
   })

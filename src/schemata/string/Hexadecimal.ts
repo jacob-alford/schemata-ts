@@ -37,8 +37,8 @@ export const hexadecimal: PB.Pattern = pipe(
   PB.subgroup,
   PB.maybe,
   PB.then(
-    pipe(PB.characterClass(false, ['0', '9'], ['A', 'F'], ['a', 'f']), PB.atLeastOne())
-  )
+    pipe(PB.characterClass(false, ['0', '9'], ['A', 'F'], ['a', 'f']), PB.atLeastOne()),
+  ),
 )
 
 /**
@@ -48,5 +48,5 @@ export const hexadecimal: PB.Pattern = pipe(
  * @category Schema
  */
 export const Hexadecimal: HexadecimalS = make(s =>
-  s.brand<HexadecimalBrand>()(s.pattern(hexadecimal, 'Hexadecimal'))
+  s.brand<HexadecimalBrand>()(s.pattern(hexadecimal, 'Hexadecimal')),
 )

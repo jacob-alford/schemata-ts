@@ -77,7 +77,7 @@ describe('dateFromIsoString', () => {
         original,
         ISODateString.Decoder.decode,
         E.map(ISODateString.Encoder.encode),
-        E.getOrElseW(() => 'unexpected')
+        E.getOrElseW(() => 'unexpected'),
       )
       expect(new Date(original).toISOString()).toEqual(roundtrip)
     })

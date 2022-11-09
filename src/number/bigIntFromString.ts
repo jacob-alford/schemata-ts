@@ -52,7 +52,7 @@ export const isBigIntString = (s: string): boolean =>
     s,
     O.fromPredicate(flow(Str.trim, s => s.length > 0)),
     O.chain(O.tryCatchK(s => BigInt(s))),
-    O.isSome
+    O.isSome,
   )
 
 /**
@@ -110,7 +110,7 @@ export const Type: SchemableParams1<t.URI> = new Type_(
     typeof s === 'string' && isBigIntString(s)
       ? success(BigInt(s))
       : failure(s, ctx, 'bigIntFromString'),
-  Encoder.encode
+  Encoder.encode,
 )
 
 /**

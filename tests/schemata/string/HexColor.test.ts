@@ -31,11 +31,11 @@ describe('HexColor', () => {
           original,
           HexColor.Decoder.decode,
           E.map(HexColor.Encoder.encode),
-          E.getOrElse(() => 'invalid')
+          E.getOrElse(() => 'invalid'),
         )
 
         expect(original).toEqual(roundtrip)
-      }
+      },
     )
   })
 

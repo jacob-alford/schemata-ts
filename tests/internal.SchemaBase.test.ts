@@ -80,11 +80,11 @@ describe('SchemaBase', () => {
     const Schema = SC.Intersection(
       SC.Struct({
         foo: SC.String,
-      })
+      }),
     )(
       SC.Struct({
         bar: SC.Number,
-      })
+      }),
     )
     const decode = interpreter(D.Schemable)(Schema)
     const test = { foo: 'foo', bar: 1 }
@@ -122,7 +122,7 @@ describe('SchemaBase', () => {
         foo: SC.String,
         bar: SC.Number,
         baz: SC.Nullable(Schema1),
-      })
+      }),
     )
 
     const decode = interpreter(D.Schemable)(Schema1)
@@ -135,7 +135,7 @@ describe('SchemaBase', () => {
       SC.Struct({
         foo: SC.String,
         bar: SC.Number,
-      })
+      }),
     )
     const decode = interpreter(D.Schemable)(Schema)
     const test = { foo: 'foo', bar: 1 }

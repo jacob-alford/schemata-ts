@@ -36,6 +36,6 @@ export const NonEmptyString: NonEmptyStringS = make(S =>
   pipe(
     S.string,
     S.refine((s): s is NonEmptyString => s.length > 0, 'NonEmptyString'),
-    S.brand<NonEmptyStringBrand>()
-  )
+    S.brand<NonEmptyStringBrand>(),
+  ),
 )

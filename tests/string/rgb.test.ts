@@ -38,7 +38,7 @@ describe('RGB', () => {
       (str, expectedTag) => {
         const result = RGB.Decoder.decode(str)
         expect(result._tag).toBe(expectedTag)
-      }
+      },
     )
   })
 
@@ -48,7 +48,7 @@ describe('RGB', () => {
         original,
         RGB.Decoder.decode,
         E.map(RGB.Encoder.encode),
-        E.getOrElseW(() => 'unexpected')
+        E.getOrElseW(() => 'unexpected'),
       )
       expect(original).toEqual(roundtrip)
     })
@@ -64,7 +64,7 @@ describe('RGB', () => {
           throw new Error('Unexpected result')
         }
         expect(eq(str1, str2)).toBe(true)
-      }
+      },
     )
   })
 
@@ -74,7 +74,7 @@ describe('RGB', () => {
       (str, expectedTag) => {
         const result = RGB.Guard.is(str)
         expect(result).toBe(expectedTag)
-      }
+      },
     )
   })
 
@@ -84,7 +84,7 @@ describe('RGB', () => {
       async (str, expectedTag) => {
         const result = await RGB.TaskDecoder.decode(str)()
         expect(result._tag).toBe(expectedTag)
-      }
+      },
     )
   })
 
@@ -94,7 +94,7 @@ describe('RGB', () => {
       (str, expectedTag) => {
         const result = RGB.Type.decode(str)
         expect(result._tag).toBe(expectedTag)
-      }
+      },
     )
   })
 

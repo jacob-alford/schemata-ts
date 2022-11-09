@@ -55,7 +55,10 @@ const invalidNumbers: TestArray = [
 describe('intFromString', () => {
   describe('Decoder', () => {
     test.each(
-      cat(combineExpected(validNumbers, 'Right'), combineExpected(invalidNumbers, 'Left'))
+      cat(
+        combineExpected(validNumbers, 'Right'),
+        combineExpected(invalidNumbers, 'Left'),
+      ),
     )('validates valid numbers, and catches bad numbers', ([num], expectedTag) => {
       const result = Decoder().decode(num)
       expect(result._tag).toBe(expectedTag)
@@ -69,11 +72,11 @@ describe('intFromString', () => {
           original,
           Decoder({ encodeToBase }).decode,
           E.map(Encoder({ encodeToBase }).encode),
-          E.getOrElse(() => 'invalid')
+          E.getOrElse(() => 'invalid'),
         )
 
         expect(roundtrip).toEqual(original)
-      }
+      },
     )
   })
   describe('Eq', () => {
@@ -84,7 +87,7 @@ describe('intFromString', () => {
         const n2 = Number(num2)
         if (!Guard().is(n1) || !Guard().is(n2)) throw new Error('Unexpected result')
         expect(Eq().equals(n1, n2)).toBe(true)
-      }
+      },
     )
   })
   describe('Guard', () => {
@@ -94,7 +97,7 @@ describe('intFromString', () => {
         const n = Number(typeof num === 'string' ? num.trim() : num)
         const result = Guard().is(n)
         expect(result).toBe(expectedTag)
-      }
+      },
     )
     it('guards against invalid int', () => {
       expect(Guard().is(1.1)).toBe(false)
@@ -108,7 +111,10 @@ describe('intFromString', () => {
   })
   describe('TaskDecoder', () => {
     test.each(
-      cat(combineExpected(validNumbers, 'Right'), combineExpected(invalidNumbers, 'Left'))
+      cat(
+        combineExpected(validNumbers, 'Right'),
+        combineExpected(invalidNumbers, 'Left'),
+      ),
     )('validates valid numbers, and catches bad numbers', async ([num], expectedTag) => {
       const result = await TaskDecoder().decode(num)()
       expect(result._tag).toBe(expectedTag)
@@ -117,7 +123,10 @@ describe('intFromString', () => {
 
   describe('Type', () => {
     test.each(
-      cat(combineExpected(validNumbers, 'Right'), combineExpected(invalidNumbers, 'Left'))
+      cat(
+        combineExpected(validNumbers, 'Right'),
+        combineExpected(invalidNumbers, 'Left'),
+      ),
     )('validates valid numbers, and catches bad numbers', ([num], expectedTag) => {
       const result = Type().decode(num)
       expect(result._tag).toBe(expectedTag)

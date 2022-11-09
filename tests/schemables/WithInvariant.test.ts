@@ -20,10 +20,10 @@ describe('WithInvariant', () => {
   test('Decoder', () => {
     const S = Schema<Date>(
       { is: (a: unknown): a is Date => a instanceof Date },
-      'Date'
+      'Date',
     )<string>(
       a => new Date(a),
-      a => a.toISOString()
+      a => a.toISOString(),
     )(SC.String)
     const decoder = interpreter(D.Schemable)(S)
     const test = new Date()
@@ -32,10 +32,10 @@ describe('WithInvariant', () => {
   test('Guard', () => {
     const g = Guard.imap<Date>(
       { is: (a: unknown): a is Date => a instanceof Date },
-      'Date'
+      'Date',
     )<string>(
       a => new Date(a),
-      a => a.toISOString()
+      a => a.toISOString(),
     )(G.string)
     const test = new Date()
     expect(g.is(test)).toBe(true)
@@ -43,10 +43,10 @@ describe('WithInvariant', () => {
   test('Encoder', () => {
     const enc = Encoder.imap<Date>(
       { is: (a: unknown): a is Date => a instanceof Date },
-      'Date'
+      'Date',
     )<string>(
       a => new Date(a),
-      a => a.toISOString()
+      a => a.toISOString(),
     )(Enc.Schemable.string)
 
     const test = new Date()
@@ -55,10 +55,10 @@ describe('WithInvariant', () => {
   test('Eq', () => {
     const eq = Eq.imap<Date>(
       { is: (a: unknown): a is Date => a instanceof Date },
-      'Date'
+      'Date',
     )<string>(
       a => new Date(a),
-      a => a.toISOString()
+      a => a.toISOString(),
     )(Eq_.string)
     const test = new Date()
     expect(eq.equals(test, test)).toBe(true)
@@ -66,10 +66,10 @@ describe('WithInvariant', () => {
   test('TaskDecoder', async () => {
     const td = TaskDecoder.imap<Date>(
       { is: (a: unknown): a is Date => a instanceof Date },
-      'Date'
+      'Date',
     )<string>(
       a => new Date(a),
-      a => a.toISOString()
+      a => a.toISOString(),
     )(TD.string)
     const test = new Date()
     expect(await td.decode(test.toISOString())()).toStrictEqual(E.right(test))
@@ -78,10 +78,10 @@ describe('WithInvariant', () => {
     test('guard', () => {
       const type = Type.imap<Date>(
         { is: (a: unknown): a is Date => a instanceof Date },
-        'Date'
+        'Date',
       )<string>(
         a => new Date(a),
-        a => a.toISOString()
+        a => a.toISOString(),
       )(t.string)
       const test = new Date()
       expect(type.is(test)).toBe(true)
@@ -89,10 +89,10 @@ describe('WithInvariant', () => {
     test('decoder', () => {
       const type = Type.imap<Date>(
         { is: (a: unknown): a is Date => a instanceof Date },
-        'Date'
+        'Date',
       )<string>(
         a => new Date(a),
-        a => a.toISOString()
+        a => a.toISOString(),
       )(t.string)
       const test = new Date()
       expect(type.decode(test.toISOString())).toStrictEqual({

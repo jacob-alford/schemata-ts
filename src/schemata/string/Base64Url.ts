@@ -39,7 +39,7 @@ export type Base64UrlS = SchemaExt<string, Base64Url>
 export const base64Url: PB.Pattern = pipe(
   PB.word,
   PB.and('-'),
-  PB.anyNumber({ greedy: true })
+  PB.anyNumber({ greedy: true }),
 )
 
 /**
@@ -51,5 +51,5 @@ export const base64Url: PB.Pattern = pipe(
  * @category Schema
  */
 export const Base64Url: Base64UrlS = make(s =>
-  s.brand<Base64UrlBrand>()(s.pattern(base64Url, 'Base64Url'))
+  s.brand<Base64UrlBrand>()(s.pattern(base64Url, 'Base64Url')),
 )

@@ -30,7 +30,7 @@ describe('NonPositiveInt', () => {
       (str, expectedTag) => {
         const result = Decoder.decode(str)
         expect(result._tag).toBe(expectedTag)
-      }
+      },
     )
   })
 
@@ -40,7 +40,7 @@ describe('NonPositiveInt', () => {
         original,
         Decoder.decode,
         E.map(Encoder.encode),
-        E.getOrElseW(() => 'unexpected')
+        E.getOrElseW(() => 'unexpected'),
       )
       expect(original).toEqual(roundtrip)
     })
@@ -56,7 +56,7 @@ describe('NonPositiveInt', () => {
           throw new Error('Unexpected result')
         }
         expect(eq(str1, str2)).toBe(true)
-      }
+      },
     )
   })
 
@@ -66,7 +66,7 @@ describe('NonPositiveInt', () => {
       (str, expectedTag) => {
         const result = Guard.is(str)
         expect(result).toBe(expectedTag)
-      }
+      },
     )
   })
 
@@ -76,7 +76,7 @@ describe('NonPositiveInt', () => {
       async (str, expectedTag) => {
         const result = await TaskDecoder.decode(str)()
         expect(result._tag).toBe(expectedTag)
-      }
+      },
     )
   })
 
@@ -86,7 +86,7 @@ describe('NonPositiveInt', () => {
       (str, expectedTag) => {
         const result = Type.decode(str)
         expect(result._tag).toBe(expectedTag)
-      }
+      },
     )
   })
 

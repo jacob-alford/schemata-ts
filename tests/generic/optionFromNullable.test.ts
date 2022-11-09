@@ -21,7 +21,7 @@ describe('OptionFromNullable', () => {
     })
     it('should decode valid values to some', () => {
       expect(OptionFromNullable.Decoder(D.string).decode('a')).toEqual(
-        E.right(O.some('a'))
+        E.right(O.some('a')),
       )
     })
     it("should decode invalid values to left('invalid')", () => {
@@ -35,7 +35,7 @@ describe('OptionFromNullable', () => {
     })
     it('should encode some to the value', () => {
       expect(OptionFromNullable.Encoder(Enc.Schemable.string).encode(O.some('a'))).toBe(
-        'a'
+        'a',
       )
     })
   })
@@ -73,17 +73,17 @@ describe('OptionFromNullable', () => {
   describe('TaskDecoder', () => {
     it('should decode null to none', async () => {
       expect(await OptionFromNullable.TaskDecoder(TD.string).decode(null)()).toEqual(
-        E.right(O.none)
+        E.right(O.none),
       )
     })
     it('should decode valid values to some', async () => {
       expect(await OptionFromNullable.TaskDecoder(TD.string).decode('a')()).toEqual(
-        E.right(O.some('a'))
+        E.right(O.some('a')),
       )
     })
     it("should decode invalid values to left('invalid')", async () => {
       expect((await OptionFromNullable.TaskDecoder(TD.string).decode(1)())._tag).toBe(
-        'Left'
+        'Left',
       )
     })
   })
@@ -94,7 +94,7 @@ describe('OptionFromNullable', () => {
     })
     it('should decode valid values to some', () => {
       expect(OptionFromNullable.Type(t.string).decode(O.some('a'))).toEqual(
-        E.right(O.some('a'))
+        E.right(O.some('a')),
       )
     })
     it("should decode invalid values to left('invalid')", () => {
@@ -106,7 +106,7 @@ describe('OptionFromNullable', () => {
     it('generates valid options', () => {
       validateArbitrary(
         { Arbitrary: OptionFromNullable.Arbitrary(Arb.string) },
-        OptionFromNullable.Guard(G.string).is
+        OptionFromNullable.Guard(G.string).is,
       )
     })
   })

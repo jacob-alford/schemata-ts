@@ -46,7 +46,7 @@ export type IntFromStringParams = {
  * @category Model
  */
 export type SchemableParams<S> = (
-  params?: int.IntParams & IntFromStringParams
+  params?: int.IntParams & IntFromStringParams,
 ) => HKT2<S, string, int.Int>
 
 /**
@@ -54,7 +54,7 @@ export type SchemableParams<S> = (
  * @category Model
  */
 export type SchemableParams1<S extends URIS> = (
-  params?: int.IntParams & IntFromStringParams
+  params?: int.IntParams & IntFromStringParams,
 ) => Kind<S, int.Int>
 
 /**
@@ -62,7 +62,7 @@ export type SchemableParams1<S extends URIS> = (
  * @category Model
  */
 export type SchemableParams2<S extends URIS2> = (
-  params?: int.IntParams & IntFromStringParams
+  params?: int.IntParams & IntFromStringParams,
 ) => Kind2<S, string, int.Int>
 
 /**
@@ -70,7 +70,7 @@ export type SchemableParams2<S extends URIS2> = (
  * @category Model
  */
 export type SchemableParams2C<S extends URIS2> = (
-  params?: int.IntParams & IntFromStringParams
+  params?: int.IntParams & IntFromStringParams,
 ) => Kind2<S, unknown, int.Int>
 
 /**
@@ -119,7 +119,7 @@ export const Type: SchemableParams1<t.URI> = params =>
       typeof str === 'string' && str.length > 0
         ? pipe(str, Str.trim, Number, int.Type(params).decode)
         : failure(str, ctx, 'Nonempty string'),
-    Encoder(params).encode
+    Encoder(params).encode,
   )
 
 /** @internal */

@@ -49,5 +49,5 @@ export type NaturalS = SchemaExt<number, Natural>
  * @category Schema
  */
 export const Natural: NaturalS = make(S =>
-  pipe(S.int({ min: 0 }), S.brand<NaturalBrand>())
+  pipe(S.int({ min: 0 }), S.brand<NaturalBrand>()),
 )

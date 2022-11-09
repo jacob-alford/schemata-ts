@@ -18,7 +18,7 @@ type Any = any
 
 export const combineExpected: <A, B>(
   input: ReadonlyArray<A>,
-  expectedOutcome: B
+  expectedOutcome: B,
 ) => ReadonlyArray<readonly [A, B]> = (as, b) => RA.comprehension([as, RA.of(b)], tuple)
 
 export const cat = <A>(...args: ReadonlyArray<ReadonlyArray<A>>): ReadonlyArray<A> =>
@@ -26,7 +26,7 @@ export const cat = <A>(...args: ReadonlyArray<ReadonlyArray<A>>): ReadonlyArray<
 
 export const validateArbitrary: <T, A extends T>(
   t: { Arbitrary: fc.Arbitrary<A> },
-  check: (a: T) => a is A
+  check: (a: T) => a is A,
 ) => void = ({ Arbitrary }, check) => fc.assert(fc.property(Arbitrary, check))
 
 type ZipN = {
@@ -34,20 +34,20 @@ type ZipN = {
   <A, B, C>(
     as: ReadonlyArray<A>,
     bs: ReadonlyArray<B>,
-    cs: ReadonlyArray<C>
+    cs: ReadonlyArray<C>,
   ): ReadonlyArray<[A, B, C]>
   <A, B, C, D>(
     as: ReadonlyArray<A>,
     bs: ReadonlyArray<B>,
     cs: ReadonlyArray<C>,
-    ds: ReadonlyArray<D>
+    ds: ReadonlyArray<D>,
   ): ReadonlyArray<[A, B, C, D]>
 }
 
 export const zipN: ZipN = (...args: ReadonlyArray<ReadonlyArray<Any>>) => {
   const smallestLength = pipe(
     args,
-    RA.foldMap(Mn.min(N.Bounded))(a => a.length)
+    RA.foldMap(Mn.min(N.Bounded))(a => a.length),
   )
   const _: <A>(xs: ReadonlyArray<A>, i: number) => A = (xs, i) => unsafeCoerce(xs[i])
   const zipped = []

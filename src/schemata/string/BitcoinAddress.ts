@@ -35,7 +35,7 @@ export type BitcoinAddressS = SchemaExt<string, BitcoinAddress>
  */
 const bech32 = pipe(
   PB.exactString('bc1'),
-  PB.then(pipe(PB.characterClass(false, ['a', 'z'], ['0', '9']), PB.between(25, 39)))
+  PB.then(pipe(PB.characterClass(false, ['a', 'z'], ['0', '9']), PB.between(25, 39))),
 )
 
 /**
@@ -54,11 +54,11 @@ const base58 = pipe(
         ['P', 'Z'],
         ['a', 'k'],
         ['m', 'z'],
-        ['1', '9']
+        ['1', '9'],
       ),
-      PB.between(25, 39)
-    )
-  )
+      PB.between(25, 39),
+    ),
+  ),
 )
 
 /**
@@ -74,5 +74,5 @@ export const bitcoinAddress: PB.Pattern = pipe(bech32, PB.or(base58))
  * @category Schema
  */
 export const BitcoinAddress: BitcoinAddressS = make(s =>
-  s.brand<BitcoinAddressBrand>()(s.pattern(bitcoinAddress, 'BitcoinAddress'))
+  s.brand<BitcoinAddressBrand>()(s.pattern(bitcoinAddress, 'BitcoinAddress')),
 )

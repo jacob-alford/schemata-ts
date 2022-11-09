@@ -94,7 +94,7 @@ for (const i of RNEA.range(0, 5)) {
         (str, expectedTag) => {
           const result = UUID.Decoder({ version }).decode(str)
           expect(result._tag).toBe(expectedTag)
-        }
+        },
       )
     })
 
@@ -104,7 +104,7 @@ for (const i of RNEA.range(0, 5)) {
           original,
           UUID.Decoder({ version }).decode,
           E.map(UUID.Encoder({ version }).encode),
-          E.getOrElseW(() => 'unexpected')
+          E.getOrElseW(() => 'unexpected'),
         )
         expect(original).toEqual(roundtrip)
       })
@@ -120,7 +120,7 @@ for (const i of RNEA.range(0, 5)) {
             throw new Error('Unexpected result')
           }
           expect(eq(str1, str2)).toBe(true)
-        }
+        },
       )
     })
 
@@ -130,7 +130,7 @@ for (const i of RNEA.range(0, 5)) {
         (str, expectedTag) => {
           const result = UUID.Guard({ version }).is(str)
           expect(result).toBe(expectedTag)
-        }
+        },
       )
     })
 
@@ -140,7 +140,7 @@ for (const i of RNEA.range(0, 5)) {
         async (str, expectedTag) => {
           const result = await UUID.TaskDecoder({ version }).decode(str)()
           expect(result._tag).toBe(expectedTag)
-        }
+        },
       )
     })
 
@@ -150,7 +150,7 @@ for (const i of RNEA.range(0, 5)) {
         (str, expectedTag) => {
           const result = UUID.Type({ version }).decode(str)
           expect(result._tag).toBe(expectedTag)
-        }
+        },
       )
     })
 
@@ -158,7 +158,7 @@ for (const i of RNEA.range(0, 5)) {
       it('generates valid UUID', () => {
         validateArbitrary(
           { Arbitrary: UUID.Arbitrary({ version }) },
-          UUID.isUUID({ version })
+          UUID.isUUID({ version }),
         )
       })
     })

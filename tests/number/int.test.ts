@@ -61,7 +61,7 @@ describe('Int', () => {
       const decoder = getDecoder(IntSchema)
       expect(decoder.decode(Infinity)._tag).toEqual('Left')
       expect(decoder.decode(Number.MAX_SAFE_INTEGER)).toStrictEqual(
-        E.right(Number.MAX_SAFE_INTEGER)
+        E.right(Number.MAX_SAFE_INTEGER),
       )
     })
   })

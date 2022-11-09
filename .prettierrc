@@ -3,5 +3,6 @@
   "printWidth": 90,
   "semi": false,
   "arrowParens": "avoid",
-  "plugins": ["prettier-plugin-jsdoc"]
+  "plugins": ["prettier-plugin-jsdoc"],
+  "trailingComma": "all"
 }

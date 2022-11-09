@@ -16,7 +16,7 @@ import * as Enc from 'io-ts/Encoder'
 export interface WithRefineHKT2<S> {
   readonly refine: <A, B extends A>(
     refinement: Refinement<A, B>,
-    id: string
+    id: string,
   ) => <O>(from: HKT2<S, O, A>) => HKT2<S, O, B>
 }
 
@@ -35,7 +35,7 @@ export {
 export interface WithRefine2<S extends URIS2> {
   readonly refine: <A, B extends A>(
     refinement: Refinement<A, B>,
-    id: string
+    id: string,
   ) => <O>(from: Kind2<S, O, A>) => Kind2<S, O, B>
 }
 

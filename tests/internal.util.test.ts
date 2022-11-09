@@ -27,7 +27,7 @@ describe('digits', () => {
         expect(s.length).toBeGreaterThanOrEqual(1)
         expect(s.length).toBeLessThanOrEqual(3)
         expect(s).toMatch(/^[0-9]+$/)
-      })
+      }),
     )
   })
 })
@@ -59,19 +59,19 @@ describe('zipN', () => {
         [1, 'a', true],
         [2, 'b', false],
         [3, 'c', true],
-      ]
+      ],
     )
   })
   it('zips 4', () => {
     expect(
-      zipN([1, 2, 3], ['a', 'b', 'c', 'd'], [true, false, true], ['x', 'y', 'z', 'w'])
+      zipN([1, 2, 3], ['a', 'b', 'c', 'd'], [true, false, true], ['x', 'y', 'z', 'w']),
     ).toStrictEqual([
       [1, 'a', true, 'x'],
       [2, 'b', false, 'y'],
       [3, 'c', true, 'z'],
     ])
     expect(
-      zipN([1, 2, 3, 4], ['a', 'b', 'c'], [true, false, true, false], ['x', 'y', 'z'])
+      zipN([1, 2, 3, 4], ['a', 'b', 'c'], [true, false, true, false], ['x', 'y', 'z']),
     ).toStrictEqual([
       [1, 'a', true, 'x'],
       [2, 'b', false, 'y'],

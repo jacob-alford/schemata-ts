@@ -44,10 +44,10 @@ export type TypeOf<S> = S extends SchemaExt<unknown, infer A> ? A : never
  */
 export const interpreter: {
   <S extends URIS2>(S: SchemableExt2<S>): <E, A>(
-    schema: SchemaExt<E, A>
+    schema: SchemaExt<E, A>,
   ) => Kind2<S, E, A>
   <S extends URIS2>(S: SchemableExt2C<S>): <A>(
-    schema: SchemaExt<unknown, A>
+    schema: SchemaExt<unknown, A>,
   ) => Kind2<S, unknown, A>
   <S extends URIS>(S: SchemableExt1<S>): <A>(schema: SchemaExt<unknown, A>) => Kind<S, A>
 } = unsafeCoerce(interpreter_)

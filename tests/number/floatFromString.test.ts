@@ -50,7 +50,10 @@ const invalidNumbers: TestArray = [
 describe('floatFromString', () => {
   describe('Decoder', () => {
     test.each(
-      cat(combineExpected(validNumbers, 'Right'), combineExpected(invalidNumbers, 'Left'))
+      cat(
+        combineExpected(validNumbers, 'Right'),
+        combineExpected(invalidNumbers, 'Left'),
+      ),
     )('validates valid numbers, and catches bad numbers', ([num], expectedTag) => {
       const result = Decoder().decode(num)
       expect(result._tag).toBe(expectedTag)
@@ -64,11 +67,11 @@ describe('floatFromString', () => {
           original,
           Decoder().decode,
           E.map(Encoder().encode),
-          E.getOrElse(() => 'invalid')
+          E.getOrElse(() => 'invalid'),
         )
 
         expect(Number(roundtrip)).toEqual(Number(original))
-      }
+      },
     )
   })
   describe('Eq', () => {
@@ -79,7 +82,7 @@ describe('floatFromString', () => {
         const n2 = Number(num2)
         if (!Guard().is(n1) || !Guard().is(n2)) throw new Error('Unexpected result')
         expect(Eq().equals(n1, n2)).toBe(true)
-      }
+      },
     )
   })
   describe('Guard', () => {
@@ -89,12 +92,15 @@ describe('floatFromString', () => {
         const n = Number(typeof num === 'string' ? num.trim() : num)
         const result = Guard().is(n)
         expect(result).toBe(expectedTag)
-      }
+      },
     )
   })
   describe('TaskDecoder', () => {
     test.each(
-      cat(combineExpected(validNumbers, 'Right'), combineExpected(invalidNumbers, 'Left'))
+      cat(
+        combineExpected(validNumbers, 'Right'),
+        combineExpected(invalidNumbers, 'Left'),
+      ),
     )('validates valid numbers, and catches bad numbers', async ([num], expectedTag) => {
       const result = await TaskDecoder().decode(num)()
       expect(result._tag).toBe(expectedTag)
@@ -102,7 +108,10 @@ describe('floatFromString', () => {
   })
   describe('Type', () => {
     test.each(
-      cat(combineExpected(validNumbers, 'Right'), combineExpected(invalidNumbers, 'Left'))
+      cat(
+        combineExpected(validNumbers, 'Right'),
+        combineExpected(invalidNumbers, 'Left'),
+      ),
     )('validates valid numbers, and catches bad numbers', ([num], expectedTag) => {
       const result = Type().decode(num)
       expect(result._tag).toBe(expectedTag)
@@ -120,7 +129,7 @@ describe('floatFromString', () => {
       const decoder = getDecoder(FloatFromString)
       expect(decoder.decode('NaN')._tag).toEqual('Left')
       expect(decoder.decode(`${Number.MAX_VALUE}`)).toStrictEqual(
-        E.right(Number.MAX_VALUE)
+        E.right(Number.MAX_VALUE),
       )
     })
   })

@@ -8,7 +8,7 @@ describe('interpreters', () => {
     fc.assert(
       fc.property(arb, str => {
         expect(typeof str).toBe('string')
-      })
+      }),
     )
   })
   test('getDecoder', () => {

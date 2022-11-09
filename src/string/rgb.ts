@@ -111,7 +111,7 @@ export const Guard: SchemableParams1<G.URI> = pipe(G.string, G.refine(isRGB))
  */
 export const TaskDecoder: SchemableParams2C<TD.URI> = pipe(
   TD.string,
-  TD.refine(isRGB, 'RGB')
+  TD.refine(isRGB, 'RGB'),
 )
 
 /**
@@ -136,14 +136,14 @@ export const Arbitrary: SchemableParams1<Arb.URI> = fc
         fc.nat({ max: 255 }),
         fc.nat({ max: 255 }),
         fc.nat({ max: 255 }),
-        fc.nat({ max: 255 })
+        fc.nat({ max: 255 }),
       )
       .map(([r, g, b, a]) => `rgba(${r},${g},${b},${a / 255})`),
     /* RGB > Percentage */
     fc
       .tuple(fc.nat({ max: 255 }), fc.nat({ max: 255 }), fc.nat({ max: 255 }))
       .map(
-        ([r, g, b]) => `rgb(${(r / 255) * 100}%,${(g / 255) * 100}%,${(b / 255) * 100}%)`
+        ([r, g, b]) => `rgb(${(r / 255) * 100}%,${(g / 255) * 100}%,${(b / 255) * 100}%)`,
       ),
     /* RGBA > Percentage */
     fc
@@ -151,11 +151,11 @@ export const Arbitrary: SchemableParams1<Arb.URI> = fc
         fc.nat({ max: 255 }),
         fc.nat({ max: 255 }),
         fc.nat({ max: 255 }),
-        fc.nat({ max: 255 })
+        fc.nat({ max: 255 }),
       )
       .map(
         ([r, g, b, a]) =>
-          `rgba(${(r / 255) * 100}%,${(g / 255) * 100}%,${(b / 255) * 100}%,${a / 255})`
-      )
+          `rgba(${(r / 255) * 100}%,${(g / 255) * 100}%,${(b / 255) * 100}%,${a / 255})`,
+      ),
   )
   .filter(isRGB)

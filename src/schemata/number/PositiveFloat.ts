@@ -51,5 +51,5 @@ export type PositiveFloatS = SchemaExt<number, PositiveFloat>
  * @category Schema
  */
 export const PositiveFloat: PositiveFloatS = make(S =>
-  pipe(S.float({ min: Number.MIN_VALUE }), S.brand<PositiveFloatBrand>())
+  pipe(S.float({ min: Number.MIN_VALUE }), S.brand<PositiveFloatBrand>()),
 )

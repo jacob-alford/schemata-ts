@@ -22,7 +22,7 @@ export interface SchemableHKT2<S> {
   readonly URI: S
   readonly literal: <
     A extends readonly [L, ...ReadonlyArray<L>],
-    L extends Literal = Literal
+    L extends Literal = Literal,
   >(
     ...values: A
   ) => HKT2<S, A[number], A[number]>
@@ -31,21 +31,21 @@ export interface SchemableHKT2<S> {
   readonly boolean: HKT2<S, boolean, boolean>
   readonly nullable: <O, A>(or: HKT2<S, O, A>) => HKT2<S, null | O, null | A>
   readonly struct: <Properties extends Record<PropertyKey, HKT2<S, Any, Any>>>(
-    properties: Properties
+    properties: Properties,
   ) => HKT2<
     S,
     { [K in keyof Properties]: EofHKT2<S, Properties[K]> },
     { [K in keyof Properties]: AofHKT2<S, Properties[K]> }
   >
   readonly partial: <Properties extends Record<PropertyKey, HKT2<S, Any, Any>>>(
-    properties: Properties
+    properties: Properties,
   ) => HKT2<
     S,
     Partial<{ [K in keyof Properties]: EofHKT2<S, Properties[K]> }>,
     Partial<{ [K in keyof Properties]: AofHKT2<S, Properties[K]> }>
   >
   readonly record: <O, A>(
-    codomain: HKT2<S, O, A>
+    codomain: HKT2<S, O, A>,
   ) => HKT2<S, Record<string, O>, Record<string, A>>
   readonly array: <O, A>(item: HKT2<S, O, A>) => HKT2<S, Array<O>, Array<A>>
   readonly tuple: <Components extends Array<HKT2<S, Any, Any>>>(
@@ -56,12 +56,12 @@ export interface SchemableHKT2<S> {
     { [K in keyof Components]: AofHKT2<S, Components[K]> }
   >
   readonly intersect: <O2, A2>(
-    right: HKT2<S, O2, A2>
+    right: HKT2<S, O2, A2>,
   ) => <O1, A1>(left: HKT2<S, O1, A1>) => HKT2<S, O1 & O2, A1 & A2>
   readonly sum: <T extends string>(
-    tag: T
+    tag: T,
   ) => <Members extends Record<PropertyKey, HKT2<S, Any, Any>>>(
-    members: EnsureTagHKT2<S, T, Members> & Members
+    members: EnsureTagHKT2<S, T, Members> & Members,
   ) => HKT2<
     S,
     { [K in keyof Members]: EofHKT2<S, Members[K]> }[keyof Members],
@@ -75,7 +75,7 @@ export interface Schemable2<S extends URIS2> {
   readonly URI: S
   readonly literal: <
     A extends readonly [L, ...ReadonlyArray<L>],
-    L extends Literal = Literal
+    L extends Literal = Literal,
   >(
     ...values: A
   ) => Kind2<S, A[number], A[number]>
@@ -84,21 +84,21 @@ export interface Schemable2<S extends URIS2> {
   readonly boolean: Kind2<S, boolean, boolean>
   readonly nullable: <O, A>(or: Kind2<S, O, A>) => Kind2<S, null | O, null | A>
   readonly struct: <Properties extends Record<PropertyKey, Kind2<S, Any, Any>>>(
-    properties: Properties
+    properties: Properties,
   ) => Kind2<
     S,
     { [K in keyof Properties]: EofKind2<S, Properties[K]> },
     { [K in keyof Properties]: AofKind2<S, Properties[K]> }
   >
   readonly partial: <Properties extends Record<PropertyKey, Kind2<S, Any, Any>>>(
-    properties: Properties
+    properties: Properties,
   ) => Kind2<
     S,
     Partial<{ [K in keyof Properties]: EofKind2<S, Properties[K]> }>,
     Partial<{ [K in keyof Properties]: AofKind2<S, Properties[K]> }>
   >
   readonly record: <O, A>(
-    codomain: Kind2<S, O, A>
+    codomain: Kind2<S, O, A>,
   ) => Kind2<S, Record<string, O>, Record<string, A>>
   readonly array: <O, A>(item: Kind2<S, O, A>) => Kind2<S, Array<O>, Array<A>>
   readonly tuple: <Components extends Array<Kind2<S, Any, Any>>>(
@@ -109,12 +109,12 @@ export interface Schemable2<S extends URIS2> {
     { [K in keyof Components]: AofKind2<S, Components[K]> }
   >
   readonly intersect: <O2, A2>(
-    right: Kind2<S, O2, A2>
+    right: Kind2<S, O2, A2>,
   ) => <O1, A1>(left: Kind2<S, O1, A1>) => Kind2<S, O1 & O2, A1 & A2>
   readonly sum: <T extends string>(
-    tag: T
+    tag: T,
   ) => <Members extends Record<PropertyKey, Kind2<S, Any, Any>>>(
-    members: EnsureTagKind2<S, T, Members> & Members
+    members: EnsureTagKind2<S, T, Members> & Members,
   ) => Kind2<
     S,
     { [K in keyof Members]: EofKind2<S, Members[K]> }[keyof Members],

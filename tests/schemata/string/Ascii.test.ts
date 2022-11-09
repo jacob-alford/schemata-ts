@@ -34,7 +34,7 @@ describe('instances', () => {
         original,
         instances.Decoder.decode,
         E.map(instances.Encoder.encode),
-        E.getOrElseW(() => 'unexpected')
+        E.getOrElseW(() => 'unexpected'),
       )
       expect(original).toEqual(roundtrip)
     })
@@ -50,7 +50,7 @@ describe('instances', () => {
           throw new Error('Unexpected result')
         }
         expect(eq(str1, str2)).toBe(true)
-      }
+      },
     )
   })
 

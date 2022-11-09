@@ -39,10 +39,10 @@ export const hexColor: PB.Pattern = pipe(
       pipe(
         PB.between(3, 4)(PB.hexDigit),
         PB.or(PB.exactly(6)(PB.hexDigit)),
-        PB.or(PB.exactly(8)(PB.hexDigit))
-      )
-    )
-  )
+        PB.or(PB.exactly(8)(PB.hexDigit)),
+      ),
+    ),
+  ),
 )
 
 /**
@@ -52,5 +52,5 @@ export const hexColor: PB.Pattern = pipe(
  * @category Schema
  */
 export const HexColor: HexColorS = make(s =>
-  s.brand<HexColorBrand>()(s.pattern(hexColor, 'HexColor', true))
+  s.brand<HexColorBrand>()(s.pattern(hexColor, 'HexColor', true)),
 )

@@ -25,7 +25,7 @@ export const DateFromInt: DateFromIntS = make(S =>
     S.int({ min: -8_640_000_000_000_000, max: 8_640_000_000_000_000 }),
     S.imap(date.Guard, 'DateFromInt')(
       n => new Date(n),
-      d => d.getTime() as int.Int
-    )
-  )
+      d => d.getTime() as int.Int,
+    ),
+  ),
 )

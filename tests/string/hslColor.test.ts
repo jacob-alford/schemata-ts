@@ -54,7 +54,10 @@ const invalidStrings = [
 describe('HslColor', () => {
   describe('Decoder', () => {
     test.each(
-      cat(combineExpected(validStrings, 'Right'), combineExpected(invalidStrings, 'Left'))
+      cat(
+        combineExpected(validStrings, 'Right'),
+        combineExpected(invalidStrings, 'Left'),
+      ),
     )('validates valid strings, and catches bad strings', (str, expectedTag) => {
       const result = HslColor.Decoder.decode(str)
 
@@ -70,11 +73,11 @@ describe('HslColor', () => {
           original,
           HslColor.Decoder.decode,
           E.map(HslColor.Encoder.encode),
-          E.getOrElse(() => 'invalid')
+          E.getOrElse(() => 'invalid'),
         )
 
         expect(original).toEqual(roundtrip)
-      }
+      },
     )
   })
 
@@ -91,13 +94,13 @@ describe('HslColor', () => {
         }
 
         expect(eq(str1, str2)).toBe(true)
-      }
+      },
     )
   })
 
   describe('Guard', () => {
     test.each(
-      cat(combineExpected(validStrings, true), combineExpected(invalidStrings, false))
+      cat(combineExpected(validStrings, true), combineExpected(invalidStrings, false)),
     )('validates valid strings, and catches bad strings', (str, expectedTag) => {
       const result = HslColor.Guard.is(str)
 
@@ -107,7 +110,10 @@ describe('HslColor', () => {
 
   describe('TaskDecoder', () => {
     test.each(
-      cat(combineExpected(validStrings, 'Right'), combineExpected(invalidStrings, 'Left'))
+      cat(
+        combineExpected(validStrings, 'Right'),
+        combineExpected(invalidStrings, 'Left'),
+      ),
     )('validates valid strings, and catches bad strings', async (str, expectedTag) => {
       const result = await HslColor.TaskDecoder.decode(str)()
 
@@ -117,7 +123,10 @@ describe('HslColor', () => {
 
   describe('Type', () => {
     test.each(
-      cat(combineExpected(validStrings, 'Right'), combineExpected(invalidStrings, 'Left'))
+      cat(
+        combineExpected(validStrings, 'Right'),
+        combineExpected(invalidStrings, 'Left'),
+      ),
     )('validates valid strings, and catches bad strings', (str, expectedTag) => {
       const result = HslColor.Type.decode(str)
 

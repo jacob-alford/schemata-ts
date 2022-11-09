@@ -68,7 +68,7 @@ describe('LatLong', () => {
       (str, expectedTag) => {
         const result = LatLong.Decoder.decode(str)
         expect(result._tag).toBe(expectedTag)
-      }
+      },
     )
   })
 
@@ -78,7 +78,7 @@ describe('LatLong', () => {
         original,
         LatLong.Decoder.decode,
         E.map(LatLong.Encoder.encode),
-        E.getOrElseW(() => 'unexpected')
+        E.getOrElseW(() => 'unexpected'),
       )
       expect(original).toEqual(roundtrip)
     })
@@ -94,7 +94,7 @@ describe('LatLong', () => {
           throw new Error('Unexpected result')
         }
         expect(eq(str1, str2)).toBe(true)
-      }
+      },
     )
   })
 
@@ -104,7 +104,7 @@ describe('LatLong', () => {
       (str, expectedTag) => {
         const result = LatLong.Guard.is(str)
         expect(result).toBe(expectedTag)
-      }
+      },
     )
   })
 
@@ -114,7 +114,7 @@ describe('LatLong', () => {
       async (str, expectedTag) => {
         const result = await LatLong.TaskDecoder.decode(str)()
         expect(result._tag).toBe(expectedTag)
-      }
+      },
     )
   })
 
@@ -124,7 +124,7 @@ describe('LatLong', () => {
       (str, expectedTag) => {
         const result = LatLong.Type.decode(str)
         expect(result._tag).toBe(expectedTag)
-      }
+      },
     )
   })
   // TODO: fix small exponentials from being generated

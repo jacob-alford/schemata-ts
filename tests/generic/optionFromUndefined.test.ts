@@ -18,12 +18,12 @@ describe('OptionFromUndefined', () => {
   describe('Decoder', () => {
     it('should decode null to none', () => {
       expect(OptionFromUndefined.Decoder(D.string).decode(undefined)).toEqual(
-        E.right(O.none)
+        E.right(O.none),
       )
     })
     it('should decode valid values to some', () => {
       expect(OptionFromUndefined.Decoder(D.string).decode('a')).toEqual(
-        E.right(O.some('a'))
+        E.right(O.some('a')),
       )
     })
     it("should decode invalid values to left('invalid')", () => {
@@ -34,12 +34,12 @@ describe('OptionFromUndefined', () => {
   describe('Encoder', () => {
     it('should encode none to null', () => {
       expect(OptionFromUndefined.Encoder(Enc.Schemable.string).encode(O.none)).toBe(
-        undefined
+        undefined,
       )
     })
     it('should encode some to the value', () => {
       expect(OptionFromUndefined.Encoder(Enc.Schemable.string).encode(O.some('a'))).toBe(
-        'a'
+        'a',
       )
     })
   })
@@ -77,17 +77,17 @@ describe('OptionFromUndefined', () => {
   describe('TaskDecoder', () => {
     it('should decode null to none', async () => {
       expect(
-        await OptionFromUndefined.TaskDecoder(TD.string).decode(undefined)()
+        await OptionFromUndefined.TaskDecoder(TD.string).decode(undefined)(),
       ).toEqual(E.right(O.none))
     })
     it('should decode valid values to some', async () => {
       expect(await OptionFromUndefined.TaskDecoder(TD.string).decode('a')()).toEqual(
-        E.right(O.some('a'))
+        E.right(O.some('a')),
       )
     })
     it("should decode invalid values to left('invalid')", async () => {
       expect((await OptionFromUndefined.TaskDecoder(TD.string).decode(1)())._tag).toBe(
-        'Left'
+        'Left',
       )
     })
   })
@@ -98,7 +98,7 @@ describe('OptionFromUndefined', () => {
     })
     it('should decode valid values to some', () => {
       expect(OptionFromUndefined.Type(t.string).decode(O.some('a'))).toEqual(
-        E.right(O.some('a'))
+        E.right(O.some('a')),
       )
     })
     it("should decode invalid values to left('invalid')", () => {
@@ -110,7 +110,7 @@ describe('OptionFromUndefined', () => {
     it('generates valid options', () => {
       validateArbitrary(
         { Arbitrary: OptionFromUndefined.Arbitrary(Arb.string) },
-        OptionFromUndefined.Guard(G.string).is
+        OptionFromUndefined.Guard(G.string).is,
       )
     })
   })

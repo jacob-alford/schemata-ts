@@ -35,7 +35,7 @@ describe('EncoderBase', () => {
         }).encode({
           a: 'a',
           b: 5,
-        })
+        }),
       ).toEqual({ a: 'a', b: 5 })
     })
     test('partial', () => {
@@ -43,7 +43,7 @@ describe('EncoderBase', () => {
         _.partial({
           a: _.string,
           b: _.number,
-        }).encode({ a: 'a' })
+        }).encode({ a: 'a' }),
       ).toStrictEqual({ a: 'a' })
     })
     test('record', () => {
@@ -61,8 +61,8 @@ describe('EncoderBase', () => {
     test('intersect', () => {
       expect(
         _.intersect(_.struct({ a: _.string, b: _.number }))(
-          _.struct({ b: _.number, c: _.boolean })
-        ).encode({ a: 'a', b: 5, c: true })
+          _.struct({ b: _.number, c: _.boolean }),
+        ).encode({ a: 'a', b: 5, c: true }),
       ).toStrictEqual({ a: 'a', b: 5, c: true })
     })
     test('sum', () => {

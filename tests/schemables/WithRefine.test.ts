@@ -15,7 +15,7 @@ describe('WithRefine', () => {
   test('Encoder', () => {
     const enc = Encoder.refine(
       (a: string): a is 'foo' => a === 'foo',
-      'isFoo'
+      'isFoo',
     )(Enc.Schemable.string)
     expect(enc.encode('foo')).toEqual('foo')
   })

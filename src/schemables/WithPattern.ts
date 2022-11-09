@@ -29,7 +29,7 @@ export interface WithPatternHKT2<S> {
   readonly pattern: (
     pattern: Pattern,
     description: string,
-    caseInsensitive?: boolean
+    caseInsensitive?: boolean,
   ) => HKT2<S, string, string>
 }
 
@@ -46,7 +46,7 @@ export interface WithPattern2<S extends URIS2> {
   readonly pattern: (
     pattern: Pattern,
     description: string,
-    caseInsensitive?: boolean
+    caseInsensitive?: boolean,
   ) => Kind2<S, string, string>
 }
 
@@ -63,7 +63,7 @@ export interface WithPattern2C<S extends URIS2, E> {
   readonly pattern: (
     pattern: Pattern,
     description: string,
-    caseInsensitive?: boolean
+    caseInsensitive?: boolean,
   ) => Kind2<S, E, string>
 }
 
@@ -80,7 +80,7 @@ export interface WithPattern1<S extends URIS> {
   readonly pattern: (
     pattern: Pattern,
     description: string,
-    caseInsensitive?: boolean
+    caseInsensitive?: boolean,
   ) => Kind<S, string>
 }
 
@@ -88,7 +88,7 @@ export interface WithPattern1<S extends URIS> {
 export const pattern: (
   pattern: Pattern,
   _: string,
-  caseInsensitive?: boolean
+  caseInsensitive?: boolean,
 ) => G.Guard<unknown, string> = (pattern, _, caseInsensitive) => {
   const regex = regexFromPattern(pattern, caseInsensitive)
   return {

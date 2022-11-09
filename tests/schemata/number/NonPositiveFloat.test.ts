@@ -40,7 +40,7 @@ describe('NonPositiveFloat', () => {
       (str, expectedTag) => {
         const result = Decoder.decode(str)
         expect(result._tag).toBe(expectedTag)
-      }
+      },
     )
   })
 
@@ -50,7 +50,7 @@ describe('NonPositiveFloat', () => {
         original,
         Decoder.decode,
         E.map(Encoder.encode),
-        E.getOrElseW(() => 'unexpected')
+        E.getOrElseW(() => 'unexpected'),
       )
       expect(original).toEqual(roundtrip)
     })
@@ -66,7 +66,7 @@ describe('NonPositiveFloat', () => {
           throw new Error('Unexpected result')
         }
         expect(eq(str1, str2)).toBe(true)
-      }
+      },
     )
   })
 
@@ -76,7 +76,7 @@ describe('NonPositiveFloat', () => {
       (str, expectedTag) => {
         const result = Guard.is(str)
         expect(result).toBe(expectedTag)
-      }
+      },
     )
   })
 
@@ -86,7 +86,7 @@ describe('NonPositiveFloat', () => {
       async (str, expectedTag) => {
         const result = await TaskDecoder.decode(str)()
         expect(result._tag).toBe(expectedTag)
-      }
+      },
     )
   })
 
@@ -96,7 +96,7 @@ describe('NonPositiveFloat', () => {
       (str, expectedTag) => {
         const result = Type.decode(str)
         expect(result._tag).toBe(expectedTag)
-      }
+      },
     )
   })
 

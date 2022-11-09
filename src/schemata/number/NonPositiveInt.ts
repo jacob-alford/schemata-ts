@@ -51,5 +51,5 @@ export type NonPositiveIntS = SchemaExt<number, NonPositiveInt>
  * @category Schema
  */
 export const NonPositiveInt: NonPositiveIntS = make(S =>
-  pipe(S.int({ max: 0 }), S.brand<NonPositiveIntBrand>())
+  pipe(S.int({ max: 0 }), S.brand<NonPositiveIntBrand>()),
 )

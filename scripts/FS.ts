@@ -40,15 +40,15 @@ const readFile = TE.taskify<
   string
 >((path, options, callback) => fs.readFile(path, options, callback))
 const writeFile = TE.taskify<fs.PathLike, string, NodeJS.ErrnoException, void>(
-  fs.writeFile
+  fs.writeFile,
 )
 const copyFile = TE.taskify<fs.PathLike, fs.PathLike, NodeJS.ErrnoException, void>(
-  fs.copyFile
+  fs.copyFile,
 )
 const glob = TE.taskify<string, Error, ReadonlyArray<string>>(G)
 const mkdirTE = TE.taskify(fs.mkdir)
 const moveFile = TE.taskify<fs.PathLike, fs.PathLike, NodeJS.ErrnoException, void>(
-  fs.rename
+  fs.rename,
 )
 const access = TE.taskify(fs.access)
 
@@ -57,8 +57,8 @@ export const fileSystem: FileSystem = {
     access,
     TE.match(
       () => false,
-      () => true
-    )
+      () => true,
+    ),
   ),
   readDirs: path =>
     pipe(
@@ -69,11 +69,11 @@ export const fileSystem: FileSystem = {
             pipe(
               dir,
               O.fromPredicate(dir => dir.isDirectory()),
-              O.map(dir => dir.name)
-            )
-          )
-        )
-      )
+              O.map(dir => dir.name),
+            ),
+          ),
+        ),
+      ),
     ),
   readFile: path => readFile(path, { encoding: 'utf-8' }),
   readFiles: path => readFiles(path, { encoding: 'utf-8', withFileTypes: false }),
@@ -82,7 +82,7 @@ export const fileSystem: FileSystem = {
   glob,
   mkdir: flow(
     mkdirTE,
-    TE.map(() => undefined)
+    TE.map(() => undefined),
   ),
   moveFile,
 }
@@ -91,70 +91,70 @@ export const fileSystemTest: FileSystem = {
   exists: flow(
     Cons.log,
     T.fromIO,
-    T.map(() => true)
+    T.map(() => true),
   ),
   readDirs: flow(
     Cons.log,
     TE.fromIO,
     TE.bimap(
       e => new Error(String(e)),
-      () => []
-    )
+      () => [],
+    ),
   ),
   readFile: flow(
     Cons.log,
     TE.fromIO,
     TE.bimap(
       e => new Error(String(e)),
-      () => ''
-    )
+      () => '',
+    ),
   ),
   readFiles: flow(
     Cons.log,
     TE.fromIO,
     TE.bimap(
       e => new Error(String(e)),
-      () => ['ASCII.ts', 'ASCII.test.ts']
-    )
+      () => ['ASCII.ts', 'ASCII.test.ts'],
+    ),
   ),
   writeFile: flow(
     Cons.log,
     TE.fromIO,
     TE.bimap(
       e => new Error(String(e)),
-      () => void 0
-    )
+      () => void 0,
+    ),
   ),
   copyFile: flow(
     Cons.log,
     TE.fromIO,
     TE.bimap(
       e => new Error(String(e)),
-      () => void 0
-    )
+      () => void 0,
+    ),
   ),
   glob: flow(
     Cons.log,
     TE.fromIO,
     TE.bimap(
       e => new Error(String(e)),
-      () => []
-    )
+      () => [],
+    ),
   ),
   mkdir: flow(
     Cons.log,
     TE.fromIO,
     TE.bimap(
       e => new Error(String(e)),
-      () => void 0
-    )
+      () => void 0,
+    ),
   ),
   moveFile: flow(
     Cons.log,
     TE.fromIO,
     TE.bimap(
       e => new Error(String(e)),
-      () => void 0
-    )
+      () => void 0,
+    ),
   ),
 }

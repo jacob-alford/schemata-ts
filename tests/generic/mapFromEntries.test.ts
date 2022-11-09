@@ -17,7 +17,7 @@ describe('MapFromEntries', () => {
   describe('Decoder', () => {
     it("should decode empty array to empty map'", () => {
       expect(
-        MapFromEntries.Decoder(Str.Ord, D.string, D.string).decode([])
+        MapFromEntries.Decoder(Str.Ord, D.string, D.string).decode([]),
       ).toStrictEqual(E.right(new Map()))
     })
     it('should decode valid values to map', () => {
@@ -25,14 +25,14 @@ describe('MapFromEntries', () => {
         MapFromEntries.Decoder(Str.Ord, D.string, D.string).decode([
           ['a', 'b'],
           ['c', 'd'],
-        ])
+        ]),
       ).toStrictEqual(
         E.right(
           new Map([
             ['a', 'b'],
             ['c', 'd'],
-          ])
-        )
+          ]),
+        ),
       )
     })
   })
@@ -43,8 +43,8 @@ describe('MapFromEntries', () => {
         MapFromEntries.Encoder(
           Str.Ord,
           Enc.Schemable.string,
-          Enc.Schemable.string
-        ).encode(new Map())
+          Enc.Schemable.string,
+        ).encode(new Map()),
       ).toStrictEqual([])
     })
     it('should encode map to array', () => {
@@ -52,13 +52,13 @@ describe('MapFromEntries', () => {
         MapFromEntries.Encoder(
           Str.Ord,
           Enc.Schemable.string,
-          Enc.Schemable.string
+          Enc.Schemable.string,
         ).encode(
           new Map([
             ['a', 'b'],
             ['c', 'd'],
-          ])
-        )
+          ]),
+        ),
       ).toStrictEqual([
         ['a', 'b'],
         ['c', 'd'],
@@ -69,39 +69,39 @@ describe('MapFromEntries', () => {
   describe('Eq', () => {
     it('should return true for empty maps', () => {
       expect(
-        MapFromEntries.Eq(Str.Ord, Str.Eq, Str.Eq).equals(new Map(), new Map())
+        MapFromEntries.Eq(Str.Ord, Str.Eq, Str.Eq).equals(new Map(), new Map()),
       ).toBe(true)
     })
     it('should return false for empty map and non-empty map', () => {
       expect(
         MapFromEntries.Eq(Str.Ord, Str.Eq, Str.Eq).equals(
           new Map(),
-          new Map([['a', 'b']])
-        )
+          new Map([['a', 'b']]),
+        ),
       ).toBe(false)
     })
     it('should return false for non-empty map and empty map', () => {
       expect(
         MapFromEntries.Eq(Str.Ord, Str.Eq, Str.Eq).equals(
           new Map([['a', 'b']]),
-          new Map()
-        )
+          new Map(),
+        ),
       ).toBe(false)
     })
     it('should return true for equal maps', () => {
       expect(
         MapFromEntries.Eq(Str.Ord, Str.Eq, Str.Eq).equals(
           new Map([['a', 'b']]),
-          new Map([['a', 'b']])
-        )
+          new Map([['a', 'b']]),
+        ),
       ).toBe(true)
     })
     it('should return false for non-equal maps', () => {
       expect(
         MapFromEntries.Eq(Str.Ord, Str.Eq, Str.Eq).equals(
           new Map([['a', 'b']]),
-          new Map([['a', 'c']])
-        )
+          new Map([['a', 'c']]),
+        ),
       ).toBe(false)
     })
   })
@@ -118,7 +118,7 @@ describe('MapFromEntries', () => {
   describe('TaskDecoder', () => {
     it("should decode empty array to empty map'", async () => {
       expect(
-        await MapFromEntries.TaskDecoder(Str.Ord, TD.string, TD.string).decode([])()
+        await MapFromEntries.TaskDecoder(Str.Ord, TD.string, TD.string).decode([])(),
       ).toStrictEqual(E.right(new Map()))
     })
     it('should decode valid values to map', async () => {
@@ -126,14 +126,14 @@ describe('MapFromEntries', () => {
         await MapFromEntries.TaskDecoder(Str.Ord, TD.string, TD.string).decode([
           ['a', 'b'],
           ['c', 'd'],
-        ])()
+        ])(),
       ).toStrictEqual(
         E.right(
           new Map([
             ['a', 'b'],
             ['c', 'd'],
-          ])
-        )
+          ]),
+        ),
       )
     })
   })
@@ -141,7 +141,7 @@ describe('MapFromEntries', () => {
   describe('Type', () => {
     it('should decode empty array to empty map', () => {
       expect(MapFromEntries.Type(Str.Ord, t.string, t.string).decode([])).toStrictEqual(
-        E.right(new Map())
+        E.right(new Map()),
       )
     })
     it('should decode valid values to map', () => {
@@ -149,14 +149,14 @@ describe('MapFromEntries', () => {
         MapFromEntries.Type(Str.Ord, t.string, t.string).decode([
           ['a', 'b'],
           ['c', 'd'],
-        ])
+        ]),
       ).toStrictEqual(
         E.right(
           new Map([
             ['a', 'b'],
             ['c', 'd'],
-          ])
-        )
+          ]),
+        ),
       )
     })
   })
@@ -165,7 +165,7 @@ describe('MapFromEntries', () => {
     it('generates valid readonly maps', () => {
       validateArbitrary(
         { Arbitrary: MapFromEntries.Arbitrary(Str.Ord, Arb.string, Arb.string) },
-        MapFromEntries.Guard(Str.Ord, G.string, G.string).is
+        MapFromEntries.Guard(Str.Ord, G.string, G.string).is,
       )
     })
   })
@@ -175,7 +175,7 @@ describe('MapFromEntries', () => {
     const enc = MapFromEntries.Encoder(
       Str.Ord,
       Enc.Schemable.string,
-      Enc.Schemable.string
+      Enc.Schemable.string,
     )
     const dec = MapFromEntries.Decoder(Str.Ord, D.string, D.string)
     fc.assert(fc.property(arb, flow(enc.encode, dec.decode, E.isRight)))
@@ -190,14 +190,14 @@ describe('MapFromEntries', () => {
         decoder.decode([
           ['a', 'b'],
           ['c', 'd'],
-        ])
+        ]),
       ).toStrictEqual(
         E.right(
           new Map([
             ['a', 'b'],
             ['c', 'd'],
-          ])
-        )
+          ]),
+        ),
       )
     })
   })

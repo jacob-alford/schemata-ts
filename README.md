@@ -177,7 +177,7 @@ const UserSchema = make(S =>
     email: S.string,
     age: S.number,
     id: S.string,
-  })
+  }),
 )
 
 export type User = TypeOf<UserSchema>

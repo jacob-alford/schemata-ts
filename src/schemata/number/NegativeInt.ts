@@ -49,5 +49,5 @@ export type NegativeIntS = SchemaExt<number, NegativeInt>
  * @category Schema
  */
 export const NegativeInt: NegativeIntS = make(S =>
-  pipe(S.int({ max: -1 }), S.brand<NegativeIntBrand>())
+  pipe(S.int({ max: -1 }), S.brand<NegativeIntBrand>()),
 )

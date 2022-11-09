@@ -92,7 +92,7 @@ export const isLatLong = (str: string): str is LatLong => {
  */
 export const Decoder: SchemableParams2C<D.URI> = pipe(
   D.string,
-  D.refine(isLatLong, 'LatLong')
+  D.refine(isLatLong, 'LatLong'),
 )
 
 /**
@@ -119,7 +119,7 @@ export const Guard: SchemableParams1<G.URI> = pipe(G.string, G.refine(isLatLong)
  */
 export const TaskDecoder: SchemableParams2C<TD.URI> = pipe(
   TD.string,
-  TD.refine(isLatLong, 'LatLong')
+  TD.refine(isLatLong, 'LatLong'),
 )
 
 /**
@@ -128,7 +128,7 @@ export const TaskDecoder: SchemableParams2C<TD.URI> = pipe(
  */
 export const Type: SchemableParams1<t.URI> = pipe(
   t.string,
-  t.refine(isLatLong, 'LatLong')
+  t.refine(isLatLong, 'LatLong'),
 )
 
 /**
@@ -139,7 +139,7 @@ export const Arbitrary: SchemableParams1<Arb.URI> = fc
   .tuple(
     fc.float({ min: -90, max: 90, noDefaultInfinity: true, noNaN: true }),
     fc.float({ min: -180, max: 180, noDefaultInfinity: true, noNaN: true }),
-    fc.boolean()
+    fc.boolean(),
   )
   .map(([lat_, long_, paren]) => {
     const lat = lat_.toLocaleString(undefined, { maximumFractionDigits: 6 })

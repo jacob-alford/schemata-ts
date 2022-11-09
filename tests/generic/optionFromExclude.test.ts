@@ -21,7 +21,7 @@ describe('OptionFromExclude', () => {
     })
     it('should decode valid values to some', () => {
       expect(OptionFromExclude.Decoder('', D.string).decode('non-empty')).toEqual(
-        E.right(O.some('non-empty'))
+        E.right(O.some('non-empty')),
       )
     })
     it("should decode invalid values to left('invalid')", () => {
@@ -35,7 +35,7 @@ describe('OptionFromExclude', () => {
     })
     it('should encode some to the value', () => {
       expect(
-        OptionFromExclude.Encoder('' as string, Enc.Schemable.string).encode(O.some('a'))
+        OptionFromExclude.Encoder('' as string, Enc.Schemable.string).encode(O.some('a')),
       ).toBe('a')
     })
   })
@@ -46,22 +46,22 @@ describe('OptionFromExclude', () => {
     })
     it('should return false for none and some', () => {
       expect(OptionFromExclude.Eq('' as string, Str.Eq).equals(O.none, O.some('a'))).toBe(
-        false
+        false,
       )
     })
     it('should return false for some and none', () => {
       expect(OptionFromExclude.Eq('' as string, Str.Eq).equals(O.some('a'), O.none)).toBe(
-        false
+        false,
       )
     })
     it('should return true for some and some', () => {
       expect(
-        OptionFromExclude.Eq('' as string, Str.Eq).equals(O.some('a'), O.some('a'))
+        OptionFromExclude.Eq('' as string, Str.Eq).equals(O.some('a'), O.some('a')),
       ).toBe(true)
     })
     it('should return false for some and some', () => {
       expect(
-        OptionFromExclude.Eq('' as string, Str.Eq).equals(O.some('a'), O.some('b'))
+        OptionFromExclude.Eq('' as string, Str.Eq).equals(O.some('a'), O.some('b')),
       ).toBe(false)
     })
   })
@@ -81,17 +81,17 @@ describe('OptionFromExclude', () => {
   describe('TaskDecoder', () => {
     it('should decode empty string to none', async () => {
       expect(await OptionFromExclude.TaskDecoder('', TD.string).decode('')()).toEqual(
-        E.right(O.none)
+        E.right(O.none),
       )
     })
     it('should decode valid values to some', async () => {
       expect(await OptionFromExclude.TaskDecoder('', TD.string).decode('a')()).toEqual(
-        E.right(O.some('a'))
+        E.right(O.some('a')),
       )
     })
     it("should decode invalid values to left('invalid')", async () => {
       expect((await OptionFromExclude.TaskDecoder('', TD.string).decode(1)())._tag).toBe(
-        'Left'
+        'Left',
       )
     })
   })
@@ -102,7 +102,7 @@ describe('OptionFromExclude', () => {
     })
     it('should decode valid values to some', () => {
       expect(OptionFromExclude.Type('', t.string).decode(O.some('a'))).toEqual(
-        E.right(O.some('a'))
+        E.right(O.some('a')),
       )
     })
     it("should decode invalid values to left('invalid')", () => {
@@ -114,7 +114,7 @@ describe('OptionFromExclude', () => {
     it('generates valid options', () => {
       validateArbitrary(
         { Arbitrary: OptionFromExclude.Arbitrary('', Arb.string) },
-        OptionFromExclude.Guard('', G.string).is
+        OptionFromExclude.Guard('', G.string).is,
       )
     })
   })

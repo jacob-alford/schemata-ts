@@ -109,7 +109,7 @@ export const isHslColor = (s: string): s is HslColor => {
  */
 export const Decoder: SchemableParams2C<D.URI> = pipe(
   D.string,
-  D.refine(isHslColor, 'HslColor')
+  D.refine(isHslColor, 'HslColor'),
 )
 
 /**
@@ -136,7 +136,7 @@ export const Guard: SchemableParams1<G.URI> = pipe(G.string, G.refine(isHslColor
  */
 export const TaskDecoder: SchemableParams2C<TD.URI> = pipe(
   TD.string,
-  TD.refine(isHslColor, 'HslColor')
+  TD.refine(isHslColor, 'HslColor'),
 )
 
 /**
@@ -145,7 +145,7 @@ export const TaskDecoder: SchemableParams2C<TD.URI> = pipe(
  */
 export const Type: SchemableParams1<t.URI> = pipe(
   t.string,
-  t.refine(isHslColor, 'HslColor')
+  t.refine(isHslColor, 'HslColor'),
 )
 
 /**
@@ -157,9 +157,9 @@ export const Arbitrary: SchemableParams1<Arb.URI> = fc
     fc.integer({ min: 0, max: 360 }),
     fc.integer({ min: 0, max: 100 }),
     fc.integer({ min: 0, max: 100 }),
-    fc.float({ noDefaultInfinity: true, noNaN: true })
+    fc.float({ noDefaultInfinity: true, noNaN: true }),
   )
   .map(
     ([hue, saturation, lightness, alpha]) =>
-      `hsl(${hue}deg ${saturation}% ${lightness}% / ${alpha})`
+      `hsl(${hue}deg ${saturation}% ${lightness}% / ${alpha})`,
   ) as Arb.Arbitrary<HslColor>

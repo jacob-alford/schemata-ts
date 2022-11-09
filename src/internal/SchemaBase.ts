@@ -108,7 +108,7 @@ export const Intersection: S2.Schemable2<URI>['intersect'] = right => left =>
 export const Sum =
   <T extends string>(tag: T) =>
   <MS extends Record<string, SC.SchemaExt<Any, Any>>>(
-    members: MS
+    members: MS,
   ): SC.SchemaExt<OutputOf<MS[keyof MS]>, TypeOf<MS[keyof MS]>> =>
     SC.make(_ => {
       const out = {} as Any

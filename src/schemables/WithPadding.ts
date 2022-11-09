@@ -39,7 +39,7 @@ export interface WithPaddingHKT2<S> {
    */
   readonly padLeft: (
     length: PaddingLength,
-    char: string
+    char: string,
   ) => (sa: HKT2<S, string, string>) => HKT2<S, string, string>
 
   /**
@@ -49,7 +49,7 @@ export interface WithPaddingHKT2<S> {
    */
   readonly padRight: (
     length: PaddingLength,
-    char: string
+    char: string,
   ) => (sa: HKT2<S, string, string>) => HKT2<S, string, string>
 }
 
@@ -65,7 +65,7 @@ export interface WithPadding1<S extends URIS> {
    */
   readonly padLeft: (
     length: PaddingLength,
-    char: string
+    char: string,
   ) => (sa: Kind<S, string>) => Kind<S, string>
 
   /**
@@ -75,7 +75,7 @@ export interface WithPadding1<S extends URIS> {
    */
   readonly padRight: (
     length: PaddingLength,
-    char: string
+    char: string,
   ) => (sa: Kind<S, string>) => Kind<S, string>
 }
 
@@ -91,7 +91,7 @@ export interface WithPadding2<S extends URIS2> {
    */
   readonly padLeft: (
     length: PaddingLength,
-    char: string
+    char: string,
   ) => (sa: Kind2<S, string, string>) => Kind2<S, string, string>
 
   /**
@@ -101,7 +101,7 @@ export interface WithPadding2<S extends URIS2> {
    */
   readonly padRight: (
     length: PaddingLength,
-    char: string
+    char: string,
   ) => (sa: Kind2<S, string, string>) => Kind2<S, string, string>
 }
 
@@ -117,7 +117,7 @@ export interface WithPadding2C<S extends URIS2, E> {
    */
   readonly padLeft: (
     length: PaddingLength,
-    char: string
+    char: string,
   ) => (sa: Kind2<S, E, string>) => Kind2<S, E, string>
   /**
    * Adds a character to the right of a string until it reaches a certain length.
@@ -126,7 +126,7 @@ export interface WithPadding2C<S extends URIS2, E> {
    */
   readonly padRight: (
     length: PaddingLength,
-    char: string
+    char: string,
   ) => (sa: Kind2<S, E, string>) => Kind2<S, E, string>
 }
 
@@ -147,24 +147,24 @@ export const Decoder: WithPadding2C<D.URI, unknown> = {
     MaxLength: ({ maxLength }) =>
       D.refine(
         (s: string): s is string => s.length <= foldUnion(maxLength)(s),
-        `LeftPadding`
+        `LeftPadding`,
       ),
     ExactLength: ({ exactLength }) =>
       D.refine(
         (s: string): s is string => s.length === foldUnion(exactLength)(s),
-        `LeftPadding`
+        `LeftPadding`,
       ),
   }),
   padRight: match({
     MaxLength: ({ maxLength }) =>
       D.refine(
         (s: string): s is string => s.length <= foldUnion(maxLength)(s),
-        `RightPadding`
+        `RightPadding`,
       ),
     ExactLength: ({ exactLength }) =>
       D.refine(
         (s: string): s is string => s.length === foldUnion(exactLength)(s),
-        `RightPadding`
+        `RightPadding`,
       ),
   }),
 }
@@ -215,24 +215,24 @@ export const TaskDecoder: WithPadding2C<TD.URI, unknown> = {
     MaxLength: ({ maxLength }) =>
       TD.refine(
         (s: string): s is string => s.length <= foldUnion(maxLength)(s),
-        `LeftPadding`
+        `LeftPadding`,
       ),
     ExactLength: ({ exactLength }) =>
       TD.refine(
         (s: string): s is string => s.length === foldUnion(exactLength)(s),
-        `LeftPadding`
+        `LeftPadding`,
       ),
   }),
   padRight: match({
     MaxLength: ({ maxLength }) =>
       TD.refine(
         (s: string): s is string => s.length <= foldUnion(maxLength)(s),
-        `RightPadding`
+        `RightPadding`,
       ),
     ExactLength: ({ exactLength }) =>
       TD.refine(
         (s: string): s is string => s.length === foldUnion(exactLength)(s),
-        `RightPadding`
+        `RightPadding`,
       ),
   }),
 }
@@ -246,24 +246,24 @@ export const Type: WithPadding1<t.URI> = {
     MaxLength: ({ maxLength }) =>
       t.refine(
         (s: string): s is string => s.length <= foldUnion(maxLength)(s),
-        `LeftPadding`
+        `LeftPadding`,
       ),
     ExactLength: ({ exactLength }) =>
       t.refine(
         (s: string): s is string => s.length === foldUnion(exactLength)(s),
-        `LeftPadding`
+        `LeftPadding`,
       ),
   }),
   padRight: match({
     MaxLength: ({ maxLength }) =>
       t.refine(
         (s: string): s is string => s.length <= foldUnion(maxLength)(s),
-        `RightPadding`
+        `RightPadding`,
       ),
     ExactLength: ({ exactLength }) =>
       t.refine(
         (s: string): s is string => s.length === foldUnion(exactLength)(s),
-        `RightPadding`
+        `RightPadding`,
       ),
   }),
 }
@@ -321,9 +321,9 @@ export const Arbitrary: WithPadding1<Arb.URI> = {
             s =>
               s.length > length
                 ? s.slice(0, foldUnion(length)(s))
-                : s.padStart(foldUnion(length)(s), char)
-          )
-        )
+                : s.padStart(foldUnion(length)(s), char),
+          ),
+        ),
     ),
 
   padRight: (length, char) => aS =>
@@ -340,9 +340,9 @@ export const Arbitrary: WithPadding1<Arb.URI> = {
             s =>
               s.length > length
                 ? s.slice(0, foldUnion(length)(s))
-                : s.padEnd(foldUnion(length)(s), char)
-          )
-        )
+                : s.padEnd(foldUnion(length)(s), char),
+          ),
+        ),
     ),
 }
 
