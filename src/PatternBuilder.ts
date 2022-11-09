@@ -299,7 +299,17 @@ const repr = (n: number): string =>
 const regexStringFromAtom: (atom: Atom) => string = matchK({
   anything: () => '.',
   character: ({ char }) =>
-    char === '[' ? '\\[' : char === ']' ? '\\]' : char === '.' ? '\\.' : char,
+    char === '['
+      ? '\\['
+      : char === ']'
+      ? '\\]'
+      : char === '.'
+      ? '\\.'
+      : char === '('
+      ? '\\('
+      : char === ')'
+      ? '\\)'
+      : char,
   characterClass: ({ exclude, ranges }) =>
     pipe(
       RNEA.fromReadonlyArray(ranges),
@@ -614,7 +624,7 @@ const integerRange_: (min: string, max: string, omitInitialZeros?: boolean) => P
                     (curMinDigit + 1).toString(10),
                     (curMaxDigit - 1).toString(10),
                   ]),
-                  then(sequence(empty, ...restMin.split('').map(_ => digit))),
+                  then(sequence(empty, ...restMin.split('').map(() => digit))),
                 ),
               ]
             : []),
