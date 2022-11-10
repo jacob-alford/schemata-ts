@@ -1,8 +1,15 @@
 import * as RA from 'fp-ts/ReadonlyArray'
 import * as E from 'fp-ts/Either'
 import { pipe, tuple } from 'fp-ts/function'
-import * as LatLong from '../../src/string/latLong'
-import { cat, combineExpected, validateArbitrary } from '../../test-utils'
+import { LatLong } from '../../../src/schemata/string/LatLong'
+import {
+  cat,
+  combineExpected,
+  getAllInstances,
+  validateArbitrary,
+} from '../../../test-utils'
+
+const instances = getAllInstances(LatLong)
 
 const valid: ReadonlyArray<string> = [
   '(-17.738223, 85.605469)',
@@ -30,6 +37,8 @@ const valid: ReadonlyArray<string> = [
 ]
 
 const invalid: ReadonlyArray<string> = [
+  '(0, 0',
+  '0, 0)',
   '(020.000000, 010.000000000)',
   '89.9999999989, 360.0000000',
   '90.1000000, 180.000000',
@@ -66,7 +75,7 @@ describe('LatLong', () => {
     test.each(cat(combineExpected(valid, 'Right'), combineExpected(invalid, 'Left')))(
       'validates valid strings, and catches bad strings',
       (str, expectedTag) => {
-        const result = LatLong.Decoder.decode(str)
+        const result = instances.Decoder.decode(str)
         expect(result._tag).toBe(expectedTag)
       },
     )
@@ -76,8 +85,8 @@ describe('LatLong', () => {
     test.each(valid)('encoding a decoded value yields original value', original => {
       const roundtrip = pipe(
         original,
-        LatLong.Decoder.decode,
-        E.map(LatLong.Encoder.encode),
+        instances.Decoder.decode,
+        E.map(instances.Encoder.encode),
         E.getOrElseW(() => 'unexpected'),
       )
       expect(original).toEqual(roundtrip)
@@ -88,8 +97,8 @@ describe('LatLong', () => {
     test.each(RA.zipWith(valid, valid, tuple))(
       'determines two strings are equal',
       (str1, str2) => {
-        const guard = LatLong.Guard.is
-        const eq = LatLong.Eq.equals
+        const guard = instances.Guard.is
+        const eq = instances.Eq.equals
         if (!guard(str1) || !guard(str2)) {
           throw new Error('Unexpected result')
         }
@@ -102,7 +111,7 @@ describe('LatLong', () => {
     test.each(cat(combineExpected(valid, true), combineExpected(invalid, false)))(
       'validates valid strings, and catches bad strings',
       (str, expectedTag) => {
-        const result = LatLong.Guard.is(str)
+        const result = instances.Guard.is(str)
         expect(result).toBe(expectedTag)
       },
     )
@@ -112,7 +121,7 @@ describe('LatLong', () => {
     test.each(cat(combineExpected(valid, 'Right'), combineExpected(invalid, 'Left')))(
       'validates valid string, and catches bad string',
       async (str, expectedTag) => {
-        const result = await LatLong.TaskDecoder.decode(str)()
+        const result = await instances.TaskDecoder.decode(str)()
         expect(result._tag).toBe(expectedTag)
       },
     )
@@ -122,15 +131,15 @@ describe('LatLong', () => {
     test.each(cat(combineExpected(valid, 'Right'), combineExpected(invalid, 'Left')))(
       'validates valid strings, and catches bad strings',
       (str, expectedTag) => {
-        const result = LatLong.Type.decode(str)
+        const result = instances.Type.decode(str)
         expect(result._tag).toBe(expectedTag)
       },
     )
   })
-  // TODO: fix small exponentials from being generated
+
   describe('Arbitrary', () => {
     it('generates valid LatLong', () => {
-      validateArbitrary(LatLong, LatLong.isLatLong)
+      validateArbitrary(instances, instances.Guard.is)
     })
   })
 })

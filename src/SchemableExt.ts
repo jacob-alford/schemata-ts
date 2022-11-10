@@ -66,7 +66,6 @@ import * as intFromString from './number/intFromString'
 
 /** String */
 import * as hslColor from './string/hslColor'
-import * as latLong from './string/latLong'
 import * as uuid from './string/uuid'
 
 /** Date */
@@ -196,16 +195,6 @@ export interface SchemableExt<S>
    *   assert.equal(Guard.is(hslString), true)
    */
   readonly hslColor: hslColor.SchemableParams<S>
-
-  /**
-   * Representing a Lat/Long coordinate.
-   *
-   * Inspired by
-   * [validator.js::isLatLong](https://github.com/validatorjs/validator.js/blob/master/src/lib/isLatLong.js)
-   *
-   * @since 0.0.4
-   */
-  readonly latLong: latLong.SchemableParams<S>
 
   /**
    * Represents strings that are UUIDs.
@@ -359,16 +348,6 @@ export interface SchemableExt1<S extends URIS>
   readonly hslColor: hslColor.SchemableParams1<S>
 
   /**
-   * Representing a Lat/Long coordinate.
-   *
-   * Inspired by
-   * [validator.js::isLatLong](https://github.com/validatorjs/validator.js/blob/master/src/lib/isLatLong.js)
-   *
-   * @since 0.0.4
-   */
-  readonly latLong: latLong.SchemableParams1<S>
-
-  /**
    * Represents strings that are UUIDs.
    *
    * This is heavily inspired by the `validator.js` module
@@ -520,16 +499,6 @@ export interface SchemableExt2<S extends URIS2>
   readonly hslColor: hslColor.SchemableParams2<S>
 
   /**
-   * Representing a Lat/Long coordinate.
-   *
-   * Inspired by
-   * [validator.js::isLatLong](https://github.com/validatorjs/validator.js/blob/master/src/lib/isLatLong.js)
-   *
-   * @since 0.0.4
-   */
-  readonly latLong: latLong.SchemableParams2<S>
-
-  /**
    * Represents strings that are UUIDs.
    *
    * This is heavily inspired by the `validator.js` module
@@ -679,16 +648,6 @@ export interface SchemableExt2C<S extends URIS2>
    *   assert.equal(Guard.is(hslString), true)
    */
   readonly hslColor: hslColor.SchemableParams2C<S>
-
-  /**
-   * Representing a Lat/Long coordinate.
-   *
-   * Inspired by
-   * [validator.js::isLatLong](https://github.com/validatorjs/validator.js/blob/master/src/lib/isLatLong.js)
-   *
-   * @since 0.0.4
-   */
-  readonly latLong: latLong.SchemableParams2C<S>
 
   /**
    * Represents strings that are UUIDs.

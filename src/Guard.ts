@@ -32,7 +32,6 @@ import * as intFromString from './number/intFromString'
 
 /** String */
 import * as hslColor from './string/hslColor'
-import * as latLong from './string/latLong'
 import * as uuid from './string/uuid'
 
 /** Date */
@@ -62,7 +61,6 @@ export const Schemable: SchemableExt1<G.URI> = {
   int: int.Guard,
   intFromString: intFromString.Guard,
   hslColor: hslColor.Guard,
-  latLong: latLong.Guard,
   uuid: uuid.Guard,
   date: date.Guard,
   dateFromIsoString: dateFromIsoString.Guard,
