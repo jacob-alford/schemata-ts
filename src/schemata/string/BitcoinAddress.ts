@@ -6,13 +6,13 @@
 
 import * as PB from '../../PatternBuilder'
 import { make, SchemaExt } from '../../SchemaExt'
-import { Brand } from 'io-ts'
+import { Branded } from 'io-ts'
 import { pipe } from 'fp-ts/function'
 
 /** @internal */
-type BitcoinAddressBrand = Brand<
-  { readonly BitcoinAddress: unique symbol }['BitcoinAddress']
->
+interface BitcoinAddressBrand {
+  readonly BitcoinAddress: unique symbol
+}
 
 /**
  * Represents strings which are valid Bitcoin addresses.
@@ -20,7 +20,7 @@ type BitcoinAddressBrand = Brand<
  * @since 1.0.0
  * @category Model
  */
-export type BitcoinAddress = string & BitcoinAddressBrand
+export type BitcoinAddress = Branded<string, BitcoinAddressBrand>
 
 /**
  * @since 1.0.0

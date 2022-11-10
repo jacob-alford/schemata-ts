@@ -8,11 +8,13 @@
 
 import * as PB from '../../PatternBuilder'
 import { make, SchemaExt } from '../../SchemaExt'
-import { Brand } from 'io-ts'
+import { Branded } from 'io-ts'
 import { pipe } from 'fp-ts/function'
 
 /** @internal */
-type Base64Brand = Brand<{ readonly Base64: unique symbol }['Base64']>
+interface Base64Brand {
+  readonly Base64: unique symbol
+}
 
 /**
  * Representing a Base64-encoded string.
@@ -22,7 +24,7 @@ type Base64Brand = Brand<{ readonly Base64: unique symbol }['Base64']>
  * @since 1.0.0
  * @category Model
  */
-export type Base64 = string & Base64Brand
+export type Base64 = Branded<string, Base64Brand>
 
 /**
  * @since 1.0.0

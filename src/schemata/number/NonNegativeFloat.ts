@@ -11,12 +11,12 @@
  */
 import { pipe } from 'fp-ts/function'
 import { make, SchemaExt } from '../../SchemaExt'
-import { Brand } from 'io-ts'
+import { Branded } from 'io-ts'
 
 /** @internal */
-type NonNegativeFloatBrand = Brand<
-  { readonly NonNegativeFloat: unique symbol }['NonNegativeFloat']
->
+interface NonNegativeFloatBrand {
+  readonly NonNegativeFloat: unique symbol
+}
 
 /**
  * Non-negative floating point branded newtype.
@@ -30,7 +30,7 @@ type NonNegativeFloatBrand = Brand<
  * @since 1.0.0
  * @category Model
  */
-export type NonNegativeFloat = number & NonNegativeFloatBrand
+export type NonNegativeFloat = Branded<number, NonNegativeFloatBrand>
 
 /**
  * @since 1.0.0

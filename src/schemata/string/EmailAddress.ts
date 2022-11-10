@@ -10,12 +10,12 @@
 import { pipe } from 'fp-ts/function'
 import * as PB from '../../PatternBuilder'
 import { make, SchemaExt } from '../../SchemaExt'
-import { Brand } from 'io-ts'
+import { Branded } from 'io-ts'
 
 /** @internal */
-type EmailAddressBrand = Brand<{
+interface EmailAddressBrand {
   readonly EmailAddress: unique symbol
-}>
+}
 
 /**
  * Represents strings (email addresses) that conform to the RFC 5322 standard.
@@ -23,7 +23,7 @@ type EmailAddressBrand = Brand<{
  * @since 1.0.0
  * @category Model
  */
-export type EmailAddress = string & EmailAddressBrand
+export type EmailAddress = Branded<string, EmailAddressBrand>
 
 /**
  * @since 1.0.0

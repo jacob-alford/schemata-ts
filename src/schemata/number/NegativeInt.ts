@@ -11,10 +11,12 @@
  */
 import { pipe } from 'fp-ts/function'
 import { make, SchemaExt } from '../../SchemaExt'
-import { Brand } from 'io-ts'
+import { Branded } from 'io-ts'
 
 /** @internal */
-type NegativeIntBrand = Brand<{ readonly NegativeInt: unique symbol }['NegativeInt']>
+interface NegativeIntBrand {
+  readonly NegativeInt: unique symbol
+}
 
 /**
  * Negative integer branded newtype.
@@ -28,7 +30,7 @@ type NegativeIntBrand = Brand<{ readonly NegativeInt: unique symbol }['NegativeI
  * @since 1.0.0
  * @category Model
  */
-export type NegativeInt = number & NegativeIntBrand
+export type NegativeInt = Branded<number, NegativeIntBrand>
 
 /**
  * @since 1.0.0

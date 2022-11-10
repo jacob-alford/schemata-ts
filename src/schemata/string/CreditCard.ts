@@ -11,18 +11,18 @@ import { pipe } from 'fp-ts/function'
 import { luhn } from '../../internal/algorithms'
 import * as PB from '../../PatternBuilder'
 import { make } from '../../SchemaExt'
-import { Brand } from 'io-ts'
+import { Branded } from 'io-ts'
 
 /** @internal */
-type CreditCardBrand = Brand<{
+interface CreditCardBrand {
   readonly CreditCard: unique symbol
-}>
+}
 
 /**
  * @since 1.0.0
  * @category Model
  */
-export type CreditCard = string & CreditCardBrand
+export type CreditCard = Branded<string, CreditCardBrand>
 
 // source: https://en.wikipedia.org/w/index.php?title=Payment_card_number&oldid=1110892430
 // afaict the 13-digit variant has not been a thing for years, but maybe there

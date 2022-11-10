@@ -6,11 +6,13 @@
 
 import * as PB from '../../PatternBuilder'
 import { make, SchemaExt } from '../../SchemaExt'
-import { Brand } from 'io-ts'
+import { Branded } from 'io-ts'
 import { pipe } from 'fp-ts/function'
 
 /** @internal */
-type HexColorBrand = Brand<{ readonly HexColor: unique symbol }['HexColor']>
+interface HexColorBrand {
+  readonly HexColor: unique symbol
+}
 
 /**
  * A valid hexadecimal color value.
@@ -18,7 +20,7 @@ type HexColorBrand = Brand<{ readonly HexColor: unique symbol }['HexColor']>
  * @since 1.0.0
  * @category Model
  */
-export type HexColor = string & HexColorBrand
+export type HexColor = Branded<string, HexColorBrand>
 
 /**
  * @since 1.0.0
