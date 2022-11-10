@@ -14,7 +14,9 @@ import { make, SchemaExt } from '../../SchemaExt'
 import { Branded } from 'io-ts'
 
 /** @internal */
-interface NegativeFloatBrand { readonly NegativeFloat: unique symbol }
+interface NegativeFloatBrand {
+  readonly NegativeFloat: unique symbol
+}
 
 /**
  * Negative floating point branded newtype.
