@@ -30,9 +30,6 @@ import * as floatFromString from './number/floatFromString'
 import * as int from './number/int'
 import * as intFromString from './number/intFromString'
 
-/** String */
-import * as uuid from './string/uuid'
-
 /** Date */
 import * as date from './date/date'
 import * as dateFromIsoString from './date/dateFromIsoString'
@@ -59,7 +56,6 @@ export const Schemable: SchemableExt1<Eq.URI> = {
   floatFromString: floatFromString.Eq,
   int: int.Eq,
   intFromString: intFromString.Eq,
-  uuid: uuid.Eq,
   date: date.Eq,
   dateFromIsoString: dateFromIsoString.Eq,
 }

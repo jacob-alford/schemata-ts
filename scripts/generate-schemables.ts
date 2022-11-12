@@ -25,7 +25,6 @@ type SchemableCombinators = {
   generic: ReadonlyArray<readonly [string, string]>
   date: ReadonlyArray<readonly [string, string]>
   number: ReadonlyArray<readonly [string, string]>
-  string: ReadonlyArray<readonly [string, string]>
 }
 
 type Schemable = [name: `With${string}`, path: string]
@@ -140,28 +139,6 @@ export const makeSchemableExtTypeclass: (
         ),
       ),
       ...pipe(
-        combinators.string,
-        RA.map(([combinator, comment]) =>
-          ts.addSyntheticLeadingComment(
-            _.createPropertySignature(
-              [_.createModifier(ts.SyntaxKind.ReadonlyKeyword)],
-              _.createIdentifier(combinator),
-              undefined,
-              _.createTypeReferenceNode(
-                _.createQualifiedName(
-                  _.createIdentifier(combinator),
-                  _.createIdentifier(`SchemableParams${suffix}`),
-                ),
-                [_.createTypeReferenceNode(_.createIdentifier('S'), undefined)],
-              ),
-            ),
-            ts.SyntaxKind.MultiLineCommentTrivia,
-            `* ${comment}`,
-            true,
-          ),
-        ),
-      ),
-      ...pipe(
         combinators.date,
         RA.map(([combinator, comment]) =>
           ts.addSyntheticLeadingComment(
@@ -227,13 +204,6 @@ const makeSchemableExtContents: (
         combinators.number,
         RA.map(([combinator]) =>
           makeModuleStarImport(combinator, `./number/${combinator}`),
-        ),
-      ),
-      _.createJSDocComment('string'),
-      ...pipe(
-        combinators.string,
-        RA.map(([combinator]) =>
-          makeModuleStarImport(combinator, `./string/${combinator}`),
         ),
       ),
       _.createJSDocComment('date'),
@@ -361,18 +331,6 @@ const makeSchemableInstance: (
                   ),
                 ),
                 ...pipe(
-                  schemableCombinators.string,
-                  RA.map(([schemableCombinatorName]) =>
-                    _.createPropertyAssignment(
-                      _.createIdentifier(schemableCombinatorName),
-                      _.createPropertyAccessExpression(
-                        _.createIdentifier(schemableCombinatorName),
-                        _.createIdentifier(instanceName),
-                      ),
-                    ),
-                  ),
-                ),
-                ...pipe(
                   schemableCombinators.date,
                   RA.map(([schemableCombinatorName]) =>
                     _.createPropertyAssignment(
@@ -434,13 +392,6 @@ const makeSchemableInstanceModuleContents: (
           combinators.number,
           RA.map(([combinator]) =>
             makeModuleStarImport(combinator, `./number/${combinator}`),
-          ),
-        ),
-        _.createJSDocComment('string'),
-        ...pipe(
-          combinators.string,
-          RA.map(([combinator]) =>
-            makeModuleStarImport(combinator, `./string/${combinator}`),
           ),
         ),
         _.createJSDocComment('date'),
@@ -520,21 +471,6 @@ const getSchemableCombinators: Build<SchemableCombinators> = C =>
             pipe(
               C,
               getModuleJSDocComment(`./src/number/${file}`),
-              TE.map(comment => tuple(getModuleName(file), comment)),
-            ),
-          ),
-        ),
-      ),
-    ),
-    TE.apS(
-      'string',
-      pipe(
-        C.readFiles('./src/string'),
-        TE.chain(
-          TE.traverseArray(file =>
-            pipe(
-              C,
-              getModuleJSDocComment(`./src/string/${file}`),
               TE.map(comment => tuple(getModuleName(file), comment)),
             ),
           ),

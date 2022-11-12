@@ -64,9 +64,6 @@ import * as floatFromString from './number/floatFromString'
 import * as int from './number/int'
 import * as intFromString from './number/intFromString'
 
-/** String */
-import * as uuid from './string/uuid'
-
 /** Date */
 import * as date from './date/date'
 import * as dateFromIsoString from './date/dateFromIsoString'
@@ -176,16 +173,6 @@ export interface SchemableExt<S>
    * @since 1.0.0
    */
   readonly intFromString: intFromString.SchemableParams<S>
-
-  /**
-   * Represents strings that are UUIDs.
-   *
-   * This is heavily inspired by the `validator.js` module
-   * [`isUUID`](https://github.com/validatorjs/validator.js/blob/master/src/lib/isUUID.js).
-   *
-   * @since 0.0.1
-   */
-  readonly uuid: uuid.SchemableParams<S>
 
   /**
    * Represents valid Date objects
@@ -311,16 +298,6 @@ export interface SchemableExt1<S extends URIS>
   readonly intFromString: intFromString.SchemableParams1<S>
 
   /**
-   * Represents strings that are UUIDs.
-   *
-   * This is heavily inspired by the `validator.js` module
-   * [`isUUID`](https://github.com/validatorjs/validator.js/blob/master/src/lib/isUUID.js).
-   *
-   * @since 0.0.1
-   */
-  readonly uuid: uuid.SchemableParams1<S>
-
-  /**
    * Represents valid Date objects
    *
    * @since 1.0.0
@@ -444,16 +421,6 @@ export interface SchemableExt2<S extends URIS2>
   readonly intFromString: intFromString.SchemableParams2<S>
 
   /**
-   * Represents strings that are UUIDs.
-   *
-   * This is heavily inspired by the `validator.js` module
-   * [`isUUID`](https://github.com/validatorjs/validator.js/blob/master/src/lib/isUUID.js).
-   *
-   * @since 0.0.1
-   */
-  readonly uuid: uuid.SchemableParams2<S>
-
-  /**
    * Represents valid Date objects
    *
    * @since 1.0.0
@@ -575,16 +542,6 @@ export interface SchemableExt2C<S extends URIS2>
    * @since 1.0.0
    */
   readonly intFromString: intFromString.SchemableParams2C<S>
-
-  /**
-   * Represents strings that are UUIDs.
-   *
-   * This is heavily inspired by the `validator.js` module
-   * [`isUUID`](https://github.com/validatorjs/validator.js/blob/master/src/lib/isUUID.js).
-   *
-   * @since 0.0.1
-   */
-  readonly uuid: uuid.SchemableParams2C<S>
 
   /**
    * Represents valid Date objects

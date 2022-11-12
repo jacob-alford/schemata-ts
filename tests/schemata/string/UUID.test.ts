@@ -2,12 +2,15 @@ import * as E from 'fp-ts/Either'
 import { pipe, tuple } from 'fp-ts/function'
 import * as RA from 'fp-ts/ReadonlyArray'
 import * as RNEA from 'fp-ts/ReadonlyNonEmptyArray'
-import * as UUID from '../../src/string/uuid'
-import { cat, combineExpected, validateArbitrary } from '../../test-utils'
+import { UUID, UUIDVersion } from '../../../src/schemata/string/UUID'
+import {
+  cat,
+  combineExpected,
+  getAllInstances,
+  validateArbitrary,
+} from '../../../test-utils'
 
-const valid_: Readonly<
-  Record<UUID.UUIDSchemableOptions['version'], ReadonlyArray<string>>
-> = {
+const valid_: Readonly<Record<UUIDVersion, ReadonlyArray<string>>> = {
   1: ['E034B584-7D89-11E9-9669-1AECF481A97B'],
   2: ['A987FBC9-4BED-2078-CF07-9141BA07C9F3'],
   3: ['A987FBC9-4BED-3078-CF07-9141BA07C9F3'],
@@ -23,16 +26,14 @@ const valid_: Readonly<
     '987FBC97-4BED-5078-8F07-9141BA07C9F3',
     '987FBC97-4BED-5078-9F07-9141BA07C9F3',
   ],
-  all: [
+  any: [
     'A987FBC9-4BED-3078-CF07-9141BA07C9F3',
     'A117FBC9-4BED-3078-CF07-9141BA07C9F3',
     'A127FBC9-4BED-3078-CF07-9141BA07C9F3',
   ],
 }
 
-const invalid_: Readonly<
-  Record<UUID.UUIDSchemableOptions['version'], ReadonlyArray<string>>
-> = {
+const invalid_: Readonly<Record<UUIDVersion, ReadonlyArray<string>>> = {
   1: [
     'xxxA987FBC9-4BED-3078-CF07-9141BA07C9F3',
     'AAAAAAAA-1111-2222-AAAG',
@@ -72,7 +73,7 @@ const invalid_: Readonly<
     '9c858901-8a57-4791-81fe-4c455b099bc9',
     'A987FBC9-4BED-3078-CF07-9141BA07C9F3',
   ],
-  all: [
+  any: [
     '',
     'xxxA987FBC9-4BED-3078-CF07-9141BA07C9F3',
     'A987FBC9-4BED-3078-CF07-9141BA07C9F3xxx',
@@ -84,15 +85,17 @@ const invalid_: Readonly<
 }
 
 for (const i of RNEA.range(0, 5)) {
-  const version = (i || 'all') as UUID.UUIDSchemableOptions['version']
+  const version = (i || 'any') as UUIDVersion
   const valid = valid_[version]
   const invalid = invalid_[version]
-  describe(`UUID > ${version === 'all' ? '' : 'v'}${version}`, () => {
+  describe(`UUID > ${version === 'any' ? '' : 'v'}${version}`, () => {
+    const instances = getAllInstances(UUID(version))
+
     describe('Decoder', () => {
       test.each(cat(combineExpected(valid, 'Right'), combineExpected(invalid, 'Left')))(
         'validates valid strings, and catches bad strings',
         (str, expectedTag) => {
-          const result = UUID.Decoder({ version }).decode(str)
+          const result = instances.Decoder.decode(str)
           expect(result._tag).toBe(expectedTag)
         },
       )
@@ -102,8 +105,8 @@ for (const i of RNEA.range(0, 5)) {
       test.each(valid)('encoding a decoded value yields original value', original => {
         const roundtrip = pipe(
           original,
-          UUID.Decoder({ version }).decode,
-          E.map(UUID.Encoder({ version }).encode),
+          instances.Decoder.decode,
+          E.map(instances.Encoder.encode),
           E.getOrElseW(() => 'unexpected'),
         )
         expect(original).toEqual(roundtrip)
@@ -114,8 +117,8 @@ for (const i of RNEA.range(0, 5)) {
       test.each(RA.zipWith(valid, valid, tuple))(
         'determines two strings are equal',
         (str1, str2) => {
-          const guard = UUID.Guard({ version }).is
-          const eq = UUID.Eq({ version }).equals
+          const guard = instances.Guard.is
+          const eq = instances.Eq.equals
           if (!guard(str1) || !guard(str2)) {
             throw new Error('Unexpected result')
           }
@@ -128,7 +131,7 @@ for (const i of RNEA.range(0, 5)) {
       test.each(cat(combineExpected(valid, true), combineExpected(invalid, false)))(
         'validates valid strings, and catches bad strings',
         (str, expectedTag) => {
-          const result = UUID.Guard({ version }).is(str)
+          const result = instances.Guard.is(str)
           expect(result).toBe(expectedTag)
         },
       )
@@ -138,7 +141,7 @@ for (const i of RNEA.range(0, 5)) {
       test.each(cat(combineExpected(valid, 'Right'), combineExpected(invalid, 'Left')))(
         'validates valid string, and catches bad string',
         async (str, expectedTag) => {
-          const result = await UUID.TaskDecoder({ version }).decode(str)()
+          const result = await instances.TaskDecoder.decode(str)()
           expect(result._tag).toBe(expectedTag)
         },
       )
@@ -148,7 +151,7 @@ for (const i of RNEA.range(0, 5)) {
       test.each(cat(combineExpected(valid, 'Right'), combineExpected(invalid, 'Left')))(
         'validates valid strings, and catches bad strings',
         (str, expectedTag) => {
-          const result = UUID.Type({ version }).decode(str)
+          const result = instances.Type.decode(str)
           expect(result._tag).toBe(expectedTag)
         },
       )
@@ -156,10 +159,7 @@ for (const i of RNEA.range(0, 5)) {
 
     describe('Arbitrary', () => {
       it('generates valid UUID', () => {
-        validateArbitrary(
-          { Arbitrary: UUID.Arbitrary({ version }) },
-          UUID.isUUID({ version }),
-        )
+        validateArbitrary(instances, instances.Guard.is)
       })
     })
   })
