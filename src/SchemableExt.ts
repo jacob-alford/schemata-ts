@@ -65,7 +65,6 @@ import * as int from './number/int'
 import * as intFromString from './number/intFromString'
 
 /** String */
-import * as hslColor from './string/hslColor'
 import * as uuid from './string/uuid'
 
 /** Date */
@@ -177,24 +176,6 @@ export interface SchemableExt<S>
    * @since 1.0.0
    */
   readonly intFromString: intFromString.SchemableParams<S>
-
-  /**
-   * An HSL string. Commonly in CSS.
-   *
-   * @since 0.0.3
-   * @example
-   *   import { Guard } from 'schemata-ts/string/hslColor'
-   *
-   *   const hue = 270
-   *   const saturation = 60
-   *   const lightness = 70
-   *   const alpha = 0.7
-   *
-   *   const hslString = `hsl(${hue} ${saturation}% ${lightness}% / ${alpha})`
-   *
-   *   assert.equal(Guard.is(hslString), true)
-   */
-  readonly hslColor: hslColor.SchemableParams<S>
 
   /**
    * Represents strings that are UUIDs.
@@ -330,24 +311,6 @@ export interface SchemableExt1<S extends URIS>
   readonly intFromString: intFromString.SchemableParams1<S>
 
   /**
-   * An HSL string. Commonly in CSS.
-   *
-   * @since 0.0.3
-   * @example
-   *   import { Guard } from 'schemata-ts/string/hslColor'
-   *
-   *   const hue = 270
-   *   const saturation = 60
-   *   const lightness = 70
-   *   const alpha = 0.7
-   *
-   *   const hslString = `hsl(${hue} ${saturation}% ${lightness}% / ${alpha})`
-   *
-   *   assert.equal(Guard.is(hslString), true)
-   */
-  readonly hslColor: hslColor.SchemableParams1<S>
-
-  /**
    * Represents strings that are UUIDs.
    *
    * This is heavily inspired by the `validator.js` module
@@ -481,24 +444,6 @@ export interface SchemableExt2<S extends URIS2>
   readonly intFromString: intFromString.SchemableParams2<S>
 
   /**
-   * An HSL string. Commonly in CSS.
-   *
-   * @since 0.0.3
-   * @example
-   *   import { Guard } from 'schemata-ts/string/hslColor'
-   *
-   *   const hue = 270
-   *   const saturation = 60
-   *   const lightness = 70
-   *   const alpha = 0.7
-   *
-   *   const hslString = `hsl(${hue} ${saturation}% ${lightness}% / ${alpha})`
-   *
-   *   assert.equal(Guard.is(hslString), true)
-   */
-  readonly hslColor: hslColor.SchemableParams2<S>
-
-  /**
    * Represents strings that are UUIDs.
    *
    * This is heavily inspired by the `validator.js` module
@@ -630,24 +575,6 @@ export interface SchemableExt2C<S extends URIS2>
    * @since 1.0.0
    */
   readonly intFromString: intFromString.SchemableParams2C<S>
-
-  /**
-   * An HSL string. Commonly in CSS.
-   *
-   * @since 0.0.3
-   * @example
-   *   import { Guard } from 'schemata-ts/string/hslColor'
-   *
-   *   const hue = 270
-   *   const saturation = 60
-   *   const lightness = 70
-   *   const alpha = 0.7
-   *
-   *   const hslString = `hsl(${hue} ${saturation}% ${lightness}% / ${alpha})`
-   *
-   *   assert.equal(Guard.is(hslString), true)
-   */
-  readonly hslColor: hslColor.SchemableParams2C<S>
 
   /**
    * Represents strings that are UUIDs.

@@ -309,6 +309,8 @@ const regexStringFromAtom: (atom: Atom) => string = matchK({
       ? '\\('
       : char === ')'
       ? '\\)'
+      : char === '+'
+      ? '\\+'
       : char,
   characterClass: ({ exclude, ranges }) =>
     pipe(

@@ -31,7 +31,6 @@ import * as int from './number/int'
 import * as intFromString from './number/intFromString'
 
 /** String */
-import * as hslColor from './string/hslColor'
 import * as uuid from './string/uuid'
 
 /** Date */
@@ -60,7 +59,6 @@ export const Schemable: SchemableExt1<Eq.URI> = {
   floatFromString: floatFromString.Eq,
   int: int.Eq,
   intFromString: intFromString.Eq,
-  hslColor: hslColor.Eq,
   uuid: uuid.Eq,
   date: date.Eq,
   dateFromIsoString: dateFromIsoString.Eq,
