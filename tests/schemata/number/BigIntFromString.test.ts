@@ -1,12 +1,13 @@
 import * as E from 'fp-ts/Either'
 import { pipe } from 'fp-ts/function'
-import { getDecoder } from '../../src/interpreters'
-import * as BigIntString from '../../src/number/bigIntFromString'
-import { validateArbitrary } from '../../test-utils'
+import * as BigIntString_ from '../../../src/schemata/number/BigIntFromString'
+import { getAllInstances, validateArbitrary } from '../../../test-utils'
 
 const valid: ReadonlyArray<string> = ['0', '10', '-1', '11']
 
 const invalid: ReadonlyArray<string> = ['5.5', '-5.5', '', ' ', 'a', 'a5', '1n']
+
+const BigIntString = getAllInstances(BigIntString_.BigIntFromString())
 
 describe('BigIntString', () => {
   describe('Decoder', () => {
@@ -81,15 +82,6 @@ describe('BigIntString', () => {
   describe('Arbitrary', () => {
     it('generates valid BigIntString', () => {
       validateArbitrary(BigIntString, BigIntString.Guard.is)
-    })
-  })
-
-  describe('Schema', () => {
-    const Float = BigIntString.Schema
-    it('derives a decoder', () => {
-      const decoder = getDecoder(Float)
-      expect(decoder.decode('abc')._tag).toEqual('Left')
-      expect(decoder.decode('123456789')).toStrictEqual(E.right(123456789n))
     })
   })
 })

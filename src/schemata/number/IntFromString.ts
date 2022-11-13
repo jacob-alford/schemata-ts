@@ -43,7 +43,7 @@ export type IntFromStringS = (
  * @since 1.0.0
  * @category Pattern
  */
-const intFromBinaryString: PB.Pattern = pipe(
+const binaryIntString: PB.Pattern = pipe(
   PB.exactString('0b'),
   PB.then(pipe(PB.characterClass(false, ['0', '1']), PB.between(1, 53))),
 )
@@ -52,7 +52,7 @@ const intFromBinaryString: PB.Pattern = pipe(
  * @since 1.0.0
  * @category Pattern
  */
-const intFromOctalString: PB.Pattern = pipe(
+const octalIntString: PB.Pattern = pipe(
   PB.exactString('0o'),
   PB.then(pipe(PB.characterClass(false, ['0', '7']), PB.between(1, 18))),
 )
@@ -61,17 +61,17 @@ const intFromOctalString: PB.Pattern = pipe(
  * @since 1.0.0
  * @category Pattern
  */
-const intFromDecimalString: PB.Pattern = pipe(
+const decimalIntString: PB.Pattern = pipe(
   PB.char('-'),
   PB.maybe,
-  PB.then(pipe(PB.characterClass(false, ['0', '9']), PB.between(1, 16))),
+  PB.then(pipe(PB.digit, PB.between(1, 16))),
 )
 
 /**
  * @since 1.0.0
  * @category Pattern
  */
-const intFromHexString: PB.Pattern = pipe(
+const hexIntString: PB.Pattern = pipe(
   PB.exactString('0x'),
   PB.then(pipe(PB.hexDigit, PB.between(1, 14))),
 )
@@ -81,10 +81,10 @@ const intFromHexString: PB.Pattern = pipe(
  * @category Pattern
  */
 export const intFromString: PB.Pattern = PB.oneOf(
-  intFromBinaryString,
-  intFromOctalString,
-  intFromDecimalString,
-  intFromHexString,
+  binaryIntString,
+  octalIntString,
+  decimalIntString,
+  hexIntString,
 )
 
 /** @internal */
