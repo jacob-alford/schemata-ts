@@ -24,7 +24,7 @@ const _ = ts.factory
 
 const sinceAndCategory: (category: string, version: string) => ts.JSDoc = (
   category,
-  version
+  version,
 ) => _.createJSDocComment(`@since ${version}\n\n@category ${category}`)
 
 const capitalize: (s: string) => string = s =>
@@ -33,7 +33,7 @@ const capitalize: (s: string) => string = s =>
 const makeCombinatorModule: (
   primitive: 'string' | 'number',
   name: string,
-  packageVersion: string
+  packageVersion: string,
 ) => string = (primitive, name, packageVersion) => {
   const printer = ts.createPrinter({ newLine: ts.NewLineKind.LineFeed })
   const sourceFile = ts.createSourceFile(
@@ -41,7 +41,7 @@ const makeCombinatorModule: (
     '',
     ts.ScriptTarget.Latest,
     false,
-    ts.ScriptKind.TS
+    ts.ScriptKind.TS,
   )
 
   const primitiveModule: [string, string, number, string] =
@@ -75,13 +75,13 @@ const makeCombinatorModule: (
             undefined,
             _.createTypeOperatorNode(
               ts.SyntaxKind.UniqueKeyword,
-              _.createKeywordTypeNode(ts.SyntaxKind.SymbolKeyword)
-            )
+              _.createKeywordTypeNode(ts.SyntaxKind.SymbolKeyword),
+            ),
           ),
-        ]
+        ],
       ),
       _.createJSDocComment(
-        `TODO: Add module comment\n\n@since ${packageVersion}\n@category Model`
+        `TODO: Add module comment\n\n@since ${packageVersion}\n@category Model`,
       ),
       _.createTypeAliasDeclaration(
         [_.createModifier(ts.SyntaxKind.ExportKeyword)],
@@ -90,7 +90,7 @@ const makeCombinatorModule: (
         _.createIntersectionTypeNode([
           _.createKeywordTypeNode(primitiveModule[2]),
           _.createTypeReferenceNode(_.createIdentifier(`${name}Brand`), undefined),
-        ])
+        ]),
       ),
       sinceAndCategory('Model', packageVersion),
       _.createTypeAliasDeclaration(
@@ -101,14 +101,14 @@ const makeCombinatorModule: (
             undefined,
             _.createIdentifier('S'),
             undefined,
-            undefined
+            undefined,
           ),
         ],
         _.createTypeReferenceNode(_.createIdentifier('HKT2'), [
           _.createTypeReferenceNode(_.createIdentifier('S'), undefined),
           _.createTypeReferenceNode(_.createIdentifier(primitive), undefined),
           _.createTypeReferenceNode(_.createIdentifier(name), undefined),
-        ])
+        ]),
       ),
       sinceAndCategory('Model', packageVersion),
       _.createTypeAliasDeclaration(
@@ -119,13 +119,13 @@ const makeCombinatorModule: (
             undefined,
             _.createIdentifier('S'),
             _.createTypeReferenceNode(_.createIdentifier('URIS'), undefined),
-            undefined
+            undefined,
           ),
         ],
         _.createTypeReferenceNode(_.createIdentifier('Kind'), [
           _.createTypeReferenceNode(_.createIdentifier('S'), undefined),
           _.createTypeReferenceNode(_.createIdentifier(name), undefined),
-        ])
+        ]),
       ),
       sinceAndCategory('Model', packageVersion),
       _.createTypeAliasDeclaration(
@@ -136,14 +136,14 @@ const makeCombinatorModule: (
             undefined,
             _.createIdentifier('S'),
             _.createTypeReferenceNode(_.createIdentifier('URIS2'), undefined),
-            undefined
+            undefined,
           ),
         ],
         _.createTypeReferenceNode(_.createIdentifier('Kind2'), [
           _.createTypeReferenceNode(_.createIdentifier('S'), undefined),
           _.createTypeReferenceNode(_.createIdentifier(primitive), undefined),
           _.createTypeReferenceNode(_.createIdentifier(name), undefined),
-        ])
+        ]),
       ),
       sinceAndCategory('Model', packageVersion),
       _.createTypeAliasDeclaration(
@@ -154,14 +154,14 @@ const makeCombinatorModule: (
             undefined,
             _.createIdentifier('S'),
             _.createTypeReferenceNode(_.createIdentifier('URIS2'), undefined),
-            undefined
+            undefined,
           ),
         ],
         _.createTypeReferenceNode(_.createIdentifier('Kind2'), [
           _.createTypeReferenceNode(_.createIdentifier('S'), undefined),
           _.createKeywordTypeNode(ts.SyntaxKind.UnknownKeyword),
           _.createTypeReferenceNode(_.createIdentifier(name), undefined),
-        ])
+        ]),
       ),
       sinceAndCategory('Refinements', packageVersion),
       _.createVariableStatement(
@@ -182,13 +182,13 @@ const makeCombinatorModule: (
                     _.createIdentifier(primitiveModule[3]),
                     undefined,
                     _.createKeywordTypeNode(primitiveModule[2]),
-                    undefined
+                    undefined,
                   ),
                 ],
                 _.createTypePredicateNode(
                   undefined,
                   primitiveModule[3],
-                  _.createTypeReferenceNode(name)
+                  _.createTypeReferenceNode(name),
                 ),
                 _.createToken(ts.SyntaxKind.EqualsGreaterThanToken),
                 _.createBlock(
@@ -196,16 +196,16 @@ const makeCombinatorModule: (
                     _.createThrowStatement(
                       _.createNewExpression(_.createIdentifier('Error'), undefined, [
                         _.createStringLiteral('not implemented'),
-                      ])
+                      ]),
                     ),
                   ],
-                  true
-                )
-              )
+                  true,
+                ),
+              ),
             ),
           ],
-          ts.NodeFlags.Const
-        )
+          ts.NodeFlags.Const,
+        ),
       ),
       sinceAndCategory('Instances', packageVersion),
       _.createVariableStatement(
@@ -219,29 +219,29 @@ const makeCombinatorModule: (
                 _.createTypeReferenceNode(
                   _.createQualifiedName(
                     _.createIdentifier('D'),
-                    _.createIdentifier('URI')
+                    _.createIdentifier('URI'),
                   ),
-                  undefined
+                  undefined,
                 ),
               ]),
               _.createCallExpression(_.createIdentifier('pipe'), undefined, [
                 _.createPropertyAccessExpression(
                   _.createIdentifier('D'),
-                  _.createIdentifier(primitiveModule[1])
+                  _.createIdentifier(primitiveModule[1]),
                 ),
                 _.createCallExpression(
                   _.createPropertyAccessExpression(
                     _.createIdentifier('D'),
-                    _.createIdentifier('refine')
+                    _.createIdentifier('refine'),
                   ),
                   undefined,
-                  [_.createIdentifier(`is${name}`), _.createStringLiteral(name)]
+                  [_.createIdentifier(`is${name}`), _.createStringLiteral(name)],
                 ),
-              ])
+              ]),
             ),
           ],
-          ts.NodeFlags.Const
-        )
+          ts.NodeFlags.Const,
+        ),
       ),
       sinceAndCategory('Instances', packageVersion),
       _.createVariableStatement(
@@ -255,23 +255,23 @@ const makeCombinatorModule: (
                 _.createTypeReferenceNode(
                   _.createQualifiedName(
                     _.createIdentifier('Enc'),
-                    _.createIdentifier('URI')
+                    _.createIdentifier('URI'),
                   ),
-                  undefined
+                  undefined,
                 ),
               ]),
               _.createCallExpression(
                 _.createPropertyAccessExpression(
                   _.createIdentifier('Enc'),
-                  _.createIdentifier('id')
+                  _.createIdentifier('id'),
                 ),
                 undefined,
-                []
-              )
+                [],
+              ),
             ),
           ],
-          ts.NodeFlags.Const
-        )
+          ts.NodeFlags.Const,
+        ),
       ),
       sinceAndCategory('Instances', packageVersion),
       _.createVariableStatement(
@@ -285,19 +285,19 @@ const makeCombinatorModule: (
                 _.createTypeReferenceNode(
                   _.createQualifiedName(
                     _.createIdentifier('Eq_'),
-                    _.createIdentifier('URI')
+                    _.createIdentifier('URI'),
                   ),
-                  undefined
+                  undefined,
                 ),
               ]),
               _.createPropertyAccessExpression(
                 _.createIdentifier(primitiveModule[0]),
-                _.createIdentifier('Eq')
-              )
+                _.createIdentifier('Eq'),
+              ),
             ),
           ],
-          ts.NodeFlags.Const
-        )
+          ts.NodeFlags.Const,
+        ),
       ),
       sinceAndCategory('Instances', packageVersion),
       _.createVariableStatement(
@@ -311,29 +311,29 @@ const makeCombinatorModule: (
                 _.createTypeReferenceNode(
                   _.createQualifiedName(
                     _.createIdentifier('G'),
-                    _.createIdentifier('URI')
+                    _.createIdentifier('URI'),
                   ),
-                  undefined
+                  undefined,
                 ),
               ]),
               _.createCallExpression(_.createIdentifier('pipe'), undefined, [
                 _.createPropertyAccessExpression(
                   _.createIdentifier('G'),
-                  _.createIdentifier(primitiveModule[1])
+                  _.createIdentifier(primitiveModule[1]),
                 ),
                 _.createCallExpression(
                   _.createPropertyAccessExpression(
                     _.createIdentifier('G'),
-                    _.createIdentifier('refine')
+                    _.createIdentifier('refine'),
                   ),
                   undefined,
-                  [_.createIdentifier(`is${name}`)]
+                  [_.createIdentifier(`is${name}`)],
                 ),
-              ])
+              ]),
             ),
           ],
-          ts.NodeFlags.Const
-        )
+          ts.NodeFlags.Const,
+        ),
       ),
       sinceAndCategory('Instances', packageVersion),
       _.createVariableStatement(
@@ -347,29 +347,29 @@ const makeCombinatorModule: (
                 _.createTypeReferenceNode(
                   _.createQualifiedName(
                     _.createIdentifier('TD'),
-                    _.createIdentifier('URI')
+                    _.createIdentifier('URI'),
                   ),
-                  undefined
+                  undefined,
                 ),
               ]),
               _.createCallExpression(_.createIdentifier('pipe'), undefined, [
                 _.createPropertyAccessExpression(
                   _.createIdentifier('TD'),
-                  _.createIdentifier(primitiveModule[1])
+                  _.createIdentifier(primitiveModule[1]),
                 ),
                 _.createCallExpression(
                   _.createPropertyAccessExpression(
                     _.createIdentifier('TD'),
-                    _.createIdentifier('refine')
+                    _.createIdentifier('refine'),
                   ),
                   undefined,
-                  [_.createIdentifier(`is${name}`), _.createStringLiteral(name)]
+                  [_.createIdentifier(`is${name}`), _.createStringLiteral(name)],
                 ),
-              ])
+              ]),
             ),
           ],
-          ts.NodeFlags.Const
-        )
+          ts.NodeFlags.Const,
+        ),
       ),
       sinceAndCategory('Instances', packageVersion),
       _.createVariableStatement(
@@ -383,29 +383,29 @@ const makeCombinatorModule: (
                 _.createTypeReferenceNode(
                   _.createQualifiedName(
                     _.createIdentifier('t'),
-                    _.createIdentifier('URI')
+                    _.createIdentifier('URI'),
                   ),
-                  undefined
+                  undefined,
                 ),
               ]),
               _.createCallExpression(_.createIdentifier('pipe'), undefined, [
                 _.createPropertyAccessExpression(
                   _.createIdentifier('t'),
-                  _.createIdentifier(primitiveModule[1])
+                  _.createIdentifier(primitiveModule[1]),
                 ),
                 _.createCallExpression(
                   _.createPropertyAccessExpression(
                     _.createIdentifier('t'),
-                    _.createIdentifier('refine')
+                    _.createIdentifier('refine'),
                   ),
                   undefined,
-                  [_.createIdentifier(`is${name}`), _.createStringLiteral(name)]
+                  [_.createIdentifier(`is${name}`), _.createStringLiteral(name)],
                 ),
-              ])
+              ]),
             ),
           ],
-          ts.NodeFlags.Const
-        )
+          ts.NodeFlags.Const,
+        ),
       ),
       sinceAndCategory('Instances', packageVersion),
       _.createVariableStatement(
@@ -419,41 +419,41 @@ const makeCombinatorModule: (
                 _.createTypeReferenceNode(
                   _.createQualifiedName(
                     _.createIdentifier('Arb'),
-                    _.createIdentifier('URI')
+                    _.createIdentifier('URI'),
                   ),
-                  undefined
+                  undefined,
                 ),
               ]),
               _.createCallExpression(_.createIdentifier('pipe'), undefined, [
                 _.createPropertyAccessExpression(
                   _.createIdentifier('Arb'),
-                  _.createIdentifier(primitiveModule[1])
+                  _.createIdentifier(primitiveModule[1]),
                 ),
                 _.createCallExpression(
                   _.createPropertyAccessExpression(
                     _.createIdentifier('Arb'),
-                    _.createIdentifier('refine')
+                    _.createIdentifier('refine'),
                   ),
                   undefined,
-                  [_.createIdentifier(`is${name}`)]
+                  [_.createIdentifier(`is${name}`)],
                 ),
-              ])
+              ]),
             ),
           ],
-          ts.NodeFlags.Const
-        )
+          ts.NodeFlags.Const,
+        ),
       ),
     ],
     _.createNodeArray,
     nodes => printer.printList(ts.ListFormat.MultiLine, nodes, sourceFile),
-    Str.replace(/\/\*\*/gm, '\n/**')
+    Str.replace(/\/\*\*/gm, '\n/**'),
   )
 }
 
 const PackageJson = SC.make(S =>
   S.struct({
     version: S.string,
-  })
+  }),
 )
 
 const decodePackageJson = SC.interpreter(D.Schemable)(PackageJson)
@@ -464,15 +464,15 @@ const getPackageJson: Build<SC.TypeOf<typeof PackageJson>> = C =>
     TE.chainEitherK(
       flow(
         Json.parse,
-        E.mapLeft(() => new Error('Unable to parse package.json'))
-      )
+        E.mapLeft(() => new Error('Unable to parse package.json')),
+      ),
     ),
     TE.chainEitherKW(
       flow(
         decodePackageJson.decode,
-        E.mapLeft(() => new Error('Package.json does not match expected shape'))
-      )
-    )
+        E.mapLeft(() => new Error('Package.json does not match expected shape')),
+      ),
+    ),
   )
 
 const checkModuleUniqueness: (module: string) => Build<ReadonlyArray<string>> =
@@ -481,26 +481,32 @@ const checkModuleUniqueness: (module: string) => Build<ReadonlyArray<string>> =
       TE.Do,
       TE.apS(
         'date',
-        pipe(C.readFiles('./src/date'), TE.map(RA.map(flow(Str.split('.'), RNEA.head))))
+        pipe(C.readFiles('./src/date'), TE.map(RA.map(flow(Str.split('.'), RNEA.head)))),
       ),
       TE.apS(
         'number',
-        pipe(C.readFiles('./src/number'), TE.map(RA.map(flow(Str.split('.'), RNEA.head))))
+        pipe(
+          C.readFiles('./src/number'),
+          TE.map(RA.map(flow(Str.split('.'), RNEA.head))),
+        ),
       ),
       TE.apS(
         'string',
-        pipe(C.readFiles('./src/string'), TE.map(RA.map(flow(Str.split('.'), RNEA.head))))
+        pipe(
+          C.readFiles('./src/string'),
+          TE.map(RA.map(flow(Str.split('.'), RNEA.head))),
+        ),
       ),
       TE.map(({ date, number, string }) => [...date, ...number, ...string]),
       TE.filterOrElse(
         flow(
           RA.findFirst(
-            existingModule => Str.toLowerCase(existingModule) === Str.toLowerCase(module)
+            existingModule => Str.toLowerCase(existingModule) === Str.toLowerCase(module),
           ),
-          O.isNone
+          O.isNone,
         ),
-        () => new Error(`Module ${module} already exists`)
-      )
+        () => new Error(`Module ${module} already exists`),
+      ),
     )
 
 const writeToDisk: (path: string) => (contents: string) => Build<void> =
@@ -523,22 +529,22 @@ const main: Build<void> = pipe(
   RTE.fromEither,
   RTE.filterOrElse(
     ([, module]) => /^[a-z]/g.test(module),
-    () => new Error('Module name must be lowercase')
+    () => new Error('Module name must be lowercase'),
   ),
   RTE.bindTo('args'),
   RTE.chainFirstIOK(({ args: [primitive, module] }) =>
     Cons.log(
-      Color.whiteBright(`\n\n💻 Generating ${Color.bold(module)} ${primitive} module`)
-    )
+      Color.whiteBright(`\n\n💻 Generating ${Color.bold(module)} ${primitive} module`),
+    ),
   ),
   RTE.chainFirstTaskK(delay(600)),
   RTE.chainFirstIOK(() =>
-    Cons.log(Color.cyan("\n🔎 Checking that module doesn't already exist..."))
+    Cons.log(Color.cyan("\n🔎 Checking that module doesn't already exist...")),
   ),
   RTE.chainFirstTaskK(delay(400)),
   RTE.chainFirst(({ args: [, module] }) => checkModuleUniqueness(module)),
   RTE.chainFirstIOK(() =>
-    Cons.log(Color.cyan("🔎 Checking that test module doesn't already exist..."))
+    Cons.log(Color.cyan("🔎 Checking that test module doesn't already exist...")),
   ),
   RTE.chainFirstTaskK(delay(400)),
   RTE.chainFirst(({ args: [, module] }) => checkTestModuleUniqueness(module)),
@@ -546,7 +552,7 @@ const main: Build<void> = pipe(
   RTE.chainFirstTaskK(delay(400)),
   RTE.apS('packageVersion', getPackageJson),
   RTE.chainFirstIOK(({ args: [, module] }) =>
-    Cons.log(Color.cyan(`\n🖊️  Generating ${module}...`))
+    Cons.log(Color.cyan(`\n🖊️  Generating ${module}...`)),
   ),
   flow(
     RTE.chainFirstTaskK(delay(400)),
@@ -554,43 +560,43 @@ const main: Build<void> = pipe(
     RTE.bind(
       'moduleContents',
       ({ args: [primitive, module], packageVersion: { version } }) =>
-        RTE.of(makeCombinatorModule(primitive, capitalize(module), version))
+        RTE.of(makeCombinatorModule(primitive, capitalize(module), version)),
     ),
     RTE.chainFirstIOK(({ args: [, module] }) =>
-      Cons.log(Color.cyan(`🖊️  Generating ${module} test file...`))
+      Cons.log(Color.cyan(`🖊️  Generating ${module} test file...`)),
     ),
     RTE.chainFirstTaskK(delay(400)),
     RTE.bind('testModuleContents', ({ args: [primitive, module] }) =>
-      RTE.of(makeTestFile(primitive, module))
+      RTE.of(makeTestFile(primitive, module)),
     ),
     RTE.chainFirstIOK(({ args: [primitive, module] }) =>
-      Cons.log(Color.cyan(`\n💾 Writing ./src/${primitive}/${module}.ts to disk`))
+      Cons.log(Color.cyan(`\n💾 Writing ./src/${primitive}/${module}.ts to disk`)),
     ),
     RTE.chainFirstTaskK(delay(400)),
     flow(
       RTE.chainFirst(({ args: [primitive, module], moduleContents }) =>
-        pipe(moduleContents, writeToDisk(`./src/${primitive}/${module}.ts`))
+        pipe(moduleContents, writeToDisk(`./src/${primitive}/${module}.ts`)),
       ),
       RTE.chainFirstIOK(({ args: [primitive, module] }) =>
-        Cons.log(Color.cyan(`💾 Writing ./tests/${primitive}/${module}.test.ts to disk`))
+        Cons.log(Color.cyan(`💾 Writing ./tests/${primitive}/${module}.test.ts to disk`)),
       ),
       RTE.chainFirstTaskK(delay(400)),
       RTE.chain(({ args: [primitive, module], testModuleContents }) =>
-        pipe(testModuleContents, writeToDisk(`./tests/${primitive}/${module}.test.ts`))
+        pipe(testModuleContents, writeToDisk(`./tests/${primitive}/${module}.test.ts`)),
       ),
       RTE.chainFirstIOK(() => Cons.log(Color.cyan('\n💅 Formatting with Prettier...'))),
       RTE.chainFirstTaskK(delay(400)),
       flow(
         RTE.chainFirst(() => format),
-        RTE.chainFirstIOK(() => Cons.log(Color.green('\n\nDone!')))
-      )
-    )
-  )
+        RTE.chainFirstIOK(() => Cons.log(Color.green('\n\nDone!'))),
+      ),
+    ),
+  ),
 )
 
 run(
   main({
     ...fileSystem,
     ...cli,
-  })
+  }),
 )

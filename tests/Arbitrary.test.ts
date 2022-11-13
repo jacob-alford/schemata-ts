@@ -11,7 +11,7 @@ describe('Arbitrary', () => {
     fc.assert(
       fc.property(arb, obj => {
         expect(typeof obj.name).toBe('string')
-      })
+      }),
     )
   })
 
@@ -19,8 +19,8 @@ describe('Arbitrary', () => {
     const CheckDigit = make(S =>
       S.checkDigit(
         s => s[0] ?? '0',
-        1
-      )(S.pattern(PB.sequence(PB.digit, PB.digit), 'first digit is second digit'))
+        1,
+      )(S.pattern(PB.sequence(PB.digit, PB.digit), 'first digit is second digit')),
     )
     const arb = interpreter(Schemable)(CheckDigit)
 

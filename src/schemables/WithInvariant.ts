@@ -30,7 +30,7 @@ export interface WithInvariantHKT2<S> {
    */
   readonly imap: <B>(
     guardB: G.Guard<unknown, B>,
-    name: string
+    name: string,
   ) => <A>(f: (a: A) => B, g: (b: B) => A) => <O>(target: HKT2<S, O, A>) => HKT2<S, O, B>
 }
 
@@ -46,7 +46,7 @@ export interface WithInvariant1<S extends URIS> {
    */
   readonly imap: <B>(
     guardB: G.Guard<unknown, B>,
-    name: string
+    name: string,
   ) => <A>(f: (a: A) => B, g: (b: B) => A) => (target: Kind<S, A>) => Kind<S, B>
 }
 
@@ -62,10 +62,10 @@ export interface WithInvariant2<S extends URIS2> {
    */
   readonly imap: <B>(
     guardB: G.Guard<unknown, B>,
-    name: string
+    name: string,
   ) => <A>(
     f: (a: A) => B,
-    g: (b: B) => A
+    g: (b: B) => A,
   ) => <O>(target: Kind2<S, O, A>) => Kind2<S, O, B>
 }
 
@@ -81,7 +81,7 @@ export interface WithInvariant2C<S extends URIS2, E> {
    */
   readonly imap: <B>(
     guardB: G.Guard<unknown, B>,
-    name: string
+    name: string,
   ) => <A>(f: (a: A) => B, g: (b: B) => A) => (target: Kind2<S, E, A>) => Kind2<S, E, B>
 }
 
@@ -151,7 +151,7 @@ export const Type: WithInvariant1<t.URI> = {
       name,
       gB.is,
       (i, c) => pipe(tdA.validate(i, c), E.map(get)),
-      flow(reverseGet, tdA.encode)
+      flow(reverseGet, tdA.encode),
     ),
 }
 

@@ -9,7 +9,7 @@ describe('WithPattern', () => {
   test('Pattern', () => {
     const pattern = pipe(
       PB.exactString('foo'),
-      PB.then(PB.characterClass(false, ['0', '9']))
+      PB.then(PB.characterClass(false, ['0', '9'])),
     )
     const Schema = P.Schema(pattern, 'FooNum')
     const decode = interpreter(D.Schemable)(Schema)

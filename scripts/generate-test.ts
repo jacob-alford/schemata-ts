@@ -30,33 +30,33 @@ const main: Build<void> = pipe(
   RTE.fromEither,
   RTE.filterOrElse(
     ([, module]) => /^[A-Z]/g.test(module),
-    () => new Error('Module name must be capitalized')
+    () => new Error('Module name must be capitalized'),
   ),
   RTE.bindTo('args'),
   RTE.chainFirstIOK(({ args: [, module] }) =>
-    Cons.log(`Checking that ${module} doesn't already exist...`)
+    Cons.log(`Checking that ${module} doesn't already exist...`),
   ),
   RTE.chainFirst(({ args: [, module] }) => checkTestModuleUniqueness(module)),
   RTE.chainFirstIOK(({ args: [, module] }) =>
-    Cons.log(`Generating ${module}.test.ts...`)
+    Cons.log(`Generating ${module}.test.ts...`),
   ),
   RTE.bind('moduleContents', ({ args: [primitive, module] }) =>
-    RTE.of(makeTestFile(primitive, module))
+    RTE.of(makeTestFile(primitive, module)),
   ),
   RTE.chainFirstIOK(({ args: [primitive, module] }) =>
-    Cons.log(`Writing ${primitive}/${module}.test.ts to disk`)
+    Cons.log(`Writing ${primitive}/${module}.test.ts to disk`),
   ),
   RTE.chain(({ args: [primitive, module], moduleContents }) =>
-    pipe(moduleContents, writeToDisk(`./tests/${primitive}/${module}.test.ts`))
+    pipe(moduleContents, writeToDisk(`./tests/${primitive}/${module}.test.ts`)),
   ),
   RTE.chainFirstIOK(() => Cons.log('Formatting with Prettier...')),
   RTE.apFirst(format),
-  RTE.chainFirstIOK(() => Cons.log('Done!'))
+  RTE.chainFirstIOK(() => Cons.log('Done!')),
 )
 
 run(
   main({
     ...fileSystem,
     ...cli,
-  })
+  }),
 )

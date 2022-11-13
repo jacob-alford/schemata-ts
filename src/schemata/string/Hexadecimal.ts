@@ -6,10 +6,12 @@
 import { pipe } from 'fp-ts/function'
 import * as PB from '../../PatternBuilder'
 import { make, SchemaExt } from '../../SchemaExt'
-import { Brand } from 'io-ts'
+import { Branded } from 'io-ts'
 
 /** @internal */
-type HexadecimalBrand = Brand<{ readonly x: unique symbol }['x']>
+interface HexadecimalBrand {
+  readonly Hexadecimal: unique symbol
+}
 
 /**
  * A string of hexadecimal characters.
@@ -17,7 +19,7 @@ type HexadecimalBrand = Brand<{ readonly x: unique symbol }['x']>
  * @since 1.0.0
  * @category Model
  */
-export type Hexadecimal = string & HexadecimalBrand
+export type Hexadecimal = Branded<string, HexadecimalBrand>
 
 /**
  * @since 1.0.0
@@ -37,8 +39,8 @@ export const hexadecimal: PB.Pattern = pipe(
   PB.subgroup,
   PB.maybe,
   PB.then(
-    pipe(PB.characterClass(false, ['0', '9'], ['A', 'F'], ['a', 'f']), PB.atLeastOne())
-  )
+    pipe(PB.characterClass(false, ['0', '9'], ['A', 'F'], ['a', 'f']), PB.atLeastOne()),
+  ),
 )
 
 /**
@@ -48,5 +50,5 @@ export const hexadecimal: PB.Pattern = pipe(
  * @category Schema
  */
 export const Hexadecimal: HexadecimalS = make(s =>
-  s.brand<HexadecimalBrand>()(s.pattern(hexadecimal, 'Hexadecimal'))
+  s.brand<HexadecimalBrand>()(s.pattern(hexadecimal, 'Hexadecimal')),
 )

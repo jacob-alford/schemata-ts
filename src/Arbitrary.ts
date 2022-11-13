@@ -30,12 +30,6 @@ import * as floatFromString from './number/floatFromString'
 import * as int from './number/int'
 import * as intFromString from './number/intFromString'
 
-/** String */
-import * as hslColor from './string/hslColor'
-import * as latLong from './string/latLong'
-import * as rgb from './string/rgb'
-import * as uuid from './string/uuid'
-
 /** Date */
 import * as date from './date/date'
 import * as dateFromIsoString from './date/dateFromIsoString'
@@ -62,10 +56,6 @@ export const Schemable: SchemableExt1<Arb.URI> = {
   floatFromString: floatFromString.Arbitrary,
   int: int.Arbitrary,
   intFromString: intFromString.Arbitrary,
-  hslColor: hslColor.Arbitrary,
-  latLong: latLong.Arbitrary,
-  rgb: rgb.Arbitrary,
-  uuid: uuid.Arbitrary,
   date: date.Arbitrary,
   dateFromIsoString: dateFromIsoString.Arbitrary,
 }

@@ -64,12 +64,6 @@ import * as floatFromString from './number/floatFromString'
 import * as int from './number/int'
 import * as intFromString from './number/intFromString'
 
-/** String */
-import * as hslColor from './string/hslColor'
-import * as latLong from './string/latLong'
-import * as rgb from './string/rgb'
-import * as uuid from './string/uuid'
-
 /** Date */
 import * as date from './date/date'
 import * as dateFromIsoString from './date/dateFromIsoString'
@@ -179,52 +173,6 @@ export interface SchemableExt<S>
    * @since 1.0.0
    */
   readonly intFromString: intFromString.SchemableParams<S>
-
-  /**
-   * An HSL string. Commonly in CSS.
-   *
-   * @since 0.0.3
-   * @example
-   *   import { Guard } from 'schemata-ts/string/hslColor'
-   *
-   *   const hue = 270
-   *   const saturation = 60
-   *   const lightness = 70
-   *   const alpha = 0.7
-   *
-   *   const hslString = `hsl(${hue} ${saturation}% ${lightness}% / ${alpha})`
-   *
-   *   assert.equal(Guard.is(hslString), true)
-   */
-  readonly hslColor: hslColor.SchemableParams<S>
-
-  /**
-   * Representing a Lat/Long coordinate.
-   *
-   * Inspired by
-   * [validator.js::isLatLong](https://github.com/validatorjs/validator.js/blob/master/src/lib/isLatLong.js)
-   *
-   * @since 0.0.4
-   */
-  readonly latLong: latLong.SchemableParams<S>
-
-  /**
-   * Represents strings which are valid RGB colors. Permits both absolute and percentage
-   * based values.
-   *
-   * @since 0.0.4
-   */
-  readonly rgb: rgb.SchemableParams<S>
-
-  /**
-   * Represents strings that are UUIDs.
-   *
-   * This is heavily inspired by the `validator.js` module
-   * [`isUUID`](https://github.com/validatorjs/validator.js/blob/master/src/lib/isUUID.js).
-   *
-   * @since 0.0.1
-   */
-  readonly uuid: uuid.SchemableParams<S>
 
   /**
    * Represents valid Date objects
@@ -350,52 +298,6 @@ export interface SchemableExt1<S extends URIS>
   readonly intFromString: intFromString.SchemableParams1<S>
 
   /**
-   * An HSL string. Commonly in CSS.
-   *
-   * @since 0.0.3
-   * @example
-   *   import { Guard } from 'schemata-ts/string/hslColor'
-   *
-   *   const hue = 270
-   *   const saturation = 60
-   *   const lightness = 70
-   *   const alpha = 0.7
-   *
-   *   const hslString = `hsl(${hue} ${saturation}% ${lightness}% / ${alpha})`
-   *
-   *   assert.equal(Guard.is(hslString), true)
-   */
-  readonly hslColor: hslColor.SchemableParams1<S>
-
-  /**
-   * Representing a Lat/Long coordinate.
-   *
-   * Inspired by
-   * [validator.js::isLatLong](https://github.com/validatorjs/validator.js/blob/master/src/lib/isLatLong.js)
-   *
-   * @since 0.0.4
-   */
-  readonly latLong: latLong.SchemableParams1<S>
-
-  /**
-   * Represents strings which are valid RGB colors. Permits both absolute and percentage
-   * based values.
-   *
-   * @since 0.0.4
-   */
-  readonly rgb: rgb.SchemableParams1<S>
-
-  /**
-   * Represents strings that are UUIDs.
-   *
-   * This is heavily inspired by the `validator.js` module
-   * [`isUUID`](https://github.com/validatorjs/validator.js/blob/master/src/lib/isUUID.js).
-   *
-   * @since 0.0.1
-   */
-  readonly uuid: uuid.SchemableParams1<S>
-
-  /**
    * Represents valid Date objects
    *
    * @since 1.0.0
@@ -519,52 +421,6 @@ export interface SchemableExt2<S extends URIS2>
   readonly intFromString: intFromString.SchemableParams2<S>
 
   /**
-   * An HSL string. Commonly in CSS.
-   *
-   * @since 0.0.3
-   * @example
-   *   import { Guard } from 'schemata-ts/string/hslColor'
-   *
-   *   const hue = 270
-   *   const saturation = 60
-   *   const lightness = 70
-   *   const alpha = 0.7
-   *
-   *   const hslString = `hsl(${hue} ${saturation}% ${lightness}% / ${alpha})`
-   *
-   *   assert.equal(Guard.is(hslString), true)
-   */
-  readonly hslColor: hslColor.SchemableParams2<S>
-
-  /**
-   * Representing a Lat/Long coordinate.
-   *
-   * Inspired by
-   * [validator.js::isLatLong](https://github.com/validatorjs/validator.js/blob/master/src/lib/isLatLong.js)
-   *
-   * @since 0.0.4
-   */
-  readonly latLong: latLong.SchemableParams2<S>
-
-  /**
-   * Represents strings which are valid RGB colors. Permits both absolute and percentage
-   * based values.
-   *
-   * @since 0.0.4
-   */
-  readonly rgb: rgb.SchemableParams2<S>
-
-  /**
-   * Represents strings that are UUIDs.
-   *
-   * This is heavily inspired by the `validator.js` module
-   * [`isUUID`](https://github.com/validatorjs/validator.js/blob/master/src/lib/isUUID.js).
-   *
-   * @since 0.0.1
-   */
-  readonly uuid: uuid.SchemableParams2<S>
-
-  /**
    * Represents valid Date objects
    *
    * @since 1.0.0
@@ -686,52 +542,6 @@ export interface SchemableExt2C<S extends URIS2>
    * @since 1.0.0
    */
   readonly intFromString: intFromString.SchemableParams2C<S>
-
-  /**
-   * An HSL string. Commonly in CSS.
-   *
-   * @since 0.0.3
-   * @example
-   *   import { Guard } from 'schemata-ts/string/hslColor'
-   *
-   *   const hue = 270
-   *   const saturation = 60
-   *   const lightness = 70
-   *   const alpha = 0.7
-   *
-   *   const hslString = `hsl(${hue} ${saturation}% ${lightness}% / ${alpha})`
-   *
-   *   assert.equal(Guard.is(hslString), true)
-   */
-  readonly hslColor: hslColor.SchemableParams2C<S>
-
-  /**
-   * Representing a Lat/Long coordinate.
-   *
-   * Inspired by
-   * [validator.js::isLatLong](https://github.com/validatorjs/validator.js/blob/master/src/lib/isLatLong.js)
-   *
-   * @since 0.0.4
-   */
-  readonly latLong: latLong.SchemableParams2C<S>
-
-  /**
-   * Represents strings which are valid RGB colors. Permits both absolute and percentage
-   * based values.
-   *
-   * @since 0.0.4
-   */
-  readonly rgb: rgb.SchemableParams2C<S>
-
-  /**
-   * Represents strings that are UUIDs.
-   *
-   * This is heavily inspired by the `validator.js` module
-   * [`isUUID`](https://github.com/validatorjs/validator.js/blob/master/src/lib/isUUID.js).
-   *
-   * @since 0.0.1
-   */
-  readonly uuid: uuid.SchemableParams2C<S>
 
   /**
    * Represents valid Date objects

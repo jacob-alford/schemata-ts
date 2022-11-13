@@ -31,7 +31,7 @@ import { flow, pipe } from 'fp-ts/function'
 export type SchemableParams<S> = <EK, EA, K extends EK, A extends EA>(
   ordEK: Ord.Ord<K>,
   sk: HKT2<S, EK, K>,
-  sa: HKT2<S, EA, A>
+  sa: HKT2<S, EA, A>,
 ) => HKT2<S, ReadonlyArray<readonly [K, A]>, ReadonlyMap<K, A>>
 
 /**
@@ -41,7 +41,7 @@ export type SchemableParams<S> = <EK, EA, K extends EK, A extends EA>(
 export type SchemableParams1<S extends URIS> = <K, A>(
   ordK: Ord.Ord<K>,
   sk: Kind<S, K>,
-  sa: Kind<S, A>
+  sa: Kind<S, A>,
 ) => Kind<S, ReadonlyMap<K, A>>
 
 /**
@@ -51,7 +51,7 @@ export type SchemableParams1<S extends URIS> = <K, A>(
 export type SchemableParams2<S extends URIS2> = <EK, EA, K extends EK, A extends EA>(
   ordEK: Ord.Ord<K>,
   sk: Kind2<S, EK, K>,
-  sa: Kind2<S, EA, A>
+  sa: Kind2<S, EA, A>,
 ) => Kind2<S, ReadonlyArray<readonly [EK, EA]>, ReadonlyMap<K, A>>
 
 /**
@@ -61,7 +61,7 @@ export type SchemableParams2<S extends URIS2> = <EK, EA, K extends EK, A extends
 export type SchemableParams2C<S extends URIS2> = <K, A>(
   ordK: Ord.Ord<K>,
   sk: Kind2<S, unknown, K>,
-  sa: Kind2<S, unknown, A>
+  sa: Kind2<S, unknown, A>,
 ) => Kind2<S, unknown, ReadonlyMap<K, A>>
 
 /**
@@ -71,7 +71,7 @@ export type SchemableParams2C<S extends URIS2> = <K, A>(
 export const Decoder: SchemableParams2C<D.URI> = (ordK, sk, sa) => ({
   decode: flow(
     D.array(D.tuple(sk, sa)).decode,
-    E.map(RM.fromFoldable(ordK, Sg.last(), RA.Foldable))
+    E.map(RM.fromFoldable(ordK, Sg.last(), RA.Foldable)),
   ),
 })
 
@@ -96,13 +96,13 @@ export const Eq: SchemableParams1<Eq_.URI> = (_, sk, sa) => RM.getEq(sk, sa)
 export const Guard: SchemableParams1<G.URI> = <K, A>(
   ordK: Ord.Ord<K>,
   sk: G.Guard<unknown, K>,
-  sa: G.Guard<unknown, A>
+  sa: G.Guard<unknown, A>,
 ) => ({
   is: (a): a is ReadonlyMap<K, A> =>
     a instanceof Map &&
     pipe(
       a,
-      RM.foldMapWithIndex(ordK)(B.MonoidAll)((key, value) => sk.is(key) && sa.is(value))
+      RM.foldMapWithIndex(ordK)(B.MonoidAll)((key, value) => sk.is(key) && sa.is(value)),
     ),
 })
 
@@ -113,7 +113,7 @@ export const Guard: SchemableParams1<G.URI> = <K, A>(
 export const TaskDecoder: SchemableParams2C<TD.URI> = (ordK, sk, sa) => ({
   decode: flow(
     TD.array(TD.tuple(sk, sa)).decode,
-    TE.map(RM.fromFoldable(ordK, Sg.last(), RA.Foldable))
+    TE.map(RM.fromFoldable(ordK, Sg.last(), RA.Foldable)),
   ),
 })
 
@@ -124,16 +124,16 @@ export const TaskDecoder: SchemableParams2C<TD.URI> = (ordK, sk, sa) => ({
 export const Type: SchemableParams1<t.URI> = <K, A>(
   ordK: Ord.Ord<K>,
   typeK: t.Type<K>,
-  typeA: t.Type<A>
+  typeA: t.Type<A>,
 ) =>
   new Type_(
     `ReadonlyMap<${typeK.name},${typeA.name}>`,
     Guard<K, A>(ordK, typeK, typeA).is,
     flow(
       t.array(t.tuple(typeK, typeA)).decode,
-      E.map(RM.fromFoldable(ordK, Sg.last(), RA.Foldable))
+      E.map(RM.fromFoldable(ordK, Sg.last(), RA.Foldable)),
     ),
-    Encoder(ordK, typeK, typeA).encode
+    Encoder(ordK, typeK, typeA).encode,
   )
 
 /**
@@ -150,6 +150,6 @@ export const Arbitrary: SchemableParams1<Arb.URI> = (ordK, arbK, arbA) =>
 export const Schema = <EK, EA, K extends EK, A extends EA>(
   ordK: Ord.Ord<K>,
   sK: SC.SchemaExt<EK, K>,
-  sA: SC.SchemaExt<EA, A>
+  sA: SC.SchemaExt<EA, A>,
 ): SC.SchemaExt<ReadonlyArray<readonly [EK, EA]>, ReadonlyMap<K, A>> =>
   SC.make(S => S.mapFromEntries(ordK, sK(S), sA(S)))

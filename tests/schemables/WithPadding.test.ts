@@ -26,7 +26,7 @@ const tests: ReadonlyArray<
       invalidL: ReadonlyArray<string>
       validR: ReadonlyArray<string>
       invalidR: ReadonlyArray<string>
-    }
+    },
   ]
 > = [
   [
@@ -62,11 +62,11 @@ describe('WithPadding', () => {
 
       const encoderL = WithPadding.Encoder.padLeft(
         paddingParams,
-        char
+        char,
       )(Enc.Schemable.string)
       const encoderR = WithPadding.Encoder.padRight(
         paddingParams,
-        char
+        char,
       )(Enc.Schemable.string)
 
       const guardL = WithPadding.Guard.padLeft(paddingParams, char)(G.string)
@@ -75,7 +75,7 @@ describe('WithPadding', () => {
       const taskDecoderL = WithPadding.TaskDecoder.padLeft(paddingParams, char)(TD.string)
       const taskDecoderR = WithPadding.TaskDecoder.padRight(
         paddingParams,
-        char
+        char,
       )(TD.string)
 
       const typeL = WithPadding.Type.padLeft(paddingParams, char)(t.string)
@@ -107,10 +107,10 @@ describe('WithPadding', () => {
               original,
               decoderL.decode,
               E.map(encoderL.encode),
-              E.getOrElseW(() => 'unexpected')
+              E.getOrElseW(() => 'unexpected'),
             )
             expect(original).toEqual(roundtrip)
-          }
+          },
         )
         test.each(validR)(
           'encoding a decoded value yields original value, %s',
@@ -119,10 +119,10 @@ describe('WithPadding', () => {
               original,
               decoderR.decode,
               E.map(encoderR.encode),
-              E.getOrElseW(() => 'unexpected')
+              E.getOrElseW(() => 'unexpected'),
             )
             expect(original).toEqual(roundtrip)
-          }
+          },
         )
       })
 
@@ -234,7 +234,7 @@ describe('WithPadding', () => {
       {
         Arbitrary: WithPadding.Arbitrary.padLeft(
           { by: 'ExactLength', exactLength: 4 },
-          '='
+          '=',
         )(
           arbPattern.pattern(
             pipe(
@@ -242,14 +242,18 @@ describe('WithPadding', () => {
               PB.between(0, 2),
               PB.subgroup,
               PB.then(
-                pipe(PB.alnum, PB.and(PB.characterClass(false, '+', '/')), PB.anyNumber())
-              )
+                pipe(
+                  PB.alnum,
+                  PB.and(PB.characterClass(false, '+', '/')),
+                  PB.anyNumber(),
+                ),
+              ),
             ),
-            'Reverse base64'
-          )
+            'Reverse base64',
+          ),
         ),
       },
-      (s): s is string => typeof s === 'string' && s.length === 4
+      (s): s is string => typeof s === 'string' && s.length === 4,
     )
   })
 })

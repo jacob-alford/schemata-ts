@@ -24,7 +24,7 @@ import { flow, pipe } from 'fp-ts/function'
  * @category Model
  */
 export type SchemableParams<S> = <A, E>(
-  sa: HKT2<S, E, A>
+  sa: HKT2<S, E, A>,
 ) => HKT2<S, E | null, O.Option<A>>
 
 /**
@@ -38,7 +38,7 @@ export type SchemableParams1<S extends URIS> = <A>(sa: Kind<S, A>) => Kind<S, O.
  * @category Model
  */
 export type SchemableParams2<S extends URIS2> = <A, E>(
-  sa: Kind2<S, E, A>
+  sa: Kind2<S, E, A>,
 ) => Kind2<S, E | null, O.Option<A>>
 
 /**
@@ -46,7 +46,7 @@ export type SchemableParams2<S extends URIS2> = <A, E>(
  * @category Model
  */
 export type SchemableParams2C<S extends URIS2> = <A>(
-  sa: Kind2<S, unknown, A>
+  sa: Kind2<S, unknown, A>,
 ) => Kind2<S, unknown, O.Option<A>>
 
 /**
@@ -83,7 +83,7 @@ export const Guard: SchemableParams1<G.URI> = guardA =>
     G.struct({
       _tag: G.literal('Some'),
       value: guardA,
-    })
+    }),
   )
 
 /**
@@ -107,7 +107,7 @@ export const Type: SchemableParams1<t.URI> = typeA =>
     t.struct({
       _tag: t.literal('Some'),
       value: typeA,
-    })
+    }),
   )
 
 /**
@@ -117,7 +117,7 @@ export const Type: SchemableParams1<t.URI> = typeA =>
 export const Arbitrary: SchemableParams1<Arb.URI> = arbA =>
   fc.oneof(
     Arb.struct({ _tag: Arb.literal('None') }),
-    Arb.struct({ _tag: Arb.literal('Some'), value: arbA })
+    Arb.struct({ _tag: Arb.literal('Some'), value: arbA }),
   )
 
 /**

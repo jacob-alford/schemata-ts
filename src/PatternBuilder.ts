@@ -15,7 +15,7 @@
  *   const areaCode = pipe(
  *     pipe(PB.char('('), PB.then(PB.times(3)(digit)), PB.then(PB.char(')'))),
  *     PB.or(PB.times(3)(digit)),
- *     PB.subgroup
+ *     PB.subgroup,
  *   )
  *
  *   const prefix = PB.times(3)(digit)
@@ -27,11 +27,13 @@
  *     PB.then(PB.char('-')),
  *     PB.then(prefix),
  *     PB.then(PB.char('-')),
- *     PB.then(lineNumber)
+ *     PB.then(lineNumber),
  *   )
  */
 import * as fc from 'fast-check'
 import { pipe } from 'fp-ts/function'
+import * as O from 'fp-ts/Option'
+import * as RNEA from 'fp-ts/ReadonlyNonEmptyArray'
 import * as RA from 'fp-ts/ReadonlyArray'
 import { match, matchOn } from './internal/match'
 
@@ -90,7 +92,7 @@ export const char: (c: Char) => Atom = c => ({ tag: 'atom', kind: 'character', c
 export const anything: Atom = { tag: 'atom', kind: 'anything' }
 
 const convertRanges: (
-  ranges: ReadonlyArray<readonly [Char, Char] | Char | readonly [number, number]>
+  ranges: ReadonlyArray<readonly [Char, Char] | Char | readonly [number, number]>,
 ) => CharacterClass['ranges'] = RA.map(range => {
   if (typeof range === 'string') {
     return { lower: range.charCodeAt(0), upper: range.charCodeAt(0) } as const
@@ -127,11 +129,14 @@ export const characterClass: (
  *
  * @since 1.0.0
  */
-export const subgroup: (subpattern: Pattern) => Atom = subpattern => ({
-  tag: 'atom',
-  kind: 'subgroup',
-  subpattern,
-})
+export const subgroup: (subpattern: Pattern) => Atom = subpattern =>
+  subpattern.tag === 'atom'
+    ? subpattern
+    : {
+        tag: 'atom',
+        kind: 'subgroup',
+        subpattern,
+      }
 
 /**
  * Repeat an `Atom` any number of times (including zero).
@@ -229,7 +234,7 @@ export const between: (min: number, max: number) => (atom: Atom) => QuantifiedAt
  * @since 1.0.0
  */
 export const or: (
-  right: TermSequence | Atom | QuantifiedAtom
+  right: TermSequence | Atom | QuantifiedAtom,
 ) => (left: Pattern) => Disjunction = right => left => ({
   tag: 'disjunction',
   left,
@@ -248,7 +253,7 @@ const getTerms: (termOrSeq: Term | TermSequence) => TermSequence['terms'] = matc
  * @since 1.0.0
  */
 export const then: (
-  term: Term | TermSequence
+  term: Term | TermSequence,
 ) => (alt: TermSequence | Term) => TermSequence = term => alt => ({
   tag: 'termSequence',
   terms: [...getTerms(alt), ...getTerms(term)],
@@ -294,13 +299,35 @@ const repr = (n: number): string =>
 const regexStringFromAtom: (atom: Atom) => string = matchK({
   anything: () => '.',
   character: ({ char }) =>
-    char === '[' ? '\\[' : char === ']' ? '\\]' : char === '.' ? '\\.' : char,
+    char === '['
+      ? '\\['
+      : char === ']'
+      ? '\\]'
+      : char === '.'
+      ? '\\.'
+      : char === '('
+      ? '\\('
+      : char === ')'
+      ? '\\)'
+      : char === '+'
+      ? '\\+'
+      : char,
   characterClass: ({ exclude, ranges }) =>
-    `[${exclude ? '^' : ''}${ranges
-      .map(({ lower, upper }) =>
-        lower === upper ? repr(lower) : `${repr(lower)}-${repr(upper)}`
-      )
-      .join('')}]`,
+    pipe(
+      RNEA.fromReadonlyArray(ranges),
+      O.chain(O.fromPredicate(s => s.length === 1)),
+      O.chain(([{ lower, upper }]) =>
+        lower === 48 && upper === 57 ? O.some('\\d') : O.none,
+      ),
+      O.getOrElse(
+        () =>
+          `[${exclude ? '^' : ''}${ranges
+            .map(({ lower, upper }) =>
+              lower === upper ? repr(lower) : `${repr(lower)}-${repr(upper)}`,
+            )
+            .join('')}]`,
+      ),
+    ),
   subgroup: ({ subpattern }) => `(${regexStringFromPattern(subpattern)})`,
 })
 
@@ -344,7 +371,7 @@ export const arbitraryFromAtom: (atom: Atom) => fc.Arbitrary<string> = matchK({
           .integer({ min: 1, max: 0xffff })
           .filter(i => ranges.every(({ lower, upper }) => i > upper || i < lower))
       : fc.oneof(
-          ...ranges.map(({ lower, upper }) => fc.integer({ min: lower, max: upper }))
+          ...ranges.map(({ lower, upper }) => fc.integer({ min: lower, max: upper })),
         )
     ).map(charCode => String.fromCharCode(charCode)),
   subgroup: ({ subpattern }) => arbitraryFromPattern(subpattern),
@@ -352,7 +379,7 @@ export const arbitraryFromAtom: (atom: Atom) => fc.Arbitrary<string> = matchK({
 
 /** @internal */
 export const arbitraryFromQuantifiedAtom: (
-  quantifiedAtom: QuantifiedAtom
+  quantifiedAtom: QuantifiedAtom,
 ) => fc.Arbitrary<string> = matchK({
   star: ({ atom }) => fc.array(arbitraryFromAtom(atom)).map(strs => strs.join('')),
   plus: ({ atom }) =>
@@ -382,7 +409,7 @@ const chainConcatAll: (fcs: ReadonlyArray<fc.Arbitrary<string>>) => fc.Arbitrary
   RA.foldLeft(
     () => fc.constant(''),
     (head, tail) =>
-      head.chain(headStr => chainConcatAll(tail).map(tailStr => headStr + tailStr))
+      head.chain(headStr => chainConcatAll(tail).map(tailStr => headStr + tailStr)),
   )
 
 /**
@@ -405,7 +432,7 @@ export const arbitraryFromPattern: (pattern: Pattern) => fc.Arbitrary<string> = 
  */
 export const and: {
   (...ranges: ReadonlyArray<readonly [Char, Char] | Char | readonly [number, number]>): (
-    cc: CharacterClass
+    cc: CharacterClass,
   ) => CharacterClass
   (ccb: CharacterClass): (cca: CharacterClass) => CharacterClass
 } =
@@ -420,7 +447,7 @@ export const and: {
     ranges: cc.ranges.concat(
       typeof first === 'string' || first instanceof Array
         ? convertRanges([first, ...addl])
-        : first.ranges
+        : first.ranges,
     ),
   })
 
@@ -508,7 +535,7 @@ export const punct: CharacterClass = characterClass(
   ['!', '/'],
   [':', '@'],
   ['[', '_'],
-  ['{', '~']
+  ['{', '~'],
 )
 
 /**
@@ -555,5 +582,83 @@ export const oneOf: (
 ) => Pattern = (pattern, ...patterns) =>
   pipe(
     patterns,
-    RA.reduce(pattern, (ored, next) => pipe(ored, or(next)))
+    RA.reduce(pattern, (ored, next) => pipe(ored, or(next))),
   )
+
+/**
+ * An empty pattern.
+ *
+ * @since 1.0.0
+ */
+export const empty: Pattern = { tag: 'atom', kind: 'character', char: '' }
+
+const integerRange_: (min: string, max: string, omitInitialZeros?: boolean) => Pattern = (
+  min,
+  max,
+  omitInitialZeros = false,
+) => {
+  const curMinDigit = Number(min[0] ?? '0')
+  const restMin = min.slice(1)
+  const curMaxDigit = Number(max[0] ?? '9')
+  const restMax = max.slice(1)
+
+  const res =
+    restMin.length === 0
+      ? curMinDigit === curMaxDigit
+        ? char(min)
+        : characterClass(false, [min, max])
+      : curMinDigit === curMaxDigit
+      ? pipe(
+          char(curMinDigit.toString(10)),
+          then(subgroup(integerRange_(restMin, restMax))),
+        )
+      : oneOf(
+          curMinDigit === 0 && omitInitialZeros
+            ? integerRange_(restMin, restMax.replace(/./g, '9'), true)
+            : pipe(
+                char(curMinDigit.toString(10)),
+                then(subgroup(integerRange_(restMin, restMin.replace(/./g, '9')))),
+              ),
+          ...(curMaxDigit - curMinDigit > 1
+            ? [
+                pipe(
+                  characterClass(false, [
+                    (curMinDigit + 1).toString(10),
+                    (curMaxDigit - 1).toString(10),
+                  ]),
+                  then(sequence(empty, ...restMin.split('').map(() => digit))),
+                ),
+              ]
+            : []),
+          pipe(
+            char(curMaxDigit.toString(10)),
+            then(subgroup(integerRange_(restMin.replace(/./g, '0'), restMax))),
+          ),
+        )
+
+  return res
+}
+
+/**
+ * Create a pattern that matches integers in a given range. Does not currently handle
+ * negatives (it returns an empty pattern if either number is negative)
+ *
+ * @since 1.0.0
+ */
+export const integerRange: (min: number, max: number) => Pattern = (min, max) => {
+  if (
+    min > max ||
+    Number.isNaN(min) ||
+    Number.isNaN(max) ||
+    !Number.isInteger(min) ||
+    !Number.isInteger(max) ||
+    min < 0 ||
+    max < 0
+  ) {
+    return empty
+  }
+
+  const maxStr = max.toString(10)
+  const minStr = min.toString(10).padStart(maxStr.length, '0')
+  return integerRange_(minStr, maxStr, true)
+}

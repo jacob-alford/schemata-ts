@@ -85,7 +85,7 @@ export const Type: SchemableParams1<t.URI> = new t_.Type<Date, unknown, unknown>
   'SafeDate',
   isSafeDate,
   (u, c) => (isSafeDate(u) ? t_.success(u) : t_.failure(u, c)),
-  identity
+  identity,
 )
 
 /**

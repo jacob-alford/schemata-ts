@@ -40,7 +40,10 @@ describe('Hexadecimal', () => {
 
   describe('Decoder', () => {
     test.each(
-      cat(combineExpected(validStrings, 'Right'), combineExpected(invalidStrings, 'Left'))
+      cat(
+        combineExpected(validStrings, 'Right'),
+        combineExpected(invalidStrings, 'Left'),
+      ),
     )('validates valid strings, and catches bad strings', (str, expectedTag) => {
       const result = instances.Decoder.decode(str)
 
@@ -56,11 +59,11 @@ describe('Hexadecimal', () => {
           original,
           instances.Decoder.decode,
           E.map(instances.Encoder.encode),
-          E.getOrElse(() => 'invalid')
+          E.getOrElse(() => 'invalid'),
         )
 
         expect(original).toEqual(roundtrip)
-      }
+      },
     )
   })
 
@@ -74,13 +77,13 @@ describe('Hexadecimal', () => {
         }
 
         expect(instances.Eq.equals(str1, str2)).toBe(true)
-      }
+      },
     )
   })
 
   describe('Guard', () => {
     test.each(
-      cat(combineExpected(validStrings, true), combineExpected(invalidStrings, false))
+      cat(combineExpected(validStrings, true), combineExpected(invalidStrings, false)),
     )('validates valid strings, and catches bad strings', (str, expectedTag) => {
       const result = instances.Guard.is(str)
 
@@ -90,7 +93,10 @@ describe('Hexadecimal', () => {
 
   describe('TaskDecoder', () => {
     test.each(
-      cat(combineExpected(validStrings, 'Right'), combineExpected(invalidStrings, 'Left'))
+      cat(
+        combineExpected(validStrings, 'Right'),
+        combineExpected(invalidStrings, 'Left'),
+      ),
     )('validates valid strings, and catches bad strings', async (str, expectedTag) => {
       const result = await instances.TaskDecoder.decode(str)()
 
@@ -100,7 +106,10 @@ describe('Hexadecimal', () => {
 
   describe('Type', () => {
     test.each(
-      cat(combineExpected(validStrings, 'Right'), combineExpected(invalidStrings, 'Left'))
+      cat(
+        combineExpected(validStrings, 'Right'),
+        combineExpected(invalidStrings, 'Left'),
+      ),
     )('validates valid strings, and catches bad strings', (str, expectedTag) => {
       const result = instances.Type.decode(str)
 

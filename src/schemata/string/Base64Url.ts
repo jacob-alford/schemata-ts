@@ -8,11 +8,13 @@
 
 import * as PB from '../../PatternBuilder'
 import { make, SchemaExt } from '../../SchemaExt'
-import { Brand } from 'io-ts'
+import { Branded } from 'io-ts'
 import { pipe } from 'fp-ts/function'
 
 /** @internal */
-type Base64UrlBrand = Brand<{ readonly Base64Url: unique symbol }['Base64Url']>
+interface Base64UrlBrand {
+  readonly Base64Url: unique symbol
+}
 
 /**
  * Representing a URL-safe, Base64 encoded string.
@@ -22,7 +24,7 @@ type Base64UrlBrand = Brand<{ readonly Base64Url: unique symbol }['Base64Url']>
  * @since 1.0.0
  * @category Model
  */
-export type Base64Url = string & Base64UrlBrand
+export type Base64Url = Branded<string, Base64UrlBrand>
 
 /**
  * @since 1.0.0
@@ -39,7 +41,7 @@ export type Base64UrlS = SchemaExt<string, Base64Url>
 export const base64Url: PB.Pattern = pipe(
   PB.word,
   PB.and('-'),
-  PB.anyNumber({ greedy: true })
+  PB.anyNumber({ greedy: true }),
 )
 
 /**
@@ -51,5 +53,5 @@ export const base64Url: PB.Pattern = pipe(
  * @category Schema
  */
 export const Base64Url: Base64UrlS = make(s =>
-  s.brand<Base64UrlBrand>()(s.pattern(base64Url, 'Base64Url'))
+  s.brand<Base64UrlBrand>()(s.pattern(base64Url, 'Base64Url')),
 )

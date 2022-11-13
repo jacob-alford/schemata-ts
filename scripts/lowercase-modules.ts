@@ -19,7 +19,7 @@ const isUppercase: (s: string) => boolean = s => /^[A-Z]/.test(s)
 const isAllCaps: (s: string) => boolean = flow(
   Str.split('.'),
   RNEA.head,
-  name => name === name.toUpperCase()
+  name => name === name.toUpperCase(),
 )
 
 const camelFromPascal: (s: string) => string = s =>
@@ -28,7 +28,7 @@ const camelFromPascal: (s: string) => string = s =>
     : `${Str.toLowerCase(s.slice(0, 1))}${s.slice(1, s.length)}`
 
 const getUppercaseModules: (
-  subdir: string
+  subdir: string,
 ) => Build<ReadonlyArray<readonly [Primitive, ModuleWithExtension]>> = subdir => C =>
   pipe(
     TE.Do,
@@ -41,41 +41,41 @@ const getUppercaseModules: (
         [
           ...pipe(
             s,
-            RA.map(name => tuple('string' as const, name))
+            RA.map(name => tuple('string' as const, name)),
           ),
           ...pipe(
             n,
-            RA.map(name => tuple('number' as const, name))
+            RA.map(name => tuple('number' as const, name)),
           ),
           ...pipe(
             d,
-            RA.map(name => tuple('date' as const, name))
+            RA.map(name => tuple('date' as const, name)),
           ),
         ],
-        RA.filter(([, name]) => isUppercase(name))
-      )
-    )
+        RA.filter(([, name]) => isUppercase(name)),
+      ),
+    ),
   )
 
 const renameToLowercase: (
-  subdir: string
+  subdir: string,
 ) => (mod: readonly [Primitive, ModuleWithExtension]) => Build<void> =
   subdir =>
   ([prim, name]) =>
   C =>
     pipe(
       C.exec(
-        `git mv ${subdir}/${prim}/${name} ${subdir}/${prim}/${camelFromPascal(name)}`
+        `git mv ${subdir}/${prim}/${name} ${subdir}/${prim}/${camelFromPascal(name)}`,
       ),
       TE.chainFirstIOK(() =>
         Cons.log(
           Color.green(
             `✔️ Renamed ${subdir}/${prim}/${name} to ${subdir}/${prim}/${camelFromPascal(
-              name
-            )}`
-          )
-        )
-      )
+              name,
+            )}`,
+          ),
+        ),
+      ),
     )
 
 const main: Build<void> = pipe(
@@ -83,17 +83,17 @@ const main: Build<void> = pipe(
   RTE.apS('modules', getUppercaseModules('src')),
   RTE.apS('testModules', getUppercaseModules('tests')),
   RTE.chainFirst(({ modules }) =>
-    pipe(modules, RA.traverse(RTE.ApplicativeSeq)(renameToLowercase('src')))
+    pipe(modules, RA.traverse(RTE.ApplicativeSeq)(renameToLowercase('src'))),
   ),
   RTE.chainFirst(({ testModules }) =>
-    pipe(testModules, RA.traverse(RTE.ApplicativeSeq)(renameToLowercase('tests')))
+    pipe(testModules, RA.traverse(RTE.ApplicativeSeq)(renameToLowercase('tests'))),
   ),
-  RTE.chainIOK(() => Cons.log(Color.green('Done!')))
+  RTE.chainIOK(() => Cons.log(Color.green('Done!'))),
 )
 
 run(
   main({
     ...fileSystem,
     ...cli,
-  })
+  }),
 )

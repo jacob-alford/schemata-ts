@@ -10,12 +10,12 @@
 import { pipe } from 'fp-ts/function'
 import * as PB from '../../PatternBuilder'
 import { make, SchemaExt } from '../../SchemaExt'
-import { Brand } from 'io-ts'
+import { Branded } from 'io-ts'
 
 /** @internal */
-type EmailAddressBrand = Brand<{
+interface EmailAddressBrand {
   readonly EmailAddress: unique symbol
-}>
+}
 
 /**
  * Represents strings (email addresses) that conform to the RFC 5322 standard.
@@ -23,7 +23,7 @@ type EmailAddressBrand = Brand<{
  * @since 1.0.0
  * @category Model
  */
-export type EmailAddress = string & EmailAddressBrand
+export type EmailAddress = Branded<string, EmailAddressBrand>
 
 /**
  * @since 1.0.0
@@ -35,7 +35,7 @@ export type EmailAddressS = SchemaExt<string, EmailAddress>
 const localPartQuoted = pipe(
   PB.char('"'),
   PB.then(PB.atLeastOne({ greedy: true })(PB.characterClass(true, '"', [0, 0x1f]))),
-  PB.then(PB.char('"'))
+  PB.then(PB.char('"')),
 )
 
 const localPartUnquotedAllowedCharacters = PB.characterClass(
@@ -54,7 +54,7 @@ const localPartUnquotedAllowedCharacters = PB.characterClass(
   ' ',
   '\t',
   '@',
-  '"'
+  '"',
 )
 
 // [^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*
@@ -65,9 +65,9 @@ const localPartUnquoted = pipe(
       PB.char('.'),
       PB.then(PB.atLeastOne({ greedy: true })(localPartUnquotedAllowedCharacters)),
       PB.subgroup,
-      PB.anyNumber({ greedy: true })
-    )
-  )
+      PB.anyNumber({ greedy: true }),
+    ),
+  ),
 )
 const localPart = pipe(localPartUnquoted, PB.or(localPartQuoted), PB.subgroup)
 
@@ -84,8 +84,8 @@ const domainIpAddress = pipe(
     ipAddressByte,
     PB.char('.'),
     ipAddressByte,
-    PB.char(']')
-  )
+    PB.char(']'),
+  ),
 )
 
 // ([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}
@@ -96,7 +96,7 @@ const domainName = pipe(
   PB.then(PB.char('.')),
   PB.subgroup,
   PB.atLeastOne({ greedy: true }),
-  PB.then(PB.atLeast(2)(PB.alpha))
+  PB.then(PB.atLeast(2)(PB.alpha)),
 )
 
 const domain = pipe(domainIpAddress, PB.or(domainName), PB.subgroup)
@@ -108,7 +108,7 @@ const domain = pipe(domainIpAddress, PB.or(domainName), PB.subgroup)
 export const emailAddress: PB.Pattern = pipe(
   localPart,
   PB.then(PB.char('@')),
-  PB.then(domain)
+  PB.then(domain),
 )
 
 /**
@@ -118,5 +118,5 @@ export const emailAddress: PB.Pattern = pipe(
  * @category Schema
  */
 export const EmailAddress: EmailAddressS = make(s =>
-  s.brand<EmailAddressBrand>()(s.pattern(emailAddress, 'EmailAddress'))
+  s.brand<EmailAddressBrand>()(s.pattern(emailAddress, 'EmailAddress')),
 )

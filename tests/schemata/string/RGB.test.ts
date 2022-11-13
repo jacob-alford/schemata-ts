@@ -1,35 +1,53 @@
-import * as E from 'fp-ts/Either'
 import * as RA from 'fp-ts/ReadonlyArray'
+import * as E from 'fp-ts/Either'
 import { pipe, tuple } from 'fp-ts/function'
-import { Ascii } from '../../../src/schemata/string/Ascii'
+import { RGB } from '../../../src/schemata/string/RGB'
 import { getAllInstances, validateArbitrary } from '../../../test-utils'
 
+const instances = getAllInstances(RGB)
+
 const valid: ReadonlyArray<string> = [
-  'foobar',
-  '0987654321',
-  'test@example.com',
-  '1234abcDEF',
+  'rgb(0,0,0)',
+  'rgb(255,255,255)',
+  'rgba(0,0,0,0)',
+  'rgba(255,255,255,1)',
+  'rgba(255,255,255,.1)',
+  'rgba(255,255,255,0.1)',
+  'rgba(255,255,255,.12)',
+  'rgb(5%,5%,5%)',
+  'rgba(5%,5%,5%,.3)',
 ]
 
-const invalid: ReadonlyArray<string> = ['ｆｏｏbar', 'ｘｙｚ０９８', '１２３456', 'ｶﾀｶﾅ']
+const invalid: ReadonlyArray<string> = [
+  'rgb(0,0,0,)',
+  'rgb(0,0,)',
+  'rgb(0,0,256)',
+  'rgb()',
+  'rgba(0,0,0)',
+  'rgba(255,255,255,2)',
+  'rgba(255,255,256,0.1)',
+  'rgb(4,4,5%)',
+  'rgba(5%,5%,5%)',
+  'rgba(3,3,3%,.3)',
+  'rgb(101%,101%,101%)',
+  'rgba(3%,3%,101%,0.3)',
+]
 
-describe('instances', () => {
-  const instances = getAllInstances(Ascii)
-
+describe('RGB', () => {
   describe('Decoder', () => {
     test.each(valid)('validates valid string %s', str => {
       const result = instances.Decoder.decode(str)
       expect(result._tag).toBe('Right')
     })
 
-    test.each(invalid)('catches invalid string %s', str => {
+    test.each(invalid)('catches bad string %s', str => {
       const result = instances.Decoder.decode(str)
       expect(result._tag).toBe('Left')
     })
   })
 
   describe('Encoder', () => {
-    test.each(valid)('encoding a decoded value yields original value (%s)', original => {
+    test.each(valid)('encoding a decoded value yields original value', original => {
       const roundtrip = pipe(
         original,
         instances.Decoder.decode,
@@ -42,7 +60,7 @@ describe('instances', () => {
 
   describe('Eq', () => {
     test.each(RA.zipWith(valid, valid, tuple))(
-      'determines two strings (%s) are equal',
+      'determines two strings are equal',
       (str1, str2) => {
         const guard = instances.Guard.is
         const eq = instances.Eq.equals
@@ -60,7 +78,7 @@ describe('instances', () => {
       expect(result).toBe(true)
     })
 
-    test.each(invalid)('catches invalid string %s', str => {
+    test.each(invalid)('catches bad string %s', str => {
       const result = instances.Guard.is(str)
       expect(result).toBe(false)
     })
@@ -72,7 +90,7 @@ describe('instances', () => {
       expect(result._tag).toBe('Right')
     })
 
-    test.each(invalid)('catches invalid string %s', async str => {
+    test.each(invalid)('catches bad string %s', async str => {
       const result = await instances.TaskDecoder.decode(str)()
       expect(result._tag).toBe('Left')
     })
@@ -84,14 +102,14 @@ describe('instances', () => {
       expect(result._tag).toBe('Right')
     })
 
-    test.each(invalid)('catches invalid string %s', str => {
+    test.each(invalid)('catches bad string %s', str => {
       const result = instances.Type.decode(str)
       expect(result._tag).toBe('Left')
     })
   })
 
   describe('Arbitrary', () => {
-    it('generates valid instances', () => {
+    it('generates valid RGB', () => {
       validateArbitrary(instances, instances.Guard.is)
     })
   })

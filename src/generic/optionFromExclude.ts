@@ -27,7 +27,7 @@ import { flow, SK } from 'fp-ts/function'
 export type SchemableParams<S> = <A, B extends A, E>(
   exclude: B,
   sa: HKT2<S, E, A>,
-  eqA?: Eq_.Eq<A>
+  eqA?: Eq_.Eq<A>,
 ) => HKT2<S, E | B, O.Option<A>>
 
 /**
@@ -37,7 +37,7 @@ export type SchemableParams<S> = <A, B extends A, E>(
 export type SchemableParams1<S extends URIS> = <A, B extends A>(
   exclude: B,
   sa: Kind<S, A>,
-  eqA?: Eq_.Eq<A>
+  eqA?: Eq_.Eq<A>,
 ) => Kind<S, O.Option<A>>
 
 /**
@@ -47,7 +47,7 @@ export type SchemableParams1<S extends URIS> = <A, B extends A>(
 export type SchemableParams2<S extends URIS2> = <A, B extends A, E>(
   exclude: B,
   sa: Kind2<S, E, A>,
-  eqA?: Eq_.Eq<A>
+  eqA?: Eq_.Eq<A>,
 ) => Kind2<S, E | B, O.Option<A>>
 
 /**
@@ -57,7 +57,7 @@ export type SchemableParams2<S extends URIS2> = <A, B extends A, E>(
 export type SchemableParams2C<S extends URIS2> = <A, B extends A>(
   exclude: B,
   sa: Kind2<S, unknown, A>,
-  eqA?: Eq_.Eq<A>
+  eqA?: Eq_.Eq<A>,
 ) => Kind2<S, unknown, O.Option<A>>
 
 /**
@@ -75,7 +75,7 @@ export const Decoder: SchemableParams2C<D.URI> = (exclude, sa, eqA = Eq_.eqStric
 export const Encoder: SchemableParams2<Enc.URI> = (exclude, sa) => ({
   encode: flow(
     O.getOrElseW(() => exclude),
-    sa.encode
+    sa.encode,
   ),
 })
 
@@ -97,7 +97,7 @@ export const Guard: SchemableParams1<G.URI> = (_, guardA) =>
     G.struct({
       _tag: G.literal('Some'),
       value: guardA,
-    })
+    }),
   )
 
 /**
@@ -107,7 +107,7 @@ export const Guard: SchemableParams1<G.URI> = (_, guardA) =>
 export const TaskDecoder: SchemableParams2C<TD.URI> = (
   exclude,
   sa,
-  eqA = Eq_.eqStrict
+  eqA = Eq_.eqStrict,
 ) => ({
   decode: flow(sa.decode, TE.map(O.fromPredicate(a => !eqA.equals(a, exclude)))),
 })
@@ -124,7 +124,7 @@ export const Type: SchemableParams1<t.URI> = (_, typeA) =>
     t.struct({
       _tag: t.literal('Some'),
       value: typeA,
-    })
+    }),
   )
 
 /**
@@ -134,7 +134,7 @@ export const Type: SchemableParams1<t.URI> = (_, typeA) =>
 export const Arbitrary: SchemableParams1<Arb.URI> = (_, arbA) =>
   fc.oneof(
     Arb.struct({ _tag: Arb.literal('None') }),
-    Arb.struct({ _tag: Arb.literal('Some'), value: arbA })
+    Arb.struct({ _tag: Arb.literal('Some'), value: arbA }),
   )
 
 /**

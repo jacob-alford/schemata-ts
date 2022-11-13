@@ -27,7 +27,7 @@ export interface Arbitrary<A> extends fc.Arbitrary<A> {}
  */
 export const literal = <
   A extends readonly [L, ...ReadonlyArray<L>],
-  L extends S.Literal = S.Literal
+  L extends S.Literal = S.Literal,
 >(
   ...values: A
 ): Arbitrary<A[number]> => fc.oneof(...values.map(v => fc.constant(v)))
@@ -45,7 +45,7 @@ export const string: Arbitrary<string> = fc.oneof(
   fc.asciiString(),
   fc.fullUnicodeString(),
   fc.hexaString(),
-  fc.lorem()
+  fc.lorem(),
 )
 
 /**
@@ -55,7 +55,7 @@ export const string: Arbitrary<string> = fc.oneof(
 export const number: Arbitrary<number> = fc.oneof(
   fc.float({ noDefaultInfinity: true, noNaN: true }),
   fc.double({ noDefaultInfinity: true, noNaN: true }),
-  fc.integer()
+  fc.integer(),
 )
 
 /**
@@ -76,7 +76,7 @@ export const UnknownArray: Arbitrary<Array<unknown>> = fc.array(fc.anything())
  */
 export const UnknownRecord: Arbitrary<Record<string, unknown>> = fc.dictionary(
   string,
-  fc.anything()
+  fc.anything(),
 )
 
 // -------------------------------------------------------------------------------------
@@ -182,7 +182,7 @@ export const intersect =
  */
 export const sum =
   <T extends string>(
-    _tag: T // eslint-disable-line @typescript-eslint/no-unused-vars
+    _tag: T, // eslint-disable-line @typescript-eslint/no-unused-vars
   ) =>
   <A>(members: { [K in keyof A]: Arbitrary<A[K] & Record<T, K>> }): Arbitrary<
     A[keyof A]

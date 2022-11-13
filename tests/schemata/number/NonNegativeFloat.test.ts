@@ -29,7 +29,10 @@ const invalidNumbers = [
 describe('NonNegativeFloat', () => {
   describe('Decoder', () => {
     test.each(
-      cat(combineExpected(validNumbers, 'Right'), combineExpected(invalidNumbers, 'Left'))
+      cat(
+        combineExpected(validNumbers, 'Right'),
+        combineExpected(invalidNumbers, 'Left'),
+      ),
     )('validates valid numbers, and catches bad numbers', (num, expectedTag) => {
       const result = Decoder.decode(num)
       expect(result._tag).toBe(expectedTag)
@@ -41,12 +44,12 @@ describe('NonNegativeFloat', () => {
       (num1, num2) => {
         if (!Guard.is(num1) || !Guard.is(num2)) throw new Error('Unexpected result')
         expect(Eq.equals(num1, num2)).toBe(true)
-      }
+      },
     )
   })
   describe('Guard', () => {
     test.each(
-      cat(combineExpected(validNumbers, true), combineExpected(invalidNumbers, false))
+      cat(combineExpected(validNumbers, true), combineExpected(invalidNumbers, false)),
     )('validates valid numbers, and catches bad numbers', (num, expectedTag) => {
       const result = Guard.is(num)
       expect(result).toBe(expectedTag)
@@ -54,7 +57,10 @@ describe('NonNegativeFloat', () => {
   })
   describe('TaskDecoder', () => {
     test.each(
-      cat(combineExpected(validNumbers, 'Right'), combineExpected(invalidNumbers, 'Left'))
+      cat(
+        combineExpected(validNumbers, 'Right'),
+        combineExpected(invalidNumbers, 'Left'),
+      ),
     )('validates valid numbers, and catches bad numbers', async (num, expectedTag) => {
       const result = await TaskDecoder.decode(num)()
       expect(result._tag).toBe(expectedTag)
@@ -62,7 +68,10 @@ describe('NonNegativeFloat', () => {
   })
   describe('Type', () => {
     test.each(
-      cat(combineExpected(validNumbers, 'Right'), combineExpected(invalidNumbers, 'Left'))
+      cat(
+        combineExpected(validNumbers, 'Right'),
+        combineExpected(invalidNumbers, 'Left'),
+      ),
     )('validates valid numbers, and catches bad numbers', (num, expectedTag) => {
       const result = Type.decode(num)
       expect(result._tag).toBe(expectedTag)

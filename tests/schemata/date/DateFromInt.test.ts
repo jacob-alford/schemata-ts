@@ -4,7 +4,7 @@ import { getAllInstances, validateArbitrary } from '../../../test-utils'
 import { pipe } from 'fp-ts/function'
 
 const { Arbitrary, Decoder, Encoder, Eq, Guard, TaskDecoder, Type } = getAllInstances(
-  DateFromInt.DateFromInt
+  DateFromInt.DateFromInt,
 )
 
 const nowish = 1667162645986
@@ -41,7 +41,7 @@ describe('DateFromInt', () => {
         original,
         Decoder.decode,
         E.map(Encoder.encode),
-        E.getOrElseW(() => 'unexpected')
+        E.getOrElseW(() => 'unexpected'),
       )
       expect(original).toEqual(roundtrip)
     })

@@ -93,7 +93,7 @@ describe('EmailAddress', () => {
         original,
         instances.Decoder.decode,
         E.map(instances.Encoder.encode),
-        E.getOrElseW(() => 'unexpected')
+        E.getOrElseW(() => 'unexpected'),
       )
       expect(original).toEqual(roundtrip)
     })
@@ -109,7 +109,7 @@ describe('EmailAddress', () => {
           throw new Error('Unexpected result')
         }
         expect(eq(str1, str2)).toBe(true)
-      }
+      },
     )
   })
 
@@ -119,7 +119,7 @@ describe('EmailAddress', () => {
       (str, expectedTag) => {
         const result = instances.Guard.is(str)
         expect(result).toBe(expectedTag)
-      }
+      },
     )
   })
 

@@ -11,8 +11,8 @@ export function run<A>(eff: TaskEither<Error, A>): void {
         },
         () => {
           process.exitCode = 0
-        }
-      )
+        },
+      ),
     )
     .catch(e => {
       console.error(`\n❌ ${Color.red(e)}\n\n`)

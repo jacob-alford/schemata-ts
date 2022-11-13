@@ -7,7 +7,7 @@ const _: (n: string) => NonEmptyString.NonEmptyString = unsafeCoerce
 const make: () => NonEmptyString.NonEmptyString = () => _(`${Math.random()}`)
 
 const { Arbitrary, Decoder, Eq, Guard, Type } = getAllInstances(
-  NonEmptyString.NonEmptyString
+  NonEmptyString.NonEmptyString,
 )
 
 describe('NonEmptyString', () => {

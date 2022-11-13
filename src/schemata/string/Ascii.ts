@@ -6,11 +6,13 @@
 
 import * as PB from '../../PatternBuilder'
 import { make, SchemaExt } from '../../SchemaExt'
-import { Brand } from 'io-ts'
+import { Branded } from 'io-ts'
 import { pipe } from 'fp-ts/function'
 
 /** @internal */
-type AsciiBrand = Brand<{ readonly x: unique symbol }['x']>
+interface AsciiBrand {
+  readonly Ascii: unique symbol
+}
 
 /**
  * A string of ASCII characters.
@@ -18,7 +20,7 @@ type AsciiBrand = Brand<{ readonly x: unique symbol }['x']>
  * @since 1.0.0
  * @category Model
  */
-export type Ascii = string & AsciiBrand
+export type Ascii = Branded<string, AsciiBrand>
 
 /**
  * @since 1.0.0
@@ -32,7 +34,7 @@ export type AsciiS = SchemaExt<string, Ascii>
  */
 export const ascii: PB.Pattern = pipe(
   PB.characterClass(false, [0x00, 0x7f]),
-  PB.atLeastOne()
+  PB.atLeastOne(),
 )
 
 /**

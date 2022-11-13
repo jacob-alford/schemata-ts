@@ -8,11 +8,13 @@
 
 import * as PB from '../../PatternBuilder'
 import { make, SchemaExt } from '../../SchemaExt'
-import { Brand } from 'io-ts'
+import { Branded } from 'io-ts'
 import { pipe } from 'fp-ts/function'
 
 /** @internal */
-type Base64Brand = Brand<{ readonly Base64: unique symbol }['Base64']>
+interface Base64Brand {
+  readonly Base64: unique symbol
+}
 
 /**
  * Representing a Base64-encoded string.
@@ -22,7 +24,7 @@ type Base64Brand = Brand<{ readonly Base64: unique symbol }['Base64']>
  * @since 1.0.0
  * @category Model
  */
-export type Base64 = string & Base64Brand
+export type Base64 = Branded<string, Base64Brand>
 
 /**
  * @since 1.0.0
@@ -47,7 +49,7 @@ export const base64: PB.Pattern = pipe(
   PB.then(pipe(base64Characters, PB.between(2, 4))),
   PB.then(pipe(PB.char('='), PB.between(0, 2))),
   PB.subgroup,
-  PB.maybe
+  PB.maybe,
 )
 
 /**
@@ -66,8 +68,8 @@ export const Base64: Base64S = make(S =>
         by: 'ExactLength',
         exactLength: s => s.length + ((4 - (s.length % 4)) % 4),
       },
-      '='
+      '=',
     ),
-    S.brand<Base64Brand>()
-  )
+    S.brand<Base64Brand>(),
+  ),
 )

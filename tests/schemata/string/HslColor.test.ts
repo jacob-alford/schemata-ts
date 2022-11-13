@@ -3,9 +3,12 @@ import * as E from 'fp-ts/Either'
 
 import { pipe, tuple } from 'fp-ts/function'
 
-import * as HslColor from '../../src/string/hslColor'
+import { HslColor, HslPattern } from '../../../src/schemata/string/HslColor'
 
-import { cat, combineExpected, validateArbitrary } from '../../test-utils'
+import { getAllInstances, validateArbitrary } from '../../../test-utils'
+import { regexFromPattern } from '../../../src/PatternBuilder'
+
+const instances = getAllInstances(HslColor)
 
 const validStrings = [
   'hsl(360,0000000000100%,000000100%)',
@@ -22,8 +25,8 @@ const validStrings = [
   'hsl(+540gRaD, 03%, 4%, 500)',
   'hsl(+540.01e-98rad, 03%, 4%, 500)',
   'hsl(-540.5turn, 03%, 4%, 500)',
-  'hsl(+540, 03%, 4%, 500e-01)',
   'hsl(+540, 03%, 4%, 500e+80)',
+  'hsl(+540, 03%, 4%, 500e-01)',
   'hsl(4.71239rad, 60%, 70%)',
   'hsl(270deg, 60%, 70%)',
   'hsl(200, +.1%, 62%, 1)',
@@ -53,12 +56,16 @@ const invalidStrings = [
 
 describe('HslColor', () => {
   describe('Decoder', () => {
-    test.each(
-      cat(combineExpected(validStrings, 'Right'), combineExpected(invalidStrings, 'Left'))
-    )('validates valid strings, and catches bad strings', (str, expectedTag) => {
-      const result = HslColor.Decoder.decode(str)
+    test.each(validStrings)('validates valid string %s', str => {
+      const result = instances.Decoder.decode(str)
 
-      expect(result._tag).toBe(expectedTag)
+      expect(result._tag).toBe('Right')
+    })
+
+    test.each(invalidStrings)('catches invalid string %s', str => {
+      const result = instances.Decoder.decode(str)
+
+      expect(result._tag).toBe('Left')
     })
   })
 
@@ -68,13 +75,13 @@ describe('HslColor', () => {
       original => {
         const roundtrip = pipe(
           original,
-          HslColor.Decoder.decode,
-          E.map(HslColor.Encoder.encode),
-          E.getOrElse(() => 'invalid')
+          instances.Decoder.decode,
+          E.map(instances.Encoder.encode),
+          E.getOrElse(() => 'invalid'),
         )
 
         expect(original).toEqual(roundtrip)
-      }
+      },
     )
   })
 
@@ -83,51 +90,65 @@ describe('HslColor', () => {
       'determines two strings are equal',
 
       (str1, str2) => {
-        const guard = HslColor.Guard.is
-        const eq = HslColor.Eq.equals
+        const guard = instances.Guard.is
+        const eq = instances.Eq.equals
 
         if (!guard(str1) || !guard(str2)) {
           throw new Error('Unexpected result')
         }
 
         expect(eq(str1, str2)).toBe(true)
-      }
+      },
     )
   })
 
   describe('Guard', () => {
-    test.each(
-      cat(combineExpected(validStrings, true), combineExpected(invalidStrings, false))
-    )('validates valid strings, and catches bad strings', (str, expectedTag) => {
-      const result = HslColor.Guard.is(str)
+    test.each(validStrings)('validates valid string %s', str => {
+      const result = instances.Guard.is(str)
 
-      expect(result).toBe(expectedTag)
+      expect(result).toBe(true)
+    })
+
+    test.each(invalidStrings)('catches invalid string %s', str => {
+      const result = instances.Guard.is(str)
+
+      expect(result).toBe(false)
     })
   })
 
   describe('TaskDecoder', () => {
-    test.each(
-      cat(combineExpected(validStrings, 'Right'), combineExpected(invalidStrings, 'Left'))
-    )('validates valid strings, and catches bad strings', async (str, expectedTag) => {
-      const result = await HslColor.TaskDecoder.decode(str)()
+    test.each(validStrings)('validates valid string %s', async str => {
+      const result = await instances.TaskDecoder.decode(str)()
 
-      expect(result._tag).toBe(expectedTag)
+      expect(result._tag).toBe('Right')
+    })
+
+    test.each(invalidStrings)('catches invalid string %s', async str => {
+      const result = await instances.TaskDecoder.decode(str)()
+
+      expect(result._tag).toBe('Left')
     })
   })
 
   describe('Type', () => {
-    test.each(
-      cat(combineExpected(validStrings, 'Right'), combineExpected(invalidStrings, 'Left'))
-    )('validates valid strings, and catches bad strings', (str, expectedTag) => {
-      const result = HslColor.Type.decode(str)
+    test.each(validStrings)('validates valid string %s', str => {
+      const result = instances.Type.decode(str)
 
-      expect(result._tag).toBe(expectedTag)
+      expect(result._tag).toBe('Right')
+    })
+
+    test.each(invalidStrings)('catches invalid string %s', str => {
+      const result = instances.Type.decode(str)
+
+      expect(result._tag).toBe('Left')
     })
   })
 
   describe('Arbitrary', () => {
     it('generates valid HslColors', () => {
-      validateArbitrary(HslColor, HslColor.isHslColor)
+      validateArbitrary(instances, instances.Guard.is)
     })
   })
+
+  console.log(regexFromPattern(HslPattern).source)
 })

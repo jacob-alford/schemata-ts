@@ -6,12 +6,14 @@
 
 import * as PB from '../../PatternBuilder'
 import { make, SchemaExt } from '../../SchemaExt'
-import { Brand } from 'io-ts'
+import { Branded } from 'io-ts'
 import { pipe } from 'fp-ts/function'
 import { base64Url } from './Base64Url'
 
 /** @internal */
-type JwtBrand = Brand<{ readonly Jwt: unique symbol }['Jwt']>
+interface JwtBrand {
+  readonly Jwt: unique symbol
+}
 
 /**
  * A valid, Base64-encoded JWT.
@@ -19,7 +21,7 @@ type JwtBrand = Brand<{ readonly Jwt: unique symbol }['Jwt']>
  * @since 1.0.0
  * @category Model
  */
-export type Jwt = string & JwtBrand
+export type Jwt = Branded<string, JwtBrand>
 
 /**
  * @since 1.0.0
@@ -38,8 +40,8 @@ export const jwt: PB.Pattern = pipe(
   PB.then(PB.char('.')),
   PB.then(PB.subgroup(base64Url)),
   PB.then(
-    pipe(PB.char('.'), PB.then(PB.subgroup(base64Url)), PB.subgroup, PB.between(0, 1))
-  )
+    pipe(PB.char('.'), PB.then(PB.subgroup(base64Url)), PB.subgroup, PB.between(0, 1)),
+  ),
 )
 
 /**

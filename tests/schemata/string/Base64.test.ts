@@ -3,7 +3,7 @@ import * as Base64 from '../../../src/schemata/string/Base64'
 import { getAllInstances, validateArbitrary } from '../../../test-utils'
 
 const { Arbitrary, Decoder, Eq, Guard, TaskDecoder, Type } = getAllInstances(
-  Base64.Base64
+  Base64.Base64,
 )
 
 const validStrings = [
@@ -131,12 +131,12 @@ IUqUviQNw7SX41v90N39iNP3JmczkN8J70+o7NLYlcvp4xXIFOcRaDrinbCcXT1WfQ==`
       expect(Decoder.decode('12345')._tag).toEqual('Left')
       expect(
         Decoder.decode(
-          'TG9yZW0gaXBzdW0gZG9sb3Igc2l0IGFtZXQsIGNvbnNlY3RldHVyIGFkaXBpc2NpbmcgZWxpdC4='
-        )
+          'TG9yZW0gaXBzdW0gZG9sb3Igc2l0IGFtZXQsIGNvbnNlY3RldHVyIGFkaXBpc2NpbmcgZWxpdC4=',
+        ),
       ).toEqual(
         E.right(
-          'TG9yZW0gaXBzdW0gZG9sb3Igc2l0IGFtZXQsIGNvbnNlY3RldHVyIGFkaXBpc2NpbmcgZWxpdC4='
-        )
+          'TG9yZW0gaXBzdW0gZG9sb3Igc2l0IGFtZXQsIGNvbnNlY3RldHVyIGFkaXBpc2NpbmcgZWxpdC4=',
+        ),
       )
     })
   })

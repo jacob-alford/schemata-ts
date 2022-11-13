@@ -71,7 +71,7 @@ export type SchemableParams1<S extends URIS> = (params?: IntParams) => Kind<S, I
  * @category Model
  */
 export type SchemableParams2<S extends URIS2> = (
-  params?: IntParams
+  params?: IntParams,
 ) => Kind2<S, number, Int>
 
 /**
@@ -79,7 +79,7 @@ export type SchemableParams2<S extends URIS2> = (
  * @category Model
  */
 export type SchemableParams2C<S extends URIS2> = (
-  params?: IntParams
+  params?: IntParams,
 ) => Kind2<S, unknown, Int>
 
 /**

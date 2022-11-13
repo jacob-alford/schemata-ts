@@ -4,13 +4,13 @@
  * @since 1.0.0
  */
 import { make, SchemaExt } from '../../SchemaExt'
-import { Brand } from 'io-ts'
+import { Branded } from 'io-ts'
 import { pipe } from 'fp-ts/function'
 
 /** @internal */
-type NonEmptyStringBrand = Brand<
-  { readonly NonEmptyString: unique symbol }['NonEmptyString']
->
+interface NonEmptyStringBrand {
+  readonly NonEmptyString: unique symbol
+}
 
 /**
  * A string with length greater than one
@@ -18,7 +18,7 @@ type NonEmptyStringBrand = Brand<
  * @since 1.0.0
  * @category Model
  */
-export type NonEmptyString = string & NonEmptyStringBrand
+export type NonEmptyString = Branded<string, NonEmptyStringBrand>
 
 /**
  * @since 1.0.0
@@ -36,6 +36,6 @@ export const NonEmptyString: NonEmptyStringS = make(S =>
   pipe(
     S.string,
     S.refine((s): s is NonEmptyString => s.length > 0, 'NonEmptyString'),
-    S.brand<NonEmptyStringBrand>()
-  )
+    S.brand<NonEmptyStringBrand>(),
+  ),
 )

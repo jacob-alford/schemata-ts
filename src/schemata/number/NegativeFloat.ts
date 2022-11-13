@@ -11,12 +11,12 @@
  */
 import { pipe } from 'fp-ts/function'
 import { make, SchemaExt } from '../../SchemaExt'
-import { Brand } from 'io-ts'
+import { Branded } from 'io-ts'
 
 /** @internal */
-type NegativeFloatBrand = Brand<
-  { readonly NegativeFloat: unique symbol }['NegativeFloat']
->
+interface NegativeFloatBrand {
+  readonly NegativeFloat: unique symbol
+}
 
 /**
  * Negative floating point branded newtype.
@@ -30,7 +30,7 @@ type NegativeFloatBrand = Brand<
  * @since 1.0.0
  * @category Model
  */
-export type NegativeFloat = number & NegativeFloatBrand
+export type NegativeFloat = Branded<number, NegativeFloatBrand>
 
 /**
  * @since 1.0.0
@@ -51,5 +51,5 @@ export type NegativeFloatS = SchemaExt<number, NegativeFloat>
  * @category Schema
  */
 export const NegativeFloat: NegativeFloatS = make(S =>
-  pipe(S.float({ max: -Number.MIN_VALUE }), S.brand<NegativeFloatBrand>())
+  pipe(S.float({ max: -Number.MIN_VALUE }), S.brand<NegativeFloatBrand>()),
 )
