@@ -11,6 +11,8 @@ import { SchemableExt1 } from './SchemableExt'
 /** Schemables */
 import * as WithBrand from './schemables/WithBrand'
 import * as WithCheckDigit from './schemables/WithCheckDigit'
+import * as WithFloat from './schemables/WithFloat'
+import * as WithInt from './schemables/WithInt'
 import * as WithInvariant from './schemables/WithInvariant'
 import * as WithPadding from './schemables/WithPadding'
 import * as WithPattern from './schemables/WithPattern'
@@ -22,13 +24,6 @@ import * as mapFromEntries from './generic/mapFromEntries'
 import * as optionFromExclude from './generic/optionFromExclude'
 import * as optionFromNullable from './generic/optionFromNullable'
 import * as optionFromUndefined from './generic/optionFromUndefined'
-
-/** Number */
-import * as bigIntFromString from './number/bigIntFromString'
-import * as float from './number/float'
-import * as floatFromString from './number/floatFromString'
-import * as int from './number/int'
-import * as intFromString from './number/intFromString'
 
 /** Date */
 import * as date from './date/date'
@@ -42,6 +37,8 @@ export const Schemable: SchemableExt1<Eq.URI> = {
   ...Eq.Schemable,
   ...WithBrand.Eq,
   ...WithCheckDigit.Eq,
+  ...WithFloat.Eq,
+  ...WithInt.Eq,
   ...WithInvariant.Eq,
   ...WithPadding.Eq,
   ...WithPattern.Eq,
@@ -51,11 +48,6 @@ export const Schemable: SchemableExt1<Eq.URI> = {
   optionFromExclude: optionFromExclude.Eq,
   optionFromNullable: optionFromNullable.Eq,
   optionFromUndefined: optionFromUndefined.Eq,
-  bigIntFromString: bigIntFromString.Eq,
-  float: float.Eq,
-  floatFromString: floatFromString.Eq,
-  int: int.Eq,
-  intFromString: intFromString.Eq,
   date: date.Eq,
   dateFromIsoString: dateFromIsoString.Eq,
 }

@@ -1,6 +1,7 @@
 import * as ts from 'typescript'
 import * as Cons from 'fp-ts/Console'
-import { flow, pipe, tuple } from 'fp-ts/function'
+import { flow, pipe, tuple, unsafeCoerce } from 'fp-ts/function'
+import * as E from 'fp-ts/Either'
 import * as O from 'fp-ts/Option'
 import * as RA from 'fp-ts/ReadonlyArray'
 import * as RNEA from 'fp-ts/ReadonlyNonEmptyArray'
@@ -24,7 +25,6 @@ const _ = ts.factory
 type SchemableCombinators = {
   generic: ReadonlyArray<readonly [string, string]>
   date: ReadonlyArray<readonly [string, string]>
-  number: ReadonlyArray<readonly [string, string]>
 }
 
 type Schemable = [name: `With${string}`, path: string]
@@ -117,28 +117,6 @@ export const makeSchemableExtTypeclass: (
         ),
       ),
       ...pipe(
-        combinators.number,
-        RA.map(([combinator, comment]) =>
-          ts.addSyntheticLeadingComment(
-            _.createPropertySignature(
-              [_.createModifier(ts.SyntaxKind.ReadonlyKeyword)],
-              _.createIdentifier(combinator),
-              undefined,
-              _.createTypeReferenceNode(
-                _.createQualifiedName(
-                  _.createIdentifier(combinator),
-                  _.createIdentifier(`SchemableParams${suffix}`),
-                ),
-                [_.createTypeReferenceNode(_.createIdentifier('S'), undefined)],
-              ),
-            ),
-            ts.SyntaxKind.MultiLineCommentTrivia,
-            `* ${comment}`,
-            true,
-          ),
-        ),
-      ),
-      ...pipe(
         combinators.date,
         RA.map(([combinator, comment]) =>
           ts.addSyntheticLeadingComment(
@@ -197,13 +175,6 @@ const makeSchemableExtContents: (
         combinators.generic,
         RA.map(([combinator]) =>
           makeModuleStarImport(combinator, `./generic/${combinator}`),
-        ),
-      ),
-      _.createJSDocComment('number'),
-      ...pipe(
-        combinators.number,
-        RA.map(([combinator]) =>
-          makeModuleStarImport(combinator, `./number/${combinator}`),
         ),
       ),
       _.createJSDocComment('date'),
@@ -319,18 +290,6 @@ const makeSchemableInstance: (
                   ),
                 ),
                 ...pipe(
-                  schemableCombinators.number,
-                  RA.map(([schemableCombinatorName]) =>
-                    _.createPropertyAssignment(
-                      _.createIdentifier(schemableCombinatorName),
-                      _.createPropertyAccessExpression(
-                        _.createIdentifier(schemableCombinatorName),
-                        _.createIdentifier(instanceName),
-                      ),
-                    ),
-                  ),
-                ),
-                ...pipe(
                   schemableCombinators.date,
                   RA.map(([schemableCombinatorName]) =>
                     _.createPropertyAssignment(
@@ -387,13 +346,6 @@ const makeSchemableInstanceModuleContents: (
             makeModuleStarImport(combinator, `./generic/${combinator}`),
           ),
         ),
-        _.createJSDocComment('number'),
-        ...pipe(
-          combinators.number,
-          RA.map(([combinator]) =>
-            makeModuleStarImport(combinator, `./number/${combinator}`),
-          ),
-        ),
         _.createJSDocComment('date'),
         ...pipe(
           combinators.date,
@@ -443,6 +395,9 @@ const getModuleJSDocComment: (filePath: string) => Build<string> = filePath => C
 /** Extracts module name, e.g. ASCII.ts -> ASCII */
 const getModuleName: (file: string) => string = flow(Str.split('.'), RNEA.head)
 
+const getSchemableName: (schmable: `With${string}`) => `With${string}` =
+  unsafeCoerce(getModuleName)
+
 /** Retrieve modules found in category folders */
 const getSchemableCombinators: Build<SchemableCombinators> = C =>
   pipe(
@@ -456,21 +411,6 @@ const getSchemableCombinators: Build<SchemableCombinators> = C =>
             pipe(
               C,
               getModuleJSDocComment(`./src/date/${file}`),
-              TE.map(comment => tuple(getModuleName(file), comment)),
-            ),
-          ),
-        ),
-      ),
-    ),
-    TE.apS(
-      'number',
-      pipe(
-        C.readFiles('./src/number'),
-        TE.chain(
-          TE.traverseArray(file =>
-            pipe(
-              C,
-              getModuleJSDocComment(`./src/number/${file}`),
               TE.map(comment => tuple(getModuleName(file), comment)),
             ),
           ),
@@ -494,6 +434,25 @@ const getSchemableCombinators: Build<SchemableCombinators> = C =>
     ),
   )
 
+const getSchemables: Build<ReadonlyArray<Schemable>> = C =>
+  pipe(
+    C.readFiles('./src/schemables'),
+    TE.chain(
+      TE.traverseArray<string, `With${string}`, Error>(
+        TE.fromPredicate(
+          (file): file is `With${string}` => file.length > 4 && file.startsWith('With'),
+          file => E.toError(`File ${file} does not start with \`With\``),
+        ),
+      ),
+    ),
+    TE.map(
+      RA.map(file => {
+        const schemable = getSchemableName(file)
+        return tuple(schemable, `./schemables/${schemable}`)
+      }),
+    ),
+  )
+
 const schemableTypeclasses: ReadonlyArray<SchemableTypeclasses> = [
   ['Decoder', 'D', 'SchemableExt2C', '0.0.1'],
   ['Eq', 'Eq', 'SchemableExt1', '0.0.1'],
@@ -504,21 +463,12 @@ const schemableTypeclasses: ReadonlyArray<SchemableTypeclasses> = [
   ['Arbitrary', 'Arb', 'SchemableExt1', '0.0.3'],
 ]
 
-const schemables: ReadonlyArray<Schemable> = [
-  ['WithBrand', './schemables/WithBrand'],
-  ['WithCheckDigit', './schemables/WithCheckDigit'],
-  ['WithInvariant', './schemables/WithInvariant'],
-  ['WithPadding', './schemables/WithPadding'],
-  ['WithPattern', './schemables/WithPattern'],
-  ['WithRefine', './schemables/WithRefine'],
-  ['WithUnknownContainers', './schemables/WithUnknownContainers'],
-]
-
 const main: Build<void> = pipe(
   getSchemableCombinators,
   RTE.bindTo('combinators'),
+  RTE.apS('schemables', getSchemables),
   RTE.chainFirstIOK(() => Cons.log('Writing `Schemable` instance modules...')),
-  RTE.chainFirst(({ combinators }) =>
+  RTE.chainFirst(({ combinators, schemables }) =>
     pipe(
       schemableTypeclasses,
       RTE.traverseArray(typeclass =>
@@ -532,7 +482,7 @@ const main: Build<void> = pipe(
     ),
   ),
   RTE.chainFirstIOK(() => Cons.log('Writing `SchemableExt`...')),
-  RTE.chainFirst(({ combinators }) =>
+  RTE.chainFirst(({ combinators, schemables }) =>
     pipe(
       makeSchemableExtContents(combinators, schemables),
       writeToDisk(`./src/SchemableExt.ts`),

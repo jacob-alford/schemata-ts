@@ -11,6 +11,8 @@ import { SchemableExt2C } from './SchemableExt'
 /** Schemables */
 import * as WithBrand from './schemables/WithBrand'
 import * as WithCheckDigit from './schemables/WithCheckDigit'
+import * as WithFloat from './schemables/WithFloat'
+import * as WithInt from './schemables/WithInt'
 import * as WithInvariant from './schemables/WithInvariant'
 import * as WithPadding from './schemables/WithPadding'
 import * as WithPattern from './schemables/WithPattern'
@@ -22,13 +24,6 @@ import * as mapFromEntries from './generic/mapFromEntries'
 import * as optionFromExclude from './generic/optionFromExclude'
 import * as optionFromNullable from './generic/optionFromNullable'
 import * as optionFromUndefined from './generic/optionFromUndefined'
-
-/** Number */
-import * as bigIntFromString from './number/bigIntFromString'
-import * as float from './number/float'
-import * as floatFromString from './number/floatFromString'
-import * as int from './number/int'
-import * as intFromString from './number/intFromString'
 
 /** Date */
 import * as date from './date/date'
@@ -42,6 +37,8 @@ export const Schemable: SchemableExt2C<TD.URI> = {
   ...TD.Schemable,
   ...WithBrand.TaskDecoder,
   ...WithCheckDigit.TaskDecoder,
+  ...WithFloat.TaskDecoder,
+  ...WithInt.TaskDecoder,
   ...WithInvariant.TaskDecoder,
   ...WithPadding.TaskDecoder,
   ...WithPattern.TaskDecoder,
@@ -51,11 +48,6 @@ export const Schemable: SchemableExt2C<TD.URI> = {
   optionFromExclude: optionFromExclude.TaskDecoder,
   optionFromNullable: optionFromNullable.TaskDecoder,
   optionFromUndefined: optionFromUndefined.TaskDecoder,
-  bigIntFromString: bigIntFromString.TaskDecoder,
-  float: float.TaskDecoder,
-  floatFromString: floatFromString.TaskDecoder,
-  int: int.TaskDecoder,
-  intFromString: intFromString.TaskDecoder,
   date: date.TaskDecoder,
   dateFromIsoString: dateFromIsoString.TaskDecoder,
 }
