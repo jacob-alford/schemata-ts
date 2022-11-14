@@ -80,6 +80,18 @@ describe('IntFromString', () => {
         expect(roundtrip).toEqual(original)
       },
     )
+    it('works with default params', () => {
+      const { Decoder, Encoder } = getAllInstances(IntFromString.IntFromString())
+      const original = '123'
+      const roundtrip = pipe(
+        original,
+        Decoder.decode,
+        E.map(Encoder.encode),
+        E.getOrElse(() => 'invalid'),
+      )
+
+      expect(roundtrip).toEqual(original)
+    })
   })
   describe('Eq', () => {
     test.each(validNumbers)('determines two numbers are equal', (num, encodeToBase) => {

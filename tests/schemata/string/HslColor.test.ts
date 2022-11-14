@@ -3,10 +3,9 @@ import * as E from 'fp-ts/Either'
 
 import { pipe, tuple } from 'fp-ts/function'
 
-import { HslColor, HslPattern } from '../../../src/schemata/string/HslColor'
+import { HslColor } from '../../../src/schemata/string/HslColor'
 
 import { getAllInstances, validateArbitrary } from '../../../test-utils'
-import { regexFromPattern } from '../../../src/PatternBuilder'
 
 const instances = getAllInstances(HslColor)
 
@@ -149,6 +148,4 @@ describe('HslColor', () => {
       validateArbitrary(instances, instances.Guard.is)
     })
   })
-
-  console.log(regexFromPattern(HslPattern).source)
 })

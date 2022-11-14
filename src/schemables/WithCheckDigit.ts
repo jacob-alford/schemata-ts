@@ -181,7 +181,7 @@ export const Type: WithCheckDigit1<t.URI> = {
  * @category Combinators
  */
 export const Schema =
-  (algorithm: (s: string) => string, location: number) =>
+  (algorithm: (s: string) => string, location: number | ((s: string) => number)) =>
   <O>(
     schema: SC.SchemaExt<O, string>,
   ): SC.SchemaExt<O, Branded<string, CheckDigitVerified>> =>

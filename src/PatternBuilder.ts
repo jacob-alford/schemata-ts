@@ -592,6 +592,8 @@ export const oneOf: (
  */
 export const empty: Pattern = { tag: 'atom', kind: 'character', char: '' }
 
+// TODO @jacob-alford 22-11-13 Figure out how to test lines 602-604.  It's technically not unreachable during recursion
+// istanbul ignore next
 const integerRange_: (min: string, max: string, omitInitialZeros?: boolean) => Pattern = (
   min,
   max,
