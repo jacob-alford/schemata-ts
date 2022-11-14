@@ -5,7 +5,7 @@
  */
 import { pipe } from 'fp-ts/function'
 import { SchemaExt, make } from '../../SchemaExt'
-import * as int from '../../number/int'
+import * as int from '../../schemables/WithInt'
 import * as date from '../../date/date'
 
 /**

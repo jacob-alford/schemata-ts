@@ -272,7 +272,20 @@ const unionPay = PB.sequence(
   PB.between(8, 11)(PB.digit),
 )
 
-const cc = PB.oneOf(visa, mastercard, amex, dinersClub, discover, jcb, rupay, unionPay)
+/**
+ * @since 1.0.0
+ * @category Pattern
+ */
+export const creditCard = PB.oneOf(
+  visa,
+  mastercard,
+  amex,
+  dinersClub,
+  discover,
+  jcb,
+  rupay,
+  unionPay,
+)
 
 /**
  * Represents a credit card number; currently this should accept Visa, Mastercard,
@@ -283,7 +296,7 @@ const cc = PB.oneOf(visa, mastercard, amex, dinersClub, discover, jcb, rupay, un
  */
 export const CreditCard = make(s =>
   pipe(
-    s.pattern(cc, 'CreditCard'),
+    s.pattern(creditCard, 'CreditCard'),
     s.checkDigit(
       ccn => luhn(ccn.substring(0, ccn.length - 1)).toString(10),
       ccn => ccn.length - 1,

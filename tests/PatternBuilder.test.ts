@@ -62,6 +62,11 @@ describe('PatternBuilder', () => {
   })
 
   describe('integerRange', () => {
+    describe('invalid range', () => {
+      const pattern = PB.integerRange(Infinity, NaN)
+      const actual = PB.regexFromPattern(pattern)
+      expect(actual.source).toEqual('^()$')
+    })
     describe('one digit ranges', () => {
       test('1-9', () => {
         const pattern = PB.integerRange(1, 9)

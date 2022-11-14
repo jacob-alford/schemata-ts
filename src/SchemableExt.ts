@@ -21,6 +21,13 @@ import {
   WithCheckDigitHKT2,
 } from './schemables/WithCheckDigit'
 import {
+  WithFloat1,
+  WithFloat2,
+  WithFloat2C,
+  WithFloatHKT2,
+} from './schemables/WithFloat'
+import { WithInt1, WithInt2, WithInt2C, WithIntHKT2 } from './schemables/WithInt'
+import {
   WithInvariant1,
   WithInvariant2,
   WithInvariant2C,
@@ -57,13 +64,6 @@ import * as optionFromExclude from './generic/optionFromExclude'
 import * as optionFromNullable from './generic/optionFromNullable'
 import * as optionFromUndefined from './generic/optionFromUndefined'
 
-/** Number */
-import * as bigIntFromString from './number/bigIntFromString'
-import * as float from './number/float'
-import * as floatFromString from './number/floatFromString'
-import * as int from './number/int'
-import * as intFromString from './number/intFromString'
-
 /** Date */
 import * as date from './date/date'
 import * as dateFromIsoString from './date/dateFromIsoString'
@@ -76,6 +76,8 @@ export interface SchemableExt<S>
   extends SchemableHKT2<S>,
     WithBrandHKT2<S>,
     WithCheckDigitHKT2<S>,
+    WithFloatHKT2<S>,
+    WithIntHKT2<S>,
     WithInvariantHKT2<S>,
     WithPaddingHKT2<S>,
     WithPatternHKT2<S>,
@@ -111,70 +113,6 @@ export interface SchemableExt<S>
   readonly optionFromUndefined: optionFromUndefined.SchemableParams<S>
 
   /**
-   * Represents bigints converted from strings
-   *
-   * @since 1.0.0
-   */
-  readonly bigIntFromString: bigIntFromString.SchemableParams<S>
-
-  /**
-   * Floating point branded newtype. Parameters: min, max are inclusive.
-   *
-   * Represents floating point numbers:
-   *
-   * ```math
-   *  { f | f ∈ ℝ, f >= -Number.MAX_VALUE, f <= Number.MAX_VALUE }
-   * ```
-   *
-   * @since 1.0.0
-   */
-  readonly float: float.SchemableParams<S>
-
-  /**
-   * Floating point branded newtype from strings. Parameters: min, max are inclusive.
-   *
-   * Represents string floating point numbers:
-   *
-   * ```math
-   *  { f | f ∈ ℝ, f >= -Number.MAX_VALUE, f <= Number.MAX_VALUE }
-   * ```
-   *
-   * @since 1.0.0
-   */
-  readonly floatFromString: floatFromString.SchemableParams<S>
-
-  /**
-   * Integer branded newtype. Parameters: min, max are inclusive.
-   *
-   * Represents integers:
-   *
-   * ```math
-   *  { z | z ∈ ℤ, z >= -2 ** 53 + 1, z <= 2 ** 53 - 1 }
-   * ```
-   *
-   * @since 1.0.0
-   */
-  readonly int: int.SchemableParams<S>
-
-  /**
-   * Integer branded newtype from string. Parameters: min, max are inclusive.
-   *
-   * Note: has an optional `encodeToBase` parameter that controls the output base of the
-   * encoded string. Currently only accepts 2, 8, 10, and 16 due to constraints using
-   * `Number` as a parser. It does not decode in this specified base, and accepts any base
-   * as input: 2, 8, 10, or 16.
-   *
-   * Represents string-integers:
-   *
-   * ```math
-   *  { z | z ∈ ℤ, z >= -2 ** 53 + 1, z <= 2 ** 53 - 1 }
-   * ```
-   *
-   * @since 1.0.0
-   */
-  readonly intFromString: intFromString.SchemableParams<S>
-
-  /**
    * Represents valid Date objects
    *
    * @since 1.0.0
@@ -199,6 +137,8 @@ export interface SchemableExt1<S extends URIS>
   extends Schemable1<S>,
     WithBrand1<S>,
     WithCheckDigit1<S>,
+    WithFloat1<S>,
+    WithInt1<S>,
     WithInvariant1<S>,
     WithPadding1<S>,
     WithPattern1<S>,
@@ -234,70 +174,6 @@ export interface SchemableExt1<S extends URIS>
   readonly optionFromUndefined: optionFromUndefined.SchemableParams1<S>
 
   /**
-   * Represents bigints converted from strings
-   *
-   * @since 1.0.0
-   */
-  readonly bigIntFromString: bigIntFromString.SchemableParams1<S>
-
-  /**
-   * Floating point branded newtype. Parameters: min, max are inclusive.
-   *
-   * Represents floating point numbers:
-   *
-   * ```math
-   *  { f | f ∈ ℝ, f >= -Number.MAX_VALUE, f <= Number.MAX_VALUE }
-   * ```
-   *
-   * @since 1.0.0
-   */
-  readonly float: float.SchemableParams1<S>
-
-  /**
-   * Floating point branded newtype from strings. Parameters: min, max are inclusive.
-   *
-   * Represents string floating point numbers:
-   *
-   * ```math
-   *  { f | f ∈ ℝ, f >= -Number.MAX_VALUE, f <= Number.MAX_VALUE }
-   * ```
-   *
-   * @since 1.0.0
-   */
-  readonly floatFromString: floatFromString.SchemableParams1<S>
-
-  /**
-   * Integer branded newtype. Parameters: min, max are inclusive.
-   *
-   * Represents integers:
-   *
-   * ```math
-   *  { z | z ∈ ℤ, z >= -2 ** 53 + 1, z <= 2 ** 53 - 1 }
-   * ```
-   *
-   * @since 1.0.0
-   */
-  readonly int: int.SchemableParams1<S>
-
-  /**
-   * Integer branded newtype from string. Parameters: min, max are inclusive.
-   *
-   * Note: has an optional `encodeToBase` parameter that controls the output base of the
-   * encoded string. Currently only accepts 2, 8, 10, and 16 due to constraints using
-   * `Number` as a parser. It does not decode in this specified base, and accepts any base
-   * as input: 2, 8, 10, or 16.
-   *
-   * Represents string-integers:
-   *
-   * ```math
-   *  { z | z ∈ ℤ, z >= -2 ** 53 + 1, z <= 2 ** 53 - 1 }
-   * ```
-   *
-   * @since 1.0.0
-   */
-  readonly intFromString: intFromString.SchemableParams1<S>
-
-  /**
    * Represents valid Date objects
    *
    * @since 1.0.0
@@ -322,6 +198,8 @@ export interface SchemableExt2<S extends URIS2>
   extends Schemable2<S>,
     WithBrand2<S>,
     WithCheckDigit2<S>,
+    WithFloat2<S>,
+    WithInt2<S>,
     WithInvariant2<S>,
     WithPadding2<S>,
     WithPattern2<S>,
@@ -357,70 +235,6 @@ export interface SchemableExt2<S extends URIS2>
   readonly optionFromUndefined: optionFromUndefined.SchemableParams2<S>
 
   /**
-   * Represents bigints converted from strings
-   *
-   * @since 1.0.0
-   */
-  readonly bigIntFromString: bigIntFromString.SchemableParams2<S>
-
-  /**
-   * Floating point branded newtype. Parameters: min, max are inclusive.
-   *
-   * Represents floating point numbers:
-   *
-   * ```math
-   *  { f | f ∈ ℝ, f >= -Number.MAX_VALUE, f <= Number.MAX_VALUE }
-   * ```
-   *
-   * @since 1.0.0
-   */
-  readonly float: float.SchemableParams2<S>
-
-  /**
-   * Floating point branded newtype from strings. Parameters: min, max are inclusive.
-   *
-   * Represents string floating point numbers:
-   *
-   * ```math
-   *  { f | f ∈ ℝ, f >= -Number.MAX_VALUE, f <= Number.MAX_VALUE }
-   * ```
-   *
-   * @since 1.0.0
-   */
-  readonly floatFromString: floatFromString.SchemableParams2<S>
-
-  /**
-   * Integer branded newtype. Parameters: min, max are inclusive.
-   *
-   * Represents integers:
-   *
-   * ```math
-   *  { z | z ∈ ℤ, z >= -2 ** 53 + 1, z <= 2 ** 53 - 1 }
-   * ```
-   *
-   * @since 1.0.0
-   */
-  readonly int: int.SchemableParams2<S>
-
-  /**
-   * Integer branded newtype from string. Parameters: min, max are inclusive.
-   *
-   * Note: has an optional `encodeToBase` parameter that controls the output base of the
-   * encoded string. Currently only accepts 2, 8, 10, and 16 due to constraints using
-   * `Number` as a parser. It does not decode in this specified base, and accepts any base
-   * as input: 2, 8, 10, or 16.
-   *
-   * Represents string-integers:
-   *
-   * ```math
-   *  { z | z ∈ ℤ, z >= -2 ** 53 + 1, z <= 2 ** 53 - 1 }
-   * ```
-   *
-   * @since 1.0.0
-   */
-  readonly intFromString: intFromString.SchemableParams2<S>
-
-  /**
    * Represents valid Date objects
    *
    * @since 1.0.0
@@ -445,6 +259,8 @@ export interface SchemableExt2C<S extends URIS2>
   extends Schemable2C<S, unknown>,
     WithBrand2C<S, unknown>,
     WithCheckDigit2C<S, unknown>,
+    WithFloat2C<S, unknown>,
+    WithInt2C<S, unknown>,
     WithInvariant2C<S, unknown>,
     WithPadding2C<S, unknown>,
     WithPattern2C<S, unknown>,
@@ -478,70 +294,6 @@ export interface SchemableExt2C<S extends URIS2>
    * @since 0.0.4
    */
   readonly optionFromUndefined: optionFromUndefined.SchemableParams2C<S>
-
-  /**
-   * Represents bigints converted from strings
-   *
-   * @since 1.0.0
-   */
-  readonly bigIntFromString: bigIntFromString.SchemableParams2C<S>
-
-  /**
-   * Floating point branded newtype. Parameters: min, max are inclusive.
-   *
-   * Represents floating point numbers:
-   *
-   * ```math
-   *  { f | f ∈ ℝ, f >= -Number.MAX_VALUE, f <= Number.MAX_VALUE }
-   * ```
-   *
-   * @since 1.0.0
-   */
-  readonly float: float.SchemableParams2C<S>
-
-  /**
-   * Floating point branded newtype from strings. Parameters: min, max are inclusive.
-   *
-   * Represents string floating point numbers:
-   *
-   * ```math
-   *  { f | f ∈ ℝ, f >= -Number.MAX_VALUE, f <= Number.MAX_VALUE }
-   * ```
-   *
-   * @since 1.0.0
-   */
-  readonly floatFromString: floatFromString.SchemableParams2C<S>
-
-  /**
-   * Integer branded newtype. Parameters: min, max are inclusive.
-   *
-   * Represents integers:
-   *
-   * ```math
-   *  { z | z ∈ ℤ, z >= -2 ** 53 + 1, z <= 2 ** 53 - 1 }
-   * ```
-   *
-   * @since 1.0.0
-   */
-  readonly int: int.SchemableParams2C<S>
-
-  /**
-   * Integer branded newtype from string. Parameters: min, max are inclusive.
-   *
-   * Note: has an optional `encodeToBase` parameter that controls the output base of the
-   * encoded string. Currently only accepts 2, 8, 10, and 16 due to constraints using
-   * `Number` as a parser. It does not decode in this specified base, and accepts any base
-   * as input: 2, 8, 10, or 16.
-   *
-   * Represents string-integers:
-   *
-   * ```math
-   *  { z | z ∈ ℤ, z >= -2 ** 53 + 1, z <= 2 ** 53 - 1 }
-   * ```
-   *
-   * @since 1.0.0
-   */
-  readonly intFromString: intFromString.SchemableParams2C<S>
 
   /**
    * Represents valid Date objects
