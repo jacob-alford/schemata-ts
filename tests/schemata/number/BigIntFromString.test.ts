@@ -1,11 +1,22 @@
 import * as E from 'fp-ts/Either'
-import { pipe } from 'fp-ts/function'
+import { pipe, tuple } from 'fp-ts/function'
 import * as BigIntString_ from '../../../src/schemata/number/BigIntFromString'
 import { getAllInstances, validateArbitrary } from '../../../test-utils'
 
 const valid: ReadonlyArray<string> = ['0', '10', '-1', '11']
 
-const invalid: ReadonlyArray<string> = ['5.5', '-5.5', '', ' ', 'a', 'a5', '1n']
+const invalid: ReadonlyArray<string> = [
+  '5.5',
+  '-5.5',
+  '',
+  ' ',
+  'a',
+  'a5',
+  '1n',
+  '0x',
+  '0b',
+  '0o',
+]
 
 const BigIntString = getAllInstances(BigIntString_.BigIntFromString())
 
@@ -31,6 +42,22 @@ describe('BigIntString', () => {
       )
       expect(original).toEqual(roundtrip)
     })
+    test.each([tuple('0xabc', 16), tuple('0b101', 2), tuple('0o123', 8)])(
+      'encoding a decoded value yields original value',
+      (original, base) => {
+        const BigIntString = getAllInstances(
+          BigIntString_.BigIntFromString({ encodeToBase: base as 2 | 8 | 16 }),
+        )
+
+        const roundtrip = pipe(
+          original,
+          BigIntString.Decoder.decode,
+          E.map(BigIntString.Encoder.encode),
+          E.getOrElseW(() => 'unexpected'),
+        )
+        expect(original).toEqual(roundtrip)
+      },
+    )
   })
 
   describe('Eq', () => {

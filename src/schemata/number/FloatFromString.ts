@@ -116,7 +116,7 @@ const positiveExponential: PB.Pattern = pipe(
  */
 const negativeExponential: PB.Pattern = pipe(
   PB.char('-'),
-  PB.then(pipe(PB.digit, PB.anyNumber(), PB.subgroup)),
+  PB.then(pipe(PB.digit, PB.atLeastOne(), PB.subgroup)),
 )
 
 /**

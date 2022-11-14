@@ -46,6 +46,8 @@ const invalidNumbers = [
   true,
   false,
   '1e+309',
+  '1e-',
+  '1e+',
 ]
 
 describe('FloatFromString', () => {

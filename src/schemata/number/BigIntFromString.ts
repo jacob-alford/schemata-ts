@@ -33,7 +33,7 @@ export type BigIntFromStringS = (
  */
 const binaryBigIntString: PB.Pattern = pipe(
   PB.exactString('0b'),
-  PB.then(pipe(PB.characterClass(false, ['0', '1']), PB.anyNumber())),
+  PB.then(pipe(PB.characterClass(false, ['0', '1']), PB.atLeastOne())),
 )
 
 /**
@@ -42,7 +42,7 @@ const binaryBigIntString: PB.Pattern = pipe(
  */
 const octalBigIntString: PB.Pattern = pipe(
   PB.exactString('0o'),
-  PB.then(pipe(PB.characterClass(false, ['0', '7']), PB.anyNumber())),
+  PB.then(pipe(PB.characterClass(false, ['0', '7']), PB.atLeastOne())),
 )
 
 /**
@@ -52,7 +52,7 @@ const octalBigIntString: PB.Pattern = pipe(
 const decimalBigIntString: PB.Pattern = pipe(
   PB.char('-'),
   PB.maybe,
-  PB.then(pipe(PB.digit, PB.anyNumber())),
+  PB.then(pipe(PB.digit, PB.atLeastOne())),
 )
 
 /**
@@ -61,7 +61,7 @@ const decimalBigIntString: PB.Pattern = pipe(
  */
 const hexBigIntString: PB.Pattern = pipe(
   PB.exactString('0x'),
-  PB.then(pipe(PB.hexDigit, PB.anyNumber())),
+  PB.then(pipe(PB.hexDigit, PB.atLeastOne())),
 )
 
 /**
