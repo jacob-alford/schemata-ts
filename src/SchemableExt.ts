@@ -20,6 +20,7 @@ import {
   WithCheckDigit2C,
   WithCheckDigitHKT2,
 } from './schemables/WithCheckDigit'
+import { WithDate1, WithDate2, WithDate2C, WithDateHKT2 } from './schemables/WithDate'
 import {
   WithFloat1,
   WithFloat2,
@@ -64,10 +65,6 @@ import * as optionFromExclude from './generic/optionFromExclude'
 import * as optionFromNullable from './generic/optionFromNullable'
 import * as optionFromUndefined from './generic/optionFromUndefined'
 
-/** Date */
-import * as date from './date/date'
-import * as dateFromIsoString from './date/dateFromIsoString'
-
 /**
  * @since 0.0.1
  * @category Instances
@@ -76,6 +73,7 @@ export interface SchemableExt<S>
   extends SchemableHKT2<S>,
     WithBrandHKT2<S>,
     WithCheckDigitHKT2<S>,
+    WithDateHKT2<S>,
     WithFloatHKT2<S>,
     WithIntHKT2<S>,
     WithInvariantHKT2<S>,
@@ -111,22 +109,6 @@ export interface SchemableExt<S>
    * @since 0.0.4
    */
   readonly optionFromUndefined: optionFromUndefined.SchemableParams<S>
-
-  /**
-   * Represents valid Date objects
-   *
-   * @since 1.0.0
-   */
-  readonly date: date.SchemableParams<S>
-
-  /**
-   * Represents a conversion from a valid dateString according to
-   * [ECMA262](https://tc39.es/ecma262/#sec-date-time-string-format) which is a particular
-   * subset of ISO8601 parsable with `Date.parse()`.
-   *
-   * @since 1.0.0
-   */
-  readonly dateFromIsoString: dateFromIsoString.SchemableParams<S>
 }
 
 /**
@@ -137,6 +119,7 @@ export interface SchemableExt1<S extends URIS>
   extends Schemable1<S>,
     WithBrand1<S>,
     WithCheckDigit1<S>,
+    WithDate1<S>,
     WithFloat1<S>,
     WithInt1<S>,
     WithInvariant1<S>,
@@ -172,22 +155,6 @@ export interface SchemableExt1<S extends URIS>
    * @since 0.0.4
    */
   readonly optionFromUndefined: optionFromUndefined.SchemableParams1<S>
-
-  /**
-   * Represents valid Date objects
-   *
-   * @since 1.0.0
-   */
-  readonly date: date.SchemableParams1<S>
-
-  /**
-   * Represents a conversion from a valid dateString according to
-   * [ECMA262](https://tc39.es/ecma262/#sec-date-time-string-format) which is a particular
-   * subset of ISO8601 parsable with `Date.parse()`.
-   *
-   * @since 1.0.0
-   */
-  readonly dateFromIsoString: dateFromIsoString.SchemableParams1<S>
 }
 
 /**
@@ -198,6 +165,7 @@ export interface SchemableExt2<S extends URIS2>
   extends Schemable2<S>,
     WithBrand2<S>,
     WithCheckDigit2<S>,
+    WithDate2<S>,
     WithFloat2<S>,
     WithInt2<S>,
     WithInvariant2<S>,
@@ -233,22 +201,6 @@ export interface SchemableExt2<S extends URIS2>
    * @since 0.0.4
    */
   readonly optionFromUndefined: optionFromUndefined.SchemableParams2<S>
-
-  /**
-   * Represents valid Date objects
-   *
-   * @since 1.0.0
-   */
-  readonly date: date.SchemableParams2<S>
-
-  /**
-   * Represents a conversion from a valid dateString according to
-   * [ECMA262](https://tc39.es/ecma262/#sec-date-time-string-format) which is a particular
-   * subset of ISO8601 parsable with `Date.parse()`.
-   *
-   * @since 1.0.0
-   */
-  readonly dateFromIsoString: dateFromIsoString.SchemableParams2<S>
 }
 
 /**
@@ -259,6 +211,7 @@ export interface SchemableExt2C<S extends URIS2>
   extends Schemable2C<S, unknown>,
     WithBrand2C<S, unknown>,
     WithCheckDigit2C<S, unknown>,
+    WithDate2C<S, unknown>,
     WithFloat2C<S, unknown>,
     WithInt2C<S, unknown>,
     WithInvariant2C<S, unknown>,
@@ -294,20 +247,4 @@ export interface SchemableExt2C<S extends URIS2>
    * @since 0.0.4
    */
   readonly optionFromUndefined: optionFromUndefined.SchemableParams2C<S>
-
-  /**
-   * Represents valid Date objects
-   *
-   * @since 1.0.0
-   */
-  readonly date: date.SchemableParams2C<S>
-
-  /**
-   * Represents a conversion from a valid dateString according to
-   * [ECMA262](https://tc39.es/ecma262/#sec-date-time-string-format) which is a particular
-   * subset of ISO8601 parsable with `Date.parse()`.
-   *
-   * @since 1.0.0
-   */
-  readonly dateFromIsoString: dateFromIsoString.SchemableParams2C<S>
 }

@@ -24,7 +24,6 @@ const _ = ts.factory
  */
 type SchemableCombinators = {
   generic: ReadonlyArray<readonly [string, string]>
-  date: ReadonlyArray<readonly [string, string]>
 }
 
 type Schemable = [name: `With${string}`, path: string]
@@ -116,28 +115,6 @@ export const makeSchemableExtTypeclass: (
           ),
         ),
       ),
-      ...pipe(
-        combinators.date,
-        RA.map(([combinator, comment]) =>
-          ts.addSyntheticLeadingComment(
-            _.createPropertySignature(
-              [_.createModifier(ts.SyntaxKind.ReadonlyKeyword)],
-              _.createIdentifier(combinator),
-              undefined,
-              _.createTypeReferenceNode(
-                _.createQualifiedName(
-                  _.createIdentifier(combinator),
-                  _.createIdentifier(`SchemableParams${suffix}`),
-                ),
-                [_.createTypeReferenceNode(_.createIdentifier('S'), undefined)],
-              ),
-            ),
-            ts.SyntaxKind.MultiLineCommentTrivia,
-            `* ${comment}`,
-            true,
-          ),
-        ),
-      ),
     ],
   )
 
@@ -175,13 +152,6 @@ const makeSchemableExtContents: (
         combinators.generic,
         RA.map(([combinator]) =>
           makeModuleStarImport(combinator, `./generic/${combinator}`),
-        ),
-      ),
-      _.createJSDocComment('date'),
-      ...pipe(
-        combinators.date,
-        RA.map(([combinator]) =>
-          makeModuleStarImport(combinator, `./date/${combinator}`),
         ),
       ),
 
@@ -289,18 +259,6 @@ const makeSchemableInstance: (
                     ),
                   ),
                 ),
-                ...pipe(
-                  schemableCombinators.date,
-                  RA.map(([schemableCombinatorName]) =>
-                    _.createPropertyAssignment(
-                      _.createIdentifier(schemableCombinatorName),
-                      _.createPropertyAccessExpression(
-                        _.createIdentifier(schemableCombinatorName),
-                        _.createIdentifier(instanceName),
-                      ),
-                    ),
-                  ),
-                ),
               ],
               true,
             ),
@@ -344,13 +302,6 @@ const makeSchemableInstanceModuleContents: (
           combinators.generic,
           RA.map(([combinator]) =>
             makeModuleStarImport(combinator, `./generic/${combinator}`),
-          ),
-        ),
-        _.createJSDocComment('date'),
-        ...pipe(
-          combinators.date,
-          RA.map(([combinator]) =>
-            makeModuleStarImport(combinator, `./date/${combinator}`),
           ),
         ),
         instanceComment,
@@ -402,21 +353,6 @@ const getSchemableName: (schmable: `With${string}`) => `With${string}` =
 const getSchemableCombinators: Build<SchemableCombinators> = C =>
   pipe(
     TE.Do,
-    TE.apS(
-      'date',
-      pipe(
-        C.readFiles('./src/date'),
-        TE.chain(
-          TE.traverseArray(file =>
-            pipe(
-              C,
-              getModuleJSDocComment(`./src/date/${file}`),
-              TE.map(comment => tuple(getModuleName(file), comment)),
-            ),
-          ),
-        ),
-      ),
-    ),
     TE.apS(
       'generic',
       pipe(
