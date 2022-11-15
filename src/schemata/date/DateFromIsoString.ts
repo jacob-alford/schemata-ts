@@ -1,5 +1,5 @@
 /**
- * The date parser (used in DateFromString) accepts different strings depending on
+ * The Date parser (used in DateFromString) accepts different strings depending on
  * runtime, and also accepts other formats like `February 29, 2022`.
  *
  * `DateFromIsoString` follows a subset of the [ECMAScript 2023 Language Date Time String
@@ -7,62 +7,25 @@
  *
  * Notable features:
  *
- * Permissible (simple) date / date-time formats (cannot contain milliseconds, date-time
- * separator, nor timezone):
- *
- * - `YYYY-(MM|M)-(DD|D)`
- * - `YYYY-(MM|M)-(DD|D) (HH|H):(mm|m)`
- * - `YYYY-(MM|M)-(DD|D) (HH|H):(mm|m):(ss|s)`
- * - `YYYY (MM|M) (DD|D)`
- * - `YYYY (MM|M) (DD|D) (HH|H):(mm|m)`
- * - `YYYY (MM|M) (DD|D) (HH|H):(mm|m):(ss|s)`
- *
- * Note:
- *
- * - Does not permit a three-digit year.
- * - Allows mixing padded / unpadded months, days, hours, minutes, seconds.
- *
- * Permissible (advanced) date-times - optionally contains date-time separator,
- * milliseconds, and timezone (configurable):
- *
- * - Permits date strings, and date-time strings
- * - Permits simple date-times with four-digit years that contain either spaces or hyphens
- *   as separators, e.g. `2021-01-01` or `2021 1 1`
- * - Date-time strings must use use a colon to separate hour from minute, and minute from
- *   second. period to separate second from millisecond.
- * - Date-time strings may contain seconds, seconds and milliseconds, or neither.
- * - Date-time strings may start with an expanded year if starting with a plus or minus sign.
- * - Date-time strings may contain a Date / Time separator T between days and hours or a space.
- * - Date-time strings may contain a UTC offset character "Z" following milliseconds.
+ * - Requires `T` separator between date and time
+ * - Requires padded months, days, hours, minutes, and seconds
+ * - Can be configured to require a timezone offset (e.g. `Z` or `±05:00`) (default is true)
+ * - Dates may contain years, months, and days; years and months; or years
+ * - Times may contain hours, minutes, seconds, and milliseconds; hours, minutes, and
+ *   seconds; or hours and minutes.
+ * - Expanded years are permitted (e.g. `+002022` instead of `2022`)
  *
  * @since 1.0.0
  */
 
+import { pipe } from 'fp-ts/function'
 import * as PB from '../../PatternBuilder'
 import { make, SchemaExt } from '../../SchemaExt'
-import { Branded } from 'io-ts'
-import { pipe } from 'fp-ts/function'
+import * as D from '../../schemables/WithDate'
 
 /**
- * @since 1.0.0
- * @category Model
- */
-export type DateFromIsoStringParams = {
-  /**
-   * Require date-time string to include a timezone offset, e.g. `Z` or `±05:00`.
-   *
-   * @since 1.0.0
-   */
-  readonly requireTimezoneOffset?: boolean
-}
-
-/**
- * @since 1.0.0
- * @category Model
- */
-export type DateFromIsoStringS = () => SchemaExt<string, Date>
-
-/**
+ * E.g. `2022`
+ *
  * @since 1.0.0
  * @category Pattern
  */
@@ -81,14 +44,6 @@ const expandedYear: PB.Pattern = pipe(
 )
 
 /**
- * E.g. 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12
- *
- * @since 1.0.0
- * @category Pattern
- */
-const shortMonth: PB.Pattern = pipe(PB.integerRange(1, 12), PB.subgroup)
-
-/**
  * E.g. 01, 02, 03, 04, 05, 06, 07, 08, 09, 10, 11, 12
  *
  * @since 1.0.0
@@ -103,13 +58,7 @@ const month: PB.Pattern = pipe(
 )
 
 /**
- * @since 1.0.0
- * @category Pattern
- */
-const shortDay: PB.Pattern = pipe(PB.integerRange(1, 31), PB.subgroup)
-
-/**
- * E.g. 01, 02, 03, 04, 05, 06, 07, 08, 09, 10, 11, 12
+ * E.g. 01, 02, 03, 04, 05, ..., 30, 31
  *
  * @since 1.0.0
  * @category Pattern
@@ -123,36 +72,188 @@ const day: PB.Pattern = pipe(
 )
 
 /**
+ * E.g. `YYYY-MM-DD`
+ *
  * @since 1.0.0
  * @category Pattern
  */
-const simpleSeparator: PB.Pattern = PB.characterClass(false, '-', ' ')
-
-/**
- * @since 1.0.0
- * @category Pattern
- */
-const simpleDayMonth: PB.Pattern = pipe(
-  shortDay,
-  PB.then(simpleSeparator),
-  PB.then(shortMonth),
-  PB.subgroup,
-  PB.or(pipe(day, PB.then(simpleSeparator), PB.then(month))),
-  PB.subgroup,
-)
-
-/**
- * @since 1.0.0
- * @category Pattern
- */
-const simpleDate: PB.Pattern = pipe(
+const yearMonthDay: PB.Pattern = pipe(
   year,
-  PB.then(simpleSeparator),
-  PB.then(simpleDayMonth),
+  PB.or(expandedYear),
+  PB.subgroup,
+  PB.then(PB.char('-')),
+  PB.then(month),
+  PB.then(PB.char('-')),
+  PB.then(day),
 )
 
 /**
- * The date parser (used in DateFromString) accepts different strings depending on
+ * E.g. `YYYY-MM`
+ *
+ * @since 1.0.0
+ * @category Pattern
+ */
+const yearMonth: PB.Pattern = pipe(
+  year,
+  PB.or(expandedYear),
+  PB.subgroup,
+  PB.then(PB.char('-')),
+  PB.then(month),
+)
+
+/**
+ * E.G. `YYYY-MM-DD` or `YYYY-MM` or `YYYY`
+ *
+ * @since 1.0.0
+ * @category Pattern
+ */
+const date: PB.Pattern = pipe(yearMonthDay, PB.or(yearMonth), PB.or(year), PB.subgroup)
+
+/**
+ * E.g. 00, 01, 02, 03, 04, 05, 06, 07, ..., 22, 23
+ *
+ * @since 1.0.0
+ * @category Pattern
+ */
+const hour: PB.Pattern = pipe(
+  PB.char('0'),
+  PB.then(pipe(PB.integerRange(0, 9), PB.subgroup)),
+  PB.subgroup,
+  PB.or(pipe(PB.integerRange(10, 23), PB.subgroup)),
+  PB.subgroup,
+)
+
+/**
+ * E.g. 00, 01, 02, 03, 04, 05, 06, 07, ..., 58, 59
+ *
+ * @since 1.0.0
+ * @category Pattern
+ */
+export const minutesSeconds: PB.Pattern = pipe(
+  PB.char('0'),
+  PB.then(pipe(PB.integerRange(0, 9), PB.subgroup)),
+  PB.subgroup,
+  PB.or(pipe(PB.integerRange(10, 59), PB.subgroup)),
+  PB.subgroup,
+)
+
+/**
+ * @since 1.0.0
+ * @category Pattern
+ */
+const milliseconds: PB.Pattern = pipe(PB.digit, PB.atLeastOne(), PB.subgroup)
+
+/**
+ * E.g. `Z` or `±05:00`
+ *
+ * @since 1.0.0
+ * @category Pattern
+ */
+const timezoneOffset: PB.Pattern = pipe(
+  PB.char('Z'),
+  PB.or(
+    pipe(
+      PB.characterClass(false, '+', '-'),
+      PB.subgroup,
+      PB.then(pipe(PB.integerRange(0, 23), PB.subgroup)),
+      PB.then(PB.char(':')),
+      PB.then(pipe(PB.integerRange(0, 59), PB.subgroup)),
+      PB.subgroup,
+    ),
+  ),
+  PB.subgroup,
+)
+
+/**
+ * E.g. `HH:mm:ss.SSS`
+ *
+ * @since 1.0.0
+ * @category Pattern
+ */
+const hrMinSecMs: PB.Pattern = pipe(
+  hour,
+  PB.then(PB.char(':')),
+  PB.then(minutesSeconds),
+  PB.then(PB.char(':')),
+  PB.then(minutesSeconds),
+  PB.then(PB.char('.')),
+  PB.then(milliseconds),
+)
+
+/**
+ * E.g. `HH:mm:ss`
+ *
+ * @since 1.0.0
+ * @category Pattern
+ */
+const hrMinSec: PB.Pattern = pipe(
+  hour,
+  PB.then(PB.char(':')),
+  PB.then(minutesSeconds),
+  PB.then(PB.char(':')),
+  PB.then(minutesSeconds),
+)
+
+/**
+ * E.g. `HH:mm`
+ *
+ * @since 1.0.0
+ * @category Pattern
+ */
+const hrMin: PB.Pattern = pipe(hour, PB.then(PB.char(':')), PB.then(minutesSeconds))
+
+/**
+ * Iso time string
+ *
+ * @since 1.0.0
+ * @category Pattern
+ */
+const time: PB.Pattern = pipe(hrMinSecMs, PB.or(hrMinSec), PB.or(hrMin), PB.subgroup)
+
+/**
+ * @since 1.0.0
+ * @category Pattern
+ */
+const dateTimeString: PB.Pattern = pipe(date, PB.then(PB.char('T')), PB.then(time))
+
+/**
+ * @since 1.0.0
+ * @category Pattern
+ */
+const isoDateStringReqTZ: PB.Pattern = pipe(dateTimeString, PB.then(timezoneOffset))
+
+/**
+ * @since 1.0.0
+ * @category Pattern
+ */
+const isoDateStringOptTZ: PB.Pattern = pipe(
+  dateTimeString,
+  PB.then(pipe(timezoneOffset, PB.maybe)),
+)
+
+/**
+ * @since 1.0.0
+ * @category Model
+ */
+export type DateFromIsoStringParams = {
+  /**
+   * Require date-time string to include a timezone offset, e.g. `Z` or `±05:00`.
+   *
+   * @since 1.0.0
+   */
+  readonly requireTimezoneOffset?: boolean
+}
+
+/**
+ * @since 1.0.0
+ * @category Model
+ */
+export type DateFromIsoStringS = (
+  params?: DateFromIsoStringParams,
+) => SchemaExt<string, Date>
+
+/**
+ * The Date parser (used in DateFromString) accepts different strings depending on
  * runtime, and also accepts other formats like `February 29, 2022`.
  *
  * `DateFromIsoString` follows a subset of the [ECMAScript 2023 Language Date Time String
@@ -160,18 +261,29 @@ const simpleDate: PB.Pattern = pipe(
  *
  * Notable features:
  *
- * - Permits date strings, and date-time strings
- * - Permits simple dates with four-digit years that contain either spaces or hyphens as
- *   separators, e.g. `2021-01-01` or `2021 1 1`
- * - Date-time strings must use hyphens to separate year from month, and month from day;
- *   must use a colon to separate hour from minute, and minute from second; and must use a
- *   period to separate second from millisecond.
- * - Date-time strings may contain seconds, seconds and milliseconds, or neither.
- * - Date-time strings may start with an expanded year if starting with a plus or minus sign.
- * - Date-time strings may contain a Date / Time separator T between days and hours or a space.
- * - Date-time strings may contain a UTC offset character "Z" following milliseconds.
+ * - Requires `T` separator between date and time
+ * - Requires padded months, days, hours, minutes, and seconds
+ * - Can be configured to require a timezone offset (e.g. `Z` or `±05:00`) (default is true)
+ * - Dates may contain years, months, and days; years and months; or years
+ * - Times may contain hours, minutes, seconds, and milliseconds; hours, minutes, and
+ *   seconds; or hours and minutes.
+ * - Expanded years are permitted (e.g. `+002022` instead of `2022`)
  *
  * @since 1.0.0
  * @category Schema
  */
-export const DateFromIsoString: DateFromIsoStringS = () => make(s => s.dateFromString)
+export const DateFromIsoString: DateFromIsoStringS = (params = {}) => {
+  const { requireTimezoneOffset = true } = params
+  return make(S =>
+    pipe(
+      S.pattern(
+        requireTimezoneOffset ? isoDateStringReqTZ : isoDateStringOptTZ,
+        'IsoDateString',
+      ),
+      S.imap(D.Guard.date, 'DateFromIsoString')(
+        s => new Date(s),
+        d => d.toISOString(),
+      ),
+    ),
+  )
+}
