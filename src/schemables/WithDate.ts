@@ -23,7 +23,7 @@ import * as Arb from '../internal/ArbitraryBase'
  */
 export type WithDateHKT2<S> = {
   date: HKT2<S, Date, Date>
-  dateFromIsoString: HKT2<S, string, Date>
+  dateFromString: HKT2<S, string, Date>
 }
 
 /**
@@ -32,7 +32,7 @@ export type WithDateHKT2<S> = {
  */
 export type WithDate1<S extends URIS> = {
   date: Kind<S, Date>
-  dateFromIsoString: Kind<S, Date>
+  dateFromString: Kind<S, Date>
 }
 
 /**
@@ -41,7 +41,7 @@ export type WithDate1<S extends URIS> = {
  */
 export type WithDate2<S extends URIS2> = {
   date: Kind2<S, Date, Date>
-  dateFromIsoString: Kind2<S, string, Date>
+  dateFromString: Kind2<S, string, Date>
 }
 
 /**
@@ -50,7 +50,7 @@ export type WithDate2<S extends URIS2> = {
  */
 export type WithDate2C<S extends URIS2, E> = {
   date: Kind2<S, E, Date>
-  dateFromIsoString: Kind2<S, E, Date>
+  dateFromString: Kind2<S, E, Date>
 }
 
 /**
@@ -65,7 +65,7 @@ export function isSafeDate(d: unknown): d is Date {
  * @since 1.0.0
  * @category Refinements
  */
-export const isISODateString = (s: unknown): s is string =>
+export const isValidDateString = (s: unknown): s is string =>
   typeof s === 'string' && !Number.isNaN(new Date(s).getTime())
 
 /**
@@ -76,7 +76,7 @@ export const Guard: WithDate1<G.URI> = {
   date: {
     is: isSafeDate,
   },
-  dateFromIsoString: {
+  dateFromString: {
     is: isSafeDate,
   },
 }
@@ -87,11 +87,9 @@ export const Guard: WithDate1<G.URI> = {
  */
 export const Decoder: WithDate2C<D.URI, unknown> = {
   date: D.fromGuard(Guard.date, 'Date.date'),
-  dateFromIsoString: {
+  dateFromString: {
     decode: s =>
-      isISODateString(s)
-        ? D.success(new Date(s))
-        : D.failure(s, 'Date.dateFromIsoString'),
+      isValidDateString(s) ? D.success(new Date(s)) : D.failure(s, 'Date.dateFromString'),
   },
 }
 
@@ -103,7 +101,7 @@ export const Eq: WithDate1<Eq_.URI> = {
   date: {
     equals: (x, y) => x.getTime() === y.getTime(),
   },
-  dateFromIsoString: {
+  dateFromString: {
     equals: (x, y) => x.getTime() === y.getTime(),
   },
 }
@@ -114,7 +112,7 @@ export const Eq: WithDate1<Eq_.URI> = {
  */
 export const TaskDecoder: WithDate2C<TD.URI, unknown> = {
   date: TD.fromDecoder(Decoder.date),
-  dateFromIsoString: TD.fromDecoder(Decoder.dateFromIsoString),
+  dateFromString: TD.fromDecoder(Decoder.dateFromString),
 }
 
 /**
@@ -128,10 +126,10 @@ export const Type: WithDate1<t.URI> = {
     (u, c) => (isSafeDate(u) ? t_.success(u) : t_.failure(u, c)),
     identity,
   ),
-  dateFromIsoString: new t_.Type<Date, unknown, unknown>(
+  dateFromString: new t_.Type<Date, unknown, unknown>(
     'SafeDate',
     isSafeDate,
-    (u, c) => (isISODateString(u) ? t_.success(new Date(u)) : t_.failure(u, c)),
+    (u, c) => (isValidDateString(u) ? t_.success(new Date(u)) : t_.failure(u, c)),
     identity,
   ),
 }
@@ -142,7 +140,7 @@ export const Type: WithDate1<t.URI> = {
  */
 export const Encoder: WithDate2<Enc.URI> = {
   date: Enc.id(),
-  dateFromIsoString: { encode: d => d.toISOString() },
+  dateFromString: { encode: d => d.toISOString() },
 }
 
 /**
@@ -151,7 +149,7 @@ export const Encoder: WithDate2<Enc.URI> = {
  */
 export const Arbitrary: WithDate1<Arb.URI> = {
   date: fc.date().filter(isSafeDate),
-  dateFromIsoString: fc.date().filter(isSafeDate),
+  dateFromString: fc.date().filter(isSafeDate),
 }
 
 /**
@@ -160,5 +158,5 @@ export const Arbitrary: WithDate1<Arb.URI> = {
  */
 export const Schema: WithDate2<SchemaURI> = {
   date: SC.make(S => S.date),
-  dateFromIsoString: SC.make(S => S.dateFromIsoString),
+  dateFromString: SC.make(S => S.dateFromString),
 }

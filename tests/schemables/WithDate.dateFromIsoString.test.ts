@@ -63,14 +63,14 @@ const invalid: ReadonlyArray<string> = [
   '2021-01-01T00:00:00Znonsense',
 ]
 
-describe('dateFromIsoString', () => {
+describe('dateFromString', () => {
   describe('Decoder', () => {
     test.each(valid)('validates valid date strings, %s', str => {
-      const result = ISODateString.Decoder.dateFromIsoString.decode(str)
+      const result = ISODateString.Decoder.dateFromString.decode(str)
       expect(result._tag).toBe('Right')
     })
     test.each(invalid)('invalidates invalid date strings, %s', str => {
-      const result = ISODateString.Decoder.dateFromIsoString.decode(str)
+      const result = ISODateString.Decoder.dateFromString.decode(str)
       if (result._tag === 'Right') console.log({ str, result: result.right })
       expect(result._tag).toBe('Left')
     })
@@ -80,8 +80,8 @@ describe('dateFromIsoString', () => {
     test.each(valid)('encoding a decoded value yields original value', original => {
       const roundtrip = pipe(
         original,
-        ISODateString.Decoder.dateFromIsoString.decode,
-        E.map(ISODateString.Encoder.dateFromIsoString.encode),
+        ISODateString.Decoder.dateFromString.decode,
+        E.map(ISODateString.Encoder.dateFromString.encode),
         E.getOrElseW(() => 'unexpected'),
       )
       expect(new Date(original).toISOString()).toEqual(roundtrip)
@@ -90,8 +90,8 @@ describe('dateFromIsoString', () => {
 
   describe('Eq', () => {
     test.each(valid)('determines two strings are equal', str1 => {
-      const guard = ISODateString.Guard.dateFromIsoString.is
-      const eq = ISODateString.Eq.dateFromIsoString.equals
+      const guard = ISODateString.Guard.dateFromString.is
+      const eq = ISODateString.Eq.dateFromString.equals
       const test = new Date(str1)
       if (!guard(test)) {
         throw new Error('Unexpected result')
@@ -103,34 +103,34 @@ describe('dateFromIsoString', () => {
   describe('Guard', () => {
     test.each(valid)('validates valid date strings, %s', str => {
       const test = new Date(str)
-      const result = ISODateString.Guard.dateFromIsoString.is(test)
+      const result = ISODateString.Guard.dateFromString.is(test)
       expect(result).toBe(true)
     })
     test.each(invalid)('invalidates invalid date strings, %s', str => {
       const test = new Date(str)
-      const result = ISODateString.Guard.dateFromIsoString.is(test)
+      const result = ISODateString.Guard.dateFromString.is(test)
       expect(result).toBe(false)
     })
   })
 
   describe('TaskDecoder', () => {
     test.each(valid)('validates valid date strings, %s', async str => {
-      const result = await ISODateString.TaskDecoder.dateFromIsoString.decode(str)()
+      const result = await ISODateString.TaskDecoder.dateFromString.decode(str)()
       expect(result._tag).toBe('Right')
     })
     test.each(invalid)('invalidates invalid date strings, %s', async str => {
-      const result = await ISODateString.TaskDecoder.dateFromIsoString.decode(str)()
+      const result = await ISODateString.TaskDecoder.dateFromString.decode(str)()
       expect(result._tag).toBe('Left')
     })
   })
 
   describe('Type', () => {
     test.each(valid)('validates valid date strings, %s', str => {
-      const result = ISODateString.Type.dateFromIsoString.decode(str)
+      const result = ISODateString.Type.dateFromString.decode(str)
       expect(result._tag).toBe('Right')
     })
     test.each(invalid)('invalidates invalid date strings, %s', str => {
-      const result = ISODateString.Type.dateFromIsoString.decode(str)
+      const result = ISODateString.Type.dateFromString.decode(str)
       expect(result._tag).toBe('Left')
     })
   })
@@ -138,15 +138,15 @@ describe('dateFromIsoString', () => {
   describe('Arbitrary', () => {
     it('generates valid ISODateString', () => {
       validateArbitrary(
-        { Arbitrary: ISODateString.Arbitrary.dateFromIsoString },
-        ISODateString.Guard.dateFromIsoString.is,
+        { Arbitrary: ISODateString.Arbitrary.dateFromString },
+        ISODateString.Guard.dateFromString.is,
       )
     })
   })
 
   describe('Schema', () => {
     it('derives a decoder', () => {
-      const decoder = getDecoder(ISODateString.Schema.dateFromIsoString)
+      const decoder = getDecoder(ISODateString.Schema.dateFromString)
       const validDate = new Date()
       expect(decoder.decode(new Date('abc'))._tag).toEqual('Left')
       expect(decoder.decode(validDate.toISOString())).toStrictEqual(E.right(validDate))
