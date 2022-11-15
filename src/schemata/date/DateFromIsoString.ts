@@ -9,8 +9,8 @@
  *
  * - Requires `T` separator between date and time
  * - Requires padded months, days, hours, minutes, and seconds
- * - Time part is optional
- * - Can be configured to require a timezone offset (e.g. `Z` or `±05:00`) (default is true)
+ * - Can be configured to require a time, time and timezone offset (e.g. `Z` or `±05:00`) or
+ *   neither (default is require both).
  * - Dates may contain years, months, and days; years and months; or years
  * - Times may contain hours, minutes, seconds, and milliseconds; hours, minutes, and
  *   seconds; or hours and minutes.
