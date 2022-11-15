@@ -9,6 +9,7 @@
  *
  * - Requires `T` separator between date and time
  * - Requires padded months, days, hours, minutes, and seconds
+ * - Time part is optional
  * - Can be configured to require a timezone offset (e.g. `Z` or `±05:00`) (default is true)
  * - Dates may contain years, months, and days; years and months; or years
  * - Times may contain hours, minutes, seconds, and milliseconds; hours, minutes, and
@@ -22,6 +23,7 @@ import { pipe } from 'fp-ts/function'
 import * as PB from '../../PatternBuilder'
 import { make, SchemaExt } from '../../SchemaExt'
 import * as D from '../../schemables/WithDate'
+import { match } from '../../internal/match'
 
 /**
  * E.g. `2022`
@@ -154,11 +156,9 @@ const timezoneOffset: PB.Pattern = pipe(
   PB.or(
     pipe(
       PB.characterClass(false, '+', '-'),
-      PB.subgroup,
-      PB.then(pipe(PB.integerRange(0, 23), PB.subgroup)),
+      PB.then(hour),
       PB.then(PB.char(':')),
-      PB.then(pipe(PB.integerRange(0, 59), PB.subgroup)),
-      PB.subgroup,
+      PB.then(minutesSeconds),
     ),
   ),
   PB.subgroup,
@@ -214,21 +214,42 @@ const time: PB.Pattern = pipe(hrMinSecMs, PB.or(hrMinSec), PB.or(hrMin), PB.subg
  * @since 1.0.0
  * @category Pattern
  */
-const dateTimeString: PB.Pattern = pipe(date, PB.then(PB.char('T')), PB.then(time))
+const dateTimeStringOptT: PB.Pattern = pipe(
+  date,
+  PB.then(pipe(PB.char('T'), PB.then(time), PB.subgroup, PB.maybe)),
+)
 
 /**
  * @since 1.0.0
  * @category Pattern
  */
-const isoDateStringReqTZ: PB.Pattern = pipe(dateTimeString, PB.then(timezoneOffset))
+const dateTimeStringReqT: PB.Pattern = pipe(date, PB.then(PB.char('T')), PB.then(time))
 
 /**
  * @since 1.0.0
  * @category Pattern
  */
-const isoDateStringOptTZ: PB.Pattern = pipe(
-  dateTimeString,
+const isoDateStringOptTzOptT: PB.Pattern = pipe(
+  dateTimeStringOptT,
   PB.then(pipe(timezoneOffset, PB.maybe)),
+)
+
+/**
+ * @since 1.0.0
+ * @category Pattern
+ */
+const isoDateStringOptTzReqT: PB.Pattern = pipe(
+  dateTimeStringReqT,
+  PB.then(pipe(timezoneOffset, PB.maybe)),
+)
+
+/**
+ * @since 1.0.0
+ * @category Pattern
+ */
+const isoDateStringReqTzReqT: PB.Pattern = pipe(
+  dateTimeStringReqT,
+  PB.then(timezoneOffset),
 )
 
 /**
@@ -237,11 +258,15 @@ const isoDateStringOptTZ: PB.Pattern = pipe(
  */
 export type DateFromIsoStringParams = {
   /**
-   * Require date-time string to include a timezone offset, e.g. `Z` or `±05:00`.
+   * Configuration to require string to include time, time and timezone offset, or neither.
+   *
+   * - `None` => date, or date-string, or date-string and timezone offset are allowed
+   * - `Time` => date-string, or date-string and timezone offset are allowed
+   * - `TimeAndOffset` => date-string and timezone offset are required
    *
    * @since 1.0.0
    */
-  readonly requireTimezoneOffset?: boolean
+  readonly requireTime?: 'None' | 'Time' | 'TimeAndOffset'
 }
 
 /**
@@ -263,7 +288,8 @@ export type DateFromIsoStringS = (
  *
  * - Requires `T` separator between date and time
  * - Requires padded months, days, hours, minutes, and seconds
- * - Can be configured to require a timezone offset (e.g. `Z` or `±05:00`) (default is true)
+ * - Can be configured to require a time, time and timezone offset (e.g. `Z` or `±05:00`) or
+ *   neither (default is require both).
  * - Dates may contain years, months, and days; years and months; or years
  * - Times may contain hours, minutes, seconds, and milliseconds; hours, minutes, and
  *   seconds; or hours and minutes.
@@ -273,13 +299,21 @@ export type DateFromIsoStringS = (
  * @category Schema
  */
 export const DateFromIsoString: DateFromIsoStringS = (params = {}) => {
-  const { requireTimezoneOffset = true } = params
+  const { requireTime = 'TimeAndOffset' } = params
   return make(S =>
     pipe(
       S.pattern(
-        requireTimezoneOffset ? isoDateStringReqTZ : isoDateStringOptTZ,
+        pipe(
+          { tag: requireTime },
+          match({
+            None: () => isoDateStringOptTzOptT,
+            Time: () => isoDateStringOptTzReqT,
+            TimeAndOffset: () => isoDateStringReqTzReqT,
+          }),
+        ),
         'IsoDateString',
       ),
+      S.refine((s): s is string => D.Guard.date.is(new Date(s)), 'SafeDateString'),
       S.imap(D.Guard.date, 'DateFromIsoString')(
         s => new Date(s),
         d => d.toISOString(),
