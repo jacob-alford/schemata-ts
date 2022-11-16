@@ -7,6 +7,7 @@ import { getAllInstances, validateArbitrary } from '../../../test-utils'
 const validNone: ReadonlyArray<string> = [
   '2009-12T12:34',
   '2009',
+  '+002022',
   '2009-05-19',
   '2009-05-19',
   '2009-05',

@@ -79,14 +79,12 @@ const day: PB.Pattern = pipe(
  * @since 1.0.0
  * @category Pattern
  */
-const yearMonthDay: PB.Pattern = pipe(
-  year,
-  PB.or(expandedYear),
-  PB.subgroup,
-  PB.then(PB.char('-')),
-  PB.then(month),
-  PB.then(PB.char('-')),
-  PB.then(day),
+const yearMonthDay: PB.Pattern = PB.sequence(
+  PB.subgroup(PB.oneOf(year, expandedYear)),
+  PB.char('-'),
+  month,
+  PB.char('-'),
+  day,
 )
 
 /**
@@ -95,12 +93,8 @@ const yearMonthDay: PB.Pattern = pipe(
  * @since 1.0.0
  * @category Pattern
  */
-const yearMonth: PB.Pattern = pipe(
-  year,
-  PB.or(expandedYear),
-  PB.subgroup,
-  PB.then(PB.char('-')),
-  PB.then(month),
+const yearMonth: PB.Pattern = PB.subgroup(
+  PB.sequence(PB.subgroup(PB.oneOf(year, expandedYear)), PB.char('-'), month),
 )
 
 /**
@@ -109,7 +103,9 @@ const yearMonth: PB.Pattern = pipe(
  * @since 1.0.0
  * @category Pattern
  */
-const date: PB.Pattern = pipe(yearMonthDay, PB.or(yearMonth), PB.or(year), PB.subgroup)
+const date: PB.Pattern = PB.subgroup(
+  PB.oneOf(yearMonthDay, yearMonth, year, expandedYear),
+)
 
 /**
  * E.g. 00, 01, 02, 03, 04, 05, 06, 07, ..., 22, 23

@@ -139,7 +139,7 @@ describe('dateFromString', () => {
     it('generates valid ISODateString', () => {
       validateArbitrary(
         { Arbitrary: ISODateString.Arbitrary.dateFromString },
-        ISODateString.Guard.dateFromString.is,
+        (d): d is Date => d instanceof Date && !Number.isNaN(d.getTime()),
       )
     })
   })
