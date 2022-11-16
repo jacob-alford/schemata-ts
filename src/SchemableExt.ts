@@ -34,6 +34,19 @@ import {
   WithInvariant2C,
   WithInvariantHKT2,
 } from './schemables/WithInvariant'
+import { WithMap1, WithMap2, WithMap2C, WithMapHKT2 } from './schemables/WithMap'
+import {
+  WithOption1,
+  WithOption2,
+  WithOption2C,
+  WithOptionHKT2,
+} from './schemables/WithOption'
+import {
+  WithOptional1,
+  WithOptional2,
+  WithOptional2C,
+  WithOptionalHKT2,
+} from './schemables/WithOptional'
 import {
   WithPadding1,
   WithPadding2,
@@ -59,12 +72,6 @@ import {
   WithUnknownContainersHKT2,
 } from './schemables/WithUnknownContainers'
 
-/** Generic */
-import * as mapFromEntries from './generic/mapFromEntries'
-import * as optionFromExclude from './generic/optionFromExclude'
-import * as optionFromNullable from './generic/optionFromNullable'
-import * as optionFromUndefined from './generic/optionFromUndefined'
-
 /**
  * @since 0.0.1
  * @category Instances
@@ -77,39 +84,13 @@ export interface SchemableExt<S>
     WithFloatHKT2<S>,
     WithIntHKT2<S>,
     WithInvariantHKT2<S>,
+    WithMapHKT2<S>,
+    WithOptionHKT2<S>,
+    WithOptionalHKT2<S>,
     WithPaddingHKT2<S>,
     WithPatternHKT2<S>,
     WithRefineHKT2<S>,
-    WithUnknownContainersHKT2<S> {
-  /**
-   * Represents a ReadonlyMap converted from an expected array of entries.
-   *
-   * @since 1.0.0
-   */
-  readonly mapFromEntries: mapFromEntries.SchemableParams<S>
-
-  /**
-   * Represents an exclusion of a supplied value where the exclusion is mapped to `None`.
-   * Requires an inner schemable, and an Eq instance which defaults to strict equality.
-   *
-   * @since 1.0.0
-   */
-  readonly optionFromExclude: optionFromExclude.SchemableParams<S>
-
-  /**
-   * Represents a conversion from a nullable value to an Optional type
-   *
-   * @since 1.0.0
-   */
-  readonly optionFromNullable: optionFromNullable.SchemableParams<S>
-
-  /**
-   * Represents a conversion from an value that can be undefined to an Optional type
-   *
-   * @since 0.0.4
-   */
-  readonly optionFromUndefined: optionFromUndefined.SchemableParams<S>
-}
+    WithUnknownContainersHKT2<S> {}
 
 /**
  * @since 0.0.1
@@ -123,39 +104,13 @@ export interface SchemableExt1<S extends URIS>
     WithFloat1<S>,
     WithInt1<S>,
     WithInvariant1<S>,
+    WithMap1<S>,
+    WithOption1<S>,
+    WithOptional1<S>,
     WithPadding1<S>,
     WithPattern1<S>,
     WithRefine1<S>,
-    WithUnknownContainers1<S> {
-  /**
-   * Represents a ReadonlyMap converted from an expected array of entries.
-   *
-   * @since 1.0.0
-   */
-  readonly mapFromEntries: mapFromEntries.SchemableParams1<S>
-
-  /**
-   * Represents an exclusion of a supplied value where the exclusion is mapped to `None`.
-   * Requires an inner schemable, and an Eq instance which defaults to strict equality.
-   *
-   * @since 1.0.0
-   */
-  readonly optionFromExclude: optionFromExclude.SchemableParams1<S>
-
-  /**
-   * Represents a conversion from a nullable value to an Optional type
-   *
-   * @since 1.0.0
-   */
-  readonly optionFromNullable: optionFromNullable.SchemableParams1<S>
-
-  /**
-   * Represents a conversion from an value that can be undefined to an Optional type
-   *
-   * @since 0.0.4
-   */
-  readonly optionFromUndefined: optionFromUndefined.SchemableParams1<S>
-}
+    WithUnknownContainers1<S> {}
 
 /**
  * @since 0.0.1
@@ -169,39 +124,13 @@ export interface SchemableExt2<S extends URIS2>
     WithFloat2<S>,
     WithInt2<S>,
     WithInvariant2<S>,
+    WithMap2<S>,
+    WithOption2<S>,
+    WithOptional2<S>,
     WithPadding2<S>,
     WithPattern2<S>,
     WithRefine2<S>,
-    WithUnknownContainers2<S> {
-  /**
-   * Represents a ReadonlyMap converted from an expected array of entries.
-   *
-   * @since 1.0.0
-   */
-  readonly mapFromEntries: mapFromEntries.SchemableParams2<S>
-
-  /**
-   * Represents an exclusion of a supplied value where the exclusion is mapped to `None`.
-   * Requires an inner schemable, and an Eq instance which defaults to strict equality.
-   *
-   * @since 1.0.0
-   */
-  readonly optionFromExclude: optionFromExclude.SchemableParams2<S>
-
-  /**
-   * Represents a conversion from a nullable value to an Optional type
-   *
-   * @since 1.0.0
-   */
-  readonly optionFromNullable: optionFromNullable.SchemableParams2<S>
-
-  /**
-   * Represents a conversion from an value that can be undefined to an Optional type
-   *
-   * @since 0.0.4
-   */
-  readonly optionFromUndefined: optionFromUndefined.SchemableParams2<S>
-}
+    WithUnknownContainers2<S> {}
 
 /**
  * @since 0.0.1
@@ -215,36 +144,10 @@ export interface SchemableExt2C<S extends URIS2>
     WithFloat2C<S, unknown>,
     WithInt2C<S, unknown>,
     WithInvariant2C<S, unknown>,
+    WithMap2C<S, unknown>,
+    WithOption2C<S, unknown>,
+    WithOptional2C<S, unknown>,
     WithPadding2C<S, unknown>,
     WithPattern2C<S, unknown>,
     WithRefine2C<S, unknown>,
-    WithUnknownContainers2C<S, unknown> {
-  /**
-   * Represents a ReadonlyMap converted from an expected array of entries.
-   *
-   * @since 1.0.0
-   */
-  readonly mapFromEntries: mapFromEntries.SchemableParams2C<S>
-
-  /**
-   * Represents an exclusion of a supplied value where the exclusion is mapped to `None`.
-   * Requires an inner schemable, and an Eq instance which defaults to strict equality.
-   *
-   * @since 1.0.0
-   */
-  readonly optionFromExclude: optionFromExclude.SchemableParams2C<S>
-
-  /**
-   * Represents a conversion from a nullable value to an Optional type
-   *
-   * @since 1.0.0
-   */
-  readonly optionFromNullable: optionFromNullable.SchemableParams2C<S>
-
-  /**
-   * Represents a conversion from an value that can be undefined to an Optional type
-   *
-   * @since 0.0.4
-   */
-  readonly optionFromUndefined: optionFromUndefined.SchemableParams2C<S>
-}
+    WithUnknownContainers2C<S, unknown> {}

@@ -17,15 +17,6 @@ interface Build<A> extends RTE.ReaderTaskEither<FileSystem & CLI, Error, A> {}
 
 const _ = ts.factory
 
-/**
- * Types that are injected into SchemableExt, follows:
- *
- * Category: List TypeName
- */
-type SchemableCombinators = {
-  generic: ReadonlyArray<readonly [string, string]>
-}
-
 type Schemable = [name: `With${string}`, path: string]
 
 // #region SchemableExt
@@ -50,10 +41,9 @@ const suffixToURIS = (suffix: Suffix) => {
 }
 
 export const makeSchemableExtTypeclass: (
-  combinators: SchemableCombinators,
   schemables: ReadonlyArray<Schemable>,
   suffix: Suffix,
-) => ts.InterfaceDeclaration = (combinators, schemables, suffix) =>
+) => ts.InterfaceDeclaration = (schemables, suffix) =>
   _.createInterfaceDeclaration(
     [_.createModifier(ts.SyntaxKind.ExportKeyword)],
     _.createIdentifier(`SchemableExt${suffix}`),
@@ -92,37 +82,13 @@ export const makeSchemableExtTypeclass: (
         ),
       ]),
     ],
-    [
-      ...pipe(
-        combinators.generic,
-        RA.map(([combinator, comment]) =>
-          ts.addSyntheticLeadingComment(
-            _.createPropertySignature(
-              [_.createModifier(ts.SyntaxKind.ReadonlyKeyword)],
-              _.createIdentifier(combinator),
-              undefined,
-              _.createTypeReferenceNode(
-                _.createQualifiedName(
-                  _.createIdentifier(combinator),
-                  _.createIdentifier(`SchemableParams${suffix}`),
-                ),
-                [_.createTypeReferenceNode(_.createIdentifier('S'), undefined)],
-              ),
-            ),
-            ts.SyntaxKind.MultiLineCommentTrivia,
-            `* ${comment}`,
-            true,
-          ),
-        ),
-      ),
-    ],
+    [],
   )
 
 /** Generate TS code for SchemableExt.ts */
 const makeSchemableExtContents: (
-  schemableCombinators: SchemableCombinators,
   schemables: ReadonlyArray<Schemable>,
-) => string = (combinators, schemables) => {
+) => string = schemables => {
   const printer = ts.createPrinter({ newLine: ts.NewLineKind.LineFeed })
   const sourceFile = ts.createSourceFile(
     `${module}.ts`,
@@ -147,25 +113,18 @@ const makeSchemableExtContents: (
           ),
         ),
       ),
-      _.createJSDocComment('generic'),
-      ...pipe(
-        combinators.generic,
-        RA.map(([combinator]) =>
-          makeModuleStarImport(combinator, `./generic/${combinator}`),
-        ),
-      ),
 
       instanceComment,
-      makeSchemableExtTypeclass(combinators, schemables, ''),
+      makeSchemableExtTypeclass(schemables, ''),
 
       instanceComment,
-      makeSchemableExtTypeclass(combinators, schemables, '1'),
+      makeSchemableExtTypeclass(schemables, '1'),
 
       instanceComment,
-      makeSchemableExtTypeclass(combinators, schemables, '2'),
+      makeSchemableExtTypeclass(schemables, '2'),
 
       instanceComment,
-      makeSchemableExtTypeclass(combinators, schemables, '2C'),
+      makeSchemableExtTypeclass(schemables, '2C'),
     ],
     _.createNodeArray,
     nodes => printer.printList(ts.ListFormat.MultiLine, nodes, sourceFile),
@@ -209,109 +168,87 @@ export const instanceComment: ts.JSDoc = _.createJSDocComment(
 const makeSchemableInstance: (
   tc: SchemableTypeclasses,
   schemables: ReadonlyArray<Schemable>,
-) => (schemableCombinators: SchemableCombinators) => ts.VariableStatement =
-  ([instanceName, accessor, schemableInstance], schemables) =>
-  schemableCombinators =>
-    _.createVariableStatement(
-      [_.createModifier(ts.SyntaxKind.ExportKeyword)],
-      _.createVariableDeclarationList(
-        [
-          _.createVariableDeclaration(
-            _.createIdentifier('Schemable'),
-            undefined,
-            _.createTypeReferenceNode(_.createIdentifier(schemableInstance), [
-              _.createTypeReferenceNode(
-                _.createQualifiedName(
-                  _.createIdentifier(accessor),
-                  _.createIdentifier('URI'),
-                ),
-                undefined,
+) => ts.VariableStatement = ([instanceName, accessor, schemableInstance], schemables) =>
+  _.createVariableStatement(
+    [_.createModifier(ts.SyntaxKind.ExportKeyword)],
+    _.createVariableDeclarationList(
+      [
+        _.createVariableDeclaration(
+          _.createIdentifier('Schemable'),
+          undefined,
+          _.createTypeReferenceNode(_.createIdentifier(schemableInstance), [
+            _.createTypeReferenceNode(
+              _.createQualifiedName(
+                _.createIdentifier(accessor),
+                _.createIdentifier('URI'),
               ),
-            ]),
-            _.createObjectLiteralExpression(
-              [
-                _.createSpreadAssignment(
-                  _.createPropertyAccessExpression(
-                    _.createIdentifier(accessor),
-                    _.createIdentifier('Schemable'),
-                  ),
-                ),
-                ...pipe(
-                  schemables,
-                  RA.map(([schemable]) =>
-                    _.createSpreadAssignment(
-                      _.createPropertyAccessExpression(
-                        _.createIdentifier(schemable),
-                        _.createIdentifier(instanceName),
-                      ),
-                    ),
-                  ),
-                ),
-                ...pipe(
-                  schemableCombinators.generic,
-                  RA.map(([schemableCombinatorName]) =>
-                    _.createPropertyAssignment(
-                      _.createIdentifier(schemableCombinatorName),
-                      _.createPropertyAccessExpression(
-                        _.createIdentifier(schemableCombinatorName),
-                        _.createIdentifier(instanceName),
-                      ),
-                    ),
-                  ),
-                ),
-              ],
-              true,
+              undefined,
             ),
+          ]),
+          _.createObjectLiteralExpression(
+            [
+              _.createSpreadAssignment(
+                _.createPropertyAccessExpression(
+                  _.createIdentifier(accessor),
+                  _.createIdentifier('Schemable'),
+                ),
+              ),
+              ...pipe(
+                schemables,
+                RA.map(([schemable]) =>
+                  _.createSpreadAssignment(
+                    _.createPropertyAccessExpression(
+                      _.createIdentifier(schemable),
+                      _.createIdentifier(instanceName),
+                    ),
+                  ),
+                ),
+              ),
+            ],
+            true,
           ),
-        ],
-        ts.NodeFlags.Const,
-      ),
-    )
+        ),
+      ],
+      ts.NodeFlags.Const,
+    ),
+  )
 
 /** Generate TS code for Decoder, Eq, Guard, TaskDecoder, Type, or Encoder */
 const makeSchemableInstanceModuleContents: (
   typeclass: SchemableTypeclasses,
   schemables: ReadonlyArray<Schemable>,
-) => (combinators: SchemableCombinators) => string =
-  (typeclass, schemables) => combinators => {
-    const [module, accessor, schemableInstance, sinceVersion] = typeclass
+) => string = (typeclass, schemables) => {
+  const [module, accessor, schemableInstance, sinceVersion] = typeclass
 
-    const printer = ts.createPrinter({ newLine: ts.NewLineKind.LineFeed })
-    const sourceFile = ts.createSourceFile(
-      `${module}.ts`,
-      '',
-      ts.ScriptTarget.Latest,
-      false,
-      ts.ScriptKind.TS,
-    )
+  const printer = ts.createPrinter({ newLine: ts.NewLineKind.LineFeed })
+  const sourceFile = ts.createSourceFile(
+    `${module}.ts`,
+    '',
+    ts.ScriptTarget.Latest,
+    false,
+    ts.ScriptKind.TS,
+  )
 
-    return pipe(
-      [
-        moduleHeaderComment(module, sinceVersion),
-        makeModuleStarImport(accessor, `./internal/${module}Base`),
-        makeDestructureImport([schemableInstance], './SchemableExt'),
-        _.createJSDocComment('schemables'),
-        ...pipe(
-          schemables,
-          RA.map(([schemable]) =>
-            makeModuleStarImport(schemable, `./schemables/${schemable}`),
-          ),
+  return pipe(
+    [
+      moduleHeaderComment(module, sinceVersion),
+      makeModuleStarImport(accessor, `./internal/${module}Base`),
+      makeDestructureImport([schemableInstance], './SchemableExt'),
+      _.createJSDocComment('schemables'),
+      ...pipe(
+        schemables,
+        RA.map(([schemable]) =>
+          makeModuleStarImport(schemable, `./schemables/${schemable}`),
         ),
-        _.createJSDocComment('generic'),
-        ...pipe(
-          combinators.generic,
-          RA.map(([combinator]) =>
-            makeModuleStarImport(combinator, `./generic/${combinator}`),
-          ),
-        ),
-        instanceComment,
-        makeSchemableInstance(typeclass, schemables)(combinators),
-      ],
-      _.createNodeArray,
-      nodes => printer.printList(ts.ListFormat.MultiLine, nodes, sourceFile),
-      Str.replace(/\/\*\*/gm, '\n/**'),
-    )
-  }
+      ),
+      instanceComment,
+      makeSchemableInstance(typeclass, schemables),
+    ],
+    _.createNodeArray,
+    nodes => printer.printList(ts.ListFormat.MultiLine, nodes, sourceFile),
+    Str.replace(/\/\*\*/gm, '\n/**'),
+  )
+}
 
 const writeToDisk: (path: string) => (contents: string) => Build<void> =
   path => contents => C =>
@@ -333,42 +270,11 @@ export const extractJSDocHeaderTextFromFileContents: (
     O.getOrElse(() => ''),
   )
 
-const getModuleJSDocComment: (filePath: string) => Build<string> = filePath => C =>
-  pipe(
-    C.readFile(filePath),
-    TE.filterOrElse(
-      file => file.startsWith('/**'),
-      () => new Error(`File ${filePath} does not start with a JSDoc comment`),
-    ),
-    TE.map(extractJSDocHeaderTextFromFileContents),
-  )
-
 /** Extracts module name, e.g. ASCII.ts -> ASCII */
 const getModuleName: (file: string) => string = flow(Str.split('.'), RNEA.head)
 
 const getSchemableName: (schmable: `With${string}`) => `With${string}` =
   unsafeCoerce(getModuleName)
-
-/** Retrieve modules found in category folders */
-const getSchemableCombinators: Build<SchemableCombinators> = C =>
-  pipe(
-    TE.Do,
-    TE.apS(
-      'generic',
-      pipe(
-        C.readFiles('./src/generic'),
-        TE.chain(
-          TE.traverseArray(file =>
-            pipe(
-              C,
-              getModuleJSDocComment(`./src/generic/${file}`),
-              TE.map(comment => tuple(getModuleName(file), comment)),
-            ),
-          ),
-        ),
-      ),
-    ),
-  )
 
 const getSchemables: Build<ReadonlyArray<Schemable>> = C =>
   pipe(
@@ -400,16 +306,14 @@ const schemableTypeclasses: ReadonlyArray<SchemableTypeclasses> = [
 ]
 
 const main: Build<void> = pipe(
-  getSchemableCombinators,
-  RTE.bindTo('combinators'),
-  RTE.apS('schemables', getSchemables),
+  getSchemables,
+  RTE.bindTo('schemables'),
   RTE.chainFirstIOK(() => Cons.log('Writing `Schemable` instance modules...')),
-  RTE.chainFirst(({ combinators, schemables }) =>
+  RTE.chainFirst(({ schemables }) =>
     pipe(
       schemableTypeclasses,
       RTE.traverseArray(typeclass =>
         pipe(
-          combinators,
           makeSchemableInstanceModuleContents(typeclass, schemables),
           writeToDisk(`./src/${typeclass[0]}.ts`),
           RTE.chainFirstIOK(() => Cons.log(`  - Writing src/${typeclass[0]}.ts...`)),
@@ -418,11 +322,8 @@ const main: Build<void> = pipe(
     ),
   ),
   RTE.chainFirstIOK(() => Cons.log('Writing `SchemableExt`...')),
-  RTE.chainFirst(({ combinators, schemables }) =>
-    pipe(
-      makeSchemableExtContents(combinators, schemables),
-      writeToDisk(`./src/SchemableExt.ts`),
-    ),
+  RTE.chainFirst(({ schemables }) =>
+    pipe(makeSchemableExtContents(schemables), writeToDisk(`./src/SchemableExt.ts`)),
   ),
   RTE.chainIOK(() => Cons.log('Done!')),
 )

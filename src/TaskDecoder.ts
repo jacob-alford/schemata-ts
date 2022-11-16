@@ -15,16 +15,13 @@ import * as WithDate from './schemables/WithDate'
 import * as WithFloat from './schemables/WithFloat'
 import * as WithInt from './schemables/WithInt'
 import * as WithInvariant from './schemables/WithInvariant'
+import * as WithMap from './schemables/WithMap'
+import * as WithOption from './schemables/WithOption'
+import * as WithOptional from './schemables/WithOptional'
 import * as WithPadding from './schemables/WithPadding'
 import * as WithPattern from './schemables/WithPattern'
 import * as WithRefine from './schemables/WithRefine'
 import * as WithUnknownContainers from './schemables/WithUnknownContainers'
-
-/** Generic */
-import * as mapFromEntries from './generic/mapFromEntries'
-import * as optionFromExclude from './generic/optionFromExclude'
-import * as optionFromNullable from './generic/optionFromNullable'
-import * as optionFromUndefined from './generic/optionFromUndefined'
 
 /**
  * @since 0.0.1
@@ -38,12 +35,11 @@ export const Schemable: SchemableExt2C<TD.URI> = {
   ...WithFloat.TaskDecoder,
   ...WithInt.TaskDecoder,
   ...WithInvariant.TaskDecoder,
+  ...WithMap.TaskDecoder,
+  ...WithOption.TaskDecoder,
+  ...WithOptional.TaskDecoder,
   ...WithPadding.TaskDecoder,
   ...WithPattern.TaskDecoder,
   ...WithRefine.TaskDecoder,
   ...WithUnknownContainers.TaskDecoder,
-  mapFromEntries: mapFromEntries.TaskDecoder,
-  optionFromExclude: optionFromExclude.TaskDecoder,
-  optionFromNullable: optionFromNullable.TaskDecoder,
-  optionFromUndefined: optionFromUndefined.TaskDecoder,
 }
