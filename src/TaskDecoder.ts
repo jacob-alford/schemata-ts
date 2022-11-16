@@ -11,6 +11,7 @@ import { SchemableExt2C } from './SchemableExt'
 /** Schemables */
 import * as WithBrand from './schemables/WithBrand'
 import * as WithCheckDigit from './schemables/WithCheckDigit'
+import * as WithDate from './schemables/WithDate'
 import * as WithFloat from './schemables/WithFloat'
 import * as WithInt from './schemables/WithInt'
 import * as WithInvariant from './schemables/WithInvariant'
@@ -25,10 +26,6 @@ import * as optionFromExclude from './generic/optionFromExclude'
 import * as optionFromNullable from './generic/optionFromNullable'
 import * as optionFromUndefined from './generic/optionFromUndefined'
 
-/** Date */
-import * as date from './date/date'
-import * as dateFromIsoString from './date/dateFromIsoString'
-
 /**
  * @since 0.0.1
  * @category Instances
@@ -37,6 +34,7 @@ export const Schemable: SchemableExt2C<TD.URI> = {
   ...TD.Schemable,
   ...WithBrand.TaskDecoder,
   ...WithCheckDigit.TaskDecoder,
+  ...WithDate.TaskDecoder,
   ...WithFloat.TaskDecoder,
   ...WithInt.TaskDecoder,
   ...WithInvariant.TaskDecoder,
@@ -48,6 +46,4 @@ export const Schemable: SchemableExt2C<TD.URI> = {
   optionFromExclude: optionFromExclude.TaskDecoder,
   optionFromNullable: optionFromNullable.TaskDecoder,
   optionFromUndefined: optionFromUndefined.TaskDecoder,
-  date: date.TaskDecoder,
-  dateFromIsoString: dateFromIsoString.TaskDecoder,
 }
