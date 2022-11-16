@@ -132,19 +132,19 @@ describe('OptionFromExclude', () => {
 
   describe('Type', () => {
     it('should decode none', () => {
-      expect(
-        OptionFromExclude.Type.optionFromExclude('', t.string).decode(O.none),
-      ).toEqual(E.right(O.none))
+      expect(OptionFromExclude.Type.optionFromExclude('', t.string).decode('')).toEqual(
+        E.right(O.none),
+      )
     })
     it('should decode valid values to some', () => {
-      expect(
-        OptionFromExclude.Type.optionFromExclude('', t.string).decode(O.some('a')),
-      ).toEqual(E.right(O.some('a')))
+      expect(OptionFromExclude.Type.optionFromExclude('', t.string).decode('a')).toEqual(
+        E.right(O.some('a')),
+      )
     })
     it("should decode invalid values to left('invalid')", () => {
-      expect(
-        OptionFromExclude.Type.optionFromExclude('', t.string).decode(O.some(1))._tag,
-      ).toBe('Left')
+      expect(OptionFromExclude.Type.optionFromExclude('', t.string).decode(1)._tag).toBe(
+        'Left',
+      )
     })
   })
 

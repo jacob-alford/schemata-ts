@@ -14,6 +14,7 @@ import * as TE from 'fp-ts/TaskEither'
 import * as G from 'io-ts/Guard'
 import * as TD from 'io-ts/TaskDecoder'
 import * as t from 'io-ts/Type'
+import * as t_ from 'io-ts'
 import * as O from 'fp-ts/Option'
 import * as SC from '../SchemaExt'
 import { URI as SchemaURI } from '../internal/SchemaBase'
@@ -157,15 +158,12 @@ export const TaskDecoder: WithOption2C<TD.URI, unknown> = {
  * @category Instances
  */
 export const Type: WithOption1<t.URI> = {
-  optionFromExclude: (_, typeA) =>
-    t.union(
-      t.struct({
-        _tag: t.literal('None'),
-      }),
-      t.struct({
-        _tag: t.literal('Some'),
-        value: typeA,
-      }),
+  optionFromExclude: (exclude, tA, eqA = Eq_.eqStrict) =>
+    new t_.Type(
+      `OptionFromExclude<${tA.name}>`,
+      Guard.optionFromExclude(exclude, tA).is,
+      flow(tA.decode, E.map(O.fromPredicate(a => !eqA.equals(a, exclude)))),
+      Encoder.optionFromExclude(exclude, tA).encode,
     ),
 }
 
