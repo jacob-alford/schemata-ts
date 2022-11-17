@@ -15,16 +15,13 @@ import * as WithDate from './schemables/WithDate'
 import * as WithFloat from './schemables/WithFloat'
 import * as WithInt from './schemables/WithInt'
 import * as WithInvariant from './schemables/WithInvariant'
+import * as WithMap from './schemables/WithMap'
+import * as WithOption from './schemables/WithOption'
+import * as WithOptional from './schemables/WithOptional'
 import * as WithPadding from './schemables/WithPadding'
 import * as WithPattern from './schemables/WithPattern'
 import * as WithRefine from './schemables/WithRefine'
 import * as WithUnknownContainers from './schemables/WithUnknownContainers'
-
-/** Generic */
-import * as mapFromEntries from './generic/mapFromEntries'
-import * as optionFromExclude from './generic/optionFromExclude'
-import * as optionFromNullable from './generic/optionFromNullable'
-import * as optionFromUndefined from './generic/optionFromUndefined'
 
 /**
  * @since 0.0.1
@@ -38,12 +35,11 @@ export const Schemable: SchemableExt1<Eq.URI> = {
   ...WithFloat.Eq,
   ...WithInt.Eq,
   ...WithInvariant.Eq,
+  ...WithMap.Eq,
+  ...WithOption.Eq,
+  ...WithOptional.Eq,
   ...WithPadding.Eq,
   ...WithPattern.Eq,
   ...WithRefine.Eq,
   ...WithUnknownContainers.Eq,
-  mapFromEntries: mapFromEntries.Eq,
-  optionFromExclude: optionFromExclude.Eq,
-  optionFromNullable: optionFromNullable.Eq,
-  optionFromUndefined: optionFromUndefined.Eq,
 }
