@@ -177,7 +177,7 @@ const main: Build<void> = pipe(
     pipe(makeSchemaExportsFile(schemables, schemata), writeToDisk('./src/schemata.ts')),
   ),
   RTE.chainFirstIOK(() => Cons.log('Formatting with Prettier...')),
-  RTE.apFirst(format),
+  RTE.chainFirst(() => format),
   RTE.chainIOK(() => Cons.log('Done!')),
 )
 

@@ -342,7 +342,7 @@ const main: Build<void> = pipe(
     pipe(makeSchemableExtContents(schemables), writeToDisk(`./src/SchemableExt.ts`)),
   ),
   RTE.chainFirstIOK(() => Cons.log('Formatting with Prettier...')),
-  RTE.apFirst(format),
+  RTE.chainFirst(() => format),
   RTE.chainIOK(() => Cons.log('Done!')),
 )
 
