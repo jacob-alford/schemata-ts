@@ -2,7 +2,6 @@
  * An instance of `Schemable` for `fast-check` arbitraries that emit valid values
  *
  * @since 1.0.0
- * @internal
  */
 import * as fc from 'fast-check'
 import { identity, pipe } from 'fp-ts/function'
@@ -220,6 +219,10 @@ export const union: S.WithUnion1<URI>['union'] = (...members) => fc.oneof(...mem
  */
 export const URI = 'Arbitrary'
 
+/**
+ * @since 1.0.0
+ * @category Instances
+ */
 export type URI = typeof URI
 
 declare module 'fp-ts/lib/HKT' {

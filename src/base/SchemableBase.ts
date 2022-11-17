@@ -1,3 +1,8 @@
+/**
+ * A base `Schemable` built with a type arity of two to support Encoder.
+ *
+ * @since 1.0.0
+ */
 import { HKT2, Kind2, URIS2 } from 'fp-ts/HKT'
 import { Literal } from 'io-ts/Schemable'
 
@@ -18,6 +23,11 @@ type EnsureTagKind2<S extends URIS2, T extends string, M> = {
   [K in keyof M]: Kind2<S, { [_ in T]: K }, Any>
 }
 
+/**
+ * A base `Schemable` built with a type arity of two to support Encoder.
+ *
+ * @since 1.0.0
+ */
 export interface SchemableHKT2<S> {
   readonly URI: S
   readonly literal: <
@@ -71,6 +81,11 @@ export interface SchemableHKT2<S> {
   readonly readonly: <O, A>(soa: HKT2<S, O, A>) => HKT2<S, O, Readonly<A>>
 }
 
+/**
+ * A base `Schemable` built with a type arity of two to support Encoder.
+ *
+ * @since 1.0.0
+ */
 export interface Schemable2<S extends URIS2> {
   readonly URI: S
   readonly literal: <
