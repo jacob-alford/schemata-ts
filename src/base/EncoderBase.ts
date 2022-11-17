@@ -1,8 +1,19 @@
+/**
+ * An instance of `Schemable` for io-ts/Encoder
+ *
+ * @since 1.0.0
+ */
 import * as Enc from 'io-ts/Encoder'
 import { Schemable2 } from './SchemableBase'
 
-export type { Encoder, URI } from 'io-ts/Encoder'
+export * from 'io-ts/Encoder'
 
+/**
+ * An instance of `Schemable` for io-ts/Encoder
+ *
+ * @since 1.0.0
+ * @category Instances
+ */
 export const Schemable: Schemable2<Enc.URI> = {
   URI: Enc.URI,
   literal: () => Enc.id(),
