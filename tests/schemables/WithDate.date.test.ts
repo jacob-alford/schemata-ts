@@ -72,7 +72,7 @@ describe('SafeDate', () => {
 
   describe('Schema', () => {
     it('derives a decoder', () => {
-      const decoder = getDecoder(SafeDate.Schema.date)
+      const decoder = getDecoder()(SafeDate.Schema.date)
       const validDate = new Date()
       expect(decoder.decode(new Date('abc'))._tag).toEqual('Left')
       expect(decoder.decode(validDate)).toStrictEqual(E.right(validDate))

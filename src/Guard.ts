@@ -5,6 +5,7 @@
  *
  * @since 1.0.0
  */
+export type { Guard } from './base/GuardBase'
 import * as G from './base/GuardBase'
 import { SchemableExt1 } from './SchemableExt'
 

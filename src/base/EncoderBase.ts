@@ -1,7 +1,7 @@
 import * as Enc from 'io-ts/Encoder'
 import { Schemable2 } from './SchemableBase'
 
-export { URI } from 'io-ts/Encoder'
+export type { Encoder, URI } from 'io-ts/Encoder'
 
 export const Schemable: Schemable2<Enc.URI> = {
   URI: Enc.URI,

@@ -165,19 +165,6 @@ export const instanceComment: ts.JSDoc = _.createJSDocComment(
   `@since 1.0.0\n@category Instances`,
 )
 
-const makeInstanceTypeExport: (tc: SchemableTypeclasses) => ts.ExportDeclaration = ([
-  typeclassName,
-]) =>
-  _.createExportDeclaration(
-    undefined,
-    true,
-    _.createNamedExports([
-      _.createExportSpecifier(false, undefined, _.createIdentifier(typeclassName)),
-    ]),
-    _.createStringLiteral(`./base/${typeclassName}Base`),
-    undefined,
-  )
-
 const makeSchemableInstance: (
   tc: SchemableTypeclasses,
   schemables: ReadonlyArray<Schemable>,
@@ -245,7 +232,6 @@ const makeSchemableInstanceModuleContents: (
   return pipe(
     [
       moduleHeaderComment(module, sinceVersion),
-      makeInstanceTypeExport(typeclass),
       makeModuleStarImport(accessor, `./base/${module}Base`),
       makeDestructureImport([schemableInstance], './SchemableExt'),
       _.createJSDocComment('schemables'),

@@ -5,6 +5,7 @@
  *
  * @since 1.0.0
  */
+export type { Type } from './base/TypeBase'
 import * as t from './base/TypeBase'
 import { SchemableExt1 } from './SchemableExt'
 

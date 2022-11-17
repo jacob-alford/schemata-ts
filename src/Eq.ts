@@ -5,6 +5,7 @@
  *
  * @since 1.0.0
  */
+export type { Eq } from './base/EqBase'
 import * as Eq from './base/EqBase'
 import { SchemableExt1 } from './SchemableExt'
 
