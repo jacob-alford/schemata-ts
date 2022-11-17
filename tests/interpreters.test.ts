@@ -4,7 +4,7 @@ import * as I from '../src/interpreters'
 
 describe('interpreters', () => {
   test('getArbitrary', () => {
-    const arb = I.getArbitrary(SC.String)
+    const arb = I.getArbitrary()(SC.String)
     fc.assert(
       fc.property(arb, str => {
         expect(typeof str).toBe('string')
@@ -12,19 +12,19 @@ describe('interpreters', () => {
     )
   })
   test('getDecoder', () => {
-    const decoder = I.getDecoder(SC.String)
+    const decoder = I.getDecoder()(SC.String)
     expect(decoder.decode('foo')).toEqual({ _tag: 'Right', right: 'foo' })
   })
   test('getEncoder', () => {
-    const encoder = I.getEncoder(SC.String)
+    const encoder = I.getEncoder()(SC.String)
     expect(encoder.encode('foo')).toEqual('foo')
   })
   test('getEq', () => {
-    const eq = I.getEq(SC.String)
+    const eq = I.getEq()(SC.String)
     expect(eq.equals('foo', 'foo')).toBe(true)
   })
   test('getGuard', () => {
-    const guard = I.getGuard(SC.String)
+    const guard = I.getGuard()(SC.String)
     expect(guard.is('foo')).toBe(true)
   })
 })

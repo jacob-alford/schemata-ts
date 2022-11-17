@@ -319,6 +319,8 @@ const schemableTypeclasses: ReadonlyArray<SchemableTypeclasses> = [
   ['Arbitrary', 'Arb', 'SchemableExt1', '1.0.0'],
 ]
 
+const format: Build<void> = C => C.exec('yarn format')
+
 const main: Build<void> = pipe(
   getSchemables,
   RTE.bindTo('schemables'),
@@ -339,6 +341,8 @@ const main: Build<void> = pipe(
   RTE.chainFirst(({ schemables }) =>
     pipe(makeSchemableExtContents(schemables), writeToDisk(`./src/SchemableExt.ts`)),
   ),
+  RTE.chainFirstIOK(() => Cons.log('Formatting with Prettier...')),
+  RTE.apFirst(format),
   RTE.chainIOK(() => Cons.log('Done!')),
 )
 
