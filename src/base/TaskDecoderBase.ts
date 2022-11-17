@@ -1,5 +1,5 @@
 /**
- * Re-exports for io-ts/Decoder
+ * Re-exports for io-ts/TaskDecoder
  *
  * @since 1.0.0
  */
