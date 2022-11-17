@@ -12,7 +12,7 @@
  *   const alpha = 0.7
  *
  *   const hslString = `hsl(${hue} ${saturation}% ${lightness}% / ${alpha})`
- *   const Guard = getGuard(HslColor)
+ *   const Guard = getGuard()(HslColor)
  *
  *   assert.equal(Guard.is(hslString), true)
  */
@@ -44,7 +44,7 @@ interface HslColorBrand {
  *   const alpha = 0.7
  *
  *   const hslString = `hsl(${hue} ${saturation}% ${lightness}% / ${alpha})`
- *   const Guard = getGuard(HslColor)
+ *   const Guard = getGuard()(HslColor)
  *
  *   assert.equal(Guard.is(hslString), true)
  */
