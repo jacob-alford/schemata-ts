@@ -5,7 +5,13 @@
  *
  * @since 1.0.0
  */
-export type { Arbitrary } from './base/ArbitraryBase'
+export type {
+  /**
+   * @since 1.0.0
+   * @category Model
+   */
+  Arbitrary,
+} from './base/ArbitraryBase'
 import * as Arb from './base/ArbitraryBase'
 import { SchemableExt1 } from './SchemableExt'
 

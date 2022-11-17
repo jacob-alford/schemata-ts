@@ -2,6 +2,7 @@ import * as ts from 'typescript'
 import * as Cons from 'fp-ts/Console'
 import { flow, pipe, tuple, unsafeCoerce } from 'fp-ts/function'
 import * as E from 'fp-ts/Either'
+import * as O from 'fp-ts/Option'
 import * as RA from 'fp-ts/ReadonlyArray'
 import * as RNEA from 'fp-ts/ReadonlyNonEmptyArray'
 import * as RTE from 'fp-ts/ReaderTaskEither'
@@ -15,13 +16,20 @@ interface Build<A> extends RTE.ReaderTaskEither<FileSystem & CLI, Error, A> {}
 
 const _ = ts.factory
 
-type Schemable = [name: `With${string}`, nameWithout: string, path: string]
+type Schemable = [
+  name: `With${string}`,
+  nameWithout: string,
+  path: string,
+  moduleComment: string,
+]
+
+type Schema = [name: string, moduleComment: string]
 
 type Schemata = {
-  readonly date: ReadonlyArray<string>
-  readonly generic: ReadonlyArray<string>
-  readonly number: ReadonlyArray<string>
-  readonly string: ReadonlyArray<string>
+  readonly date: ReadonlyArray<Schema>
+  readonly generic: ReadonlyArray<Schema>
+  readonly number: ReadonlyArray<Schema>
+  readonly string: ReadonlyArray<Schema>
 }
 
 type SchemableTypeclass<
@@ -41,27 +49,46 @@ export type SchemableTypeclasses =
   | SchemableTypeclass<'Encoder', 'Enc', 'SchemableExt2', '1.0.0'>
   | SchemableTypeclass<'Arbitrary', 'Arb', 'SchemableExt1', '1.0.0'>
 
-const makeSchemableSchemaExport = ([nameWith, name]: Schemable): ts.ExportDeclaration =>
+const makeSchemableSchemaExport = ([
+  nameWith,
+  name,
+  ,
+  comment,
+]: Schemable): ts.ExportDeclaration =>
   _.createExportDeclaration(
     undefined,
     false,
     _.createNamedExports([
-      _.createExportSpecifier(
+      ts.addSyntheticLeadingComment(
+        _.createExportSpecifier(
+          false,
+          _.createIdentifier('Schema'),
+          _.createIdentifier(name),
+        ),
+        ts.SyntaxKind.MultiLineCommentTrivia,
+        `* ${comment}`,
         false,
-        _.createIdentifier('Schema'),
-        _.createIdentifier(name),
       ),
     ]),
     _.createStringLiteral(`./schemables/${nameWith}`),
     undefined,
   )
 
-const makeSchemaExport = (category: string, name: string): ts.ExportDeclaration =>
+const makeSchemaExport = (
+  category: string,
+  name: string,
+  comment: string,
+): ts.ExportDeclaration =>
   _.createExportDeclaration(
     undefined,
     false,
     _.createNamedExports([
-      _.createExportSpecifier(false, undefined, _.createIdentifier(name)),
+      ts.addSyntheticLeadingComment(
+        _.createExportSpecifier(false, undefined, _.createIdentifier(name)),
+        ts.SyntaxKind.MultiLineCommentTrivia,
+        `* ${comment} `,
+        true,
+      ),
     ]),
     _.createStringLiteral(`./schemata/${category}/${name}`),
     undefined,
@@ -90,27 +117,28 @@ const makeSchemaExportsFile: (
       _.createJSDocComment('schemata > date'),
       ...pipe(
         schemata.date,
-        RA.map(name => makeSchemaExport('date', name)),
+        RA.map(([name, comment]) => makeSchemaExport('date', name, comment)),
       ),
       _.createJSDocComment('schemata > generic'),
       ...pipe(
         schemata.generic,
-        RA.map(name => makeSchemaExport('generic', name)),
+        RA.map(([name, comment]) => makeSchemaExport('generic', name, comment)),
       ),
       _.createJSDocComment('schemata > number'),
       ...pipe(
         schemata.number,
-        RA.map(name => makeSchemaExport('number', name)),
+        RA.map(([name, comment]) => makeSchemaExport('number', name, comment)),
       ),
       _.createJSDocComment('schemata > string'),
       ...pipe(
         schemata.string,
-        RA.map(name => makeSchemaExport('string', name)),
+        RA.map(([name, comment]) => makeSchemaExport('string', name, comment)),
       ),
     ],
     _.createNodeArray,
     nodes => printer.printList(ts.ListFormat.MultiLine, nodes, sourceFile),
     Str.replace(/\/\*\*/gm, '\n/**'),
+    Str.replace(/export/gm, '\nexport'),
   )
 }
 
@@ -125,6 +153,15 @@ const getModuleName: (file: string) => string = flow(Str.split('.'), RNEA.head)
 
 const getSchemableName: (schmable: `With${string}`) => `With${string}` =
   unsafeCoerce(getModuleName)
+
+const getSchemableModuleComment: (path: string) => Build<string> = path => C =>
+  pipe(
+    C.readFile(path),
+    TE.filterOrElse(
+      file => file.startsWith('/**'),
+      () => new Error(`File ${path} does not start with a JSDoc comment`),
+    ),
+  )
 
 const getSchemables: Build<ReadonlyArray<Schemable>> = C =>
   pipe(
@@ -143,6 +180,42 @@ const getSchemables: Build<ReadonlyArray<Schemable>> = C =>
         return tuple(schemable, schemable.slice(4), `./schemables/${schemable}`)
       }),
     ),
+    TE.chain(
+      TE.traverseArray(([nameWith, name, path]) =>
+        pipe(
+          getSchemableModuleComment(`./src/schemables/${nameWith}.ts`)(C),
+          TE.map(comment =>
+            tuple(nameWith, name, path, extractJSDocHeaderTextFromFileContents(comment)),
+          ),
+        ),
+      ),
+    ),
+  )
+
+/** Strips JSDoc comment's leading ** and trailing * */
+export const extractJSDocHeaderTextFromFileContents: (
+  fileContents: string,
+) => string = fileContents =>
+  pipe(
+    fileContents,
+    Str.split('*/'),
+    RNEA.head,
+    Str.split('/**'),
+    RNEA.tail,
+    RA.head,
+    O.getOrElse(() => ''),
+  )
+
+const getSchema: (name: string, path: string) => Build<Schema> = (name, path) => C =>
+  pipe(
+    C.readFile(path),
+    TE.filterOrElse(
+      file => file.startsWith('/**'),
+      () => new Error(`File ${path} does not start with a JSDoc comment`),
+    ),
+    TE.map(contents =>
+      tuple(getModuleName(name), extractJSDocHeaderTextFromFileContents(contents)),
+    ),
   )
 
 const getSchemata: Build<Schemata> = C =>
@@ -150,19 +223,47 @@ const getSchemata: Build<Schemata> = C =>
     TE.Do,
     TE.apS(
       'date',
-      pipe(C.readFiles('./src/schemata/date'), TE.map(RA.map(getModuleName))),
+      pipe(
+        C.readFiles('./src/schemata/date'),
+        TE.chain(
+          TE.traverseArray(fileName =>
+            getSchema(fileName, `./src/schemata/date/${fileName}`)(C),
+          ),
+        ),
+      ),
     ),
     TE.apS(
       'generic',
-      pipe(C.readFiles('./src/schemata/generic'), TE.map(RA.map(getModuleName))),
+      pipe(
+        C.readFiles('./src/schemata/generic'),
+        TE.chain(
+          TE.traverseArray(fileName =>
+            getSchema(fileName, `./src/schemata/generic/${fileName}`)(C),
+          ),
+        ),
+      ),
     ),
     TE.apS(
       'number',
-      pipe(C.readFiles('./src/schemata/number'), TE.map(RA.map(getModuleName))),
+      pipe(
+        C.readFiles('./src/schemata/number'),
+        TE.chain(
+          TE.traverseArray(fileName =>
+            getSchema(fileName, `./src/schemata/number/${fileName}`)(C),
+          ),
+        ),
+      ),
     ),
     TE.apS(
       'string',
-      pipe(C.readFiles('./src/schemata/string'), TE.map(RA.map(getModuleName))),
+      pipe(
+        C.readFiles('./src/schemata/string'),
+        TE.chain(
+          TE.traverseArray(fileName =>
+            getSchema(fileName, `./src/schemata/string/${fileName}`)(C),
+          ),
+        ),
+      ),
     ),
   )
 

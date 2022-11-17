@@ -172,7 +172,12 @@ const makeInstanceTypeExport: (tc: SchemableTypeclasses) => ts.ExportDeclaration
     undefined,
     true,
     _.createNamedExports([
-      _.createExportSpecifier(false, undefined, _.createIdentifier(typeclassName)),
+      ts.addSyntheticLeadingComment(
+        _.createExportSpecifier(false, undefined, _.createIdentifier(typeclassName)),
+        ts.SyntaxKind.MultiLineCommentTrivia,
+        `* @since 1.0.0\n\n@category Model`,
+        true,
+      ),
     ]),
     _.createStringLiteral(`./base/${typeclassName}Base`),
     undefined,

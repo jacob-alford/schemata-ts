@@ -5,7 +5,13 @@
  *
  * @since 1.0.0
  */
-export type { Encoder } from './base/EncoderBase'
+export type {
+  /**
+   * @since 1.0.0
+   * @category Model
+   */
+  Encoder,
+} from './base/EncoderBase'
 import * as Enc from './base/EncoderBase'
 import { SchemableExt2 } from './SchemableExt'
 

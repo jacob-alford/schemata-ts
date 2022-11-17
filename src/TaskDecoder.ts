@@ -5,7 +5,13 @@
  *
  * @since 1.0.0
  */
-export type { TaskDecoder } from './base/TaskDecoderBase'
+export type {
+  /**
+   * @since 1.0.0
+   * @category Model
+   */
+  TaskDecoder,
+} from './base/TaskDecoderBase'
 import * as TD from './base/TaskDecoderBase'
 import { SchemableExt2C } from './SchemableExt'
 
