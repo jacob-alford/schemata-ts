@@ -4,7 +4,7 @@
  * @since 1.0.0
  */
 import { Kind2, URIS2, HKT2 } from 'fp-ts/HKT'
-import { URI as SchemaURI } from '../internal/SchemaBase'
+import { URI as SchemaURI } from '../base/SchemaBase'
 import * as SC from '../SchemaExt'
 import * as Enc from 'io-ts/Encoder'
 
@@ -48,7 +48,7 @@ export {
    * @category Instances
    */
   WithUnknownContainers as Arbitrary,
-} from '../internal/ArbitraryBase'
+} from '../base/ArbitraryBase'
 
 export {
   /**
@@ -56,7 +56,7 @@ export {
    * @category Instances
    */
   WithUnknownContainers as Decoder,
-} from '../internal/DecoderBase'
+} from '../base/DecoderBase'
 
 /**
  * @since 1.0.0
@@ -73,7 +73,7 @@ export {
    * @category Instances
    */
   WithUnknownContainers as Eq,
-} from '../internal/EqBase'
+} from '../base/EqBase'
 
 export {
   /**
@@ -81,7 +81,7 @@ export {
    * @category Instances
    */
   WithUnknownContainers as Guard,
-} from '../internal/GuardBase'
+} from '../base/GuardBase'
 
 export {
   /**
@@ -89,7 +89,7 @@ export {
    * @category Instances
    */
   WithUnknownContainers as TaskDecoder,
-} from '../internal/TaskDecoderBase'
+} from '../base/TaskDecoderBase'
 
 export {
   /**
@@ -97,7 +97,7 @@ export {
    * @category Instances
    */
   WithUnknownContainers as Type,
-} from '../internal/TypeBase'
+} from '../base/TypeBase'
 
 /**
  * @since 1.0.0

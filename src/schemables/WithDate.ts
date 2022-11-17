@@ -14,8 +14,8 @@ import * as t_ from 'io-ts'
 import { identity } from 'fp-ts/function'
 import * as fc from 'fast-check'
 import * as SC from '../SchemaExt'
-import { URI as SchemaURI } from '../internal/SchemaBase'
-import * as Arb from '../internal/ArbitraryBase'
+import { URI as SchemaURI } from '../base/SchemaBase'
+import * as Arb from '../base/ArbitraryBase'
 
 /**
  * @since 1.0.0

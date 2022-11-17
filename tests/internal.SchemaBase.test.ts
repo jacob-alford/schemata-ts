@@ -1,5 +1,5 @@
 import * as E from 'fp-ts/Either'
-import * as SC from '../src/internal/SchemaBase'
+import * as SC from '../src/base/SchemaBase'
 import { interpreter, SchemaExt } from '../src/SchemaExt'
 import * as D from '../src/Decoder'
 

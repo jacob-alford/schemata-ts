@@ -17,8 +17,8 @@ import * as t from 'io-ts/Type'
 import * as t_ from 'io-ts'
 import * as O from 'fp-ts/Option'
 import * as SC from '../SchemaExt'
-import { URI as SchemaURI } from '../internal/SchemaBase'
-import * as Arb from '../internal/ArbitraryBase'
+import { URI as SchemaURI } from '../base/SchemaBase'
+import * as Arb from '../base/ArbitraryBase'
 import { flow, SK } from 'fp-ts/function'
 
 /**

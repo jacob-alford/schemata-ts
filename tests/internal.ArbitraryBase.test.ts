@@ -1,6 +1,6 @@
 import { pipe } from 'fp-ts/function'
 import * as fc from 'fast-check'
-import * as Arb from '../src/internal/ArbitraryBase'
+import * as Arb from '../src/base/ArbitraryBase'
 import * as G from '../src/Guard'
 import * as SC from '../src/SchemaExt'
 import { PositiveFloat } from '../src/schemata/number/PositiveFloat'

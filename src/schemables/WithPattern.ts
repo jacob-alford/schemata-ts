@@ -3,14 +3,14 @@
  *
  * @since 1.0.0
  */
-import * as Arb from '../internal/ArbitraryBase'
-import * as D from '../internal/DecoderBase'
+import * as Arb from '../base/ArbitraryBase'
+import * as D from '../base/DecoderBase'
 import * as Enc from 'io-ts/Encoder'
-import * as Eq_ from '../internal/EqBase'
-import * as G from '../internal/GuardBase'
-import * as TD from '../internal/TaskDecoderBase'
-import * as t from '../internal/TypeBase'
-import { URI as SchemaURI } from '../internal/SchemaBase'
+import * as Eq_ from '../base/EqBase'
+import * as G from '../base/GuardBase'
+import * as TD from '../base/TaskDecoderBase'
+import * as t from '../base/TypeBase'
+import { URI as SchemaURI } from '../base/SchemaBase'
 import * as SC from '../SchemaExt'
 import { HKT2, Kind, Kind2, URIS, URIS2 } from 'fp-ts/HKT'
 import { arbitraryFromPattern, Pattern, regexFromPattern } from '../PatternBuilder'

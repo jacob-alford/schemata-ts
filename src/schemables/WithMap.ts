@@ -21,8 +21,8 @@ import * as t from 'io-ts/Type'
 import { Type as Type_ } from 'io-ts'
 import * as Ord from 'fp-ts/Ord'
 import * as SC from '../SchemaExt'
-import { URI as SchemaURI } from '../internal/SchemaBase'
-import * as Arb from '../internal/ArbitraryBase'
+import { URI as SchemaURI } from '../base/SchemaBase'
+import * as Arb from '../base/ArbitraryBase'
 import { flow, pipe } from 'fp-ts/function'
 
 /**

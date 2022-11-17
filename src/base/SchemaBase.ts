@@ -1,7 +1,7 @@
 import { identity } from 'fp-ts/function'
 
 import * as SC from '../SchemaExt'
-import * as S2 from './Schemable2'
+import * as S2 from './SchemableBase'
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 type Any = any

@@ -20,8 +20,8 @@ import * as N from 'fp-ts/number'
 import { pipe } from 'fp-ts/function'
 import * as fc from 'fast-check'
 import * as SC from '../SchemaExt'
-import { URI as SchemaURI } from '../internal/SchemaBase'
-import * as Arb from '../internal/ArbitraryBase'
+import { URI as SchemaURI } from '../base/SchemaBase'
+import * as Arb from '../base/ArbitraryBase'
 import { Branded } from 'io-ts'
 
 /**

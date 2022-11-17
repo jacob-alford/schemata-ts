@@ -1,5 +1,5 @@
 import * as Enc from 'io-ts/Encoder'
-import { Schemable2 } from './Schemable2'
+import { Schemable2 } from './SchemableBase'
 
 export { URI } from 'io-ts/Encoder'
 

@@ -1,4 +1,4 @@
-import * as Enc from '../src/internal/EncoderBase'
+import * as Enc from '../src/base/EncoderBase'
 
 const _ = Enc.Schemable
 
