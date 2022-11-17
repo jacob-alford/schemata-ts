@@ -108,6 +108,5 @@ export {
  * @since 1.0.0
  * @category Instances
  */
-export const Schema: WithRefine2<SchemaURI> = {
-  refine: (refinement, id) => from => SC.make(_ => _.refine(refinement, id)(from(_))),
-}
+export const Schema: WithRefine2<SchemaURI>['refine'] = (refinement, id) => from =>
+  SC.make(_ => _.refine(refinement, id)(from(_)))

@@ -203,7 +203,7 @@ describe('MapFromEntries', () => {
   })
 
   describe('Schema', () => {
-    const Schema = MapFromEntries.Schema.mapFromEntries(Str.Ord, SC.String, SC.String)
+    const Schema = MapFromEntries.Schema(Str.Ord, SC.String, SC.String)
     it('derives a decoder', () => {
       const decoder = getDecoder(Schema)
       expect(decoder.decode([])).toStrictEqual(E.right(new Map()))

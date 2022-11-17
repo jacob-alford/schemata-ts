@@ -13,6 +13,7 @@ import * as t from '../base/TypeBase'
 import * as Arb from '../base/ArbitraryBase'
 import * as fc from 'fast-check'
 import * as SC from '../SchemaExt'
+import { URI as SchemaURI } from '../base/SchemaBase'
 import * as t_ from 'io-ts'
 
 /**
@@ -148,6 +149,6 @@ export const Type: WithOptional1<t.URI> = {
  * @since 1.0.0
  * @category Combinators
  */
-export const Schema = <O, A>(
+export const Schema: WithOptional2<SchemaURI>['optional'] = <O, A>(
   target: SC.SchemaExt<O, A>,
 ): SC.SchemaExt<O | undefined, A | undefined> => SC.make(_ => _.optional(target(_)))

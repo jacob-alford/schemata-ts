@@ -212,4 +212,4 @@ export const Arbitrary: WithInt1<Arb.URI> = {
  * @since 1.0.0
  * @category Instances
  */
-export const Schema: WithInt2<SchemaURI> = { int: params => SC.make(S => S.int(params)) }
+export const Schema: WithInt2<SchemaURI>['int'] = params => SC.make(S => S.int(params))
