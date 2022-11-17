@@ -1,11 +1,11 @@
 import * as E from 'fp-ts/Either'
-import * as Enc from '../../src/internal/EncoderBase'
-import * as Eq_ from '../../src/internal/EqBase'
+import * as Enc from '../../src/base/EncoderBase'
+import * as Eq_ from '../../src/base/EqBase'
 import * as D from '../../src/Decoder'
-import * as G from '../../src/internal/GuardBase'
-import * as SC from '../../src/internal/SchemaBase'
-import * as TD from '../../src/internal/TaskDecoderBase'
-import * as t from '../../src/internal/TypeBase'
+import * as G from '../../src/base/GuardBase'
+import * as SC from '../../src/base/SchemaBase'
+import * as TD from '../../src/base/TaskDecoderBase'
+import * as t from '../../src/base/TypeBase'
 import {
   Encoder,
   Eq,

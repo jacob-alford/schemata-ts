@@ -1,13 +1,26 @@
+/**
+ * An instance of `Schemable` for Schema. This can be thought of as an identity schema.
+ *
+ * @since 1.0.0
+ */
 import { identity } from 'fp-ts/function'
 
 import * as SC from '../SchemaExt'
-import * as S2 from './Schemable2'
+import * as S2 from './SchemableBase'
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 type Any = any
 
+/**
+ * @since 1.0.0
+ * @category Instances
+ */
 export const URI = 'SchemaExt'
 
+/**
+ * @since 1.0.0
+ * @category Instances
+ */
 export type URI = typeof URI
 
 declare module 'fp-ts/lib/HKT' {

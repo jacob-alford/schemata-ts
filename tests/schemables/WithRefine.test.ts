@@ -1,7 +1,7 @@
 import * as E from 'fp-ts/Either'
 import * as D from '../../src/Decoder'
-import * as SC from '../../src/internal/SchemaBase'
-import * as Enc from '../../src/internal/EncoderBase'
+import * as SC from '../../src/base/SchemaBase'
+import * as Enc from '../../src/base/EncoderBase'
 import { Encoder, Schema } from '../../src/schemables/WithRefine'
 import { interpreter } from '../../src/SchemaExt'
 

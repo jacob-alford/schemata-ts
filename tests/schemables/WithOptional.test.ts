@@ -1,4 +1,4 @@
-import * as SC from '../../src/internal/SchemaBase'
+import * as SC from '../../src/base/SchemaBase'
 import { getGuard } from '../../src/interpreters'
 import * as WithOptional from '../../src/schemables/WithOptional'
 

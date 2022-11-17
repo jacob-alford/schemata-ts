@@ -6,7 +6,7 @@
 import { Kind2, URIS2, HKT2 } from 'fp-ts/HKT'
 import { Refinement } from 'fp-ts/Refinement'
 import * as SC from '../SchemaExt'
-import { URI as SchemaURI } from '../internal/SchemaBase'
+import { URI as SchemaURI } from '../base/SchemaBase'
 import * as Enc from 'io-ts/Encoder'
 
 /**
@@ -53,7 +53,7 @@ export {
    * @category Instances
    */
   WithRefine as Arbitrary,
-} from '../internal/ArbitraryBase'
+} from '../base/ArbitraryBase'
 
 export {
   /**
@@ -61,7 +61,7 @@ export {
    * @category Instances
    */
   WithRefine as Decoder,
-} from '../internal/DecoderBase'
+} from '../base/DecoderBase'
 
 /**
  * @since 1.0.0
@@ -78,7 +78,7 @@ export {
    * @category Instances
    */
   WithRefine as Eq,
-} from '../internal/EqBase'
+} from '../base/EqBase'
 
 export {
   /**
@@ -86,7 +86,7 @@ export {
    * @category Instances
    */
   WithRefine as Guard,
-} from '../internal/GuardBase'
+} from '../base/GuardBase'
 
 export {
   /**
@@ -94,7 +94,7 @@ export {
    * @category Instances
    */
   WithRefine as TaskDecoder,
-} from '../internal/TaskDecoderBase'
+} from '../base/TaskDecoderBase'
 
 export {
   /**
@@ -102,7 +102,7 @@ export {
    * @category Instances
    */
   WithRefine as Type,
-} from '../internal/TypeBase'
+} from '../base/TypeBase'
 
 /**
  * @since 1.0.0
