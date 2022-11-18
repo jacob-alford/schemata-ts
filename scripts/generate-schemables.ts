@@ -17,7 +17,7 @@ interface Build<A> extends RTE.ReaderTaskEither<FileSystem & CLI, Error, A> {}
 
 const _ = ts.factory
 
-type Schemable = [name: `With${string}`, path: string]
+type Schemable = [name: `With${string}`, path: string, isDirectory: boolean]
 
 // #region SchemableExt
 
@@ -106,10 +106,10 @@ const makeSchemableExtContents: (
       makeDestructureImport(['Schemable2', 'SchemableHKT2'], './base/SchemableBase'),
       ...pipe(
         schemables,
-        RA.map(([schemable, path]) =>
+        RA.map(([schemable, path, isDirectory]) =>
           makeDestructureImport(
             [`${schemable}1`, `${schemable}2`, `${schemable}2C`, `${schemable}HKT2`],
-            path,
+            isDirectory ? `${path}/definition` : path,
           ),
         ),
       ),
@@ -139,7 +139,7 @@ type SchemableTypeclass<
   Accessor extends string,
   Arity extends `SchemableExt${'1' | '2' | '2C'}`,
   Version extends string,
-> = [name: Name, accessor: Accessor, arity: Arity, version: Version]
+> = [name: Name, accessor: Accessor, arity: Arity, version: Version, fileName: string]
 
 /** Different typeclasses which express a Schemable instance */
 export type SchemableTypeclasses =
@@ -236,7 +236,7 @@ const makeSchemableInstanceModuleContents: (
   typeclass: SchemableTypeclasses,
   schemables: ReadonlyArray<Schemable>,
 ) => string = (typeclass, schemables) => {
-  const [module, accessor, schemableInstance, sinceVersion] = typeclass
+  const [module, accessor, schemableInstance, sinceVersion, lowercaseModule] = typeclass
 
   const printer = ts.createPrinter({ newLine: ts.NewLineKind.LineFeed })
   const sourceFile = ts.createSourceFile(
@@ -256,8 +256,13 @@ const makeSchemableInstanceModuleContents: (
       _.createJSDocComment('schemables'),
       ...pipe(
         schemables,
-        RA.map(([schemable]) =>
-          makeModuleStarImport(schemable, `./schemables/${schemable}`),
+        RA.map(([schemable, , isDirectory]) =>
+          makeModuleStarImport(
+            schemable,
+            isDirectory
+              ? `./schemables/${schemable}/instances/${lowercaseModule}`
+              : `./schemables/${schemable}`,
+          ),
         ),
       ),
       instanceComment,
@@ -306,22 +311,30 @@ const getSchemables: Build<ReadonlyArray<Schemable>> = C =>
         ),
       ),
     ),
+    TE.chain(
+      TE.traverseArray(file =>
+        pipe(
+          C.isDirectory(`./src/schemables/${file}`),
+          TE.map(isDirectory => tuple(file, isDirectory)),
+        ),
+      ),
+    ),
     TE.map(
-      RA.map(file => {
-        const schemable = getSchemableName(file)
-        return tuple(schemable, `./schemables/${schemable}`)
+      RA.map(([fileName, isDirectory]) => {
+        const schemable = getSchemableName(fileName)
+        return tuple(schemable, `./schemables/${schemable}`, isDirectory)
       }),
     ),
   )
 
 const schemableTypeclasses: ReadonlyArray<SchemableTypeclasses> = [
-  ['Decoder', 'D', 'SchemableExt2C', '1.0.0'],
-  ['Eq', 'Eq', 'SchemableExt1', '1.0.0'],
-  ['Guard', 'G', 'SchemableExt1', '1.0.0'],
-  ['TaskDecoder', 'TD', 'SchemableExt2C', '1.0.0'],
-  ['Type', 't', 'SchemableExt1', '1.0.0'],
-  ['Encoder', 'Enc', 'SchemableExt2', '1.0.0'],
-  ['Arbitrary', 'Arb', 'SchemableExt1', '1.0.0'],
+  ['Decoder', 'D', 'SchemableExt2C', '1.0.0', 'decoder'],
+  ['Eq', 'Eq', 'SchemableExt1', '1.0.0', 'eq'],
+  ['Guard', 'G', 'SchemableExt1', '1.0.0', 'guard'],
+  ['TaskDecoder', 'TD', 'SchemableExt2C', '1.0.0', 'task-decoder'],
+  ['Type', 't', 'SchemableExt1', '1.0.0', 'type'],
+  ['Encoder', 'Enc', 'SchemableExt2', '1.0.0', 'encoder'],
+  ['Arbitrary', 'Arb', 'SchemableExt1', '1.0.0', 'arbitrary'],
 ]
 
 const format: Build<void> = C => C.exec('yarn format')

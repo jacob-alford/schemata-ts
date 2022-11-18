@@ -13,7 +13,7 @@ import {
   WithBrand2,
   WithBrand2C,
   WithBrandHKT2,
-} from './schemables/WithBrand'
+} from './schemables/WithBrand/definition'
 import {
   WithCheckDigit1,
   WithCheckDigit2,

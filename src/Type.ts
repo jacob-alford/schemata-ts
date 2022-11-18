@@ -16,7 +16,7 @@ import * as t from './base/TypeBase'
 import { SchemableExt1 } from './SchemableExt'
 
 /** Schemables */
-import * as WithBrand from './schemables/WithBrand'
+import * as WithBrand from './schemables/WithBrand/instances/type'
 import * as WithCheckDigit from './schemables/WithCheckDigit'
 import * as WithDate from './schemables/WithDate'
 import * as WithFloat from './schemables/WithFloat'

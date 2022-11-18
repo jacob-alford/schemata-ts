@@ -3,7 +3,7 @@ import * as D from '../../src/Decoder'
 import { pipe } from 'fp-ts/function'
 import * as SC from '../../src/base/SchemaBase'
 import { Brand } from 'io-ts'
-import * as B from '../../src/schemables/WithBrand'
+import * as B from '../../src/schemables/WithBrand/instances/schema'
 import { interpreter } from '../../src/SchemaExt'
 
 describe('WithBrand', () => {
