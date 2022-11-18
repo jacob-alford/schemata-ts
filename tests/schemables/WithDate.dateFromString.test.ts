@@ -146,7 +146,7 @@ describe('dateFromString', () => {
 
   describe('Schema', () => {
     it('derives a decoder', () => {
-      const decoder = getDecoder()(ISODateString.Schema.dateFromString)
+      const decoder = getDecoder(ISODateString.Schema.dateFromString)
       const validDate = new Date()
       expect(decoder.decode(new Date('abc'))._tag).toEqual('Left')
       expect(decoder.decode(validDate.toISOString())).toStrictEqual(E.right(validDate))

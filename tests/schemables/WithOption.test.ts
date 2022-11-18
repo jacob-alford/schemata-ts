@@ -170,7 +170,7 @@ describe('OptionFromExclude', () => {
   describe('Schema', () => {
     const Schema = OptionFromExclude.Schema('', SC.String)
     it('derives a decoder', () => {
-      const decoder = getDecoder()(Schema)
+      const decoder = getDecoder(Schema)
       expect(decoder.decode('')).toEqual(E.right(O.none))
       expect(decoder.decode('a')).toEqual(E.right(O.some('a')))
     })

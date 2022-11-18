@@ -83,7 +83,7 @@ describe('NegativeFloat', () => {
   describe('Schema', () => {
     const Float = WithFloat.Schema()
     it('derives a decoder', () => {
-      const decoder = getDecoder()(Float)
+      const decoder = getDecoder(Float)
       expect(decoder.decode(NaN)._tag).toEqual('Left')
       expect(decoder.decode(-Number.MIN_VALUE)).toStrictEqual(E.right(-Number.MIN_VALUE))
     })

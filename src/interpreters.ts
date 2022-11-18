@@ -16,9 +16,7 @@ import * as G from './Guard'
  * @since 1.0.0
  * @category Interpreters
  */
-export const getArbitrary: () => <A>(
-  schema: SC.SchemaExt<unknown, A>,
-) => Arb.Arbitrary<A> = () => SC.interpreter(Arb.Schemable)
+export const getArbitrary = SC.interpreter(Arb.Schemable)
 
 /**
  * Returns a `Decoder` given a Schema
@@ -26,9 +24,7 @@ export const getArbitrary: () => <A>(
  * @since 1.0.0
  * @category Interpreters
  */
-export const getDecoder: () => <A>(
-  schema: SC.SchemaExt<unknown, A>,
-) => D.Decoder<unknown, A> = () => SC.interpreter(D.Schemable)
+export const getDecoder = SC.interpreter(D.Schemable)
 
 /**
  * Returns an `Encoder` given a Schema
@@ -36,9 +32,7 @@ export const getDecoder: () => <A>(
  * @since 1.0.0
  * @category Interpreters
  */
-export const getEncoder: () => <E, A>(
-  schema: SC.SchemaExt<E, A>,
-) => Enc.Encoder<E, A> = () => SC.interpreter(Enc.Schemable)
+export const getEncoder = SC.interpreter(Enc.Schemable)
 
 /**
  * Returns an `Eq` instance given a Schema
@@ -46,8 +40,7 @@ export const getEncoder: () => <E, A>(
  * @since 1.0.0
  * @category Interpreters
  */
-export const getEq: () => <A>(schema: SC.SchemaExt<unknown, A>) => Eq.Eq<A> = () =>
-  SC.interpreter(Eq.Schemable)
+export const getEq = SC.interpreter(Eq.Schemable)
 
 /**
  * Returns a `Guard` given a Schema
@@ -55,6 +48,4 @@ export const getEq: () => <A>(schema: SC.SchemaExt<unknown, A>) => Eq.Eq<A> = ()
  * @since 1.0.0
  * @category Interpreters
  */
-export const getGuard: () => <A>(
-  schema: SC.SchemaExt<unknown, A>,
-) => G.Guard<unknown, A> = () => SC.interpreter(G.Schemable)
+export const getGuard = SC.interpreter(G.Schemable)
