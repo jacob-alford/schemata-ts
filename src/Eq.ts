@@ -5,6 +5,13 @@
  *
  * @since 1.0.0
  */
+export type {
+  /**
+   * @since 1.0.0
+   * @category Model
+   */
+  Eq,
+} from './base/EqBase'
 import * as Eq from './base/EqBase'
 import { SchemableExt1 } from './SchemableExt'
 

@@ -5,6 +5,13 @@
  *
  * @since 1.0.0
  */
+export type {
+  /**
+   * @since 1.0.0
+   * @category Model
+   */
+  Decoder,
+} from './base/DecoderBase'
 import * as D from './base/DecoderBase'
 import { SchemableExt2C } from './SchemableExt'
 

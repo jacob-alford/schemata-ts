@@ -15,7 +15,7 @@ import {
 } from './SchemableExt'
 
 /**
- * @since 0.0.1
+ * @since 1.0.0
  * @category Model
  */
 export interface SchemaExt<E, A> {
@@ -23,26 +23,10 @@ export interface SchemaExt<E, A> {
 }
 
 /**
- * @since 0.0.1
- * @category Constructors
+ * @since 1.0.0
+ * @category Model
  */
-export function make<E, A>(f: SchemaExt<E, A>): SchemaExt<E, A> {
-  return memoize(f)
-}
-
-/**
- * @since 2.2.0
- * @category Utilities
- */
-export type TypeOf<S> = S extends SchemaExt<unknown, infer A> ? A : never
-
-/**
- * Derives a typeclass instance from a Schema by supplying Schemable. i.e. `schemata-ts/Decoder`
- *
- * @since 0.0.1
- * @category Destructors
- */
-export const interpreter: {
+export type Interpreter = {
   <S extends URIS2>(S: SchemableExt2<S>): <E, A>(
     schema: SchemaExt<E, A>,
   ) => Kind2<S, E, A>
@@ -50,4 +34,26 @@ export const interpreter: {
     schema: SchemaExt<unknown, A>,
   ) => Kind2<S, unknown, A>
   <S extends URIS>(S: SchemableExt1<S>): <A>(schema: SchemaExt<unknown, A>) => Kind<S, A>
-} = unsafeCoerce(interpreter_)
+}
+
+/**
+ * @since 1.0.0
+ * @category Constructors
+ */
+export function make<E, A>(f: SchemaExt<E, A>): SchemaExt<E, A> {
+  return memoize(f)
+}
+
+/**
+ * @since 1.0.0
+ * @category Utilities
+ */
+export type TypeOf<S> = S extends SchemaExt<unknown, infer A> ? A : never
+
+/**
+ * Derives a typeclass instance from a Schema by supplying Schemable. i.e. `schemata-ts/Decoder`
+ *
+ * @since 1.0.0
+ * @category Destructors
+ */
+export const interpreter: Interpreter = unsafeCoerce(interpreter_)

@@ -165,6 +165,24 @@ export const instanceComment: ts.JSDoc = _.createJSDocComment(
   `@since 1.0.0\n@category Instances`,
 )
 
+const makeInstanceTypeExport: (tc: SchemableTypeclasses) => ts.ExportDeclaration = ([
+  typeclassName,
+]) =>
+  _.createExportDeclaration(
+    undefined,
+    true,
+    _.createNamedExports([
+      ts.addSyntheticLeadingComment(
+        _.createExportSpecifier(false, undefined, _.createIdentifier(typeclassName)),
+        ts.SyntaxKind.MultiLineCommentTrivia,
+        `* @since 1.0.0\n\n@category Model`,
+        true,
+      ),
+    ]),
+    _.createStringLiteral(`./base/${typeclassName}Base`),
+    undefined,
+  )
+
 const makeSchemableInstance: (
   tc: SchemableTypeclasses,
   schemables: ReadonlyArray<Schemable>,
@@ -232,6 +250,7 @@ const makeSchemableInstanceModuleContents: (
   return pipe(
     [
       moduleHeaderComment(module, sinceVersion),
+      makeInstanceTypeExport(typeclass),
       makeModuleStarImport(accessor, `./base/${module}Base`),
       makeDestructureImport([schemableInstance], './SchemableExt'),
       _.createJSDocComment('schemables'),
@@ -305,6 +324,8 @@ const schemableTypeclasses: ReadonlyArray<SchemableTypeclasses> = [
   ['Arbitrary', 'Arb', 'SchemableExt1', '1.0.0'],
 ]
 
+const format: Build<void> = C => C.exec('yarn format')
+
 const main: Build<void> = pipe(
   getSchemables,
   RTE.bindTo('schemables'),
@@ -325,6 +346,8 @@ const main: Build<void> = pipe(
   RTE.chainFirst(({ schemables }) =>
     pipe(makeSchemableExtContents(schemables), writeToDisk(`./src/SchemableExt.ts`)),
   ),
+  RTE.chainFirstIOK(() => Cons.log('Formatting with Prettier...')),
+  RTE.chainFirst(() => format),
   RTE.chainIOK(() => Cons.log('Done!')),
 )
 

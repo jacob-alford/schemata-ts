@@ -56,7 +56,7 @@ describe('Int', () => {
   })
 
   describe('Schema', () => {
-    const IntSchema = Int.Schema.int()
+    const IntSchema = Int.Schema()
     it('derives a decoder', () => {
       const decoder = getDecoder(IntSchema)
       expect(decoder.decode(Infinity)._tag).toEqual('Left')

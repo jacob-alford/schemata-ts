@@ -206,6 +206,5 @@ export const Arbitrary: WithFloat1<Arb.URI> = {
  * @since 1.0.0
  * @category Instances
  */
-export const Schema: WithFloat2<SchemaURI> = {
-  float: params => SC.make(S => S.float(params)),
-}
+export const Schema: WithFloat2<SchemaURI>['float'] = params =>
+  SC.make(S => S.float(params))

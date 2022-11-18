@@ -21,7 +21,6 @@ import * as t from 'io-ts/Type'
 import { Type as Type_ } from 'io-ts'
 import * as Ord from 'fp-ts/Ord'
 import * as SC from '../SchemaExt'
-import { URI as SchemaURI } from '../base/SchemaBase'
 import * as Arb from '../base/ArbitraryBase'
 import { flow, pipe } from 'fp-ts/function'
 
@@ -190,12 +189,9 @@ export const Arbitrary: WithMap1<Arb.URI> = {
  * @since 1.0.0
  * @category Instances
  */
-export const Schema: WithMap2<SchemaURI> = {
-  // @ts-expect-error -- typelevel difference
-  mapFromEntries: <EK, EA, K extends EK, A extends EA>(
-    ordK: Ord.Ord<K>,
-    sK: SC.SchemaExt<EK, K>,
-    sA: SC.SchemaExt<EA, A>,
-  ): SC.SchemaExt<ReadonlyArray<readonly [EK, EA]>, ReadonlyMap<K, A>> =>
-    SC.make(S => S.mapFromEntries(ordK, sK(S), sA(S))),
-}
+export const Schema = <EK, EA, K extends EK, A extends EA>(
+  ordK: Ord.Ord<K>,
+  sK: SC.SchemaExt<EK, K>,
+  sA: SC.SchemaExt<EA, A>,
+): SC.SchemaExt<ReadonlyArray<readonly [EK, EA]>, ReadonlyMap<K, A>> =>
+  SC.make(S => S.mapFromEntries(ordK, sK(S), sA(S)))

@@ -186,7 +186,8 @@ export const Arbitrary: WithOption1<Arb.URI> = {
  * @since 1.0.0
  * @category Instances
  */
-export const Schema: WithOption2<SchemaURI> = {
-  optionFromExclude: (exclude, schemaA, eq) =>
-    SC.make(S => S.optionFromExclude(exclude, schemaA(S), eq)),
-}
+export const Schema: WithOption2<SchemaURI>['optionFromExclude'] = (
+  exclude,
+  schemaA,
+  eq,
+) => SC.make(S => S.optionFromExclude(exclude, schemaA(S), eq))
