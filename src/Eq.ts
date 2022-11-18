@@ -16,7 +16,7 @@ import * as Eq from './base/EqBase'
 import { SchemableExt1 } from './SchemableExt'
 
 /** Schemables */
-import * as WithBrand from './schemables/WithBrand'
+import * as WithBrand from './schemables/WithBrand/instances/eq'
 import * as WithCheckDigit from './schemables/WithCheckDigit'
 import * as WithDate from './schemables/WithDate'
 import * as WithFloat from './schemables/WithFloat'

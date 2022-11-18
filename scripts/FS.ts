@@ -17,6 +17,7 @@ export interface FileSystem {
   readonly glob: (pattern: string) => TE.TaskEither<Error, ReadonlyArray<string>>
   readonly mkdir: (path: string) => TE.TaskEither<Error, void>
   readonly moveFile: (from: string, to: string) => TE.TaskEither<Error, void>
+  readonly isDirectory: (file: string) => TE.TaskEither<Error, boolean>
 }
 
 const readDirs = TE.taskify<
@@ -52,7 +53,13 @@ const moveFile = TE.taskify<fs.PathLike, fs.PathLike, NodeJS.ErrnoException, voi
 )
 const access = TE.taskify(fs.access)
 
+const isDirectory = flow(
+  TE.taskify<fs.PathLike, NodeJS.ErrnoException, fs.Stats>(fs.stat),
+  TE.map(stat => stat.isDirectory()),
+)
+
 export const fileSystem: FileSystem = {
+  isDirectory,
   exists: flow(
     access,
     TE.match(
@@ -88,6 +95,7 @@ export const fileSystem: FileSystem = {
 }
 
 export const fileSystemTest: FileSystem = {
+  isDirectory: () => TE.right(false),
   exists: flow(
     Cons.log,
     T.fromIO,

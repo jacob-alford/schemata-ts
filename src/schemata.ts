@@ -14,7 +14,7 @@ export {
    *
    * @since 1.0.0
    */ Schema as Brand,
-} from './schemables/WithBrand'
+} from './schemables/WithBrand/instances/schema'
 
 export {
   /**

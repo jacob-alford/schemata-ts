@@ -16,7 +16,7 @@ import * as D from './base/DecoderBase'
 import { SchemableExt2C } from './SchemableExt'
 
 /** Schemables */
-import * as WithBrand from './schemables/WithBrand'
+import * as WithBrand from './schemables/WithBrand/instances/decoder'
 import * as WithCheckDigit from './schemables/WithCheckDigit'
 import * as WithDate from './schemables/WithDate'
 import * as WithFloat from './schemables/WithFloat'
