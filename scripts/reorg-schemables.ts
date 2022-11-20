@@ -43,6 +43,9 @@ const schemableFiles: ReadonlyArray<SchemableFiles> = [
   'type',
 ]
 
+const prepareContents: (repeat: number, s: string) => string = (repeat, s) =>
+  s.replace(/'\.\.\//gm, `'${'../'.repeat(repeat)}`)
+
 const getSchemables: Build<ReadonlyArray<`With${string}`>> = C =>
   pipe(
     C.readFiles('./src/schemables'),
@@ -54,8 +57,8 @@ const getSchemables: Build<ReadonlyArray<`With${string}`>> = C =>
           TE.bind('isDirectory', ({ module }) =>
             C.isDirectory(`./src/schemables/${module}`),
           ),
-          TE.bind('contents', ({ isDirectory }) =>
-            isDirectory
+          TE.bind('contents', ({ module, isDirectory }) =>
+            !isDirectory
               ? pipe(C.readFile(`./src/schemables/${module}`), TE.map(O.some))
               : TE.of(O.none),
           ),
@@ -83,13 +86,19 @@ const getSchemables: Build<ReadonlyArray<`With${string}`>> = C =>
           C.mkdir(`./src/schemables/${module}`),
           TE.chainFirst(() => C.mkdir(`./src/schemables/${module}/instances`)),
           TE.chainFirst(() =>
-            C.writeFile(`./src/schemables/${module}/definition.ts`, contents),
+            C.writeFile(
+              `./src/schemables/${module}/definition.ts`,
+              prepareContents(2, contents),
+            ),
           ),
           TE.chainFirst(() =>
             pipe(
               schemableFiles,
               TE.traverseArray(file =>
-                C.writeFile(`./src/schemables/${module}/instances/${file}.ts`, contents),
+                C.writeFile(
+                  `./src/schemables/${module}/instances/${file}.ts`,
+                  prepareContents(3, contents),
+                ),
               ),
             ),
           ),
