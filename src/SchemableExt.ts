@@ -64,13 +64,13 @@ import {
   WithRefine2,
   WithRefine2C,
   WithRefineHKT2,
-} from './schemables/WithRefine'
+} from './schemables/WithRefine/definition'
 import {
   WithUnknownContainers1,
   WithUnknownContainers2,
   WithUnknownContainers2C,
   WithUnknownContainersHKT2,
-} from './schemables/WithUnknownContainers'
+} from './schemables/WithUnknownContainers/definition'
 
 /**
  * @since 1.0.0

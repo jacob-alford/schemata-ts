@@ -27,8 +27,8 @@ import * as WithOption from './schemables/WithOption'
 import * as WithOptional from './schemables/WithOptional'
 import * as WithPadding from './schemables/WithPadding'
 import * as WithPattern from './schemables/WithPattern'
-import * as WithRefine from './schemables/WithRefine'
-import * as WithUnknownContainers from './schemables/WithUnknownContainers'
+import * as WithRefine from './schemables/WithRefine/instances/arbitrary'
+import * as WithUnknownContainers from './schemables/WithUnknownContainers/instances/arbitrary'
 
 /**
  * @since 1.0.0

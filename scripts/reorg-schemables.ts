@@ -8,11 +8,14 @@ import {
 
   // tuple
 } from 'fp-ts/function'
+import * as E from 'fp-ts/Either'
 import * as O from 'fp-ts/Option'
 import * as RA from 'fp-ts/ReadonlyArray'
 import * as RTE from 'fp-ts/ReaderTaskEither'
+import * as RNEA from 'fp-ts/ReadonlyNonEmptyArray'
 import * as Str from 'fp-ts/string'
 import * as TE from 'fp-ts/TaskEither'
+import { tailRec } from 'fp-ts/ChainRec'
 import { fileSystem } from './FS'
 import { cli } from './CLI'
 import { run } from './run'
@@ -22,31 +25,62 @@ const stripExtension: (s: `With${string}`) => `With${string}` = unsafeCoerce(
   Str.slice(0, -3),
 )
 
+type SchemableInstance<L, U> = readonly [lowercaseName: L, uppercaseName: U]
+
 type SchemableFiles =
-  | 'arbitrary'
-  | 'decoder'
-  | 'encoder'
-  | 'eq'
-  | 'guard'
-  | 'schema'
-  | 'task-decoder'
-  | 'type'
+  | SchemableInstance<'arbitrary', 'Arbitrary'>
+  | SchemableInstance<'decoder', 'Decoder'>
+  | SchemableInstance<'encoder', 'Encoder'>
+  | SchemableInstance<'eq', 'Eq'>
+  | SchemableInstance<'guard', 'Guard'>
+  | SchemableInstance<'schema', 'Schema'>
+  | SchemableInstance<'task-decoder', 'TaskDecoder'>
+  | SchemableInstance<'type', 'Type'>
 
 const schemableFiles: ReadonlyArray<SchemableFiles> = [
-  'arbitrary',
-  'decoder',
-  'encoder',
-  'eq',
-  'guard',
-  'schema',
-  'task-decoder',
-  'type',
+  ['arbitrary', 'Arbitrary'],
+  ['decoder', 'Decoder'],
+  ['encoder', 'Encoder'],
+  ['eq', 'Eq'],
+  ['guard', 'Guard'],
+  ['schema', 'Schema'],
+  ['task-decoder', 'TaskDecoder'],
+  ['type', 'Type'],
 ]
 
-const prepareContents: (repeat: number, s: string) => string = (repeat, s) =>
+const correctRelativeImports: (repeat: number, s: string) => string = (repeat, s) =>
   s.replace(/'\.\.\//gm, `'${'../'.repeat(repeat)}`)
 
-const getSchemables: Build<ReadonlyArray<`With${string}`>> = C =>
+type File = RNEA.ReadonlyNonEmptyArray<string>
+
+const pluckImports: (file: File) => O.Option<File> = file => {
+  type Params = {
+    readonly file: File
+    readonly cursor: number
+    readonly out: ReadonlyArray<string>
+  }
+
+  const go: (params: Params) => E.Either<Params, O.Option<File>> = ({
+    file,
+    cursor,
+    out,
+  }) =>
+    pipe(file, RA.lookup(cursor), line =>
+      O.isNone(line)
+        ? E.right(O.none)
+        : line.value === ''
+        ? E.right(RNEA.fromReadonlyArray(out))
+        : E.left({
+            file,
+            cursor: cursor + 1,
+            out: [...out, line.value],
+          }),
+    )
+
+  return tailRec({ file, cursor: 0, out: [] }, go)
+}
+
+const getSchemables: Build<ReadonlyArray<File>> = C =>
   pipe(
     C.readFiles('./src/schemables'),
     TE.chain(
@@ -88,16 +122,16 @@ const getSchemables: Build<ReadonlyArray<`With${string}`>> = C =>
           TE.chainFirst(() =>
             C.writeFile(
               `./src/schemables/${module}/definition.ts`,
-              prepareContents(2, contents),
+              correctRelativeImports(2, contents),
             ),
           ),
           TE.chainFirst(() =>
             pipe(
               schemableFiles,
-              TE.traverseArray(file =>
+              TE.traverseArray(([file]) =>
                 C.writeFile(
                   `./src/schemables/${module}/instances/${file}.ts`,
-                  prepareContents(3, contents),
+                  correctRelativeImports(3, contents),
                 ),
               ),
             ),
@@ -105,7 +139,7 @@ const getSchemables: Build<ReadonlyArray<`With${string}`>> = C =>
         ),
       ),
     ),
-    TE.map(RA.map(({ module }) => module)),
+    TE.map(RA.filterMap(({ contents }) => pipe(contents, Str.split('\n'), pluckImports))),
   )
 
 const main: Build<void> = pipe(getSchemables, RTE.chainIOK(Cons.log))

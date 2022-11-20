@@ -115,7 +115,7 @@ export {
    *
    * @since 1.0.0
    */ Schema as Refine,
-} from './schemables/WithRefine'
+} from './schemables/WithRefine/instances/schema'
 
 export {
   /**
@@ -123,7 +123,7 @@ export {
    *
    * @since 1.0.0
    */ Schema as UnknownContainers,
-} from './schemables/WithUnknownContainers'
+} from './schemables/WithUnknownContainers/instances/schema'
 
 /** Schemata > date */
 

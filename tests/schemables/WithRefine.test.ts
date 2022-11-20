@@ -2,7 +2,8 @@ import * as E from 'fp-ts/Either'
 import * as D from '../../src/Decoder'
 import * as SC from '../../src/base/SchemaBase'
 import * as Enc from '../../src/base/EncoderBase'
-import { Encoder, Schema } from '../../src/schemables/WithRefine'
+import { Schema } from '../../src/schemables/WithRefine/instances/schema'
+import { Encoder } from '../../src/schemables/WithRefine/instances/encoder'
 import { interpreter } from '../../src/SchemaExt'
 
 describe('WithRefine', () => {

@@ -1,6 +1,6 @@
 import * as E from 'fp-ts/Either'
 import * as D from '../../src/Decoder'
-import { Schema } from '../../src/schemables/WithUnknownContainers'
+import { Schema } from '../../src/schemables/WithUnknownContainers/instances/schema'
 import { interpreter } from '../../src/SchemaExt'
 
 describe('WithUnknownContainers', () => {
