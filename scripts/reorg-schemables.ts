@@ -48,39 +48,92 @@ const schemableFiles: ReadonlyArray<SchemableFiles> = [
   ['type', 'Type'],
 ]
 
-const correctRelativeImports: (repeat: number, s: string) => string = (repeat, s) =>
-  s.replace(/'\.\.\//gm, `'${'../'.repeat(repeat)}`)
+// const correctRelativeImports: (repeat: number, s: string) => string = (repeat, s) =>
+//   s.replace(/'\.\.\//gm, `'${'../'.repeat(repeat)}`)
 
 type File = RNEA.ReadonlyNonEmptyArray<string>
 
-const pluckImports: (file: File) => O.Option<File> = file => {
-  type Params = {
-    readonly file: File
-    readonly cursor: number
-    readonly out: ReadonlyArray<string>
-  }
+// const pluckImports: (file: File) => O.Option<File> = file => {
+//   type Params = {
+//     readonly file: File
+//     readonly cursor: number
+//     readonly out: ReadonlyArray<string>
+//   }
 
-  const go: (params: Params) => E.Either<Params, O.Option<File>> = ({
-    file,
-    cursor,
-    out,
-  }) =>
-    pipe(file, RA.lookup(cursor), line =>
-      O.isNone(line)
-        ? E.right(O.none)
-        : line.value === ''
-        ? E.right(RNEA.fromReadonlyArray(out))
-        : E.left({
+//   const go: (params: Params) => E.Either<Params, O.Option<File>> = ({
+//     file,
+//     cursor,
+//     out,
+//   }) =>
+//     pipe(file, RA.lookup(cursor), line =>
+//       O.isNone(line)
+//         ? E.right(O.none)
+//         : line.value === ''
+//         ? E.right(RNEA.fromReadonlyArray(out))
+//         : E.left({
+//             file,
+//             cursor: cursor + 1,
+//             out: [...out, line.value],
+//           }),
+//     )
+
+//   return tailRec({ file, cursor: 0, out: [] }, go)
+// }
+
+const pluckInstance: (file: File) => (instance: SchemableFiles[1]) => O.Option<File> =
+  file => instance => {
+    type Params = {
+      readonly hasEncounteredInstance: boolean
+      readonly file: File
+      readonly cursor: number
+      readonly out: ReadonlyArray<string>
+    }
+
+    const go: (params: Params) => E.Either<Params, O.Option<File>> = ({
+      hasEncounteredInstance,
+      file,
+      cursor,
+      out,
+    }) =>
+      pipe(file, RA.lookup(cursor), line => {
+        /* Stream ended */
+        if (O.isNone(line)) return E.right(O.none)
+
+        /* Instance has been exhausted */
+        if (hasEncounteredInstance && line.value === '')
+          return E.right(RNEA.fromReadonlyArray(out))
+
+        /* If instance has just been encountered */
+        if (line.value.startsWith(`export const ${instance}`))
+          return E.left({
+            hasEncounteredInstance: true,
+            file,
+            cursor: cursor + 1,
+            out: ['/**', ' * @since 1.0.0', ' * @category Instances', ' */', line.value],
+          })
+
+        /* Instance is accumulating */
+        if (hasEncounteredInstance)
+          return E.left({
+            hasEncounteredInstance,
             file,
             cursor: cursor + 1,
             out: [...out, line.value],
-          }),
-    )
+          })
 
-  return tailRec({ file, cursor: 0, out: [] }, go)
-}
+        /* Instance has not been encountered */
+        return E.left({
+          hasEncounteredInstance,
+          file,
+          cursor: cursor + 1,
+          out,
+        })
+      })
 
-const getSchemables: Build<ReadonlyArray<File>> = C =>
+    return tailRec({ hasEncounteredInstance: false, file, cursor: 0, out: [] }, go)
+  }
+
+const getSchemables: Build<ReadonlyArray<ReadonlyArray<File>>> = C =>
   pipe(
     C.readFiles('./src/schemables'),
     TE.chain(
@@ -114,32 +167,50 @@ const getSchemables: Build<ReadonlyArray<File>> = C =>
         ),
       ),
     ),
-    TE.chainFirst(
-      TE.traverseArray(({ module, contents }) =>
-        pipe(
-          C.mkdir(`./src/schemables/${module}`),
-          TE.chainFirst(() => C.mkdir(`./src/schemables/${module}/instances`)),
-          TE.chainFirst(() =>
-            C.writeFile(
-              `./src/schemables/${module}/definition.ts`,
-              correctRelativeImports(2, contents),
-            ),
-          ),
-          TE.chainFirst(() =>
-            pipe(
-              schemableFiles,
-              TE.traverseArray(([file]) =>
-                C.writeFile(
-                  `./src/schemables/${module}/instances/${file}.ts`,
-                  correctRelativeImports(3, contents),
+    // TE.chainFirst(
+    //   TE.traverseArray(({ module, contents }) =>
+    //     pipe(
+    //       C.mkdir(`./src/schemables/${module}`),
+    //       TE.chainFirst(() => C.mkdir(`./src/schemables/${module}/instances`)),
+    //       TE.chainFirst(() =>
+    //         C.writeFile(
+    //           `./src/schemables/${module}/definition.ts`,
+    //           correctRelativeImports(2, contents),
+    //         ),
+    //       ),
+    //       TE.chainFirst(() =>
+    //         pipe(
+    //           schemableFiles,
+    //           TE.traverseArray(([file]) =>
+    //             C.writeFile(
+    //               `./src/schemables/${module}/instances/${file}.ts`,
+    //               correctRelativeImports(3, contents),
+    //             ),
+    //           ),
+    //         ),
+    //       ),
+    //     ),
+    //   ),
+    // ),
+    TE.chain(
+      flow(
+        E.traverseArray(({ contents, module }) =>
+          pipe(
+            schemableFiles,
+            E.traverseArray(([, instance]) =>
+              pipe(
+                instance,
+                pluckInstance(pipe(contents, Str.split('\n'))),
+                E.fromOption(() =>
+                  E.toError(`Could not find instance ${instance} in module ${module}`),
                 ),
               ),
             ),
           ),
         ),
+        TE.fromEither,
       ),
     ),
-    TE.map(RA.filterMap(({ contents }) => pipe(contents, Str.split('\n'), pluckImports))),
   )
 
 const main: Build<void> = pipe(getSchemables, RTE.chainIOK(Cons.log))
