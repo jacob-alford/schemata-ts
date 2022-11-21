@@ -21,7 +21,7 @@ import * as Arb from '../base/ArbitraryBase'
  * @since 1.0.0
  * @category Model
  */
-export type WithDateHKT2<S> = {
+export interface WithDateHKT2<S> {
   /**
    * Represents valid Date objects
    *
@@ -42,7 +42,7 @@ export type WithDateHKT2<S> = {
  * @since 1.0.0
  * @category Model
  */
-export type WithDate1<S extends URIS> = {
+export interface WithDate1<S extends URIS> {
   /**
    * Represents valid Date objects
    *
@@ -63,7 +63,7 @@ export type WithDate1<S extends URIS> = {
  * @since 1.0.0
  * @category Model
  */
-export type WithDate2<S extends URIS2> = {
+export interface WithDate2<S extends URIS2> {
   /**
    * Represents valid Date objects
    *
@@ -84,7 +84,7 @@ export type WithDate2<S extends URIS2> = {
  * @since 1.0.0
  * @category Model
  */
-export type WithDate2C<S extends URIS2, E> = {
+export interface WithDate2C<S extends URIS2, E> {
   /**
    * Represents valid Date objects
    *

@@ -48,37 +48,37 @@ const schemableFiles: ReadonlyArray<SchemableFiles> = [
   ['type', 'Type'],
 ]
 
-// const correctRelativeImports: (repeat: number, s: string) => string = (repeat, s) =>
-//   s.replace(/'\.\.\//gm, `'${'../'.repeat(repeat)}`)
+const correctRelativeImports: (repeat: number, s: string) => string = (repeat, s) =>
+  s.replace(/'\.\.\//gm, `'${'../'.repeat(repeat)}`)
 
 type File = RNEA.ReadonlyNonEmptyArray<string>
 
-// const pluckImports: (file: File) => O.Option<File> = file => {
-//   type Params = {
-//     readonly file: File
-//     readonly cursor: number
-//     readonly out: ReadonlyArray<string>
-//   }
+const pluckImports: (file: File) => O.Option<File> = file => {
+  type Params = {
+    readonly file: File
+    readonly cursor: number
+    readonly out: ReadonlyArray<string>
+  }
 
-//   const go: (params: Params) => E.Either<Params, O.Option<File>> = ({
-//     file,
-//     cursor,
-//     out,
-//   }) =>
-//     pipe(file, RA.lookup(cursor), line =>
-//       O.isNone(line)
-//         ? E.right(O.none)
-//         : line.value === ''
-//         ? E.right(RNEA.fromReadonlyArray(out))
-//         : E.left({
-//             file,
-//             cursor: cursor + 1,
-//             out: [...out, line.value],
-//           }),
-//     )
+  const go: (params: Params) => E.Either<Params, O.Option<File>> = ({
+    file,
+    cursor,
+    out,
+  }) =>
+    pipe(file, RA.lookup(cursor), line =>
+      O.isNone(line)
+        ? E.right(O.none)
+        : line.value === ''
+        ? E.right(RNEA.fromReadonlyArray(out))
+        : E.left({
+            file,
+            cursor: cursor + 1,
+            out: [...out, line.value],
+          }),
+    )
 
-//   return tailRec({ file, cursor: 0, out: [] }, go)
-// }
+  return tailRec({ file, cursor: 0, out: [] }, go)
+}
 
 const pluckInstance: (file: File) => (instance: SchemableFiles[1]) => O.Option<File> =
   file => instance => {
@@ -133,7 +133,83 @@ const pluckInstance: (file: File) => (instance: SchemableFiles[1]) => O.Option<F
     return tailRec({ hasEncounteredInstance: false, file, cursor: 0, out: [] }, go)
   }
 
-const getSchemables: Build<ReadonlyArray<ReadonlyArray<File>>> = C =>
+const pluckDefinition: (file: File) => O.Option<File> = file => {
+  type Params = {
+    readonly hasEncounteredHKT2: boolean
+    readonly hasEncountered2C: boolean
+    readonly file: File
+    readonly cursor: number
+    readonly out: ReadonlyArray<string>
+  }
+
+  const go: (params: Params) => E.Either<Params, O.Option<File>> = ({
+    hasEncounteredHKT2,
+    hasEncountered2C,
+    file,
+    cursor,
+    out,
+  }) =>
+    pipe(file, RA.lookup(cursor), line => {
+      /* Stream ended */
+      if (O.isNone(line)) return E.right(O.none)
+
+      /* Definitions have been exhausted */
+      if (hasEncountered2C && line.value === '')
+        return E.right(RNEA.fromReadonlyArray(out))
+
+      /* If instance has just been encountered */
+      if (!hasEncounteredHKT2 && line.value.startsWith(`export interface With`))
+        return E.left({
+          hasEncounteredHKT2: true,
+          hasEncountered2C,
+          file,
+          cursor: cursor + 1,
+          out: ['/**', ' * @since 1.0.0', ' * @category Model', ' */', line.value],
+        })
+
+      /* Final defintion has just been encountered */
+      if (!hasEncountered2C && line.value.includes('2C<S extends URIS2'))
+        return E.left({
+          hasEncounteredHKT2,
+          hasEncountered2C: true,
+          file,
+          cursor: cursor + 1,
+          out: [...out, line.value],
+        })
+
+      /* Instance is accumulating */
+      if (hasEncounteredHKT2)
+        return E.left({
+          hasEncounteredHKT2,
+          hasEncountered2C,
+          file,
+          cursor: cursor + 1,
+          out: [...out, line.value],
+        })
+
+      /* Instance has not been encountered */
+      return E.left({
+        hasEncounteredHKT2,
+        hasEncountered2C,
+        file,
+        cursor: cursor + 1,
+        out,
+      })
+    })
+
+  return tailRec(
+    {
+      hasEncounteredHKT2: false,
+      hasEncountered2C: false,
+      file,
+      cursor: 0,
+      out: [],
+    },
+    go,
+  )
+}
+
+const getSchemables: Build<ReadonlyArray<File>> = C =>
   pipe(
     C.readFiles('./src/schemables'),
     TE.chain(
@@ -192,23 +268,31 @@ const getSchemables: Build<ReadonlyArray<ReadonlyArray<File>>> = C =>
     //     ),
     //   ),
     // ),
+    // TE.chainFirst(
+    //   flow(
+    //     E.traverseArray(({ contents, module }) =>
+    //       pipe(
+    //         schemableFiles,
+    //         E.traverseArray(([, instance]) =>
+    //           pipe(
+    //             instance,
+    //             pluckInstance(pipe(contents, Str.split('\n'))),
+    //             E.fromOption(() =>
+    //               E.toError(`Could not find instance ${instance} in module ${module}`),
+    //             ),
+    //           ),
+    //         ),
+    //       ),
+    //     ),
+    //     TE.fromEither,
+    //   ),
+    // ),
     TE.chain(
-      flow(
-        E.traverseArray(({ contents, module }) =>
-          pipe(
-            schemableFiles,
-            E.traverseArray(([, instance]) =>
-              pipe(
-                instance,
-                pluckInstance(pipe(contents, Str.split('\n'))),
-                E.fromOption(() =>
-                  E.toError(`Could not find instance ${instance} in module ${module}`),
-                ),
-              ),
-            ),
-          ),
+      TE.traverseArray(({ contents, module }) =>
+        pipe(
+          pluckDefinition(pipe(contents, Str.split('\n'))),
+          TE.fromOption(() => E.toError(`Could not find definition in module ${module}`)),
         ),
-        TE.fromEither,
       ),
     ),
   )

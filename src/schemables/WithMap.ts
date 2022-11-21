@@ -28,7 +28,7 @@ import { flow, pipe } from 'fp-ts/function'
  * @since 1.0.0
  * @category Model
  */
-export type WithMapHKT2<S> = {
+export interface WithMapHKT2<S> {
   /**
    * Represents a ReadonlyMap converted from an expected array of entries.
    *
@@ -46,7 +46,7 @@ export type WithMapHKT2<S> = {
  * @since 1.0.0
  * @category Model
  */
-export type WithMap1<S extends URIS> = {
+export interface WithMap1<S extends URIS> {
   /**
    * Represents a ReadonlyMap converted from an expected array of entries.
    *
@@ -64,7 +64,7 @@ export type WithMap1<S extends URIS> = {
  * @since 1.0.0
  * @category Model
  */
-export type WithMap2<S extends URIS2> = {
+export interface WithMap2<S extends URIS2> {
   /**
    * Represents a ReadonlyMap converted from an expected array of entries.
    *
@@ -82,7 +82,7 @@ export type WithMap2<S extends URIS2> = {
  * @since 1.0.0
  * @category Model
  */
-export type WithMap2C<S extends URIS2, E> = {
+export interface WithMap2C<S extends URIS2, E> {
   /**
    * Represents a ReadonlyMap converted from an expected array of entries.
    *

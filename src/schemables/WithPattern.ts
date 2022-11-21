@@ -37,6 +37,23 @@ export interface WithPatternHKT2<S> {
  * @since 1.0.0
  * @category Model
  */
+export interface WithPattern1<S extends URIS> {
+  /**
+   * Schemable construction based on Regex combinators
+   *
+   * @since 1.0.0
+   */
+  readonly pattern: (
+    pattern: Pattern,
+    description: string,
+    caseInsensitive?: boolean,
+  ) => Kind<S, string>
+}
+
+/**
+ * @since 1.0.0
+ * @category Model
+ */
 export interface WithPattern2<S extends URIS2> {
   /**
    * Schemable construction based on Regex combinators
@@ -65,23 +82,6 @@ export interface WithPattern2C<S extends URIS2, E> {
     description: string,
     caseInsensitive?: boolean,
   ) => Kind2<S, E, string>
-}
-
-/**
- * @since 1.0.0
- * @category Model
- */
-export interface WithPattern1<S extends URIS> {
-  /**
-   * Schemable construction based on Regex combinators
-   *
-   * @since 1.0.0
-   */
-  readonly pattern: (
-    pattern: Pattern,
-    description: string,
-    caseInsensitive?: boolean,
-  ) => Kind<S, string>
 }
 
 /** @internal */
