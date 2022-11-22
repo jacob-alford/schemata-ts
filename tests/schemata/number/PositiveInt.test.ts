@@ -1,6 +1,6 @@
-import { unsafeCoerce } from 'fp-ts/function'
 import { PositiveInt } from '../../../src/schemata/number/PositiveInt'
 import { getAllInstances, validateArbitrary } from '../../../test-utils'
+import { unsafeCoerce } from 'fp-ts/function'
 
 const _: (n: number) => PositiveInt = unsafeCoerce
 

@@ -1,11 +1,11 @@
-import * as E from 'fp-ts/Either'
 import * as D from '../../src/Decoder'
-import { pipe } from 'fp-ts/function'
-import * as CheckDigit from '../../src/schemables/WithCheckDigit'
 import * as CC from '../../src/schemata/string/CreditCard'
-import { Schema as Pattern } from '../../src/schemables/WithPattern'
+import * as CheckDigit from '../../test-utils/schemable-exports/WithCheckDigit'
+import * as E from 'fp-ts/Either'
 import { interpreter } from '../../src/SchemaExt'
 import { luhn } from '../../src/internal/algorithms'
+import { Schema as Pattern } from '../../test-utils/schemable-exports/WithPattern'
+import { pipe } from 'fp-ts/function'
 
 describe('WithCheckDigit', () => {
   test('Schema', () => {

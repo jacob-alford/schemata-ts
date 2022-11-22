@@ -1,9 +1,9 @@
-import * as E from 'fp-ts/Either'
 import * as D from '../../src/Decoder'
-import { pipe } from 'fp-ts/function'
-import * as P from '../../src/schemables/WithPattern'
 import * as PB from '../../src/PatternBuilder'
+import * as P from '../../test-utils/schemable-exports/WithPattern'
+import * as E from 'fp-ts/Either'
 import { interpreter } from '../../src/SchemaExt'
+import { pipe } from 'fp-ts/function'
 
 describe('WithPattern', () => {
   test('Pattern', () => {

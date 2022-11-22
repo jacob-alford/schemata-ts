@@ -1,25 +1,24 @@
-import * as ts from 'typescript'
 import * as Cons from 'fp-ts/Console'
-// import * as Color from 'colorette'
-import {
-  unsafeCoerce,
-  flow,
-  // identity,
-  pipe,
-  tuple,
-} from 'fp-ts/function'
 import * as E from 'fp-ts/Either'
 import * as O from 'fp-ts/Option'
-import * as RA from 'fp-ts/ReadonlyArray'
 import * as RTE from 'fp-ts/ReaderTaskEither'
+import * as RA from 'fp-ts/ReadonlyArray'
 import * as RNEA from 'fp-ts/ReadonlyNonEmptyArray'
-import * as Str from 'fp-ts/string'
 import * as TE from 'fp-ts/TaskEither'
-import { tailRec } from 'fp-ts/ChainRec'
-import { fileSystem } from './FS'
+import * as Str from 'fp-ts/string'
+import * as ts from 'typescript'
 import { cli } from './CLI'
-import { run } from './run'
+import { fileSystem } from './FS'
 import { Build } from './build'
+import { run } from './run'
+import { tailRec } from 'fp-ts/ChainRec'
+// import * as Color from 'colorette'
+import {
+  flow, // identity,
+  pipe,
+  tuple,
+  unsafeCoerce,
+} from 'fp-ts/function'
 
 const _ = ts.factory
 
@@ -27,27 +26,31 @@ const stripExtension: (s: `With${string}`) => `With${string}` = unsafeCoerce(
   Str.slice(0, -3),
 )
 
-type SchemableInstance<L, U> = readonly [lowercaseName: L, uppercaseName: U]
+type SchemableInstance<L, U, E extends null | '1' | '2' | '2C'> = readonly [
+  lowercaseName: L,
+  uppercaseName: U,
+  extension: E,
+]
 
 type SchemableInstances =
-  | SchemableInstance<'arbitrary', 'Arbitrary'>
-  | SchemableInstance<'decoder', 'Decoder'>
-  | SchemableInstance<'encoder', 'Encoder'>
-  | SchemableInstance<'eq', 'Eq'>
-  | SchemableInstance<'guard', 'Guard'>
-  | SchemableInstance<'schema', 'Schema'>
-  | SchemableInstance<'task-decoder', 'TaskDecoder'>
-  | SchemableInstance<'type', 'Type'>
+  | SchemableInstance<'arbitrary', 'Arbitrary', '1'>
+  | SchemableInstance<'decoder', 'Decoder', '2C'>
+  | SchemableInstance<'encoder', 'Encoder', '2'>
+  | SchemableInstance<'eq', 'Eq', '1'>
+  | SchemableInstance<'guard', 'Guard', '1'>
+  | SchemableInstance<'schema', 'Schema', null>
+  | SchemableInstance<'task-decoder', 'TaskDecoder', '2C'>
+  | SchemableInstance<'type', 'Type', '1'>
 
 const schemableInstances: ReadonlyArray<SchemableInstances> = [
-  ['arbitrary', 'Arbitrary'],
-  ['decoder', 'Decoder'],
-  ['encoder', 'Encoder'],
-  ['eq', 'Eq'],
-  ['guard', 'Guard'],
-  ['schema', 'Schema'],
-  ['task-decoder', 'TaskDecoder'],
-  ['type', 'Type'],
+  ['arbitrary', 'Arbitrary', '1'],
+  ['decoder', 'Decoder', '2C'],
+  ['encoder', 'Encoder', '2'],
+  ['eq', 'Eq', '1'],
+  ['guard', 'Guard', '1'],
+  ['schema', 'Schema', null],
+  ['task-decoder', 'TaskDecoder', '2C'],
+  ['type', 'Type', '1'],
 ]
 
 const correctRelativeImports: (repeat: number) => (s: string) => string = repeat => s =>
@@ -331,9 +334,17 @@ const upsertSchemablesToDisk: (
                     `./src/schemables/${module}/instances/${instanceFileName[0]}.ts`,
                     pipe(
                       imports,
+                      RA.concat(
+                        instanceFileName[2] === null
+                          ? []
+                          : [
+                              `import { ${module}${instanceFileName[2]} } from 'REPLACE_ME_BABY'`,
+                            ],
+                      ),
                       RA.concat(instance),
                       RA.foldMap(Str.Monoid)(line => `${line}\n`),
                       correctRelativeImports(3),
+                      Str.replace(/REPLACE_ME_BABY/gm, '../definition'),
                     ),
                   ),
                 ),
@@ -369,7 +380,7 @@ const makeExportsFile: (
             false,
             _.createNamespaceExport(_.createIdentifier(instance)),
             _.createStringLiteral(
-              `../src/schemables/${name}/instances/${instanceFileName}`,
+              `../../src/schemables/${name}/instances/${instanceFileName}`,
             ),
             undefined,
           ),
@@ -405,11 +416,14 @@ const makeSchemableBarrelExports: (
     TE.map(() => void 0),
   )
 
+const format: Build<void> = C => C.exec('yarn format')
+
 const main: Build<void> = pipe(
   getSchemableFiles,
   RTE.chain(getSchemableArtifacts),
   RTE.chainFirst(upsertSchemablesToDisk),
   RTE.chainFirst(makeSchemableBarrelExports),
+  RTE.chainFirst(() => format),
   RTE.map(RA.foldMap(Str.Monoid)(({ module }) => `Wrote ${module} artifacts.\n`)),
   RTE.chainIOK(Cons.log),
 )

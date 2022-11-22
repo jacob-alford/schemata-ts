@@ -1,10 +1,10 @@
-import { pipe } from 'fp-ts/function'
-import * as fc from 'fast-check'
-import * as Arb from '../src/base/ArbitraryBase'
 import * as G from '../src/Guard'
 import * as SC from '../src/SchemaExt'
+import * as Arb from '../src/base/ArbitraryBase'
+import * as fc from 'fast-check'
 import { PositiveFloat } from '../src/schemata/number/PositiveFloat'
-import { Arbitrary as WithInvariant } from '../src/schemables/WithInvariant'
+import { Arbitrary as WithInvariant } from '../test-utils/schemable-exports/WithInvariant'
+import { pipe } from 'fp-ts/function'
 
 const isPositiveFloat = SC.interpreter(G.Schemable)(PositiveFloat).is
 

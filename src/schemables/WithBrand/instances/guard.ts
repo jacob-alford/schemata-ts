@@ -4,8 +4,8 @@
  * @since 1.0.0
  */
 import * as G from '../../../base/GuardBase'
-import { identity } from 'fp-ts/function'
 import { WithBrand1 } from '../definition'
+import { identity } from 'fp-ts/function'
 
 /**
  * @since 1.0.0

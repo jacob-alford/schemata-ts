@@ -7,9 +7,9 @@
  *
  * @since 1.0.0
  */
-import { pipe } from 'fp-ts/function'
 import * as PB from '../../PatternBuilder'
-import { make, SchemaExt } from '../../SchemaExt'
+import { SchemaExt, make } from '../../SchemaExt'
+import { pipe } from 'fp-ts/function'
 import { Branded } from 'io-ts'
 
 /** @internal */

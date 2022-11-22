@@ -1,6 +1,6 @@
+import * as PB from '../src/PatternBuilder'
 import fc from 'fast-check'
 import { pipe } from 'fp-ts/function'
-import * as PB from '../src/PatternBuilder'
 
 describe('PatternBuilder', () => {
   const pattern: PB.Pattern = pipe(

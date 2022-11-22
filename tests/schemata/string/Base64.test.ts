@@ -1,5 +1,5 @@
-import * as E from 'fp-ts/Either'
 import * as Base64 from '../../../src/schemata/string/Base64'
+import * as E from 'fp-ts/Either'
 import { getAllInstances, validateArbitrary } from '../../../test-utils'
 
 const { Arbitrary, Decoder, Eq, Guard, TaskDecoder, Type } = getAllInstances(

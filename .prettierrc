@@ -4,5 +4,7 @@
   "semi": false,
   "arrowParens": "avoid",
   "plugins": ["prettier-plugin-jsdoc"],
-  "trailingComma": "all"
+  "trailingComma": "all",
+  "importOrderSortSpecifiers": true,
+  "importOrderGroupNamespaceSpecifiers": true
 }

@@ -1,7 +1,7 @@
-import * as E from 'fp-ts/Either'
 import * as D from '../../src/Decoder'
-import { Schema } from '../../src/schemables/WithUnknownContainers/instances/schema'
+import * as E from 'fp-ts/Either'
 import { interpreter } from '../../src/SchemaExt'
+import { Schema } from '../../src/schemables/WithUnknownContainers/instances/schema'
 
 describe('WithUnknownContainers', () => {
   test('UnknownArray', () => {

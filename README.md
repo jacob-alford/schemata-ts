@@ -44,8 +44,8 @@ A collection of Schemata inspired by io-ts-types and validators.js.
 Version 0.1.0 is a transitionary release that will contain breaking changes upon release of the full version 1.0.0. 0.1.0 released on NPM is intended to be used with `SchemaExt.make(S => S.Nullable(S.String))`, where version 1.0.0 is almost exclusively `Schema` based, and will look something like this:
 
 ```typescript
-import * as S from 'schemata-ts/schemata'
 import * as I from 'schemata-ts/interpreters'
+import * as S from 'schemata-ts/schemata'
 
 const User = S.Struct({
   id: S.UUID({ version: 5 }),
@@ -166,10 +166,10 @@ With Schemable, you first provide instructions (`Schema`) to construct a domain 
 The example above can be refined to the following with Schema and Schemable:
 
 ```typescript
-import { interpreter, make, TypeOf } from 'io-ts/Schema'
 import * as D from 'io-ts/Decoder'
 import * as Eq from 'io-ts/Eq'
 import * as G from 'io-ts/Guard'
+import { TypeOf, interpreter, make } from 'io-ts/Schema'
 
 const UserSchema = make(S =>
   S.struct({
@@ -198,8 +198,8 @@ And with this, the structure of domain types and operators come from a single so
 Let's refine our User type.
 
 ```typescript
-import * as S from 'schemata-ts/schemata'
 import * as I from 'schemata-ts/interpreters'
+import * as S from 'schemata-ts/schemata'
 
 const User = S.Struct({
   id: S.UUID({ version: 5 }),

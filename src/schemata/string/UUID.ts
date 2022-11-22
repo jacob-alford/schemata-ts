@@ -7,9 +7,8 @@
  * @since 1.0.0
  */
 import * as PB from '../../PatternBuilder'
-
+import { SchemaExt, make } from '../../SchemaExt'
 import { Branded } from 'io-ts'
-import { make, SchemaExt } from '../../SchemaExt'
 
 const nHexDigits = (n: number) => PB.exactly(n)(PB.hexDigit)
 

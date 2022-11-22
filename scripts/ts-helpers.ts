@@ -1,6 +1,6 @@
+import * as RA from 'fp-ts/ReadonlyArray'
 import * as ts from 'typescript'
 import { pipe } from 'fp-ts/function'
-import * as RA from 'fp-ts/ReadonlyArray'
 
 const _ = ts.factory
 

@@ -1,8 +1,8 @@
-import * as E from 'fp-ts/Either'
-import { pipe, tuple } from 'fp-ts/function'
 import * as ISODateString_ from '../../../src/schemata/date/DateFromIsoString'
-import * as D from '../../../src/schemables/WithDate'
+import * as D from '../../../test-utils/schemable-exports/WithDate'
+import * as E from 'fp-ts/Either'
 import { getAllInstances, validateArbitrary } from '../../../test-utils'
+import { pipe, tuple } from 'fp-ts/function'
 
 const validNone: ReadonlyArray<string> = [
   '2009-12T12:34',

@@ -1,5 +1,5 @@
-import * as E from 'fp-ts/Either'
 import * as DateFromInt from '../../../src/schemata/date/DateFromInt'
+import * as E from 'fp-ts/Either'
 import { getAllInstances, validateArbitrary } from '../../../test-utils'
 import { pipe } from 'fp-ts/function'
 

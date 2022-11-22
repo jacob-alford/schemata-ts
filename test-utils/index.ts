@@ -1,10 +1,3 @@
-import * as fc from 'fast-check'
-import { pipe, tuple, unsafeCoerce } from 'fp-ts/function'
-import * as N from 'fp-ts/number'
-import * as Mn from 'fp-ts/Monoid'
-import * as RA from 'fp-ts/ReadonlyArray'
-
-import { interpreter, SchemaExt } from '../src/SchemaExt'
 import * as Arb from '../src/Arbitrary'
 import * as D from '../src/Decoder'
 import * as E from '../src/Encoder'
@@ -12,6 +5,12 @@ import * as Eq from '../src/Eq'
 import * as G from '../src/Guard'
 import * as TD from '../src/TaskDecoder'
 import * as T from '../src/Type'
+import * as fc from 'fast-check'
+import * as Mn from 'fp-ts/Monoid'
+import * as RA from 'fp-ts/ReadonlyArray'
+import * as N from 'fp-ts/number'
+import { SchemaExt, interpreter } from '../src/SchemaExt'
+import { pipe, tuple, unsafeCoerce } from 'fp-ts/function'
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 type Any = any

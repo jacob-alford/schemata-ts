@@ -3,12 +3,11 @@
  *
  * @since 1.0.0
  */
-
 import * as PB from '../../PatternBuilder'
-import { make, SchemaExt } from '../../SchemaExt'
-import { Branded } from 'io-ts'
-import { pipe } from 'fp-ts/function'
+import { SchemaExt, make } from '../../SchemaExt'
 import { base64Url } from './Base64Url'
+import { pipe } from 'fp-ts/function'
+import { Branded } from 'io-ts'
 
 /** @internal */
 interface JwtBrand {

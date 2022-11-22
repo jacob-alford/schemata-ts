@@ -1,9 +1,9 @@
-import * as G from 'io-ts/Guard'
-import * as O from 'fp-ts/Option'
-import * as E from 'fp-ts/Either'
-import * as fc from 'fast-check'
 import * as SC from '../../../src/base/SchemaBase'
 import * as OptionFromNullable_ from '../../../src/schemata/generic/OptionFromNullable'
+import * as fc from 'fast-check'
+import * as E from 'fp-ts/Either'
+import * as O from 'fp-ts/Option'
+import * as G from 'io-ts/Guard'
 import { getAllInstances, validateArbitrary } from '../../../test-utils'
 import { flow } from 'fp-ts/function'
 

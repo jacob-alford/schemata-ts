@@ -16,11 +16,10 @@
  *
  *   assert.equal(Guard.is(hslString), true)
  */
-
-import { Branded } from 'io-ts'
-import { make, SchemaExt } from '../../SchemaExt'
 import * as PB from '../../PatternBuilder'
+import { SchemaExt, make } from '../../SchemaExt'
 import { pipe } from 'fp-ts/function'
+import { Branded } from 'io-ts'
 
 /**
  * @since 1.0.0

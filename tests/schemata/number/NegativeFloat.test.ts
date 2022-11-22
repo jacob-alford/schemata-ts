@@ -1,13 +1,12 @@
 import * as RA from 'fp-ts/ReadonlyArray'
-import { tuple } from 'fp-ts/function'
 import { NegativeFloat } from '../../../src/schemata/number/NegativeFloat'
-
 import {
   cat,
   combineExpected,
   getAllInstances,
   validateArbitrary,
 } from '../../../test-utils'
+import { tuple } from 'fp-ts/function'
 
 const { Decoder, Eq, Guard, Arbitrary, Type, TaskDecoder } =
   getAllInstances(NegativeFloat)

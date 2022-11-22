@@ -6,11 +6,10 @@
  *
  * @since 0.0.3
  */
-import { pipe } from 'fp-ts/function'
-
-import { luhn } from '../../internal/algorithms'
 import * as PB from '../../PatternBuilder'
 import { make } from '../../SchemaExt'
+import { luhn } from '../../internal/algorithms'
+import { pipe } from 'fp-ts/function'
 import { Branded } from 'io-ts'
 
 /** @internal */

@@ -1,8 +1,8 @@
+import * as ISODateString from '../../test-utils/schemable-exports/WithDate'
 import * as E from 'fp-ts/Either'
-import { pipe } from 'fp-ts/function'
-import * as ISODateString from '../../src/schemables/WithDate'
 import { getDecoder } from '../../src/interpreters'
 import { validateArbitrary } from '../../test-utils'
+import { pipe } from 'fp-ts/function'
 
 const valid: ReadonlyArray<string> = [
   '2009-12T12:34',

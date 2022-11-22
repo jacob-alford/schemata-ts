@@ -3,7 +3,7 @@
  *
  * @since 1.0.0
  */
-import { Kind2, URIS2, HKT2 } from 'fp-ts/HKT'
+import { HKT2, Kind2, URIS2 } from 'fp-ts/HKT'
 import { Refinement } from 'fp-ts/Refinement'
 
 /**

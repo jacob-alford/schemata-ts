@@ -4,8 +4,8 @@
  * @since 1.0.0
  */
 import * as D from '../../../base/DecoderBase'
-import { identity } from 'fp-ts/function'
 import { WithBrand2C } from '../definition'
+import { identity } from 'fp-ts/function'
 
 /**
  * @since 1.0.0

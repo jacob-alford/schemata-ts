@@ -1,13 +1,12 @@
 import * as RA from 'fp-ts/ReadonlyArray'
-import { tuple } from 'fp-ts/function'
 import { NonNegativeFloat } from '../../../src/schemata/number/NonNegativeFloat'
-
 import {
   cat,
   combineExpected,
   getAllInstances,
   validateArbitrary,
 } from '../../../test-utils'
+import { tuple } from 'fp-ts/function'
 
 const validNumbers = [0, 1, 1.1, Math.random() + 1, Number.MAX_SAFE_INTEGER]
 

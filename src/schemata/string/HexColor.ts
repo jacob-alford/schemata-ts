@@ -3,11 +3,10 @@
  *
  * @since 1.0.0
  */
-
 import * as PB from '../../PatternBuilder'
-import { make, SchemaExt } from '../../SchemaExt'
-import { Branded } from 'io-ts'
+import { SchemaExt, make } from '../../SchemaExt'
 import { pipe } from 'fp-ts/function'
+import { Branded } from 'io-ts'
 
 /** @internal */
 interface HexColorBrand {

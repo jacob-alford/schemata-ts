@@ -1,8 +1,8 @@
 import * as E from 'fp-ts/Either'
 import * as RA from 'fp-ts/ReadonlyArray'
-import { pipe, tuple } from 'fp-ts/function'
 import { Ascii } from '../../../src/schemata/string/Ascii'
 import { getAllInstances, validateArbitrary } from '../../../test-utils'
+import { pipe, tuple } from 'fp-ts/function'
 
 const valid: ReadonlyArray<string> = [
   'foobar',

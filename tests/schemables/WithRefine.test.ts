@@ -1,10 +1,10 @@
-import * as E from 'fp-ts/Either'
 import * as D from '../../src/Decoder'
-import * as SC from '../../src/base/SchemaBase'
 import * as Enc from '../../src/base/EncoderBase'
-import { Schema } from '../../src/schemables/WithRefine/instances/schema'
-import { Encoder } from '../../src/schemables/WithRefine/instances/encoder'
+import * as SC from '../../src/base/SchemaBase'
+import * as E from 'fp-ts/Either'
 import { interpreter } from '../../src/SchemaExt'
+import { Encoder } from '../../src/schemables/WithRefine/instances/encoder'
+import { Schema } from '../../src/schemables/WithRefine/instances/schema'
 
 describe('WithRefine', () => {
   test('Schema', () => {

@@ -1,12 +1,11 @@
 import * as Cons from 'fp-ts/Console'
 import * as E from 'fp-ts/Either'
+import * as O from 'fp-ts/Option'
 import * as RTE from 'fp-ts/ReaderTaskEither'
 import * as TE from 'fp-ts/TaskEither'
-import * as O from 'fp-ts/Option'
-import { pipe } from 'fp-ts/function'
-
 import { FileSystem, fileSystem } from './FS'
 import { run } from './run'
+import { pipe } from 'fp-ts/function'
 
 interface Build<A> extends RTE.ReaderTaskEither<FileSystem, Error, A> {}
 

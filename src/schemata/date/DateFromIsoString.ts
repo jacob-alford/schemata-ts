@@ -18,12 +18,11 @@
  *
  * @since 1.0.0
  */
-
-import { pipe } from 'fp-ts/function'
 import * as PB from '../../PatternBuilder'
-import { make, SchemaExt } from '../../SchemaExt'
-import * as D from '../../schemables/WithDate'
+import { SchemaExt, make } from '../../SchemaExt'
 import { match } from '../../internal/match'
+import { Guard } from '../../schemables/WithDate/instances/guard'
+import { pipe } from 'fp-ts/function'
 
 /**
  * E.g. `2022`
@@ -309,8 +308,8 @@ export const DateFromIsoString: DateFromIsoStringS = (params = {}) => {
         ),
         'IsoDateString',
       ),
-      S.refine((s): s is string => D.Guard.date.is(new Date(s)), 'SafeDateString'),
-      S.imap(D.Guard.date, 'DateFromIsoString')(
+      S.refine((s): s is string => Guard.date.is(new Date(s)), 'SafeDateString'),
+      S.imap(Guard.date, 'DateFromIsoString')(
         s => new Date(s),
         d => d.toISOString(),
       ),
