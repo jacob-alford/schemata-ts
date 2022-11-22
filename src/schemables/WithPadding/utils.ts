@@ -1,3 +1,8 @@
+/**
+ * Utilities for `WithPadding`
+ *
+ * @since 1.0.0
+ */
 import { matchOn } from '../../internal/match'
 
 /** @internal */

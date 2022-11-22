@@ -1,6 +1,11 @@
+/**
+ * Utilies for `WithInt`
+ *
+ * @since 1.0.0
+ */
 import { Int, IntParams } from './definition'
 
-/** @internal */
+/** @since 1.0.0 */
 export const isInt =
   ({ min = Number.MIN_SAFE_INTEGER, max = Number.MAX_SAFE_INTEGER }: IntParams = {}) =>
   (n: number): n is Int =>

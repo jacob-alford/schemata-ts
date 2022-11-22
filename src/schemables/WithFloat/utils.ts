@@ -1,6 +1,11 @@
+/**
+ * Utilities for `WithFloat`
+ *
+ * @since 1.0.0
+ */
 import { Float, FloatParams } from './definition'
 
-/** @internal */
+/** @since 1.0.0 */
 export const isFloat =
   ({ min = -Number.MAX_VALUE, max = Number.MAX_VALUE }: FloatParams = {}) =>
   (n: number): n is Float =>

@@ -9,7 +9,7 @@ import * as D from '../src/Decoder'
 import * as E from '../src/Encoder'
 import * as Eq from '../src/Eq'
 import * as G from '../src/Guard'
-import { interpreter,SchemaExt } from '../src/SchemaExt'
+import { interpreter, SchemaExt } from '../src/SchemaExt'
 import * as TD from '../src/TaskDecoder'
 import * as T from '../src/Type'
 
