@@ -3,8 +3,9 @@
  *
  * @since 1.0.0
  */
-import * as t from '../../../base/TypeBase'
 import * as t_ from 'io-ts'
+
+import * as t from '../../../base/TypeBase'
 import { WithOptional1 } from '../definition'
 import { Encoder } from './encoder'
 import { Guard } from './guard'

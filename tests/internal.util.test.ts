@@ -1,4 +1,5 @@
 import * as fc from 'fast-check'
+
 import { base64Encode, digits, urlifyBase64 } from '../src/internal/util'
 import { zipN } from '../test-utils'
 

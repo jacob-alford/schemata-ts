@@ -3,8 +3,9 @@
  *
  * @since 1.0.0
  */
-import { Pattern } from '../../PatternBuilder'
 import { HKT2, Kind, Kind2, URIS, URIS2 } from 'fp-ts/HKT'
+
+import { Pattern } from '../../PatternBuilder'
 
 /**
  * @since 1.0.0

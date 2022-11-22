@@ -3,10 +3,11 @@
  *
  * @since 1.0.0
  */
+import { flow, pipe } from 'fp-ts/function'
+
 import * as Arb from '../../../base/ArbitraryBase'
 import { WithPadding1 } from '../definition'
 import { foldUnion, match, stripLeftWhile, stripRightWhile } from '../utils'
-import { flow, pipe } from 'fp-ts/function'
 
 /**
  * @since 1.0.0

@@ -3,8 +3,8 @@
  *
  * @since 1.0.0
  */
-import * as Ord from 'fp-ts/Ord'
 import { HKT2, Kind, Kind2, URIS, URIS2 } from 'fp-ts/HKT'
+import * as Ord from 'fp-ts/Ord'
 
 /**
  * @since 1.0.0

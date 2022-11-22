@@ -3,8 +3,8 @@
  *
  * @since 1.0.0
  */
-import * as SC from '../../../SchemaExt'
 import { URI as SchemaURI } from '../../../base/SchemaBase'
+import * as SC from '../../../SchemaExt'
 import { WithInvariant2 } from '../definition'
 
 /**

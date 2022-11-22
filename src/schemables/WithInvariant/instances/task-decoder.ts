@@ -3,10 +3,11 @@
  *
  * @since 1.0.0
  */
-import * as TD from '../../../base/TaskDecoderBase'
-import * as TE from 'fp-ts/TaskEither'
-import { WithInvariant2C } from '../definition'
 import { flow } from 'fp-ts/function'
+import * as TE from 'fp-ts/TaskEither'
+
+import * as TD from '../../../base/TaskDecoderBase'
+import { WithInvariant2C } from '../definition'
 
 /**
  * @since 1.0.0

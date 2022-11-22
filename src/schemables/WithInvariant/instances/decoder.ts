@@ -3,10 +3,11 @@
  *
  * @since 1.0.0
  */
-import * as D from '../../../base/DecoderBase'
 import * as E from 'fp-ts/Either'
-import { WithInvariant2C } from '../definition'
 import { flow } from 'fp-ts/function'
+
+import * as D from '../../../base/DecoderBase'
+import { WithInvariant2C } from '../definition'
 
 /**
  * @since 1.0.0

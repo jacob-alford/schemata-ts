@@ -1,4 +1,6 @@
-import * as PB from '../../src/PatternBuilder'
+import * as E from 'fp-ts/Either'
+import { pipe } from 'fp-ts/function'
+
 import * as Arb from '../../src/base/ArbitraryBase'
 import * as D from '../../src/base/DecoderBase'
 import * as Enc from '../../src/base/EncoderBase'
@@ -7,14 +9,13 @@ import * as G from '../../src/base/GuardBase'
 import * as SC from '../../src/base/SchemaBase'
 import * as TD from '../../src/base/TaskDecoderBase'
 import * as t from '../../src/base/TypeBase'
-import * as WithPadding from '../../test-utils/schemable-exports/WithPadding'
-import * as E from 'fp-ts/Either'
 import { Schemable as GuardSchemableExt } from '../../src/Guard'
-import { interpreter } from '../../src/SchemaExt'
+import * as PB from '../../src/PatternBuilder'
 import { PaddingLength } from '../../src/schemables/WithPadding/definition'
+import { interpreter } from '../../src/SchemaExt'
 import { validateArbitrary } from '../../test-utils'
+import * as WithPadding from '../../test-utils/schemable-exports/WithPadding'
 import { Arbitrary as arbPattern } from '../../test-utils/schemable-exports/WithPattern'
-import { pipe } from 'fp-ts/function'
 
 const exact: PaddingLength = { by: 'ExactLength', exactLength: 4 }
 const max: PaddingLength = { by: 'MaxLength', maxLength: 4 }

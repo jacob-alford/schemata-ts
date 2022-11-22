@@ -3,10 +3,11 @@
  *
  * @since 1.0.0
  */
-import * as int from '../../schemables/WithInt/definition'
-import { SchemaExt, make } from '../../SchemaExt'
-import { Guard } from '../../schemables/WithDate/instances/guard'
 import { pipe } from 'fp-ts/function'
+
+import { Guard } from '../../schemables/WithDate/instances/guard'
+import * as int from '../../schemables/WithInt/definition'
+import { make, SchemaExt } from '../../SchemaExt'
 
 /**
  * @since 1.0.0

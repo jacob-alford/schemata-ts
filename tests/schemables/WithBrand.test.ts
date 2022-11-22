@@ -1,10 +1,11 @@
-import * as D from '../../src/Decoder'
-import * as SC from '../../src/base/SchemaBase'
-import * as B from '../../src/schemables/WithBrand/instances/schema'
 import * as E from 'fp-ts/Either'
-import { interpreter } from '../../src/SchemaExt'
 import { pipe } from 'fp-ts/function'
 import { Brand } from 'io-ts'
+
+import * as SC from '../../src/base/SchemaBase'
+import * as D from '../../src/Decoder'
+import * as B from '../../src/schemables/WithBrand/instances/schema'
+import { interpreter } from '../../src/SchemaExt'
 
 describe('WithBrand', () => {
   test('Brand', () => {

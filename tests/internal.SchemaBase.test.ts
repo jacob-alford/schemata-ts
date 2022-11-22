@@ -1,7 +1,8 @@
-import * as D from '../src/Decoder'
-import * as SC from '../src/base/SchemaBase'
 import * as E from 'fp-ts/Either'
-import { SchemaExt, interpreter } from '../src/SchemaExt'
+
+import * as SC from '../src/base/SchemaBase'
+import * as D from '../src/Decoder'
+import { interpreter,SchemaExt } from '../src/SchemaExt'
 
 describe('SchemaBase', () => {
   test('Literal', () => {

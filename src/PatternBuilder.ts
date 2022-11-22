@@ -31,11 +31,12 @@
  *   )
  */
 import * as fc from 'fast-check'
+import { pipe } from 'fp-ts/function'
 import * as O from 'fp-ts/Option'
 import * as RA from 'fp-ts/ReadonlyArray'
 import * as RNEA from 'fp-ts/ReadonlyNonEmptyArray'
+
 import { match, matchOn } from './internal/match'
-import { pipe } from 'fp-ts/function'
 
 // Breakdown of RegExp from https://262.ecma-international.org/5.1/#sec-15.10
 // Slightly adapted

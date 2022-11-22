@@ -5,8 +5,8 @@
  * @since 1.0.0
  */
 import * as Eq_ from 'fp-ts/Eq'
-import * as O from 'fp-ts/Option'
 import { HKT2, Kind, Kind2, URIS, URIS2 } from 'fp-ts/HKT'
+import * as O from 'fp-ts/Option'
 
 /**
  * @since 1.0.0

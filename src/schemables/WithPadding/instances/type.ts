@@ -4,6 +4,7 @@
  * @since 1.0.0
  */
 import * as t from 'io-ts/Type'
+
 import { WithPadding1 } from '../definition'
 import { foldUnion, match } from '../utils'
 

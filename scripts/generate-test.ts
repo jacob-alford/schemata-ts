@@ -1,14 +1,15 @@
-import * as D from '../src/Decoder'
-import * as SC from '../src/SchemaExt'
 import * as Cons from 'fp-ts/Console'
 import * as E from 'fp-ts/Either'
+import { pipe } from 'fp-ts/function'
 import * as RTE from 'fp-ts/ReaderTaskEither'
 import * as RA from 'fp-ts/ReadonlyArray'
+
+import * as D from '../src/Decoder'
+import * as SC from '../src/SchemaExt'
 import { CLI, cli } from './CLI'
 import { FileSystem, fileSystem } from './FS'
 import { checkTestModuleUniqueness, makeTestFile } from './generator-helpers'
 import { run } from './run'
-import { pipe } from 'fp-ts/function'
 
 interface Build<A> extends RTE.ReaderTaskEither<FileSystem & CLI, Error, A> {}
 

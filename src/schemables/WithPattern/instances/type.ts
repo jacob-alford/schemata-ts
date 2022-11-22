@@ -3,10 +3,11 @@
  *
  * @since 1.0.0
  */
+import { pipe } from 'fp-ts/function'
+
 import * as t from '../../../base/TypeBase'
 import { WithPattern1 } from '../definition'
 import { pattern } from '../utils'
-import { pipe } from 'fp-ts/function'
 
 /**
  * @since 1.0.0

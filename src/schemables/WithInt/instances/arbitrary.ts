@@ -9,8 +9,9 @@
  *
  * @since 1.0.0
  */
-import * as Arb from '../../../base/ArbitraryBase'
 import * as fc from 'fast-check'
+
+import * as Arb from '../../../base/ArbitraryBase'
 import { WithInt1 } from '../definition'
 import { isInt } from '../utils'
 

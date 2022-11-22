@@ -3,8 +3,9 @@
  *
  * @since 1.0.0
  */
-import * as G from '../../base/GuardBase'
 import { HKT2, Kind, Kind2, URIS, URIS2 } from 'fp-ts/HKT'
+
+import * as G from '../../base/GuardBase'
 
 /**
  * @since 1.0.0

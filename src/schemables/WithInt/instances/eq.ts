@@ -11,6 +11,7 @@
  */
 import * as Eq_ from 'fp-ts/Eq'
 import * as N from 'fp-ts/number'
+
 import { WithInt1 } from '../definition'
 
 /**

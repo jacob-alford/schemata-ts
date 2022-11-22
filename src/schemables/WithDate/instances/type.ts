@@ -3,11 +3,12 @@
  *
  * @since 1.0.0
  */
+import { identity } from 'fp-ts/function'
 import * as t_ from 'io-ts'
 import * as t from 'io-ts/Type'
+
 import { WithDate1 } from '../definition'
 import { isSafeDate, isValidDateString } from '../utils'
-import { identity } from 'fp-ts/function'
 
 /**
  * @since 1.0.0

@@ -3,9 +3,10 @@
  *
  * @since 1.0.0
  */
-import * as Enc from 'io-ts/Encoder'
-import { WithPadding2 } from '../definition'
 import { identity } from 'fp-ts/function'
+import * as Enc from 'io-ts/Encoder'
+
+import { WithPadding2 } from '../definition'
 
 /**
  * @since 1.0.0

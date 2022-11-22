@@ -3,12 +3,13 @@
  *
  * @since 1.0.0
  */
-import * as D from '../../../base/DecoderBase'
 import * as E from 'fp-ts/Either'
-import { CheckDigitVerified, WithCheckDigit2C } from '../definition'
-import { locationToIndex, replaceCharAt } from '../utils'
 import { pipe } from 'fp-ts/function'
 import { Branded } from 'io-ts'
+
+import * as D from '../../../base/DecoderBase'
+import { CheckDigitVerified, WithCheckDigit2C } from '../definition'
+import { locationToIndex, replaceCharAt } from '../utils'
 
 /**
  * @since 1.0.0

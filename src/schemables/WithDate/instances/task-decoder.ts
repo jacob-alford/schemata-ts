@@ -4,6 +4,7 @@
  * @since 1.0.0
  */
 import * as TD from 'io-ts/TaskDecoder'
+
 import { WithDate2C } from '../definition'
 import { Decoder } from './decoder'
 

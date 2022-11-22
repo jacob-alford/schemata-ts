@@ -3,11 +3,12 @@
  *
  * @since 1.0.0
  */
-import * as t from '../../../base/TypeBase'
 import * as E from 'fp-ts/Either'
-import { WithInvariant1 } from '../definition'
 import { flow, pipe } from 'fp-ts/function'
 import { Type as Type_ } from 'io-ts'
+
+import * as t from '../../../base/TypeBase'
+import { WithInvariant1 } from '../definition'
 
 /**
  * @since 1.0.0

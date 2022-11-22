@@ -1,10 +1,11 @@
-import * as Int_ from '../../test-utils/schemable-exports/WithInt'
 import * as E from 'fp-ts/Either'
+import { unsafeCoerce } from 'fp-ts/function'
+
 import { getDecoder } from '../../src/interpreters'
 import { Int } from '../../src/schemables/WithInt/definition'
 import { isInt } from '../../src/schemables/WithInt/utils'
 import { validateArbitrary } from '../../test-utils'
-import { unsafeCoerce } from 'fp-ts/function'
+import * as Int_ from '../../test-utils/schemable-exports/WithInt'
 
 const _: (n: number) => Int = unsafeCoerce
 

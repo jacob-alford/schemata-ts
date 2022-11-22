@@ -4,6 +4,7 @@
  * @since 1.0.0
  */
 import * as Enc from 'io-ts/Encoder'
+
 import { WithDate2 } from '../definition'
 
 /**

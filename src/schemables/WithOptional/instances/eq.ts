@@ -4,6 +4,7 @@
  * @since 1.0.0
  */
 import * as Eq_ from 'fp-ts/Eq'
+
 import { WithOptional1 } from '../definition'
 
 /**

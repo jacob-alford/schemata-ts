@@ -3,9 +3,10 @@
  *
  * @since 1.0.0
  */
+import { Branded } from 'io-ts'
+
 import * as SC from '../../../SchemaExt'
 import { CheckDigitVerified } from '../definition'
-import { Branded } from 'io-ts'
 
 /**
  * @since 1.0.0

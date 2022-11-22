@@ -5,11 +5,12 @@
  * @since 1.0.0
  */
 import * as Eq_ from 'fp-ts/Eq'
+import { flow } from 'fp-ts/function'
 import * as O from 'fp-ts/Option'
 import * as TE from 'fp-ts/TaskEither'
 import * as TD from 'io-ts/TaskDecoder'
+
 import { WithOption2C } from '../definition'
-import { flow } from 'fp-ts/function'
 
 /**
  * @since 1.0.0

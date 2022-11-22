@@ -6,10 +6,11 @@
  */
 import * as E from 'fp-ts/Either'
 import * as Eq_ from 'fp-ts/Eq'
+import { flow } from 'fp-ts/function'
 import * as O from 'fp-ts/Option'
 import * as D from 'io-ts/Decoder'
+
 import { WithOption2C } from '../definition'
-import { flow } from 'fp-ts/function'
 
 /**
  * @since 1.0.0

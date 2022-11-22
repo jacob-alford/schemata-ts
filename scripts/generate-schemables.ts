@@ -1,17 +1,18 @@
 import * as Cons from 'fp-ts/Console'
 import * as E from 'fp-ts/Either'
+import { flow, pipe, tuple, unsafeCoerce } from 'fp-ts/function'
 import * as O from 'fp-ts/Option'
 import * as RTE from 'fp-ts/ReaderTaskEither'
 import * as RA from 'fp-ts/ReadonlyArray'
 import * as RNEA from 'fp-ts/ReadonlyNonEmptyArray'
-import * as TE from 'fp-ts/TaskEither'
 import * as Str from 'fp-ts/string'
+import * as TE from 'fp-ts/TaskEither'
 import * as ts from 'typescript'
+
 import { CLI, cli } from './CLI'
 import { FileSystem, fileSystem } from './FS'
 import { run } from './run'
 import { makeDestructureImport, makeModuleStarImport } from './ts-helpers'
-import { flow, pipe, tuple, unsafeCoerce } from 'fp-ts/function'
 
 interface Build<A> extends RTE.ReaderTaskEither<FileSystem & CLI, Error, A> {}
 

@@ -9,10 +9,11 @@
  *
  * @since 1.0.0
  */
+import { pipe } from 'fp-ts/function'
 import * as t from 'io-ts/Type'
+
 import { WithInt1 } from '../definition'
 import { isInt } from '../utils'
-import { pipe } from 'fp-ts/function'
 
 /**
  * @since 1.0.0

@@ -1,8 +1,9 @@
 import * as E from 'fp-ts/Either'
+import { pipe, tuple } from 'fp-ts/function'
 import * as RA from 'fp-ts/ReadonlyArray'
+
 import { HslColor } from '../../../src/schemata/string/HslColor'
 import { getAllInstances, validateArbitrary } from '../../../test-utils'
-import { pipe, tuple } from 'fp-ts/function'
 
 const instances = getAllInstances(HslColor)
 

@@ -1,11 +1,12 @@
+import { flow, pipe } from 'fp-ts/function'
 import * as O from 'fp-ts/Option'
 import * as RA from 'fp-ts/ReadonlyArray'
 import * as RNEA from 'fp-ts/ReadonlyNonEmptyArray'
-import * as TE from 'fp-ts/TaskEither'
 import * as Str from 'fp-ts/string'
+import * as TE from 'fp-ts/TaskEither'
 import * as ts from 'typescript'
+
 import { Build } from './build'
-import { flow, pipe } from 'fp-ts/function'
 
 const _ = ts.factory
 

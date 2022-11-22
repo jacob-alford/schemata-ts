@@ -7,10 +7,11 @@
  *
  * @since 1.0.0
  */
-import * as PB from '../../PatternBuilder'
-import { SchemaExt, make } from '../../SchemaExt'
 import { pipe } from 'fp-ts/function'
 import { Branded } from 'io-ts'
+
+import * as PB from '../../PatternBuilder'
+import { make, SchemaExt } from '../../SchemaExt'
 
 /** @internal */
 interface EmailAddressBrand {

@@ -3,11 +3,12 @@
  *
  * @since 1.0.0
  */
+import { pipe } from 'fp-ts/function'
+import { Branded } from 'io-ts'
+
 import * as t from '../../../base/TypeBase'
 import { CheckDigitVerified, WithCheckDigit1 } from '../definition'
 import { locationToIndex } from '../utils'
-import { pipe } from 'fp-ts/function'
-import { Branded } from 'io-ts'
 
 /**
  * @since 1.0.0

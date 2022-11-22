@@ -3,8 +3,9 @@
  *
  * @since 1.0.0
  */
-import * as SC from '../../../SchemaExt'
 import * as Ord from 'fp-ts/Ord'
+
+import * as SC from '../../../SchemaExt'
 
 /**
  * @since 1.0.0

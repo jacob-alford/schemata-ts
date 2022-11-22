@@ -1,10 +1,10 @@
 import * as Cons from 'fp-ts/Console'
+import { flow, pipe } from 'fp-ts/function'
 import * as O from 'fp-ts/Option'
 import * as RA from 'fp-ts/ReadonlyArray'
 import * as T from 'fp-ts/Task'
 import * as TE from 'fp-ts/TaskEither'
 import * as fs from 'fs'
-import { flow, pipe } from 'fp-ts/function'
 import G from 'glob'
 
 export interface FileSystem {

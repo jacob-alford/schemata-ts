@@ -1,5 +1,7 @@
 import * as E from 'fp-ts/Either'
+import { pipe, tuple } from 'fp-ts/function'
 import * as RA from 'fp-ts/ReadonlyArray'
+
 import { NonPositiveFloat } from '../../../src/schemata/number/NonPositiveFloat'
 import {
   cat,
@@ -7,7 +9,6 @@ import {
   getAllInstances,
   validateArbitrary,
 } from '../../../test-utils'
-import { pipe, tuple } from 'fp-ts/function'
 
 const { Encoder, Decoder, Eq, Guard, Arbitrary, Type, TaskDecoder } =
   getAllInstances(NonPositiveFloat)

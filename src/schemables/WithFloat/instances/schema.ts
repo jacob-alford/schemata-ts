@@ -9,8 +9,8 @@
  *
  * @since 1.0.0
  */
-import * as SC from '../../../SchemaExt'
 import { URI as SchemaURI } from '../../../base/SchemaBase'
+import * as SC from '../../../SchemaExt'
 import { WithFloat2 } from '../definition'
 
 /**

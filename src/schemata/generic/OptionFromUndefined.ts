@@ -3,10 +3,11 @@
  *
  * @since 1.0.0
  */
-import * as G from '../../base/GuardBase'
-import * as O from 'fp-ts/Option'
-import { SchemaExt, make } from '../../SchemaExt'
 import { pipe } from 'fp-ts/function'
+import * as O from 'fp-ts/Option'
+
+import * as G from '../../base/GuardBase'
+import { make, SchemaExt } from '../../SchemaExt'
 
 /**
  * @since 1.0.0

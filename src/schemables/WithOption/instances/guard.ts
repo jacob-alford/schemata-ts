@@ -5,6 +5,7 @@
  * @since 1.0.0
  */
 import * as G from 'io-ts/Guard'
+
 import { WithOption1 } from '../definition'
 
 /**

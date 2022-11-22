@@ -4,16 +4,17 @@
  * @since 1.0.0
  */
 import * as E from 'fp-ts/Either'
+import { flow } from 'fp-ts/function'
 import * as Ord from 'fp-ts/Ord'
 import * as RA from 'fp-ts/ReadonlyArray'
 import * as RM from 'fp-ts/ReadonlyMap'
 import * as Sg from 'fp-ts/Semigroup'
+import { Type as Type_ } from 'io-ts'
 import * as t from 'io-ts/Type'
+
 import { WithMap1 } from '../definition'
 import { Encoder } from './encoder'
 import { Guard } from './guard'
-import { flow } from 'fp-ts/function'
-import { Type as Type_ } from 'io-ts'
 
 /**
  * @since 1.0.0

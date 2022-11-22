@@ -3,10 +3,11 @@
  *
  * @since 1.0.0
  */
+import { Branded } from 'io-ts'
+
 import * as Arb from '../../../base/ArbitraryBase'
 import { CheckDigitVerified, WithCheckDigit1 } from '../definition'
 import { locationToIndex, replaceCharAt } from '../utils'
-import { Branded } from 'io-ts'
 
 /**
  * @since 1.0.0

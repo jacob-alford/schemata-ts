@@ -3,11 +3,12 @@
  *
  * @since 1.0.0
  */
-import * as PB from '../../PatternBuilder'
+import { flow, pipe } from 'fp-ts/function'
 import * as O from 'fp-ts/Option'
 import * as Str from 'fp-ts/string'
-import { SchemaExt, make } from '../../SchemaExt'
-import { flow, pipe } from 'fp-ts/function'
+
+import * as PB from '../../PatternBuilder'
+import { make, SchemaExt } from '../../SchemaExt'
 
 /**
  * Controls the output base of the encoded string. Currently only accepts 2, 8, 10, and

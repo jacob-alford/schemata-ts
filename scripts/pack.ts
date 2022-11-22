@@ -1,5 +1,6 @@
 import * as Cons from 'fp-ts/Console'
 import * as E from 'fp-ts/Either'
+import { flow, pipe } from 'fp-ts/function'
 import * as J from 'fp-ts/Json'
 import * as RTE from 'fp-ts/ReaderTaskEither'
 import * as RA from 'fp-ts/ReadonlyArray'
@@ -7,10 +8,10 @@ import * as RR from 'fp-ts/ReadonlyRecord'
 import * as T from 'fp-ts/Task'
 import * as TE from 'fp-ts/TaskEither'
 import * as path from 'path'
+
 import { CLI, cli } from './CLI'
 import { FileSystem, fileSystem } from './FS'
 import { run } from './run'
-import { flow, pipe } from 'fp-ts/function'
 
 interface Build<A> extends RTE.ReaderTaskEither<FileSystem & CLI, Error, A> {}
 

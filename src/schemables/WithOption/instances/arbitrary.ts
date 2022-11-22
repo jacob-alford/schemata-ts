@@ -4,8 +4,9 @@
  *
  * @since 1.0.0
  */
-import * as Arb from '../../../base/ArbitraryBase'
 import * as fc from 'fast-check'
+
+import * as Arb from '../../../base/ArbitraryBase'
 import { WithOption1 } from '../definition'
 
 /**

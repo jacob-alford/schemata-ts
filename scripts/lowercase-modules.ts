@@ -1,15 +1,16 @@
 import * as Color from 'colorette'
 import * as Cons from 'fp-ts/Console'
+import { flow, pipe, tuple } from 'fp-ts/function'
 import * as RTE from 'fp-ts/ReaderTaskEither'
 import * as RA from 'fp-ts/ReadonlyArray'
 import * as RNEA from 'fp-ts/ReadonlyNonEmptyArray'
-import * as TE from 'fp-ts/TaskEither'
 import * as Str from 'fp-ts/string'
+import * as TE from 'fp-ts/TaskEither'
+
+import { Build } from './build'
 import { cli } from './CLI'
 import { fileSystem } from './FS'
-import { Build } from './build'
 import { run } from './run'
-import { flow, pipe, tuple } from 'fp-ts/function'
 
 type Primitive = 'string' | 'number' | 'date'
 type ModuleWithExtension = string

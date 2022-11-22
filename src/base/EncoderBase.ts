@@ -4,6 +4,7 @@
  * @since 1.0.0
  */
 import * as Enc from 'io-ts/Encoder'
+
 import { Schemable2 } from './SchemableBase'
 
 export * from 'io-ts/Encoder'

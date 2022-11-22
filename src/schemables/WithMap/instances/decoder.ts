@@ -4,12 +4,13 @@
  * @since 1.0.0
  */
 import * as E from 'fp-ts/Either'
+import { flow } from 'fp-ts/function'
 import * as RA from 'fp-ts/ReadonlyArray'
 import * as RM from 'fp-ts/ReadonlyMap'
 import * as Sg from 'fp-ts/Semigroup'
 import * as D from 'io-ts/Decoder'
+
 import { WithMap2C } from '../definition'
-import { flow } from 'fp-ts/function'
 
 /**
  * @since 1.0.0

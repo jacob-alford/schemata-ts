@@ -3,11 +3,12 @@
  *
  * @since 1.0.0
  */
-import * as Arb from '../../../base/ArbitraryBase'
 import * as fc from 'fast-check'
 import * as RA from 'fp-ts/ReadonlyArray'
 import * as RM from 'fp-ts/ReadonlyMap'
 import * as Sg from 'fp-ts/Semigroup'
+
+import * as Arb from '../../../base/ArbitraryBase'
 import { WithMap1 } from '../definition'
 
 /**

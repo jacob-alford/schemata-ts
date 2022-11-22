@@ -9,10 +9,11 @@
  *
  * @since 1.0.0
  */
+import { pipe } from 'fp-ts/function'
 import * as D from 'io-ts/Decoder'
+
 import { WithInt2C } from '../definition'
 import { isInt } from '../utils'
-import { pipe } from 'fp-ts/function'
 
 /**
  * @since 1.0.0

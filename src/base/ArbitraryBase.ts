@@ -4,11 +4,11 @@
  * @since 1.0.0
  */
 import * as fc from 'fast-check'
+import { identity, pipe } from 'fp-ts/function'
 import * as RA from 'fp-ts/ReadonlyArray'
 import * as RR from 'fp-ts/ReadonlyRecord'
 import * as RTup from 'fp-ts/ReadonlyTuple'
 import * as S from 'io-ts/Schemable'
-import { identity, pipe } from 'fp-ts/function'
 
 /**
  * @since 1.0.0

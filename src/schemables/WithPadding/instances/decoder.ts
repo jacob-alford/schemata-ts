@@ -4,6 +4,7 @@
  * @since 1.0.0
  */
 import * as D from 'io-ts/Decoder'
+
 import { WithPadding2C } from '../definition'
 import { foldUnion, match } from '../utils'
 

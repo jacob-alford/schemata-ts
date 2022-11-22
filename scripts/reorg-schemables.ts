@@ -1,17 +1,6 @@
+import { tailRec } from 'fp-ts/ChainRec'
 import * as Cons from 'fp-ts/Console'
 import * as E from 'fp-ts/Either'
-import * as O from 'fp-ts/Option'
-import * as RTE from 'fp-ts/ReaderTaskEither'
-import * as RA from 'fp-ts/ReadonlyArray'
-import * as RNEA from 'fp-ts/ReadonlyNonEmptyArray'
-import * as TE from 'fp-ts/TaskEither'
-import * as Str from 'fp-ts/string'
-import * as ts from 'typescript'
-import { cli } from './CLI'
-import { fileSystem } from './FS'
-import { Build } from './build'
-import { run } from './run'
-import { tailRec } from 'fp-ts/ChainRec'
 // import * as Color from 'colorette'
 import {
   flow, // identity,
@@ -19,6 +8,18 @@ import {
   tuple,
   unsafeCoerce,
 } from 'fp-ts/function'
+import * as O from 'fp-ts/Option'
+import * as RTE from 'fp-ts/ReaderTaskEither'
+import * as RA from 'fp-ts/ReadonlyArray'
+import * as RNEA from 'fp-ts/ReadonlyNonEmptyArray'
+import * as Str from 'fp-ts/string'
+import * as TE from 'fp-ts/TaskEither'
+import * as ts from 'typescript'
+
+import { Build } from './build'
+import { cli } from './CLI'
+import { fileSystem } from './FS'
+import { run } from './run'
 
 const _ = ts.factory
 

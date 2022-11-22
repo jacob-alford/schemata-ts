@@ -6,13 +6,14 @@
  */
 import * as E from 'fp-ts/Either'
 import * as Eq_ from 'fp-ts/Eq'
+import { flow } from 'fp-ts/function'
 import * as O from 'fp-ts/Option'
 import * as t_ from 'io-ts'
 import * as t from 'io-ts/Type'
+
 import { WithOption1 } from '../definition'
 import { Encoder } from './encoder'
 import { Guard } from './guard'
-import { flow } from 'fp-ts/function'
 
 /**
  * @since 1.0.0

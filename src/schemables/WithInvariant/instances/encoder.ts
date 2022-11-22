@@ -3,9 +3,10 @@
  *
  * @since 1.0.0
  */
+import { flow } from 'fp-ts/function'
+
 import * as Enc from '../../../base/EncoderBase'
 import { WithInvariant2 } from '../definition'
-import { flow } from 'fp-ts/function'
 
 /**
  * @since 1.0.0

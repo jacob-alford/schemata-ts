@@ -12,11 +12,12 @@
  *
  * @since 1.0.0
  */
+import { pipe } from 'fp-ts/function'
+
 import * as PB from '../../PatternBuilder'
 import * as Float from '../../schemables/WithFloat/definition'
-import { SchemaExt, make } from '../../SchemaExt'
 import { Guard } from '../../schemables/WithFloat/instances/guard'
-import { pipe } from 'fp-ts/function'
+import { make, SchemaExt } from '../../SchemaExt'
 
 /**
  * @since 1.0.0

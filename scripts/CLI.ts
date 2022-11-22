@@ -1,6 +1,6 @@
 import * as child_process from 'child_process'
-import * as TE from 'fp-ts/TaskEither'
 import { left, right } from 'fp-ts/Either'
+import * as TE from 'fp-ts/TaskEither'
 
 export interface CLI {
   exec: (cmd: string, args?: child_process.ExecOptions) => TE.TaskEither<Error, void>

@@ -1,8 +1,9 @@
 import * as E from 'fp-ts/Either'
+import { pipe, tuple } from 'fp-ts/function'
 import * as RA from 'fp-ts/ReadonlyArray'
+
 import { RGB } from '../../../src/schemata/string/RGB'
 import { getAllInstances, validateArbitrary } from '../../../test-utils'
-import { pipe, tuple } from 'fp-ts/function'
 
 const instances = getAllInstances(RGB)
 
