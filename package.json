@@ -78,7 +78,6 @@
     "@babel/preset-env": "^7.18.2",
     "@babel/preset-typescript": "^7.17.12",
     "@fast-check/jest": "^1.1.0",
-    "@trivago/prettier-plugin-sort-imports": "^3.4.0",
     "@types/jest": "^26.0.20",
     "@typescript-eslint/eslint-plugin": "^4.25.0",
     "@typescript-eslint/parser": "^4.25.0",
