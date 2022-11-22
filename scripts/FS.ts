@@ -16,6 +16,7 @@ export interface FileSystem {
   readonly copyFile: (from: string, to: string) => TE.TaskEither<Error, void>
   readonly glob: (pattern: string) => TE.TaskEither<Error, ReadonlyArray<string>>
   readonly mkdir: (path: string) => TE.TaskEither<Error, void>
+  readonly upsertDir: (path: string) => TE.TaskEither<Error, void>
   readonly moveFile: (from: string, to: string) => TE.TaskEither<Error, void>
   readonly isDirectory: (file: string) => TE.TaskEither<Error, boolean>
 }
@@ -91,6 +92,11 @@ export const fileSystem: FileSystem = {
     mkdirTE,
     TE.map(() => undefined),
   ),
+  upsertDir: flow(
+    mkdirTE,
+    TE.map(() => void 0),
+    TE.alt(() => TE.right(void 0)),
+  ),
   moveFile,
 }
 
@@ -150,6 +156,14 @@ export const fileSystemTest: FileSystem = {
     ),
   ),
   mkdir: flow(
+    Cons.log,
+    TE.fromIO,
+    TE.bimap(
+      e => new Error(String(e)),
+      () => void 0,
+    ),
+  ),
+  upsertDir: flow(
     Cons.log,
     TE.fromIO,
     TE.bimap(
