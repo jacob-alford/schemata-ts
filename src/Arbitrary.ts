@@ -5,16 +5,8 @@
  *
  * @since 1.0.0
  */
-export type {
-  /**
-   * @since 1.0.0
-   * @category Model
-   */
-  Arbitrary,
-} from './base/ArbitraryBase'
 import * as Arb from './base/ArbitraryBase'
 import { SchemableExt1 } from './SchemableExt'
-/** Schemables */
 import * as WithBrand from './schemables/WithBrand/instances/arbitrary'
 import * as WithCheckDigit from './schemables/WithCheckDigit/instances/arbitrary'
 import * as WithDate from './schemables/WithDate/instances/arbitrary'
@@ -28,6 +20,14 @@ import * as WithPadding from './schemables/WithPadding/instances/arbitrary'
 import * as WithPattern from './schemables/WithPattern/instances/arbitrary'
 import * as WithRefine from './schemables/WithRefine/instances/arbitrary'
 import * as WithUnknownContainers from './schemables/WithUnknownContainers/instances/arbitrary'
+import { interpret } from './SchemaExt'
+export type {
+  /**
+   * @since 1.0.0
+   * @category Model
+   */
+  Arbitrary,
+} from './base/ArbitraryBase'
 
 /**
  * @since 1.0.0
@@ -49,3 +49,9 @@ export const Schemable: SchemableExt1<Arb.URI> = {
   ...WithRefine.Arbitrary,
   ...WithUnknownContainers.Arbitrary,
 }
+
+/**
+ * @since 1.0.0
+ * @category Interpreters
+ */
+export const getArbitrary = interpret(Schemable)

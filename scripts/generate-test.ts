@@ -21,7 +21,7 @@ const format: Build<void> = C => C.exec('yarn format')
 
 const Args = SC.make(S => S.tuple(S.literal('string', 'number'), S.string))
 
-const decodeArgs = SC.interpreter(D.Schemable)(Args)
+const decodeArgs = SC.interpret(D.Schemable)(Args)
 
 const main: Build<void> = pipe(
   process.argv,

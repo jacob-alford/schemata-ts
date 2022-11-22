@@ -18,7 +18,7 @@ interface Build<A> extends RTE.ReaderTaskEither<FileSystem & CLI, Error, A> {}
 
 const _ = ts.factory
 
-type Schemable = [name: `With${string}`, path: string, isDirectory: boolean]
+type Schemable = [name: `With${string}`, path: string]
 
 // #region SchemableExt
 
@@ -107,10 +107,10 @@ const makeSchemableExtContents: (
       makeDestructureImport(['Schemable2', 'SchemableHKT2'], './base/SchemableBase'),
       ...pipe(
         schemables,
-        RA.map(([schemable, path, isDirectory]) =>
+        RA.map(([schemable, path]) =>
           makeDestructureImport(
             [`${schemable}1`, `${schemable}2`, `${schemable}2C`, `${schemable}HKT2`],
-            isDirectory ? `${path}/definition` : path,
+            `${path}/definition`,
           ),
         ),
       ),
@@ -232,6 +232,31 @@ const makeSchemableInstance: (
     ),
   )
 
+const makeInterpretter: (typeclass: SchemableTypeclasses) => ts.VariableStatement = ([
+  module,
+]) =>
+  ts.addSyntheticLeadingComment(
+    _.createVariableStatement(
+      [_.createModifier(ts.SyntaxKind.ExportKeyword)],
+      _.createVariableDeclarationList(
+        [
+          _.createVariableDeclaration(
+            _.createIdentifier(`get${module}`),
+            undefined,
+            undefined,
+            _.createCallExpression(_.createIdentifier('interpret'), undefined, [
+              _.createIdentifier('Schemable'),
+            ]),
+          ),
+        ],
+        ts.NodeFlags.Const,
+      ),
+    ),
+    ts.SyntaxKind.MultiLineCommentTrivia,
+    `* @since 1.0.0\n\n@category Interpreters`,
+    true,
+  )
+
 /** Generate TS code for Decoder, Eq, Guard, TaskDecoder, Type, or Encoder */
 const makeSchemableInstanceModuleContents: (
   typeclass: SchemableTypeclasses,
@@ -251,23 +276,22 @@ const makeSchemableInstanceModuleContents: (
   return pipe(
     [
       moduleHeaderComment(module, sinceVersion),
-      makeInstanceTypeExport(typeclass),
       makeModuleStarImport(accessor, `./base/${module}Base`),
       makeDestructureImport([schemableInstance], './SchemableExt'),
-      _.createJSDocComment('schemables'),
+      makeDestructureImport(['interpret'], './SchemaExt'),
       ...pipe(
         schemables,
-        RA.map(([schemable, , isDirectory]) =>
+        RA.map(([schemable]) =>
           makeModuleStarImport(
             schemable,
-            isDirectory
-              ? `./schemables/${schemable}/instances/${lowercaseModule}`
-              : `./schemables/${schemable}`,
+            `./schemables/${schemable}/instances/${lowercaseModule}`,
           ),
         ),
       ),
+      makeInstanceTypeExport(typeclass),
       instanceComment,
       makeSchemableInstance(typeclass, schemables),
+      makeInterpretter(typeclass),
     ],
     _.createNodeArray,
     nodes => printer.printList(ts.ListFormat.MultiLine, nodes, sourceFile),
@@ -312,18 +336,10 @@ const getSchemables: Build<ReadonlyArray<Schemable>> = C =>
         ),
       ),
     ),
-    TE.chain(
-      TE.traverseArray(file =>
-        pipe(
-          C.isDirectory(`./src/schemables/${file}`),
-          TE.map(isDirectory => tuple(file, isDirectory)),
-        ),
-      ),
-    ),
     TE.map(
-      RA.map(([fileName, isDirectory]) => {
+      RA.map(fileName => {
         const schemable = getSchemableName(fileName)
-        return tuple(schemable, `./schemables/${schemable}`, isDirectory)
+        return tuple(schemable, `./schemables/${schemable}`)
       }),
     ),
   )

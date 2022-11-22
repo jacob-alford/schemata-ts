@@ -10,7 +10,7 @@ import * as t from 'io-ts/Type'
 import * as Arb from '../../src/base/ArbitraryBase'
 import * as Enc from '../../src/base/EncoderBase'
 import * as SC from '../../src/base/SchemaBase'
-import { getDecoder } from '../../src/interpreters'
+import { getDecoder } from '../../src/Decoder'
 import { validateArbitrary } from '../../test-utils'
 import * as MapFromEntries from '../../test-utils/schemable-exports/WithMap'
 

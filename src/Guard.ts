@@ -5,16 +5,8 @@
  *
  * @since 1.0.0
  */
-export type {
-  /**
-   * @since 1.0.0
-   * @category Model
-   */
-  Guard,
-} from './base/GuardBase'
 import * as G from './base/GuardBase'
 import { SchemableExt1 } from './SchemableExt'
-/** Schemables */
 import * as WithBrand from './schemables/WithBrand/instances/guard'
 import * as WithCheckDigit from './schemables/WithCheckDigit/instances/guard'
 import * as WithDate from './schemables/WithDate/instances/guard'
@@ -28,6 +20,14 @@ import * as WithPadding from './schemables/WithPadding/instances/guard'
 import * as WithPattern from './schemables/WithPattern/instances/guard'
 import * as WithRefine from './schemables/WithRefine/instances/guard'
 import * as WithUnknownContainers from './schemables/WithUnknownContainers/instances/guard'
+import { interpret } from './SchemaExt'
+export type {
+  /**
+   * @since 1.0.0
+   * @category Model
+   */
+  Guard,
+} from './base/GuardBase'
 
 /**
  * @since 1.0.0
@@ -49,3 +49,9 @@ export const Schemable: SchemableExt1<G.URI> = {
   ...WithRefine.Guard,
   ...WithUnknownContainers.Guard,
 }
+
+/**
+ * @since 1.0.0
+ * @category Interpreters
+ */
+export const getGuard = interpret(Schemable)

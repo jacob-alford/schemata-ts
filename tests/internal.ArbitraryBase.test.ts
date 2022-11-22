@@ -7,7 +7,7 @@ import * as SC from '../src/SchemaExt'
 import { PositiveFloat } from '../src/schemata/number/PositiveFloat'
 import { Arbitrary as WithInvariant } from '../test-utils/schemable-exports/WithInvariant'
 
-const isPositiveFloat = SC.interpreter(G.Schemable)(PositiveFloat).is
+const isPositiveFloat = SC.interpret(G.Schemable)(PositiveFloat).is
 
 describe('ArbitraryBase', () => {
   describe('constructors', () => {

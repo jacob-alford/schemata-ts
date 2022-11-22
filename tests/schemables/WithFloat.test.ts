@@ -2,7 +2,7 @@ import * as E from 'fp-ts/Either'
 import { tuple } from 'fp-ts/function'
 import * as RA from 'fp-ts/ReadonlyArray'
 
-import { getDecoder } from '../../src/interpreters'
+import { getDecoder } from '../../src/Decoder'
 import { cat, combineExpected, validateArbitrary } from '../../test-utils'
 import * as WithFloat from '../../test-utils/schemable-exports/WithFloat'
 

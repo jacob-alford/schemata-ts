@@ -22,7 +22,6 @@ type Schemable = [
   nameWithout: string,
   path: string,
   moduleComment: string,
-  isDirectory: boolean,
 ]
 
 type Schema = [name: string, moduleComment: string]
@@ -56,7 +55,6 @@ const makeSchemableSchemaExport = ([
   name,
   ,
   comment,
-  isDirectory,
 ]: Schemable): ts.ExportDeclaration =>
   _.createExportDeclaration(
     undefined,
@@ -73,11 +71,7 @@ const makeSchemableSchemaExport = ([
         false,
       ),
     ]),
-    _.createStringLiteral(
-      isDirectory
-        ? `./schemables/${nameWith}/instances/schema`
-        : `./schemables/${nameWith}`,
-    ),
+    _.createStringLiteral(`./schemables/${nameWith}/instances/schema`),
     undefined,
   )
 
@@ -181,41 +175,18 @@ const getSchemables: Build<ReadonlyArray<Schemable>> = C =>
         ),
       ),
     ),
-    TE.chain(
-      TE.traverseArray(file =>
-        pipe(
-          C.isDirectory(`./src/schemables/${file}`),
-          TE.map(isDirectory => tuple(file, isDirectory)),
-        ),
-      ),
-    ),
     TE.map(
-      RA.map(([file, isDirectory]) => {
+      RA.map(file => {
         const schemable = getSchemableName(file)
-        return tuple(
-          schemable,
-          schemable.slice(4),
-          `./schemables/${schemable}`,
-          isDirectory,
-        )
+        return tuple(schemable, schemable.slice(4), `./schemables/${schemable}`)
       }),
     ),
     TE.chain(
-      TE.traverseArray(([nameWith, name, path, isDirectory]) =>
+      TE.traverseArray(([nameWith, name, path]) =>
         pipe(
-          getSchemableModuleComment(
-            isDirectory
-              ? `./src/schemables/${nameWith}/definition.ts`
-              : `./src/schemables/${nameWith}.ts`,
-          )(C),
+          getSchemableModuleComment(`./src/schemables/${nameWith}/definition.ts`)(C),
           TE.map(comment =>
-            tuple(
-              nameWith,
-              name,
-              path,
-              extractJSDocHeaderTextFromFileContents(comment),
-              isDirectory,
-            ),
+            tuple(nameWith, name, path, extractJSDocHeaderTextFromFileContents(comment)),
           ),
         ),
       ),

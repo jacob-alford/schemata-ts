@@ -1,6 +1,6 @@
 import * as E from 'fp-ts/Either'
 
-import { getDecoder } from '../../src/interpreters'
+import { getDecoder } from '../../src/Decoder'
 import { isSafeDate } from '../../src/schemables/WithDate/utils'
 import { validateArbitrary } from '../../test-utils'
 import * as SafeDate from '../../test-utils/schemable-exports/WithDate'
