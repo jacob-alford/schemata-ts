@@ -4,6 +4,7 @@
  * @since 1.0.0
  */
 import { Branded } from 'io-ts'
+
 import * as PB from '../../PatternBuilder'
 import { make, SchemaExt } from '../../SchemaExt'
 

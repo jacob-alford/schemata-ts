@@ -1,5 +1,6 @@
 import fc from 'fast-check'
 import { pipe } from 'fp-ts/function'
+
 import * as PB from '../src/PatternBuilder'
 
 describe('PatternBuilder', () => {

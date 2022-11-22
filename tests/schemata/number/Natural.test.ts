@@ -1,4 +1,5 @@
 import { unsafeCoerce } from 'fp-ts/function'
+
 import { Natural } from '../../../src/schemata/number/Natural'
 import { getAllInstances, validateArbitrary } from '../../../test-utils'
 

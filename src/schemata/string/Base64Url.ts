@@ -5,11 +5,11 @@
  *
  * @since 1.0.0
  */
+import { pipe } from 'fp-ts/function'
+import { Branded } from 'io-ts'
 
 import * as PB from '../../PatternBuilder'
 import { make, SchemaExt } from '../../SchemaExt'
-import { Branded } from 'io-ts'
-import { pipe } from 'fp-ts/function'
 
 /** @internal */
 interface Base64UrlBrand {

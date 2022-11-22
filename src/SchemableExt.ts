@@ -7,6 +7,7 @@
  */
 import { URIS, URIS2 } from 'fp-ts/HKT'
 import { Schemable1, Schemable2C } from 'io-ts/Schemable'
+
 import { Schemable2, SchemableHKT2 } from './base/SchemableBase'
 import {
   WithBrand1,
@@ -19,58 +20,73 @@ import {
   WithCheckDigit2,
   WithCheckDigit2C,
   WithCheckDigitHKT2,
-} from './schemables/WithCheckDigit'
-import { WithDate1, WithDate2, WithDate2C, WithDateHKT2 } from './schemables/WithDate'
+} from './schemables/WithCheckDigit/definition'
+import {
+  WithDate1,
+  WithDate2,
+  WithDate2C,
+  WithDateHKT2,
+} from './schemables/WithDate/definition'
 import {
   WithFloat1,
   WithFloat2,
   WithFloat2C,
   WithFloatHKT2,
-} from './schemables/WithFloat'
-import { WithInt1, WithInt2, WithInt2C, WithIntHKT2 } from './schemables/WithInt'
+} from './schemables/WithFloat/definition'
+import {
+  WithInt1,
+  WithInt2,
+  WithInt2C,
+  WithIntHKT2,
+} from './schemables/WithInt/definition'
 import {
   WithInvariant1,
   WithInvariant2,
   WithInvariant2C,
   WithInvariantHKT2,
-} from './schemables/WithInvariant'
-import { WithMap1, WithMap2, WithMap2C, WithMapHKT2 } from './schemables/WithMap'
+} from './schemables/WithInvariant/definition'
+import {
+  WithMap1,
+  WithMap2,
+  WithMap2C,
+  WithMapHKT2,
+} from './schemables/WithMap/definition'
 import {
   WithOption1,
   WithOption2,
   WithOption2C,
   WithOptionHKT2,
-} from './schemables/WithOption'
+} from './schemables/WithOption/definition'
 import {
   WithOptional1,
   WithOptional2,
   WithOptional2C,
   WithOptionalHKT2,
-} from './schemables/WithOptional'
+} from './schemables/WithOptional/definition'
 import {
   WithPadding1,
   WithPadding2,
   WithPadding2C,
   WithPaddingHKT2,
-} from './schemables/WithPadding'
+} from './schemables/WithPadding/definition'
 import {
   WithPattern1,
   WithPattern2,
   WithPattern2C,
   WithPatternHKT2,
-} from './schemables/WithPattern'
+} from './schemables/WithPattern/definition'
 import {
   WithRefine1,
   WithRefine2,
   WithRefine2C,
   WithRefineHKT2,
-} from './schemables/WithRefine'
+} from './schemables/WithRefine/definition'
 import {
   WithUnknownContainers1,
   WithUnknownContainers2,
   WithUnknownContainers2C,
   WithUnknownContainersHKT2,
-} from './schemables/WithUnknownContainers'
+} from './schemables/WithUnknownContainers/definition'
 
 /**
  * @since 1.0.0

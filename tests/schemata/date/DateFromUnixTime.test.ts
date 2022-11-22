@@ -1,7 +1,8 @@
 import * as E from 'fp-ts/Either'
+import { pipe } from 'fp-ts/function'
+
 import * as DateFromUnixTime from '../../../src/schemata/date/DateFromUnixTime'
 import { getAllInstances, validateArbitrary } from '../../../test-utils'
-import { pipe } from 'fp-ts/function'
 
 const { Arbitrary, Decoder, Encoder, Eq, Guard, TaskDecoder, Type } = getAllInstances(
   DateFromUnixTime.DateFromUnixTime,

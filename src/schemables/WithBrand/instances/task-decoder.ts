@@ -3,8 +3,9 @@
  *
  * @since 1.0.0
  */
-import * as TD from '../../../base/TaskDecoderBase'
 import { identity } from 'fp-ts/function'
+
+import * as TD from '../../../base/TaskDecoderBase'
 import { WithBrand2C } from '../definition'
 
 /**

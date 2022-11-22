@@ -7,11 +7,11 @@
  * @since 0.0.3
  */
 import { pipe } from 'fp-ts/function'
+import { Branded } from 'io-ts'
 
 import { luhn } from '../../internal/algorithms'
 import * as PB from '../../PatternBuilder'
 import { make } from '../../SchemaExt'
-import { Branded } from 'io-ts'
 
 /** @internal */
 interface CreditCardBrand {

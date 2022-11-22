@@ -1,7 +1,9 @@
 import * as E from 'fp-ts/Either'
-import * as SafeDate from '../../src/schemables/WithDate'
+
 import { getDecoder } from '../../src/interpreters'
+import { isSafeDate } from '../../src/schemables/WithDate/utils'
 import { validateArbitrary } from '../../test-utils'
+import * as SafeDate from '../../test-utils/schemable-exports/WithDate'
 
 describe('SafeDate', () => {
   describe('Decoder', () => {
@@ -17,14 +19,13 @@ describe('SafeDate', () => {
   describe('Eq', () => {
     it('returns true for similar dates', () => {
       const date = new Date()
-      if (!SafeDate.isSafeDate(date)) throw new Error('Unexpected result')
+      if (!isSafeDate(date)) throw new Error('Unexpected result')
       expect(SafeDate.Eq.date.equals(date, date)).toBe(true)
     })
     it('returns false for dissimilar dates', () => {
       const date1 = new Date()
       const date2 = new Date(date1.getTime() + 1)
-      if (!SafeDate.isSafeDate(date1) || !SafeDate.isSafeDate(date2))
-        throw new Error('Unexpected result')
+      if (!isSafeDate(date1) || !isSafeDate(date2)) throw new Error('Unexpected result')
 
       expect(SafeDate.Eq.date.equals(date1, date2)).toBe(false)
     })
@@ -66,7 +67,7 @@ describe('SafeDate', () => {
 
   describe('Arbitrary', () => {
     it('generates valid SafeDates', () => {
-      validateArbitrary({ Arbitrary: SafeDate.Arbitrary.date }, SafeDate.isSafeDate)
+      validateArbitrary({ Arbitrary: SafeDate.Arbitrary.date }, isSafeDate)
     })
   })
 

@@ -1,20 +1,21 @@
 import * as E from 'fp-ts/Either'
+
 import * as Enc from '../../src/base/EncoderBase'
 import * as Eq_ from '../../src/base/EqBase'
-import * as D from '../../src/Decoder'
 import * as G from '../../src/base/GuardBase'
 import * as SC from '../../src/base/SchemaBase'
 import * as TD from '../../src/base/TaskDecoderBase'
 import * as t from '../../src/base/TypeBase'
+import * as D from '../../src/Decoder'
+import { interpreter } from '../../src/SchemaExt'
 import {
   Encoder,
   Eq,
   Guard,
   Schema,
-  Type,
   TaskDecoder,
-} from '../../src/schemables/WithInvariant'
-import { interpreter } from '../../src/SchemaExt'
+  Type,
+} from '../../test-utils/schemable-exports/WithInvariant'
 
 describe('WithInvariant', () => {
   test('Decoder', () => {

@@ -4,9 +4,10 @@
  * @since 1.0.0
  */
 import { pipe } from 'fp-ts/function'
-import { SchemaExt, make } from '../../SchemaExt'
 import * as O from 'fp-ts/Option'
+
 import * as G from '../../base/GuardBase'
+import { make, SchemaExt } from '../../SchemaExt'
 
 /**
  * @since 1.0.0

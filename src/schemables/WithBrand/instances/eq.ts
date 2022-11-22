@@ -5,6 +5,7 @@
  */
 import * as Eq_ from 'fp-ts/Eq'
 import { identity } from 'fp-ts/function'
+
 import { WithBrand1 } from '../definition'
 
 /**

@@ -1,4 +1,5 @@
 import * as fc from 'fast-check'
+
 import * as SC from '../src/base/SchemaBase'
 import * as I from '../src/interpreters'
 

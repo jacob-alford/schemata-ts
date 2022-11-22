@@ -1,13 +1,13 @@
 import * as E from 'fp-ts/Either'
 import { pipe, tuple, unsafeCoerce } from 'fp-ts/function'
-import * as IntFromString from '../../../src/schemata/number/IntFromString'
-import * as Int from '../../../src/schemables/WithInt'
 
+import { Int } from '../../../src/schemables/WithInt/definition'
+import * as IntFromString from '../../../src/schemata/number/IntFromString'
 import { getAllInstances, validateArbitrary } from '../../../test-utils'
 
-const _: (n: number) => Int.Int = unsafeCoerce
+const _: (n: number) => Int = unsafeCoerce
 
-const make: () => Int.Int = () => _((Math.random() * 100000) | 0)
+const make: () => Int = () => _((Math.random() * 100000) | 0)
 
 type TestArray = ReadonlyArray<[unknown, 2 | 8 | 10 | 16]>
 

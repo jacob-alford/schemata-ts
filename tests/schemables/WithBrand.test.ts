@@ -1,8 +1,9 @@
 import * as E from 'fp-ts/Either'
-import * as D from '../../src/Decoder'
 import { pipe } from 'fp-ts/function'
-import * as SC from '../../src/base/SchemaBase'
 import { Brand } from 'io-ts'
+
+import * as SC from '../../src/base/SchemaBase'
+import * as D from '../../src/Decoder'
 import * as B from '../../src/schemables/WithBrand/instances/schema'
 import { interpreter } from '../../src/SchemaExt'
 

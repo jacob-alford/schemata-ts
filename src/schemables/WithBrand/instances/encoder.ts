@@ -3,8 +3,9 @@
  *
  * @since 1.0.0
  */
-import * as Enc from '../../../base/EncoderBase'
 import { identity } from 'fp-ts/function'
+
+import * as Enc from '../../../base/EncoderBase'
 import { WithBrand2 } from '../definition'
 
 /**

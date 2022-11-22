@@ -4,9 +4,10 @@
  * @since 1.0.0
  */
 import { pipe } from 'fp-ts/function'
-import { SchemaExt, make } from '../../SchemaExt'
-import * as float from '../../schemables/WithFloat'
-import * as date from '../../schemables/WithDate'
+
+import { Guard } from '../../schemables/WithDate/instances/guard'
+import * as float from '../../schemables/WithFloat/definition'
+import { make, SchemaExt } from '../../SchemaExt'
 
 /**
  * @since 1.0.0
@@ -23,7 +24,7 @@ export type DateFromUnixTimeS = SchemaExt<number, Date>
 export const DateFromUnixTime: DateFromUnixTimeS = make(S =>
   pipe(
     S.float({ min: -8_640_000_000_000, max: 8_640_000_000_000 }),
-    S.imap(date.Guard.date, 'DateFromUnixTime')(
+    S.imap(Guard.date, 'DateFromUnixTime')(
       n => new Date(n * 1000),
       d => (d.getTime() / 1000) as float.Float,
     ),

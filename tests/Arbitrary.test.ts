@@ -1,7 +1,8 @@
 import * as fc from 'fast-check'
-import { interpreter, make } from '../src/SchemaExt'
+
 import { Schemable } from '../src/Arbitrary'
 import * as PB from '../src/PatternBuilder'
+import { interpreter, make } from '../src/SchemaExt'
 
 describe('Arbitrary', () => {
   const User = make(S => S.struct({ name: S.string }))

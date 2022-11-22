@@ -3,12 +3,12 @@
  *
  * @since 1.0.0
  */
-import * as SC from './SchemaExt'
 import * as Arb from './Arbitrary'
 import * as D from './Decoder'
 import * as Enc from './Encoder'
 import * as Eq from './Eq'
 import * as G from './Guard'
+import * as SC from './SchemaExt'
 
 /**
  * Returns an `Arbitrary` given a Schema

@@ -10,8 +10,9 @@
  * @since 1.0.0
  */
 import { pipe } from 'fp-ts/function'
-import { make, SchemaExt } from '../../SchemaExt'
 import { Branded } from 'io-ts'
+
+import { make, SchemaExt } from '../../SchemaExt'
 
 /** @internal */
 interface PositiveIntBrand {

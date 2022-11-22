@@ -1,11 +1,12 @@
-import * as G from 'io-ts/Guard'
-import * as O from 'fp-ts/Option'
-import * as E from 'fp-ts/Either'
 import * as fc from 'fast-check'
+import * as E from 'fp-ts/Either'
+import { flow } from 'fp-ts/function'
+import * as O from 'fp-ts/Option'
+import * as G from 'io-ts/Guard'
+
 import * as SC from '../../../src/base/SchemaBase'
 import * as OptionFromUndefined_ from '../../../src/schemata/generic/OptionFromUndefined'
 import { getAllInstances, validateArbitrary } from '../../../test-utils'
-import { flow } from 'fp-ts/function'
 
 const OptionFromUndefined = getAllInstances(
   OptionFromUndefined_.OptionFromUndefined(G.string)(SC.String),

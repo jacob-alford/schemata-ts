@@ -1,4 +1,5 @@
 import { unsafeCoerce } from 'fp-ts/function'
+
 import { PositiveInt } from '../../../src/schemata/number/PositiveInt'
 import { getAllInstances, validateArbitrary } from '../../../test-utils'
 

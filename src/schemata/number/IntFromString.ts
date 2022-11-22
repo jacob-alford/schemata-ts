@@ -16,9 +16,11 @@
  * @since 1.0.0
  */
 import { pipe } from 'fp-ts/function'
-import { SchemaExt, make } from '../../SchemaExt'
-import * as Int from '../../schemables/WithInt'
+
 import * as PB from '../../PatternBuilder'
+import * as Int from '../../schemables/WithInt/definition'
+import { Guard } from '../../schemables/WithInt/instances/guard'
+import { make, SchemaExt } from '../../SchemaExt'
 
 /**
  * Controls the output base of the encoded string. Currently only accepts 2, 8, 10, and 16
@@ -122,7 +124,7 @@ export const IntFromString: IntFromStringS = (params = {}) =>
   make(S =>
     pipe(
       S.pattern(intFromString, 'IntFromString'),
-      S.imap(Int.Guard.int(params), 'IntFromString')(
+      S.imap(Guard.int(params), 'IntFromString')(
         (s: string) => Number(s) as Int.Int,
         (n: Int.Int) =>
           `${baseToPrefix(params.encodeToBase)}${n.toString(params.encodeToBase ?? 10)}`,

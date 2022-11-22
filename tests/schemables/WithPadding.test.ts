@@ -1,26 +1,28 @@
 import * as E from 'fp-ts/Either'
+import { pipe } from 'fp-ts/function'
+
+import * as Arb from '../../src/base/ArbitraryBase'
 import * as D from '../../src/base/DecoderBase'
-import * as G from '../../src/base/GuardBase'
-import * as TD from '../../src/base/TaskDecoderBase'
 import * as Enc from '../../src/base/EncoderBase'
 import * as Eq from '../../src/base/EqBase'
-import * as t from '../../src/base/TypeBase'
-import * as Arb from '../../src/base/ArbitraryBase'
-import { pipe } from 'fp-ts/function'
-import * as WithPadding from '../../src/schemables/WithPadding'
-import { validateArbitrary } from '../../test-utils'
-import { interpreter } from '../../src/SchemaExt'
-import { Schemable as GuardSchemableExt } from '../../src/Guard'
+import * as G from '../../src/base/GuardBase'
 import * as SC from '../../src/base/SchemaBase'
-import { Arbitrary as arbPattern } from '../../src/schemables/WithPattern'
+import * as TD from '../../src/base/TaskDecoderBase'
+import * as t from '../../src/base/TypeBase'
+import { Schemable as GuardSchemableExt } from '../../src/Guard'
 import * as PB from '../../src/PatternBuilder'
+import { PaddingLength } from '../../src/schemables/WithPadding/definition'
+import { interpreter } from '../../src/SchemaExt'
+import { validateArbitrary } from '../../test-utils'
+import * as WithPadding from '../../test-utils/schemable-exports/WithPadding'
+import { Arbitrary as arbPattern } from '../../test-utils/schemable-exports/WithPattern'
 
-const exact: WithPadding.PaddingLength = { by: 'ExactLength', exactLength: 4 }
-const max: WithPadding.PaddingLength = { by: 'MaxLength', maxLength: 4 }
+const exact: PaddingLength = { by: 'ExactLength', exactLength: 4 }
+const max: PaddingLength = { by: 'MaxLength', maxLength: 4 }
 
 const tests: ReadonlyArray<
   [
-    WithPadding.PaddingLength,
+    PaddingLength,
     {
       validL: ReadonlyArray<string>
       invalidL: ReadonlyArray<string>

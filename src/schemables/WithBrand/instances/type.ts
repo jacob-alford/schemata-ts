@@ -3,8 +3,9 @@
  *
  * @since 1.0.0
  */
-import * as t from '../../../base/TypeBase'
 import { identity } from 'fp-ts/function'
+
+import * as t from '../../../base/TypeBase'
 import { WithBrand1 } from '../definition'
 
 /**

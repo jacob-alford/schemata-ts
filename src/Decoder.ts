@@ -14,21 +14,20 @@ export type {
 } from './base/DecoderBase'
 import * as D from './base/DecoderBase'
 import { SchemableExt2C } from './SchemableExt'
-
 /** Schemables */
 import * as WithBrand from './schemables/WithBrand/instances/decoder'
-import * as WithCheckDigit from './schemables/WithCheckDigit'
-import * as WithDate from './schemables/WithDate'
-import * as WithFloat from './schemables/WithFloat'
-import * as WithInt from './schemables/WithInt'
-import * as WithInvariant from './schemables/WithInvariant'
-import * as WithMap from './schemables/WithMap'
-import * as WithOption from './schemables/WithOption'
-import * as WithOptional from './schemables/WithOptional'
-import * as WithPadding from './schemables/WithPadding'
-import * as WithPattern from './schemables/WithPattern'
-import * as WithRefine from './schemables/WithRefine'
-import * as WithUnknownContainers from './schemables/WithUnknownContainers'
+import * as WithCheckDigit from './schemables/WithCheckDigit/instances/decoder'
+import * as WithDate from './schemables/WithDate/instances/decoder'
+import * as WithFloat from './schemables/WithFloat/instances/decoder'
+import * as WithInt from './schemables/WithInt/instances/decoder'
+import * as WithInvariant from './schemables/WithInvariant/instances/decoder'
+import * as WithMap from './schemables/WithMap/instances/decoder'
+import * as WithOption from './schemables/WithOption/instances/decoder'
+import * as WithOptional from './schemables/WithOptional/instances/decoder'
+import * as WithPadding from './schemables/WithPadding/instances/decoder'
+import * as WithPattern from './schemables/WithPattern/instances/decoder'
+import * as WithRefine from './schemables/WithRefine/instances/decoder'
+import * as WithUnknownContainers from './schemables/WithUnknownContainers/instances/decoder'
 
 /**
  * @since 1.0.0

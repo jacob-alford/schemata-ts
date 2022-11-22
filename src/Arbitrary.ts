@@ -14,21 +14,20 @@ export type {
 } from './base/ArbitraryBase'
 import * as Arb from './base/ArbitraryBase'
 import { SchemableExt1 } from './SchemableExt'
-
 /** Schemables */
 import * as WithBrand from './schemables/WithBrand/instances/arbitrary'
-import * as WithCheckDigit from './schemables/WithCheckDigit'
-import * as WithDate from './schemables/WithDate'
-import * as WithFloat from './schemables/WithFloat'
-import * as WithInt from './schemables/WithInt'
-import * as WithInvariant from './schemables/WithInvariant'
-import * as WithMap from './schemables/WithMap'
-import * as WithOption from './schemables/WithOption'
-import * as WithOptional from './schemables/WithOptional'
-import * as WithPadding from './schemables/WithPadding'
-import * as WithPattern from './schemables/WithPattern'
-import * as WithRefine from './schemables/WithRefine'
-import * as WithUnknownContainers from './schemables/WithUnknownContainers'
+import * as WithCheckDigit from './schemables/WithCheckDigit/instances/arbitrary'
+import * as WithDate from './schemables/WithDate/instances/arbitrary'
+import * as WithFloat from './schemables/WithFloat/instances/arbitrary'
+import * as WithInt from './schemables/WithInt/instances/arbitrary'
+import * as WithInvariant from './schemables/WithInvariant/instances/arbitrary'
+import * as WithMap from './schemables/WithMap/instances/arbitrary'
+import * as WithOption from './schemables/WithOption/instances/arbitrary'
+import * as WithOptional from './schemables/WithOptional/instances/arbitrary'
+import * as WithPadding from './schemables/WithPadding/instances/arbitrary'
+import * as WithPattern from './schemables/WithPattern/instances/arbitrary'
+import * as WithRefine from './schemables/WithRefine/instances/arbitrary'
+import * as WithUnknownContainers from './schemables/WithUnknownContainers/instances/arbitrary'
 
 /**
  * @since 1.0.0

@@ -1,17 +1,18 @@
-import * as D from 'io-ts/Decoder'
-import * as Enc from '../../src/base/EncoderBase'
-import * as Arb from '../../src/base/ArbitraryBase'
-import * as G from 'io-ts/Guard'
-import * as E from 'fp-ts/Either'
-import * as TD from 'io-ts/TaskDecoder'
 import * as fc from 'fast-check'
-import * as t from 'io-ts/Type'
+import * as E from 'fp-ts/Either'
+import { flow } from 'fp-ts/function'
 import * as Str from 'fp-ts/string'
-import * as MapFromEntries from '../../src/schemables/WithMap'
+import * as D from 'io-ts/Decoder'
+import * as G from 'io-ts/Guard'
+import * as TD from 'io-ts/TaskDecoder'
+import * as t from 'io-ts/Type'
+
+import * as Arb from '../../src/base/ArbitraryBase'
+import * as Enc from '../../src/base/EncoderBase'
 import * as SC from '../../src/base/SchemaBase'
 import { getDecoder } from '../../src/interpreters'
 import { validateArbitrary } from '../../test-utils'
-import { flow } from 'fp-ts/function'
+import * as MapFromEntries from '../../test-utils/schemable-exports/WithMap'
 
 describe('MapFromEntries', () => {
   describe('Decoder', () => {

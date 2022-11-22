@@ -3,10 +3,11 @@
  *
  * @since 0.0.1
  */
-import { Kind, Kind2, URIS, URIS2, HKT2 } from 'fp-ts/HKT'
 import { unsafeCoerce } from 'fp-ts/function'
-import { memoize } from 'io-ts/Schemable'
+import { HKT2, Kind, Kind2, URIS, URIS2 } from 'fp-ts/HKT'
 import { interpreter as interpreter_ } from 'io-ts/Schema'
+import { memoize } from 'io-ts/Schemable'
+
 import {
   SchemableExt,
   SchemableExt1,

@@ -14,21 +14,20 @@ export type {
 } from './base/EqBase'
 import * as Eq from './base/EqBase'
 import { SchemableExt1 } from './SchemableExt'
-
 /** Schemables */
 import * as WithBrand from './schemables/WithBrand/instances/eq'
-import * as WithCheckDigit from './schemables/WithCheckDigit'
-import * as WithDate from './schemables/WithDate'
-import * as WithFloat from './schemables/WithFloat'
-import * as WithInt from './schemables/WithInt'
-import * as WithInvariant from './schemables/WithInvariant'
-import * as WithMap from './schemables/WithMap'
-import * as WithOption from './schemables/WithOption'
-import * as WithOptional from './schemables/WithOptional'
-import * as WithPadding from './schemables/WithPadding'
-import * as WithPattern from './schemables/WithPattern'
-import * as WithRefine from './schemables/WithRefine'
-import * as WithUnknownContainers from './schemables/WithUnknownContainers'
+import * as WithCheckDigit from './schemables/WithCheckDigit/instances/eq'
+import * as WithDate from './schemables/WithDate/instances/eq'
+import * as WithFloat from './schemables/WithFloat/instances/eq'
+import * as WithInt from './schemables/WithInt/instances/eq'
+import * as WithInvariant from './schemables/WithInvariant/instances/eq'
+import * as WithMap from './schemables/WithMap/instances/eq'
+import * as WithOption from './schemables/WithOption/instances/eq'
+import * as WithOptional from './schemables/WithOptional/instances/eq'
+import * as WithPadding from './schemables/WithPadding/instances/eq'
+import * as WithPattern from './schemables/WithPattern/instances/eq'
+import * as WithRefine from './schemables/WithRefine/instances/eq'
+import * as WithUnknownContainers from './schemables/WithUnknownContainers/instances/eq'
 
 /**
  * @since 1.0.0

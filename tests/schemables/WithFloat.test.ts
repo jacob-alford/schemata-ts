@@ -1,9 +1,10 @@
-import * as RA from 'fp-ts/ReadonlyArray'
-import { tuple } from 'fp-ts/function'
 import * as E from 'fp-ts/Either'
+import { tuple } from 'fp-ts/function'
+import * as RA from 'fp-ts/ReadonlyArray'
+
 import { getDecoder } from '../../src/interpreters'
-import * as WithFloat from '../../src/schemables/WithFloat'
 import { cat, combineExpected, validateArbitrary } from '../../test-utils'
+import * as WithFloat from '../../test-utils/schemable-exports/WithFloat'
 
 const validNumbers = [
   -1,

@@ -1,18 +1,19 @@
-import * as D from 'io-ts/Decoder'
-import * as Enc from '../../src/base/EncoderBase'
-import * as Arb from '../../src/base/ArbitraryBase'
-import * as G from 'io-ts/Guard'
-import * as O from 'fp-ts/Option'
-import * as E from 'fp-ts/Either'
 import * as fc from 'fast-check'
+import * as E from 'fp-ts/Either'
+import { flow } from 'fp-ts/function'
+import * as O from 'fp-ts/Option'
+import * as Str from 'fp-ts/string'
+import * as D from 'io-ts/Decoder'
+import * as G from 'io-ts/Guard'
 import * as TD from 'io-ts/TaskDecoder'
 import * as t from 'io-ts/Type'
-import * as Str from 'fp-ts/string'
+
+import * as Arb from '../../src/base/ArbitraryBase'
+import * as Enc from '../../src/base/EncoderBase'
 import * as SC from '../../src/base/SchemaBase'
 import { getDecoder } from '../../src/interpreters'
-import * as OptionFromExclude from '../../src/schemables/WithOption'
 import { validateArbitrary } from '../../test-utils'
-import { flow } from 'fp-ts/function'
+import * as OptionFromExclude from '../../test-utils/schemable-exports/WithOption'
 
 describe('OptionFromExclude', () => {
   describe('Decoder', () => {

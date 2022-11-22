@@ -5,8 +5,9 @@
  */
 import { pipe } from 'fp-ts/function'
 import { Branded } from 'io-ts'
-import { make, SchemaExt } from '../../SchemaExt'
+
 import * as PB from '../../PatternBuilder'
+import { make, SchemaExt } from '../../SchemaExt'
 
 /**
  * @since 1.0.0

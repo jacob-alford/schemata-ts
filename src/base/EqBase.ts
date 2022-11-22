@@ -3,7 +3,6 @@
  *
  * @since 1.0.0
  */
-export * from 'io-ts/Eq'
 export type {
   /**
    * @since 1.0.0
@@ -11,3 +10,4 @@ export type {
    */
   Eq,
 } from 'fp-ts/Eq'
+export * from 'io-ts/Eq'

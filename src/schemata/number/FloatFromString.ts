@@ -13,9 +13,11 @@
  * @since 1.0.0
  */
 import { pipe } from 'fp-ts/function'
-import { SchemaExt, make } from '../../SchemaExt'
-import * as Float from '../../schemables/WithFloat'
+
 import * as PB from '../../PatternBuilder'
+import * as Float from '../../schemables/WithFloat/definition'
+import { Guard } from '../../schemables/WithFloat/instances/guard'
+import { make, SchemaExt } from '../../SchemaExt'
 
 /**
  * @since 1.0.0
@@ -152,10 +154,10 @@ export const FloatFromString: FloatFromStringS = params =>
     pipe(
       S.pattern(floatFromString, 'FloatFromString'),
       S.refine(
-        (s): s is string => Float.Guard.float(params).is(Number(s)) && s.trim() !== '',
+        (s): s is string => Guard.float(params).is(Number(s)) && s.trim() !== '',
         'SafeFloatString',
       ),
-      S.imap(Float.Guard.float(params), 'FloatFromString')(
+      S.imap(Guard.float(params), 'FloatFromString')(
         (s: string) => Number(s) as Float.Float,
         (n: Float.Float) => n.toString(),
       ),

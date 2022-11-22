@@ -1,13 +1,14 @@
 import * as E from 'fp-ts/Either'
 import { pipe, tuple } from 'fp-ts/function'
 import * as RA from 'fp-ts/ReadonlyArray'
+
+import { EmailAddress } from '../../../src/schemata/string/EmailAddress'
 import {
   cat,
   combineExpected,
   getAllInstances,
   validateArbitrary,
 } from '../../../test-utils'
-import { EmailAddress } from '../../../src/schemata/string/EmailAddress'
 
 const repeat: (s: string, times: number) => string = (s, times) => s.repeat(times)
 
