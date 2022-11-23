@@ -102,7 +102,7 @@ describe('OptionFromUndefined', () => {
   })
 
   it('round trips decoder <=> encoder', () => {
-    const arb = OptionFromUndefined.Arbitrary
+    const arb = OptionFromUndefined.Arbitrary.arbitrary(fc)
     const enc = OptionFromUndefined.Encoder
     const dec = OptionFromUndefined.Decoder
     fc.assert(fc.property(arb, flow(enc.encode, dec.decode, E.isRight)))

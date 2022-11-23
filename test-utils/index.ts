@@ -25,9 +25,10 @@ export const cat = <A>(...args: ReadonlyArray<ReadonlyArray<A>>): ReadonlyArray<
   pipe(args, RA.flatten)
 
 export const validateArbitrary: <T, A extends T>(
-  t: { Arbitrary: fc.Arbitrary<A> },
+  t: { Arbitrary: Arb.Arbitrary<A> },
   check: (a: T) => a is A,
-) => void = ({ Arbitrary }, check) => fc.assert(fc.property(Arbitrary, check))
+) => void = ({ Arbitrary }, check) =>
+  fc.assert(fc.property(Arbitrary.arbitrary(fc), check))
 
 type ZipN = {
   <A, B>(as: ReadonlyArray<A>, bs: ReadonlyArray<B>): ReadonlyArray<[A, B]>

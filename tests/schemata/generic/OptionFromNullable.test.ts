@@ -100,7 +100,7 @@ describe('OptionFromNullable', () => {
   })
 
   it('round trips decoder <=> encoder', () => {
-    const arb = OptionFromNullable.Arbitrary
+    const arb = OptionFromNullable.Arbitrary.arbitrary(fc)
     const enc = OptionFromNullable.Encoder
     const dec = OptionFromNullable.Decoder
     fc.assert(fc.property(arb, flow(enc.encode, dec.decode, E.isRight)))

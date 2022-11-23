@@ -159,7 +159,10 @@ describe('OptionFromExclude', () => {
   })
 
   it('round trips decoder <=> encoder', () => {
-    const arb = OptionFromExclude.Arbitrary.optionFromExclude('' as string, Arb.string)
+    const arb = OptionFromExclude.Arbitrary.optionFromExclude(
+      '' as string,
+      Arb.string,
+    ).arbitrary(fc)
     const enc = OptionFromExclude.Encoder.optionFromExclude(
       '' as string,
       Enc.Schemable.string,

@@ -1,7 +1,8 @@
-import fc from 'fast-check'
+import * as fc from 'fast-check'
 import { pipe } from 'fp-ts/function'
 
 import * as PB from '../src/PatternBuilder'
+import { arbitraryFromPattern } from '../src/schemables/WithPattern/instances/arbitrary'
 
 describe('PatternBuilder', () => {
   const pattern: PB.Pattern = pipe(
@@ -54,7 +55,7 @@ describe('PatternBuilder', () => {
   })
 
   it('can create Arbitraries', () => {
-    const arbitrary = PB.arbitraryFromPattern(pattern)
+    const arbitrary = arbitraryFromPattern(pattern).arbitrary(fc)
 
     // woof, bad testing practices ahead, but I'm not sure of a better way to test Arbitraries
     const regex = PB.regexFromPattern(pattern)

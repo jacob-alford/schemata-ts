@@ -6,7 +6,7 @@ import { interpret, make } from '../src/SchemaExt'
 
 describe('Arbitrary', () => {
   const User = make(S => S.struct({ name: S.string }))
-  const arb = interpret(Schemable)(User)
+  const arb = interpret(Schemable)(User).arbitrary(fc)
 
   it('interprets a schema', () => {
     fc.assert(
@@ -23,7 +23,7 @@ describe('Arbitrary', () => {
         1,
       )(S.pattern(PB.sequence(PB.digit, PB.digit), 'first digit is second digit')),
     )
-    const arb = interpret(Schemable)(CheckDigit)
+    const arb = interpret(Schemable)(CheckDigit).arbitrary(fc)
 
     fc.assert(fc.property(arb, s => /^(\d)\1$/.test(s)))
   })

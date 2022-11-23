@@ -193,7 +193,11 @@ describe('MapFromEntries', () => {
   })
 
   it('round trips decoder <=> encoder', () => {
-    const arb = MapFromEntries.Arbitrary.mapFromEntries(Str.Ord, Arb.string, Arb.string)
+    const arb = MapFromEntries.Arbitrary.mapFromEntries(
+      Str.Ord,
+      Arb.string,
+      Arb.string,
+    ).arbitrary(fc)
     const enc = MapFromEntries.Encoder.mapFromEntries(
       Str.Ord,
       Enc.Schemable.string,

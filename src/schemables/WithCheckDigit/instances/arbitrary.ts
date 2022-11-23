@@ -14,12 +14,16 @@ import { locationToIndex, replaceCharAt } from '../utils'
  * @category Instances
  */
 export const Arbitrary: WithCheckDigit1<Arb.URI> = {
-  checkDigit: (algorithm, location) => arb =>
-    arb.map(
-      s =>
-        replaceCharAt(s, locationToIndex(s, location), algorithm(s)) as Branded<
-          string,
-          CheckDigitVerified
-        >,
-    ),
+  checkDigit: (algorithm, location) => arb => ({
+    arbitrary: fc =>
+      arb
+        .arbitrary(fc)
+        .map(
+          s =>
+            replaceCharAt(s, locationToIndex(s, location), algorithm(s)) as Branded<
+              string,
+              CheckDigitVerified
+            >,
+        ),
+  }),
 }

@@ -3,8 +3,6 @@
  *
  * @since 1.0.0
  */
-import * as fc from 'fast-check'
-
 import * as Arb from '../../../base/ArbitraryBase'
 import { WithDate1 } from '../definition'
 import { isSafeDate } from '../utils'
@@ -14,6 +12,6 @@ import { isSafeDate } from '../utils'
  * @category Instances
  */
 export const Arbitrary: WithDate1<Arb.URI> = {
-  date: fc.date().filter(isSafeDate),
-  dateFromString: fc.date().filter(isSafeDate),
+  date: { arbitrary: fc => fc.date().filter(isSafeDate) },
+  dateFromString: { arbitrary: fc => fc.date().filter(isSafeDate) },
 }

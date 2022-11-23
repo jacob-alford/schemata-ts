@@ -30,27 +30,49 @@
  *     PB.then(lineNumber),
  *   )
  */
-import * as fc from 'fast-check'
 import { pipe } from 'fp-ts/function'
 import * as O from 'fp-ts/Option'
 import * as RA from 'fp-ts/ReadonlyArray'
 import * as RNEA from 'fp-ts/ReadonlyNonEmptyArray'
 
-import { match, matchOn } from './internal/match'
+import { matchOnW, matchW } from './internal/match'
 
 // Breakdown of RegExp from https://262.ecma-international.org/5.1/#sec-15.10
 // Slightly adapted
 
-/** @internal */
+/**
+ * @since 1.0.0
+ * @category Model
+ */
 export type Pattern = Disjunction | TermSequence | Term
 
-type Disjunction = { tag: 'disjunction'; left: Pattern; right: TermSequence | Term }
+/**
+ * @since 1.0.0
+ * @category Model
+ */
+export type Disjunction = {
+  tag: 'disjunction'
+  left: Pattern
+  right: TermSequence | Term
+}
 
-type TermSequence = { tag: 'termSequence'; terms: ReadonlyArray<Term> }
+/**
+ * @since 1.0.0
+ * @category Model
+ */
+export type TermSequence = { tag: 'termSequence'; terms: ReadonlyArray<Term> }
 
-type Term = Atom | QuantifiedAtom
+/**
+ * @since 1.0.0
+ * @category Model
+ */
+export type Term = Atom | QuantifiedAtom
 
-type QuantifiedAtom = { tag: 'quantifiedAtom'; atom: Atom } & (
+/**
+ * @since 1.0.0
+ * @category Model
+ */
+export type QuantifiedAtom = { tag: 'quantifiedAtom'; atom: Atom } & (
   | { kind: 'star'; greedy: boolean }
   | { kind: 'plus'; greedy: boolean }
   | { kind: 'question' }
@@ -59,14 +81,22 @@ type QuantifiedAtom = { tag: 'quantifiedAtom'; atom: Atom } & (
   | { kind: 'between'; min: number; max: number }
 )
 
-type CharacterClass = {
+/**
+ * @since 1.0.0
+ * @category Model
+ */
+export type CharacterClass = {
   tag: 'atom'
   kind: 'characterClass'
   exclude: boolean
   ranges: ReadonlyArray<{ lower: number; upper: number }>
 }
 
-type Atom =
+/**
+ * @since 1.0.0
+ * @category Model
+ */
+export type Atom =
   | CharacterClass
   | ({ tag: 'atom' } & (
       | { kind: 'character'; char: string }
@@ -76,7 +106,7 @@ type Atom =
 
 type Char = string
 
-const matchK = matchOn('kind')
+const matchK = matchOnW('kind')
 
 /**
  * A pattern of a single, specific character
@@ -242,7 +272,7 @@ export const or: (
   right,
 })
 
-const getTerms: (termOrSeq: Term | TermSequence) => TermSequence['terms'] = match({
+const getTerms: (termOrSeq: Term | TermSequence) => TermSequence['terms'] = matchW({
   termSequence: ({ terms }) => terms,
   atom: atom => [atom],
   quantifiedAtom: qatom => [qatom],
@@ -341,12 +371,12 @@ const regexStringFromQuantifiedAtom: (quantifiedAtom: QuantifiedAtom) => string 
   minimum: ({ atom, min }) => `${regexStringFromAtom(atom)}{${min},}`,
 })
 
-const regexStringFromTerm: (term: Term) => string = match({
+const regexStringFromTerm: (term: Term) => string = matchW({
   atom: regexStringFromAtom,
   quantifiedAtom: regexStringFromQuantifiedAtom,
 })
 
-const regexStringFromPattern: (pattern: Pattern) => string = match({
+const regexStringFromPattern: (pattern: Pattern) => string = matchW({
   atom: regexStringFromAtom,
   disjunction: ({ left, right }) =>
     `${regexStringFromPattern(left)}|${regexStringFromPattern(right)}`,
@@ -361,70 +391,6 @@ const regexStringFromPattern: (pattern: Pattern) => string = match({
  */
 export const regexFromPattern = (pattern: Pattern, caseInsensitive = false): RegExp =>
   new RegExp(`^(${regexStringFromPattern(pattern)})$`, caseInsensitive ? 'i' : '')
-
-/** @internal */
-export const arbitraryFromAtom: (atom: Atom) => fc.Arbitrary<string> = matchK({
-  anything: fc.char,
-  character: ({ char }) => fc.constant(char),
-  characterClass: ({ exclude, ranges }) =>
-    (exclude
-      ? fc
-          .integer({ min: 1, max: 0xffff })
-          .filter(i => ranges.every(({ lower, upper }) => i > upper || i < lower))
-      : fc.oneof(
-          ...ranges.map(({ lower, upper }) => fc.integer({ min: lower, max: upper })),
-        )
-    ).map(charCode => String.fromCharCode(charCode)),
-  subgroup: ({ subpattern }) => arbitraryFromPattern(subpattern),
-})
-
-/** @internal */
-export const arbitraryFromQuantifiedAtom: (
-  quantifiedAtom: QuantifiedAtom,
-) => fc.Arbitrary<string> = matchK({
-  star: ({ atom }) => fc.array(arbitraryFromAtom(atom)).map(strs => strs.join('')),
-  plus: ({ atom }) =>
-    fc.array(arbitraryFromAtom(atom), { minLength: 1 }).map(strs => strs.join('')),
-  question: ({ atom }) =>
-    fc
-      .array(arbitraryFromAtom(atom), { minLength: 0, maxLength: 1 })
-      .map(strs => strs.join('')),
-  exactly: ({ atom, count }) =>
-    fc
-      .array(arbitraryFromAtom(atom), { minLength: count, maxLength: count })
-      .map(strs => strs.join('')),
-  between: ({ atom, min, max }) =>
-    fc
-      .array(arbitraryFromAtom(atom), { minLength: min, maxLength: max })
-      .map(strs => strs.join('')),
-  minimum: ({ atom, min }) =>
-    fc.array(arbitraryFromAtom(atom), { minLength: min }).map(strs => strs.join('')),
-})
-
-const arbitraryFromTerm: (term: Term) => fc.Arbitrary<string> = match({
-  atom: arbitraryFromAtom,
-  quantifiedAtom: arbitraryFromQuantifiedAtom,
-})
-
-const chainConcatAll: (fcs: ReadonlyArray<fc.Arbitrary<string>>) => fc.Arbitrary<string> =
-  RA.foldLeft(
-    () => fc.constant(''),
-    (head, tail) =>
-      head.chain(headStr => chainConcatAll(tail).map(tailStr => headStr + tailStr)),
-  )
-
-/**
- * Construct a `fast-check` `Arbitrary` instance from a given `Pattern`.
- *
- * @since 1.0.0
- */
-export const arbitraryFromPattern: (pattern: Pattern) => fc.Arbitrary<string> = match({
-  atom: arbitraryFromAtom,
-  disjunction: ({ left, right }) =>
-    fc.oneof(arbitraryFromPattern(left), arbitraryFromPattern(right)),
-  quantifiedAtom: arbitraryFromQuantifiedAtom,
-  termSequence: ({ terms }) => pipe(terms.map(arbitraryFromTerm), chainConcatAll),
-})
 
 /**
  * Modify a character class with more ranges, or combine two character classes together.

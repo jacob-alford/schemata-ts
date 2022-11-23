@@ -9,8 +9,6 @@
  *
  * @since 1.0.0
  */
-import * as fc from 'fast-check'
-
 import * as Arb from '../../../base/ArbitraryBase'
 import { WithFloat1 } from '../definition'
 import { isFloat } from '../utils'
@@ -22,13 +20,16 @@ import { isFloat } from '../utils'
 export const Arbitrary: WithFloat1<Arb.URI> = {
   float(params = {}) {
     const { min = -Number.MAX_VALUE, max = Number.MAX_VALUE } = params
-    return fc
-      .double({
-        min,
-        max,
-        noDefaultInfinity: true,
-        noNaN: true,
-      })
-      .filter(isFloat(params))
+    return {
+      arbitrary: fc =>
+        fc
+          .double({
+            min,
+            max,
+            noDefaultInfinity: true,
+            noNaN: true,
+          })
+          .filter(isFloat(params)),
+    }
   },
 }

@@ -9,7 +9,7 @@ import { getGuard } from '../src/Guard'
 
 describe('interpreters', () => {
   test('getArbitrary', () => {
-    const arb = getArbitrary(SC.String)
+    const arb = getArbitrary(SC.String).arbitrary(fc)
     fc.assert(
       fc.property(arb, str => {
         expect(typeof str).toBe('string')
