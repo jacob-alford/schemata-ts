@@ -75,7 +75,7 @@ export const taskDecoder = getTaskDecoder(User)
 
 ### Using Generated Instances
 
-Generating a decoder instance can enforce a particular structure on an unknown data-type with run-time safety. This allows safe property and method access with knowledge that runtime types align with Typescript's type system.
+Generating a decoder instance can enforce a particular structure on an unknown data-type with run-time safety. This allows safe property and method access with knowledge that runtime types align with Typescript's type system. Encoders go in the opposite direction, allowing conversion of domain-types back to raw types from which they were decoded. Arbitraries are a system for generating random examples, and is primarily used for highly rigorous testing.
 
 ```typescript
 import * as fc from 'fast-check'
