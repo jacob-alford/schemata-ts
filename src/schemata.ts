@@ -6,6 +6,21 @@
  * @since 1.0.0
  */
 
+/** Type utilities */
+
+export {
+  /** @since 1.0.0 */
+  InputOf,
+  /** @since 1.0.0 */
+  OutputOf,
+  /** @since 1.0.0 */
+  TypeOf,
+} from './SchemaExt'
+
+/** Base schemata */
+
+export * from './base/SchemaBase'
+
 /** Schemables */
 
 export {
@@ -418,7 +433,7 @@ export {
    * @since 1.0.0
    * @example
    *   import { HslColor } from 'schemata-ts/schemata/string/HslColor'
-   *   import { getGuard } from 'schemata-ts/interpreters'
+   *   import { getGuard } from 'schemata-ts/Guard'
    *
    *   const hue = 270
    *   const saturation = 60

@@ -7,7 +7,7 @@ schemata-ts
 </h1>
 
 <p align="center" style="margin-bottom: 12px;">
-A collection of Schemata inspired by io-ts-types and validators.js.
+Write domain types once.  A collection of Schemata inspired by io-ts-types and validators.js.
 </p>
 
 <div align="center">
@@ -24,61 +24,102 @@ A collection of Schemata inspired by io-ts-types and validators.js.
 
 <!-- AUTO-GENERATED-CONTENT:START (TOC) -->
 
-- [Disclaimer](#disclaimer)
-- [Contributing](#contributing)
-  - [Test Coverage](#test-coverage)
-  - [Module Structure](#module-structure)
+- [Introduction](#introduction)
+  - [User Document Example](#user-document-example)
+  - [Using Generated Instances](#using-generated-instances)
 - [Installation](#installation)
   - [Yarn](#yarn)
   - [NPM](#npm)
 - [Documentation](#documentation)
-- [Schemable types explained](#schemable-types-explained)
-  - [The problem:](#the-problem)
-  - [The solution: Schema / Schemable](#the-solution-schema--schemable)
-  - [The value of schema](#the-value-of-schema)
-- [Currently supported modules:](#currently-supported-modules)
+- [Exported Schemata](#exported-schemata)
 <!-- AUTO-GENERATED-CONTENT:END -->
 
-## Disclaimer
+## Introduction
 
-Version 0.1.0 is a transitionary release that will contain breaking changes upon release of the full version 1.0.0. 0.1.0 released on NPM is intended to be used with `SchemaExt.make(S => S.Nullable(S.String))`, where version 1.0.0 is almost exclusively `Schema` based, and will look something like this:
+A schema is an expression of a type structure that can be used to generate typeclass instances from a single declaration. The following example constructs a `User` schema from which the underlying domain type can be extracted, and a handful of useful instances generated.
+
+### User Document Example
 
 ```typescript
-import * as I from 'schemata-ts/interpreters'
+import * as fc from 'fast-check'
 import * as S from 'schemata-ts/schemata'
+import { getArbitrary } from 'schemata-ts/Arbitrary'
+import { getDecoder } from 'schemata-ts/Decoder'
+import { getEncoder } from 'schemata-ts/Encoder'
+import { getEq } from 'schemata-ts/Eq'
+import { getGuard } from 'schemata-ts/Guard'
+import { getTaskDecoder } from 'schemata-ts/TaskDecoder'
 
-const User = S.Struct({
+/** FooBar ltd. User document Schema */
+export const User = S.Struct({
   id: S.UUID({ version: 5 }),
+  created_at: S.DateFromIsoString({ requireTime: 'None' }),
+  updated_at: S.DateFromIsoString({ requireTime: 'TimeAndOffset' }),
   email: S.Email,
   name: S.NonEmptyString,
   username: S.ASCII,
   age: S.NonNegativeInt,
-  favoriteColor: S.OptionFromNullable(S.HexColor),
+  favorite_color: S.OptionFromNullable(S.HexColor),
 })
 
-const arbitraryUser = I.getArbitrary(User)
-const decoderUser = I.getDecoder(User)
-const eqUser = I.getEq(User)
-const guardUser = I.getGuard(User)
-const taskDecoderUser = I.getTaskDecoder(User)
+export type User = S.TypeOf<typeof User>
+export type UserInput = S.InputOf<typeof User>
+
+export const arbitrary = getArbitrary(User).arbitrary(fc)
+export const decoder = getDecoder(User)
+export const encoder = getEncoder(User)
+export const eq = getEq(User)
+export const guard = getGuard(User)
+export const taskDecoder = getTaskDecoder(User)
 ```
 
-## Contributing
+### Using Generated Instances
 
-### Test Coverage
+Generating a decoder instance can enforce a particular structure on an unknown data-type with run-time safety. This allows safe property and method access with knowledge that runtime types align with Typescript's type system.
 
-This library currently has 100% jest coverage, contributions are highly encouraged and we should seek to maintain this high level of test coverage. Send over a PR!
+```typescript
+import * as fc from 'fast-check'
+import * as E from 'fp-ts/Either'
+import * as O from 'fp-ts/Option'
+import * as User from 'src/domain/User'
 
-### Module Structure
+const input: User.User = {
+  id: '987FBC97-4BED-5078-AF07-9141BA07C9F3',
+  created_at: '+002021-10-31',
+  updated_at: '2022-11-22T18:30Z',
+  name: 'Johnathan Doe',
+  username: 'jdoe22',
+  age: 52,
+  favorite_color: null,
+}
 
-The core API of `schemata-ts` is using the exports of `src/schemata.ts`. It is planned for these to be generated based on the files in `src / schemata / (string | number) / [ModuleName].ts`. Adding a new module is a two step process:
+const expected = {
+  id: '987FBC97-4BED-5078-AF07-9141BA07C9F3',
+  created_at: new Date(2021, 9, 31),
+  updated_at: new Date('2022-11-22T18:30Z'),
+  name: 'Johnathan Doe',
+  username: 'jdoe22',
+  age: 52,
+  favorite_color: O.none,
+}
 
-1. Build the Schema in the relevant directory
-2. Generate the schemata file using the script (WIP)
+// Arbitraries
+it('generates valid User Documents', () => {
+  fc.assert(fc.property(User.arbitrary, User.guard.is))
+})
+
+// Decoding
+assert.deepStrictEqual(User.decoder.decode(input), E.right(expected))
+
+// Encoding
+assert.deepStrictEqual(User.encoder.encode(expected), input)
+```
 
 ## Installation
 
 Uses `fp-ts`, and `io-ts` as peer dependencies. Read more about peer dependencies at [nodejs.org](https://nodejs.org/en/blog/npm/peer-dependencies/).
+
+Also contains `fast-check` as a soft peer dependency. Constructing an arbitrary requires fast-check to exist in node_modules, this allows a reduction in bundle size for consumers where bundle size matters.
 
 ### Yarn
 
@@ -99,165 +140,43 @@ npm install schemata-ts
 - [io-ts](https://gcanti.github.io/io-ts)
 - [docs-ts](https://github.com/gcanti/docs-ts)
 
-## Schemable types explained
+## Exported Schemata
 
-### The problem:
+| Schema                | Type           |
+| --------------------- | -------------- |
+| `Date.date`           | Base Schemable |
+| `Date.dateFromString` | Base Schemable |
+| DateFromInt           | Conversion     |
+| DateFromIsoString     | Conversion     |
+| DateFromUnixTime      | Conversion     |
+| OptionFromNullable    | Conversion     |
+| OptionFromUndefined   | Conversion     |
+| BigIntFromString      | Conversion     |
+| FloatFromString       | Conversion     |
+| IntFromString         | Conversion     |
+| `Int.int`             | Base Schemable |
+| `Float.float`         | Base Schemable |
+| Natural               | Number         |
+| NegativeFloat         | Number         |
+| NegativeInt           | Number         |
+| NonNegativeFloat      | Number         |
+| NonPositiveFloat      | Number         |
+| NonPositiveInt        | Number         |
+| PositiveFloat         | Number         |
+| PositiveInt           | Number         |
+| Ascii                 | String         |
+| Base64                | String         |
+| Base64Url             | String         |
+| BitcoinAddress        | String         |
+| CreditCard            | String         |
+| EmailAddress          | String         |
+| Hexadecimal           | String         |
+| HexColor              | String         |
+| HslColor              | String         |
+| Jwt                   | String         |
+| LatLong               | String         |
+| NonEmptyString        | String         |
+| RGB                   | String         |
+| UUID                  | String         |
 
-At present there is no way\* in vanilla Typescript to derive domain typeclasses from domain types. Languages like Haskell, Purescript, and Rust support this functionality out of the box. With the older `io-ts` system you would have a domain declaration that looks like the following.
-
-\*(Note: [ts-plus](https://dev.to/matechs/the-case-for-ts-18b3) seeks to extend Typescript with this functionality and more)
-
-```typescript
-import * as t from 'io-ts'
-
-export const User = t.type({
-  name: t.string,
-  email: t.string,
-  age: t.number,
-})
-
-export type User = t.TypeOf<typeof User>
-```
-
-Elsewhere in your package you could consume the `User` type using `User.decode(/* Some unknown data structure */)`, which would guarantee that the runtime type (if value was a `Right` value) conforms to the expected data structure.
-
-The more recent development in `io-ts` splits `t` – a collection of combinators which construct a class of Decoders/Encoders – into distinct modules, `Decoder`, `Encoder`, `Eq`, etc. Using this newer system presents a challenge, as you can no longer get `Decoder`, `Encoder` in a unified class with a single definition.
-
-```typescript
-import * as D from 'io-ts/Decoder'
-import * as Eq from 'io-ts/Eq'
-import * as G from 'io-ts/Guard'
-
-export type User = {
-  name: string
-  email: string
-  age: number
-  id: string
-}
-
-export const decodeUser: D.Decoder<User> = D.struct({
-  name: D.string,
-  email: D.string,
-  age: D.number,
-  id: D.string,
-})
-
-export const eqUser: Eq.Eq<User> = Eq.struct({
-  name: Eq.string,
-  email: Eq.string,
-  age: Eq.number,
-  id: Eq.string,
-})
-
-export const guardUser: G.Guard<User> = G.struct({
-  name: G.string,
-  email: G.string,
-  age: G.number,
-  id: G.string,
-})
-```
-
-This works well and is type safe. But it comes with a big downside: if we need to change something, it is necessary to change it in four different places.
-
-### The solution: Schema / Schemable
-
-With Schemable, you first provide instructions (`Schema`) to construct a domain type, and then provide a way to interpret instructions (`Schemable`).
-
-The example above can be refined to the following with Schema and Schemable:
-
-```typescript
-import * as D from 'io-ts/Decoder'
-import * as Eq from 'io-ts/Eq'
-import * as G from 'io-ts/Guard'
-import { TypeOf, interpreter, make } from 'io-ts/Schema'
-
-const UserSchema = make(S =>
-  S.struct({
-    name: S.string,
-    email: S.string,
-    age: S.number,
-    id: S.string,
-  }),
-)
-
-export type User = TypeOf<UserSchema>
-
-export const decodeUser = interpreter(D.Schemable)(UserSchema)
-
-export const eqUser = interpreter(Eq.Schemable)(UserSchema)
-
-export const guardUser = interpreter(G.Schemable)(UserSchema)
-```
-
-And with this, the structure of domain types and operators come from a single source, making future maintenance and extension trivial.
-
-### The value of schema
-
-`schemata-ts` comes with many different exported schemata that aims to provide similar levels of functionality to `io-ts-types` and `validators.js`.
-
-Let's refine our User type.
-
-```typescript
-import * as I from 'schemata-ts/interpreters'
-import * as S from 'schemata-ts/schemata'
-
-const User = S.Struct({
-  id: S.UUID({ version: 5 }),
-  email: S.Email,
-  name: S.NonEmptyString,
-  username: S.ASCII,
-  age: S.NonNegativeInt,
-  favoriteColor: S.OptionFromNullable(S.HexColor),
-})
-
-const arbitraryUser = I.getArbitrary(User)
-const decoderUser = I.getDecoder(User)
-const eqUser = I.getEq(User)
-const guardUser = I.getGuard(User)
-const taskDecoderUser = I.getTaskDecoder(User)
-```
-
-And now we can guarantee that a user's email will conform to RFC 5322, their id will be a proper UUID-v5, and their age will not be negative.
-
-## Currently supported modules:
-
-| primitive | refinement                |
-| --------- | ------------------------- |
-| `Date`    | SafeDate.ts               |
-| `generic` | optionFromExclude.ts      |
-| `generic` | optionFromNullable.ts     |
-| `generic` | optionFromUndefined.ts    |
-| `generic` | mapFromEntries.ts         |
-| `number`  | Int.ts                    |
-| `number`  | Natural.ts                |
-| `number`  | NegativeFloat.ts          |
-| `number`  | NegativeInt.ts            |
-| `number`  | NonNegativeFloat.ts       |
-| `number`  | NonPositiveFloat.ts       |
-| `number`  | NonPositiveInt.ts         |
-| `number`  | PositiveFloat.ts          |
-| `number`  | PositiveInt.ts            |
-| `string`  | ASCII.ts                  |
-| `string`  | Base64.ts                 |
-| `string`  | Base64Url.ts              |
-| `string`  | BigIntString.ts           |
-| `string`  | BtcAddress.ts             |
-| `string`  | CreditCard.ts             |
-| `string`  | EmailAddress.ts           |
-| `string`  | Hexadecimal.ts            |
-| `string`  | HexColor.ts               |
-| `string`  | HslColor.ts               |
-| `string`  | IntString.ts              |
-| `string`  | ISODateString.ts          |
-| `string`  | JWT.ts                    |
-| `string`  | NaturalString.ts          |
-| `string`  | NegativeFloatString.ts    |
-| `string`  | NegativeIntString.ts      |
-| `string`  | NonemptyString.ts         |
-| `string`  | NonNegativeFloatString.ts |
-| `string`  | NonPositiveFloatString.ts |
-| `string`  | NonPositiveIntString.ts   |
-| `string`  | PositiveFloatString.ts    |
-| `string`  | PositiveIntString.ts      |
-| `string`  | RGB.ts                    |
-| `string`  | UUID.ts                   |
+> Additionally, there are more unlisted base schemable schemata also exported from `schemata-ts/schemata`. These can be used to construct more complex schemata. There are many examples in this repository to model your schema.

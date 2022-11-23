@@ -46,10 +46,90 @@ export function make<E, A>(f: SchemaExt<E, A>): SchemaExt<E, A> {
 }
 
 /**
+ * Extract the output of a schema
+ *
  * @since 1.0.0
  * @category Utilities
+ * @example
+ *   import * as O from 'fp-ts/Option'
+ *   import * as S from 'schemata-ts/schemata'
+ *   import { getGuard } from 'schemata-ts/Guard'
+ *   import { getEncoder } from 'schemata-ts/Encoder'
+ *
+ *   const guardString = getGuard(S.String)
+ *
+ *   const optionFromNullable = S.OptionFromNullable(guardString)(S.String)
+ *
+ *   // type Input = S.InputOf<typeof optionFromNullable>
+ *   // type Input = string | null
+ *
+ *   // type Output = S.OutputOf<typeof optionFromNullable>
+ *   // Option<string>
+ *
+ *   const encoder = getEncoder(optionFromNullable)
+ *
+ *   assert.deepStrictEqual(encoder.encode(O.some('a')), 'a')
+ *   assert.deepStrictEqual(encoder.encode(O.none), null)
  */
 export type TypeOf<S> = S extends SchemaExt<unknown, infer A> ? A : never
+
+/**
+ * Extract the output of a schema.
+ *
+ * Alias of `TypeOf`
+ *
+ * @since 1.0.0
+ * @category Utilities
+ * @example
+ *   import * as O from 'fp-ts/Option'
+ *   import * as S from 'schemata-ts/schemata'
+ *   import { getGuard } from 'schemata-ts/Guard'
+ *   import { getEncoder } from 'schemata-ts/Encoder'
+ *
+ *   const guardString = getGuard(S.String)
+ *
+ *   const optionFromNullable = S.OptionFromNullable(guardString)(S.String)
+ *
+ *   // type Input = S.InputOf<typeof optionFromNullable>
+ *   // type Input = string | null
+ *
+ *   // type Output = S.OutputOf<typeof optionFromNullable>
+ *   // Option<string>
+ *
+ *   const encoder = getEncoder(optionFromNullable)
+ *
+ *   assert.deepStrictEqual(encoder.encode(O.some('a')), 'a')
+ *   assert.deepStrictEqual(encoder.encode(O.none), null)
+ */
+export type OutputOf<S> = TypeOf<S>
+
+/**
+ * Extract the input type of a schema.
+ *
+ * @since 1.0.0
+ * @category Utilities
+ * @example
+ *   import * as O from 'fp-ts/Option'
+ *   import * as S from 'schemata-ts/schemata'
+ *   import { getGuard } from 'schemata-ts/Guard'
+ *   import { getEncoder } from 'schemata-ts/Encoder'
+ *
+ *   const guardString = getGuard(S.String)
+ *
+ *   const optionFromNullable = S.OptionFromNullable(guardString)(S.String)
+ *
+ *   // type Input = S.InputOf<typeof optionFromNullable>
+ *   // type Input = string | null
+ *
+ *   // type Output = S.OutputOf<typeof optionFromNullable>
+ *   // Option<string>
+ *
+ *   const encoder = getEncoder(optionFromNullable)
+ *
+ *   assert.deepStrictEqual(encoder.encode(O.some('a')), 'a')
+ *   assert.deepStrictEqual(encoder.encode(O.none), null)
+ */
+export type InputOf<S> = S extends SchemaExt<infer I, unknown> ? I : never
 
 /**
  * Derives a typeclass instance from a Schema by supplying Schemable. i.e. `schemata-ts/Decoder`
