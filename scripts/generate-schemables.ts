@@ -232,7 +232,7 @@ const makeSchemableInstance: (
     ),
   )
 
-const makeInterpretter: (typeclass: SchemableTypeclasses) => ts.VariableStatement = ([
+const makeInterpreter: (typeclass: SchemableTypeclasses) => ts.VariableStatement = ([
   module,
 ]) =>
   ts.addSyntheticLeadingComment(
@@ -291,7 +291,7 @@ const makeSchemableInstanceModuleContents: (
       makeInstanceTypeExport(typeclass),
       instanceComment,
       makeSchemableInstance(typeclass, schemables),
-      makeInterpretter(typeclass),
+      makeInterpreter(typeclass),
     ],
     _.createNodeArray,
     nodes => printer.printList(ts.ListFormat.MultiLine, nodes, sourceFile),
