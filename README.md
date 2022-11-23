@@ -144,6 +144,8 @@ npm install schemata-ts
 
 | Schema                | Type           |
 | --------------------- | -------------- |
+| BooleanFromString     | Conversion     |
+| BooleanFromNumber     | Conversion     |
 | `Date.date`           | Base Schemable |
 | `Date.dateFromString` | Base Schemable |
 | DateFromInt           | Conversion     |
@@ -170,6 +172,7 @@ npm install schemata-ts
 | BitcoinAddress        | String         |
 | CreditCard            | String         |
 | EmailAddress          | String         |
+| Ethereum Address      | String         |
 | Hexadecimal           | String         |
 | HexColor              | String         |
 | HslColor              | String         |
