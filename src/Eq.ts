@@ -5,16 +5,8 @@
  *
  * @since 1.0.0
  */
-export type {
-  /**
-   * @since 1.0.0
-   * @category Model
-   */
-  Eq,
-} from './base/EqBase'
 import * as Eq from './base/EqBase'
 import { SchemableExt1 } from './SchemableExt'
-/** Schemables */
 import * as WithBrand from './schemables/WithBrand/instances/eq'
 import * as WithCheckDigit from './schemables/WithCheckDigit/instances/eq'
 import * as WithDate from './schemables/WithDate/instances/eq'
@@ -28,6 +20,14 @@ import * as WithPadding from './schemables/WithPadding/instances/eq'
 import * as WithPattern from './schemables/WithPattern/instances/eq'
 import * as WithRefine from './schemables/WithRefine/instances/eq'
 import * as WithUnknownContainers from './schemables/WithUnknownContainers/instances/eq'
+import { interpret } from './SchemaExt'
+export type {
+  /**
+   * @since 1.0.0
+   * @category Model
+   */
+  Eq,
+} from './base/EqBase'
 
 /**
  * @since 1.0.0
@@ -49,3 +49,9 @@ export const Schemable: SchemableExt1<Eq.URI> = {
   ...WithRefine.Eq,
   ...WithUnknownContainers.Eq,
 }
+
+/**
+ * @since 1.0.0
+ * @category Interpreters
+ */
+export const getEq = interpret(Schemable)

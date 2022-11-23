@@ -3,7 +3,7 @@ import { pipe } from 'fp-ts/function'
 
 import * as D from '../../src/Decoder'
 import * as PB from '../../src/PatternBuilder'
-import { interpreter } from '../../src/SchemaExt'
+import { interpret } from '../../src/SchemaExt'
 import * as P from '../../test-utils/schemable-exports/WithPattern'
 
 describe('WithPattern', () => {
@@ -13,7 +13,7 @@ describe('WithPattern', () => {
       PB.then(PB.characterClass(false, ['0', '9'])),
     )
     const Schema = P.Schema(pattern, 'FooNum')
-    const decode = interpreter(D.Schemable)(Schema)
+    const decode = interpret(D.Schemable)(Schema)
     expect(decode.decode('foo1')).toStrictEqual(E.right('foo1'))
     expect(decode.decode('foo')._tag).toStrictEqual('Left')
     expect(decode.decode('bar')._tag).toStrictEqual('Left')

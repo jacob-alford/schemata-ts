@@ -4,7 +4,7 @@
  * @since 1.0.0
  * @example
  *   import { HslColor } from 'schemata-ts/schemata/string/HslColor'
- *   import { getGuard } from 'schemata-ts/interpreters'
+ *   import { getGuard } from 'schemata-ts/Guard'
  *
  *   const hue = 270
  *   const saturation = 60
@@ -36,7 +36,7 @@ interface HslColorBrand {
  * @since 1.0.0
  * @example
  *   import { HslColor } from 'schemata-ts/schemata/string/HslColor'
- *   import { getGuard } from 'schemata-ts/interpreters'
+ *   import { getGuard } from 'schemata-ts/Guard'
  *
  *   const hue = 270
  *   const saturation = 60

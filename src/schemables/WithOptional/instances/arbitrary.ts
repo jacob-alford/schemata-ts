@@ -3,8 +3,6 @@
  *
  * @since 1.0.0
  */
-import * as fc from 'fast-check'
-
 import * as Arb from '../../../base/ArbitraryBase'
 import { WithOptional1 } from '../definition'
 
@@ -13,5 +11,7 @@ import { WithOptional1 } from '../definition'
  * @category Instances
  */
 export const Arbitrary: WithOptional1<Arb.URI> = {
-  optional: arbA => fc.oneof(arbA, fc.constant(undefined)),
+  optional: arbA => ({
+    arbitrary: fc => fc.oneof(arbA.arbitrary(fc), fc.constant(undefined)),
+  }),
 }

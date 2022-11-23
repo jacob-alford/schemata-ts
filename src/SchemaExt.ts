@@ -57,4 +57,4 @@ export type TypeOf<S> = S extends SchemaExt<unknown, infer A> ? A : never
  * @since 1.0.0
  * @category Destructors
  */
-export const interpreter: Interpreter = unsafeCoerce(interpreter_)
+export const interpret: Interpreter = unsafeCoerce(interpreter_)

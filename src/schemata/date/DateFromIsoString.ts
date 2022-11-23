@@ -20,7 +20,7 @@
  */
 import { pipe } from 'fp-ts/function'
 
-import { match } from '../../internal/match'
+import { matchW } from '../../internal/match'
 import * as PB from '../../PatternBuilder'
 import { Guard } from '../../schemables/WithDate/instances/guard'
 import { make, SchemaExt } from '../../SchemaExt'
@@ -301,7 +301,7 @@ export const DateFromIsoString: DateFromIsoStringS = (params = {}) => {
       S.pattern(
         pipe(
           { tag: requireTime },
-          match({
+          matchW({
             None: () => isoDateStringOptTzOptT,
             Time: () => isoDateStringOptTzReqT,
             TimeAndOffset: () => isoDateStringReqTzReqT,

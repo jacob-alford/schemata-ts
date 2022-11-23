@@ -1,7 +1,7 @@
 import * as E from 'fp-ts/Either'
 import { pipe } from 'fp-ts/function'
 
-import { getDecoder } from '../../src/interpreters'
+import { getDecoder } from '../../src/Decoder'
 import { validateArbitrary } from '../../test-utils'
 import * as ISODateString from '../../test-utils/schemable-exports/WithDate'
 

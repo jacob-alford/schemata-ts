@@ -9,8 +9,6 @@
  *
  * @since 1.0.0
  */
-import * as fc from 'fast-check'
-
 import * as Arb from '../../../base/ArbitraryBase'
 import { WithInt1 } from '../definition'
 import { isInt } from '../utils'
@@ -22,11 +20,14 @@ import { isInt } from '../utils'
 export const Arbitrary: WithInt1<Arb.URI> = {
   int: (params = {}) => {
     const { min = Number.MIN_SAFE_INTEGER, max = Number.MAX_SAFE_INTEGER } = params
-    return fc
-      .integer({
-        min: Math.floor(Math.max(min, Number.MIN_SAFE_INTEGER)),
-        max: Math.floor(Math.min(max, Number.MAX_SAFE_INTEGER)),
-      })
-      .filter(isInt(params))
+    return {
+      arbitrary: fc =>
+        fc
+          .integer({
+            min: Math.floor(Math.max(min, Number.MIN_SAFE_INTEGER)),
+            max: Math.floor(Math.min(max, Number.MAX_SAFE_INTEGER)),
+          })
+          .filter(isInt(params)),
+    }
   },
 }

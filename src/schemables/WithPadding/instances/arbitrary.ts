@@ -14,40 +14,44 @@ import { foldUnion, match, stripLeftWhile, stripRightWhile } from '../utils'
  * @category Instances
  */
 export const Arbitrary: WithPadding1<Arb.URI> = {
-  padLeft: (length, char) => aS =>
-    pipe(
-      length,
-      match({
-        MaxLength: ({ maxLength }) => maxLength,
-        ExactLength: ({ exactLength }) => exactLength,
-      }),
-      length =>
-        aS.map(
-          flow(
-            stripLeftWhile(c => c === char),
-            s =>
-              s.length > length
-                ? s.slice(0, foldUnion(length)(s))
-                : s.padStart(foldUnion(length)(s), char),
+  padLeft: (length, char) => aS => ({
+    arbitrary: fc =>
+      pipe(
+        length,
+        match({
+          MaxLength: ({ maxLength }) => maxLength,
+          ExactLength: ({ exactLength }) => exactLength,
+        }),
+        length =>
+          aS.arbitrary(fc).map(
+            flow(
+              stripLeftWhile(c => c === char),
+              s =>
+                s.length > length
+                  ? s.slice(0, foldUnion(length)(s))
+                  : s.padStart(foldUnion(length)(s), char),
+            ),
           ),
-        ),
-    ),
-  padRight: (length, char) => aS =>
-    pipe(
-      length,
-      match({
-        MaxLength: ({ maxLength }) => maxLength,
-        ExactLength: ({ exactLength }) => exactLength,
-      }),
-      length =>
-        aS.map(
-          flow(
-            stripRightWhile(c => c === char),
-            s =>
-              s.length > length
-                ? s.slice(0, foldUnion(length)(s))
-                : s.padEnd(foldUnion(length)(s), char),
+      ),
+  }),
+  padRight: (length, char) => aS => ({
+    arbitrary: fc =>
+      pipe(
+        length,
+        match({
+          MaxLength: ({ maxLength }) => maxLength,
+          ExactLength: ({ exactLength }) => exactLength,
+        }),
+        length =>
+          aS.arbitrary(fc).map(
+            flow(
+              stripRightWhile(c => c === char),
+              s =>
+                s.length > length
+                  ? s.slice(0, foldUnion(length)(s))
+                  : s.padEnd(foldUnion(length)(s), char),
+            ),
           ),
-        ),
-    ),
+      ),
+  }),
 }

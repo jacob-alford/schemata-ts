@@ -3,7 +3,6 @@
  *
  * @since 1.0.0
  */
-import * as fc from 'fast-check'
 import * as RA from 'fp-ts/ReadonlyArray'
 import * as RM from 'fp-ts/ReadonlyMap'
 import * as Sg from 'fp-ts/Semigroup'
@@ -16,6 +15,10 @@ import { WithMap1 } from '../definition'
  * @category Instances
  */
 export const Arbitrary: WithMap1<Arb.URI> = {
-  mapFromEntries: (ordK, arbK, arbA) =>
-    fc.array(fc.tuple(arbK, arbA)).map(RM.fromFoldable(ordK, Sg.last(), RA.Foldable)),
+  mapFromEntries: (ordK, arbK, arbA) => ({
+    arbitrary: fc =>
+      fc
+        .array(fc.tuple(arbK.arbitrary(fc), arbA.arbitrary(fc)))
+        .map(RM.fromFoldable(ordK, Sg.last(), RA.Foldable)),
+  }),
 }

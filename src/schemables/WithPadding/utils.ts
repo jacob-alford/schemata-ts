@@ -3,10 +3,10 @@
  *
  * @since 1.0.0
  */
-import { matchOn } from '../../internal/match'
+import { matchOnW } from '../../internal/match'
 
 /** @internal */
-export const match = matchOn('by')
+export const match = matchOnW('by')
 
 /** @internal */
 export const foldUnion: (n: number | ((s: string) => number)) => (s: string) => number =

@@ -457,7 +457,7 @@ const PackageJson = SC.make(S =>
   }),
 )
 
-const decodePackageJson = SC.interpreter(D.Schemable)(PackageJson)
+const decodePackageJson = SC.interpret(D.Schemable)(PackageJson)
 
 const getPackageJson: Build<SC.TypeOf<typeof PackageJson>> = C =>
   pipe(
@@ -518,7 +518,7 @@ const format: Build<void> = C => C.exec('yarn format')
 
 const Args = SC.make(S => S.tuple(S.literal('string', 'number'), S.string))
 
-const decodeArgs = SC.interpreter(D.Schemable)(Args)
+const decodeArgs = SC.interpret(D.Schemable)(Args)
 
 const delay = (n: number) => () => pipe(T.of(void 0), T.delay(n))
 

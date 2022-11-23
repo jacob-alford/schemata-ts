@@ -4,8 +4,6 @@
  *
  * @since 1.0.0
  */
-import * as fc from 'fast-check'
-
 import * as Arb from '../../../base/ArbitraryBase'
 import { WithOption1 } from '../definition'
 
@@ -14,9 +12,14 @@ import { WithOption1 } from '../definition'
  * @category Instances
  */
 export const Arbitrary: WithOption1<Arb.URI> = {
-  optionFromExclude: (_, arbA) =>
-    fc.oneof(
-      Arb.struct({ _tag: Arb.literal('None') }),
-      Arb.struct({ _tag: Arb.literal('Some'), value: arbA }),
-    ),
+  optionFromExclude: (_, arbA) => ({
+    arbitrary: fc =>
+      fc.oneof(
+        Arb.struct({ _tag: Arb.literal('None') }).arbitrary(fc),
+        Arb.struct({
+          _tag: Arb.literal('Some'),
+          value: arbA,
+        }).arbitrary(fc),
+      ),
+  }),
 }

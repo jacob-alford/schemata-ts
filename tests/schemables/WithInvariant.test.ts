@@ -7,7 +7,7 @@ import * as SC from '../../src/base/SchemaBase'
 import * as TD from '../../src/base/TaskDecoderBase'
 import * as t from '../../src/base/TypeBase'
 import * as D from '../../src/Decoder'
-import { interpreter } from '../../src/SchemaExt'
+import { interpret } from '../../src/SchemaExt'
 import {
   Encoder,
   Eq,
@@ -26,7 +26,7 @@ describe('WithInvariant', () => {
       a => new Date(a),
       a => a.toISOString(),
     )(SC.String)
-    const decoder = interpreter(D.Schemable)(S)
+    const decoder = interpret(D.Schemable)(S)
     const test = new Date()
     expect(decoder.decode(test.toISOString())).toStrictEqual(E.right(test))
   })

@@ -2,11 +2,11 @@ import * as fc from 'fast-check'
 
 import { Schemable } from '../src/Arbitrary'
 import * as PB from '../src/PatternBuilder'
-import { interpreter, make } from '../src/SchemaExt'
+import { interpret, make } from '../src/SchemaExt'
 
 describe('Arbitrary', () => {
   const User = make(S => S.struct({ name: S.string }))
-  const arb = interpreter(Schemable)(User)
+  const arb = interpret(Schemable)(User).arbitrary(fc)
 
   it('interprets a schema', () => {
     fc.assert(
@@ -23,7 +23,7 @@ describe('Arbitrary', () => {
         1,
       )(S.pattern(PB.sequence(PB.digit, PB.digit), 'first digit is second digit')),
     )
-    const arb = interpreter(Schemable)(CheckDigit)
+    const arb = interpret(Schemable)(CheckDigit).arbitrary(fc)
 
     fc.assert(fc.property(arb, s => /^(\d)\1$/.test(s)))
   })

@@ -11,5 +11,5 @@ import { WithInvariant1 } from '../definition'
  * @category Instances
  */
 export const Arbitrary: WithInvariant1<Arb.URI> = {
-  imap: () => get => arb => arb.map(get),
+  imap: () => get => arb => ({ arbitrary: fc => arb.arbitrary(fc).map(get) }),
 }

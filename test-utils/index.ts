@@ -9,7 +9,7 @@ import * as D from '../src/Decoder'
 import * as E from '../src/Encoder'
 import * as Eq from '../src/Eq'
 import * as G from '../src/Guard'
-import { interpreter, SchemaExt } from '../src/SchemaExt'
+import { interpret, SchemaExt } from '../src/SchemaExt'
 import * as TD from '../src/TaskDecoder'
 import * as T from '../src/Type'
 
@@ -25,9 +25,10 @@ export const cat = <A>(...args: ReadonlyArray<ReadonlyArray<A>>): ReadonlyArray<
   pipe(args, RA.flatten)
 
 export const validateArbitrary: <T, A extends T>(
-  t: { Arbitrary: fc.Arbitrary<A> },
+  t: { Arbitrary: Arb.Arbitrary<A> },
   check: (a: T) => a is A,
-) => void = ({ Arbitrary }, check) => fc.assert(fc.property(Arbitrary, check))
+) => void = ({ Arbitrary }, check) =>
+  fc.assert(fc.property(Arbitrary.arbitrary(fc), check))
 
 type ZipN = {
   <A, B>(as: ReadonlyArray<A>, bs: ReadonlyArray<B>): ReadonlyArray<[A, B]>
@@ -63,11 +64,11 @@ export const zipN: ZipN = (...args: ReadonlyArray<ReadonlyArray<Any>>) => {
 
 // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
 export const getAllInstances = <E, A>(schema: SchemaExt<E, A>) => ({
-  Arbitrary: interpreter(Arb.Schemable)(schema),
-  Decoder: interpreter(D.Schemable)(schema),
-  Encoder: interpreter(E.Schemable)(schema),
-  Eq: interpreter(Eq.Schemable)(schema),
-  Guard: interpreter(G.Schemable)(schema),
-  TaskDecoder: interpreter(TD.Schemable)(schema),
-  Type: interpreter(T.Schemable)(schema),
+  Arbitrary: interpret(Arb.Schemable)(schema),
+  Decoder: interpret(D.Schemable)(schema),
+  Encoder: interpret(E.Schemable)(schema),
+  Eq: interpret(Eq.Schemable)(schema),
+  Guard: interpret(G.Schemable)(schema),
+  TaskDecoder: interpret(TD.Schemable)(schema),
+  Type: interpret(T.Schemable)(schema),
 })

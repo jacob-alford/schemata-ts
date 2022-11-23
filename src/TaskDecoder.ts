@@ -5,16 +5,8 @@
  *
  * @since 1.0.0
  */
-export type {
-  /**
-   * @since 1.0.0
-   * @category Model
-   */
-  TaskDecoder,
-} from './base/TaskDecoderBase'
 import * as TD from './base/TaskDecoderBase'
 import { SchemableExt2C } from './SchemableExt'
-/** Schemables */
 import * as WithBrand from './schemables/WithBrand/instances/task-decoder'
 import * as WithCheckDigit from './schemables/WithCheckDigit/instances/task-decoder'
 import * as WithDate from './schemables/WithDate/instances/task-decoder'
@@ -28,6 +20,14 @@ import * as WithPadding from './schemables/WithPadding/instances/task-decoder'
 import * as WithPattern from './schemables/WithPattern/instances/task-decoder'
 import * as WithRefine from './schemables/WithRefine/instances/task-decoder'
 import * as WithUnknownContainers from './schemables/WithUnknownContainers/instances/task-decoder'
+import { interpret } from './SchemaExt'
+export type {
+  /**
+   * @since 1.0.0
+   * @category Model
+   */
+  TaskDecoder,
+} from './base/TaskDecoderBase'
 
 /**
  * @since 1.0.0
@@ -49,3 +49,9 @@ export const Schemable: SchemableExt2C<TD.URI> = {
   ...WithRefine.TaskDecoder,
   ...WithUnknownContainers.TaskDecoder,
 }
+
+/**
+ * @since 1.0.0
+ * @category Interpreters
+ */
+export const getTaskDecoder = interpret(Schemable)

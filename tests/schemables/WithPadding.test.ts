@@ -12,7 +12,7 @@ import * as t from '../../src/base/TypeBase'
 import { Schemable as GuardSchemableExt } from '../../src/Guard'
 import * as PB from '../../src/PatternBuilder'
 import { PaddingLength } from '../../src/schemables/WithPadding/definition'
-import { interpreter } from '../../src/SchemaExt'
+import { interpret } from '../../src/SchemaExt'
 import { validateArbitrary } from '../../test-utils'
 import * as WithPadding from '../../test-utils/schemable-exports/WithPadding'
 import { Arbitrary as arbPattern } from '../../test-utils/schemable-exports/WithPattern'
@@ -208,8 +208,8 @@ describe('WithPadding', () => {
       describe(`Schema`, () => {
         const L = WithPadding.Schema.padLeft(paddingParams, char)(SC.String)
         const R = WithPadding.Schema.padRight(paddingParams, char)(SC.String)
-        const guardL = interpreter(GuardSchemableExt)(L)
-        const guardR = interpreter(GuardSchemableExt)(R)
+        const guardL = interpret(GuardSchemableExt)(L)
+        const guardR = interpret(GuardSchemableExt)(R)
         test.each(validL)('validates validly padded strings, %s', str => {
           const result = guardL.is(str)
           expect(result).toBe(true)
