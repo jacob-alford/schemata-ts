@@ -13,6 +13,20 @@ nav_order: 1
 ![Vulnerabilities](https://img.shields.io/snyk/vulnerabilities/npm/schemata-ts)
 ![License](https://img.shields.io/github/license/jacob-alford/schemata-ts)
 
+## Table of Contents
+
+<!-- AUTO-GENERATED-CONTENT:START (TOC) -->
+- [Introduction](#introduction)
+  - [User Document Example](#user-document-example)
+  - [Using Generated Instances](#using-generated-instances)
+- [Installation](#installation)
+  - [Yarn](#yarn)
+  - [NPM](#npm)
+- [Documentation](#documentation)
+- [Exported Schemata](#exported-schemata)
+- [v2 Roadmap](#v2-roadmap)
+<!-- AUTO-GENERATED-CONTENT:END -->
+
 ## Introduction
 
 A schema is an expression of a type structure that can be used to generate typeclass instances from a single declaration. The following example constructs a `User` schema from which the underlying domain type can be extracted. `schemata-ts` generates the following typeclasses: `Arbitrary`, `Decoder`, `Encoder`, `Guard`, `Eq`, `TaskDecoder`, and `Type`.
@@ -113,84 +127,3 @@ assert.equal(User.decoder.decode(invalidInput)._tag, 'Left')
 // Encoding
 assert.deepStrictEqual(User.encoder.encode(expectedOutput), validInput)
 ```
-
-## Installation
-
-Uses `fp-ts`, and `io-ts` as peer dependencies. Read more about peer dependencies at [nodejs.org](https://nodejs.org/en/blog/npm/peer-dependencies/).
-
-Also contains `fast-check` as a soft peer dependency. Soft peer dependency implies that usage of the `Arbitrary` module requires fast-check as a peer-dependency.
-
-### Yarn
-
-```bash
-yarn add schemata-ts
-```
-
-### NPM
-
-```bash
-npm install schemata-ts
-```
-
-## Documentation
-
-- [schemata-ts](https://jacob-alford.github.io/schemata-ts/modules/)
-- [fp-ts](https://gcanti.github.io/fp-ts/modules/)
-- [io-ts](https://gcanti.github.io/io-ts)
-- [docs-ts](https://github.com/gcanti/docs-ts)
-
-## Exported Schemata
-
-| Schema                | Type           |
-| --------------------- | -------------- |
-| BooleanFromString     | Conversion     |
-| BooleanFromNumber     | Conversion     |
-| `Date.date`           | Base Schemable |
-| `Date.dateFromString` | Base Schemable |
-| DateFromInt           | Conversion     |
-| DateFromIsoString     | Conversion     |
-| DateFromUnixTime      | Conversion     |
-| OptionFromNullable    | Conversion     |
-| OptionFromUndefined   | Conversion     |
-| BigIntFromString      | Conversion     |
-| FloatFromString       | Conversion     |
-| IntFromString         | Conversion     |
-| `Int.int`             | Base Schemable |
-| `Float.float`         | Base Schemable |
-| Natural               | Number         |
-| NegativeFloat         | Number         |
-| NegativeInt           | Number         |
-| NonNegativeFloat      | Number         |
-| NonPositiveFloat      | Number         |
-| NonPositiveInt        | Number         |
-| PositiveFloat         | Number         |
-| PositiveInt           | Number         |
-| Ascii                 | String         |
-| Base64                | String         |
-| Base64Url             | String         |
-| BitcoinAddress        | String         |
-| CreditCard            | String         |
-| EmailAddress          | String         |
-| Ethereum Address      | String         |
-| Hexadecimal           | String         |
-| HexColor              | String         |
-| HslColor              | String         |
-| Jwt                   | String         |
-| LatLong               | String         |
-| NonEmptyString        | String         |
-| RGB                   | String         |
-| UUID                  | String         |
-
-Additionally, there are more unlisted base schemable schemata also exported from `schemata-ts/schemata`. These can be used to construct more complex schemata. There are many examples of custom schemata in `src/schemata` to use as a reference.
-
-## v2 Roadmap
-
-`Schemata-ts`'s implementation of Schema is built on io-ts `Schemable`. This library wraps schemable with a schema-based API. The future of io-ts is likewise a schema system: [@fp-ts/schema](https://github.com/fp-ts/schema). Version 2.0 of `schemata-ts` will use @fp-ts/schema as its internals, and the external API will remain mostly the same.
-
-Furthermore, schemata-ts is planned to support the following features in various 1.x, and 2.x versions in the near future:
-
-- Json Schema: generating JSON-Schema from schemata ([#137](https://github.com/jacob-alford/schemata-ts/issues/137))
-- Optic Schema: generating optics from schemata ([#134](https://github.com/jacob-alford/schemata-ts/issues/134))
-- Mapped Structs: conversions between struct types, i.e. `snake-case` keys to `camelCase` keys
-- More generic schemata: (SetFromArray, NonEmptyArray)
-- More validator.js branded schemata
