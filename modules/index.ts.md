@@ -1,12 +1,12 @@
 ---
 title: index.ts
-nav_order: 10
+nav_order: 15
 parent: Modules
 ---
 
 ## index overview
 
-Added in v0.0.1
+Added in v1.0.0
 
 ---
 
