@@ -141,10 +141,9 @@ npm install schemata-ts
 
 ## Documentation
 
-- [schemata-ts](https://jacob-alford.github.io/schemata-ts/modules/)
+- [schemata-ts](https://jacob-alford.github.io/schemata-ts/docs/modules)
 - [fp-ts](https://gcanti.github.io/fp-ts/modules/)
 - [io-ts](https://gcanti.github.io/io-ts)
-- [docs-ts](https://github.com/gcanti/docs-ts)
 
 ## Exported Schemata
 
