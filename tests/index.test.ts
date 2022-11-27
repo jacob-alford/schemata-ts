@@ -1,9 +1,9 @@
-import { interpreter, make } from '../src/SchemaExt'
-import { D } from '../src'
+import { schemata } from '../src'
+import { getDecoder } from '../src/Decoder'
 
 describe('Decoder', () => {
-  const User = make(S => S.struct({ name: S.string }))
-  const decode = interpreter(D.Schemable)(User)
+  const User = schemata.Struct({ name: schemata.String })
+  const decode = getDecoder(User)
   it('interprets a schema', () => {
     expect(decode.decode({ name: 'John' })._tag).toBe('Right')
   })

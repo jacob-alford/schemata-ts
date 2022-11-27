@@ -1,27 +1,27 @@
-import * as ts from 'typescript'
 import { pipe } from 'fp-ts/function'
 import * as RA from 'fp-ts/ReadonlyArray'
+import * as ts from 'typescript'
 
 const _ = ts.factory
 
 export const makeModuleStarImport: (
   name: string,
-  path: string
+  path: string,
 ) => ts.ImportDeclaration = (name, path) =>
   _.createImportDeclaration(
     undefined,
     _.createImportClause(
       false,
       undefined,
-      _.createNamespaceImport(_.createIdentifier(name))
+      _.createNamespaceImport(_.createIdentifier(name)),
     ),
     _.createStringLiteral(path),
-    undefined
+    undefined,
   )
 
 export const makeDestructureImport: (
   destructuredElements: ReadonlyArray<string>,
-  path: string
+  path: string,
 ) => ts.ImportDeclaration = (destructuredElements, path) =>
   _.createImportDeclaration(
     undefined,
@@ -31,10 +31,10 @@ export const makeDestructureImport: (
       _.createNamedImports(
         pipe(
           destructuredElements,
-          RA.map(el => _.createImportSpecifier(false, undefined, _.createIdentifier(el)))
-        )
-      )
+          RA.map(el => _.createImportSpecifier(false, undefined, _.createIdentifier(el))),
+        ),
+      ),
     ),
     _.createStringLiteral(path),
-    undefined
+    undefined,
   )

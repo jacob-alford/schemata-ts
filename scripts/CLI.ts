@@ -18,3 +18,10 @@ export const cli: CLI = {
       })
     }),
 }
+
+export const cliTest: CLI = {
+  exec: (cmd, args) => () => {
+    console.log(cmd, args)
+    return Promise.resolve(right(undefined))
+  },
+}

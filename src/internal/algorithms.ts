@@ -19,7 +19,7 @@ export const luhn: (cc: string) => number = flow(
       : // numbers of even rank get doubled, then their digits are summed
       d * 2 >= 10
       ? 1 + (d * 2 - 10)
-      : d * 2
+      : d * 2,
   ),
-  sum => (10 - (sum % 10)) % 10
+  sum => (10 - (sum % 10)) % 10,
 )

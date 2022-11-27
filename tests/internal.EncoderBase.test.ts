@@ -1,4 +1,4 @@
-import * as Enc from '../src/internal/EncoderBase'
+import * as Enc from '../src/base/EncoderBase'
 
 const _ = Enc.Schemable
 
@@ -35,7 +35,7 @@ describe('EncoderBase', () => {
         }).encode({
           a: 'a',
           b: 5,
-        })
+        }),
       ).toEqual({ a: 'a', b: 5 })
     })
     test('partial', () => {
@@ -43,7 +43,7 @@ describe('EncoderBase', () => {
         _.partial({
           a: _.string,
           b: _.number,
-        }).encode({ a: 'a' })
+        }).encode({ a: 'a' }),
       ).toStrictEqual({ a: 'a' })
     })
     test('record', () => {
@@ -61,20 +61,17 @@ describe('EncoderBase', () => {
     test('intersect', () => {
       expect(
         _.intersect(_.struct({ a: _.string, b: _.number }))(
-          _.struct({ b: _.number, c: _.boolean })
-        ).encode({ a: 'a', b: 5, c: true })
+          _.struct({ b: _.number, c: _.boolean }),
+        ).encode({ a: 'a', b: 5, c: true }),
       ).toStrictEqual({ a: 'a', b: 5, c: true })
     })
     test('sum', () => {
-      type SumType = 'A' | 'B' | 'C'
-      const sumType: SumType = 'A'
-      expect(
-        _.sum(sumType)({
-          A: _.record(_.literal('A')),
-          B: _.record(_.literal('B')),
-          // @ts-expect-error -- typelevel difference
-        }).encode({ A: 'A', B: 'B' })
-      ).toStrictEqual({ A: 'A', B: 'B' })
+      const sum = _.sum('tag')
+      const encoder = sum({
+        a: _.struct({ tag: _.literal('a'), a: _.string }),
+        b: _.struct({ tag: _.literal('b'), b: _.number }),
+      })
+      expect(encoder.encode({ tag: 'a', a: 'a' })).toStrictEqual({ tag: 'a', a: 'a' })
     })
     test('lazy', () => {
       const enc = _.lazy('', () => _.number)

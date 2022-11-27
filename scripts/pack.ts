@@ -1,15 +1,16 @@
-import * as path from 'path'
-import * as E from 'fp-ts/Either'
 import * as Cons from 'fp-ts/Console'
+import * as E from 'fp-ts/Either'
 import { flow, pipe } from 'fp-ts/function'
 import * as J from 'fp-ts/Json'
 import * as RTE from 'fp-ts/ReaderTaskEither'
-import * as TE from 'fp-ts/TaskEither'
-import * as T from 'fp-ts/Task'
 import * as RA from 'fp-ts/ReadonlyArray'
 import * as RR from 'fp-ts/ReadonlyRecord'
+import * as T from 'fp-ts/Task'
+import * as TE from 'fp-ts/TaskEither'
+import * as path from 'path'
+
+import { CLI, cli } from './CLI'
 import { FileSystem, fileSystem } from './FS'
-import { cli, CLI } from './CLI'
 import { run } from './run'
 
 interface Build<A> extends RTE.ReaderTaskEither<FileSystem & CLI, Error, A> {}
@@ -18,7 +19,7 @@ export const checkDist: Build<void> = C =>
   pipe(
     C.exists('dist'),
     T.chain(exists => (exists ? C.exec('rm -rf dist') : TE.of(undefined))),
-    TE.chain(() => C.mkdir('dist'))
+    TE.chain(() => C.mkdir('dist')),
   )
 
 export const copyPackageJson: Build<void> = C =>
@@ -50,13 +51,13 @@ export const copyPackageJson: Build<void> = C =>
 
       return clone
     }),
-    TE.chain(json => C.writeFile('./dist/package.json', JSON.stringify(json, null, 2)))
+    TE.chain(json => C.writeFile('./dist/package.json', JSON.stringify(json, null, 2))),
   )
 
 /* See: https://gitlab.com/simspace-oss/xio/-/blob/dev/scripts/pack.ts */
 export const rewriteSourceMap: (
   content: string,
-  path: string
+  path: string,
 ) => TE.TaskEither<Error, string> = (content, path_) =>
   pipe(
     TE.fromEither(pipe(J.parse(content), E.mapLeft(E.toError))),
@@ -80,12 +81,12 @@ export const rewriteSourceMap: (
                 clone = path.posix.relative(dir, path.posix.join(dir, clone))
                 return clone.startsWith('.') ? clone : './' + clone
               })
-            : v
+            : v,
         ),
         J.stringify,
-        E.mapLeft(E.toError)
+        E.mapLeft(E.toError),
       )
-    })
+    }),
   )
 
 export const FILES: ReadonlyArray<string> = ['LICENSE', 'README.md']
@@ -94,8 +95,8 @@ export const copyMetaFiles: Build<ReadonlyArray<void>> = C =>
   pipe(
     FILES,
     TE.traverseReadonlyArrayWithIndex((_, from) =>
-      C.copyFile(from, path.resolve('dist', from))
-    )
+      C.copyFile(from, path.resolve('dist', from)),
+    ),
   )
 
 export const copyBuildFiles: Build<void> = C =>
@@ -114,7 +115,7 @@ export const copyBuildFiles: Build<void> = C =>
     TE.chain(() => C.exec('cp -r ./build/dts/* ./dist')),
 
     /* Copy docs to dist/docs */
-    TE.chain(() => C.exec('cp -r ./docs ./dist/docs'))
+    TE.chain(() => C.exec('cp -r ./docs ./dist/docs')),
   )
 
 export const overwriteSourceMaps: Build<void> = C =>
@@ -126,13 +127,13 @@ export const overwriteSourceMaps: Build<void> = C =>
           pipe(
             C.readFile(path_),
             TE.chain(content => rewriteSourceMap(content, path_)),
-            TE.chain(content => C.writeFile(path_, content))
-          )
+            TE.chain(content => C.writeFile(path_, content)),
+          ),
         ),
-        TE.sequenceArray
-      )
+        TE.sequenceArray,
+      ),
     ),
-    TE.map(() => undefined)
+    TE.map(() => undefined),
   )
 
 const main: Build<void> = pipe(
@@ -141,12 +142,12 @@ const main: Build<void> = pipe(
   RTE.chain(() => copyMetaFiles),
   RTE.chain(() => copyBuildFiles),
   RTE.chain(() => overwriteSourceMaps),
-  RTE.chainFirstIOK(() => Cons.log('Done!'))
+  RTE.chainFirstIOK(() => Cons.log('Done!')),
 )
 
 run(
   main({
     ...fileSystem,
     ...cli,
-  })
+  }),
 )
