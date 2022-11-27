@@ -403,7 +403,7 @@ const makeSchemableBarrelExports: (
     TE.traverseArray(({ module, instances }) =>
       pipe(
         C.writeFile(
-          `./tests/schemable-exports/${module}.ts`,
+          `./test-utils/schemable-exports/${module}.ts`,
           makeExportsFile(
             module,
             pipe(

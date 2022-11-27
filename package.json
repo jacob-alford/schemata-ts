@@ -54,8 +54,7 @@
     "prerelease": "yarn clean && yarn build:pack",
     "release": "yarn ts-node scripts/config.ts && cd dist && npm publish",
     "docs": "yarn run docs-ts",
-    "md": "yarn run markdown",
-    "docsmd": "yarn md && yarn docs",
+    "docs-toc": "yarn markdown --path ./docs/index.md",
     "prepare": "husky install"
   },
   "lint-staged": {
