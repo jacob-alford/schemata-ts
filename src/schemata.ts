@@ -128,6 +128,28 @@ export {
    */ Schema as UnknownContainers,
 } from './schemables/WithUnknownContainers/instances/schema'
 
+/** Schemata > boolean */
+
+export {
+  /**
+   * A boolean value whose encoded representation is a number, where 0 is false and 1 is true.
+   *
+   * Strictly speaking, this will _decode_ any number (0 becomes false, and non-zero
+   * becomes true), but will only _encode_ 0 and 1.
+   *
+   * @since 1.0.0
+   */
+  BooleanFromNumber,
+} from './schemata/boolean/BooleanFromNumber'
+export {
+  /**
+   * A boolean value whose encoded representation is either "true" or "false".
+   *
+   * @since 1.0.0
+   */
+  BooleanFromString,
+} from './schemata/boolean/BooleanFromString'
+
 /** Schemata > date */
 
 export {
@@ -410,6 +432,14 @@ export {
    */
   EmailAddress,
 } from './schemata/string/EmailAddress'
+export {
+  /**
+   * Represents strings which are valid Ethereum addresses.
+   *
+   * @since 1.0.0
+   */
+  EthereumAddress,
+} from './schemata/string/EthereumAddress'
 export {
   /**
    * A string of hexadecimal characters.

@@ -27,6 +27,7 @@ type Schemable = [
 type Schema = [name: string, moduleComment: string]
 
 type Schemata = {
+  readonly boolean: ReadonlyArray<Schema>
   readonly date: ReadonlyArray<Schema>
   readonly generic: ReadonlyArray<Schema>
   readonly number: ReadonlyArray<Schema>
@@ -152,6 +153,11 @@ const makeSchemaExportsFile: (
       ),
       _.createJSDocComment('schemables'),
       ...pipe(schemables, RA.map(makeSchemableSchemaExport)),
+      _.createJSDocComment('schemata > boolean'),
+      ...pipe(
+        schemata.boolean,
+        RA.map(([name, comment]) => makeSchemaExport('boolean', name, comment)),
+      ),
       _.createJSDocComment('schemata > date'),
       ...pipe(
         schemata.date,
@@ -259,6 +265,17 @@ const getSchema: (name: string, path: string) => Build<Schema> = (name, path) =>
 const getSchemata: Build<Schemata> = C =>
   pipe(
     TE.Do,
+    TE.apS(
+      'boolean',
+      pipe(
+        C.readFiles('./src/schemata/boolean'),
+        TE.chain(
+          TE.traverseArray(fileName =>
+            getSchema(fileName, `./src/schemata/boolean/${fileName}`)(C),
+          ),
+        ),
+      ),
+    ),
     TE.apS(
       'date',
       pipe(
