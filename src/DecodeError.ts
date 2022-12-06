@@ -104,7 +104,7 @@ export const foldMap =
   }) =>
   (errors: FSg.FreeSemigroup<DE.DecodeError<E>>): S => {
     const foldDecodeError: (params: DE.DecodeError<E>) => S = DE.fold({
-      Leaf: (input, error) => matchers.Leaf(input, error),
+      Leaf: matchers.Leaf,
       Key: (key, kind, errors) => matchers.Key(key, kind, foldFreeSemigroup(errors)),
       Index: (index, kind, errors) =>
         matchers.Index(index, kind, foldFreeSemigroup(errors)),
