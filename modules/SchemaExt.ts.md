@@ -1,6 +1,6 @@
 ---
 title: SchemaExt.ts
-nav_order: 141
+nav_order: 142
 parent: Modules
 ---
 
@@ -89,7 +89,7 @@ const invalidInput = decoder.decode({
 assert.equal(invalidInput._tag, 'Left')
 ```
 
-Added in v0.0.1
+Added in v1.0.0
 
 ---
 

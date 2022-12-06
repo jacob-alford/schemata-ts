@@ -1,6 +1,6 @@
 ---
 title: schemata/number/NegativeInt.ts
-nav_order: 155
+nav_order: 156
 parent: Modules
 ---
 

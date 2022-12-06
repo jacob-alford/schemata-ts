@@ -1,6 +1,6 @@
 ---
 title: schemables/WithFloat/instances/encoder.ts
-nav_order: 50
+nav_order: 51
 parent: Modules
 ---
 

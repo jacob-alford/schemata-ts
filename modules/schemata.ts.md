@@ -1,6 +1,6 @@
 ---
 title: schemata.ts
-nav_order: 142
+nav_order: 143
 parent: Modules
 ---
 
@@ -202,7 +202,7 @@ Discover, and JCB.
 export declare const CreditCard: SchemaExt<string, Branded<Branded<string, CheckDigitVerified>, CreditCardBrand>>
 ```
 
-Added in v0.0.3
+Added in v1.0.0
 
 ## Date
 

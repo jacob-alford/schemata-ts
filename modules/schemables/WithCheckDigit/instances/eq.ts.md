@@ -1,6 +1,6 @@
 ---
 title: schemables/WithCheckDigit/instances/eq.ts
-nav_order: 31
+nav_order: 32
 parent: Modules
 ---
 

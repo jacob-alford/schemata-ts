@@ -1,6 +1,6 @@
 ---
 title: schemata/string/CreditCard.ts
-nav_order: 165
+nav_order: 166
 parent: Modules
 ---
 
@@ -11,7 +11,7 @@ Represents (some) valid credit card numbers.
 At the moment, this mostly handles Visa, Mastercard, American Express, Diners Club,
 Discover, and JCB.
 
-Added in v0.0.3
+Added in v1.0.0
 
 ---
 

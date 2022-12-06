@@ -1,6 +1,6 @@
 ---
 title: schemables/WithPattern/definition.ts
-nav_order: 113
+nav_order: 114
 parent: Modules
 ---
 

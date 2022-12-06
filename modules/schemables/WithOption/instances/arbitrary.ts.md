@@ -1,6 +1,6 @@
 ---
 title: schemables/WithOption/instances/arbitrary.ts
-nav_order: 86
+nav_order: 87
 parent: Modules
 ---
 
