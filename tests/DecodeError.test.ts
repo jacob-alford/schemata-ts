@@ -2,9 +2,15 @@ import * as S from 'fp-ts/string'
 import * as DE from 'io-ts/DecodeError'
 import * as FSg from 'io-ts/FreeSemigroup'
 
-import { foldMap, foldMapFlat } from '../src/DecodeError'
+import { drawTree, foldMap, foldMapFlat } from '../src/DecodeError'
 
 describe('DecodeError', () => {
+  test('drawTree', () => {
+    const error = DE.index(0, DE.required, FSg.of(DE.leaf(null, 'baz')))
+    expect(drawTree(FSg.of(error))).toEqual(
+      'required index 0\n└─ cannot decode null, should be baz',
+    )
+  })
   describe('foldMap', () => {
     const mapError = foldMap(S.Semigroup)<string>({
       Leaf: (got, err) => `Expected ${err}, but Received ${got}; `,

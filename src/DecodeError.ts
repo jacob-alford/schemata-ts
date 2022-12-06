@@ -1,7 +1,7 @@
 /**
  * A collection of utility functions for mapping `DecodeError`s from io-ts/DecodeError.
  *
- * @since 1.0.0
+ * @since 1.0.1
  * @example
  *   import * as E from 'fp-ts/Either'
  *   import * as Str from 'fp-ts/string'
@@ -46,12 +46,22 @@ import * as Sg from 'fp-ts/Semigroup'
 import * as DE from 'io-ts/DecodeError'
 import * as FSg from 'io-ts/FreeSemigroup'
 
+export {
+  /**
+   * Draws a `DecodeError` as a tree structure using indentation markings and newlines.
+   *
+   * @since 1.0.1
+   * @category Destructors
+   */
+  draw as drawTree,
+} from 'io-ts/Decoder'
+
 /**
  * Converts a DecodeError to a type of a given Semigroup using a supplied instance and
  * mapping function.
  *
  * @since 1.0.1
- * @category Utilities
+ * @category Destructors
  * @example
  *   import * as E from 'fp-ts/Either'
  *   import * as Str from 'fp-ts/string'
@@ -125,7 +135,7 @@ export const foldMap =
  * Disregards a DecodeError's structure, mapping and combining into/using a supplied Semigroup.
  *
  * @since 1.0.1
- * @category Utilities
+ * @category Destructors
  */
 export const foldMapFlat =
   <S>(S: Sg.Semigroup<S>) =>
