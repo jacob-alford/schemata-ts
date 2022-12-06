@@ -416,7 +416,7 @@ export {
    * At the moment, this mostly handles Visa, Mastercard, American Express, Diners Club,
    * Discover, and JCB.
    *
-   * @since 0.0.3
+   * @since 1.0.0
    */
   CreditCard,
 } from './schemata/string/CreditCard'
