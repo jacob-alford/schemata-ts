@@ -42,7 +42,6 @@
  *     ),
  *   )
  */
-import { pipe } from 'fp-ts/function'
 import * as Sg from 'fp-ts/Semigroup'
 import * as DE from 'io-ts/DecodeError'
 import * as FSg from 'io-ts/FreeSemigroup'
@@ -104,26 +103,19 @@ export const foldMap =
     readonly Wrap: (error: E, errors: S) => S
   }) =>
   (errors: FSg.FreeSemigroup<DE.DecodeError<E>>): S => {
-    const foldDecodeError: (params: DE.DecodeError<E>) => S = next =>
-      pipe(
-        next,
-        DE.fold({
-          Leaf: (input, error) => matchers.Leaf(input, error),
-          Key: (key, kind, errors) => matchers.Key(key, kind, foldFreeSemigroup(errors)),
-          Index: (index, kind, errors) =>
-            matchers.Index(index, kind, foldFreeSemigroup(errors)),
-          Member: (index, errors) => matchers.Member(index, foldFreeSemigroup(errors)),
-          Lazy: (id, errors) => matchers.Lazy(id, foldFreeSemigroup(errors)),
-          Wrap: (error, errors) => matchers.Wrap(error, foldFreeSemigroup(errors)),
-        }),
-      )
+    const foldDecodeError: (params: DE.DecodeError<E>) => S = DE.fold({
+      Leaf: (input, error) => matchers.Leaf(input, error),
+      Key: (key, kind, errors) => matchers.Key(key, kind, foldFreeSemigroup(errors)),
+      Index: (index, kind, errors) =>
+        matchers.Index(index, kind, foldFreeSemigroup(errors)),
+      Member: (index, errors) => matchers.Member(index, foldFreeSemigroup(errors)),
+      Lazy: (id, errors) => matchers.Lazy(id, foldFreeSemigroup(errors)),
+      Wrap: (error, errors) => matchers.Wrap(error, foldFreeSemigroup(errors)),
+    })
 
-    const foldFreeSemigroup = (errors: FSg.FreeSemigroup<DE.DecodeError<E>>): S =>
-      pipe(
-        errors,
-        FSg.fold(foldDecodeError, (left, right) =>
-          S.concat(foldFreeSemigroup(left), foldFreeSemigroup(right)),
-        ),
+    const foldFreeSemigroup: (errors: FSg.FreeSemigroup<DE.DecodeError<E>>) => S =
+      FSg.fold(foldDecodeError, (left, right) =>
+        S.concat(foldFreeSemigroup(left), foldFreeSemigroup(right)),
       )
 
     return foldFreeSemigroup(errors)
