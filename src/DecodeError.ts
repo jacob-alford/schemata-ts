@@ -12,7 +12,7 @@
  *
  *   const User = S.Struct({
  *     name: S.NonEmptyString,
- *     favoriteRealNumbers: S.Array(S.Int()),
+ *     favoriteIntegers: S.Array(S.Int()),
  *   })
  *
  *   const decoder = getDecoder(User)
@@ -30,7 +30,7 @@
  *
  *   const input = {
  *     name: '',
- *     favoriteRealNumbers: [1, NaN, 3, 4.1, 5],
+ *     favoriteIntegers: [1, NaN, 3, 4.1, 5],
  *   }
  *
  *   const result = pipe(decoder.decode(input), E.mapLeft(mapError))
@@ -38,7 +38,7 @@
  *   assert.deepStrictEqual(
  *     result,
  *     E.left(
- *       'At property key name (required): Expected NonEmptyString, but Received ""; At property key favoriteRealNumbers (required): At index 1 (optional): Expected number, but Received NaN; At index 3 (optional): Expected int, but Received 4.1; ',
+ *       'At property key name (required): Expected NonEmptyString, but Received ""; At property key favoriteIntegers (required): At index 1 (optional): Expected number, but Received NaN; At index 3 (optional): Expected int, but Received 4.1; ',
  *     ),
  *   )
  */
@@ -63,7 +63,7 @@ import * as FSg from 'io-ts/FreeSemigroup'
  *
  *   const User = S.Struct({
  *     name: S.NonEmptyString,
- *     favoriteRealNumbers: S.Array(S.Int()),
+ *     favoriteIntegers: S.Array(S.Int()),
  *   })
  *
  *   const decoder = getDecoder(User)
@@ -81,7 +81,7 @@ import * as FSg from 'io-ts/FreeSemigroup'
  *
  *   const input = {
  *     name: '',
- *     favoriteRealNumbers: [1, NaN, 3, 4.1, 5],
+ *     favoriteIntegers: [1, NaN, 3, 4.1, 5],
  *   }
  *
  *   const result = pipe(decoder.decode(input), E.mapLeft(mapError))
@@ -89,7 +89,7 @@ import * as FSg from 'io-ts/FreeSemigroup'
  *   assert.deepStrictEqual(
  *     result,
  *     E.left(
- *       'At property key name (required): Expected NonEmptyString, but Received ""; At property key favoriteRealNumbers (required): At index 1 (optional): Expected number, but Received NaN; At index 3 (optional): Expected int, but Received 4.1; ',
+ *       'At property key name (required): Expected NonEmptyString, but Received ""; At property key favoriteIntegers (required): At index 1 (optional): Expected number, but Received NaN; At index 3 (optional): Expected int, but Received 4.1; ',
  *     ),
  *   )
  */
