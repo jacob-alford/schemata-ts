@@ -4,7 +4,7 @@
  * At the moment, this mostly handles Visa, Mastercard, American Express, Diners Club,
  * Discover, and JCB.
  *
- * @since 0.0.3
+ * @since 1.0.0
  */
 import { pipe } from 'fp-ts/function'
 import { Branded } from 'io-ts'

@@ -1,7 +1,7 @@
 /**
  * Schema combinators for SchemableExt
  *
- * @since 0.0.1
+ * @since 1.0.0
  * @example
  *   // e.g. src/domain/User.ts
  *   import * as fc from 'fast-check'
