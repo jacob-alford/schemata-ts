@@ -1,7 +1,7 @@
 import { getCodec } from '../src/Codec'
 import * as S from '../src/schemata'
 
-describe('Codec', () => {
+describe.skip('Codec', () => {
   describe('getCodec', () => {
     test('decoding', () => {
       const codec = getCodec(S.FloatFromString())
