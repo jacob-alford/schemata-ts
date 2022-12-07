@@ -1,6 +1,6 @@
 ---
 title: schemables/WithFloat/instances/type.ts
-nav_order: 56
+nav_order: 57
 parent: Modules
 ---
 

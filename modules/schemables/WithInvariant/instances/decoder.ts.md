@@ -1,6 +1,6 @@
 ---
 title: schemables/WithInvariant/instances/decoder.ts
-nav_order: 70
+nav_order: 71
 parent: Modules
 ---
 

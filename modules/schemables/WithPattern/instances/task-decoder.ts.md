@@ -1,6 +1,6 @@
 ---
 title: schemables/WithPattern/instances/task-decoder.ts
-nav_order: 121
+nav_order: 122
 parent: Modules
 ---
 

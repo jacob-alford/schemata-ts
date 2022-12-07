@@ -1,6 +1,6 @@
 ---
 title: schemata/number/IntFromString.ts
-nav_order: 153
+nav_order: 154
 parent: Modules
 ---
 

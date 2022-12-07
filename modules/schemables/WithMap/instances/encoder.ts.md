@@ -1,6 +1,6 @@
 ---
 title: schemables/WithMap/instances/encoder.ts
-nav_order: 80
+nav_order: 81
 parent: Modules
 ---
 
