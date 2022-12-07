@@ -1,5 +1,5 @@
 /**
- * A Codec is a combined Decoder, Encoder, and Guard.
+ * A Codec is a combined Decoder, Encoder, and Guard
  *
  * @since 1.0.1
  */
