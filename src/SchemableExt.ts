@@ -46,6 +46,12 @@ import {
   WithInvariantHKT2,
 } from './schemables/WithInvariant/definition'
 import {
+  WithJson1,
+  WithJson2,
+  WithJson2C,
+  WithJsonHKT2,
+} from './schemables/WithJson/definition'
+import {
   WithMap1,
   WithMap2,
   WithMap2C,
@@ -100,6 +106,7 @@ export interface SchemableExt<S>
     WithFloatHKT2<S>,
     WithIntHKT2<S>,
     WithInvariantHKT2<S>,
+    WithJsonHKT2<S>,
     WithMapHKT2<S>,
     WithOptionHKT2<S>,
     WithOptionalHKT2<S>,
@@ -120,6 +127,7 @@ export interface SchemableExt1<S extends URIS>
     WithFloat1<S>,
     WithInt1<S>,
     WithInvariant1<S>,
+    WithJson1<S>,
     WithMap1<S>,
     WithOption1<S>,
     WithOptional1<S>,
@@ -140,6 +148,7 @@ export interface SchemableExt2<S extends URIS2>
     WithFloat2<S>,
     WithInt2<S>,
     WithInvariant2<S>,
+    WithJson2<S>,
     WithMap2<S>,
     WithOption2<S>,
     WithOptional2<S>,
@@ -160,6 +169,7 @@ export interface SchemableExt2C<S extends URIS2>
     WithFloat2C<S, unknown>,
     WithInt2C<S, unknown>,
     WithInvariant2C<S, unknown>,
+    WithJson2C<S, unknown>,
     WithMap2C<S, unknown>,
     WithOption2C<S, unknown>,
     WithOptional2C<S, unknown>,

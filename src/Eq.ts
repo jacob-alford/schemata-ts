@@ -13,6 +13,7 @@ import * as WithDate from './schemables/WithDate/instances/eq'
 import * as WithFloat from './schemables/WithFloat/instances/eq'
 import * as WithInt from './schemables/WithInt/instances/eq'
 import * as WithInvariant from './schemables/WithInvariant/instances/eq'
+import * as WithJson from './schemables/WithJson/instances/eq'
 import * as WithMap from './schemables/WithMap/instances/eq'
 import * as WithOption from './schemables/WithOption/instances/eq'
 import * as WithOptional from './schemables/WithOptional/instances/eq'
@@ -41,6 +42,7 @@ export const Schemable: SchemableExt1<Eq.URI> = {
   ...WithFloat.Eq,
   ...WithInt.Eq,
   ...WithInvariant.Eq,
+  ...WithJson.Eq,
   ...WithMap.Eq,
   ...WithOption.Eq,
   ...WithOptional.Eq,

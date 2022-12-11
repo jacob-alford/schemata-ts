@@ -13,6 +13,7 @@ import * as WithDate from './schemables/WithDate/instances/decoder'
 import * as WithFloat from './schemables/WithFloat/instances/decoder'
 import * as WithInt from './schemables/WithInt/instances/decoder'
 import * as WithInvariant from './schemables/WithInvariant/instances/decoder'
+import * as WithJson from './schemables/WithJson/instances/decoder'
 import * as WithMap from './schemables/WithMap/instances/decoder'
 import * as WithOption from './schemables/WithOption/instances/decoder'
 import * as WithOptional from './schemables/WithOptional/instances/decoder'
@@ -41,6 +42,7 @@ export const Schemable: SchemableExt2C<D.URI> = {
   ...WithFloat.Decoder,
   ...WithInt.Decoder,
   ...WithInvariant.Decoder,
+  ...WithJson.Decoder,
   ...WithMap.Decoder,
   ...WithOption.Decoder,
   ...WithOptional.Decoder,

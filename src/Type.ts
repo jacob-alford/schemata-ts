@@ -13,6 +13,7 @@ import * as WithDate from './schemables/WithDate/instances/type'
 import * as WithFloat from './schemables/WithFloat/instances/type'
 import * as WithInt from './schemables/WithInt/instances/type'
 import * as WithInvariant from './schemables/WithInvariant/instances/type'
+import * as WithJson from './schemables/WithJson/instances/type'
 import * as WithMap from './schemables/WithMap/instances/type'
 import * as WithOption from './schemables/WithOption/instances/type'
 import * as WithOptional from './schemables/WithOptional/instances/type'
@@ -41,6 +42,7 @@ export const Schemable: SchemableExt1<t.URI> = {
   ...WithFloat.Type,
   ...WithInt.Type,
   ...WithInvariant.Type,
+  ...WithJson.Type,
   ...WithMap.Type,
   ...WithOption.Type,
   ...WithOptional.Type,

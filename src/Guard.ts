@@ -13,6 +13,7 @@ import * as WithDate from './schemables/WithDate/instances/guard'
 import * as WithFloat from './schemables/WithFloat/instances/guard'
 import * as WithInt from './schemables/WithInt/instances/guard'
 import * as WithInvariant from './schemables/WithInvariant/instances/guard'
+import * as WithJson from './schemables/WithJson/instances/guard'
 import * as WithMap from './schemables/WithMap/instances/guard'
 import * as WithOption from './schemables/WithOption/instances/guard'
 import * as WithOptional from './schemables/WithOptional/instances/guard'
@@ -41,6 +42,7 @@ export const Schemable: SchemableExt1<G.URI> = {
   ...WithFloat.Guard,
   ...WithInt.Guard,
   ...WithInvariant.Guard,
+  ...WithJson.Guard,
   ...WithMap.Guard,
   ...WithOption.Guard,
   ...WithOptional.Guard,
