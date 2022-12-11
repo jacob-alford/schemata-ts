@@ -6,10 +6,9 @@
 import { pipe } from 'fp-ts/function'
 import * as J from 'fp-ts/Json'
 
-import { getGuard } from '../../Guard'
 import { JsonString } from '../../schemables/WithJson/definition'
+import * as Json from '../../schemables/WithJson/instances/guard'
 import { make, SchemaExt } from '../../SchemaExt'
-import { Json } from '../../schemata'
 
 /**
  * @since 1.0.2
@@ -24,7 +23,7 @@ export type JsonFromStringS = SchemaExt<string, J.Json>
 export const JsonFromString: JsonFromStringS = make(S =>
   pipe(
     S.jsonString,
-    S.imap(getGuard(Json.json), 'Json')(
+    S.imap(Json.Guard.json, 'Json')(
       jsonString => JSON.parse(jsonString) as J.Json,
       json => JSON.stringify(json, null, 2) as JsonString,
     ),
