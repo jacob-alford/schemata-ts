@@ -30,6 +30,7 @@ type Schemata = {
   readonly boolean: ReadonlyArray<Schema>
   readonly date: ReadonlyArray<Schema>
   readonly generic: ReadonlyArray<Schema>
+  readonly json: ReadonlyArray<Schema>
   readonly number: ReadonlyArray<Schema>
   readonly string: ReadonlyArray<Schema>
 }
@@ -168,6 +169,11 @@ const makeSchemaExportsFile: (
         schemata.generic,
         RA.map(([name, comment]) => makeSchemaExport('generic', name, comment)),
       ),
+      _.createJSDocComment('schemata > json'),
+      ...pipe(
+        schemata.json,
+        RA.map(([name, comment]) => makeSchemaExport('json', name, comment)),
+      ),
       _.createJSDocComment('schemata > number'),
       ...pipe(
         schemata.number,
@@ -294,6 +300,17 @@ const getSchemata: Build<Schemata> = C =>
         TE.chain(
           TE.traverseArray(fileName =>
             getSchema(fileName, `./src/schemata/generic/${fileName}`)(C),
+          ),
+        ),
+      ),
+    ),
+    TE.apS(
+      'json',
+      pipe(
+        C.readFiles('./src/schemata/json'),
+        TE.chain(
+          TE.traverseArray(fileName =>
+            getSchema(fileName, `./src/schemata/json/${fileName}`)(C),
           ),
         ),
       ),

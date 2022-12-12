@@ -218,6 +218,17 @@ export {
   OptionFromUndefined,
 } from './schemata/generic/OptionFromUndefined'
 
+/** Schemata > json */
+
+export {
+  /**
+   * Represents Json values converted from strings
+   *
+   * @since 1.0.2
+   */
+  JsonFromString,
+} from './schemata/json/JsonFromString'
+
 /** Schemata > number */
 
 export {
