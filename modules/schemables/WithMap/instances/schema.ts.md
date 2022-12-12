@@ -1,6 +1,6 @@
 ---
 title: schemables/WithMap/instances/schema.ts
-nav_order: 84
+nav_order: 93
 parent: Modules
 ---
 

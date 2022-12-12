@@ -1,6 +1,6 @@
 ---
 title: schemata/number/IntFromString.ts
-nav_order: 154
+nav_order: 164
 parent: Modules
 ---
 
@@ -30,8 +30,9 @@ Added in v1.0.0
   - [IntFromStringS (type alias)](#intfromstrings-type-alias)
 - [Pattern](#pattern)
   - [intFromString](#intfromstring)
-- [utils](#utils)
+- [Schema](#schema)
   - [IntFromString](#intfromstring)
+- [utils](#utils)
   - [IntFromStringParams (type alias)](#intfromstringparams-type-alias)
 
 ---
@@ -60,7 +61,7 @@ export declare const intFromString: PB.Pattern
 
 Added in v1.0.0
 
-# utils
+# Schema
 
 ## IntFromString
 
@@ -85,6 +86,8 @@ export declare const IntFromString: IntFromStringS
 ```
 
 Added in v1.0.0
+
+# utils
 
 ## IntFromStringParams (type alias)
 

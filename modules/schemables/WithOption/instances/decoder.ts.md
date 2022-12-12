@@ -1,6 +1,6 @@
 ---
 title: schemables/WithOption/instances/decoder.ts
-nav_order: 89
+nav_order: 98
 parent: Modules
 ---
 

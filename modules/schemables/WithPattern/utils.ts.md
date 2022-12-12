@@ -1,6 +1,6 @@
 ---
 title: schemables/WithPattern/utils.ts
-nav_order: 124
+nav_order: 133
 parent: Modules
 ---
 

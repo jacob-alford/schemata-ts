@@ -1,6 +1,6 @@
 ---
 title: schemables/WithPadding/instances/type.ts
-nav_order: 113
+nav_order: 122
 parent: Modules
 ---
 

@@ -1,6 +1,6 @@
 ---
 title: schemata/number/BigIntFromString.ts
-nav_order: 152
+nav_order: 162
 parent: Modules
 ---
 
@@ -18,8 +18,9 @@ Added in v1.0.0
   - [BigIntFromStringS (type alias)](#bigintfromstrings-type-alias)
 - [Pattern](#pattern)
   - [bigIntString](#bigintstring)
-- [utils](#utils)
+- [Schema](#schema)
   - [BigIntFromString](#bigintfromstring)
+- [utils](#utils)
   - [BigIntFromStringParams (type alias)](#bigintfromstringparams-type-alias)
 
 ---
@@ -48,7 +49,7 @@ export declare const bigIntString: PB.Pattern
 
 Added in v1.0.0
 
-# utils
+# Schema
 
 ## BigIntFromString
 
@@ -61,6 +62,8 @@ export declare const BigIntFromString: BigIntFromStringS
 ```
 
 Added in v1.0.0
+
+# utils
 
 ## BigIntFromStringParams (type alias)
 

@@ -1,6 +1,6 @@
 ---
 title: schemata/number/FloatFromString.ts
-nav_order: 153
+nav_order: 163
 parent: Modules
 ---
 
@@ -25,7 +25,7 @@ Added in v1.0.0
 
 - [Model](#model)
   - [FloatFromStringS (type alias)](#floatfromstrings-type-alias)
-- [utils](#utils)
+- [Schema](#schema)
   - [FloatFromString](#floatfromstring)
 
 ---
@@ -42,7 +42,7 @@ export type FloatFromStringS = (params?: Float.FloatParams) => SchemaExt<string,
 
 Added in v1.0.0
 
-# utils
+# Schema
 
 ## FloatFromString
 

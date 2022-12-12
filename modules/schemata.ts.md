@@ -1,6 +1,6 @@
 ---
 title: schemata.ts
-nav_order: 144
+nav_order: 153
 parent: Modules
 ---
 
@@ -42,6 +42,8 @@ Added in v1.0.0
   - [Int](#int)
   - [IntFromString](#intfromstring)
   - [Invariant](#invariant)
+  - [Json](#json)
+  - [JsonFromString](#jsonfromstring)
   - [Jwt](#jwt)
   - [LatLong](#latlong)
   - [Map](#map)
@@ -453,6 +455,30 @@ export declare const Invariant: <B>(
 ```
 
 Added in v1.0.0
+
+## Json
+
+A basal schemable for Json and JsonString
+
+**Signature**
+
+```ts
+export declare const Json: WithJson2<'SchemaExt'>
+```
+
+Added in v1.0.2
+
+## JsonFromString
+
+Represents Json values converted from strings
+
+**Signature**
+
+```ts
+export declare const JsonFromString: JsonFromStringS
+```
+
+Added in v1.0.2
 
 ## Jwt
 

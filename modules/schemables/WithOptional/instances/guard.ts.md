@@ -1,6 +1,6 @@
 ---
 title: schemables/WithOptional/instances/guard.ts
-nav_order: 101
+nav_order: 110
 parent: Modules
 ---
 

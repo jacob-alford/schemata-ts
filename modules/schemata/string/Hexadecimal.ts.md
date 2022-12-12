@@ -1,6 +1,6 @@
 ---
 title: schemata/string/Hexadecimal.ts
-nav_order: 170
+nav_order: 180
 parent: Modules
 ---
 

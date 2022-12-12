@@ -1,6 +1,6 @@
 ---
 title: schemata/number/Natural.ts
-nav_order: 155
+nav_order: 165
 parent: Modules
 ---
 

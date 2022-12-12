@@ -1,6 +1,6 @@
 ---
 title: schemata/boolean/BooleanFromNumber.ts
-nav_order: 145
+nav_order: 154
 parent: Modules
 ---
 

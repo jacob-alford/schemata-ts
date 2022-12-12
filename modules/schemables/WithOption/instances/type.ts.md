@@ -1,6 +1,6 @@
 ---
 title: schemables/WithOption/instances/type.ts
-nav_order: 95
+nav_order: 104
 parent: Modules
 ---
 

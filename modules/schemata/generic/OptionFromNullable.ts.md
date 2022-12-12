@@ -1,6 +1,6 @@
 ---
 title: schemata/generic/OptionFromNullable.ts
-nav_order: 150
+nav_order: 159
 parent: Modules
 ---
 

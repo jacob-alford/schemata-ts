@@ -1,6 +1,6 @@
 ---
 title: schemata/string/RGB.ts
-nav_order: 176
+nav_order: 186
 parent: Modules
 ---
 

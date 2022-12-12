@@ -1,6 +1,6 @@
 ---
 title: schemata/number/NonPositiveInt.ts
-nav_order: 160
+nav_order: 170
 parent: Modules
 ---
 

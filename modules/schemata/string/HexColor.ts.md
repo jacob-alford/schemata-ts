@@ -1,6 +1,6 @@
 ---
 title: schemata/string/HexColor.ts
-nav_order: 171
+nav_order: 181
 parent: Modules
 ---
 

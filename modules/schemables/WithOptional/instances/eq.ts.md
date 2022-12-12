@@ -1,6 +1,6 @@
 ---
 title: schemables/WithOptional/instances/eq.ts
-nav_order: 100
+nav_order: 109
 parent: Modules
 ---
 

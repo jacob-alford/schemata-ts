@@ -1,6 +1,6 @@
 ---
 title: schemata/string/LatLong.ts
-nav_order: 174
+nav_order: 184
 parent: Modules
 ---
 
