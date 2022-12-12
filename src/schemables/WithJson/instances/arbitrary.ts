@@ -15,7 +15,7 @@ import { JsonString, WithJson1 } from '../definition'
  */
 export const Arbitrary: WithJson1<Arb.URI> = {
   json: {
-    arbitrary: fc => fc.json().map(jsonString => JSON.parse(jsonString) as J.Json),
+    arbitrary: fc => fc.jsonValue() as Arbitrary_<J.Json>,
   },
   jsonString: {
     arbitrary: fc => fc.json() as Arbitrary_<JsonString>,
