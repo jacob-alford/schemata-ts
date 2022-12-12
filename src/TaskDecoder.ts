@@ -13,6 +13,7 @@ import * as WithDate from './schemables/WithDate/instances/task-decoder'
 import * as WithFloat from './schemables/WithFloat/instances/task-decoder'
 import * as WithInt from './schemables/WithInt/instances/task-decoder'
 import * as WithInvariant from './schemables/WithInvariant/instances/task-decoder'
+import * as WithJson from './schemables/WithJson/instances/task-decoder'
 import * as WithMap from './schemables/WithMap/instances/task-decoder'
 import * as WithOption from './schemables/WithOption/instances/task-decoder'
 import * as WithOptional from './schemables/WithOptional/instances/task-decoder'
@@ -41,6 +42,7 @@ export const Schemable: SchemableExt2C<TD.URI> = {
   ...WithFloat.TaskDecoder,
   ...WithInt.TaskDecoder,
   ...WithInvariant.TaskDecoder,
+  ...WithJson.TaskDecoder,
   ...WithMap.TaskDecoder,
   ...WithOption.TaskDecoder,
   ...WithOptional.TaskDecoder,

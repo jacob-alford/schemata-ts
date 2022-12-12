@@ -79,6 +79,13 @@ export {
 } from './schemables/WithInvariant/instances/schema'
 export {
   /**
+   * A basal schemable for Json and JsonString
+   *
+   * @since 1.0.2
+   */ Schema as Json,
+} from './schemables/WithJson/instances/schema'
+export {
+  /**
    * Represents a ReadonlyMap converted from an expected array of entries.
    *
    * @since 1.0.0
@@ -210,6 +217,17 @@ export {
    */
   OptionFromUndefined,
 } from './schemata/generic/OptionFromUndefined'
+
+/** Schemata > json */
+
+export {
+  /**
+   * Represents Json values converted from strings
+   *
+   * @since 1.0.2
+   */
+  JsonFromString,
+} from './schemata/json/JsonFromString'
 
 /** Schemata > number */
 

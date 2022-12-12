@@ -13,6 +13,7 @@ import * as WithDate from './schemables/WithDate/instances/arbitrary'
 import * as WithFloat from './schemables/WithFloat/instances/arbitrary'
 import * as WithInt from './schemables/WithInt/instances/arbitrary'
 import * as WithInvariant from './schemables/WithInvariant/instances/arbitrary'
+import * as WithJson from './schemables/WithJson/instances/arbitrary'
 import * as WithMap from './schemables/WithMap/instances/arbitrary'
 import * as WithOption from './schemables/WithOption/instances/arbitrary'
 import * as WithOptional from './schemables/WithOptional/instances/arbitrary'
@@ -41,6 +42,7 @@ export const Schemable: SchemableExt1<Arb.URI> = {
   ...WithFloat.Arbitrary,
   ...WithInt.Arbitrary,
   ...WithInvariant.Arbitrary,
+  ...WithJson.Arbitrary,
   ...WithMap.Arbitrary,
   ...WithOption.Arbitrary,
   ...WithOptional.Arbitrary,

@@ -119,6 +119,7 @@ const baseToPrefix = (base: IntFromStringParams['encodeToBase']): string => {
  * ```
  *
  * @since 1.0.0
+ * @category Schema
  */
 export const IntFromString: IntFromStringS = (params = {}) =>
   make(S =>

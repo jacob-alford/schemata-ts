@@ -148,6 +148,7 @@ const floatFromString: PB.Pattern = pipe(
  * ```
  *
  * @since 1.0.0
+ * @category Schema
  */
 export const FloatFromString: FloatFromStringS = params =>
   make(S =>

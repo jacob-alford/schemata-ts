@@ -94,6 +94,7 @@ const baseToPrefix = (base: BigIntFromStringParams['encodeToBase']): string => {
  * Represents bigints converted from strings
  *
  * @since 1.0.0
+ * @category Schema
  */
 export const BigIntFromString: BigIntFromStringS = (params = {}) =>
   make(S =>
