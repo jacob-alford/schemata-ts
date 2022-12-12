@@ -53,6 +53,20 @@ describe('WithJson > jsonString', () => {
       }
       expect(eq(str1, str1)).toBe(true)
     })
+    it('compares json strings diregarding spacing and order', () => {
+      const guard = Json.Guard.jsonString.is
+      const eq = Json.Eq.jsonString.equals
+      const str1 = '{"a": 1, "b": 2}'
+      const str2 = '{"b": 2, "a": 1}'
+      const str3 = '{ "b": 2, "a": 1 }'
+      const str4 = '{"b": 2, "a": 1, "c": 3}'
+      if (!guard(str1) || !guard(str2) || !guard(str3) || !guard(str4)) {
+        throw new Error('Unexpected result')
+      }
+      expect(eq(str1, str2)).toBe(true)
+      expect(eq(str1, str3)).toBe(true)
+      expect(eq(str1, str4)).toBe(false)
+    })
   })
 
   describe('Guard', () => {

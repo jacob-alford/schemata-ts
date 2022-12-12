@@ -30,5 +30,7 @@ export const Eq: WithJson1<Eq_.URI> = {
         !Array.isArray(y) &&
         RR.getEq<string, J.Json>(Eq.json).equals(x as J.JsonRecord, y as J.JsonRecord)),
   },
-  jsonString: Eq_.string,
+  jsonString: {
+    equals: (x, y) => x === y || Eq.json.equals(JSON.parse(x), JSON.parse(y)),
+  },
 }
