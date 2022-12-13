@@ -73,9 +73,9 @@ export interface WithPrimitives<S extends TypeLambda> {
     properties: P,
   ) => Kind<
     S,
-    never,
-    never,
     { [K in keyof P]: InnerInput<S, P[K]> },
+    never,
+    never,
     { [K in keyof P]: InnerOutput<S, P[K]> }
   >
   readonly [ArrayURI]: <O, A>(
