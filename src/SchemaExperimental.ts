@@ -1,14 +1,11 @@
 import { Kind, TypeLambda } from '@fp-ts/core/HKT'
-import { IdentityTypeLambda } from '@fp-ts/data/Identity'
 
 /**
  * @since 2.0.0
  * @category Model
  */
 export interface Schema<RI extends SchemableLambda, E, A> {
-  <S extends TypeLambda, RO extends SchemableLambda = IdentitySchemableLambda>(
-    requirements: Schemable<RO, S> & Schemable<RI, S>,
-  ): Kind<S, never, never, E, A>
+  <S extends TypeLambda>(requirements: Schemable<RI, S>): Kind<S, never, never, E, A>
 }
 
 /**
@@ -17,14 +14,6 @@ export interface Schema<RI extends SchemableLambda, E, A> {
  */
 export interface SchemableLambda {
   readonly Kind: TypeLambda
-}
-
-/**
- * @since 2.0.0
- * @category Schemable
- */
-export interface IdentitySchemableLambda extends SchemableLambda {
-  readonly Kind: IdentityTypeLambda
 }
 
 /**
