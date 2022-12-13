@@ -1271,6 +1271,11 @@
   dependencies:
     fast-check "^3.0.0"
 
+"@fp-ts/core@^0.0.9":
+  version "0.0.9"
+  resolved "https://registry.yarnpkg.com/@fp-ts/core/-/core-0.0.9.tgz#4dd0351f3e349a530b958bd1c624c357d102424a"
+  integrity sha512-FuXKPHTEvvgxV3LulGJXkSpAghovh7wLxux+Pm9LKefC0gtZZQ4OajTjTK5RsQtpyKIsAn26PwdG6W6zksF/UA==
+
 "@humanwhocodes/config-array@^0.5.0":
   version "0.5.0"
   resolved "https://registry.yarnpkg.com/@humanwhocodes/config-array/-/config-array-0.5.0.tgz#1407967d4c6eecd7388f83acf1eaf4d0c6e58ef9"
