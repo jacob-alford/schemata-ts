@@ -25,12 +25,6 @@ export type Schemable<R extends SchemableLambda, Kind extends TypeLambda> = R ex
   ? (R & { readonly Kind: Kind })['type']
   : { readonly R: R; readonly Kind: () => Kind }
 
-type Eq<A, B> = [() => A] extends [() => B]
-  ? [() => B] extends [() => A]
-    ? true
-    : false
-  : false
-
 /**
  * @since 2.0.0
  * @category Schemable
@@ -38,7 +32,14 @@ type Eq<A, B> = [() => A] extends [() => B]
 export type ComposeSchemables<
   R1 extends SchemableLambda,
   R2 extends SchemableLambda,
-> = Eq<R1['Kind'], R2['Kind']> extends true ? R1 & R2 : never
+> = R1 extends { readonly type: unknown }
+  ? R2 extends { readonly type: unknown }
+    ? R1 &
+        R2 & {
+          readonly type: Schemable<R1 & R2, R1['Kind'] & R2['Kind']>
+        }
+    : { readonly R: R1 & R2; readonly Kind: () => R1['Kind'] & R2['Kind'] }
+  : { readonly R: R1 & R2; readonly Kind: () => R1['Kind'] & R2['Kind'] }
 
 /**
  * @since 2.0.0
