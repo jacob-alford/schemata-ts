@@ -12,9 +12,6 @@ import {
   SchemableLambda,
 } from '../../SchemaExperimental'
 
-const PrimitiveURI = Symbol('Primitives')
-type PrimitiveURI = typeof PrimitiveURI
-
 const StringURI = Symbol('Primitives.String')
 type StringURI = typeof StringURI
 
@@ -67,7 +64,6 @@ export interface WithPrimitives<S extends TypeLambda> extends TypeClass<S> {
  */
 export interface WithPrimitivesLambda extends SchemableLambda {
   readonly type: WithPrimitives<this['Kind']>
-  readonly key: PrimitiveURI
 }
 
 /**
