@@ -1,6 +1,18 @@
+/** @since 1.0.0 */
+import { TypeClass, TypeLambda } from '@fp-ts/core/HKT'
+
 /**
- * Re-exports for io-ts/Guard
- *
- * @since 1.0.0
+ * @since 2.0.0
+ * @category Model
  */
-export * from 'io-ts/Guard'
+export interface Guard<A> extends TypeClass<GuardTypeLambda> {
+  readonly is: (input: unknown) => input is A
+}
+
+/**
+ * @since 2.0.0
+ * @category Type Lambdas
+ */
+export interface GuardTypeLambda extends TypeLambda {
+  readonly type: Guard<this['Target']>
+}
