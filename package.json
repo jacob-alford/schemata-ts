@@ -65,6 +65,7 @@
     ]
   },
   "peerDependencies": {
+    "@fp-ts/data": "^0.0.26",
     "fast-check": "^3.1.4",
     "fp-ts": "^2.9.5",
     "io-ts": "^2.2.18"

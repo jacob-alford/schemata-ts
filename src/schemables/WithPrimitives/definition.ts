@@ -133,13 +133,7 @@ export const Struct = <P extends Record<string, Schema<any, any, any>>>(
  */
 export const Array = <R extends SchemableLambda, E, A>(
   item: Schema<R, E, A>,
-): Schema<
-  ComposeSchemables<WithPrimitivesLambda, R>,
-  ReadonlyArray<E>,
-  ReadonlyArray<A>
-> =>
-  makeSchema<
-    ComposeSchemables<WithPrimitivesLambda, R>,
-    ReadonlyArray<E>,
-    ReadonlyArray<A>
-  >(S => S[ArrayURI](item(S)))
+): Schema<WithPrimitivesLambda, ReadonlyArray<E>, ReadonlyArray<A>> =>
+  makeSchema<WithPrimitivesLambda, ReadonlyArray<E>, ReadonlyArray<A>>(S =>
+    S[ArrayURI](item(S)),
+  )
