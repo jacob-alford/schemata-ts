@@ -6,6 +6,7 @@
 import { pipe } from 'fp-ts/function'
 import * as J from 'fp-ts/Json'
 
+import { stringify } from '../../internal/util'
 import { JsonString } from '../../schemables/WithJson/definition'
 import * as Json from '../../schemables/WithJson/instances/guard'
 import { make, SchemaExt } from '../../SchemaExt'
@@ -25,7 +26,7 @@ export const JsonFromString: JsonFromStringS = make(S =>
     S.jsonString,
     S.imap(Json.Guard.json, 'Json')(
       jsonString => JSON.parse(jsonString) as J.Json,
-      json => JSON.stringify(json, null, 2) as JsonString,
+      json => stringify(json) as JsonString,
     ),
   ),
 )

@@ -4,16 +4,14 @@
  * @since 1.0.2
  */
 import type * as FastCheck from 'fast-check'
-import { identity, pipe } from 'fp-ts/function'
+import { flow, identity, pipe } from 'fp-ts/function'
 import * as RA from 'fp-ts/ReadonlyArray'
 import * as RR from 'fp-ts/ReadonlyRecord'
 import * as S from 'io-ts/Schemable'
 
+import { forIn, stringify } from '../internal/util'
 import { WithRefine2 } from '../schemables/WithRefine/definition'
 import { Schemable2 } from './SchemableBase'
-
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-type Any = any
 
 /**
  * @since 1.0.2
@@ -36,8 +34,8 @@ export const literal = <
   A extends readonly [L, ...ReadonlyArray<L>],
   L extends S.Literal = S.Literal,
 >(): Printer<A[number], A[number]> => ({
-  print: a => (a === null ? 'null' : JSON.stringify(a)),
-  printLeft: e => (e === null ? 'null' : JSON.stringify(e)),
+  print: stringify,
+  printLeft: stringify,
 })
 
 // -------------------------------------------------------------------------------------
@@ -49,8 +47,8 @@ export const literal = <
  * @category Primitives
  */
 export const string: Printer<string, string> = {
-  print: JSON.stringify,
-  printLeft: JSON.stringify,
+  print: stringify,
+  printLeft: stringify,
 }
 
 /**
@@ -58,8 +56,8 @@ export const string: Printer<string, string> = {
  * @category Primitives
  */
 export const number: Printer<number, number> = {
-  print: JSON.stringify,
-  printLeft: JSON.stringify,
+  print: stringify,
+  printLeft: stringify,
 }
 
 /**
@@ -67,8 +65,8 @@ export const number: Printer<number, number> = {
  * @category Primitives
  */
 export const boolean: Printer<boolean, boolean> = {
-  print: JSON.stringify,
-  printLeft: JSON.stringify,
+  print: stringify,
+  printLeft: stringify,
 }
 
 /**
@@ -76,8 +74,8 @@ export const boolean: Printer<boolean, boolean> = {
  * @category Primitives
  */
 export const UnknownArray: Printer<Array<unknown>, Array<unknown>> = {
-  print: JSON.stringify,
-  printLeft: JSON.stringify,
+  print: stringify,
+  printLeft: stringify,
 }
 
 /**
@@ -85,8 +83,8 @@ export const UnknownArray: Printer<Array<unknown>, Array<unknown>> = {
  * @category Primitives
  */
 export const UnknownRecord: Printer<Record<string, unknown>, Record<string, unknown>> = {
-  print: JSON.stringify,
-  printLeft: JSON.stringify,
+  print: stringify,
+  printLeft: stringify,
 }
 
 // -------------------------------------------------------------------------------------
@@ -108,33 +106,41 @@ export const nullable = <E, A>(or: Printer<E, A>): Printer<E, null | A> => ({
   printLeft: e => or.printLeft(e),
 })
 
-type InnerLeft<E extends Printer<Any, Any>> = E extends Printer<infer L, Any> ? L : never
+type InnerLeft<E extends Printer<any, any>> = E extends Printer<infer L, any> ? L : never
 
-type InnerRight<A extends Printer<Any, Any>> = A extends Printer<Any, infer R> ? R : never
+type InnerRight<A extends Printer<any, any>> = A extends Printer<any, infer R> ? R : never
 
 /**
  * @since 1.0.2
  * @category Combinators
  */
-export const struct = <P extends Record<string, Printer<Any, Any>>>(
+export const struct = <P extends Record<string, Printer<any, any>>>(
   properties: P,
 ): Printer<
   { [K in keyof P]: InnerLeft<P[K]> },
   { [K in keyof P]: InnerRight<P[K]> }
 > => ({
   print: a => {
-    const out: Any = {}
-    for (const [k, printer] of Object.entries<Printer<Any, Any>>(properties)) {
-      out[k] = printer.print(a[k as keyof P])
-    }
-    return JSON.stringify(out)
+    const out: { [K in keyof P]: string } = {} as any
+    pipe(
+      properties,
+      forIn((k, printer) => () => {
+        if (out[k] === a) out[k] = '[Circular]'
+        else out[k] = printer.print(a[k])
+      }),
+    )()
+    return stringify(out)
   },
   printLeft: e => {
-    const out: Any = {}
-    for (const [k, printer] of Object.entries<Printer<Any, Any>>(properties)) {
-      out[k] = printer.printLeft(e[k as keyof P])
-    }
-    return JSON.stringify(out)
+    const out: { [K in keyof P]: string } = {} as any
+    pipe(
+      properties,
+      forIn((k, printer) => () => {
+        if (out[k] === e) out[k] = '[Circular]'
+        else out[k] = printer.print(e[k])
+      }),
+    )()
+    return stringify(out)
   },
 })
 
@@ -142,47 +148,84 @@ export const struct = <P extends Record<string, Printer<Any, Any>>>(
  * @since 1.0.2
  * @category Combinators
  */
-export const partial = <P extends Record<string, Printer<Any, Any>>>(
+export const partial = <P extends Record<string, Printer<any, any>>>(
   properties: P,
 ): Printer<
   Partial<{ [K in keyof P]: InnerLeft<P[K]> }>,
   Partial<{ [K in keyof P]: InnerRight<P[K]> }>
 > => ({
-  print: a => {},
-  printLeft: e => {},
-})
-
-/**
- * @since 1.0.2
- * @category Combinators
- */
-export const record = <A>(codomain: Arbitrary<A>): Arbitrary<Record<string, A>> => ({
-  arbitrary: fc => fc.dictionary(string.arbitrary(fc), codomain.arbitrary(fc)),
-})
-
-/**
- * @since 1.0.2
- * @category Combinators
- */
-export const array = <A>(item: Arbitrary<A>): Arbitrary<Array<A>> => ({
-  arbitrary: fc => fc.array(item.arbitrary(fc)),
-})
-
-/**
- * @since 1.0.2
- * @category Combinators
- */
-export const tuple = <A extends ReadonlyArray<unknown>>(
-  ...components: { [K in keyof A]: Arbitrary<A[K]> }
-): Arbitrary<A> => ({
-  arbitrary: fc => {
-    if (components.length === 0) {
-      return fc.constant(RA.zero() as A)
-    }
-    return fc.tuple(
-      ...components.map(arb => arb.arbitrary(fc)),
-    ) as unknown as FastCheck.Arbitrary<A>
+  print: a => {
+    const out: { [K in keyof P]: string } = {} as any
+    pipe(
+      properties,
+      forIn((k, printer) => () => {
+        if (!Object.hasOwn(a, k)) return
+        if (out[k] === a) out[k] = '[Circular]'
+        else out[k] = printer.print(a[k])
+      }),
+    )()
+    return stringify(out)
   },
+  printLeft: e => {
+    const out: { [K in keyof P]: string } = {} as any
+    pipe(
+      properties,
+      forIn((k, printer) => () => {
+        if (!Object.hasOwn(e, k)) return
+        if (out[k] === e) out[k] = '[Circular]'
+        else out[k] = printer.print(e[k])
+      }),
+    )()
+    return stringify(out)
+  },
+})
+
+/**
+ * @since 1.0.2
+ * @category Combinators
+ */
+export const record = <E, A>(
+  codomain: Printer<E, A>,
+): Printer<Record<string, E>, Record<string, A>> => ({
+  print: flow(RR.map(codomain.print), stringify),
+  printLeft: flow(RR.map(codomain.printLeft), stringify),
+})
+
+/**
+ * @since 1.0.2
+ * @category Combinators
+ */
+export const array = <E, A>(
+  item: Printer<E, A>,
+): Printer<ReadonlyArray<E>, ReadonlyArray<A>> => ({
+  print: flow(RA.map(item.print), stringify),
+  printLeft: flow(RA.map(item.printLeft), stringify),
+})
+
+/**
+ * @since 1.0.2
+ * @category Combinators
+ */
+export const tuple = <C extends ReadonlyArray<Printer<any, any>>>(
+  ...components: C
+): Printer<
+  { [K in keyof C]: InnerLeft<C[K]> },
+  { [K in keyof C]: InnerRight<C[K]> }
+> => ({
+  print: a =>
+    pipe(
+      a,
+      RA.zip(components),
+      RA.map(([c, a]) => c.print(a)),
+      stringify,
+    ),
+  printLeft: e =>
+    pipe(
+      e,
+      RA.zip(components),
+      RA.map(([c, e]) => c.printLeft(e)),
+      stringify,
+    ),
 })
 
 /**
@@ -211,10 +254,10 @@ const intersect_ = <A, B>(a: A, b: B): A & B => {
  * @category Combinators
  */
 export const intersect =
-  <B>(right: Arbitrary<B>) =>
-  <A>(left: Arbitrary<A>): Arbitrary<A & B> => ({
-    arbitrary: fc =>
-      fc.tuple(left.arbitrary(fc), right.arbitrary(fc)).map(([a, b]) => intersect_(a, b)),
+  <F, B>(_: Printer<F, B>) =>
+  <E, A>(__: Printer<E, A>): Printer<E & F, A & B> => ({
+    print: stringify,
+    printLeft: stringify,
   })
 
 /**

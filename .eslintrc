@@ -8,6 +8,7 @@
   },
   "rules": {
     "@typescript-eslint/no-empty-interface": "off",
+    "@typescript-eslint/no-explicit-any": "off",
     "unused-imports/no-unused-imports": "warn",
     "simple-import-sort/imports": "warn",
     "simple-import-sort/exports": "warn"

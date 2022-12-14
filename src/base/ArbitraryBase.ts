@@ -9,8 +9,7 @@ import * as RA from 'fp-ts/ReadonlyArray'
 import * as RR from 'fp-ts/ReadonlyRecord'
 import * as S from 'io-ts/Schemable'
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-type Any = any
+import { forIn } from '../internal/util'
 
 /**
  * @since 1.0.0
@@ -119,11 +118,16 @@ export const struct = <A>(properties: {
   [K in keyof A]: Arbitrary<A[K]>
 }): Arbitrary<A> => ({
   arbitrary: fc => {
-    const out: Any = {}
-    for (const [k, arbitrary] of Object.entries<Arbitrary<Any>>(properties)) {
-      out[k] = arbitrary.arbitrary(fc)
-    }
-    return fc.record(out) as FastCheck.Arbitrary<A>
+    const out: {
+      [K in keyof A]: FastCheck.Arbitrary<A[K]>
+    } = {} as any
+    pipe(
+      properties,
+      forIn((k, arbitrary) => () => {
+        out[k] = arbitrary.arbitrary(fc)
+      }),
+    )()
+    return fc.record(out)
   },
 })
 
@@ -137,12 +141,17 @@ export const partial = <A>(properties: { [K in keyof A]: Arbitrary<A[K]> }): Arb
   arbitrary: fc => {
     const keys = fc.oneof(...Object.keys(properties).map(p => fc.constant(p)))
     return keys.chain(key => {
-      const out: Any = {}
-      for (const [k, arbitrary] of Object.entries<Arbitrary<Any>>(properties)) {
-        if (k !== key) {
-          out[k] = arbitrary.arbitrary(fc)
-        }
-      }
+      const out: {
+        [K in keyof A]: FastCheck.Arbitrary<A[K]>
+      } = {} as any
+      pipe(
+        properties,
+        forIn((k, arbitrary) => () => {
+          if (k !== key) {
+            out[k] = arbitrary.arbitrary(fc)
+          }
+        }),
+      )()
       return fc.record(out)
     })
   },
