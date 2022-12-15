@@ -1,5 +1,6 @@
 import { pipe } from 'fp-ts/function'
 import * as IO from 'fp-ts/IO'
+import * as O from 'fp-ts/Option'
 
 import * as PB from '../PatternBuilder'
 import { bigIntString } from '../schemata/number/BigIntFromString'
@@ -20,12 +21,14 @@ export const urlifyBase64 = (s: string): string =>
  */
 export const forIn =
   <A extends Record<string, any>>(
-    eff: <K extends keyof A>(key: K, value: A[K]) => IO.IO<void>,
+    eff: <K extends keyof A>(key: K, value: A[K]) => IO.IO<O.Option<void>>,
   ) =>
   (a: A): IO.IO<void> => {
     return () => {
       for (const key in a) {
-        if (Object.hasOwn(a, key)) eff(key, a[key])()
+        if (!Object.hasOwn(a, key)) continue
+        const result = eff(key, a[key])()
+        if (O.isNone(result)) return
       }
     }
   }
