@@ -41,7 +41,7 @@ export class ErrorContext {
  */
 export class CircularReference {
   readonly _tag = 'CircularReference'
-  constructor(readonly error: unknown) {}
+  constructor(readonly circularValue: unknown) {}
 }
 
 /**
@@ -211,6 +211,8 @@ export const struct = <P extends Record<string, Printer<any, any>>>(
     const out: { [K in keyof P]: string } = {} as any
     for (const key in a) {
       if (!Object.hasOwn(a, key)) continue
+      if (a[key] === a)
+        return E.left(new ErrorContext([key], new CircularReference(a[key])))
       // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
       const result = properties[key as keyof P]!.print(a[key])
       if (E.isLeft(result)) return E.left(new ErrorContext([key], result.left))
@@ -222,6 +224,8 @@ export const struct = <P extends Record<string, Printer<any, any>>>(
     const out: { [K in keyof P]: string } = {} as any
     for (const key in e) {
       if (!Object.hasOwn(e, key)) continue
+      if (e[key] === e)
+        return E.left(new ErrorContext([key], new CircularReference(e[key])))
       // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
       const result = properties[key as keyof P]!.printLeft(e[key])
       if (E.isLeft(result)) return E.left(new ErrorContext([key], result.left))
