@@ -3,11 +3,9 @@
  *
  * @since 1.0.2
  */
-import { sequenceS } from 'fp-ts/Apply'
 import * as E from 'fp-ts/Either'
 import { flow, identity, pipe } from 'fp-ts/function'
 import * as J from 'fp-ts/Json'
-import * as O from 'fp-ts/Option'
 import * as RA from 'fp-ts/ReadonlyArray'
 import * as RR from 'fp-ts/ReadonlyRecord'
 import * as S from 'io-ts/Schemable'
@@ -21,6 +19,7 @@ import { Schemable2 } from './SchemableBase'
  * @category Model
  */
 export type PrintingError =
+  | ErrorContext
   | CircularReference
   | InfiniteValue
   | NotANumber
@@ -31,9 +30,18 @@ export type PrintingError =
  * @since 1.0.2
  * @category Model
  */
+export class ErrorContext {
+  readonly _tag = 'Context'
+  constructor(readonly context: ReadonlyArray<string>, readonly error: PrintingError) {}
+}
+
+/**
+ * @since 1.0.2
+ * @category Model
+ */
 export class CircularReference {
   readonly _tag = 'CircularReference'
-  constructor(readonly error: unknown, readonly context: ReadonlyArray<string>) {}
+  constructor(readonly error: unknown) {}
 }
 
 /**
@@ -42,7 +50,6 @@ export class CircularReference {
  */
 export class InfiniteValue {
   readonly _tag = 'Infinity'
-  constructor(readonly context: ReadonlyArray<string>) {}
 }
 
 /**
@@ -51,7 +58,6 @@ export class InfiniteValue {
  */
 export class NotANumber {
   readonly _tag = 'NaN'
-  constructor(readonly context: ReadonlyArray<string>) {}
 }
 
 /**
@@ -63,7 +69,6 @@ export class InvalidValue {
   constructor(
     // eslint-disable-next-line @typescript-eslint/ban-types
     readonly value: undefined | Function | symbol | bigint,
-    readonly context: ReadonlyArray<string>,
   ) {}
 }
 
@@ -73,7 +78,7 @@ export class InvalidValue {
  */
 export class UnknownError {
   readonly _tag = 'UnknownError'
-  constructor(readonly error: unknown, readonly context: ReadonlyArray<string>) {}
+  constructor(readonly error: unknown) {}
 }
 
 /**
@@ -93,25 +98,20 @@ export interface Printer<E, A> {
  * @since 1.0.2
  * @category Constructors
  */
-export const printErrorFromInput: (
-  input: unknown,
-  context: ReadonlyArray<string>,
-) => (error: unknown) => PrintingError = (input, context) => error => {
-  if (input === undefined) return new InvalidValue(input, context)
-  if (typeof input === 'function') return new InvalidValue(input, context)
-  if (typeof input === 'symbol') return new InvalidValue(input, context)
-  if (typeof input === 'bigint') return new InvalidValue(input, context)
-  if (typeof input === 'number' && Number.isNaN(input)) return new NotANumber(context)
-  if (typeof input === 'number' && !Number.isFinite(input))
-    return new InfiniteValue(context)
-  return new UnknownError(error, context)
-}
+export const printErrorFromInput: (input: unknown) => (error: unknown) => PrintingError =
+  input => error => {
+    if (input === undefined) return new InvalidValue(input)
+    if (typeof input === 'function') return new InvalidValue(input)
+    if (typeof input === 'symbol') return new InvalidValue(input)
+    if (typeof input === 'bigint') return new InvalidValue(input)
+    if (typeof input === 'number' && Number.isNaN(input)) return new NotANumber()
+    if (typeof input === 'number' && !Number.isFinite(input)) return new InfiniteValue()
+    return new UnknownError(error)
+  }
 
 /** @internal */
-const stringify: (
-  context: ReadonlyArray<string>,
-) => (a: unknown) => E.Either<PrintingError, string> = context => input =>
-  pipe(J.stringify(input), E.mapLeft(printErrorFromInput(input, context)))
+const stringify: (a: unknown) => E.Either<PrintingError, string> = input =>
+  pipe(J.stringify(input), E.mapLeft(printErrorFromInput(input)))
 
 /**
  * @since 1.0.2
@@ -121,8 +121,8 @@ export const literal = <
   A extends readonly [L, ...ReadonlyArray<L>],
   L extends S.Literal = S.Literal,
 >(): Printer<A[number], A[number]> => ({
-  print: stringify([]),
-  printLeft: stringify([]),
+  print: stringify,
+  printLeft: stringify,
 })
 
 // -------------------------------------------------------------------------------------
@@ -134,8 +134,8 @@ export const literal = <
  * @category Primitives
  */
 export const string: Printer<string, string> = {
-  print: stringify([]),
-  printLeft: stringify([]),
+  print: stringify,
+  printLeft: stringify,
 }
 
 /**
@@ -143,8 +143,8 @@ export const string: Printer<string, string> = {
  * @category Primitives
  */
 export const number: Printer<number, number> = {
-  print: stringify([]),
-  printLeft: stringify([]),
+  print: stringify,
+  printLeft: stringify,
 }
 
 /**
@@ -152,8 +152,8 @@ export const number: Printer<number, number> = {
  * @category Primitives
  */
 export const boolean: Printer<boolean, boolean> = {
-  print: stringify([]),
-  printLeft: stringify([]),
+  print: stringify,
+  printLeft: stringify,
 }
 
 /**
@@ -161,8 +161,8 @@ export const boolean: Printer<boolean, boolean> = {
  * @category Primitives
  */
 export const UnknownArray: Printer<Array<unknown>, Array<unknown>> = {
-  print: stringify([]),
-  printLeft: stringify([]),
+  print: stringify,
+  printLeft: stringify,
 }
 
 /**
@@ -170,8 +170,8 @@ export const UnknownArray: Printer<Array<unknown>, Array<unknown>> = {
  * @category Primitives
  */
 export const UnknownRecord: Printer<Record<string, unknown>, Record<string, unknown>> = {
-  print: stringify([]),
-  printLeft: stringify([]),
+  print: stringify,
+  printLeft: stringify,
 }
 
 // -------------------------------------------------------------------------------------
@@ -213,10 +213,10 @@ export const struct = <P extends Record<string, Printer<any, any>>>(
       if (!Object.hasOwn(a, key)) continue
       // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
       const result = properties[key as keyof P]!.print(a[key])
-      if (E.isLeft(result)) return result
+      if (E.isLeft(result)) return E.left(new ErrorContext([key], result.left))
       out[key] = result.right
     }
-    return stringify([])(out)
+    return stringify(out)
   },
   printLeft: e => {
     const out: { [K in keyof P]: string } = {} as any
@@ -224,10 +224,10 @@ export const struct = <P extends Record<string, Printer<any, any>>>(
       if (!Object.hasOwn(e, key)) continue
       // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
       const result = properties[key as keyof P]!.printLeft(e[key])
-      if (E.isLeft(result)) return result
+      if (E.isLeft(result)) return E.left(new ErrorContext([key], result.left))
       out[key] = result.right
     }
-    return stringify([])(out)
+    return stringify(out)
   },
 })
 
