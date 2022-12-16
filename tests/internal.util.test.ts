@@ -1,98 +1,77 @@
-import { base64Encode, forIn, parse, stringify, urlifyBase64 } from '../src/internal/util'
+import * as E from 'fp-ts/Either'
+import { pipe } from 'fp-ts/function'
+import * as O from 'fp-ts/Option'
+
+import { base64Encode, forIn, traverseESO, urlifyBase64 } from '../src/internal/util'
 import { zipN } from '../test-utils'
 
-describe('stringify', () => {
-  it("doesn't throw on circular references", () => {
-    const a: any = {}
-    a.a = a
-    expect(JSON.parse(stringify(a))).toStrictEqual(JSON.parse('{"a":"[Circular]"}'))
-  })
-  it("doesn't throw on BigInts", () => {
-    expect(JSON.parse(stringify(1n))).toStrictEqual('1n')
-    expect(JSON.parse(stringify(BigInt(Number.MAX_SAFE_INTEGER)))).toStrictEqual(
-      `${BigInt(Number.MAX_SAFE_INTEGER)}n`,
-    )
-    expect(JSON.parse(stringify({ a: 2n }))).toStrictEqual({ a: '2n' })
-  })
-  it('handles undefined', () => {
-    expect(JSON.parse(stringify(undefined))).toStrictEqual('[undefined]')
-    expect(JSON.parse(stringify({ a: undefined }))).toStrictEqual({ a: '[undefined]' })
-  })
-  it('handles NaN', () => {
-    expect(JSON.parse(stringify(NaN))).toStrictEqual('[NaN]')
-    expect(JSON.parse(stringify({ a: NaN }))).toStrictEqual({ a: '[NaN]' })
-  })
-  it('handles Infinity', () => {
-    expect(JSON.parse(stringify(Infinity))).toStrictEqual('[Infinity]')
-    expect(JSON.parse(stringify({ a: Infinity }))).toStrictEqual({ a: '[Infinity]' })
-  })
-  it('handles deeply nested objects', () => {
-    const test = {
-      a: {
-        b: {
-          c: undefined,
-        },
-        d: Infinity,
-        e: NaN,
-        f: {
-          g: -Infinity,
-          h: 1n,
-        },
-      },
-    } as any
-    test.circ = test
-    expect(JSON.parse(stringify(test))).toStrictEqual({
-      a: {
-        b: {
-          c: '[undefined]',
-        },
-        d: '[Infinity]',
-        e: '[NaN]',
-        f: {
-          g: '[-Infinity]',
-          h: '1n',
-        },
-      },
-      circ: '[Circular]',
+describe('traverseESO', () => {
+  it('skips unenumerable properties', () => {
+    const tester = jest.fn()
+    const obj = {
+      a: 1,
+    }
+    Object.defineProperty(obj, 'b', {
+      value: 2,
     })
-  })
-})
-
-describe('parse', () => {
-  it("doesn't throw on circular references", () => {
-    const a: any = {}
-    a.a = a
-    expect(parse(stringify(a))).toStrictEqual({ a: '[Circular]' })
-  })
-  it("doesn't throw on BigInts", () => {
-    expect(parse(stringify({ a: '1n' }))).toStrictEqual({ a: 1n })
-  })
-  it('handles NaN', () => {
-    expect(parse('{"a":"[NaN]"}')).toStrictEqual({ a: NaN })
-  })
-  it('handles Infinity', () => {
-    expect(parse('{"a":"[Infinity]"}')).toStrictEqual({ a: Infinity })
-    expect(parse('{"a":"[-Infinity]"}')).toStrictEqual({ a: -Infinity })
-  })
-  it('handles deeply nested objects', () => {
-    const test = {
-      u: undefined,
-      a: {
-        b: {
-          c: null,
-        },
-        d: Infinity,
-        e: NaN,
-        f: {
-          g: -Infinity,
-          h: 1n,
-        },
-      },
-    } as any
-    test.circ = test
-    expect(parse(stringify(test))).toStrictEqual(
-      Object.assign({}, test, { circ: '[Circular]', u: '[undefined]' }),
+    const result = pipe(
+      obj,
+      traverseESO((_, value) => {
+        tester(value)
+        return O.some(E.right(value))
+      }),
     )
+    expect(tester).toHaveBeenCalledTimes(1)
+    expect(result).toStrictEqual(E.right({ a: 1 }))
+  })
+  it('skips inherited properties', () => {
+    const tester = jest.fn()
+    const obj = {
+      a: 1,
+      __proto__: {
+        b: 2,
+      },
+    }
+    const result = pipe(
+      obj,
+      traverseESO((_, value) => {
+        tester(value)
+        return O.some(E.right(value))
+      }),
+    )
+    expect(tester).toHaveBeenCalledTimes(1)
+    expect(result).toStrictEqual(E.right({ a: 1 }))
+  })
+  it('skips indices on none', () => {
+    const obj = {
+      a: 1,
+      b: 2,
+      c: 3,
+    }
+    const result = pipe(
+      obj,
+      traverseESO((_, value) => {
+        return value === 2 ? O.none : O.some(E.right(value))
+      }),
+    )
+    expect(result).toStrictEqual(E.right({ a: 1, c: 3 }))
+  })
+  it('fails fast', () => {
+    const tester = jest.fn()
+    const obj = {
+      a: 1,
+      b: 2,
+      c: 3,
+    }
+    const result = pipe(
+      obj,
+      traverseESO((_, value) => {
+        tester(value)
+        return value === 2 ? O.some(E.left('fail')) : O.some(E.right(value))
+      }),
+    )
+    expect(tester).toHaveBeenCalledTimes(2)
+    expect(result).toStrictEqual(E.left('fail'))
   })
 })
 

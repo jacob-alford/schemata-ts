@@ -4,14 +4,16 @@
  * @since 1.0.2
  */
 import * as E from 'fp-ts/Either'
-import { flow, identity, pipe } from 'fp-ts/function'
+import { identity, pipe } from 'fp-ts/function'
 import * as J from 'fp-ts/Json'
+import * as O from 'fp-ts/Option'
 import * as RA from 'fp-ts/ReadonlyArray'
 import * as RR from 'fp-ts/ReadonlyRecord'
 import * as S from 'io-ts/Schemable'
 
-import { forIn } from '../internal/util'
+import { traverseESO, typeOf } from '../internal/util'
 import { WithRefine2 } from '../schemables/WithRefine/definition'
+import { WithUnknownContainers2 } from '../schemables/WithUnknownContainers/definition'
 import { Schemable2 } from './SchemableBase'
 
 /**
@@ -19,7 +21,8 @@ import { Schemable2 } from './SchemableBase'
  * @category Model
  */
 export type PrintingError =
-  | ErrorContext
+  | ErrorAtIndex
+  | ErrorAtKey
   | CircularReference
   | InfiniteValue
   | NotANumber
@@ -30,9 +33,18 @@ export type PrintingError =
  * @since 1.0.2
  * @category Model
  */
-export class ErrorContext {
-  readonly _tag = 'Context'
-  constructor(readonly context: ReadonlyArray<string>, readonly error: PrintingError) {}
+export class ErrorAtIndex {
+  readonly _tag = 'ErrorAtIndex'
+  constructor(readonly index: number, readonly error: PrintingError) {}
+}
+
+/**
+ * @since 1.0.2
+ * @category Model
+ */
+export class ErrorAtKey {
+  readonly _tag = 'ErrorAtKey'
+  constructor(readonly key: string, readonly error: PrintingError) {}
 }
 
 /**
@@ -86,32 +98,32 @@ export class UnknownError {
  * @category Model
  */
 export interface Printer<E, A> {
-  readonly print: (a: A) => E.Either<PrintingError, string>
-  readonly printLeft: (e: E) => E.Either<PrintingError, string>
+  readonly print: (a: A) => E.Either<PrintingError, J.Json>
+  readonly printLeft: (e: E) => E.Either<PrintingError, J.Json>
 }
 
 // -------------------------------------------------------------------------------------
 // constructors
 // -------------------------------------------------------------------------------------
 
-/**
- * @since 1.0.2
- * @category Constructors
- */
-export const printErrorFromInput: (input: unknown) => (error: unknown) => PrintingError =
-  input => error => {
-    if (input === undefined) return new InvalidValue(input)
-    if (typeof input === 'function') return new InvalidValue(input)
-    if (typeof input === 'symbol') return new InvalidValue(input)
-    if (typeof input === 'bigint') return new InvalidValue(input)
-    if (typeof input === 'number' && Number.isNaN(input)) return new NotANumber()
-    if (typeof input === 'number' && !Number.isFinite(input)) return new InfiniteValue()
-    return new UnknownError(error)
-  }
-
 /** @internal */
-const stringify: (a: unknown) => E.Either<PrintingError, string> = input =>
-  pipe(J.stringify(input), E.mapLeft(printErrorFromInput(input)))
+const toJson = (input: unknown): E.Either<PrintingError, J.Json> => {
+  if (input === undefined) return E.left(new InvalidValue(input))
+  if (typeof input === 'function') return E.left(new InvalidValue(input))
+  if (typeof input === 'symbol') return E.left(new InvalidValue(input))
+  if (typeof input === 'bigint') return E.left(new InvalidValue(input))
+  if (typeof input === 'number' && Number.isNaN(input)) return E.left(new NotANumber())
+  if (typeof input === 'number' && !Number.isFinite(input))
+    return E.left(new InfiniteValue())
+  if (typeof input === 'number') return E.right(input)
+  if (typeof input === 'string') return E.right(input)
+  if (typeof input === 'boolean') return E.right(input)
+  if (input === null) return E.right(input)
+  return E.tryCatch(
+    () => JSON.stringify(input, null, 2),
+    error => new UnknownError(error),
+  )
+}
 
 /**
  * @since 1.0.2
@@ -120,9 +132,12 @@ const stringify: (a: unknown) => E.Either<PrintingError, string> = input =>
 export const literal = <
   A extends readonly [L, ...ReadonlyArray<L>],
   L extends S.Literal = S.Literal,
->(): Printer<A[number], A[number]> => ({
-  print: stringify,
-  printLeft: stringify,
+>(
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  ..._args: A
+): Printer<A[number], A[number]> => ({
+  print: toJson,
+  printLeft: toJson,
 })
 
 // -------------------------------------------------------------------------------------
@@ -134,8 +149,8 @@ export const literal = <
  * @category Primitives
  */
 export const string: Printer<string, string> = {
-  print: stringify,
-  printLeft: stringify,
+  print: toJson,
+  printLeft: toJson,
 }
 
 /**
@@ -143,8 +158,8 @@ export const string: Printer<string, string> = {
  * @category Primitives
  */
 export const number: Printer<number, number> = {
-  print: stringify,
-  printLeft: stringify,
+  print: toJson,
+  printLeft: toJson,
 }
 
 /**
@@ -152,8 +167,8 @@ export const number: Printer<number, number> = {
  * @category Primitives
  */
 export const boolean: Printer<boolean, boolean> = {
-  print: stringify,
-  printLeft: stringify,
+  print: toJson,
+  printLeft: toJson,
 }
 
 /**
@@ -161,8 +176,36 @@ export const boolean: Printer<boolean, boolean> = {
  * @category Primitives
  */
 export const UnknownArray: Printer<Array<unknown>, Array<unknown>> = {
-  print: stringify,
-  printLeft: stringify,
+  print: input =>
+    pipe(
+      input,
+      E.traverseReadonlyArrayWithIndex((i, v) =>
+        pipe(
+          v,
+          E.fromPredicate(
+            value => value !== input,
+            () => new CircularReference(v),
+          ),
+          E.chain(toJson),
+          E.mapLeft(err => new ErrorAtIndex(i, err)),
+        ),
+      ),
+    ),
+  printLeft: input =>
+    pipe(
+      input,
+      E.traverseReadonlyArrayWithIndex((i, v) =>
+        pipe(
+          v,
+          E.fromPredicate(
+            value => value !== input,
+            () => new CircularReference(v),
+          ),
+          E.chain(toJson),
+          E.mapLeft(err => new ErrorAtIndex(i, err)),
+        ),
+      ),
+    ),
 }
 
 /**
@@ -170,8 +213,36 @@ export const UnknownArray: Printer<Array<unknown>, Array<unknown>> = {
  * @category Primitives
  */
 export const UnknownRecord: Printer<Record<string, unknown>, Record<string, unknown>> = {
-  print: stringify,
-  printLeft: stringify,
+  print: input =>
+    pipe(
+      input,
+      RR.traverseWithIndex(E.Applicative)((key, v) =>
+        pipe(
+          v,
+          E.fromPredicate(
+            value => value !== input,
+            () => new CircularReference(v),
+          ),
+          E.chain(toJson),
+          E.mapLeft(err => new ErrorAtKey(key, err)),
+        ),
+      ),
+    ),
+  printLeft: input =>
+    pipe(
+      input,
+      RR.traverseWithIndex(E.Applicative)((key, v) =>
+        pipe(
+          v,
+          E.fromPredicate(
+            value => value !== input,
+            () => new CircularReference(v),
+          ),
+          E.chain(toJson),
+          E.mapLeft(err => new ErrorAtKey(key, err)),
+        ),
+      ),
+    ),
 }
 
 // -------------------------------------------------------------------------------------
@@ -189,13 +260,17 @@ export const refine: WithRefine2<URI>['refine'] = () => identity
  * @category Combinators
  */
 export const nullable = <E, A>(or: Printer<E, A>): Printer<null | E, null | A> => ({
-  print: a => (a === null ? E.right('null') : or.print(a)),
-  printLeft: e => (e === null ? E.right('null') : or.printLeft(e)),
+  print: a => (a === null ? E.right(null) : or.print(a)),
+  printLeft: e => (e === null ? E.right(null) : or.printLeft(e)),
 })
 
-type InnerLeft<E extends Printer<any, any>> = E extends Printer<infer L, any> ? L : never
+type InnerLeft<E extends Printer<any, any>> = [E] extends [Printer<infer L, any>]
+  ? L
+  : never
 
-type InnerRight<A extends Printer<any, any>> = A extends Printer<any, infer R> ? R : never
+type InnerRight<A extends Printer<any, any>> = [A] extends [Printer<any, infer R>]
+  ? R
+  : never
 
 /**
  * @since 1.0.2
@@ -207,32 +282,40 @@ export const struct = <P extends Record<string, Printer<any, any>>>(
   { [K in keyof P]: InnerLeft<P[K]> },
   { [K in keyof P]: InnerRight<P[K]> }
 > => ({
-  print: a => {
-    const out: { [K in keyof P]: string } = {} as any
-    for (const key in a) {
-      if (!Object.hasOwn(a, key)) continue
-      if (a[key] === a)
-        return E.left(new ErrorContext([key], new CircularReference(a[key])))
-      // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-      const result = properties[key as keyof P]!.print(a[key])
-      if (E.isLeft(result)) return E.left(new ErrorContext([key], result.left))
-      out[key] = result.right
-    }
-    return stringify(out)
-  },
-  printLeft: e => {
-    const out: { [K in keyof P]: string } = {} as any
-    for (const key in e) {
-      if (!Object.hasOwn(e, key)) continue
-      if (e[key] === e)
-        return E.left(new ErrorContext([key], new CircularReference(e[key])))
-      // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-      const result = properties[key as keyof P]!.printLeft(e[key])
-      if (E.isLeft(result)) return E.left(new ErrorContext([key], result.left))
-      out[key] = result.right
-    }
-    return stringify(out)
-  },
+  print: input =>
+    pipe(
+      properties,
+      traverseESO((key, printer) => {
+        const value = input[key]
+        if (value === input)
+          return O.some(
+            E.left(new ErrorAtKey(key as string, new CircularReference(value))),
+          )
+        return O.some(
+          pipe(
+            printer.print(value),
+            E.mapLeft((err): PrintingError => new ErrorAtKey(key as string, err)),
+          ),
+        )
+      }),
+    ),
+  printLeft: input =>
+    pipe(
+      properties,
+      traverseESO((key, printer) => {
+        const value = input[key]
+        if (value === input)
+          return O.some(
+            E.left(new ErrorAtKey(key as string, new CircularReference(value))),
+          )
+        return O.some(
+          pipe(
+            printer.printLeft(value),
+            E.mapLeft(err => new ErrorAtKey(key as string, err)),
+          ),
+        )
+      }),
+    ),
 })
 
 /**
@@ -245,30 +328,32 @@ export const partial = <P extends Record<string, Printer<any, any>>>(
   Partial<{ [K in keyof P]: InnerLeft<P[K]> }>,
   Partial<{ [K in keyof P]: InnerRight<P[K]> }>
 > => ({
-  print: a => {
-    const out: { [K in keyof P]: string } = {} as any
+  print: input =>
     pipe(
       properties,
-      forIn((k, printer) => () => {
-        if (!Object.hasOwn(a, k)) return
-        if (out[k] === a) out[k] = '[Circular]'
-        else out[k] = printer.print(a[k])
+      traverseESO((key, printer) => {
+        const value = input[key]
+        if (value === undefined) return O.none
+        if (value === input)
+          return O.some(
+            E.left(new ErrorAtKey(key as string, new CircularReference(value))),
+          )
+        return O.some(printer.print(value))
       }),
-    )()
-    return stringify(out)
-  },
-  printLeft: e => {
-    const out: { [K in keyof P]: string } = {} as any
+    ),
+  printLeft: input =>
     pipe(
       properties,
-      forIn((k, printer) => () => {
-        if (!Object.hasOwn(e, k)) return
-        if (out[k] === e) out[k] = '[Circular]'
-        else out[k] = printer.print(e[k])
+      traverseESO((key, printer) => {
+        const value = input[key]
+        if (value === undefined) return O.none
+        if (value === input)
+          return O.some(
+            E.left(new ErrorAtKey(key as string, new CircularReference(value))),
+          )
+        return O.some(printer.print(value))
       }),
-    )()
-    return stringify(out)
-  },
+    ),
 })
 
 /**
@@ -278,8 +363,18 @@ export const partial = <P extends Record<string, Printer<any, any>>>(
 export const record = <E, A>(
   codomain: Printer<E, A>,
 ): Printer<Record<string, E>, Record<string, A>> => ({
-  print: flow(RR.map(codomain.print), stringify),
-  printLeft: flow(RR.map(codomain.printLeft), stringify),
+  print: RR.traverseWithIndex(E.Applicative)((k, a) =>
+    pipe(
+      codomain.print(a),
+      E.mapLeft(err => new ErrorAtKey(k, err)),
+    ),
+  ),
+  printLeft: RR.traverseWithIndex(E.Applicative)((k, a) =>
+    pipe(
+      codomain.printLeft(a),
+      E.mapLeft(err => new ErrorAtKey(k, err)),
+    ),
+  ),
 })
 
 /**
@@ -289,8 +384,18 @@ export const record = <E, A>(
 export const array = <E, A>(
   item: Printer<E, A>,
 ): Printer<ReadonlyArray<E>, ReadonlyArray<A>> => ({
-  print: flow(RA.map(item.print), stringify),
-  printLeft: flow(RA.map(item.printLeft), stringify),
+  print: E.traverseReadonlyArrayWithIndex((i, a) =>
+    pipe(
+      item.print(a),
+      E.mapLeft(err => new ErrorAtIndex(i, err)),
+    ),
+  ),
+  printLeft: E.traverseReadonlyArrayWithIndex((i, a) =>
+    pipe(
+      item.printLeft(a),
+      E.mapLeft(err => new ErrorAtIndex(i, err)),
+    ),
+  ),
 })
 
 /**
@@ -304,16 +409,16 @@ export const tuple = <C extends ReadonlyArray<Printer<any, any>>>(
   { [K in keyof C]: InnerRight<C[K]> }
 > => ({
   print: input =>
-    stringify(RA.zipWith(components, input, (printer, a) => printer.print(a))),
+    pipe(
+      RA.zipWith(components, input, (printer, a) => printer.print(a)),
+      E.sequenceArray,
+    ),
   printLeft: input =>
-    stringify(RA.zipWith(components, input, (printer, b) => printer.printLeft(b))),
+    pipe(
+      RA.zipWith(components, input, (printer, b) => printer.printLeft(b)),
+      E.sequenceArray,
+    ),
 })
-
-/**
- * @since 1.0.2
- * @internal
- */
-export const typeOf = (x: unknown): string => (x === null ? 'null' : typeof x)
 
 /**
  * @since 1.0.2
@@ -337,43 +442,53 @@ const intersect_ = <A, B>(a: A, b: B): A & B => {
 export const intersect =
   <F, B>(pb: Printer<F, B>) =>
   <E, A>(pa: Printer<E, A>): Printer<E & F, A & B> => ({
-    print: input => {
-      const a = pa.print(input)
-      const b = pb.print(input)
-      return stringify(intersect_(a, b))
-    },
-    printLeft: input => {
-      const a = pa.printLeft(input)
-      const b = pb.printLeft(input)
-      return stringify(intersect_(a, b))
-    },
+    print: input =>
+      pipe(
+        E.Do,
+        E.apS('a', pa.print(input)),
+        E.apS('b', pb.print(input)),
+        E.map(({ a, b }) => intersect_(a, b)),
+        E.filterOrElseW(
+          a => a !== undefined,
+          () => new InvalidValue(undefined),
+        ),
+      ),
+    printLeft: input =>
+      pipe(
+        E.Do,
+        E.apS('a', pa.printLeft(input)),
+        E.apS('b', pb.printLeft(input)),
+        E.map(({ a, b }) => intersect_(a, b)),
+        E.filterOrElseW(
+          a => a !== undefined,
+          () => new InvalidValue(undefined),
+        ),
+      ),
   })
-
-type EnsureTagPrinter<T extends string, M> = {
-  [K in keyof M]: Printer<{ [_ in T]: K }, any>
-}
 
 /**
  * @since 1.0.2
  * @category Combinators
  */
 export const sum =
-  <T extends string>(_tag: T) =>
-  <A extends Record<PropertyKey, Printer<any, any>>>(
-    members: EnsureTagPrinter<T, A> & A,
+  <T extends string>(tag: T) =>
+  <MS extends Record<string, Printer<any, any>>>(
+    members: MS,
   ): Printer<
-    { [K in keyof A]: InnerLeft<A[K]> }[keyof A],
-    { [K in keyof A]: InnerRight<A[K]> }[keyof A]
+    { [K in keyof MS]: InnerLeft<MS[K]> }[keyof MS],
+    { [K in keyof MS]: InnerRight<MS[K]> }[keyof MS]
   > => ({
     print: a => {
-      const tag = a[_tag]
-      const printer = members[tag]
-      return printer.print(a)
+      // @ts-expect-error -- typelevel difference
+      const printer = members[a[tag]]
+      // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+      return printer!.print(a)
     },
     printLeft: e => {
-      const tag = e[_tag]
-      const printer = members[tag]
-      return printer.printLeft(e)
+      // @ts-expect-error -- typelevel difference
+      const printer = members[e[tag]]
+      // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+      return printer!.printLeft(e)
     },
   })
 
@@ -381,10 +496,15 @@ export const sum =
  * @since 1.0.2
  * @category Combinators
  */
-export const lazy = <A>(f: () => Arbitrary<A>): Arbitrary<A> => ({
-  arbitrary: fc => {
-    const get = S.memoize<void, Arbitrary<A>>(f)
-    return fc.constant(null).chain(() => get().arbitrary(fc))
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+export const lazy = <E, A>(_id: string, f: () => Printer<E, A>): Printer<E, A> => ({
+  print: input => {
+    const get = S.memoize<void, Printer<E, A>>(f)
+    return get().print(input)
+  },
+  printLeft: input => {
+    const get = S.memoize<void, Printer<E, A>>(f)
+    return get().printLeft(input)
   },
 })
 
@@ -392,15 +512,7 @@ export const lazy = <A>(f: () => Arbitrary<A>): Arbitrary<A> => ({
  * @since 1.0.2
  * @category Combintors
  */
-export const readonly: <A>(arb: Arbitrary<A>) => Arbitrary<Readonly<A>> = identity
-
-/**
- * @since 1.0.2
- * @category Combinators
- */
-export const union: S.WithUnion1<URI>['union'] = (...members) => ({
-  arbitrary: fc => fc.oneof(...members.map(arb => arb.arbitrary(fc))),
-})
+export const readonly: <E, A>(arb: Printer<E, A>) => Printer<E, Readonly<A>> = identity
 
 // -------------------------------------------------------------------------------------
 // instances
@@ -435,15 +547,14 @@ export const Schemable: Schemable2<URI> = {
   number,
   boolean,
   nullable,
-  type: struct,
   struct,
   partial,
   record,
   array,
-  tuple: tuple as S.Schemable1<URI>['tuple'],
+  tuple,
   intersect,
   sum,
-  lazy: (_, f) => lazy(f),
+  lazy,
   readonly,
 }
 
@@ -451,7 +562,7 @@ export const Schemable: Schemable2<URI> = {
  * @since 1.0.2
  * @category Instances
  */
-export const WithUnknownContainers: S.WithUnknownContainers1<URI> = {
+export const WithUnknownContainers: WithUnknownContainers2<URI> = {
   UnknownArray,
   UnknownRecord,
 }
@@ -460,14 +571,6 @@ export const WithUnknownContainers: S.WithUnknownContainers1<URI> = {
  * @since 1.0.2
  * @category Instances
  */
-export const WithUnion: S.WithUnion1<URI> = {
-  union,
-}
-
-/**
- * @since 1.0.2
- * @category Instances
- */
-export const WithRefine: S.WithRefine1<URI> = {
+export const WithRefine: WithRefine2<URI> = {
   refine,
 }

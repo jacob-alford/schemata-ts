@@ -9,7 +9,7 @@ import * as RA from 'fp-ts/ReadonlyArray'
 import * as RR from 'fp-ts/ReadonlyRecord'
 import * as S from 'io-ts/Schemable'
 
-import { forIn } from '../internal/util'
+import { forIn, typeOf } from '../internal/util'
 
 /**
  * @since 1.0.0
@@ -189,12 +189,6 @@ export const tuple = <A extends ReadonlyArray<unknown>>(
     ) as unknown as FastCheck.Arbitrary<A>
   },
 })
-
-/**
- * @since 1.0.0
- * @internal
- */
-export const typeOf = (x: unknown): string => (x === null ? 'null' : typeof x)
 
 /**
  * @since 1.0.0
