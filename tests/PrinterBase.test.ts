@@ -48,20 +48,28 @@ describe('PrinterBase', () => {
       E.left(new P.ErrorAtIndex(1, new P.CircularReference(a[1]))),
     )
   })
+  it('concats error groups', () => {
+    const e1 = new P.ErrorGroup([new P.NotANumber()])
+    const e2 = new P.ErrorGroup([new P.InfiniteValue()])
+    expect(P.semigroupPrintingError.concat(e1, e2)).toStrictEqual(
+      new P.ErrorGroup([new P.NotANumber(), new P.InfiniteValue()]),
+    )
+    expect(P.semigroupPrintingError.concat(new P.NotANumber(), e2)).toStrictEqual(
+      new P.ErrorGroup([new P.NotANumber(), new P.InfiniteValue()]),
+    )
+  })
   it('captures invalid values', () => {
     const printer = P.UnknownArray
-    expect(printer.print([undefined])).toStrictEqual(
-      E.left(new P.ErrorAtIndex(0, new P.InvalidValue(undefined))),
-    )
-    expect(printer.print([() => ''])).toStrictEqual(
-      E.left(new P.ErrorAtIndex(0, new P.InvalidValue(expect.any(Function)))),
-    )
     const s = Symbol()
-    expect(printer.print([s])).toStrictEqual(
-      E.left(new P.ErrorAtIndex(0, new P.InvalidValue(s))),
-    )
-    expect(printer.print([0n])).toStrictEqual(
-      E.left(new P.ErrorAtIndex(0, new P.InvalidValue(0n))),
+    expect(printer.print([undefined, () => '', s, 0n])).toStrictEqual(
+      E.left(
+        new P.ErrorGroup([
+          new P.ErrorAtIndex(0, new P.InvalidValue(undefined)),
+          new P.ErrorAtIndex(1, new P.InvalidValue(expect.any(Function))),
+          new P.ErrorAtIndex(2, new P.InvalidValue(s)),
+          new P.ErrorAtIndex(3, new P.InvalidValue(0n)),
+        ]),
+      ),
     )
   })
   test('UnknownRecord', () => {

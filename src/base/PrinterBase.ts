@@ -8,10 +8,12 @@ import { identity, pipe } from 'fp-ts/function'
 import * as J from 'fp-ts/Json'
 import * as O from 'fp-ts/Option'
 import * as RA from 'fp-ts/ReadonlyArray'
+import * as RNEA from 'fp-ts/ReadonlyNonEmptyArray'
 import * as RR from 'fp-ts/ReadonlyRecord'
+import * as Sg from 'fp-ts/Semigroup'
 import * as S from 'io-ts/Schemable'
 
-import { traverseESO, typeOf } from '../internal/util'
+import { traverseVESO, typeOf } from '../internal/util'
 import { WithRefine2 } from '../schemables/WithRefine/definition'
 import { WithUnknownContainers2 } from '../schemables/WithUnknownContainers/definition'
 import { Schemable2 } from './SchemableBase'
@@ -21,6 +23,7 @@ import { Schemable2 } from './SchemableBase'
  * @category Model
  */
 export type PrintingError =
+  | ErrorGroup
   | ErrorAtIndex
   | ErrorAtKey
   | CircularReference
@@ -28,6 +31,15 @@ export type PrintingError =
   | NotANumber
   | InvalidValue
   | UnknownError
+
+/**
+ * @since 1.0.2
+ * @category Model
+ */
+export class ErrorGroup {
+  readonly _tag = 'ErrorGroup'
+  constructor(readonly errors: RNEA.ReadonlyNonEmptyArray<PrintingError>) {}
+}
 
 /**
  * @since 1.0.2
@@ -95,12 +107,30 @@ export class UnknownError {
 
 /**
  * @since 1.0.2
+ * @category Instances
+ */
+export const semigroupPrintingError: Sg.Semigroup<PrintingError> = {
+  concat: (x, y): PrintingError =>
+    x instanceof ErrorGroup && y instanceof ErrorGroup
+      ? new ErrorGroup(RNEA.concat(y.errors)(x.errors))
+      : x instanceof ErrorGroup
+      ? new ErrorGroup(RNEA.concat(RNEA.of(y))(x.errors))
+      : y instanceof ErrorGroup
+      ? new ErrorGroup(RNEA.concat(y.errors)(RNEA.of(x)))
+      : new ErrorGroup(RNEA.concat(RNEA.of(y))(RNEA.of(x))),
+}
+
+/**
+ * @since 1.0.2
  * @category Model
  */
 export interface Printer<E, A> {
   readonly print: (a: A) => E.Either<PrintingError, J.Json>
   readonly printLeft: (e: E) => E.Either<PrintingError, J.Json>
 }
+
+/** @internal */
+const printerValidation = E.getApplicativeValidation(semigroupPrintingError)
 
 // -------------------------------------------------------------------------------------
 // constructors
@@ -179,7 +209,7 @@ export const UnknownArray: Printer<Array<unknown>, Array<unknown>> = {
   print: input =>
     pipe(
       input,
-      E.traverseReadonlyArrayWithIndex((i, v) =>
+      RA.traverseWithIndex(printerValidation)((i, v) =>
         pipe(
           v,
           E.fromPredicate(
@@ -194,7 +224,7 @@ export const UnknownArray: Printer<Array<unknown>, Array<unknown>> = {
   printLeft: input =>
     pipe(
       input,
-      E.traverseReadonlyArrayWithIndex((i, v) =>
+      RA.traverseWithIndex(printerValidation)((i, v) =>
         pipe(
           v,
           E.fromPredicate(
@@ -216,7 +246,7 @@ export const UnknownRecord: Printer<Record<string, unknown>, Record<string, unkn
   print: input =>
     pipe(
       input,
-      RR.traverseWithIndex(E.Applicative)((key, v) =>
+      RR.traverseWithIndex(printerValidation)((key, v) =>
         pipe(
           v,
           E.fromPredicate(
@@ -231,7 +261,7 @@ export const UnknownRecord: Printer<Record<string, unknown>, Record<string, unkn
   printLeft: input =>
     pipe(
       input,
-      RR.traverseWithIndex(E.Applicative)((key, v) =>
+      RR.traverseWithIndex(printerValidation)((key, v) =>
         pipe(
           v,
           E.fromPredicate(
@@ -285,7 +315,7 @@ export const struct = <P extends Record<string, Printer<any, any>>>(
   print: input =>
     pipe(
       properties,
-      traverseESO((key, printer) => {
+      traverseVESO(semigroupPrintingError)((key, printer) => {
         const value = input[key]
         if (value === input)
           return O.some(
@@ -302,7 +332,7 @@ export const struct = <P extends Record<string, Printer<any, any>>>(
   printLeft: input =>
     pipe(
       properties,
-      traverseESO((key, printer) => {
+      traverseVESO(semigroupPrintingError)((key, printer) => {
         const value = input[key]
         if (value === input)
           return O.some(
@@ -331,7 +361,7 @@ export const partial = <P extends Record<string, Printer<any, any>>>(
   print: input =>
     pipe(
       properties,
-      traverseESO((key, printer) => {
+      traverseVESO(semigroupPrintingError)((key, printer) => {
         const value = input[key]
         if (value === undefined) return O.none
         if (value === input)
@@ -344,7 +374,7 @@ export const partial = <P extends Record<string, Printer<any, any>>>(
   printLeft: input =>
     pipe(
       properties,
-      traverseESO((key, printer) => {
+      traverseVESO(semigroupPrintingError)((key, printer) => {
         const value = input[key]
         if (value === undefined) return O.none
         if (value === input)

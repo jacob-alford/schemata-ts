@@ -1,6 +1,10 @@
 import * as E from 'fp-ts/Either'
+import { pipe } from 'fp-ts/function'
 import * as IO from 'fp-ts/IO'
 import * as O from 'fp-ts/Option'
+import * as RA from 'fp-ts/ReadonlyArray'
+import * as RNEA from 'fp-ts/ReadonlyNonEmptyArray'
+import * as Sg from 'fp-ts/Semigroup'
 
 /* istanbul ignore next */
 /** @internal */
@@ -18,15 +22,17 @@ export const urlifyBase64 = (s: string): string =>
 export const typeOf = (x: unknown): string => (x === null ? 'null' : typeof x)
 
 /**
- * Performs a fail-fast skippable traversal over a struct's own enumerable properties.
+ * Performs a validative traversal over a struct's own enumerable properties.
  *
  * Not to be confused with traveling across spain
  */
-export const traverseESO =
-  <In extends Record<string, any>, E, A>(
+export const traverseVESO =
+  <E>(sgErrors: Sg.Semigroup<E>) =>
+  <In extends Record<string, any>, A>(
     f: <K extends keyof In>(key: K, value: In[K]) => O.Option<E.Either<E, A>>,
   ) =>
   (s: In): E.Either<E, { [K in keyof In]: A }> => {
+    const errors: E[] = []
     const out: { [K in keyof In]: A } = {} as any
     /* Enumerable own, Enumerable inherited */
     for (const key in s) {
@@ -37,11 +43,12 @@ export const traverseESO =
       /* none => skip */
       if (O.isNone(result)) continue
       /* Bail early if effect failed */
-      if (E.isLeft(result.value)) return result.value
-      /* Otherwise, add result to output */
-      out[key] = result.value.right
+      if (E.isLeft(result.value)) errors.push(result.value.left)
+      /* Otherwise, add result to output */ else out[key] = result.value.right
     }
-    return E.right(out)
+    return RA.isNonEmpty(errors)
+      ? E.left(pipe(errors, RNEA.concatAll(sgErrors)))
+      : E.right(out)
   }
 
 /**

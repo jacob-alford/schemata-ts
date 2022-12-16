@@ -1,8 +1,9 @@
 import * as E from 'fp-ts/Either'
 import { pipe } from 'fp-ts/function'
 import * as O from 'fp-ts/Option'
+import * as RA from 'fp-ts/ReadonlyArray'
 
-import { base64Encode, forIn, traverseESO, urlifyBase64 } from '../src/internal/util'
+import { base64Encode, forIn, traverseVESO, urlifyBase64 } from '../src/internal/util'
 import { zipN } from '../test-utils'
 
 describe('traverseESO', () => {
@@ -16,7 +17,7 @@ describe('traverseESO', () => {
     })
     const result = pipe(
       obj,
-      traverseESO((_, value) => {
+      traverseVESO(RA.getMonoid())((_, value) => {
         tester(value)
         return O.some(E.right(value))
       }),
@@ -34,7 +35,7 @@ describe('traverseESO', () => {
     }
     const result = pipe(
       obj,
-      traverseESO((_, value) => {
+      traverseVESO(RA.getMonoid())((_, value) => {
         tester(value)
         return O.some(E.right(value))
       }),
@@ -50,13 +51,13 @@ describe('traverseESO', () => {
     }
     const result = pipe(
       obj,
-      traverseESO((_, value) => {
+      traverseVESO(RA.getMonoid())((_, value) => {
         return value === 2 ? O.none : O.some(E.right(value))
       }),
     )
     expect(result).toStrictEqual(E.right({ a: 1, c: 3 }))
   })
-  it('fails fast', () => {
+  it('no longer fails fast', () => {
     const tester = jest.fn()
     const obj = {
       a: 1,
@@ -65,13 +66,12 @@ describe('traverseESO', () => {
     }
     const result = pipe(
       obj,
-      traverseESO((_, value) => {
+      traverseVESO(RA.getMonoid<string>())((_, value) => {
         tester(value)
-        return value === 2 ? O.some(E.left('fail')) : O.some(E.right(value))
+        return value >= 2 ? O.some(E.left(['fail'])) : O.some(E.right(value))
       }),
     )
-    expect(tester).toHaveBeenCalledTimes(2)
-    expect(result).toStrictEqual(E.left('fail'))
+    expect(result).toStrictEqual(E.left(['fail', 'fail']))
   })
 })
 
