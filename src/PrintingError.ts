@@ -18,6 +18,7 @@ export type PrintingError =
   | ErrorGroup
   | ErrorAtIndex
   | ErrorAtKey
+  | Message
   | CircularReference
   | InfiniteValue
   | NotANumber
@@ -27,6 +28,15 @@ export type PrintingError =
 // -------------------------------------------------------------------------------------
 // Constructors
 // -------------------------------------------------------------------------------------
+
+/**
+ * @since 1.0.2
+ * @category Constructors
+ */
+export class Message {
+  readonly _tag = 'Message'
+  constructor(readonly message: string, readonly error: PrintingError) {}
+}
 
 /**
  * @since 1.0.2
