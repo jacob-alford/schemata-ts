@@ -20,7 +20,7 @@ export interface WithOptionHKT2<S> {
    * @since 1.0.0
    * @category Model
    */
-  readonly optionFromExclude: <A, B extends A, E>(
+  readonly optionFromExclude: <A, B extends A, E extends A>(
     exclude: B,
     sa: HKT2<S, E, A>,
     eqA?: Eq_.Eq<A>,
@@ -58,7 +58,7 @@ export interface WithOption2<S extends URIS2> {
    * @since 1.0.0
    * @category Model
    */
-  readonly optionFromExclude: <A, B extends A, E>(
+  readonly optionFromExclude: <A, B extends A, E extends A>(
     exclude: B,
     sa: Kind2<S, E, A>,
     eqA?: Eq_.Eq<A>,

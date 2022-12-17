@@ -18,7 +18,7 @@ export type PrintingError =
   | ErrorGroup
   | ErrorAtIndex
   | ErrorAtKey
-  | Message
+  | NamedError
   | CircularReference
   | InfiniteValue
   | NotANumber
@@ -33,9 +33,9 @@ export type PrintingError =
  * @since 1.0.2
  * @category Constructors
  */
-export class Message {
+export class NamedError {
   readonly _tag = 'Message'
-  constructor(readonly message: string, readonly error: PrintingError) {}
+  constructor(readonly expected: string, readonly error: PrintingError) {}
 }
 
 /**
@@ -96,10 +96,7 @@ export class NotANumber {
  */
 export class InvalidValue {
   readonly _tag = 'InvalidValue'
-  constructor(
-    // eslint-disable-next-line @typescript-eslint/ban-types
-    readonly value: undefined | Function | symbol | bigint,
-  ) {}
+  constructor(readonly value: unknown) {}
 }
 
 /**

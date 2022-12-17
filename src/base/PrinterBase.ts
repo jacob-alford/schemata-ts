@@ -14,7 +14,6 @@ import * as S from 'io-ts/Schemable'
 import { typeOf, witherS } from '../internal/util'
 import * as PE from '../PrintingError'
 import { WithRefine2 } from '../schemables/WithRefine/definition'
-import { WithUnknownContainers2 } from '../schemables/WithUnknownContainers/definition'
 import { Schemable2 } from './SchemableBase'
 
 /**
@@ -27,7 +26,7 @@ export interface Printer<E, A> {
 }
 
 /** @internal */
-const printerValidation = E.getApplicativeValidation(PE.semigroupPrintingError)
+export const printerValidation = E.getApplicativeValidation(PE.semigroupPrintingError)
 
 // -------------------------------------------------------------------------------------
 // constructors
@@ -191,11 +190,13 @@ export const nullable = <E, A>(or: Printer<E, A>): Printer<null | E, null | A> =
   printLeft: e => (e === null ? E.right(null) : or.printLeft(e)),
 })
 
-type InnerLeft<E extends Printer<any, any>> = [E] extends [Printer<infer L, any>]
+/** @internal */
+export type InnerLeft<E extends Printer<any, any>> = [E] extends [Printer<infer L, any>]
   ? L
   : never
 
-type InnerRight<A extends Printer<any, any>> = [A] extends [Printer<any, infer R>]
+/** @internal */
+export type InnerRight<A extends Printer<any, any>> = [A] extends [Printer<any, infer R>]
   ? R
   : never
 
@@ -547,21 +548,4 @@ export const Schemable: Schemable2<URI> = {
   sum,
   lazy,
   readonly,
-}
-
-/**
- * @since 1.0.2
- * @category Instances
- */
-export const WithUnknownContainers: WithUnknownContainers2<URI> = {
-  UnknownArray,
-  UnknownRecord,
-}
-
-/**
- * @since 1.0.2
- * @category Instances
- */
-export const WithRefine: WithRefine2<URI> = {
-  refine,
 }
