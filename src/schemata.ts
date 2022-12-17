@@ -203,6 +203,14 @@ export {
 
 export {
   /**
+   * A read-only Array containing one or more elements.
+   *
+   * @since 1.0.2
+   */
+  NonEmptyArray,
+} from './schemata/generic/NonEmptyArray'
+export {
+  /**
    * Represents an optional type which encodes to / decodes from null
    *
    * @since 1.0.0
