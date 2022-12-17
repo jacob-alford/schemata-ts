@@ -1,6 +1,6 @@
 ---
 title: schemata/number/NonPositiveFloat.ts
-nav_order: 169
+nav_order: 170
 parent: Modules
 ---
 

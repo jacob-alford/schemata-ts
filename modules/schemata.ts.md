@@ -50,6 +50,7 @@ Added in v1.0.0
   - [Natural](#natural)
   - [NegativeFloat](#negativefloat)
   - [NegativeInt](#negativeint)
+  - [NonEmptyArray](#nonemptyarray)
   - [NonEmptyString](#nonemptystring)
   - [NonNegativeFloat](#nonnegativefloat)
   - [NonPositiveFloat](#nonpositivefloat)
@@ -573,6 +574,18 @@ export declare const NegativeInt: NegativeIntS
 ```
 
 Added in v1.0.0
+
+## NonEmptyArray
+
+A read-only Array containing one or more elements.
+
+**Signature**
+
+```ts
+export declare const NonEmptyArray: NonEmptyArrayS
+```
+
+Added in v1.0.2
 
 ## NonEmptyString
 
