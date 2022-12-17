@@ -2,6 +2,7 @@ import * as E from 'fp-ts/Either'
 import { pipe } from 'fp-ts/function'
 
 import * as P from '../src/base/PrinterBase'
+import * as PE from '../src/PrintingError'
 
 describe('PrinterBase', () => {
   test('literal', () => {
@@ -19,8 +20,8 @@ describe('PrinterBase', () => {
   })
   it('captures infinite values', () => {
     const printer = P.number
-    expect(printer.print(Infinity)).toStrictEqual(E.left(new P.InfiniteValue()))
-    expect(printer.print(-Infinity)).toStrictEqual(E.left(new P.InfiniteValue()))
+    expect(printer.print(Infinity)).toStrictEqual(E.left(new PE.InfiniteValue()))
+    expect(printer.print(-Infinity)).toStrictEqual(E.left(new PE.InfiniteValue()))
   })
   test('boolean', () => {
     const printer = P.boolean
@@ -34,7 +35,7 @@ describe('PrinterBase', () => {
   it('captures infinite values in an unknown array', () => {
     const printer = P.UnknownArray
     expect(printer.print([1, Infinity, 3])).toStrictEqual(
-      E.left(new P.ErrorAtIndex(1, new P.InfiniteValue())),
+      E.left(new PE.ErrorAtIndex(1, new PE.InfiniteValue())),
     )
   })
   it('captures circular references in an unknown array', () => {
@@ -42,20 +43,20 @@ describe('PrinterBase', () => {
     a[1] = a
     const printer = P.UnknownArray
     expect(printer.print(a)).toStrictEqual(
-      E.left(new P.ErrorAtIndex(1, new P.CircularReference(a[1]))),
+      E.left(new PE.ErrorAtIndex(1, new PE.CircularReference(a[1]))),
     )
     expect(printer.printLeft(a)).toStrictEqual(
-      E.left(new P.ErrorAtIndex(1, new P.CircularReference(a[1]))),
+      E.left(new PE.ErrorAtIndex(1, new PE.CircularReference(a[1]))),
     )
   })
   it('concats error groups', () => {
-    const e1 = new P.ErrorGroup([new P.NotANumber()])
-    const e2 = new P.ErrorGroup([new P.InfiniteValue()])
-    expect(P.semigroupPrintingError.concat(e1, e2)).toStrictEqual(
-      new P.ErrorGroup([new P.NotANumber(), new P.InfiniteValue()]),
+    const e1 = new PE.ErrorGroup([new PE.NotANumber()])
+    const e2 = new PE.ErrorGroup([new PE.InfiniteValue()])
+    expect(PE.semigroupPrintingError.concat(e1, e2)).toStrictEqual(
+      new PE.ErrorGroup([new PE.NotANumber(), new PE.InfiniteValue()]),
     )
-    expect(P.semigroupPrintingError.concat(new P.NotANumber(), e2)).toStrictEqual(
-      new P.ErrorGroup([new P.NotANumber(), new P.InfiniteValue()]),
+    expect(PE.semigroupPrintingError.concat(new PE.NotANumber(), e2)).toStrictEqual(
+      new PE.ErrorGroup([new PE.NotANumber(), new PE.InfiniteValue()]),
     )
   })
   it('captures invalid values', () => {
@@ -63,11 +64,11 @@ describe('PrinterBase', () => {
     const s = Symbol()
     expect(printer.print([undefined, () => '', s, 0n])).toStrictEqual(
       E.left(
-        new P.ErrorGroup([
-          new P.ErrorAtIndex(0, new P.InvalidValue(undefined)),
-          new P.ErrorAtIndex(1, new P.InvalidValue(expect.any(Function))),
-          new P.ErrorAtIndex(2, new P.InvalidValue(s)),
-          new P.ErrorAtIndex(3, new P.InvalidValue(0n)),
+        new PE.ErrorGroup([
+          new PE.ErrorAtIndex(0, new PE.InvalidValue(undefined)),
+          new PE.ErrorAtIndex(1, new PE.InvalidValue(expect.any(Function))),
+          new PE.ErrorAtIndex(2, new PE.InvalidValue(s)),
+          new PE.ErrorAtIndex(3, new PE.InvalidValue(0n)),
         ]),
       ),
     )
@@ -94,10 +95,10 @@ describe('PrinterBase', () => {
     a.b = a
     const printer = P.UnknownRecord
     expect(printer.print(a)).toStrictEqual(
-      E.left(new P.ErrorAtKey('b', new P.CircularReference(a.b))),
+      E.left(new PE.ErrorAtKey('b', new PE.CircularReference(a.b))),
     )
     expect(printer.printLeft(a)).toStrictEqual(
-      E.left(new P.ErrorAtKey('b', new P.CircularReference(a.b))),
+      E.left(new PE.ErrorAtKey('b', new PE.CircularReference(a.b))),
     )
   })
   it('returns unknown error for mutually circular record', () => {
@@ -111,7 +112,7 @@ describe('PrinterBase', () => {
     }
     a.b = b
     expect(printer.print(a)).toStrictEqual(
-      E.left(new P.ErrorAtKey('b', new P.UnknownError(expect.any(Error)))),
+      E.left(new PE.ErrorAtKey('b', new PE.UnknownError(expect.any(Error)))),
     )
   })
   test('refine', () => {
@@ -119,7 +120,7 @@ describe('PrinterBase', () => {
       P.number,
       P.refine((n): n is typeof NaN => Number.isNaN(n), ''),
     )
-    expect(printer.print(NaN)).toStrictEqual(E.left(new P.NotANumber()))
+    expect(printer.print(NaN)).toStrictEqual(E.left(new PE.NotANumber()))
   })
   test('nullable', () => {
     const printer = P.nullable(P.string)
@@ -146,10 +147,10 @@ describe('PrinterBase', () => {
       bar: P.number,
     })
     expect(printer.print({ foo: 'foo', bar: NaN })).toStrictEqual(
-      E.left(new P.ErrorAtKey('bar', new P.NotANumber())),
+      E.left(new PE.ErrorAtKey('bar', new PE.NotANumber())),
     )
     expect(printer.printLeft({ foo: 'foo', bar: NaN })).toStrictEqual(
-      E.left(new P.ErrorAtKey('bar', new P.NotANumber())),
+      E.left(new PE.ErrorAtKey('bar', new PE.NotANumber())),
     )
   })
   it('captures circular references', () => {
@@ -166,10 +167,10 @@ describe('PrinterBase', () => {
       c: P.lazy('', () => printer),
     })
     expect(printer.print(a)).toStrictEqual(
-      E.left(new P.ErrorAtKey('c', new P.CircularReference(a.c))),
+      E.left(new PE.ErrorAtKey('c', new PE.CircularReference(a.c))),
     )
     expect(printer.printLeft(a)).toStrictEqual(
-      E.left(new P.ErrorAtKey('c', new P.CircularReference(a.c))),
+      E.left(new PE.ErrorAtKey('c', new PE.CircularReference(a.c))),
     )
   })
   test('partial', () => {
@@ -200,10 +201,10 @@ describe('PrinterBase', () => {
       b: P.lazy('', () => printer),
     })
     expect(printer.print(a)).toStrictEqual(
-      E.left(new P.ErrorAtKey('b', new P.CircularReference(a.b))),
+      E.left(new PE.ErrorAtKey('b', new PE.CircularReference(a.b))),
     )
     expect(printer.printLeft(a)).toStrictEqual(
-      E.left(new P.ErrorAtKey('b', new P.CircularReference(a.b))),
+      E.left(new PE.ErrorAtKey('b', new PE.CircularReference(a.b))),
     )
   })
   test('record', () => {
@@ -215,10 +216,25 @@ describe('PrinterBase', () => {
   test('record catches printing errors', () => {
     const printer = P.record(P.number)
     expect(printer.print({ foo: 1, bar: NaN })).toStrictEqual(
-      E.left(new P.ErrorAtKey('bar', new P.NotANumber())),
+      E.left(new PE.ErrorAtKey('bar', new PE.NotANumber())),
     )
     expect(printer.printLeft({ foo: 1, bar: NaN })).toStrictEqual(
-      E.left(new P.ErrorAtKey('bar', new P.NotANumber())),
+      E.left(new PE.ErrorAtKey('bar', new PE.NotANumber())),
+    )
+  })
+  test('record catches circularity', () => {
+    const a: any = {
+      a: 1,
+    }
+    a.b = a
+    // Not sure if this is actually possible without type casting
+    // but it's a good test case anyway
+    const printer = P.record(P.lazy('', () => printer)) as any
+    expect(printer.print(a)).toStrictEqual(
+      E.left(new PE.ErrorAtKey('b', new PE.CircularReference(a.b))),
+    )
+    expect(printer.printLeft(a)).toStrictEqual(
+      E.left(new PE.ErrorAtKey('b', new PE.CircularReference(a.b))),
     )
   })
   test('array', () => {
@@ -228,17 +244,61 @@ describe('PrinterBase', () => {
   })
   test('array captures printing errors', () => {
     const printer = P.array(P.number)
-    expect(printer.print([1, NaN])).toStrictEqual(
-      E.left(new P.ErrorAtIndex(1, new P.NotANumber())),
+    expect(printer.print([1, NaN, Infinity])).toStrictEqual(
+      E.left(
+        new PE.ErrorGroup([
+          new PE.ErrorAtIndex(1, new PE.NotANumber()),
+          new PE.ErrorAtIndex(2, new PE.InfiniteValue()),
+        ]),
+      ),
     )
-    expect(printer.printLeft([1, NaN])).toStrictEqual(
-      E.left(new P.ErrorAtIndex(1, new P.NotANumber())),
+    expect(printer.printLeft([1, NaN, -Infinity])).toStrictEqual(
+      E.left(
+        new PE.ErrorGroup([
+          new PE.ErrorAtIndex(1, new PE.NotANumber()),
+          new PE.ErrorAtIndex(2, new PE.InfiniteValue()),
+        ]),
+      ),
+    )
+  })
+  test('array captures circularity', () => {
+    const a: any = [1]
+    a.push(a)
+    const printer = P.array(P.lazy('', () => printer)) as any
+    expect(printer.print(a)).toStrictEqual(
+      E.left(new PE.ErrorAtIndex(1, new PE.CircularReference(a[1]))),
+    )
+    expect(printer.printLeft(a)).toStrictEqual(
+      E.left(new PE.ErrorAtIndex(1, new PE.CircularReference(a[1]))),
     )
   })
   test('tuple', () => {
     const printer = P.tuple(P.string, P.number)
     expect(printer.print(['foo', 1])).toStrictEqual(E.right(['foo', 1]))
     expect(printer.printLeft(['foo', 1])).toStrictEqual(E.right(['foo', 1]))
+  })
+  test('tuple captures printing errors', () => {
+    const printer = P.tuple(P.string, P.number)
+    expect(printer.print(['foo', NaN])).toStrictEqual(
+      E.left(new PE.ErrorAtIndex(1, new PE.NotANumber())),
+    )
+    expect(printer.printLeft(['foo', NaN])).toStrictEqual(
+      E.left(new PE.ErrorAtIndex(1, new PE.NotANumber())),
+    )
+  })
+  test('tuple captures circularity', () => {
+    const a: any = [1]
+    a.push(a)
+    const printer = P.tuple(
+      P.number,
+      P.lazy('', () => printer),
+    ) as any
+    expect(printer.print(a)).toStrictEqual(
+      E.left(new PE.ErrorAtIndex(1, new PE.CircularReference(a[1]))),
+    )
+    expect(printer.printLeft(a)).toStrictEqual(
+      E.left(new PE.ErrorAtIndex(1, new PE.CircularReference(a[1]))),
+    )
   })
   test('intersect', () => {
     const printer = pipe(
@@ -254,9 +314,11 @@ describe('PrinterBase', () => {
   })
   it('returns invalid value for empty intersection', () => {
     const printer = pipe(P.number, P.intersect(P.string))
-    expect(printer.print(0 as never)).toStrictEqual(E.left(new P.InvalidValue(undefined)))
+    expect(printer.print(0 as never)).toStrictEqual(
+      E.left(new PE.InvalidValue(undefined)),
+    )
     expect(printer.printLeft(0 as never)).toStrictEqual(
-      E.left(new P.InvalidValue(undefined)),
+      E.left(new PE.InvalidValue(undefined)),
     )
   })
   test('sum', () => {

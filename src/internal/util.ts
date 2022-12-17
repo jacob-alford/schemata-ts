@@ -26,7 +26,7 @@ export const typeOf = (x: unknown): string => (x === null ? 'null' : typeof x)
  *
  * Not to be confused with traveling across spain
  */
-export const traverseVESO =
+export const witherS =
   <E>(sgErrors: Sg.Semigroup<E>) =>
   <In extends Record<string, any>, A>(
     f: <K extends keyof In>(key: K, value: In[K]) => O.Option<E.Either<E, A>>,

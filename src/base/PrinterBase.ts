@@ -8,12 +8,11 @@ import { identity, pipe } from 'fp-ts/function'
 import * as J from 'fp-ts/Json'
 import * as O from 'fp-ts/Option'
 import * as RA from 'fp-ts/ReadonlyArray'
-import * as RNEA from 'fp-ts/ReadonlyNonEmptyArray'
 import * as RR from 'fp-ts/ReadonlyRecord'
-import * as Sg from 'fp-ts/Semigroup'
 import * as S from 'io-ts/Schemable'
 
-import { traverseVESO, typeOf } from '../internal/util'
+import { typeOf, witherS } from '../internal/util'
+import * as PE from '../PrintingError'
 import { WithRefine2 } from '../schemables/WithRefine/definition'
 import { WithUnknownContainers2 } from '../schemables/WithUnknownContainers/definition'
 import { Schemable2 } from './SchemableBase'
@@ -22,136 +21,34 @@ import { Schemable2 } from './SchemableBase'
  * @since 1.0.2
  * @category Model
  */
-export type PrintingError =
-  | ErrorGroup
-  | ErrorAtIndex
-  | ErrorAtKey
-  | CircularReference
-  | InfiniteValue
-  | NotANumber
-  | InvalidValue
-  | UnknownError
-
-/**
- * @since 1.0.2
- * @category Model
- */
-export class ErrorGroup {
-  readonly _tag = 'ErrorGroup'
-  constructor(readonly errors: RNEA.ReadonlyNonEmptyArray<PrintingError>) {}
-}
-
-/**
- * @since 1.0.2
- * @category Model
- */
-export class ErrorAtIndex {
-  readonly _tag = 'ErrorAtIndex'
-  constructor(readonly index: number, readonly error: PrintingError) {}
-}
-
-/**
- * @since 1.0.2
- * @category Model
- */
-export class ErrorAtKey {
-  readonly _tag = 'ErrorAtKey'
-  constructor(readonly key: string, readonly error: PrintingError) {}
-}
-
-/**
- * @since 1.0.2
- * @category Model
- */
-export class CircularReference {
-  readonly _tag = 'CircularReference'
-  constructor(readonly circularValue: unknown) {}
-}
-
-/**
- * @since 1.0.2
- * @category Model
- */
-export class InfiniteValue {
-  readonly _tag = 'Infinity'
-}
-
-/**
- * @since 1.0.2
- * @category Model
- */
-export class NotANumber {
-  readonly _tag = 'NaN'
-}
-
-/**
- * @since 1.0.2
- * @category Model
- */
-export class InvalidValue {
-  readonly _tag = 'InvalidValue'
-  constructor(
-    // eslint-disable-next-line @typescript-eslint/ban-types
-    readonly value: undefined | Function | symbol | bigint,
-  ) {}
-}
-
-/**
- * @since 1.0.2
- * @category Model
- */
-export class UnknownError {
-  readonly _tag = 'UnknownError'
-  constructor(readonly error: unknown) {}
-}
-
-/**
- * @since 1.0.2
- * @category Instances
- */
-export const semigroupPrintingError: Sg.Semigroup<PrintingError> = {
-  concat: (x, y): PrintingError =>
-    x instanceof ErrorGroup && y instanceof ErrorGroup
-      ? new ErrorGroup(RNEA.concat(y.errors)(x.errors))
-      : x instanceof ErrorGroup
-      ? new ErrorGroup(RNEA.concat(RNEA.of(y))(x.errors))
-      : y instanceof ErrorGroup
-      ? new ErrorGroup(RNEA.concat(y.errors)(RNEA.of(x)))
-      : new ErrorGroup(RNEA.concat(RNEA.of(y))(RNEA.of(x))),
-}
-
-/**
- * @since 1.0.2
- * @category Model
- */
 export interface Printer<E, A> {
-  readonly print: (a: A) => E.Either<PrintingError, J.Json>
-  readonly printLeft: (e: E) => E.Either<PrintingError, J.Json>
+  readonly print: (a: A) => E.Either<PE.PrintingError, J.Json>
+  readonly printLeft: (e: E) => E.Either<PE.PrintingError, J.Json>
 }
 
 /** @internal */
-const printerValidation = E.getApplicativeValidation(semigroupPrintingError)
+const printerValidation = E.getApplicativeValidation(PE.semigroupPrintingError)
 
 // -------------------------------------------------------------------------------------
 // constructors
 // -------------------------------------------------------------------------------------
 
 /** @internal */
-const toJson = (input: unknown): E.Either<PrintingError, J.Json> => {
-  if (input === undefined) return E.left(new InvalidValue(input))
-  if (typeof input === 'function') return E.left(new InvalidValue(input))
-  if (typeof input === 'symbol') return E.left(new InvalidValue(input))
-  if (typeof input === 'bigint') return E.left(new InvalidValue(input))
-  if (typeof input === 'number' && Number.isNaN(input)) return E.left(new NotANumber())
+const toJson = (input: unknown): E.Either<PE.PrintingError, J.Json> => {
+  if (input === undefined) return E.left(new PE.InvalidValue(input))
+  if (typeof input === 'function') return E.left(new PE.InvalidValue(input))
+  if (typeof input === 'symbol') return E.left(new PE.InvalidValue(input))
+  if (typeof input === 'bigint') return E.left(new PE.InvalidValue(input))
+  if (typeof input === 'number' && Number.isNaN(input)) return E.left(new PE.NotANumber())
   if (typeof input === 'number' && !Number.isFinite(input))
-    return E.left(new InfiniteValue())
+    return E.left(new PE.InfiniteValue())
   if (typeof input === 'number') return E.right(input)
   if (typeof input === 'string') return E.right(input)
   if (typeof input === 'boolean') return E.right(input)
   if (input === null) return E.right(input)
   return E.tryCatch(
     () => JSON.stringify(input, null, 2),
-    error => new UnknownError(error),
+    error => new PE.UnknownError(error),
   )
 }
 
@@ -214,10 +111,10 @@ export const UnknownArray: Printer<Array<unknown>, Array<unknown>> = {
           v,
           E.fromPredicate(
             value => value !== input,
-            () => new CircularReference(v),
+            () => new PE.CircularReference(v),
           ),
           E.chain(toJson),
-          E.mapLeft(err => new ErrorAtIndex(i, err)),
+          E.mapLeft(err => new PE.ErrorAtIndex(i, err)),
         ),
       ),
     ),
@@ -229,10 +126,10 @@ export const UnknownArray: Printer<Array<unknown>, Array<unknown>> = {
           v,
           E.fromPredicate(
             value => value !== input,
-            () => new CircularReference(v),
+            () => new PE.CircularReference(v),
           ),
           E.chain(toJson),
-          E.mapLeft(err => new ErrorAtIndex(i, err)),
+          E.mapLeft(err => new PE.ErrorAtIndex(i, err)),
         ),
       ),
     ),
@@ -251,10 +148,10 @@ export const UnknownRecord: Printer<Record<string, unknown>, Record<string, unkn
           v,
           E.fromPredicate(
             value => value !== input,
-            () => new CircularReference(v),
+            () => new PE.CircularReference(v),
           ),
           E.chain(toJson),
-          E.mapLeft(err => new ErrorAtKey(key, err)),
+          E.mapLeft(err => new PE.ErrorAtKey(key, err)),
         ),
       ),
     ),
@@ -266,10 +163,10 @@ export const UnknownRecord: Printer<Record<string, unknown>, Record<string, unkn
           v,
           E.fromPredicate(
             value => value !== input,
-            () => new CircularReference(v),
+            () => new PE.CircularReference(v),
           ),
           E.chain(toJson),
-          E.mapLeft(err => new ErrorAtKey(key, err)),
+          E.mapLeft(err => new PE.ErrorAtKey(key, err)),
         ),
       ),
     ),
@@ -315,16 +212,16 @@ export const struct = <P extends Record<string, Printer<any, any>>>(
   print: input =>
     pipe(
       properties,
-      traverseVESO(semigroupPrintingError)((key, printer) => {
+      witherS(PE.semigroupPrintingError)((key, printer) => {
         const value = input[key]
         if (value === input)
           return O.some(
-            E.left(new ErrorAtKey(key as string, new CircularReference(value))),
+            E.left(new PE.ErrorAtKey(key as string, new PE.CircularReference(value))),
           )
         return O.some(
           pipe(
             printer.print(value),
-            E.mapLeft((err): PrintingError => new ErrorAtKey(key as string, err)),
+            E.mapLeft((err): PE.PrintingError => new PE.ErrorAtKey(key as string, err)),
           ),
         )
       }),
@@ -332,16 +229,16 @@ export const struct = <P extends Record<string, Printer<any, any>>>(
   printLeft: input =>
     pipe(
       properties,
-      traverseVESO(semigroupPrintingError)((key, printer) => {
+      witherS(PE.semigroupPrintingError)((key, printer) => {
         const value = input[key]
         if (value === input)
           return O.some(
-            E.left(new ErrorAtKey(key as string, new CircularReference(value))),
+            E.left(new PE.ErrorAtKey(key as string, new PE.CircularReference(value))),
           )
         return O.some(
           pipe(
             printer.printLeft(value),
-            E.mapLeft(err => new ErrorAtKey(key as string, err)),
+            E.mapLeft(err => new PE.ErrorAtKey(key as string, err)),
           ),
         )
       }),
@@ -361,12 +258,12 @@ export const partial = <P extends Record<string, Printer<any, any>>>(
   print: input =>
     pipe(
       properties,
-      traverseVESO(semigroupPrintingError)((key, printer) => {
+      witherS(PE.semigroupPrintingError)((key, printer) => {
         const value = input[key]
         if (value === undefined) return O.none
         if (value === input)
           return O.some(
-            E.left(new ErrorAtKey(key as string, new CircularReference(value))),
+            E.left(new PE.ErrorAtKey(key as string, new PE.CircularReference(value))),
           )
         return O.some(printer.print(value))
       }),
@@ -374,12 +271,12 @@ export const partial = <P extends Record<string, Printer<any, any>>>(
   printLeft: input =>
     pipe(
       properties,
-      traverseVESO(semigroupPrintingError)((key, printer) => {
+      witherS(PE.semigroupPrintingError)((key, printer) => {
         const value = input[key]
         if (value === undefined) return O.none
         if (value === input)
           return O.some(
-            E.left(new ErrorAtKey(key as string, new CircularReference(value))),
+            E.left(new PE.ErrorAtKey(key as string, new PE.CircularReference(value))),
           )
         return O.some(printer.print(value))
       }),
@@ -393,18 +290,36 @@ export const partial = <P extends Record<string, Printer<any, any>>>(
 export const record = <E, A>(
   codomain: Printer<E, A>,
 ): Printer<Record<string, E>, Record<string, A>> => ({
-  print: RR.traverseWithIndex(E.Applicative)((k, a) =>
+  print: input =>
     pipe(
-      codomain.print(a),
-      E.mapLeft(err => new ErrorAtKey(k, err)),
+      input,
+      RR.traverseWithIndex(printerValidation)((k, a) =>
+        pipe(
+          a,
+          E.fromPredicate(
+            a => a !== input,
+            value => new PE.CircularReference(value),
+          ),
+          E.chain(codomain.print),
+          E.mapLeft(err => new PE.ErrorAtKey(k, err)),
+        ),
+      ),
     ),
-  ),
-  printLeft: RR.traverseWithIndex(E.Applicative)((k, a) =>
+  printLeft: input =>
     pipe(
-      codomain.printLeft(a),
-      E.mapLeft(err => new ErrorAtKey(k, err)),
+      input,
+      RR.traverseWithIndex(printerValidation)((k, a) =>
+        pipe(
+          a,
+          E.fromPredicate(
+            a => a !== input,
+            value => new PE.CircularReference(value),
+          ),
+          E.chain(codomain.printLeft),
+          E.mapLeft(err => new PE.ErrorAtKey(k, err)),
+        ),
+      ),
     ),
-  ),
 })
 
 /**
@@ -414,18 +329,36 @@ export const record = <E, A>(
 export const array = <E, A>(
   item: Printer<E, A>,
 ): Printer<ReadonlyArray<E>, ReadonlyArray<A>> => ({
-  print: E.traverseReadonlyArrayWithIndex((i, a) =>
+  print: input =>
     pipe(
-      item.print(a),
-      E.mapLeft(err => new ErrorAtIndex(i, err)),
+      input,
+      RA.traverseWithIndex(printerValidation)((i, a) =>
+        pipe(
+          a,
+          E.fromPredicate(
+            value => value !== input,
+            value => new PE.CircularReference(value),
+          ),
+          E.chain(item.print),
+          E.mapLeft(err => new PE.ErrorAtIndex(i, err)),
+        ),
+      ),
     ),
-  ),
-  printLeft: E.traverseReadonlyArrayWithIndex((i, a) =>
+  printLeft: input =>
     pipe(
-      item.printLeft(a),
-      E.mapLeft(err => new ErrorAtIndex(i, err)),
+      input,
+      RA.traverseWithIndex(printerValidation)((i, a) =>
+        pipe(
+          a,
+          E.fromPredicate(
+            value => value !== input,
+            value => new PE.CircularReference(value),
+          ),
+          E.chain(item.printLeft),
+          E.mapLeft(err => new PE.ErrorAtIndex(i, err)),
+        ),
+      ),
     ),
-  ),
 })
 
 /**
@@ -440,13 +373,41 @@ export const tuple = <C extends ReadonlyArray<Printer<any, any>>>(
 > => ({
   print: input =>
     pipe(
-      RA.zipWith(components, input, (printer, a) => printer.print(a)),
-      E.sequenceArray,
+      RA.zipWith(components, input, (printer, a) =>
+        pipe(
+          a,
+          E.fromPredicate(
+            value => value !== input,
+            value => new PE.CircularReference(value),
+          ),
+          E.chain(printer.print),
+        ),
+      ),
+      RA.traverseWithIndex(printerValidation)((i, a) =>
+        pipe(
+          a,
+          E.mapLeft(err => new PE.ErrorAtIndex(i, err)),
+        ),
+      ),
     ),
   printLeft: input =>
     pipe(
-      RA.zipWith(components, input, (printer, b) => printer.printLeft(b)),
-      E.sequenceArray,
+      RA.zipWith(components, input, (printer, b) =>
+        pipe(
+          b,
+          E.fromPredicate(
+            value => value !== input,
+            value => new PE.CircularReference(value),
+          ),
+          E.chain(printer.printLeft),
+        ),
+      ),
+      RA.traverseWithIndex(printerValidation)((i, a) =>
+        pipe(
+          a,
+          E.mapLeft(err => new PE.ErrorAtIndex(i, err)),
+        ),
+      ),
     ),
 })
 
@@ -480,7 +441,7 @@ export const intersect =
         E.map(({ a, b }) => intersect_(a, b)),
         E.filterOrElseW(
           a => a !== undefined,
-          () => new InvalidValue(undefined),
+          () => new PE.InvalidValue(undefined),
         ),
       ),
     printLeft: input =>
@@ -491,7 +452,7 @@ export const intersect =
         E.map(({ a, b }) => intersect_(a, b)),
         E.filterOrElseW(
           a => a !== undefined,
-          () => new InvalidValue(undefined),
+          () => new PE.InvalidValue(undefined),
         ),
       ),
   })

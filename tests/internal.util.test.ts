@@ -3,7 +3,7 @@ import { pipe } from 'fp-ts/function'
 import * as O from 'fp-ts/Option'
 import * as RA from 'fp-ts/ReadonlyArray'
 
-import { base64Encode, forIn, traverseVESO, urlifyBase64 } from '../src/internal/util'
+import { base64Encode, forIn, urlifyBase64, witherS } from '../src/internal/util'
 import { zipN } from '../test-utils'
 
 describe('traverseESO', () => {
@@ -17,7 +17,7 @@ describe('traverseESO', () => {
     })
     const result = pipe(
       obj,
-      traverseVESO(RA.getMonoid())((_, value) => {
+      witherS(RA.getMonoid())((_, value) => {
         tester(value)
         return O.some(E.right(value))
       }),
@@ -35,7 +35,7 @@ describe('traverseESO', () => {
     }
     const result = pipe(
       obj,
-      traverseVESO(RA.getMonoid())((_, value) => {
+      witherS(RA.getMonoid())((_, value) => {
         tester(value)
         return O.some(E.right(value))
       }),
@@ -51,7 +51,7 @@ describe('traverseESO', () => {
     }
     const result = pipe(
       obj,
-      traverseVESO(RA.getMonoid())((_, value) => {
+      witherS(RA.getMonoid())((_, value) => {
         return value === 2 ? O.none : O.some(E.right(value))
       }),
     )
@@ -66,7 +66,7 @@ describe('traverseESO', () => {
     }
     const result = pipe(
       obj,
-      traverseVESO(RA.getMonoid<string>())((_, value) => {
+      witherS(RA.getMonoid<string>())((_, value) => {
         tester(value)
         return value >= 2 ? O.some(E.left(['fail'])) : O.some(E.right(value))
       }),
