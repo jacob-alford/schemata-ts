@@ -1,7 +1,7 @@
 /**
  * An instance of `Schemable` for `Printer`.
  *
- * @since 1.0.2
+ * @since 1.1.0
  */
 import * as E from 'fp-ts/Either'
 import { identity, pipe } from 'fp-ts/function'
@@ -17,7 +17,7 @@ import { WithRefine2 } from '../schemables/WithRefine/definition'
 import { Schemable2 } from './SchemableBase'
 
 /**
- * @since 1.0.2
+ * @since 1.1.0
  * @category Model
  */
 export interface Printer<E, A> {
@@ -33,7 +33,7 @@ export const printerValidation = E.getApplicativeValidation(PE.semigroupPrinting
 // -------------------------------------------------------------------------------------
 
 /** @internal */
-const toJson = (input: unknown): E.Either<PE.PrintingError, J.Json> => {
+export const toJson = (input: unknown): E.Either<PE.PrintingError, J.Json> => {
   if (input === undefined) return E.left(new PE.InvalidValue(input))
   if (typeof input === 'function') return E.left(new PE.InvalidValue(input))
   if (typeof input === 'symbol') return E.left(new PE.InvalidValue(input))
@@ -52,7 +52,7 @@ const toJson = (input: unknown): E.Either<PE.PrintingError, J.Json> => {
 }
 
 /**
- * @since 1.0.2
+ * @since 1.1.0
  * @category Constructors
  */
 export const literal = <
@@ -71,7 +71,7 @@ export const literal = <
 // -------------------------------------------------------------------------------------
 
 /**
- * @since 1.0.2
+ * @since 1.1.0
  * @category Primitives
  */
 export const string: Printer<string, string> = {
@@ -80,7 +80,7 @@ export const string: Printer<string, string> = {
 }
 
 /**
- * @since 1.0.2
+ * @since 1.1.0
  * @category Primitives
  */
 export const number: Printer<number, number> = {
@@ -89,7 +89,7 @@ export const number: Printer<number, number> = {
 }
 
 /**
- * @since 1.0.2
+ * @since 1.1.0
  * @category Primitives
  */
 export const boolean: Printer<boolean, boolean> = {
@@ -98,7 +98,7 @@ export const boolean: Printer<boolean, boolean> = {
 }
 
 /**
- * @since 1.0.2
+ * @since 1.1.0
  * @category Primitives
  */
 export const UnknownArray: Printer<Array<unknown>, Array<unknown>> = {
@@ -135,7 +135,7 @@ export const UnknownArray: Printer<Array<unknown>, Array<unknown>> = {
 }
 
 /**
- * @since 1.0.2
+ * @since 1.1.0
  * @category Primitives
  */
 export const UnknownRecord: Printer<Record<string, unknown>, Record<string, unknown>> = {
@@ -176,13 +176,13 @@ export const UnknownRecord: Printer<Record<string, unknown>, Record<string, unkn
 // -------------------------------------------------------------------------------------
 
 /**
- * @since 1.0.2
+ * @since 1.1.0
  * @category Combinators
  */
 export const refine: WithRefine2<URI>['refine'] = () => identity
 
 /**
- * @since 1.0.2
+ * @since 1.1.0
  * @category Combinators
  */
 export const nullable = <E, A>(or: Printer<E, A>): Printer<null | E, null | A> => ({
@@ -201,7 +201,7 @@ export type InnerRight<A extends Printer<any, any>> = [A] extends [Printer<any, 
   : never
 
 /**
- * @since 1.0.2
+ * @since 1.1.0
  * @category Combinators
  */
 export const struct = <P extends Record<string, Printer<any, any>>>(
@@ -247,7 +247,7 @@ export const struct = <P extends Record<string, Printer<any, any>>>(
 })
 
 /**
- * @since 1.0.2
+ * @since 1.1.0
  * @category Combinators
  */
 export const partial = <P extends Record<string, Printer<any, any>>>(
@@ -285,7 +285,7 @@ export const partial = <P extends Record<string, Printer<any, any>>>(
 })
 
 /**
- * @since 1.0.2
+ * @since 1.1.0
  * @category Combinators
  */
 export const record = <E, A>(
@@ -324,7 +324,7 @@ export const record = <E, A>(
 })
 
 /**
- * @since 1.0.2
+ * @since 1.1.0
  * @category Combinators
  */
 export const array = <E, A>(
@@ -363,7 +363,7 @@ export const array = <E, A>(
 })
 
 /**
- * @since 1.0.2
+ * @since 1.1.0
  * @category Combinators
  */
 export const tuple = <C extends ReadonlyArray<Printer<any, any>>>(
@@ -413,7 +413,7 @@ export const tuple = <C extends ReadonlyArray<Printer<any, any>>>(
 })
 
 /**
- * @since 1.0.2
+ * @since 1.1.0
  * @internal
  */
 const intersect_ = <A, B>(a: A, b: B): A & B => {
@@ -428,7 +428,7 @@ const intersect_ = <A, B>(a: A, b: B): A & B => {
 }
 
 /**
- * @since 1.0.2
+ * @since 1.1.0
  * @category Combinators
  */
 export const intersect =
@@ -459,7 +459,7 @@ export const intersect =
   })
 
 /**
- * @since 1.0.2
+ * @since 1.1.0
  * @category Combinators
  */
 export const sum =
@@ -485,7 +485,7 @@ export const sum =
   })
 
 /**
- * @since 1.0.2
+ * @since 1.1.0
  * @category Combinators
  */
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
@@ -501,7 +501,7 @@ export const lazy = <E, A>(_id: string, f: () => Printer<E, A>): Printer<E, A> =
 })
 
 /**
- * @since 1.0.2
+ * @since 1.1.0
  * @category Combintors
  */
 export const readonly: <E, A>(arb: Printer<E, A>) => Printer<E, Readonly<A>> = identity
@@ -511,13 +511,13 @@ export const readonly: <E, A>(arb: Printer<E, A>) => Printer<E, Readonly<A>> = i
 // -------------------------------------------------------------------------------------
 
 /**
- * @since 1.0.2
+ * @since 1.1.0
  * @category Instances
  */
 export const URI = 'Printer'
 
 /**
- * @since 1.0.2
+ * @since 1.1.0
  * @category Instances
  */
 export type URI = typeof URI
@@ -529,7 +529,7 @@ declare module 'fp-ts/lib/HKT' {
 }
 
 /**
- * @since 1.0.2
+ * @since 1.1.0
  * @category Instances
  */
 export const Schemable: Schemable2<URI> = {

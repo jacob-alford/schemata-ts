@@ -169,6 +169,16 @@ describe('DateFromIsoString', () => {
           validateArbitrary({ Arbitrary: ISODateString.Arbitrary }, D.Guard.date.is)
         })
       })
+
+      describe('Printer', () => {
+        test.each(valid)('validates valid date strings, %s', str => {
+          const date = new Date(str)
+          const result = ISODateString.Printer.print(date)
+          const resultLeft = ISODateString.Printer.printLeft(str)
+          expect(result).toStrictEqual(E.right(date.toISOString()))
+          expect(resultLeft).toStrictEqual(E.right(str))
+        })
+      })
     })
   }
 })

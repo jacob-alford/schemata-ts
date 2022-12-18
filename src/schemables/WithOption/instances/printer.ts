@@ -2,7 +2,7 @@
  * Represents an exclusion of a supplied value where the exclusion is mapped to `None`.
  * Requires an inner schemable, and an Eq instance which defaults to strict equality.
  *
- * @since 1.0.2
+ * @since 1.1.0
  */
 import * as Eq from 'fp-ts/Eq'
 import { flow } from 'fp-ts/function'
@@ -12,7 +12,7 @@ import * as P from '../../../base/PrinterBase'
 import { WithOption2 } from '../definition'
 
 /**
- * @since 1.0.2
+ * @since 1.1.0
  * @category Instances
  */
 export const Printer: WithOption2<P.URI> = {
@@ -21,6 +21,7 @@ export const Printer: WithOption2<P.URI> = {
       O.getOrElseW(() => exclude),
       sa.print,
     ),
-    printLeft: be => (eq.equals(be, exclude) ? sa.print(be) : sa.printLeft(be as any)),
+    printLeft: eb =>
+      eq.equals(eb, exclude) ? sa.print(exclude) : sa.printLeft(eb as any),
   }),
 }

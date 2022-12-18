@@ -87,4 +87,15 @@ describe('JsonFromString', () => {
       )
     })
   })
+
+  describe('Printer', () => {
+    it('prints a json', () => {
+      const result = JsonFromString.Printer.print({ a: 1 })
+      expect(result).toStrictEqual(E.right({ a: 1 }))
+    })
+    it('prints a json string', () => {
+      const result = JsonFromString.Printer.printLeft('{"a": 1}')
+      expect(result).toStrictEqual(E.right('{"a": 1}'))
+    })
+  })
 })

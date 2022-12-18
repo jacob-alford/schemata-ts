@@ -81,7 +81,7 @@ export {
   /**
    * A basal schemable for Json and JsonString
    *
-   * @since 1.0.2
+   * @since 1.1.0
    */ Schema as Json,
 } from './schemables/WithJson/instances/schema'
 export {
@@ -224,7 +224,7 @@ export {
   /**
    * Represents Json values converted from strings
    *
-   * @since 1.0.2
+   * @since 1.1.0
    */
   JsonFromString,
 } from './schemata/json/JsonFromString'

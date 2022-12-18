@@ -1,7 +1,7 @@
 /**
  * Represents a ReadonlyMap converted from an expected array of entries.
  *
- * @since 1.0.2
+ * @since 1.1.0
  */
 import { apS } from 'fp-ts/Apply'
 import * as E from 'fp-ts/Either'
@@ -16,7 +16,7 @@ import { WithMap2 } from '../definition'
 const apSV = apS(P.printerValidation)
 
 /**
- * @since 1.0.2
+ * @since 1.1.0
  * @category Instances
  */
 export const Printer: WithMap2<P.URI> = {

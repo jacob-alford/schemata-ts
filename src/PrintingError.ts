@@ -1,7 +1,7 @@
 /**
  * Errors that arise when serializing to JSON
  *
- * @since 1.0.2
+ * @since 1.1.0
  */
 import * as RNEA from 'fp-ts/ReadonlyNonEmptyArray'
 import * as Sg from 'fp-ts/Semigroup'
@@ -11,7 +11,7 @@ import * as Sg from 'fp-ts/Semigroup'
 // -------------------------------------------------------------------------------------
 
 /**
- * @since 1.0.2
+ * @since 1.1.0
  * @category Model
  */
 export type PrintingError =
@@ -30,7 +30,7 @@ export type PrintingError =
 // -------------------------------------------------------------------------------------
 
 /**
- * @since 1.0.2
+ * @since 1.1.0
  * @category Constructors
  */
 export class NamedError {
@@ -39,7 +39,7 @@ export class NamedError {
 }
 
 /**
- * @since 1.0.2
+ * @since 1.1.0
  * @category Constructors
  */
 export class ErrorGroup {
@@ -48,7 +48,7 @@ export class ErrorGroup {
 }
 
 /**
- * @since 1.0.2
+ * @since 1.1.0
  * @category Constructors
  */
 export class ErrorAtIndex {
@@ -57,7 +57,7 @@ export class ErrorAtIndex {
 }
 
 /**
- * @since 1.0.2
+ * @since 1.1.0
  * @category Constructors
  */
 export class ErrorAtKey {
@@ -66,7 +66,7 @@ export class ErrorAtKey {
 }
 
 /**
- * @since 1.0.2
+ * @since 1.1.0
  * @category Constructors
  */
 export class CircularReference {
@@ -75,7 +75,7 @@ export class CircularReference {
 }
 
 /**
- * @since 1.0.2
+ * @since 1.1.0
  * @category Constructors
  */
 export class InfiniteValue {
@@ -83,7 +83,7 @@ export class InfiniteValue {
 }
 
 /**
- * @since 1.0.2
+ * @since 1.1.0
  * @category Constructors
  */
 export class NotANumber {
@@ -91,7 +91,7 @@ export class NotANumber {
 }
 
 /**
- * @since 1.0.2
+ * @since 1.1.0
  * @category Constructors
  */
 export class InvalidValue {
@@ -100,7 +100,7 @@ export class InvalidValue {
 }
 
 /**
- * @since 1.0.2
+ * @since 1.1.0
  * @category Constructors
  */
 export class UnknownError {
@@ -113,7 +113,7 @@ export class UnknownError {
 // -------------------------------------------------------------------------------------
 
 /**
- * @since 1.0.2
+ * @since 1.1.0
  * @category Instances
  */
 export const semigroupPrintingError: Sg.Semigroup<PrintingError> = {

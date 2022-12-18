@@ -108,4 +108,14 @@ describe('BooleanString', () => {
       validateArbitrary(BooleanString, BooleanString.Guard.is)
     })
   })
+
+  describe('Printer', () => {
+    test.each(valid)('prints valid boolean strings %s', str => {
+      const print = BooleanString.Printer.print
+      const printLeft = BooleanString.Printer.printLeft
+      const expected = str === 'true'
+      expect(print(expected)).toStrictEqual(E.right(str))
+      expect(printLeft(str)).toStrictEqual(E.right(str))
+    })
+  })
 })

@@ -1,7 +1,7 @@
 /**
  * A basal schemable for Json and JsonString
  *
- * @since 1.0.2
+ * @since 1.1.0
  */
 import * as J from 'fp-ts/Json'
 import * as RA from 'fp-ts/ReadonlyArray'
@@ -11,7 +11,7 @@ import * as Eq_ from '../../../base/EqBase'
 import { WithJson1 } from '../definition'
 
 /**
- * @since 1.0.2
+ * @since 1.1.0
  * @category Instances
  */
 export const Eq: WithJson1<Eq_.URI> = {

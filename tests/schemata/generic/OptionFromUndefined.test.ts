@@ -4,6 +4,7 @@ import { flow } from 'fp-ts/function'
 import * as O from 'fp-ts/Option'
 
 import * as SC from '../../../src/base/SchemaBase'
+import * as PE from '../../../src/PrintingError'
 import * as OptionFromUndefined_ from '../../../src/schemata/generic/OptionFromUndefined'
 import { getAllInstances, validateArbitrary } from '../../../test-utils'
 
@@ -105,5 +106,20 @@ describe('OptionFromUndefined', () => {
     const enc = OptionFromUndefined.Encoder
     const dec = OptionFromUndefined.Decoder
     fc.assert(fc.property(arb, flow(enc.encode, dec.decode, E.isRight)))
+  })
+
+  describe('printer', () => {
+    it('fails on undefined', () => {
+      expect(OptionFromUndefined.Printer.print(O.none)).toStrictEqual(
+        E.left(new PE.InvalidValue(undefined)),
+      )
+      expect(OptionFromUndefined.Printer.printLeft(undefined)).toStrictEqual(
+        E.left(new PE.InvalidValue(undefined)),
+      )
+    })
+    it("should print 'some(a)'", () => {
+      expect(OptionFromUndefined.Printer.print(O.some('a'))).toStrictEqual(E.right('a'))
+      expect(OptionFromUndefined.Printer.printLeft('a')).toStrictEqual(E.right('a'))
+    })
   })
 })

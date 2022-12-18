@@ -1,7 +1,7 @@
 /**
  * Schemable construction based on Regex combinators
  *
- * @since 1.0.2
+ * @since 1.1.0
  */
 import * as E from 'fp-ts/Either'
 
@@ -11,7 +11,7 @@ import * as PE from '../../../PrintingError'
 import { WithPattern2 } from '../definition'
 
 /**
- * @since 1.0.2
+ * @since 1.1.0
  * @category Instances
  */
 export const Printer: WithPattern2<P.URI> = {
