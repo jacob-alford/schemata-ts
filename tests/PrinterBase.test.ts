@@ -187,7 +187,7 @@ describe('PrinterBase', () => {
     )
     expect(printer.printLeft({ foo: 'foo' })).toStrictEqual(E.right({ foo: 'foo' }))
   })
-  it('catches basic circularity in records', () => {
+  it('catches basic circularity in partial', () => {
     type A = {
       a: 1
       b: A
