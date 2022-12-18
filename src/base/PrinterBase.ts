@@ -509,7 +509,7 @@ export const intersect =
         E.map(({ a, b }) => intersect_(a, b)),
         E.filterOrElseW(
           a => a !== undefined,
-          () => new PE.InvalidValue(undefined),
+          () => new PE.NamedError('Nonzero Intersection', new PE.InvalidValue(undefined)),
         ),
       ),
     printLeft: input =>
@@ -520,7 +520,7 @@ export const intersect =
         E.map(({ a, b }) => intersect_(a, b)),
         E.filterOrElseW(
           a => a !== undefined,
-          () => new PE.InvalidValue(undefined),
+          () => new PE.NamedError('Nonzero Intersection', new PE.InvalidValue(undefined)),
         ),
       ),
   })

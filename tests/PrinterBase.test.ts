@@ -189,23 +189,28 @@ describe('PrinterBase', () => {
   })
   it('catches basic circularity in partial', () => {
     type A = {
-      a: 1
+      a: number
       b: A
     }
     const a: any = {
       a: 1,
     }
     a.b = a
-    const printer: P.Printer<A, A> = P.partial({
+    const c = {
+      a: 6,
+    }
+    const printer: P.Printer<Partial<A>, Partial<A>> = P.partial({
       a: P.number,
       b: P.lazy('', () => printer),
     })
     expect(printer.print(a)).toStrictEqual(
       E.left(new PE.ErrorAtKey('b', new PE.CircularReference(a.b))),
     )
+    expect(printer.print(c)).toStrictEqual(E.right(c))
     expect(printer.printLeft(a)).toStrictEqual(
       E.left(new PE.ErrorAtKey('b', new PE.CircularReference(a.b))),
     )
+    expect(printer.printLeft(c)).toStrictEqual(E.right(c))
   })
   test('record', () => {
     const printer = P.record(P.string)
@@ -315,10 +320,10 @@ describe('PrinterBase', () => {
   it('returns invalid value for empty intersection', () => {
     const printer = pipe(P.number, P.intersect(P.string))
     expect(printer.print(0 as never)).toStrictEqual(
-      E.left(new PE.InvalidValue(undefined)),
+      E.left(new PE.NamedError('Nonzero Intersection', new PE.InvalidValue(undefined))),
     )
     expect(printer.printLeft(0 as never)).toStrictEqual(
-      E.left(new PE.InvalidValue(undefined)),
+      E.left(new PE.NamedError('Nonzero Intersection', new PE.InvalidValue(undefined))),
     )
   })
   test('sum', () => {
