@@ -23,7 +23,6 @@ export type PrintingError =
   | InfiniteValue
   | NotANumber
   | InvalidValue
-  | UnknownError
 
 // -------------------------------------------------------------------------------------
 // Constructors
@@ -97,15 +96,6 @@ export class NotANumber {
 export class InvalidValue {
   readonly _tag = 'InvalidValue'
   constructor(readonly value: unknown) {}
-}
-
-/**
- * @since 1.1.0
- * @category Constructors
- */
-export class UnknownError {
-  readonly _tag = 'UnknownError'
-  constructor(readonly error: unknown) {}
 }
 
 // -------------------------------------------------------------------------------------

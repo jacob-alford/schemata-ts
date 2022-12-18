@@ -101,7 +101,7 @@ describe('PrinterBase', () => {
       E.left(new PE.ErrorAtKey('b', new PE.CircularReference(a.b))),
     )
   })
-  it('returns unknown error for mutually circular record', () => {
+  it('returns circular reference for mutually circular record', () => {
     const printer = P.UnknownRecord
     const a: any = {
       a: 1,
@@ -112,7 +112,7 @@ describe('PrinterBase', () => {
     }
     a.b = b
     expect(printer.print(a)).toStrictEqual(
-      E.left(new PE.ErrorAtKey('b', new PE.UnknownError(expect.any(Error)))),
+      E.left(new PE.ErrorAtKey('b', new PE.CircularReference(b))),
     )
   })
   test('refine', () => {

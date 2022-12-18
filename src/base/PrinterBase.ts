@@ -85,7 +85,7 @@ interface JsonRecord {
 export type SafeJsonRecord = Branded<SafeRecordBrand, JsonRecord>
 
 /** @internal */
-export const safeJsonRecord: (r: JsonRecord) => SafeJsonRecord = unsafeCoerce
+const safeJsonRecord: (r: JsonRecord) => SafeJsonRecord = unsafeCoerce
 
 /**
  * An array with validated keys
@@ -104,7 +104,7 @@ export interface JsonArray extends ReadonlyArray<SafeJson> {}
 export type SafeJsonArray = Branded<SafeArrayBrand, JsonArray>
 
 /** @internal */
-export const safeJsonArray: (as: ReadonlyArray<SafeJson>) => SafeJsonArray = unsafeCoerce
+const safeJsonArray: (as: ReadonlyArray<SafeJson>) => SafeJsonArray = unsafeCoerce
 
 /**
  * @since 1.1.0
@@ -135,9 +135,34 @@ export const toJson = (input: unknown): E.Either<PE.PrintingError, SafeJson> => 
   if (typeof input === 'string') return E.right(input)
   if (typeof input === 'boolean') return E.right(input)
   if (input === null) return E.right(input)
-  return E.tryCatch(
-    () => JSON.stringify(input, null, 2),
-    error => new PE.UnknownError(error),
+  // This tests for circularity using JSON.stringify's internal circularity checks
+  // Because bigints are caught above, this error can only be a circular reference
+  const circular = E.tryCatch(
+    () => JSON.stringify(input),
+    () => new PE.CircularReference(input),
+  )
+  if (E.isLeft(circular)) return circular
+  if (Array.isArray(input)) {
+    return pipe(
+      input,
+      RA.traverseWithIndex(printerValidation)((i, val) =>
+        pipe(
+          toJson(val),
+          E.mapLeft(err => new PE.ErrorAtIndex(i, err)),
+        ),
+      ),
+      E.map(safeJsonArray),
+    )
+  }
+  return pipe(
+    input,
+    RR.traverseWithIndex(printerValidation)((key, val) =>
+      pipe(
+        toJson(val),
+        E.mapLeft(err => new PE.ErrorAtKey(key, err)),
+      ),
+    ),
+    E.map(safeJsonRecord),
   )
 }
 
@@ -197,12 +222,7 @@ export const UnknownArray: Printer<Array<unknown>, Array<unknown>> = {
       input,
       RA.traverseWithIndex(printerValidation)((i, v) =>
         pipe(
-          v,
-          E.fromPredicate(
-            (value): value is SafeJson => value !== input,
-            () => new PE.CircularReference(v),
-          ),
-          E.chain(toJson),
+          toJson(v),
           E.mapLeft(err => new PE.ErrorAtIndex(i, err)),
         ),
       ),
@@ -213,12 +233,7 @@ export const UnknownArray: Printer<Array<unknown>, Array<unknown>> = {
       input,
       RA.traverseWithIndex(printerValidation)((i, v) =>
         pipe(
-          v,
-          E.fromPredicate(
-            value => value !== input,
-            () => new PE.CircularReference(v),
-          ),
-          E.chain(toJson),
+          toJson(v),
           E.mapLeft(err => new PE.ErrorAtIndex(i, err)),
         ),
       ),
@@ -236,12 +251,7 @@ export const UnknownRecord: Printer<Record<string, unknown>, Record<string, unkn
       input,
       RR.traverseWithIndex(printerValidation)((key, v) =>
         pipe(
-          v,
-          E.fromPredicate(
-            value => value !== input,
-            () => new PE.CircularReference(v),
-          ),
-          E.chain(toJson),
+          toJson(v),
           E.mapLeft(err => new PE.ErrorAtKey(key, err)),
         ),
       ),
@@ -252,12 +262,7 @@ export const UnknownRecord: Printer<Record<string, unknown>, Record<string, unkn
       input,
       RR.traverseWithIndex(printerValidation)((key, v) =>
         pipe(
-          v,
-          E.fromPredicate(
-            value => value !== input,
-            () => new PE.CircularReference(v),
-          ),
-          E.chain(toJson),
+          toJson(v),
           E.mapLeft(err => new PE.ErrorAtKey(key, err)),
         ),
       ),
@@ -307,37 +312,27 @@ export const struct = <P extends Record<string, Printer<any, any>>>(
   print: input =>
     pipe(
       properties,
-      witherS(PE.semigroupPrintingError)((key, printer) => {
-        const value = input[key]
-        if (value === input)
-          return O.some(
-            E.left(new PE.ErrorAtKey(key as string, new PE.CircularReference(value))),
-          )
-        return O.some(
+      witherS(PE.semigroupPrintingError)((key, printer) =>
+        O.some(
           pipe(
-            printer.print(value),
+            printer.print(input[key]),
             E.mapLeft((err): PE.PrintingError => new PE.ErrorAtKey(key as string, err)),
           ),
-        )
-      }),
+        ),
+      ),
       E.map(safeJsonRecord),
     ),
   printLeft: input =>
     pipe(
       properties,
-      witherS(PE.semigroupPrintingError)((key, printer) => {
-        const value = input[key]
-        if (value === input)
-          return O.some(
-            E.left(new PE.ErrorAtKey(key as string, new PE.CircularReference(value))),
-          )
-        return O.some(
+      witherS(PE.semigroupPrintingError)((key, printer) =>
+        O.some(
           pipe(
-            printer.printLeft(value),
+            printer.printLeft(input[key]),
             E.mapLeft(err => new PE.ErrorAtKey(key as string, err)),
           ),
-        )
-      }),
+        ),
+      ),
       E.map(safeJsonRecord),
     ),
 })
@@ -355,29 +350,35 @@ export const partial = <P extends Record<string, Printer<any, any>>>(
   print: input =>
     pipe(
       properties,
-      witherS(PE.semigroupPrintingError)((key, printer) => {
-        const value = input[key]
-        if (value === undefined) return O.none
-        if (value === input)
-          return O.some(
-            E.left(new PE.ErrorAtKey(key as string, new PE.CircularReference(value))),
-          )
-        return O.some(printer.print(value))
-      }),
+      witherS(PE.semigroupPrintingError)((key, printer) =>
+        pipe(
+          input[key],
+          O.fromNullable,
+          O.map(value =>
+            pipe(
+              printer.print(value),
+              E.mapLeft(err => new PE.ErrorAtKey(key as string, err)),
+            ),
+          ),
+        ),
+      ),
       E.map(safeJsonRecord),
     ),
   printLeft: input =>
     pipe(
       properties,
-      witherS(PE.semigroupPrintingError)((key, printer) => {
-        const value = input[key]
-        if (value === undefined) return O.none
-        if (value === input)
-          return O.some(
-            E.left(new PE.ErrorAtKey(key as string, new PE.CircularReference(value))),
-          )
-        return O.some(printer.print(value))
-      }),
+      witherS(PE.semigroupPrintingError)((key, printer) =>
+        pipe(
+          input[key],
+          O.fromNullable,
+          O.map(value =>
+            pipe(
+              printer.printLeft(value),
+              E.mapLeft(err => new PE.ErrorAtKey(key as string, err)),
+            ),
+          ),
+        ),
+      ),
       E.map(safeJsonRecord),
     ),
 })
@@ -394,12 +395,7 @@ export const record = <E, A>(
       input,
       RR.traverseWithIndex(printerValidation)((k, a) =>
         pipe(
-          a,
-          E.fromPredicate(
-            a => a !== input,
-            value => new PE.CircularReference(value),
-          ),
-          E.chain(codomain.print),
+          codomain.print(a),
           E.mapLeft(err => new PE.ErrorAtKey(k, err)),
         ),
       ),
@@ -410,12 +406,7 @@ export const record = <E, A>(
       input,
       RR.traverseWithIndex(printerValidation)((k, a) =>
         pipe(
-          a,
-          E.fromPredicate(
-            a => a !== input,
-            value => new PE.CircularReference(value),
-          ),
-          E.chain(codomain.printLeft),
+          codomain.printLeft(a),
           E.mapLeft(err => new PE.ErrorAtKey(k, err)),
         ),
       ),
@@ -435,12 +426,7 @@ export const array = <E, A>(
       input,
       RA.traverseWithIndex(printerValidation)((i, a) =>
         pipe(
-          a,
-          E.fromPredicate(
-            value => value !== input,
-            value => new PE.CircularReference(value),
-          ),
-          E.chain(item.print),
+          item.print(a),
           E.mapLeft(err => new PE.ErrorAtIndex(i, err)),
         ),
       ),
@@ -451,12 +437,7 @@ export const array = <E, A>(
       input,
       RA.traverseWithIndex(printerValidation)((i, a) =>
         pipe(
-          a,
-          E.fromPredicate(
-            value => value !== input,
-            value => new PE.CircularReference(value),
-          ),
-          E.chain(item.printLeft),
+          item.printLeft(a),
           E.mapLeft(err => new PE.ErrorAtIndex(i, err)),
         ),
       ),
@@ -476,16 +457,7 @@ export const tuple = <C extends ReadonlyArray<Printer<any, any>>>(
 > => ({
   print: input =>
     pipe(
-      RA.zipWith(components, input, (printer, a) =>
-        pipe(
-          a,
-          E.fromPredicate(
-            value => value !== input,
-            value => new PE.CircularReference(value),
-          ),
-          E.chain(printer.print),
-        ),
-      ),
+      RA.zipWith(components, input, (printer, a) => printer.print(a)),
       RA.traverseWithIndex(printerValidation)((i, a) =>
         pipe(
           a,
@@ -496,16 +468,7 @@ export const tuple = <C extends ReadonlyArray<Printer<any, any>>>(
     ),
   printLeft: input =>
     pipe(
-      RA.zipWith(components, input, (printer, b) =>
-        pipe(
-          b,
-          E.fromPredicate(
-            value => value !== input,
-            value => new PE.CircularReference(value),
-          ),
-          E.chain(printer.printLeft),
-        ),
-      ),
+      RA.zipWith(components, input, (printer, b) => printer.printLeft(b)),
       RA.traverseWithIndex(printerValidation)((i, a) =>
         pipe(
           a,
@@ -596,11 +559,19 @@ export const sum =
 export const lazy = <E, A>(_id: string, f: () => Printer<E, A>): Printer<E, A> => ({
   print: input => {
     const get = S.memoize<void, Printer<E, A>>(f)
-    return get().print(input)
+    return pipe(
+      // Check circularity before printing input
+      toJson(input),
+      E.chain(() => get().print(input)),
+    )
   },
   printLeft: input => {
     const get = S.memoize<void, Printer<E, A>>(f)
-    return get().printLeft(input)
+    return pipe(
+      // Check circularity before printing input
+      toJson(input),
+      E.chain(() => get().printLeft(input)),
+    )
   },
 })
 
