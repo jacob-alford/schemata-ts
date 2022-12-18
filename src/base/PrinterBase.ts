@@ -4,11 +4,11 @@
  * @since 1.1.0
  */
 import * as E from 'fp-ts/Either'
-import { identity, pipe } from 'fp-ts/function'
-import * as J from 'fp-ts/Json'
+import { identity, pipe, unsafeCoerce } from 'fp-ts/function'
 import * as O from 'fp-ts/Option'
 import * as RA from 'fp-ts/ReadonlyArray'
 import * as RR from 'fp-ts/ReadonlyRecord'
+import { Branded } from 'io-ts'
 import * as S from 'io-ts/Schemable'
 
 import { typeOf, witherS } from '../internal/util'
@@ -16,13 +16,103 @@ import * as PE from '../PrintingError'
 import { WithRefine2 } from '../schemables/WithRefine/definition'
 import { Schemable2 } from './SchemableBase'
 
+/** @internal */
+interface JsonStringBrand {
+  readonly JsonString: unique symbol
+}
+
+/** @internal */
+interface SafeNumberBrand {
+  readonly SafeNumber: unique symbol
+}
+
+/** @internal */
+interface SafeRecordBrand {
+  readonly SafeRecord: unique symbol
+}
+
+/** @internal */
+interface SafeArrayBrand {
+  readonly SafeArray: unique symbol
+}
+
+/**
+ * A parsable Json string
+ *
+ * @since 1.1.0
+ * @category Model
+ */
+export type JsonString = Branded<string, JsonStringBrand>
+
+/**
+ * A valid Json number
+ *
+ * @since 1.1.0
+ * @category Model
+ */
+export type SafeNumber = Branded<number, SafeNumberBrand>
+
+/**
+ * A valid Json object
+ *
+ * @since 1.1.0
+ * @category Model
+ */
+export type SafeJson =
+  | boolean
+  | SafeNumber
+  | string
+  | null
+  | SafeJsonArray
+  | SafeJsonRecord
+
+/**
+ * A Json with validated keys
+ *
+ * @since 1.1.0
+ * @category Model
+ */
+interface JsonRecord {
+  readonly [key: string]: SafeJson
+}
+
+/**
+ * A validated JSON Record
+ *
+ * @since 1.1.0
+ * @category Model
+ */
+export type SafeJsonRecord = Branded<SafeRecordBrand, JsonRecord>
+
+/** @internal */
+export const safeJsonRecord: (r: JsonRecord) => SafeJsonRecord = unsafeCoerce
+
+/**
+ * An array with validated keys
+ *
+ * @since 1.1.0
+ * @category Model
+ */
+export interface JsonArray extends ReadonlyArray<SafeJson> {}
+
+/**
+ * A validated JSON Array
+ *
+ * @since 1.1.0
+ * @category Model
+ */
+export type SafeJsonArray = Branded<SafeArrayBrand, JsonArray>
+
+/** @internal */
+export const safeJsonArray: (as: ReadonlyArray<SafeJson>) => SafeJsonArray = unsafeCoerce
+
 /**
  * @since 1.1.0
  * @category Model
  */
 export interface Printer<E, A> {
-  readonly print: (a: A) => E.Either<PE.PrintingError, J.Json>
-  readonly printLeft: (e: E) => E.Either<PE.PrintingError, J.Json>
+  readonly print: (a: A) => E.Either<PE.PrintingError, SafeJson>
+  readonly printLeft: (e: E) => E.Either<PE.PrintingError, SafeJson>
 }
 
 /** @internal */
@@ -33,7 +123,7 @@ export const printerValidation = E.getApplicativeValidation(PE.semigroupPrinting
 // -------------------------------------------------------------------------------------
 
 /** @internal */
-export const toJson = (input: unknown): E.Either<PE.PrintingError, J.Json> => {
+export const toJson = (input: unknown): E.Either<PE.PrintingError, SafeJson> => {
   if (input === undefined) return E.left(new PE.InvalidValue(input))
   if (typeof input === 'function') return E.left(new PE.InvalidValue(input))
   if (typeof input === 'symbol') return E.left(new PE.InvalidValue(input))
@@ -41,7 +131,7 @@ export const toJson = (input: unknown): E.Either<PE.PrintingError, J.Json> => {
   if (typeof input === 'number' && Number.isNaN(input)) return E.left(new PE.NotANumber())
   if (typeof input === 'number' && !Number.isFinite(input))
     return E.left(new PE.InfiniteValue())
-  if (typeof input === 'number') return E.right(input)
+  if (typeof input === 'number') return E.right(input as SafeNumber)
   if (typeof input === 'string') return E.right(input)
   if (typeof input === 'boolean') return E.right(input)
   if (input === null) return E.right(input)
@@ -109,13 +199,14 @@ export const UnknownArray: Printer<Array<unknown>, Array<unknown>> = {
         pipe(
           v,
           E.fromPredicate(
-            value => value !== input,
+            (value): value is SafeJson => value !== input,
             () => new PE.CircularReference(v),
           ),
           E.chain(toJson),
           E.mapLeft(err => new PE.ErrorAtIndex(i, err)),
         ),
       ),
+      E.map(safeJsonArray),
     ),
   printLeft: input =>
     pipe(
@@ -131,6 +222,7 @@ export const UnknownArray: Printer<Array<unknown>, Array<unknown>> = {
           E.mapLeft(err => new PE.ErrorAtIndex(i, err)),
         ),
       ),
+      E.map(safeJsonArray),
     ),
 }
 
@@ -153,6 +245,7 @@ export const UnknownRecord: Printer<Record<string, unknown>, Record<string, unkn
           E.mapLeft(err => new PE.ErrorAtKey(key, err)),
         ),
       ),
+      E.map(safeJsonRecord),
     ),
   printLeft: input =>
     pipe(
@@ -168,6 +261,7 @@ export const UnknownRecord: Printer<Record<string, unknown>, Record<string, unkn
           E.mapLeft(err => new PE.ErrorAtKey(key, err)),
         ),
       ),
+      E.map(safeJsonRecord),
     ),
 }
 
@@ -226,6 +320,7 @@ export const struct = <P extends Record<string, Printer<any, any>>>(
           ),
         )
       }),
+      E.map(safeJsonRecord),
     ),
   printLeft: input =>
     pipe(
@@ -243,6 +338,7 @@ export const struct = <P extends Record<string, Printer<any, any>>>(
           ),
         )
       }),
+      E.map(safeJsonRecord),
     ),
 })
 
@@ -268,6 +364,7 @@ export const partial = <P extends Record<string, Printer<any, any>>>(
           )
         return O.some(printer.print(value))
       }),
+      E.map(safeJsonRecord),
     ),
   printLeft: input =>
     pipe(
@@ -281,6 +378,7 @@ export const partial = <P extends Record<string, Printer<any, any>>>(
           )
         return O.some(printer.print(value))
       }),
+      E.map(safeJsonRecord),
     ),
 })
 
@@ -305,6 +403,7 @@ export const record = <E, A>(
           E.mapLeft(err => new PE.ErrorAtKey(k, err)),
         ),
       ),
+      E.map(safeJsonRecord),
     ),
   printLeft: input =>
     pipe(
@@ -320,6 +419,7 @@ export const record = <E, A>(
           E.mapLeft(err => new PE.ErrorAtKey(k, err)),
         ),
       ),
+      E.map(safeJsonRecord),
     ),
 })
 
@@ -344,6 +444,7 @@ export const array = <E, A>(
           E.mapLeft(err => new PE.ErrorAtIndex(i, err)),
         ),
       ),
+      E.map(safeJsonArray),
     ),
   printLeft: input =>
     pipe(
@@ -359,6 +460,7 @@ export const array = <E, A>(
           E.mapLeft(err => new PE.ErrorAtIndex(i, err)),
         ),
       ),
+      E.map(safeJsonArray),
     ),
 })
 
@@ -390,6 +492,7 @@ export const tuple = <C extends ReadonlyArray<Printer<any, any>>>(
           E.mapLeft(err => new PE.ErrorAtIndex(i, err)),
         ),
       ),
+      E.map(safeJsonArray),
     ),
   printLeft: input =>
     pipe(
@@ -409,6 +512,7 @@ export const tuple = <C extends ReadonlyArray<Printer<any, any>>>(
           E.mapLeft(err => new PE.ErrorAtIndex(i, err)),
         ),
       ),
+      E.map(safeJsonArray),
     ),
 })
 
@@ -549,3 +653,24 @@ export const Schemable: Schemable2<URI> = {
   lazy,
   readonly,
 }
+
+// -------------------------------------------------------------------------------------
+// Destructors
+// -------------------------------------------------------------------------------------
+
+/**
+ * Safely parses a Json String
+ *
+ * @since 1.1.0
+ * @category Destructors
+ */
+export const safeParse: (s: JsonString) => SafeJson = s => JSON.parse(s)
+
+/**
+ * Safely stringifies a safe Json
+ *
+ * @since 1.1.0
+ * @category Destructors
+ */
+export const safeStringify: (s: SafeJson) => JsonString = s =>
+  unsafeCoerce(JSON.stringify(s))

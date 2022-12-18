@@ -5,7 +5,7 @@
  */
 import { apS } from 'fp-ts/Apply'
 import * as E from 'fp-ts/Either'
-import { flow, pipe, tuple } from 'fp-ts/function'
+import { flow, pipe } from 'fp-ts/function'
 import * as RA from 'fp-ts/ReadonlyArray'
 import * as RM from 'fp-ts/ReadonlyMap'
 
@@ -30,21 +30,25 @@ export const Printer: WithMap2<P.URI> = {
           apSV('a', sa.print(a)),
           E.bimap(
             err => new PE.ErrorAtIndex(i, err),
-            ({ k, a }) => tuple(k, a),
+            ({ k, a }) => P.safeJsonArray([k, a]),
           ),
         ),
       ),
+      E.map(P.safeJsonArray),
     ),
-    printLeft: RA.traverseWithIndex(P.printerValidation)((i, [k, a]) =>
-      pipe(
-        E.Do,
-        apSV('k', sk.printLeft(k)),
-        apSV('a', sa.printLeft(a)),
-        E.bimap(
-          err => new PE.ErrorAtIndex(i, err),
-          ({ k, a }) => tuple(k, a),
+    printLeft: flow(
+      RA.traverseWithIndex(P.printerValidation)((i, [k, a]) =>
+        pipe(
+          E.Do,
+          apSV('k', sk.printLeft(k)),
+          apSV('a', sa.printLeft(a)),
+          E.bimap(
+            err => new PE.ErrorAtIndex(i, err),
+            ({ k, a }) => P.safeJsonArray([k, a]),
+          ),
         ),
       ),
+      E.map(P.safeJsonArray),
     ),
   }),
 }

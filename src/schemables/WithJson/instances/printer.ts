@@ -13,7 +13,7 @@ import * as P from '../../../base/PrinterBase'
 import * as PE from '../../../PrintingError'
 import { WithJson2 } from '../definition'
 
-const safePrintJson = (input: J.Json): E.Either<PE.PrintingError, J.Json> => {
+const safePrintJson = (input: J.Json): E.Either<PE.PrintingError, P.SafeJson> => {
   if (Array.isArray(input)) {
     return pipe(
       input,
@@ -28,6 +28,7 @@ const safePrintJson = (input: J.Json): E.Either<PE.PrintingError, J.Json> => {
           E.mapLeft(err => new PE.ErrorAtIndex(i, err)),
         ),
       ),
+      E.map(P.safeJsonArray),
     )
   }
   if (typeof input === 'object' && input !== null) {
@@ -44,6 +45,7 @@ const safePrintJson = (input: J.Json): E.Either<PE.PrintingError, J.Json> => {
           E.mapLeft(err => new PE.ErrorAtKey(key, err)),
         ),
       ),
+      E.map(P.safeJsonRecord),
     )
   }
   return P.toJson(input)
@@ -55,7 +57,7 @@ const safePrintJson = (input: J.Json): E.Either<PE.PrintingError, J.Json> => {
  */
 export const Printer: WithJson2<P.URI> = {
   json: {
-    print: safePrintJson,
+    print: E.right,
     printLeft: safePrintJson,
   },
   jsonString: {

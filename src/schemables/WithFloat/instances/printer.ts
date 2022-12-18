@@ -9,8 +9,6 @@
  *
  * @since 1.1.0
  */
-import * as E from 'fp-ts/Either'
-
 import * as P from '../../../base/PrinterBase'
 import { WithFloat2 } from '../definition'
 
@@ -20,7 +18,7 @@ import { WithFloat2 } from '../definition'
  */
 export const Printer: WithFloat2<P.URI> = {
   float: () => ({
-    print: E.right,
+    print: P.toJson,
     printLeft: P.number.printLeft,
   }),
 }

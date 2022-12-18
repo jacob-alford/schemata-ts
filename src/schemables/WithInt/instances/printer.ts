@@ -9,8 +9,6 @@
  *
  * @since 1.1.0
  */
-import * as E from 'fp-ts/Either'
-
 import * as P from '../../../base/PrinterBase'
 import { WithInt2 } from '../definition'
 
@@ -20,7 +18,7 @@ import { WithInt2 } from '../definition'
  */
 export const Printer: WithInt2<P.URI> = {
   int: () => ({
-    print: E.right,
+    print: P.toJson,
     printLeft: P.number.printLeft,
   }),
 }

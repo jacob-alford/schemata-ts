@@ -2,7 +2,7 @@ import * as E from 'fp-ts/Either'
 import { pipe } from 'fp-ts/function'
 import * as J from 'fp-ts/Json'
 
-import { JsonString } from '../../../src/schemables/WithJson/definition'
+import { JsonString } from '../../../src/base/PrinterBase'
 import { Json } from '../../../src/schemata'
 import { JsonFromString as Schema } from '../../../src/schemata/json/JsonFromString'
 import { getAllInstances, validateArbitrary } from '../../../test-utils'
@@ -89,13 +89,19 @@ describe('JsonFromString', () => {
   })
 
   describe('Printer', () => {
-    it('prints a json', () => {
-      const result = JsonFromString.Printer.print({ a: 1 })
+    it('prints a safe json', () => {
+      const value = { a: 1 }
+      if (!JsonFromString.Guard.is(value)) throw new Error('Unexpected Result')
+      const result = JsonFromString.Printer.print(value)
       expect(result).toStrictEqual(E.right({ a: 1 }))
     })
-    it('prints a json string', () => {
-      const result = JsonFromString.Printer.printLeft('{"a": 1}')
-      expect(result).toStrictEqual(E.right('{"a": 1}'))
+    it('prints any string', () => {
+      const result = JsonFromString.Printer.printLeft(
+        '{ im: "just a regular string"!, NaN: Infinity }',
+      )
+      expect(result).toStrictEqual(
+        E.right('{ im: "just a regular string"!, NaN: Infinity }'),
+      )
     })
   })
 })
