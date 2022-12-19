@@ -7,7 +7,7 @@ import * as E from 'fp-ts/Either'
 import { pipe } from 'fp-ts/function'
 
 import * as P from '../../../base/PrinterBase'
-import * as PE from '../../../PrintingError'
+import * as PE from '../../../PrintError'
 import { WithDate2 } from '../definition'
 import { isSafeDate } from '../utils'
 
@@ -17,7 +17,7 @@ import { isSafeDate } from '../utils'
  */
 export const Printer: WithDate2<P.URI> = {
   date: {
-    print: date =>
+    domainToJson: date =>
       pipe(
         date,
         E.fromPredicate(
@@ -26,7 +26,7 @@ export const Printer: WithDate2<P.URI> = {
         ),
         E.map(d => d.toISOString()),
       ),
-    printLeft: date =>
+    codomainToJson: date =>
       pipe(
         date,
         E.fromPredicate(
@@ -37,7 +37,7 @@ export const Printer: WithDate2<P.URI> = {
       ),
   },
   dateFromString: {
-    print: date =>
+    domainToJson: date =>
       pipe(
         date,
         E.fromPredicate(
@@ -46,6 +46,6 @@ export const Printer: WithDate2<P.URI> = {
         ),
         E.map(d => d.toISOString()),
       ),
-    printLeft: P.string.printLeft,
+    codomainToJson: P.string.codomainToJson,
   },
 }

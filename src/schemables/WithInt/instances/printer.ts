@@ -18,7 +18,7 @@ import { WithInt2 } from '../definition'
  */
 export const Printer: WithInt2<P.URI> = {
   int: () => ({
-    print: P.toJson,
-    printLeft: P.number.printLeft,
+    domainToJson: P.toJson,
+    codomainToJson: P.number.codomainToJson,
   }),
 }

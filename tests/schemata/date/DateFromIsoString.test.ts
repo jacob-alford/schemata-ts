@@ -173,8 +173,8 @@ describe('DateFromIsoString', () => {
       describe('Printer', () => {
         test.each(valid)('validates valid date strings, %s', str => {
           const date = new Date(str)
-          const result = ISODateString.Printer.print(date)
-          const resultLeft = ISODateString.Printer.printLeft(str)
+          const result = ISODateString.Printer.domainToJson(date)
+          const resultLeft = ISODateString.Printer.codomainToJson(str)
           expect(result).toStrictEqual(E.right(date.toISOString()))
           expect(resultLeft).toStrictEqual(E.right(str))
         })

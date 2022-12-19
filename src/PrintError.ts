@@ -14,7 +14,7 @@ import * as Sg from 'fp-ts/Semigroup'
  * @since 1.1.0
  * @category Model
  */
-export type PrintingError =
+export type PrintError =
   | ErrorGroup
   | ErrorAtIndex
   | ErrorAtKey
@@ -23,6 +23,24 @@ export type PrintingError =
   | InfiniteValue
   | NotANumber
   | InvalidValue
+
+// -------------------------------------------------------------------------------------
+// Guards
+// -------------------------------------------------------------------------------------
+
+/**
+ * @since 1.1.0
+ * @category Guards
+ */
+export const isPrintError = (u: unknown): u is PrintError =>
+  u instanceof ErrorGroup ||
+  u instanceof ErrorAtIndex ||
+  u instanceof ErrorAtKey ||
+  u instanceof NamedError ||
+  u instanceof CircularReference ||
+  u instanceof InfiniteValue ||
+  u instanceof NotANumber ||
+  u instanceof InvalidValue
 
 // -------------------------------------------------------------------------------------
 // Constructors
@@ -34,7 +52,7 @@ export type PrintingError =
  */
 export class ErrorGroup {
   readonly _tag = 'ErrorGroup'
-  constructor(readonly errors: RNEA.ReadonlyNonEmptyArray<PrintingError>) {}
+  constructor(readonly errors: RNEA.ReadonlyNonEmptyArray<PrintError>) {}
 }
 
 /**
@@ -43,7 +61,7 @@ export class ErrorGroup {
  */
 export class ErrorAtIndex {
   readonly _tag = 'ErrorAtIndex'
-  constructor(readonly index: number, readonly error: PrintingError) {}
+  constructor(readonly index: number, readonly error: PrintError) {}
 }
 
 /**
@@ -52,7 +70,7 @@ export class ErrorAtIndex {
  */
 export class ErrorAtKey {
   readonly _tag = 'ErrorAtKey'
-  constructor(readonly key: string, readonly error: PrintingError) {}
+  constructor(readonly key: string, readonly error: PrintError) {}
 }
 
 /**
@@ -61,7 +79,7 @@ export class ErrorAtKey {
  */
 export class NamedError {
   readonly _tag = 'NamedError'
-  constructor(readonly expected: string, readonly error: PrintingError) {}
+  constructor(readonly expected: string, readonly error: PrintError) {}
 }
 
 /**
@@ -106,8 +124,8 @@ export class InvalidValue {
  * @since 1.1.0
  * @category Instances
  */
-export const semigroupPrintingError: Sg.Semigroup<PrintingError> = {
-  concat: (x, y): PrintingError =>
+export const semigroupPrintingError: Sg.Semigroup<PrintError> = {
+  concat: (x, y): PrintError =>
     x instanceof ErrorGroup && y instanceof ErrorGroup
       ? new ErrorGroup(RNEA.concat(y.errors)(x.errors))
       : x instanceof ErrorGroup

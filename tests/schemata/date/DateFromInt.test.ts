@@ -86,8 +86,8 @@ describe('DateFromInt', () => {
 
   describe('Printer', () => {
     it('prints a valid DateFromInt', () => {
-      const result = Printer.print(nowishDate)
-      const resultLeft = Printer.printLeft(nowish)
+      const result = Printer.domainToJson(nowishDate)
+      const resultLeft = Printer.codomainToJson(nowish)
       expect(result).toStrictEqual(E.right(nowishDate.getTime()))
       expect(resultLeft).toStrictEqual(E.right(nowishDate.getTime()))
     })

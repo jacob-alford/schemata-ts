@@ -12,7 +12,7 @@ import { Branded } from 'io-ts'
 import * as S from 'io-ts/Schemable'
 
 import { typeOf, witherS } from '../internal/util'
-import * as PE from '../PrintingError'
+import * as PE from '../PrintError'
 import { WithRefine2 } from '../schemables/WithRefine/definition'
 import { Schemable2 } from './SchemableBase'
 
@@ -111,8 +111,8 @@ export const safeJsonArray: (as: ReadonlyArray<SafeJson>) => SafeJsonArray = uns
  * @category Model
  */
 export interface Printer<E, A> {
-  readonly print: (a: A) => E.Either<PE.PrintingError, SafeJson>
-  readonly printLeft: (e: E) => E.Either<PE.PrintingError, SafeJson>
+  readonly domainToJson: (a: A) => E.Either<PE.PrintError, SafeJson>
+  readonly codomainToJson: (e: E) => E.Either<PE.PrintError, SafeJson>
 }
 
 /** @internal */
@@ -123,7 +123,7 @@ export const printerValidation = E.getApplicativeValidation(PE.semigroupPrinting
 // -------------------------------------------------------------------------------------
 
 /** @internal */
-export const toJson = (input: unknown): E.Either<PE.PrintingError, SafeJson> => {
+export const toJson = (input: unknown): E.Either<PE.PrintError, SafeJson> => {
   if (input === undefined) return E.left(new PE.InvalidValue(input))
   if (typeof input === 'function') return E.left(new PE.InvalidValue(input))
   if (typeof input === 'symbol') return E.left(new PE.InvalidValue(input))
@@ -177,8 +177,8 @@ export const literal = <
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   ..._args: A
 ): Printer<A[number], A[number]> => ({
-  print: toJson,
-  printLeft: toJson,
+  domainToJson: toJson,
+  codomainToJson: toJson,
 })
 
 // -------------------------------------------------------------------------------------
@@ -190,8 +190,8 @@ export const literal = <
  * @category Primitives
  */
 export const string: Printer<string, string> = {
-  print: toJson,
-  printLeft: toJson,
+  domainToJson: toJson,
+  codomainToJson: toJson,
 }
 
 /**
@@ -199,8 +199,8 @@ export const string: Printer<string, string> = {
  * @category Primitives
  */
 export const number: Printer<number, number> = {
-  print: toJson,
-  printLeft: toJson,
+  domainToJson: toJson,
+  codomainToJson: toJson,
 }
 
 /**
@@ -208,8 +208,8 @@ export const number: Printer<number, number> = {
  * @category Primitives
  */
 export const boolean: Printer<boolean, boolean> = {
-  print: toJson,
-  printLeft: toJson,
+  domainToJson: toJson,
+  codomainToJson: toJson,
 }
 
 /**
@@ -217,7 +217,7 @@ export const boolean: Printer<boolean, boolean> = {
  * @category Primitives
  */
 export const UnknownArray: Printer<Array<unknown>, Array<unknown>> = {
-  print: input =>
+  domainToJson: input =>
     pipe(
       input,
       RA.traverseWithIndex(printerValidation)((i, v) =>
@@ -228,7 +228,7 @@ export const UnknownArray: Printer<Array<unknown>, Array<unknown>> = {
       ),
       E.map(safeJsonArray),
     ),
-  printLeft: input =>
+  codomainToJson: input =>
     pipe(
       input,
       RA.traverseWithIndex(printerValidation)((i, v) =>
@@ -246,7 +246,7 @@ export const UnknownArray: Printer<Array<unknown>, Array<unknown>> = {
  * @category Primitives
  */
 export const UnknownRecord: Printer<Record<string, unknown>, Record<string, unknown>> = {
-  print: input =>
+  domainToJson: input =>
     pipe(
       input,
       RR.traverseWithIndex(printerValidation)((key, v) =>
@@ -257,7 +257,7 @@ export const UnknownRecord: Printer<Record<string, unknown>, Record<string, unkn
       ),
       E.map(safeJsonRecord),
     ),
-  printLeft: input =>
+  codomainToJson: input =>
     pipe(
       input,
       RR.traverseWithIndex(printerValidation)((key, v) =>
@@ -279,9 +279,9 @@ export const UnknownRecord: Printer<Record<string, unknown>, Record<string, unkn
  * @category Combinators
  */
 export const refine: WithRefine2<URI>['refine'] = (f, id) => pa => ({
-  print: a =>
-    f(a) ? pa.print(a) : E.left(new PE.NamedError(id, new PE.InvalidValue(a))),
-  printLeft: pa.printLeft,
+  domainToJson: a =>
+    f(a) ? pa.domainToJson(a) : E.left(new PE.NamedError(id, new PE.InvalidValue(a))),
+  codomainToJson: pa.codomainToJson,
 })
 
 /**
@@ -289,8 +289,8 @@ export const refine: WithRefine2<URI>['refine'] = (f, id) => pa => ({
  * @category Combinators
  */
 export const nullable = <E, A>(or: Printer<E, A>): Printer<null | E, null | A> => ({
-  print: a => (a === null ? E.right(null) : or.print(a)),
-  printLeft: e => (e === null ? E.right(null) : or.printLeft(e)),
+  domainToJson: a => (a === null ? E.right(null) : or.domainToJson(a)),
+  codomainToJson: e => (e === null ? E.right(null) : or.codomainToJson(e)),
 })
 
 /** @internal */
@@ -313,26 +313,26 @@ export const struct = <P extends Record<string, Printer<any, any>>>(
   { [K in keyof P]: InnerLeft<P[K]> },
   { [K in keyof P]: InnerRight<P[K]> }
 > => ({
-  print: input =>
+  domainToJson: input =>
     pipe(
       properties,
       witherS(PE.semigroupPrintingError)((key, printer) =>
         O.some(
           pipe(
-            printer.print(input[key]),
-            E.mapLeft((err): PE.PrintingError => new PE.ErrorAtKey(key as string, err)),
+            printer.domainToJson(input[key]),
+            E.mapLeft((err): PE.PrintError => new PE.ErrorAtKey(key as string, err)),
           ),
         ),
       ),
       E.map(safeJsonRecord),
     ),
-  printLeft: input =>
+  codomainToJson: input =>
     pipe(
       properties,
       witherS(PE.semigroupPrintingError)((key, printer) =>
         O.some(
           pipe(
-            printer.printLeft(input[key]),
+            printer.codomainToJson(input[key]),
             E.mapLeft(err => new PE.ErrorAtKey(key as string, err)),
           ),
         ),
@@ -351,7 +351,7 @@ export const partial = <P extends Record<string, Printer<any, any>>>(
   Partial<{ [K in keyof P]: InnerLeft<P[K]> }>,
   Partial<{ [K in keyof P]: InnerRight<P[K]> }>
 > => ({
-  print: input =>
+  domainToJson: input =>
     pipe(
       properties,
       witherS(PE.semigroupPrintingError)((key, printer) =>
@@ -360,7 +360,7 @@ export const partial = <P extends Record<string, Printer<any, any>>>(
           O.fromNullable,
           O.map(value =>
             pipe(
-              printer.print(value),
+              printer.domainToJson(value),
               E.mapLeft(err => new PE.ErrorAtKey(key as string, err)),
             ),
           ),
@@ -368,7 +368,7 @@ export const partial = <P extends Record<string, Printer<any, any>>>(
       ),
       E.map(safeJsonRecord),
     ),
-  printLeft: input =>
+  codomainToJson: input =>
     pipe(
       properties,
       witherS(PE.semigroupPrintingError)((key, printer) =>
@@ -377,7 +377,7 @@ export const partial = <P extends Record<string, Printer<any, any>>>(
           O.fromNullable,
           O.map(value =>
             pipe(
-              printer.printLeft(value),
+              printer.codomainToJson(value),
               E.mapLeft(err => new PE.ErrorAtKey(key as string, err)),
             ),
           ),
@@ -394,20 +394,20 @@ export const partial = <P extends Record<string, Printer<any, any>>>(
 export const record = <E, A>(
   codomain: Printer<E, A>,
 ): Printer<Record<string, E>, Record<string, A>> => ({
-  print: flow(
+  domainToJson: flow(
     RR.traverseWithIndex(printerValidation)((k, a) =>
       pipe(
-        codomain.print(a),
+        codomain.domainToJson(a),
         E.mapLeft(err => new PE.ErrorAtKey(k, err)),
       ),
     ),
 
     E.map(safeJsonRecord),
   ),
-  printLeft: flow(
+  codomainToJson: flow(
     RR.traverseWithIndex(printerValidation)((k, a) =>
       pipe(
-        codomain.printLeft(a),
+        codomain.codomainToJson(a),
         E.mapLeft(err => new PE.ErrorAtKey(k, err)),
       ),
     ),
@@ -422,19 +422,19 @@ export const record = <E, A>(
 export const array = <E, A>(
   item: Printer<E, A>,
 ): Printer<ReadonlyArray<E>, ReadonlyArray<A>> => ({
-  print: flow(
+  domainToJson: flow(
     RA.traverseWithIndex(printerValidation)((i, a) =>
       pipe(
-        item.print(a),
+        item.domainToJson(a),
         E.mapLeft(err => new PE.ErrorAtIndex(i, err)),
       ),
     ),
     E.map(safeJsonArray),
   ),
-  printLeft: flow(
+  codomainToJson: flow(
     RA.traverseWithIndex(printerValidation)((i, a) =>
       pipe(
-        item.printLeft(a),
+        item.codomainToJson(a),
         E.mapLeft(err => new PE.ErrorAtIndex(i, err)),
       ),
     ),
@@ -452,9 +452,9 @@ export const tuple = <C extends ReadonlyArray<Printer<any, any>>>(
   { [K in keyof C]: InnerLeft<C[K]> },
   { [K in keyof C]: InnerRight<C[K]> }
 > => ({
-  print: input =>
+  domainToJson: input =>
     pipe(
-      RA.zipWith(components, input, (printer, a) => printer.print(a)),
+      RA.zipWith(components, input, (printer, a) => printer.domainToJson(a)),
       RA.traverseWithIndex(printerValidation)((i, a) =>
         pipe(
           a,
@@ -463,9 +463,9 @@ export const tuple = <C extends ReadonlyArray<Printer<any, any>>>(
       ),
       E.map(safeJsonArray),
     ),
-  printLeft: input =>
+  codomainToJson: input =>
     pipe(
-      RA.zipWith(components, input, (printer, b) => printer.printLeft(b)),
+      RA.zipWith(components, input, (printer, b) => printer.codomainToJson(b)),
       RA.traverseWithIndex(printerValidation)((i, a) =>
         pipe(
           a,
@@ -498,22 +498,22 @@ const intersect_ = <A, B>(a: A, b: B): A & B => {
 export const intersect =
   <F, B>(pb: Printer<F, B>) =>
   <E, A>(pa: Printer<E, A>): Printer<E & F, A & B> => ({
-    print: input =>
+    domainToJson: input =>
       pipe(
         E.Do,
-        E.apS('a', pa.print(input)),
-        E.apS('b', pb.print(input)),
+        E.apS('a', pa.domainToJson(input)),
+        E.apS('b', pb.domainToJson(input)),
         E.map(({ a, b }) => intersect_(a, b)),
         E.filterOrElseW(
           a => a !== undefined,
           () => new PE.NamedError('Nonzero Intersection', new PE.InvalidValue(undefined)),
         ),
       ),
-    printLeft: input =>
+    codomainToJson: input =>
       pipe(
         E.Do,
-        E.apS('a', pa.printLeft(input)),
-        E.apS('b', pb.printLeft(input)),
+        E.apS('a', pa.codomainToJson(input)),
+        E.apS('b', pb.codomainToJson(input)),
         E.map(({ a, b }) => intersect_(a, b)),
         E.filterOrElseW(
           a => a !== undefined,
@@ -534,17 +534,17 @@ export const sum =
     { [K in keyof MS]: InnerLeft<MS[K]> }[keyof MS],
     { [K in keyof MS]: InnerRight<MS[K]> }[keyof MS]
   > => ({
-    print: a => {
+    domainToJson: a => {
       // @ts-expect-error -- typelevel difference
       const printer = members[a[tag]]
       // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-      return printer!.print(a)
+      return printer!.domainToJson(a)
     },
-    printLeft: e => {
+    codomainToJson: e => {
       // @ts-expect-error -- typelevel difference
       const printer = members[e[tag]]
       // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-      return printer!.printLeft(e)
+      return printer!.codomainToJson(e)
     },
   })
 
@@ -553,27 +553,27 @@ export const sum =
  * @category Combinators
  */
 export const lazy = <E, A>(id: string, f: () => Printer<E, A>): Printer<E, A> => ({
-  print: input => {
+  domainToJson: input => {
     const get = S.memoize<void, Printer<E, A>>(f)
     return pipe(
       // Check circularity before printing input
       toJson(input),
       E.chainW(() =>
         pipe(
-          get().print(input),
+          get().domainToJson(input),
           E.mapLeft(err => new PE.NamedError(id, err)),
         ),
       ),
     )
   },
-  printLeft: input => {
+  codomainToJson: input => {
     const get = S.memoize<void, Printer<E, A>>(f)
     return pipe(
       // Check circularity before printing input
       toJson(input),
       E.chainW(() =>
         pipe(
-          get().printLeft(input),
+          get().codomainToJson(input),
           E.mapLeft(err => new PE.NamedError(id, err)),
         ),
       ),

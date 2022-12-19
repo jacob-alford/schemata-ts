@@ -54,7 +54,7 @@ describe('Natural', () => {
 
   describe('Printer', () => {
     it('prints a valid nat', () => {
-      expect(Printer.print(_(1))).toStrictEqual(E.right(1))
+      expect(Printer.domainToJson(_(1))).toStrictEqual(E.right(1))
     })
   })
 })

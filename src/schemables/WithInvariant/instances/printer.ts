@@ -14,7 +14,7 @@ import { WithInvariant2 } from '../definition'
  */
 export const Printer: WithInvariant2<P.URI> = {
   imap: () => (_, reverseGet) => printA => ({
-    print: flow(reverseGet, printA.print),
-    printLeft: printA.printLeft,
+    domainToJson: flow(reverseGet, printA.domainToJson),
+    codomainToJson: printA.codomainToJson,
   }),
 }

@@ -12,7 +12,7 @@ import * as TD from '../../src/base/TaskDecoderBase'
 import * as t from '../../src/base/TypeBase'
 import { Schemable as GuardSchemableExt } from '../../src/Guard'
 import * as PB from '../../src/PatternBuilder'
-import * as PE from '../../src/PrintingError'
+import * as PE from '../../src/PrintError'
 import { PaddingLength } from '../../src/schemables/WithPadding/definition'
 import { interpret } from '../../src/SchemaExt'
 import { validateArbitrary } from '../../test-utils'
@@ -235,24 +235,24 @@ describe('WithPadding', () => {
 
       describe('Printer', () => {
         test.each(validL)('prints validly padded strings, %s', str => {
-          expect(printerL.print(str)).toStrictEqual(E.right(str))
-          expect(printerL.printLeft(str)).toStrictEqual(E.right(str))
+          expect(printerL.domainToJson(str)).toStrictEqual(E.right(str))
+          expect(printerL.codomainToJson(str)).toStrictEqual(E.right(str))
         })
         test.each(validR)('prints validly padded strings, %s', str => {
-          expect(printerR.print(str)).toStrictEqual(E.right(str))
-          expect(printerR.printLeft(str)).toStrictEqual(E.right(str))
+          expect(printerR.domainToJson(str)).toStrictEqual(E.right(str))
+          expect(printerR.codomainToJson(str)).toStrictEqual(E.right(str))
         })
         test.each(invalidL)('prints invalidly padded strings, %s', str => {
-          expect(printerL.print(str)).toStrictEqual(
+          expect(printerL.domainToJson(str)).toStrictEqual(
             E.left(new PE.NamedError('LeftPadding', new PE.InvalidValue(str))),
           )
-          expect(printerL.printLeft(str)).toStrictEqual(E.right(str))
+          expect(printerL.codomainToJson(str)).toStrictEqual(E.right(str))
         })
         test.each(invalidR)('prints invalidly padded strings, %s', str => {
-          expect(printerR.print(str)).toStrictEqual(
+          expect(printerR.domainToJson(str)).toStrictEqual(
             E.left(new PE.NamedError('RightPadding', new PE.InvalidValue(str))),
           )
-          expect(printerR.printLeft(str)).toStrictEqual(E.right(str))
+          expect(printerR.codomainToJson(str)).toStrictEqual(E.right(str))
         })
       })
     })

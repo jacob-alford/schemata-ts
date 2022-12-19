@@ -99,8 +99,8 @@ describe('BooleanNumber', () => {
 
   describe('Printer', () => {
     test.each(valid)('prints valid booleans: %s', num => {
-      const print = BooleanNumber.Printer.print
-      const printLeft = BooleanNumber.Printer.printLeft
+      const print = BooleanNumber.Printer.domainToJson
+      const printLeft = BooleanNumber.Printer.codomainToJson
       const test = Boolean(num)
       expect(print(test)).toStrictEqual(E.right(num))
       expect(printLeft(num)).toStrictEqual(E.right(num))

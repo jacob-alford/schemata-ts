@@ -18,7 +18,7 @@ import { WithFloat2 } from '../definition'
  */
 export const Printer: WithFloat2<P.URI> = {
   float: () => ({
-    print: P.toJson,
-    printLeft: P.number.printLeft,
+    domainToJson: P.toJson,
+    codomainToJson: P.number.codomainToJson,
   }),
 }

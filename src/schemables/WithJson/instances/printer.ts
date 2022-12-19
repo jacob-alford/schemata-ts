@@ -15,11 +15,11 @@ import { WithJson2 } from '../definition'
  */
 export const Printer: WithJson2<P.URI> = {
   json: {
-    print: E.right,
-    printLeft: P.toJson,
+    domainToJson: E.right,
+    codomainToJson: P.toJson,
   },
   jsonString: {
-    print: flow(P.safeParse, E.right),
-    printLeft: P.string.printLeft,
+    domainToJson: flow(P.safeParse, E.right),
+    codomainToJson: P.string.codomainToJson,
   },
 }

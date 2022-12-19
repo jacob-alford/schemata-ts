@@ -13,7 +13,7 @@ import * as Enc from '../../src/base/EncoderBase'
 import * as P from '../../src/base/PrinterBase'
 import * as SC from '../../src/base/SchemaBase'
 import { getDecoder } from '../../src/Decoder'
-import * as PE from '../../src/PrintingError'
+import * as PE from '../../src/PrintError'
 import { validateArbitrary } from '../../test-utils'
 import * as MapFromEntries from '../../test-utils/schemable-exports/WithMap'
 
@@ -234,7 +234,7 @@ describe('MapFromEntries', () => {
   describe('Printer', () => {
     it('converts a map to an array', () => {
       expect(
-        MapFromEntries.Printer.mapFromEntries(Str.Ord, P.string, P.string).print(
+        MapFromEntries.Printer.mapFromEntries(Str.Ord, P.string, P.string).domainToJson(
           new Map([
             ['a', 'b'],
             ['c', 'd'],
@@ -247,10 +247,12 @@ describe('MapFromEntries', () => {
         ]),
       )
       expect(
-        MapFromEntries.Printer.mapFromEntries(Str.Ord, P.string, P.string).printLeft([
-          ['a', 'b'],
-          ['c', 'd'],
-        ]),
+        MapFromEntries.Printer.mapFromEntries(Str.Ord, P.string, P.string).codomainToJson(
+          [
+            ['a', 'b'],
+            ['c', 'd'],
+          ],
+        ),
       ).toStrictEqual(
         E.right([
           ['a', 'b'],
@@ -264,7 +266,9 @@ describe('MapFromEntries', () => {
         [1, NaN],
       ]) as any
       expect(
-        MapFromEntries.Printer.mapFromEntries(N.Ord, P.number, P.number).print(test),
+        MapFromEntries.Printer.mapFromEntries(N.Ord, P.number, P.number).domainToJson(
+          test,
+        ),
       ).toStrictEqual(
         E.left(
           new PE.ErrorGroup([
@@ -274,7 +278,7 @@ describe('MapFromEntries', () => {
         ),
       )
       expect(
-        MapFromEntries.Printer.mapFromEntries(N.Ord, P.number, P.number).printLeft([
+        MapFromEntries.Printer.mapFromEntries(N.Ord, P.number, P.number).codomainToJson([
           [NaN, 5],
           [1, NaN],
         ]),

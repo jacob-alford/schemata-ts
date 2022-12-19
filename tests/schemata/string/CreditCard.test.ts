@@ -110,7 +110,9 @@ describe('CreditCard', () => {
 
   describe('printer', () => {
     it('prints a valid CreditCard string', () => {
-      expect(instances.Printer.print(realishCC as any)).toStrictEqual(E.right(realishCC))
+      expect(instances.Printer.domainToJson(realishCC as any)).toStrictEqual(
+        E.right(realishCC),
+      )
     })
   })
 })

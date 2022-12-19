@@ -92,11 +92,11 @@ describe('JsonFromString', () => {
     it('prints a safe json', () => {
       const value = { a: 1 }
       if (!JsonFromString.Guard.is(value)) throw new Error('Unexpected Result')
-      const result = JsonFromString.Printer.print(value)
+      const result = JsonFromString.Printer.domainToJson(value)
       expect(result).toStrictEqual(E.right({ a: 1 }))
     })
     it('prints any string', () => {
-      const result = JsonFromString.Printer.printLeft(
+      const result = JsonFromString.Printer.codomainToJson(
         '{ im: "just a regular string"!, NaN: Infinity }',
       )
       expect(result).toStrictEqual(

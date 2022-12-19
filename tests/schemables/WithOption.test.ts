@@ -189,27 +189,29 @@ describe('OptionFromExclude', () => {
         OptionFromExclude.Printer.optionFromExclude(
           0 as any,
           getPrinter(IntFromString()),
-        ).print(O.some(1 as any)),
+        ).domainToJson(O.some(1 as any)),
       ).toStrictEqual(E.right('1'))
       expect(
         OptionFromExclude.Printer.optionFromExclude(
           0 as any,
           getPrinter(IntFromString()),
-        ).print(O.none),
+        ).domainToJson(O.none),
       ).toStrictEqual(E.right('0'))
       expect(
         OptionFromExclude.Printer.optionFromExclude(
           0 as any,
           getPrinter(IntFromString()),
-        ).printLeft(''),
+        ).codomainToJson(''),
       ).toStrictEqual(E.right(''))
     })
     it('should print some', () => {
       expect(
-        OptionFromExclude.Printer.optionFromExclude('', P.string).print(O.some('a')),
+        OptionFromExclude.Printer.optionFromExclude('', P.string).domainToJson(
+          O.some('a'),
+        ),
       ).toStrictEqual(E.right('a'))
       expect(
-        OptionFromExclude.Printer.optionFromExclude('', P.string).printLeft(''),
+        OptionFromExclude.Printer.optionFromExclude('', P.string).codomainToJson(''),
       ).toStrictEqual(E.right(''))
     })
   })

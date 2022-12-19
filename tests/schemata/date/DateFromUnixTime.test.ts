@@ -88,8 +88,8 @@ describe('DateFromUnixTime', () => {
 
   describe('Printer', () => {
     it('prints a DateFromUnixTime', () => {
-      expect(Printer.print(nowishDate)).toStrictEqual(E.right(nowishUnix))
-      expect(Printer.printLeft(nowishUnix)).toStrictEqual(E.right(nowishUnix))
+      expect(Printer.domainToJson(nowishDate)).toStrictEqual(E.right(nowishUnix))
+      expect(Printer.codomainToJson(nowishUnix)).toStrictEqual(E.right(nowishUnix))
     })
   })
 })

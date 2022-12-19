@@ -17,11 +17,11 @@ import { WithOption2 } from '../definition'
  */
 export const Printer: WithOption2<P.URI> = {
   optionFromExclude: (exclude, sa, eq = Eq.eqStrict) => ({
-    print: flow(
+    domainToJson: flow(
       O.getOrElseW(() => exclude),
-      sa.print,
+      sa.domainToJson,
     ),
-    printLeft: eb =>
-      eq.equals(eb, exclude) ? sa.print(exclude) : sa.printLeft(eb as any),
+    codomainToJson: eb =>
+      eq.equals(eb, exclude) ? sa.domainToJson(exclude) : sa.codomainToJson(eb as any),
   }),
 }

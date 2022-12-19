@@ -1,7 +1,7 @@
 import * as E from 'fp-ts/Either'
 
 import { getDecoder } from '../../src/Decoder'
-import * as PE from '../../src/PrintingError'
+import * as PE from '../../src/PrintError'
 import { isSafeDate } from '../../src/schemables/WithDate/utils'
 import { validateArbitrary } from '../../test-utils'
 import * as SafeDate from '../../test-utils/schemable-exports/WithDate'
@@ -84,23 +84,25 @@ describe('SafeDate', () => {
   describe('Printer', () => {
     it('prints a valid date', () => {
       const date = new Date()
-      expect(SafeDate.Printer.date.print(date)).toStrictEqual(E.right(date.toISOString()))
+      expect(SafeDate.Printer.date.domainToJson(date)).toStrictEqual(
+        E.right(date.toISOString()),
+      )
     })
     it('catches a bad date, poor guy', () => {
       const date = new Date('abc')
-      expect(SafeDate.Printer.date.print(date)).toStrictEqual(
+      expect(SafeDate.Printer.date.domainToJson(date)).toStrictEqual(
         E.left(new PE.NamedError('Valid Date', new PE.InvalidValue(date))),
       )
     })
     it('prints a valid date', () => {
       const date = new Date()
-      expect(SafeDate.Printer.date.printLeft(date)).toStrictEqual(
+      expect(SafeDate.Printer.date.codomainToJson(date)).toStrictEqual(
         E.right(date.toISOString()),
       )
     })
     it('catches another bad date, poor guy', () => {
       const date = new Date('abc')
-      expect(SafeDate.Printer.date.printLeft(date)).toStrictEqual(
+      expect(SafeDate.Printer.date.codomainToJson(date)).toStrictEqual(
         E.left(new PE.NamedError('Valid Date', new PE.InvalidValue(date))),
       )
     })

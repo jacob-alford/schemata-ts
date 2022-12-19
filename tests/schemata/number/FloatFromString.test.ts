@@ -121,7 +121,7 @@ describe('FloatFromString', () => {
 
   describe('Printer', () => {
     it('prints a float', () => {
-      expect(Printer.print(1.2 as any)).toStrictEqual(E.right('1.2'))
+      expect(Printer.domainToJson(1.2 as any)).toStrictEqual(E.right('1.2'))
     })
   })
 })

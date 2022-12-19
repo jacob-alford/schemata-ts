@@ -10,7 +10,7 @@ import * as RA from 'fp-ts/ReadonlyArray'
 import * as RM from 'fp-ts/ReadonlyMap'
 
 import * as P from '../../../base/PrinterBase'
-import * as PE from '../../../PrintingError'
+import * as PE from '../../../PrintError'
 import { WithMap2 } from '../definition'
 
 const apSV = apS(P.printerValidation)
@@ -21,7 +21,7 @@ const apSV = apS(P.printerValidation)
  */
 export const Printer: WithMap2<P.URI> = {
   mapFromEntries: (ordK, sk, sa) => ({
-    print: flow(
+    domainToJson: flow(
       RM.toReadonlyArray(ordK),
       RA.traverseWithIndex(P.printerValidation)((i, [k, a]) =>
         pipe(
@@ -29,14 +29,14 @@ export const Printer: WithMap2<P.URI> = {
           apSV(
             'k',
             pipe(
-              sk.print(k),
+              sk.domainToJson(k),
               E.mapLeft(err => new PE.ErrorAtIndex(0, err)),
             ),
           ),
           apSV(
             'a',
             pipe(
-              sa.print(a),
+              sa.domainToJson(a),
               E.mapLeft(err => new PE.ErrorAtIndex(1, err)),
             ),
           ),
@@ -48,21 +48,21 @@ export const Printer: WithMap2<P.URI> = {
       ),
       E.map(P.safeJsonArray),
     ),
-    printLeft: flow(
+    codomainToJson: flow(
       RA.traverseWithIndex(P.printerValidation)((i, [k, a]) =>
         pipe(
           E.Do,
           apSV(
             'k',
             pipe(
-              sk.printLeft(k),
+              sk.codomainToJson(k),
               E.mapLeft(err => new PE.ErrorAtIndex(0, err)),
             ),
           ),
           apSV(
             'a',
             pipe(
-              sa.printLeft(a),
+              sa.codomainToJson(a),
               E.mapLeft(err => new PE.ErrorAtIndex(1, err)),
             ),
           ),

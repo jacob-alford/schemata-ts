@@ -168,7 +168,7 @@ describe('IntFromString', () => {
 
   describe('Printer', () => {
     it('prints a number', () => {
-      expect(Printer.print(1 as any)).toEqual(E.right('1'))
+      expect(Printer.domainToJson(1 as any)).toEqual(E.right('1'))
     })
   })
 })

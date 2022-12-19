@@ -20,7 +20,7 @@ describe('WithBrand', () => {
   test('Printer', () => {
     type FooBrand = Brand<{ readonly foo: unique symbol }['foo']>
     const Printer_ = pipe(P.string, Printer.brand<FooBrand>())
-    expect(Printer_.print('foo' as any)).toEqual(E.right('foo'))
-    expect(Printer_.printLeft('foo' as any)).toEqual(E.right('foo'))
+    expect(Printer_.domainToJson('foo' as any)).toEqual(E.right('foo'))
+    expect(Printer_.codomainToJson('foo' as any)).toEqual(E.right('foo'))
   })
 })

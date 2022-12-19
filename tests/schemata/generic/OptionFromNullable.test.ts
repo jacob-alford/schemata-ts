@@ -107,12 +107,14 @@ describe('OptionFromNullable', () => {
 
   describe('Printer', () => {
     it("should print 'null' for none", () => {
-      expect(OptionFromNullable.Printer.print(O.none)).toStrictEqual(E.right(null))
-      expect(OptionFromNullable.Printer.printLeft(null)).toStrictEqual(E.right(null))
+      expect(OptionFromNullable.Printer.domainToJson(O.none)).toStrictEqual(E.right(null))
+      expect(OptionFromNullable.Printer.codomainToJson(null)).toStrictEqual(E.right(null))
     })
     it('should print the value for some', () => {
-      expect(OptionFromNullable.Printer.print(O.some('a'))).toStrictEqual(E.right('a'))
-      expect(OptionFromNullable.Printer.printLeft('a')).toStrictEqual(E.right('a'))
+      expect(OptionFromNullable.Printer.domainToJson(O.some('a'))).toStrictEqual(
+        E.right('a'),
+      )
+      expect(OptionFromNullable.Printer.codomainToJson('a')).toStrictEqual(E.right('a'))
     })
   })
 })

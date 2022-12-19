@@ -115,7 +115,7 @@ describe('BigIntString', () => {
 
   describe('Printer', () => {
     test.each(valid)('prints valid bigint strings %s', str => {
-      const result = BigIntString.Printer.print(BigInt(str))
+      const result = BigIntString.Printer.domainToJson(BigInt(str))
       expect(result).toEqual(E.right(str))
     })
   })

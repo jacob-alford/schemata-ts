@@ -6,7 +6,7 @@
 import * as E from 'fp-ts/Either'
 
 import * as P from '../../../base/PrinterBase'
-import * as PE from '../../../PrintingError'
+import * as PE from '../../../PrintError'
 import { WithOptional2 } from '../definition'
 
 /**
@@ -15,7 +15,9 @@ import { WithOptional2 } from '../definition'
  */
 export const Printer: WithOptional2<P.URI> = {
   optional: ea => ({
-    print: a => (a === undefined ? E.left(new PE.InvalidValue(a)) : ea.print(a)),
-    printLeft: e => (e === undefined ? E.left(new PE.InvalidValue(e)) : ea.printLeft(e)),
+    domainToJson: a =>
+      a === undefined ? E.left(new PE.InvalidValue(a)) : ea.domainToJson(a),
+    codomainToJson: e =>
+      e === undefined ? E.left(new PE.InvalidValue(e)) : ea.codomainToJson(e),
   }),
 }
