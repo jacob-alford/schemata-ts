@@ -1,11 +1,9 @@
 import * as E from 'fp-ts/Either'
-import { pipe } from 'fp-ts/function'
 import * as O from 'fp-ts/Option'
 import * as DE from 'io-ts/DecodeError'
 import * as FSg from 'io-ts/FreeSemigroup'
 
 import { getCodec } from '../src/Codec'
-import * as EP from '../src/ErrorReporter'
 import { isParseError, ParseError } from '../src/JsonDeserializer'
 import * as PE from '../src/PrintError'
 import * as S from '../src/schemata'
