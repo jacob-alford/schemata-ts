@@ -650,4 +650,4 @@ export const safeParse: (s: JsonString) => SafeJson = s => JSON.parse(s)
  * @category Destructors
  */
 export const safeStringify: (s: SafeJson) => JsonString = s =>
-  unsafeCoerce(JSON.stringify(s))
+  unsafeCoerce(JSON.stringify(s, null, 2))
