@@ -1,7 +1,7 @@
 /**
  * A read-only Array containing one or more elements.
  *
- * @since 1.0.2
+ * @since 1.1.0
  */
 import { pipe } from 'fp-ts/function'
 import * as RA from 'fp-ts/ReadonlyArray'
@@ -10,7 +10,7 @@ import * as RNEA from 'fp-ts/ReadonlyNonEmptyArray'
 import { make, SchemaExt } from '../../SchemaExt'
 
 /**
- * @since 1.0.2
+ * @since 1.1.0
  * @category Model
  */
 export type NonEmptyArrayS = <A, O>(
@@ -20,7 +20,7 @@ export type NonEmptyArrayS = <A, O>(
 /**
  * A read-only Array containing one or more elements.
  *
- * @since 1.0.2
+ * @since 1.1.0
  * @category Schema
  */
 export const NonEmptyArray: NonEmptyArrayS = sA =>
