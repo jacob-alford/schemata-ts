@@ -16,6 +16,15 @@ export const urlifyBase64 = (s: string): string =>
   s.replace(/[=+/]/g, c => (c === '/' ? '_' : c === '+' ? '-' : ''))
 
 /**
+ * Object.hasOwn isn't available in Node 14 :(
+ *
+ * @internal
+ */
+// eslint-disable-next-line @typescript-eslint/ban-types
+export const hasOwn = (o: object, v: PropertyKey): boolean =>
+  Object.hasOwn ? Object.hasOwn(o, v) : Object.prototype.hasOwnProperty.call(o, v)
+
+/**
  * @since 1.0.0
  * @internal
  */
@@ -37,7 +46,7 @@ export const witherS =
     /* Enumerable own, Enumerable inherited */
     for (const key in s) {
       /* Ignores inherited properties */
-      if (!Object.hasOwn(s, key)) continue
+      if (!hasOwn(s, key)) continue
       /* Perform effect */
       const result = f(key, s[key])
       /* none => skip */
@@ -63,7 +72,7 @@ export const forIn =
   (a: A): IO.IO<void> => {
     return () => {
       for (const key in a) {
-        if (!Object.hasOwn(a, key)) continue
+        if (!hasOwn(a, key)) continue
         eff(key, a[key])()
       }
     }
