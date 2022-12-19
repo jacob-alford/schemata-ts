@@ -4,7 +4,7 @@
  * @since 1.1.0
  */
 import * as E from 'fp-ts/Either'
-import { identity, pipe, unsafeCoerce } from 'fp-ts/function'
+import { flow, identity, pipe, unsafeCoerce } from 'fp-ts/function'
 import * as O from 'fp-ts/Option'
 import * as RA from 'fp-ts/ReadonlyArray'
 import * as RR from 'fp-ts/ReadonlyRecord'
@@ -85,7 +85,7 @@ interface JsonRecord {
 export type SafeJsonRecord = Branded<SafeRecordBrand, JsonRecord>
 
 /** @internal */
-const safeJsonRecord: (r: JsonRecord) => SafeJsonRecord = unsafeCoerce
+export const safeJsonRecord: (r: JsonRecord) => SafeJsonRecord = unsafeCoerce
 
 /**
  * An array with validated keys
@@ -104,7 +104,7 @@ export interface JsonArray extends ReadonlyArray<SafeJson> {}
 export type SafeJsonArray = Branded<SafeArrayBrand, JsonArray>
 
 /** @internal */
-const safeJsonArray: (as: ReadonlyArray<SafeJson>) => SafeJsonArray = unsafeCoerce
+export const safeJsonArray: (as: ReadonlyArray<SafeJson>) => SafeJsonArray = unsafeCoerce
 
 /**
  * @since 1.1.0
@@ -278,7 +278,11 @@ export const UnknownRecord: Printer<Record<string, unknown>, Record<string, unkn
  * @since 1.1.0
  * @category Combinators
  */
-export const refine: WithRefine2<URI>['refine'] = () => identity
+export const refine: WithRefine2<URI>['refine'] = (f, id) => pa => ({
+  print: a =>
+    f(a) ? pa.print(a) : E.left(new PE.NamedError(id, new PE.InvalidValue(a))),
+  printLeft: pa.printLeft,
+})
 
 /**
  * @since 1.1.0
@@ -390,28 +394,25 @@ export const partial = <P extends Record<string, Printer<any, any>>>(
 export const record = <E, A>(
   codomain: Printer<E, A>,
 ): Printer<Record<string, E>, Record<string, A>> => ({
-  print: input =>
-    pipe(
-      input,
-      RR.traverseWithIndex(printerValidation)((k, a) =>
-        pipe(
-          codomain.print(a),
-          E.mapLeft(err => new PE.ErrorAtKey(k, err)),
-        ),
+  print: flow(
+    RR.traverseWithIndex(printerValidation)((k, a) =>
+      pipe(
+        codomain.print(a),
+        E.mapLeft(err => new PE.ErrorAtKey(k, err)),
       ),
-      E.map(safeJsonRecord),
     ),
-  printLeft: input =>
-    pipe(
-      input,
-      RR.traverseWithIndex(printerValidation)((k, a) =>
-        pipe(
-          codomain.printLeft(a),
-          E.mapLeft(err => new PE.ErrorAtKey(k, err)),
-        ),
+
+    E.map(safeJsonRecord),
+  ),
+  printLeft: flow(
+    RR.traverseWithIndex(printerValidation)((k, a) =>
+      pipe(
+        codomain.printLeft(a),
+        E.mapLeft(err => new PE.ErrorAtKey(k, err)),
       ),
-      E.map(safeJsonRecord),
     ),
+    E.map(safeJsonRecord),
+  ),
 })
 
 /**
@@ -421,28 +422,24 @@ export const record = <E, A>(
 export const array = <E, A>(
   item: Printer<E, A>,
 ): Printer<ReadonlyArray<E>, ReadonlyArray<A>> => ({
-  print: input =>
-    pipe(
-      input,
-      RA.traverseWithIndex(printerValidation)((i, a) =>
-        pipe(
-          item.print(a),
-          E.mapLeft(err => new PE.ErrorAtIndex(i, err)),
-        ),
+  print: flow(
+    RA.traverseWithIndex(printerValidation)((i, a) =>
+      pipe(
+        item.print(a),
+        E.mapLeft(err => new PE.ErrorAtIndex(i, err)),
       ),
-      E.map(safeJsonArray),
     ),
-  printLeft: input =>
-    pipe(
-      input,
-      RA.traverseWithIndex(printerValidation)((i, a) =>
-        pipe(
-          item.printLeft(a),
-          E.mapLeft(err => new PE.ErrorAtIndex(i, err)),
-        ),
+    E.map(safeJsonArray),
+  ),
+  printLeft: flow(
+    RA.traverseWithIndex(printerValidation)((i, a) =>
+      pipe(
+        item.printLeft(a),
+        E.mapLeft(err => new PE.ErrorAtIndex(i, err)),
       ),
-      E.map(safeJsonArray),
     ),
+    E.map(safeJsonArray),
+  ),
 })
 
 /**
@@ -555,14 +552,18 @@ export const sum =
  * @since 1.1.0
  * @category Combinators
  */
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
-export const lazy = <E, A>(_id: string, f: () => Printer<E, A>): Printer<E, A> => ({
+export const lazy = <E, A>(id: string, f: () => Printer<E, A>): Printer<E, A> => ({
   print: input => {
     const get = S.memoize<void, Printer<E, A>>(f)
     return pipe(
       // Check circularity before printing input
       toJson(input),
-      E.chain(() => get().print(input)),
+      E.chainW(() =>
+        pipe(
+          get().print(input),
+          E.mapLeft(err => new PE.NamedError(id, err)),
+        ),
+      ),
     )
   },
   printLeft: input => {
@@ -570,7 +571,12 @@ export const lazy = <E, A>(_id: string, f: () => Printer<E, A>): Printer<E, A> =
     return pipe(
       // Check circularity before printing input
       toJson(input),
-      E.chain(() => get().printLeft(input)),
+      E.chainW(() =>
+        pipe(
+          get().printLeft(input),
+          E.mapLeft(err => new PE.NamedError(id, err)),
+        ),
+      ),
     )
   },
 })

@@ -11,7 +11,7 @@ const make: () => Int = () => _((Math.random() * 100000) | 0)
 
 type TestArray = ReadonlyArray<[unknown, 2 | 8 | 10 | 16]>
 
-const { Arbitrary, Guard } = getAllInstances(IntFromString.IntFromString())
+const { Arbitrary, Guard, Printer } = getAllInstances(IntFromString.IntFromString())
 
 const validNumbers: TestArray = [
   tuple('-1', 10),
@@ -163,6 +163,12 @@ describe('IntFromString', () => {
   describe('Arbitrary', () => {
     it('generates valid NegativeFloats', () => {
       validateArbitrary({ Arbitrary }, Guard.is)
+    })
+  })
+
+  describe('Printer', () => {
+    it('prints a number', () => {
+      expect(Printer.print(1 as any)).toEqual(E.right('1'))
     })
   })
 })

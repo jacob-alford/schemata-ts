@@ -1,3 +1,5 @@
+import * as E from 'fp-ts/Either'
+
 import { CreditCard } from '../../../src/schemata/string/CreditCard'
 import { getAllInstances, validateArbitrary } from '../../../test-utils'
 
@@ -103,6 +105,12 @@ describe('CreditCard', () => {
       '4716989580001715213',
     ])('%s is invalid', ccn => {
       expect(instances.Guard.is(ccn)).toBe(false)
+    })
+  })
+
+  describe('printer', () => {
+    it('prints a valid CreditCard string', () => {
+      expect(instances.Printer.print(realishCC as any)).toStrictEqual(E.right(realishCC))
     })
   })
 })

@@ -2,6 +2,7 @@ import * as E from 'fp-ts/Either'
 import { pipe, tuple } from 'fp-ts/function'
 import * as RA from 'fp-ts/ReadonlyArray'
 
+import * as PE from '../../../src/PrintingError'
 import { EmailAddress } from '../../../src/schemata/string/EmailAddress'
 import {
   cat,
@@ -151,6 +152,19 @@ describe('EmailAddress', () => {
   describe('Arbitrary', () => {
     it('generates valid EmailAddress', () => {
       validateArbitrary(instances, instances.Guard.is)
+    })
+  })
+
+  describe('Printer', () => {
+    test.each(valid)('validates valid email %s', str => {
+      const result = instances.Printer.print(str as EmailAddress)
+      expect(result).toStrictEqual(E.right(str))
+    })
+    test.each(invalid)('catches invalid email %s', str => {
+      const result = instances.Printer.print(str as EmailAddress)
+      expect(result).toStrictEqual(
+        E.left(new PE.NamedError('EmailAddress', new PE.InvalidValue(str))),
+      )
     })
   })
 })

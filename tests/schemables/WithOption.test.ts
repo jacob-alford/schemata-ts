@@ -10,8 +10,11 @@ import * as t from 'io-ts/Type'
 
 import * as Arb from '../../src/base/ArbitraryBase'
 import * as Enc from '../../src/base/EncoderBase'
+import * as P from '../../src/base/PrinterBase'
 import * as SC from '../../src/base/SchemaBase'
 import { getDecoder } from '../../src/Decoder'
+import { getPrinter } from '../../src/Printer'
+import { IntFromString } from '../../src/schemata'
 import { validateArbitrary } from '../../test-utils'
 import * as OptionFromExclude from '../../test-utils/schemable-exports/WithOption'
 
@@ -177,6 +180,37 @@ describe('OptionFromExclude', () => {
       const decoder = getDecoder(Schema)
       expect(decoder.decode('')).toEqual(E.right(O.none))
       expect(decoder.decode('a')).toEqual(E.right(O.some('a')))
+    })
+  })
+
+  describe('Printer', () => {
+    it('should print none', () => {
+      expect(
+        OptionFromExclude.Printer.optionFromExclude(
+          0 as any,
+          getPrinter(IntFromString()),
+        ).print(O.some(1 as any)),
+      ).toStrictEqual(E.right('1'))
+      expect(
+        OptionFromExclude.Printer.optionFromExclude(
+          0 as any,
+          getPrinter(IntFromString()),
+        ).print(O.none),
+      ).toStrictEqual(E.right('0'))
+      expect(
+        OptionFromExclude.Printer.optionFromExclude(
+          0 as any,
+          getPrinter(IntFromString()),
+        ).printLeft(''),
+      ).toStrictEqual(E.right(''))
+    })
+    it('should print some', () => {
+      expect(
+        OptionFromExclude.Printer.optionFromExclude('', P.string).print(O.some('a')),
+      ).toStrictEqual(E.right('a'))
+      expect(
+        OptionFromExclude.Printer.optionFromExclude('', P.string).printLeft(''),
+      ).toStrictEqual(E.right(''))
     })
   })
 })

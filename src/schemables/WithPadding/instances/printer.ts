@@ -3,16 +3,37 @@
  *
  * @since 1.1.0
  */
-import { identity } from 'fp-ts/function'
-
 import * as P from '../../../base/PrinterBase'
 import { WithPadding2 } from '../definition'
+import { foldUnion, match } from '../utils'
 
 /**
  * @since 1.1.0
  * @category Instances
  */
 export const Printer: WithPadding2<P.URI> = {
-  padLeft: () => identity,
-  padRight: () => identity,
+  padLeft: match({
+    MaxLength: ({ maxLength }) =>
+      P.refine(
+        (s: string): s is string => s.length <= foldUnion(maxLength)(s),
+        `LeftPadding`,
+      ),
+    ExactLength: ({ exactLength }) =>
+      P.refine(
+        (s: string): s is string => s.length === foldUnion(exactLength)(s),
+        `LeftPadding`,
+      ),
+  }),
+  padRight: match({
+    MaxLength: ({ maxLength }) =>
+      P.refine(
+        (s: string): s is string => s.length <= foldUnion(maxLength)(s),
+        `RightPadding`,
+      ),
+    ExactLength: ({ exactLength }) =>
+      P.refine(
+        (s: string): s is string => s.length === foldUnion(exactLength)(s),
+        `RightPadding`,
+      ),
+  }),
 }

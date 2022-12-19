@@ -3,6 +3,7 @@ import { pipe } from 'fp-ts/function'
 
 import * as P from '../src/base/PrinterBase'
 import * as PE from '../src/PrintingError'
+import { Printer as DatePrinter } from '../src/schemables/WithDate/instances/printer'
 
 describe('PrinterBase', () => {
   test('literal', () => {
@@ -49,6 +50,12 @@ describe('PrinterBase', () => {
       E.left(new PE.ErrorAtIndex(1, new PE.CircularReference(a[1]))),
     )
   })
+  it('captures suberrors in unknown arrays', () => {
+    const printer = P.UnknownArray
+    expect(printer.print([[NaN], 'a'])).toStrictEqual(
+      E.left(new PE.ErrorAtIndex(0, new PE.ErrorAtIndex(0, new PE.NotANumber()))),
+    )
+  })
   it('concats error groups', () => {
     const e1 = new PE.ErrorGroup([new PE.NotANumber()])
     const e2 = new PE.ErrorGroup([new PE.InfiniteValue()])
@@ -86,6 +93,12 @@ describe('PrinterBase', () => {
         bar: 2,
         foo: 1,
       }),
+    )
+  })
+  it("captures invalid values in an unknown record's values", () => {
+    const printer = P.UnknownRecord
+    expect(printer.print({ bar: 2, foo: { bar: NaN } })).toStrictEqual(
+      E.left(new PE.ErrorAtKey('foo', new PE.ErrorAtKey('bar', new PE.NotANumber()))),
     )
   })
   it('returns circular reference for an obviously circular reference', () => {
@@ -348,6 +361,33 @@ describe('PrinterBase', () => {
     const printer = P.lazy('', () => P.string)
     expect(printer.print('foo')).toStrictEqual(E.right('foo'))
     expect(printer.printLeft('foo')).toStrictEqual(E.right('foo'))
+  })
+  it('captures errors in lazy', () => {
+    const printer = P.lazy('Numerosan', () =>
+      pipe(
+        P.number,
+        P.refine((a): a is number => a !== 0, 'Nonzero'),
+      ),
+    )
+    expect(printer.print(0)).toStrictEqual(
+      E.left(
+        new PE.NamedError(
+          'Numerosan',
+          new PE.NamedError('Nonzero', new PE.InvalidValue(0)),
+        ),
+      ),
+    )
+
+    const leftPrinter = P.lazy('valid date', () => DatePrinter.date)
+    const date = new Date('abc')
+    expect(leftPrinter.printLeft(date)).toStrictEqual(
+      E.left(
+        new PE.NamedError(
+          'valid date',
+          new PE.NamedError('Valid Date', new PE.InvalidValue(date)),
+        ),
+      ),
+    )
   })
   it('stringifies recursion', () => {
     type A = {

@@ -32,15 +32,6 @@ export type PrintingError =
  * @since 1.1.0
  * @category Constructors
  */
-export class NamedError {
-  readonly _tag = 'Message'
-  constructor(readonly expected: string, readonly error: PrintingError) {}
-}
-
-/**
- * @since 1.1.0
- * @category Constructors
- */
 export class ErrorGroup {
   readonly _tag = 'ErrorGroup'
   constructor(readonly errors: RNEA.ReadonlyNonEmptyArray<PrintingError>) {}
@@ -62,6 +53,15 @@ export class ErrorAtIndex {
 export class ErrorAtKey {
   readonly _tag = 'ErrorAtKey'
   constructor(readonly key: string, readonly error: PrintingError) {}
+}
+
+/**
+ * @since 1.1.0
+ * @category Constructors
+ */
+export class NamedError {
+  readonly _tag = 'NamedError'
+  constructor(readonly expected: string, readonly error: PrintingError) {}
 }
 
 /**

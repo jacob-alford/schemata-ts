@@ -26,8 +26,20 @@ export const Printer: WithMap2<P.URI> = {
       RA.traverseWithIndex(P.printerValidation)((i, [k, a]) =>
         pipe(
           E.Do,
-          apSV('k', sk.print(k)),
-          apSV('a', sa.print(a)),
+          apSV(
+            'k',
+            pipe(
+              sk.print(k),
+              E.mapLeft(err => new PE.ErrorAtIndex(0, err)),
+            ),
+          ),
+          apSV(
+            'a',
+            pipe(
+              sa.print(a),
+              E.mapLeft(err => new PE.ErrorAtIndex(1, err)),
+            ),
+          ),
           E.bimap(
             err => new PE.ErrorAtIndex(i, err),
             ({ k, a }) => P.safeJsonArray([k, a]),
@@ -40,8 +52,20 @@ export const Printer: WithMap2<P.URI> = {
       RA.traverseWithIndex(P.printerValidation)((i, [k, a]) =>
         pipe(
           E.Do,
-          apSV('k', sk.printLeft(k)),
-          apSV('a', sa.printLeft(a)),
+          apSV(
+            'k',
+            pipe(
+              sk.printLeft(k),
+              E.mapLeft(err => new PE.ErrorAtIndex(0, err)),
+            ),
+          ),
+          apSV(
+            'a',
+            pipe(
+              sa.printLeft(a),
+              E.mapLeft(err => new PE.ErrorAtIndex(1, err)),
+            ),
+          ),
           E.bimap(
             err => new PE.ErrorAtIndex(i, err),
             ({ k, a }) => P.safeJsonArray([k, a]),

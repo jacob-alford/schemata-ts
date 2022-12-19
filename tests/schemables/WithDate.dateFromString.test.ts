@@ -2,6 +2,7 @@ import * as E from 'fp-ts/Either'
 import { pipe } from 'fp-ts/function'
 
 import { getDecoder } from '../../src/Decoder'
+import * as PE from '../../src/PrintingError'
 import { validateArbitrary } from '../../test-utils'
 import * as ISODateString from '../../test-utils/schemable-exports/WithDate'
 
@@ -151,6 +152,21 @@ describe('dateFromString', () => {
       const validDate = new Date()
       expect(decoder.decode(new Date('abc'))._tag).toEqual('Left')
       expect(decoder.decode(validDate.toISOString())).toStrictEqual(E.right(validDate))
+    })
+  })
+
+  describe('Printer', () => {
+    it('prints a date', () => {
+      const date = new Date('2021-01-01T00:00:00Z')
+      expect(ISODateString.Printer.dateFromString.print(date)).toEqual(
+        E.right('2021-01-01T00:00:00.000Z'),
+      )
+    })
+    it('catches a bad date string', () => {
+      const date = new Date('lolnotadategetalife')
+      expect(ISODateString.Printer.dateFromString.print(date)).toStrictEqual(
+        E.left(new PE.NamedError('Valid Date', new PE.InvalidValue(date))),
+      )
     })
   })
 })
