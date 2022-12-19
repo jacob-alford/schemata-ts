@@ -20,8 +20,6 @@ export type PrintError =
   | ErrorAtKey
   | NamedError
   | CircularReference
-  | InfiniteValue
-  | NotANumber
   | InvalidValue
 
 // -------------------------------------------------------------------------------------
@@ -38,8 +36,6 @@ export const isPrintError = (u: unknown): u is PrintError =>
   u instanceof ErrorAtKey ||
   u instanceof NamedError ||
   u instanceof CircularReference ||
-  u instanceof InfiniteValue ||
-  u instanceof NotANumber ||
   u instanceof InvalidValue
 
 // -------------------------------------------------------------------------------------
@@ -94,24 +90,6 @@ export class CircularReference {
   /** @since 1.1.0 */
   readonly _tag = 'CircularReference'
   constructor(readonly circularValue: unknown) {}
-}
-
-/**
- * @since 1.1.0
- * @category Constructors
- */
-export class InfiniteValue {
-  /** @since 1.1.0 */
-  readonly _tag = 'Infinity'
-}
-
-/**
- * @since 1.1.0
- * @category Constructors
- */
-export class NotANumber {
-  /** @since 1.1.0 */
-  readonly _tag = 'NaN'
 }
 
 /**

@@ -1,9 +1,11 @@
 import * as E from 'fp-ts/Either'
+import { pipe } from 'fp-ts/function'
 import * as O from 'fp-ts/Option'
 import * as DE from 'io-ts/DecodeError'
 import * as FSg from 'io-ts/FreeSemigroup'
 
 import { getCodec } from '../src/Codec'
+import * as EP from '../src/ErrorReporter'
 import { isParseError, ParseError } from '../src/JsonDeserializer'
 import * as PE from '../src/PrintError'
 import * as S from '../src/schemata'
@@ -66,12 +68,21 @@ describe('Codec', () => {
         expect(codec.print(value)).toStrictEqual(
           E.left(
             new PE.ErrorGroup([
-              new PE.ErrorAtKey('realNumber', new PE.InfiniteValue()),
+              new PE.ErrorAtKey(
+                'realNumber',
+                new PE.NamedError('Finite Number', new PE.InvalidValue(Infinity)),
+              ),
               new PE.ErrorAtKey(
                 'integers',
                 new PE.ErrorGroup([
-                  new PE.ErrorAtIndex(1, new PE.NotANumber()),
-                  new PE.ErrorAtIndex(2, new PE.InfiniteValue()),
+                  new PE.ErrorAtIndex(
+                    1,
+                    new PE.NamedError('Valid Number', new PE.InvalidValue(NaN)),
+                  ),
+                  new PE.ErrorAtIndex(
+                    2,
+                    new PE.NamedError('Finite Number', new PE.InvalidValue(-Infinity)),
+                  ),
                 ]),
               ),
               new PE.ErrorAtKey('activeStatus', new PE.InvalidValue(undefined)),

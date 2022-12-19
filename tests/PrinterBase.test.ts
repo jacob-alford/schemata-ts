@@ -21,8 +21,12 @@ describe('PrinterBase', () => {
   })
   it('captures infinite values', () => {
     const printer = P.number
-    expect(printer.domainToJson(Infinity)).toStrictEqual(E.left(new PE.InfiniteValue()))
-    expect(printer.domainToJson(-Infinity)).toStrictEqual(E.left(new PE.InfiniteValue()))
+    expect(printer.domainToJson(Infinity)).toStrictEqual(
+      E.left(new PE.NamedError('Finite Number', new PE.InvalidValue(Infinity))),
+    )
+    expect(printer.domainToJson(-Infinity)).toStrictEqual(
+      E.left(new PE.NamedError('Finite Number', new PE.InvalidValue(-Infinity))),
+    )
   })
   test('boolean', () => {
     const printer = P.boolean
@@ -36,7 +40,12 @@ describe('PrinterBase', () => {
   it('captures infinite values in an unknown array', () => {
     const printer = P.UnknownArray
     expect(printer.domainToJson([1, Infinity, 3])).toStrictEqual(
-      E.left(new PE.ErrorAtIndex(1, new PE.InfiniteValue())),
+      E.left(
+        new PE.ErrorAtIndex(
+          1,
+          new PE.NamedError('Finite Number', new PE.InvalidValue(Infinity)),
+        ),
+      ),
     )
   })
   it('captures circular references in an unknown array', () => {
@@ -53,17 +62,40 @@ describe('PrinterBase', () => {
   it('captures suberrors in unknown arrays', () => {
     const printer = P.UnknownArray
     expect(printer.domainToJson([[NaN], 'a'])).toStrictEqual(
-      E.left(new PE.ErrorAtIndex(0, new PE.ErrorAtIndex(0, new PE.NotANumber()))),
+      E.left(
+        new PE.ErrorAtIndex(
+          0,
+          new PE.ErrorAtIndex(
+            0,
+            new PE.NamedError('Valid Number', new PE.InvalidValue(NaN)),
+          ),
+        ),
+      ),
     )
   })
   it('concats error groups', () => {
-    const e1 = new PE.ErrorGroup([new PE.NotANumber()])
-    const e2 = new PE.ErrorGroup([new PE.InfiniteValue()])
+    const e1 = new PE.ErrorGroup([
+      new PE.NamedError('Valid Number', new PE.InvalidValue(NaN)),
+    ])
+    const e2 = new PE.ErrorGroup([
+      new PE.NamedError('Finite Number', new PE.InvalidValue(Infinity)),
+    ])
     expect(PE.semigroupPrintingError.concat(e1, e2)).toStrictEqual(
-      new PE.ErrorGroup([new PE.NotANumber(), new PE.InfiniteValue()]),
+      new PE.ErrorGroup([
+        new PE.NamedError('Valid Number', new PE.InvalidValue(NaN)),
+        new PE.NamedError('Finite Number', new PE.InvalidValue(Infinity)),
+      ]),
     )
-    expect(PE.semigroupPrintingError.concat(new PE.NotANumber(), e2)).toStrictEqual(
-      new PE.ErrorGroup([new PE.NotANumber(), new PE.InfiniteValue()]),
+    expect(
+      PE.semigroupPrintingError.concat(
+        new PE.NamedError('Valid Number', new PE.InvalidValue(NaN)),
+        e2,
+      ),
+    ).toStrictEqual(
+      new PE.ErrorGroup([
+        new PE.NamedError('Valid Number', new PE.InvalidValue(NaN)),
+        new PE.NamedError('Finite Number', new PE.InvalidValue(Infinity)),
+      ]),
     )
   })
   it('captures invalid values', () => {
@@ -98,7 +130,15 @@ describe('PrinterBase', () => {
   it("captures invalid values in an unknown record's values", () => {
     const printer = P.UnknownRecord
     expect(printer.domainToJson({ bar: 2, foo: { bar: NaN } })).toStrictEqual(
-      E.left(new PE.ErrorAtKey('foo', new PE.ErrorAtKey('bar', new PE.NotANumber()))),
+      E.left(
+        new PE.ErrorAtKey(
+          'foo',
+          new PE.ErrorAtKey(
+            'bar',
+            new PE.NamedError('Valid Number', new PE.InvalidValue(NaN)),
+          ),
+        ),
+      ),
     )
   })
   it('returns circular reference for an obviously circular reference', () => {
@@ -133,7 +173,9 @@ describe('PrinterBase', () => {
       P.number,
       P.refine((n): n is typeof NaN => Number.isNaN(n), ''),
     )
-    expect(printer.domainToJson(NaN)).toStrictEqual(E.left(new PE.NotANumber()))
+    expect(printer.domainToJson(NaN)).toStrictEqual(
+      E.left(new PE.NamedError('Valid Number', new PE.InvalidValue(NaN))),
+    )
   })
   test('nullable', () => {
     const printer = P.nullable(P.string)
@@ -160,10 +202,20 @@ describe('PrinterBase', () => {
       bar: P.number,
     })
     expect(printer.domainToJson({ foo: 'foo', bar: NaN })).toStrictEqual(
-      E.left(new PE.ErrorAtKey('bar', new PE.NotANumber())),
+      E.left(
+        new PE.ErrorAtKey(
+          'bar',
+          new PE.NamedError('Valid Number', new PE.InvalidValue(NaN)),
+        ),
+      ),
     )
     expect(printer.codomainToJson({ foo: 'foo', bar: NaN })).toStrictEqual(
-      E.left(new PE.ErrorAtKey('bar', new PE.NotANumber())),
+      E.left(
+        new PE.ErrorAtKey(
+          'bar',
+          new PE.NamedError('Valid Number', new PE.InvalidValue(NaN)),
+        ),
+      ),
     )
   })
   it('captures circular references', () => {
@@ -190,7 +242,12 @@ describe('PrinterBase', () => {
     expect(PE.isPrintError('PrintError kappa /s')).toBe(false)
     expect(PE.isPrintError(new PE.CircularReference('PrintError kappa /s'))).toBe(true)
     expect(
-      PE.isPrintError(new PE.NamedError('PrintError kappa /s', new PE.NotANumber())),
+      PE.isPrintError(
+        new PE.NamedError(
+          'PrintError kappa /s',
+          new PE.NamedError('Valid Number', new PE.InvalidValue(NaN)),
+        ),
+      ),
     ).toBe(true)
     expect(
       PE.isPrintError(
@@ -205,9 +262,20 @@ describe('PrinterBase', () => {
         ),
       ),
     ).toBe(true)
-    expect(PE.isPrintError(new PE.ErrorAtIndex(1, new PE.NotANumber()))).toBe(true)
-    expect(PE.isPrintError(new PE.NotANumber())).toBe(true)
-    expect(PE.isPrintError(new PE.InfiniteValue())).toBe(true)
+    expect(
+      PE.isPrintError(
+        new PE.ErrorAtIndex(
+          1,
+          new PE.NamedError('Valid Number', new PE.InvalidValue(NaN)),
+        ),
+      ),
+    ).toBe(true)
+    expect(
+      PE.isPrintError(new PE.NamedError('Valid Number', new PE.InvalidValue(NaN))),
+    ).toBe(true)
+    expect(
+      PE.isPrintError(new PE.NamedError('Finite Number', new PE.InvalidValue(Infinity))),
+    ).toBe(true)
   })
   test('partial', () => {
     const printer = P.partial({
@@ -257,10 +325,20 @@ describe('PrinterBase', () => {
   test('record catches printing errors', () => {
     const printer = P.record(P.number)
     expect(printer.domainToJson({ foo: 1, bar: NaN })).toStrictEqual(
-      E.left(new PE.ErrorAtKey('bar', new PE.NotANumber())),
+      E.left(
+        new PE.ErrorAtKey(
+          'bar',
+          new PE.NamedError('Valid Number', new PE.InvalidValue(NaN)),
+        ),
+      ),
     )
     expect(printer.codomainToJson({ foo: 1, bar: NaN })).toStrictEqual(
-      E.left(new PE.ErrorAtKey('bar', new PE.NotANumber())),
+      E.left(
+        new PE.ErrorAtKey(
+          'bar',
+          new PE.NamedError('Valid Number', new PE.InvalidValue(NaN)),
+        ),
+      ),
     )
   })
   test('record catches circularity', () => {
@@ -288,16 +366,28 @@ describe('PrinterBase', () => {
     expect(printer.domainToJson([1, NaN, Infinity])).toStrictEqual(
       E.left(
         new PE.ErrorGroup([
-          new PE.ErrorAtIndex(1, new PE.NotANumber()),
-          new PE.ErrorAtIndex(2, new PE.InfiniteValue()),
+          new PE.ErrorAtIndex(
+            1,
+            new PE.NamedError('Valid Number', new PE.InvalidValue(NaN)),
+          ),
+          new PE.ErrorAtIndex(
+            2,
+            new PE.NamedError('Finite Number', new PE.InvalidValue(Infinity)),
+          ),
         ]),
       ),
     )
     expect(printer.codomainToJson([1, NaN, -Infinity])).toStrictEqual(
       E.left(
         new PE.ErrorGroup([
-          new PE.ErrorAtIndex(1, new PE.NotANumber()),
-          new PE.ErrorAtIndex(2, new PE.InfiniteValue()),
+          new PE.ErrorAtIndex(
+            1,
+            new PE.NamedError('Valid Number', new PE.InvalidValue(NaN)),
+          ),
+          new PE.ErrorAtIndex(
+            2,
+            new PE.NamedError('Finite Number', new PE.InvalidValue(-Infinity)),
+          ),
         ]),
       ),
     )
@@ -321,10 +411,20 @@ describe('PrinterBase', () => {
   test('tuple captures printing errors', () => {
     const printer = P.tuple(P.string, P.number)
     expect(printer.domainToJson(['foo', NaN])).toStrictEqual(
-      E.left(new PE.ErrorAtIndex(1, new PE.NotANumber())),
+      E.left(
+        new PE.ErrorAtIndex(
+          1,
+          new PE.NamedError('Valid Number', new PE.InvalidValue(NaN)),
+        ),
+      ),
     )
     expect(printer.codomainToJson(['foo', NaN])).toStrictEqual(
-      E.left(new PE.ErrorAtIndex(1, new PE.NotANumber())),
+      E.left(
+        new PE.ErrorAtIndex(
+          1,
+          new PE.NamedError('Valid Number', new PE.InvalidValue(NaN)),
+        ),
+      ),
     )
   })
   test('tuple captures circularity', () => {

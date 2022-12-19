@@ -272,8 +272,20 @@ describe('MapFromEntries', () => {
       ).toStrictEqual(
         E.left(
           new PE.ErrorGroup([
-            new PE.ErrorAtIndex(0, new PE.ErrorAtIndex(0, new PE.NotANumber())),
-            new PE.ErrorAtIndex(1, new PE.ErrorAtIndex(1, new PE.NotANumber())),
+            new PE.ErrorAtIndex(
+              0,
+              new PE.ErrorAtIndex(
+                0,
+                new PE.NamedError('Valid Number', new PE.InvalidValue(NaN)),
+              ),
+            ),
+            new PE.ErrorAtIndex(
+              1,
+              new PE.ErrorAtIndex(
+                1,
+                new PE.NamedError('Valid Number', new PE.InvalidValue(NaN)),
+              ),
+            ),
           ]),
         ),
       )
@@ -285,8 +297,20 @@ describe('MapFromEntries', () => {
       ).toStrictEqual(
         E.left(
           new PE.ErrorGroup([
-            new PE.ErrorAtIndex(0, new PE.ErrorAtIndex(0, new PE.NotANumber())),
-            new PE.ErrorAtIndex(1, new PE.ErrorAtIndex(1, new PE.NotANumber())),
+            new PE.ErrorAtIndex(
+              0,
+              new PE.ErrorAtIndex(
+                0,
+                new PE.NamedError('Valid Number', new PE.InvalidValue(NaN)),
+              ),
+            ),
+            new PE.ErrorAtIndex(
+              1,
+              new PE.ErrorAtIndex(
+                1,
+                new PE.NamedError('Valid Number', new PE.InvalidValue(NaN)),
+              ),
+            ),
           ]),
         ),
       )
