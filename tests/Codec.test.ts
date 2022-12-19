@@ -4,7 +4,7 @@ import * as DE from 'io-ts/DecodeError'
 import * as FSg from 'io-ts/FreeSemigroup'
 
 import { getCodec } from '../src/Codec'
-import { ParseError } from '../src/JsonDeserializer'
+import { isParseError, ParseError } from '../src/JsonDeserializer'
 import * as PE from '../src/PrintError'
 import * as S from '../src/schemata'
 
@@ -81,6 +81,10 @@ describe('Codec', () => {
       })
     })
     describe('parsing', () => {
+      test('isParseError', () => {
+        expect(isParseError(new ParseError('error!'))).toBe(true)
+        expect(isParseError(FSg.of(DE.leaf(null, 'number')))).toBe(false)
+      })
       it('parses a valid object', () => {
         const schema = S.Struct({
           realNumber: S.Float(),
