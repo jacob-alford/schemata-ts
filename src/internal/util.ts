@@ -15,6 +15,7 @@ export const base64Encode = (s: string): string =>
 export const urlifyBase64 = (s: string): string =>
   s.replace(/[=+/]/g, c => (c === '/' ? '_' : c === '+' ? '-' : ''))
 
+/* istanbul ignore next */
 /**
  * Object.hasOwn isn't available in Node 14 :(
  *
