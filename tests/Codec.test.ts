@@ -171,5 +171,39 @@ describe('Codec', () => {
         expect(parsed).toStrictEqual(E.left(new ParseError(expect.any(Error))))
       })
     })
+    describe('printing error reporting', () => {
+      const schema = S.Struct({
+        realNumber: S.Float(),
+        integers: S.NonEmptyArray(S.Int()),
+        activeStatus: S.OptionFromUndefined(S.Boolean),
+        id: S.NonEmptyString,
+      })
+      const codec = getCodec(schema)
+      const value: S.TypeOf<typeof schema> = {
+        realNumber: Infinity as any,
+        integers: [1.1, NaN, -Infinity] as any,
+        activeStatus: O.none,
+        id: '' as any,
+      }
+      const result = pipe(codec.print(value), E.mapLeft(EP.printErrorReporter))
+      expect(result).toStrictEqual(
+        E.left([
+          '— Errors',
+          '  — Error at key `realNumber`: ',
+          '    — Expected: Finite Number, but received ',
+          '      — Invalid value: Infinity',
+          '  — Error at key `integers`: ',
+          '    — Errors',
+          '      — Error at index 1: ',
+          '        — Expected: Valid Number, but received ',
+          '          — Invalid value: NaN',
+          '      — Error at index 2: ',
+          '        — Expected: Finite Number, but received ',
+          '          — Invalid value: -Infinity',
+          '  — Error at key `activeStatus`: ',
+          '    — Invalid value: undefined',
+        ]),
+      )
+    })
   })
 })
