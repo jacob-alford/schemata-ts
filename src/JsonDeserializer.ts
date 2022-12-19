@@ -16,6 +16,7 @@ import { SchemaExt } from './SchemaExt'
  * @category Model
  */
 export class ParseError {
+  /** @since 1.1.0 */
   readonly _tag = 'ParseError'
   constructor(readonly error: unknown) {}
 }

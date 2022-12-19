@@ -51,6 +51,7 @@ export const isPrintError = (u: unknown): u is PrintError =>
  * @category Constructors
  */
 export class ErrorGroup {
+  /** @since 1.1.0 */
   readonly _tag = 'ErrorGroup'
   constructor(readonly errors: RNEA.ReadonlyNonEmptyArray<PrintError>) {}
 }
@@ -60,6 +61,7 @@ export class ErrorGroup {
  * @category Constructors
  */
 export class ErrorAtIndex {
+  /** @since 1.1.0 */
   readonly _tag = 'ErrorAtIndex'
   constructor(readonly index: number, readonly error: PrintError) {}
 }
@@ -69,6 +71,7 @@ export class ErrorAtIndex {
  * @category Constructors
  */
 export class ErrorAtKey {
+  /** @since 1.1.0 */
   readonly _tag = 'ErrorAtKey'
   constructor(readonly key: string, readonly error: PrintError) {}
 }
@@ -78,6 +81,7 @@ export class ErrorAtKey {
  * @category Constructors
  */
 export class NamedError {
+  /** @since 1.1.0 */
   readonly _tag = 'NamedError'
   constructor(readonly expected: string, readonly error: PrintError) {}
 }
@@ -87,6 +91,7 @@ export class NamedError {
  * @category Constructors
  */
 export class CircularReference {
+  /** @since 1.1.0 */
   readonly _tag = 'CircularReference'
   constructor(readonly circularValue: unknown) {}
 }
@@ -96,6 +101,7 @@ export class CircularReference {
  * @category Constructors
  */
 export class InfiniteValue {
+  /** @since 1.1.0 */
   readonly _tag = 'Infinity'
 }
 
@@ -104,6 +110,7 @@ export class InfiniteValue {
  * @category Constructors
  */
 export class NotANumber {
+  /** @since 1.1.0 */
   readonly _tag = 'NaN'
 }
 
@@ -112,6 +119,7 @@ export class NotANumber {
  * @category Constructors
  */
 export class InvalidValue {
+  /** @since 1.1.0 */
   readonly _tag = 'InvalidValue'
   constructor(readonly value: unknown) {}
 }
