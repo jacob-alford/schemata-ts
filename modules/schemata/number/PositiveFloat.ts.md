@@ -1,6 +1,6 @@
 ---
 title: schemata/number/PositiveFloat.ts
-nav_order: 172
+nav_order: 45
 parent: Modules
 ---
 

@@ -1,6 +1,6 @@
 ---
 title: schemata/string/UUID.ts
-nav_order: 188
+nav_order: 61
 parent: Modules
 ---
 

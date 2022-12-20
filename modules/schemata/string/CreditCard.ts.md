@@ -1,6 +1,6 @@
 ---
 title: schemata/string/CreditCard.ts
-nav_order: 178
+nav_order: 51
 parent: Modules
 ---
 

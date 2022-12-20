@@ -1,6 +1,6 @@
 ---
 title: schemata/number/FloatFromString.ts
-nav_order: 164
+nav_order: 37
 parent: Modules
 ---
 

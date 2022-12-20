@@ -1,6 +1,6 @@
 ---
 title: schemata/number/PositiveInt.ts
-nav_order: 173
+nav_order: 46
 parent: Modules
 ---
 

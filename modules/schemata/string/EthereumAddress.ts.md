@@ -1,6 +1,6 @@
 ---
 title: schemata/string/EthereumAddress.ts
-nav_order: 180
+nav_order: 53
 parent: Modules
 ---
 

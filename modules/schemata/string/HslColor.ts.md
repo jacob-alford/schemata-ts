@@ -1,6 +1,6 @@
 ---
 title: schemata/string/HslColor.ts
-nav_order: 183
+nav_order: 56
 parent: Modules
 ---
 

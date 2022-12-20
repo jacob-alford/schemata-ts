@@ -1,6 +1,6 @@
 ---
 title: schemata/json/JsonFromString.ts
-nav_order: 162
+nav_order: 35
 parent: Modules
 ---
 
@@ -8,7 +8,7 @@ parent: Modules
 
 Represents Json values converted from strings
 
-Added in v1.0.2
+Added in v1.1.0
 
 ---
 
@@ -28,10 +28,10 @@ Added in v1.0.2
 **Signature**
 
 ```ts
-export type JsonFromStringS = SchemaExt<string, J.Json>
+export type JsonFromStringS = SchemaExt<string, P.SafeJson>
 ```
 
-Added in v1.0.2
+Added in v1.1.0
 
 # Schema
 
@@ -43,4 +43,4 @@ Added in v1.0.2
 export declare const JsonFromString: JsonFromStringS
 ```
 
-Added in v1.0.2
+Added in v1.1.0

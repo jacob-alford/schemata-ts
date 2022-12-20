@@ -1,6 +1,6 @@
 ---
 title: schemata/date/DateFromInt.ts
-nav_order: 156
+nav_order: 29
 parent: Modules
 ---
 

@@ -1,6 +1,6 @@
 ---
 title: schemata/generic/NonEmptyArray.ts
-nav_order: 159
+nav_order: 32
 parent: Modules
 ---
 
@@ -8,7 +8,7 @@ parent: Modules
 
 A read-only Array containing one or more elements.
 
-Added in v1.0.2
+Added in v1.1.0
 
 ---
 
@@ -31,7 +31,7 @@ Added in v1.0.2
 export type NonEmptyArrayS = <A, O>(sA: SchemaExt<O, A>) => SchemaExt<Array<O>, RNEA.ReadonlyNonEmptyArray<A>>
 ```
 
-Added in v1.0.2
+Added in v1.1.0
 
 # Schema
 
@@ -45,4 +45,4 @@ A read-only Array containing one or more elements.
 export declare const NonEmptyArray: NonEmptyArrayS
 ```
 
-Added in v1.0.2
+Added in v1.1.0

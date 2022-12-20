@@ -1,6 +1,6 @@
 ---
 title: schemata.ts
-nav_order: 153
+nav_order: 26
 parent: Modules
 ---
 
@@ -467,7 +467,7 @@ A basal schemable for Json and JsonString
 export declare const Json: WithJson2<'SchemaExt'>
 ```
 
-Added in v1.0.2
+Added in v1.1.0
 
 ## JsonFromString
 
@@ -479,7 +479,7 @@ Represents Json values converted from strings
 export declare const JsonFromString: JsonFromStringS
 ```
 
-Added in v1.0.2
+Added in v1.1.0
 
 ## Jwt
 
@@ -585,7 +585,7 @@ A read-only Array containing one or more elements.
 export declare const NonEmptyArray: NonEmptyArrayS
 ```
 
-Added in v1.0.2
+Added in v1.1.0
 
 ## NonEmptyString
 
@@ -664,7 +664,7 @@ Requires an inner schemable, and an Eq instance which defaults to strict equalit
 export declare const Option: <A, B, E>(
   exclude: B,
   sa: SchemaExt<E, A>,
-  eqA?: Eq<A> | undefined
+  eqA?: Eq<A | E> | undefined
 ) => SchemaExt<B | E, Option<A>>
 ```
 

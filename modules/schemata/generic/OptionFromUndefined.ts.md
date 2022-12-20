@@ -1,6 +1,6 @@
 ---
 title: schemata/generic/OptionFromUndefined.ts
-nav_order: 161
+nav_order: 34
 parent: Modules
 ---
 
