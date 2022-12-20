@@ -9,11 +9,8 @@
  *   import * as O from 'fp-ts/Option'
  *   import * as S from 'schemata-ts/schemata'
  *   import { getArbitrary } from 'schemata-ts/Arbitrary'
- *   import { getDecoder } from 'schemata-ts/Decoder'
- *   import { getEncoder } from 'schemata-ts/Encoder'
+ *   import { getCodec } from 'schemata-ts/Codec'
  *   import { getEq } from 'schemata-ts/Eq'
- *   import { getGuard } from 'schemata-ts/Guard'
- *   import { getTaskDecoder } from 'schemata-ts/TaskDecoder'
  *
  *   export const User = S.Struct({
  *     id: S.UUID(5),
@@ -30,11 +27,8 @@
  *   export type UserInput = S.InputOf<typeof User>
  *
  *   export const arbitrary = getArbitrary(User).arbitrary(fc)
- *   export const decoder = getDecoder(User)
- *   export const encoder = getEncoder(User)
+ *   export const codec = getCodec(User)
  *   export const eq = getEq(User)
- *   export const guard = getGuard(User)
- *   export const taskDecoder = getTaskDecoder(User)
  *
  *   // ...elsewhere
  *
@@ -60,9 +54,9 @@
  *     favorite_color: O.none,
  *   }
  *
- *   assert.deepStrictEqual(decoder.decode(validInput), E.right(expectedOutput))
+ *   assert.deepStrictEqual(codec.decode(validInput), E.right(expectedOutput))
  *
- *   const invalidInput = decoder.decode({
+ *   const invalidInput = codec.decode({
  *     // not a UUID
  *     id: 123,
  *     // Not ISO 8601 compliant, though parsable with `new Date()`

@@ -1,7 +1,7 @@
 /**
  * A basal schemable for Json and JsonString
  *
- * @since 1.0.2
+ * @since 1.1.0
  */
 import { failure, success, Type as Type_ } from 'io-ts'
 
@@ -11,7 +11,7 @@ import { Encoder } from './encoder'
 import { Guard } from './guard'
 
 /**
- * @since 1.0.2
+ * @since 1.1.0
  * @category Instances
  */
 export const Type: WithJson1<t.URI> = {

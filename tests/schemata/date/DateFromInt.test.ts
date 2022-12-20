@@ -4,9 +4,8 @@ import { pipe } from 'fp-ts/function'
 import * as DateFromInt from '../../../src/schemata/date/DateFromInt'
 import { getAllInstances, validateArbitrary } from '../../../test-utils'
 
-const { Arbitrary, Decoder, Encoder, Eq, Guard, TaskDecoder, Type } = getAllInstances(
-  DateFromInt.DateFromInt,
-)
+const { Arbitrary, Decoder, Encoder, Eq, Guard, TaskDecoder, Type, Printer } =
+  getAllInstances(DateFromInt.DateFromInt)
 
 const nowish = 1667162645986
 const nowishDate = new Date(nowish)
@@ -80,8 +79,17 @@ describe('DateFromInt', () => {
   })
 
   describe('Arbitrary', () => {
-    it('generates valid DateFromUnixTimes', () => {
+    it('generates valid DateFromInt', () => {
       validateArbitrary({ Arbitrary }, Guard.is)
+    })
+  })
+
+  describe('Printer', () => {
+    it('prints a valid DateFromInt', () => {
+      const result = Printer.domainToJson(nowishDate)
+      const resultLeft = Printer.codomainToJson(nowish)
+      expect(result).toStrictEqual(E.right(nowishDate.getTime()))
+      expect(resultLeft).toStrictEqual(E.right(nowishDate.getTime()))
     })
   })
 })

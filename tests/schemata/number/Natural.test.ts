@@ -1,3 +1,4 @@
+import * as E from 'fp-ts/Either'
 import { unsafeCoerce } from 'fp-ts/function'
 
 import { Natural } from '../../../src/schemata/number/Natural'
@@ -5,7 +6,7 @@ import { getAllInstances, validateArbitrary } from '../../../test-utils'
 
 const _: (n: number) => Natural = unsafeCoerce
 
-const { Decoder, Eq, Guard, Arbitrary, Type } = getAllInstances(Natural)
+const { Decoder, Eq, Guard, Arbitrary, Type, Printer } = getAllInstances(Natural)
 
 describe('Natural', () => {
   describe('Decoder', () => {
@@ -48,6 +49,12 @@ describe('Natural', () => {
   describe('Arbitrary', () => {
     it('generates valid Naturals', () => {
       validateArbitrary({ Arbitrary }, Guard.is)
+    })
+  })
+
+  describe('Printer', () => {
+    it('prints a valid nat', () => {
+      expect(Printer.domainToJson(_(1))).toStrictEqual(E.right(1))
     })
   })
 })

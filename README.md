@@ -20,24 +20,50 @@ Write domain types once.  A collection of Schemata inspired by io-ts-types and v
 
 </div>
 
-## Introduction
+## Welcome
 
-A schema is an expression of a type structure that can be used to generate typeclass instances from a single declaration. The following example constructs a `User` schema from which the underlying domain type can be extracted. `schemata-ts` generates the following typeclasses: `Arbitrary`, `Decoder`, `Encoder`, `Guard`, `Eq`, `TaskDecoder`, and `Type`.
+A schema is an expression of a type structure that can be used to generate typeclass instances from a single declaration. Typeclass instances can perform a variety of tasks, for instance `Decoder` can take a pesky `unknown` value and give you an Either in return where the success case abides by the `schema` that generated it. The example below constructs a `User` schema.
+
+## Installation
+
+Uses `fp-ts`, and `io-ts` as peer dependencies. Read more about peer dependencies at [nodejs.org](https://nodejs.org/en/blog/npm/peer-dependencies/).
+
+Also contains `fast-check` as a soft peer dependency. Soft peer dependency implies that usage of the `Arbitrary` module requires fast-check as a peer-dependency.
+
+### Yarn
+
+```bash
+yarn add schemata-ts
+```
+
+### NPM
+
+```bash
+npm install schemata-ts
+```
+
+## Codec
+
+A codec is a typeclass that contains the methods of `Decoder`, `Encoder`, `JsonSerializer`, `JsonDeserializer`, and `Guard`. Decoder and encoder are lossless when composed together. This means that for all domain types for which an encoder encodes to, a decoder will return a valid `E.Right` value.
+
+Likewise, `JsonSerializer` and `JsonDeserializer` are lossless when composed together. Certain data types in Javascript like `NaN`, `undefined`, `Infinity`, and others are not part of the JSON specification, and `JSON.stringify` will turn these values into something different. This means that if you stringify these types and attempt to parse, you will get a different object than you originally started with. Additionally, JSON cannot stringify `bigint`, and cannot contain circular references. Under these circumstances `JSON.stringify` may throw an error.
+
+`JsonSerializer` and `JsonDeserializer` are typeclasses included in a Codec which are lossless when composed together. So anything that successfully stringifies using `JsonSerializer` will successfully parse with `JsonDeserializer` and be equivalent objects. This is useful to avoid bugs when using JSON strings for storing data. Additionally, `JsonDeserializer` will decode the Json string into a domain type for immediate use in your program.
 
 ### User Document Example
 
-```typescript
-// e.g. src/domain/User.ts
-import * as fc from 'fast-check'
-import * as S from 'schemata-ts/schemata'
-import { getArbitrary } from 'schemata-ts/Arbitrary'
-import { getDecoder } from 'schemata-ts/Decoder'
-import { getEncoder } from 'schemata-ts/Encoder'
-import { getEq } from 'schemata-ts/Eq'
-import { getGuard } from 'schemata-ts/Guard'
-import { getTaskDecoder } from 'schemata-ts/TaskDecoder'
+This is a live example found in `src/Codec.ts` type-checked and tested with [docs-ts](https://github.com/gcanti/docs-ts).
 
-/** FooBar ltd. User document Schema */
+```typescript
+import * as fc from 'fast-check'
+import * as E from 'fp-ts/Either'
+import { pipe } from 'fp-ts/function'
+import * as O from 'fp-ts/Option'
+import * as RA from 'fp-ts/ReadonlyArray'
+import { getArbitrary } from 'schemata-ts/Arbitrary'
+import { getCodec } from 'schemata-ts/Codec'
+import * as S from 'schemata-ts/schemata'
+
 export const User = S.Struct({
   id: S.UUID(5),
   created_at: S.DateFromIsoString({ requireTime: 'None' }),
@@ -52,23 +78,8 @@ export const User = S.Struct({
 export type User = S.TypeOf<typeof User>
 export type UserInput = S.InputOf<typeof User>
 
-export const arbitrary = getArbitrary(User).arbitrary(fc)
-export const decoder = getDecoder(User)
-export const encoder = getEncoder(User)
-export const eq = getEq(User)
-export const guard = getGuard(User)
-export const taskDecoder = getTaskDecoder(User)
-```
-
-### Using Generated Instances
-
-Generating `Decoder`s guarantee that an unknown type conforms to a particular structure during run-time. This allows safe property and method access with knowledge that runtime types align with Typescript's type system. `Encoder`s go in the opposite direction, converting from domain-types back to raw types from which they were decoded. `fast-check` `Arbitrary` instances are a system for generating random examples, and are primarily used for highly rigorous testing. Schemata-ts can generate these typeclasses in addition to others like `Eq`, `Guard`, `TaskDecoder`, and `Type`.
-
-```typescript
-import * as fc from 'fast-check'
-import * as E from 'fp-ts/Either'
-import * as O from 'fp-ts/Option'
-import * as User from 'src/domain/User'
+export const userArbitrary = getArbitrary(User).arbitrary(fc)
+export const userCodec = getCodec(User)
 
 const validInput = {
   id: '987FBC97-4BED-5078-AF07-9141BA07C9F3',
@@ -108,35 +119,25 @@ const invalidInput = {
   favorite_color: 'rgb(105, 190, 239)',
 }
 
-// Arbitraries
-it('generates valid User Documents', () => {
-  fc.assert(fc.property(User.arbitrary, User.guard.is))
-})
+// Using Decoders
 
-// Decoding
-assert.deepStrictEqual(User.decoder.decode(validInput), E.right(expectedOutput))
-assert.equal(User.decoder.decode(invalidInput)._tag, 'Left')
+assert.deepStrictEqual(userCodec.decode(validInput), E.right(expectedOutput))
+assert.deepStrictEqual(userCodec.decode(invalidInput)._tag, 'Left')
 
-// Encoding
-assert.deepStrictEqual(User.encoder.encode(expectedOutput), validInput)
-```
+// Using Arbitraries, Encoders, and Decoders
 
-## Installation
+const testUsers = fc.sample(userArbitrary, 10)
 
-Uses `fp-ts`, and `io-ts` as peer dependencies. Read more about peer dependencies at [nodejs.org](https://nodejs.org/en/blog/npm/peer-dependencies/).
-
-Also contains `fast-check` as a soft peer dependency. Soft peer dependency implies that usage of the `Arbitrary` module requires fast-check as a peer-dependency.
-
-### Yarn
-
-```bash
-yarn add schemata-ts
-```
-
-### NPM
-
-```bash
-npm install schemata-ts
+assert.deepStrictEqual(
+  pipe(
+    testUsers,
+    // Encode the users generated using Arbitrary
+    RA.map(userCodec.encode),
+    // Decode the encoded users back to their original form, collecting any errors
+    E.traverseArray(userCodec.decode),
+  ),
+  E.right(testUsers),
+)
 ```
 
 ## Documentation
@@ -149,10 +150,14 @@ npm install schemata-ts
 
 | Schema                | Type           |
 | --------------------- | -------------- |
-| BooleanFromString     | Conversion     |
-| BooleanFromNumber     | Conversion     |
 | `Date.date`           | Base Schemable |
 | `Date.dateFromString` | Base Schemable |
+| `Int.int`             | Base Schemable |
+| `Float.float`         | Base Schemable |
+| `Json.json`           | Base Schemable |
+| `Json.jsonFromString` | Base Schemable |
+| BooleanFromString     | Conversion     |
+| BooleanFromNumber     | Conversion     |
 | DateFromInt           | Conversion     |
 | DateFromIsoString     | Conversion     |
 | DateFromUnixTime      | Conversion     |
@@ -161,8 +166,8 @@ npm install schemata-ts
 | BigIntFromString      | Conversion     |
 | FloatFromString       | Conversion     |
 | IntFromString         | Conversion     |
-| `Int.int`             | Base Schemable |
-| `Float.float`         | Base Schemable |
+| JsonFromString        | Conversion     |
+| NonEmptyArray         | Generic        |
 | Natural               | Number         |
 | NegativeFloat         | Number         |
 | NegativeInt           | Number         |
@@ -189,14 +194,17 @@ npm install schemata-ts
 
 Additionally, there are more unlisted base schemable schemata also exported from `schemata-ts/schemata`. These can be used to construct more complex schemata. There are many examples of custom schemata in `src/schemata` to use as a reference.
 
-## v2 Roadmap
+## fp-ts next
 
-`Schemata-ts`'s implementation of Schema is built on io-ts `Schemable`. This library wraps schemable with a schema-based API. The future of io-ts is likewise a schema system: [@fp-ts/schema](https://github.com/fp-ts/schema). Version 2.0 of `schemata-ts` will use @fp-ts/schema as its internals, and the external API will remain mostly the same.
+`Schemata-ts`'s implementation of Schema is built on io-ts `Schemable`. This library wraps schemable with a schema-based API. The future of io-ts is likewise a schema system: [@fp-ts/schema](https://github.com/fp-ts/schema). The approach of `@fp-ts/schema` is for all schemata to be represented as an abstract syntax tree (AST), and then compiled using `Provider`s. This mechanism searches for the AST's instance within a nested map of symbols. This approach is similar to the Schemable method in that they both are a collection of instructions, and ways to compose those instructions together. The upside to the schemable system is that all the available instructions are known to the type system and do not require key-lookups.
 
-Furthermore, schemata-ts is planned to support the following features in various 1.x, and 2.x versions in the near future:
+## Future Features
 
+schemata-ts is planned to support the following features in various 1.x and 2.x versions in the near future:
+
+- ~~JsonSerializer and JsonDeserializer: encoding / decoding from Json strings~~ Added in 1.1.0
 - Json Schema: generating JSON-Schema from schemata ([#137](https://github.com/jacob-alford/schemata-ts/issues/137))
 - Optic Schema: generating optics from schemata ([#134](https://github.com/jacob-alford/schemata-ts/issues/134))
 - Mapped Structs: conversions between struct types, i.e. `snake-case` keys to `camelCase` keys
-- More generic schemata: (SetFromArray, NonEmptyArray)
+- More generic schemata: (SetFromArray, ~~NonEmptyArray~~ Added in 1.1.0)
 - More validator.js branded schemata

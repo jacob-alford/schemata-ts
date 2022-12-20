@@ -9,6 +9,7 @@ import * as D from '../src/Decoder'
 import * as E from '../src/Encoder'
 import * as Eq from '../src/Eq'
 import * as G from '../src/Guard'
+import * as P from '../src/Printer'
 import { interpret, SchemaExt } from '../src/SchemaExt'
 import * as TD from '../src/TaskDecoder'
 import * as T from '../src/Type'
@@ -71,4 +72,5 @@ export const getAllInstances = <E, A>(schema: SchemaExt<E, A>) => ({
   Guard: interpret(G.Schemable)(schema),
   TaskDecoder: interpret(TD.Schemable)(schema),
   Type: interpret(T.Schemable)(schema),
+  Printer: interpret(P.Schemable)(schema),
 })

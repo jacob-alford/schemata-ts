@@ -4,9 +4,8 @@ import { pipe } from 'fp-ts/function'
 import * as FloatFromString from '../../../src/schemata/number/FloatFromString'
 import { getAllInstances, validateArbitrary } from '../../../test-utils'
 
-const { Arbitrary, Decoder, Encoder, Eq, Guard, TaskDecoder, Type } = getAllInstances(
-  FloatFromString.FloatFromString(),
-)
+const { Arbitrary, Decoder, Encoder, Eq, Guard, TaskDecoder, Type, Printer } =
+  getAllInstances(FloatFromString.FloatFromString())
 
 const validNumbers = [
   '-1',
@@ -117,6 +116,12 @@ describe('FloatFromString', () => {
   describe('Arbitrary', () => {
     it('generates valid NegativeFloats', () => {
       validateArbitrary({ Arbitrary }, Guard.is)
+    })
+  })
+
+  describe('Printer', () => {
+    it('prints a float', () => {
+      expect(Printer.domainToJson(1.2 as any)).toStrictEqual(E.right('1.2'))
     })
   })
 })

@@ -1,6 +1,7 @@
 import * as fc from 'fast-check'
 import * as E from 'fp-ts/Either'
 import { flow } from 'fp-ts/function'
+import * as N from 'fp-ts/number'
 import * as Str from 'fp-ts/string'
 import * as D from 'io-ts/Decoder'
 import * as G from 'io-ts/Guard'
@@ -9,8 +10,10 @@ import * as t from 'io-ts/Type'
 
 import * as Arb from '../../src/base/ArbitraryBase'
 import * as Enc from '../../src/base/EncoderBase'
+import * as P from '../../src/base/PrinterBase'
 import * as SC from '../../src/base/SchemaBase'
 import { getDecoder } from '../../src/Decoder'
+import * as PE from '../../src/PrintError'
 import { validateArbitrary } from '../../test-utils'
 import * as MapFromEntries from '../../test-utils/schemable-exports/WithMap'
 
@@ -222,6 +225,92 @@ describe('MapFromEntries', () => {
           new Map([
             ['a', 'b'],
             ['c', 'd'],
+          ]),
+        ),
+      )
+    })
+  })
+
+  describe('Printer', () => {
+    it('converts a map to an array', () => {
+      expect(
+        MapFromEntries.Printer.mapFromEntries(Str.Ord, P.string, P.string).domainToJson(
+          new Map([
+            ['a', 'b'],
+            ['c', 'd'],
+          ]),
+        ),
+      ).toStrictEqual(
+        E.right([
+          ['a', 'b'],
+          ['c', 'd'],
+        ]),
+      )
+      expect(
+        MapFromEntries.Printer.mapFromEntries(Str.Ord, P.string, P.string).codomainToJson(
+          [
+            ['a', 'b'],
+            ['c', 'd'],
+          ],
+        ),
+      ).toStrictEqual(
+        E.right([
+          ['a', 'b'],
+          ['c', 'd'],
+        ]),
+      )
+    })
+    it('fails at invalid keys', () => {
+      const test = new Map([
+        [NaN, 5],
+        [1, NaN],
+      ]) as any
+      expect(
+        MapFromEntries.Printer.mapFromEntries(N.Ord, P.number, P.number).domainToJson(
+          test,
+        ),
+      ).toStrictEqual(
+        E.left(
+          new PE.ErrorGroup([
+            new PE.ErrorAtIndex(
+              0,
+              new PE.ErrorAtIndex(
+                0,
+                new PE.NamedError('Valid Number', new PE.InvalidValue(NaN)),
+              ),
+            ),
+            new PE.ErrorAtIndex(
+              1,
+              new PE.ErrorAtIndex(
+                1,
+                new PE.NamedError('Valid Number', new PE.InvalidValue(NaN)),
+              ),
+            ),
+          ]),
+        ),
+      )
+      expect(
+        MapFromEntries.Printer.mapFromEntries(N.Ord, P.number, P.number).codomainToJson([
+          [NaN, 5],
+          [1, NaN],
+        ]),
+      ).toStrictEqual(
+        E.left(
+          new PE.ErrorGroup([
+            new PE.ErrorAtIndex(
+              0,
+              new PE.ErrorAtIndex(
+                0,
+                new PE.NamedError('Valid Number', new PE.InvalidValue(NaN)),
+              ),
+            ),
+            new PE.ErrorAtIndex(
+              1,
+              new PE.ErrorAtIndex(
+                1,
+                new PE.NamedError('Valid Number', new PE.InvalidValue(NaN)),
+              ),
+            ),
           ]),
         ),
       )

@@ -112,4 +112,11 @@ describe('BigIntString', () => {
       validateArbitrary(BigIntString, BigIntString.Guard.is)
     })
   })
+
+  describe('Printer', () => {
+    test.each(valid)('prints valid bigint strings %s', str => {
+      const result = BigIntString.Printer.domainToJson(BigInt(str))
+      expect(result).toEqual(E.right(str))
+    })
+  })
 })

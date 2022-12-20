@@ -38,12 +38,25 @@ const validTime: ReadonlyArray<string> = [
   '2010-02-18T16:23:48.5',
   '-002022-10-10T16:23:48.5',
   '-002022-10-10T16:23:48.5-06:00',
+  '2009-12 12:34',
+  '2009-05-19 00:00',
+  '2009-05-19 14:31',
+  '2009-05-19 14:39:22',
+  '2009-05-19 14:39Z',
+  '2009-05-19 14:39:22-06:00',
+  '2007-04-06 00:00',
+  '2010-02-18 16:23:48.5',
+  '-002022-10-10 16:23:48.5',
+  '-002022-10-10 16:23:48.5-06:00',
 ]
 
 const validTimeAndOffset: ReadonlyArray<string> = [
   '2009-05-19T14:39Z',
   '2009-05-19T14:39:22-06:00',
   '-002022-10-10T16:23:48.5-06:00',
+  '2009-05-19 14:39Z',
+  '2009-05-19 14:39:22-06:00',
+  '-002022-10-10 16:23:48.5-06:00',
 ]
 
 const invalid: ReadonlyArray<string> = [
@@ -167,6 +180,16 @@ describe('DateFromIsoString', () => {
       describe('Arbitrary', () => {
         it('generates valid ISODateString', () => {
           validateArbitrary({ Arbitrary: ISODateString.Arbitrary }, D.Guard.date.is)
+        })
+      })
+
+      describe('Printer', () => {
+        test.each(valid)('validates valid date strings, %s', str => {
+          const date = new Date(str)
+          const result = ISODateString.Printer.domainToJson(date)
+          const resultLeft = ISODateString.Printer.codomainToJson(str)
+          expect(result).toStrictEqual(E.right(date.toISOString()))
+          expect(resultLeft).toStrictEqual(E.right(str))
         })
       })
     })

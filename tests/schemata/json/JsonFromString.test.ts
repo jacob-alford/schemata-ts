@@ -2,7 +2,7 @@ import * as E from 'fp-ts/Either'
 import { pipe } from 'fp-ts/function'
 import * as J from 'fp-ts/Json'
 
-import { JsonString } from '../../../src/schemables/WithJson/definition'
+import { JsonString } from '../../../src/base/PrinterBase'
 import { Json } from '../../../src/schemata'
 import { JsonFromString as Schema } from '../../../src/schemata/json/JsonFromString'
 import { getAllInstances, validateArbitrary } from '../../../test-utils'
@@ -84,6 +84,23 @@ describe('JsonFromString', () => {
             E.filterOrElseW(json.Guard.is, () => 'Unexpected Result'),
             E.isRight,
           ),
+      )
+    })
+  })
+
+  describe('Printer', () => {
+    it('prints a safe json', () => {
+      const value = { a: 1 }
+      if (!JsonFromString.Guard.is(value)) throw new Error('Unexpected Result')
+      const result = JsonFromString.Printer.domainToJson(value)
+      expect(result).toStrictEqual(E.right({ a: 1 }))
+    })
+    it('prints any string', () => {
+      const result = JsonFromString.Printer.codomainToJson(
+        '{ im: "just a regular string"!, NaN: Infinity }',
+      )
+      expect(result).toStrictEqual(
+        E.right('{ im: "just a regular string"!, NaN: Infinity }'),
       )
     })
   })

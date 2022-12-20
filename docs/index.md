@@ -13,38 +13,32 @@ nav_order: 1
 ![Vulnerabilities](https://img.shields.io/snyk/vulnerabilities/npm/schemata-ts)
 ![License](https://img.shields.io/github/license/jacob-alford/schemata-ts)
 
-## Table of Contents
+## Welcome
 
-<!-- AUTO-GENERATED-CONTENT:START (TOC) -->
-- [Introduction](#introduction)
-  - [User Document Example](#user-document-example)
-  - [Using Generated Instances](#using-generated-instances)
-- [Installation](#installation)
-  - [Yarn](#yarn)
-  - [NPM](#npm)
-- [Documentation](#documentation)
-- [Exported Schemata](#exported-schemata)
-- [v2 Roadmap](#v2-roadmap)
-<!-- AUTO-GENERATED-CONTENT:END -->
+A schema is an expression of a type structure that can be used to generate typeclass instances from a single declaration. Typeclass instances can perform a variety of tasks, for instance `Decoder` can take a pesky `unknown` value and give you an Either in return where the success case abides by the `schema` that generated it. The example below constructs a `User` schema.
 
-## Introduction
+## Codec
 
-A schema is an expression of a type structure that can be used to generate typeclass instances from a single declaration. The following example constructs a `User` schema from which the underlying domain type can be extracted. `schemata-ts` generates the following typeclasses: `Arbitrary`, `Decoder`, `Encoder`, `Guard`, `Eq`, `TaskDecoder`, and `Type`.
+A codec is a typeclass that contains the methods of `Decoder`, `Encoder`, `JsonSerializer`, `JsonDeserializer`, and `Guard`. Decoder and encoder are lossless when composed together. This means that for all domain types for which an encoder encodes to, a decoder will return a valid `E.Right` value.
+
+Likewise, `JsonSerializer` and `JsonDeserializer` are lossless when composed together. Certain data types in Javascript like `NaN`, `undefined`, `Infinity`, and others are not part of the JSON specification, and `JSON.stringify` will turn these values into something different. This means that if you stringify these types and attempt to parse, you will get a different object than you originally started with. Additionally, JSON cannot stringify `bigint`, and cannot contain circular references. Under these circumstances `JSON.stringify` may throw an error.
+
+`JsonSerializer` and `JsonDeserializer` are typeclasses included in a Codec which are lossless when composed together. So anything that successfully stringifies using `JsonSerializer` will successfully parse with `JsonDeserializer` and be equivalent objects. This is useful to avoid bugs when using JSON strings for storing data. Additionally, `JsonDeserializer` will decode the Json string into a domain type for immediate use in your program.
 
 ### User Document Example
 
-```typescript
-// e.g. src/domain/User.ts
-import * as fc from 'fast-check'
-import * as S from 'schemata-ts/schemata'
-import { getArbitrary } from 'schemata-ts/Arbitrary'
-import { getDecoder } from 'schemata-ts/Decoder'
-import { getEncoder } from 'schemata-ts/Encoder'
-import { getEq } from 'schemata-ts/Eq'
-import { getGuard } from 'schemata-ts/Guard'
-import { getTaskDecoder } from 'schemata-ts/TaskDecoder'
+This is a live example found in `src/Codec.ts` type-checked and tested with [docs-ts](https://github.com/gcanti/docs-ts).
 
-/** FooBar ltd. User document Schema */
+```typescript
+import * as fc from 'fast-check'
+import * as E from 'fp-ts/Either'
+import { pipe } from 'fp-ts/function'
+import * as O from 'fp-ts/Option'
+import * as RA from 'fp-ts/ReadonlyArray'
+import { getArbitrary } from 'schemata-ts/Arbitrary'
+import { getCodec } from 'schemata-ts/Codec'
+import * as S from 'schemata-ts/schemata'
+
 export const User = S.Struct({
   id: S.UUID(5),
   created_at: S.DateFromIsoString({ requireTime: 'None' }),
@@ -59,23 +53,8 @@ export const User = S.Struct({
 export type User = S.TypeOf<typeof User>
 export type UserInput = S.InputOf<typeof User>
 
-export const arbitrary = getArbitrary(User).arbitrary(fc)
-export const decoder = getDecoder(User)
-export const encoder = getEncoder(User)
-export const eq = getEq(User)
-export const guard = getGuard(User)
-export const taskDecoder = getTaskDecoder(User)
-```
-
-### Using Generated Instances
-
-Generating `Decoder`s guarantee that an unknown type conforms to a particular structure during run-time. This allows safe property and method access with knowledge that runtime types align with Typescript's type system. `Encoder`s go in the opposite direction, converting from domain-types back to raw types from which they were decoded. `fast-check` `Arbitrary` instances are a system for generating random examples, and are primarily used for highly rigorous testing. Schemata-ts can generate these typeclasses in addition to others like `Eq`, `Guard`, `TaskDecoder`, and `Type`.
-
-```typescript
-import * as fc from 'fast-check'
-import * as E from 'fp-ts/Either'
-import * as O from 'fp-ts/Option'
-import * as User from 'src/domain/User'
+export const userArbitrary = getArbitrary(User).arbitrary(fc)
+export const userCodec = getCodec(User)
 
 const validInput = {
   id: '987FBC97-4BED-5078-AF07-9141BA07C9F3',
@@ -115,15 +94,23 @@ const invalidInput = {
   favorite_color: 'rgb(105, 190, 239)',
 }
 
-// Arbitraries
-it('generates valid User Documents', () => {
-  fc.assert(fc.property(User.arbitrary, User.guard.is))
-})
+// Using Decoders
 
-// Decoding
-assert.deepStrictEqual(User.decoder.decode(validInput), E.right(expectedOutput))
-assert.equal(User.decoder.decode(invalidInput)._tag, 'Left')
+assert.deepStrictEqual(userCodec.decode(validInput), E.right(expectedOutput))
+assert.deepStrictEqual(userCodec.decode(invalidInput)._tag, 'Left')
 
-// Encoding
-assert.deepStrictEqual(User.encoder.encode(expectedOutput), validInput)
+// Using Arbitraries, Encoders, and Decoders
+
+const testUsers = fc.sample(userArbitrary, 10)
+
+assert.deepStrictEqual(
+  pipe(
+    testUsers,
+    // Encode the users generated using Arbitrary
+    RA.map(userCodec.encode),
+    // Decode the encoded users back to their original form, collecting any errors
+    E.traverseArray(userCodec.decode),
+  ),
+  E.right(testUsers),
+)
 ```

@@ -1,5 +1,103 @@
-import { base64Encode, urlifyBase64 } from '../src/internal/util'
+import * as E from 'fp-ts/Either'
+import { pipe } from 'fp-ts/function'
+import * as O from 'fp-ts/Option'
+import * as RA from 'fp-ts/ReadonlyArray'
+
+import { base64Encode, forIn, urlifyBase64, witherS } from '../src/internal/util'
 import { zipN } from '../test-utils'
+
+describe('traverseESO', () => {
+  it('skips unenumerable properties', () => {
+    const tester = jest.fn()
+    const obj = {
+      a: 1,
+    }
+    Object.defineProperty(obj, 'b', {
+      value: 2,
+    })
+    const result = pipe(
+      obj,
+      witherS(RA.getMonoid())((_, value) => {
+        tester(value)
+        return O.some(E.right(value))
+      }),
+    )
+    expect(tester).toHaveBeenCalledTimes(1)
+    expect(result).toStrictEqual(E.right({ a: 1 }))
+  })
+  it('skips inherited properties', () => {
+    const tester = jest.fn()
+    const obj = {
+      a: 1,
+      __proto__: {
+        b: 2,
+      },
+    }
+    const result = pipe(
+      obj,
+      witherS(RA.getMonoid())((_, value) => {
+        tester(value)
+        return O.some(E.right(value))
+      }),
+    )
+    expect(tester).toHaveBeenCalledTimes(1)
+    expect(result).toStrictEqual(E.right({ a: 1 }))
+  })
+  it('skips indices on none', () => {
+    const obj = {
+      a: 1,
+      b: 2,
+      c: 3,
+    }
+    const result = pipe(
+      obj,
+      witherS(RA.getMonoid())((_, value) => {
+        return value === 2 ? O.none : O.some(E.right(value))
+      }),
+    )
+    expect(result).toStrictEqual(E.right({ a: 1, c: 3 }))
+  })
+  it('no longer fails fast', () => {
+    const tester = jest.fn()
+    const obj = {
+      a: 1,
+      b: 2,
+      c: 3,
+    }
+    const result = pipe(
+      obj,
+      witherS(RA.getMonoid<string>())((_, value) => {
+        tester(value)
+        return value >= 2 ? O.some(E.left(['fail'])) : O.some(E.right(value))
+      }),
+    )
+    expect(result).toStrictEqual(E.left(['fail', 'fail']))
+  })
+})
+
+describe('forIn', () => {
+  it("doesn't iterate over inherited properties", () => {
+    const a = { a: 1, b: 2 }
+    const b = Object.create(a)
+    b.c = 3
+    const eff = jest.fn<void, [string, number]>(() => void 0)
+    forIn((k, v) => () => eff(k, v))(b)()
+    expect(eff).toHaveBeenCalledTimes(1)
+    expect(eff).toHaveBeenCalledWith('c', 3)
+  })
+  it("doesn't iterate over nonenumerable properties", () => {
+    const a = { a: 1, b: 2 }
+    Object.defineProperty(a, 'c', {
+      value: 3,
+      enumerable: false,
+    })
+    const eff = jest.fn<void, [string, number]>(() => void 0)
+    forIn((k, v) => () => eff(k, v))(a)()
+    expect(eff).toHaveBeenCalledTimes(2)
+    expect(eff).toHaveBeenCalledWith('a', 1)
+    expect(eff).toHaveBeenCalledWith('b', 2)
+  })
+})
 
 describe('base64Encode', () => {
   it('should encode a string', () => {

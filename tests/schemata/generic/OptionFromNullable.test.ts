@@ -104,4 +104,17 @@ describe('OptionFromNullable', () => {
     const dec = OptionFromNullable.Decoder
     fc.assert(fc.property(arb, flow(enc.encode, dec.decode, E.isRight)))
   })
+
+  describe('Printer', () => {
+    it("should print 'null' for none", () => {
+      expect(OptionFromNullable.Printer.domainToJson(O.none)).toStrictEqual(E.right(null))
+      expect(OptionFromNullable.Printer.codomainToJson(null)).toStrictEqual(E.right(null))
+    })
+    it('should print the value for some', () => {
+      expect(OptionFromNullable.Printer.domainToJson(O.some('a'))).toStrictEqual(
+        E.right('a'),
+      )
+      expect(OptionFromNullable.Printer.codomainToJson('a')).toStrictEqual(E.right('a'))
+    })
+  })
 })

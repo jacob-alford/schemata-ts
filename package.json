@@ -1,6 +1,6 @@
 {
   "name": "schemata-ts",
-  "version": "1.0.2",
+  "version": "1.1.0",
   "description": "A collection of Schemata inspired by io-ts-types and validators.js",
   "homepage": "https://jacob-alford.github.io/schemata-ts/",
   "repository": {

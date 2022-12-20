@@ -3,6 +3,7 @@ import { pipe } from 'fp-ts/function'
 
 import * as Arb from '../src/base/ArbitraryBase'
 import * as G from '../src/Guard'
+import { typeOf } from '../src/internal/util'
 import * as SC from '../src/SchemaExt'
 import { PositiveFloat } from '../src/schemata/number/PositiveFloat'
 import { Arbitrary as WithInvariant } from '../test-utils/schemable-exports/WithInvariant'
@@ -70,7 +71,7 @@ describe('ArbitraryBase', () => {
     test('nullable', () => {
       fc.assert(
         fc.property(Arb.nullable(Arb.number).arbitrary(fc), nullableNum => {
-          expect(['null', 'number']).toContain(Arb.typeOf(nullableNum))
+          expect(['null', 'number']).toContain(typeOf(nullableNum))
         }),
       )
     })
@@ -161,7 +162,7 @@ describe('ArbitraryBase', () => {
       }).arbitrary(fc)
       fc.assert(
         fc.property(arb, obj => {
-          expect(Arb.typeOf(obj)).toBe('object')
+          expect(typeOf(obj)).toBe('object')
         }),
       )
     })
@@ -191,15 +192,15 @@ describe('ArbitraryBase', () => {
     test('union', () => {
       fc.assert(
         fc.property(Arb.union(Arb.number, Arb.string).arbitrary(fc), numOrStr => {
-          expect(['number', 'string']).toContain(Arb.typeOf(numOrStr))
+          expect(['number', 'string']).toContain(typeOf(numOrStr))
         }),
       )
     })
     test('typeOf', () => {
-      expect(Arb.typeOf(null)).toBe('null')
-      expect(Arb.typeOf(undefined)).toBe('undefined')
-      expect(Arb.typeOf(1)).toBe('number')
-      expect(Arb.typeOf('')).toBe('string')
+      expect(typeOf(null)).toBe('null')
+      expect(typeOf(undefined)).toBe('undefined')
+      expect(typeOf(1)).toBe('number')
+      expect(typeOf('')).toBe('string')
     })
     test('WithInvariant', () => {
       const getDate = WithInvariant.imap(
