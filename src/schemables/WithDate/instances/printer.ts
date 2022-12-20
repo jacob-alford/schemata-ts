@@ -1,7 +1,7 @@
 /**
  * Represents valid Date objects, and valid date-strings parsable by `Date.parse`
  *
- * @since 1.0.0
+ * @since 1.1.0
  */
 import * as E from 'fp-ts/Either'
 import { pipe } from 'fp-ts/function'
@@ -12,7 +12,7 @@ import { WithDate2 } from '../definition'
 import { isSafeDate } from '../utils'
 
 /**
- * @since 1.0.0
+ * @since 1.1.0
  * @category Instances
  */
 export const Printer: WithDate2<P.URI> = {
