@@ -7,7 +7,6 @@
  *
  * Notable features:
  *
- * - Requires `T` separator between date and time
  * - Requires padded months, days, hours, minutes, and seconds
  * - Can be configured to require a time, time and timezone offset (e.g. `Z` or `±05:00`) or
  *   neither (default is require both).
@@ -212,14 +211,27 @@ const time: PB.Pattern = pipe(hrMinSecMs, PB.or(hrMinSec), PB.or(hrMin), PB.subg
  */
 const dateTimeStringOptT: PB.Pattern = pipe(
   date,
-  PB.then(pipe(PB.char('T'), PB.then(time), PB.subgroup, PB.maybe)),
+  PB.then(
+    pipe(
+      PB.char('T'),
+      PB.or(PB.char(' ')),
+      PB.subgroup,
+      PB.then(time),
+      PB.subgroup,
+      PB.maybe,
+    ),
+  ),
 )
 
 /**
  * @since 1.0.0
  * @category Pattern
  */
-const dateTimeStringReqT: PB.Pattern = pipe(date, PB.then(PB.char('T')), PB.then(time))
+const dateTimeStringReqT: PB.Pattern = pipe(
+  date,
+  PB.then(pipe(PB.char('T'), PB.or(PB.char(' ')), PB.subgroup)),
+  PB.then(time),
+)
 
 /**
  * @since 1.0.0
