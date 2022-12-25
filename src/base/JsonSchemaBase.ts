@@ -126,7 +126,8 @@ export const makeStringSchema = (
   minLength?: number,
   maxLength?: number,
   pattern?: string,
-): Const<JsonSchema, string> => makeSchema(new JsonString(minLength, maxLength, pattern))
+): Const<JsonSchema, string> =>
+  makeSchema(new JsonString(minLength, maxLength, pattern), { required: true })
 
 /**
  * @since 1.1.0
@@ -135,7 +136,8 @@ export const makeStringSchema = (
 export const makeNumberSchema = (
   minimum?: number,
   maximum?: number,
-): Const<JsonSchema, number> => makeSchema(new JsonNumber(minimum, maximum))
+): Const<JsonSchema, number> =>
+  makeSchema(new JsonNumber(minimum, maximum), { required: true })
 
 /**
  * @since 1.1.0
@@ -144,13 +146,16 @@ export const makeNumberSchema = (
 export const makeIntegerSchema = (
   minimum?: number,
   maximum?: number,
-): Const<JsonSchema, Int> => makeSchema(new JsonInteger(minimum, maximum))
+): Const<JsonSchema, Int> =>
+  makeSchema(new JsonInteger(minimum, maximum), { required: true })
 
 /**
  * @since 1.1.0
  * @category Constructors
  */
-export const booleanSchema: Const<JsonSchema, boolean> = makeSchema(new JsonBoolean())
+export const booleanSchema: Const<JsonSchema, boolean> = makeSchema(new JsonBoolean(), {
+  required: true,
+})
 
 /**
  * @since 1.1.0
@@ -158,7 +163,7 @@ export const booleanSchema: Const<JsonSchema, boolean> = makeSchema(new JsonBool
  */
 export const makeStructSchema = <A>(properties: {
   [K in keyof A]: Const<JsonSchema, A[K]>
-}): Const<JsonSchema, A> => makeSchema(new JsonStruct(properties))
+}): Const<JsonSchema, A> => makeSchema(new JsonStruct(properties), { required: true })
 
 /**
  * @since 1.1.0
@@ -167,7 +172,7 @@ export const makeStructSchema = <A>(properties: {
 export const makeRecordSchema = <A>(
   additionalProperties: Const<JsonSchema, A>,
 ): Const<JsonSchema, Record<string, A>> =>
-  makeSchema(new JsonRecord(additionalProperties))
+  makeSchema(new JsonRecord(additionalProperties), { required: true })
 
 /**
  * @since 1.1.0
@@ -177,7 +182,8 @@ export const makeArraySchema = <A>(
   items: Const<JsonSchema, A>,
   minItems?: number,
   maxItems?: number,
-): Const<JsonSchema, Array<A>> => makeSchema(new JsonArray(items, minItems, maxItems))
+): Const<JsonSchema, Array<A>> =>
+  makeSchema(new JsonArray(items, minItems, maxItems), { required: true })
 
 /**
  * @since 1.1.0
@@ -187,13 +193,14 @@ export const makeTupleSchema = <A extends ReadonlyArray<unknown>>(
   ...items: {
     [K in keyof A]: Const<JsonSchema, A[K]>
   }
-): Const<JsonSchema, A> => makeSchema(new JsonArray(items, items.length, items.length))
+): Const<JsonSchema, A> =>
+  makeSchema(new JsonArray(items, items.length, items.length), { required: true })
 
 /**
  * @since 1.1.0
  * @category Constructors
  */
-export const nullSchema = makeSchema<null>(new JsonNull())
+export const nullSchema = makeSchema<null>(new JsonNull(), { required: true })
 
 // -------------------------------------------------------------------------------------
 // instances
