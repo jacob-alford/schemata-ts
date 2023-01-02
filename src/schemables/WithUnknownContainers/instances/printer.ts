@@ -1,4 +1,4 @@
-/** @since 1.0.0 */
+/** @since 1.1.0 */
 import * as P from '../../../base/PrinterBase'
 import { WithUnknownContainers2 } from '../definition'
 

@@ -1,45 +1,55 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 /**
  * Models for JsonSchema as subsets of JSON Schema Draft 4, Draft 6, and Draft 7.
  *
- * @since 1.1.0
+ * @since 1.2.0
  */
-import { identity, pipe, unsafeCoerce } from 'fp-ts/function'
+import { identity, pipe } from 'fp-ts/function'
 import { Const, make } from 'fp-ts/lib/Const'
 import * as RNEA from 'fp-ts/ReadonlyNonEmptyArray'
 import * as RR from 'fp-ts/ReadonlyRecord'
 import * as Str from 'fp-ts/string'
-import { memoize, Schemable1 } from 'io-ts/Schemable'
+import { memoize } from 'io-ts/Schemable'
 
 import { Int } from '../schemables/WithInt/definition'
+import { Schemable2 } from './SchemableBase'
 
 // -------------------------------------------------------------------------------------
 // Model
 // -------------------------------------------------------------------------------------
 
 /**
- * @since 1.1.0
+ * @since 1.2.0
  * @category Model
  */
-export type JsonSchema = (
+export type JsonSchema =
+  | JsonEmpty
   | JsonString
   | JsonNumber
   | JsonBoolean
   | JsonNull
   | JsonInteger
+  | JsonLiteral
   | JsonStruct
   | JsonRecord
   | JsonArray
   | JsonUnion
   | JsonIntersection
-) &
-  Description
+
+/**
+ * @since 1.2.0
+ * @category Model
+ */
+export type JsonSchemaWithDescription = JsonSchema & Description
 
 /** @internal */
 interface Description {
   readonly title?: string
   readonly description?: string
-  readonly required?: boolean
 }
+
+/** @internal */
+class JsonEmpty {}
 
 /** @internal */
 class JsonString {
@@ -48,6 +58,10 @@ class JsonString {
     readonly minLength?: number,
     readonly maxLength?: number,
     readonly pattern?: string,
+    readonly contentEncoding?: string,
+    readonly contentMediaType?: string,
+    readonly contentSchema?: JsonSchema,
+    readonly format?: string,
   ) {}
 }
 
@@ -69,9 +83,31 @@ class JsonBoolean {
 }
 
 /** @internal */
+type JsonLiteral =
+  | {
+      readonly type: 'string'
+      readonly const: string
+    }
+  | {
+      readonly type: 'number'
+      readonly const: number
+    }
+  | {
+      readonly type: 'boolean'
+      readonly const: boolean
+    }
+  | {
+      readonly type: 'null'
+      readonly const: null
+    }
+
+/** @internal */
 class JsonStruct {
   readonly type = 'object'
-  constructor(readonly properties: Readonly<Record<string, JsonSchema>>) {}
+  constructor(
+    readonly properties: Readonly<Record<string, JsonSchema>>,
+    readonly required: ReadonlyArray<string> = [],
+  ) {}
 }
 
 /** @internal */
@@ -110,169 +146,185 @@ class JsonIntersection {
 // -------------------------------------------------------------------------------------
 
 /**
- * @since 1.1.0
+ * @since 1.2.0
  * @category Constructors
  */
-export const makeSchema = <A>(
-  schema: JsonSchema,
-  description: Description = {},
-): Const<JsonSchema, A> => make<JsonSchema, A>({ ...schema, ...description })
+export const emptySchema = make(new JsonEmpty())
 
 /**
- * @since 1.1.0
+ * @since 1.2.0
  * @category Constructors
  */
 export const makeStringSchema = (
   minLength?: number,
   maxLength?: number,
   pattern?: string,
+  contentEncoding?: string,
+  contentMediaType?: string,
+  contentSchema?: JsonSchema,
+  format?: string,
 ): Const<JsonSchema, string> =>
-  makeSchema(new JsonString(minLength, maxLength, pattern), { required: true })
+  make(
+    new JsonString(
+      minLength,
+      maxLength,
+      pattern,
+      contentEncoding,
+      contentMediaType,
+      contentSchema,
+      format,
+    ),
+  )
 
 /**
- * @since 1.1.0
+ * @since 1.2.0
  * @category Constructors
  */
 export const makeNumberSchema = (
   minimum?: number,
   maximum?: number,
-): Const<JsonSchema, number> =>
-  makeSchema(new JsonNumber(minimum, maximum), { required: true })
+): Const<JsonSchema, number> => make(new JsonNumber(minimum, maximum))
 
 /**
- * @since 1.1.0
+ * @since 1.2.0
  * @category Constructors
  */
 export const makeIntegerSchema = (
   minimum?: number,
   maximum?: number,
-): Const<JsonSchema, Int> =>
-  makeSchema(new JsonInteger(minimum, maximum), { required: true })
+): Const<JsonSchema, Int> => make(new JsonInteger(minimum, maximum))
 
 /**
- * @since 1.1.0
+ * @since 1.2.0
  * @category Constructors
  */
-export const booleanSchema: Const<JsonSchema, boolean> = makeSchema(new JsonBoolean(), {
-  required: true,
-})
+export const booleanSchema: Const<JsonSchema, boolean> = make(new JsonBoolean())
 
 /**
- * @since 1.1.0
+ * @since 1.2.0
  * @category Constructors
  */
-export const makeStructSchema = <A>(properties: {
-  [K in keyof A]: Const<JsonSchema, A[K]>
-}): Const<JsonSchema, A> => makeSchema(new JsonStruct(properties), { required: true })
+export const makeLiteralSchema = <A extends string | number | boolean | null>(
+  value: A,
+): Const<JsonSchema, A> =>
+  value === null ? make(new JsonNull()) : make({ type: typeof value, const: value })
 
 /**
- * @since 1.1.0
+ * @since 1.2.0
+ * @category Constructors
+ */
+export const makeStructSchema = <A>(
+  properties: {
+    [K in keyof A]: Const<JsonSchema, A[K]>
+  },
+  required: ReadonlyArray<string> = [],
+): Const<JsonSchema, A> => make(new JsonStruct(properties, required))
+
+/**
+ * @since 1.2.0
  * @category Constructors
  */
 export const makeRecordSchema = <A>(
   additionalProperties: Const<JsonSchema, A>,
-): Const<JsonSchema, Record<string, A>> =>
-  makeSchema(new JsonRecord(additionalProperties), { required: true })
+): Const<JsonSchema, Record<string, A>> => make(new JsonRecord(additionalProperties))
 
 /**
- * @since 1.1.0
+ * @since 1.2.0
  * @category Constructors
  */
 export const makeArraySchema = <A>(
   items: Const<JsonSchema, A>,
   minItems?: number,
   maxItems?: number,
-): Const<JsonSchema, Array<A>> =>
-  makeSchema(new JsonArray(items, minItems, maxItems), { required: true })
+): Const<JsonSchema, Array<A>> => make(new JsonArray(items, minItems, maxItems))
 
 /**
- * @since 1.1.0
+ * @since 1.2.0
  * @category Constructors
  */
 export const makeTupleSchema = <A extends ReadonlyArray<unknown>>(
   ...items: {
     [K in keyof A]: Const<JsonSchema, A[K]>
   }
-): Const<JsonSchema, A> =>
-  makeSchema(new JsonArray(items, items.length, items.length), { required: true })
+): Const<JsonSchema, A> => make(new JsonArray(items, items.length, items.length))
 
 /**
- * @since 1.1.0
+ * @since 1.2.0
  * @category Constructors
  */
-export const nullSchema = makeSchema<null>(new JsonNull(), { required: true })
+export const nullSchema = make(new JsonNull())
+
+/**
+ * @since 1.2.0
+ * @category Constructors
+ */
+export const makeUnionSchema = <U extends ReadonlyArray<Const<JsonSchema, unknown>>>(
+  ...members: U
+): Const<JsonSchema, U[number] extends Const<JsonSchema, infer A> ? A : never> =>
+  make(new JsonUnion(members))
+
+/**
+ * @since 1.2.0
+ * @category Combintators
+ */
+export const annotate: (
+  name?: string,
+  description?: string,
+) => (schema: JsonSchema) => Const<JsonSchemaWithDescription, never> =
+  (name, description) => schema =>
+    make({
+      ...schema,
+      name,
+      description,
+    })
 
 // -------------------------------------------------------------------------------------
 // instances
 // -------------------------------------------------------------------------------------
 
 /**
- * @since 1.1.0
+ * @since 1.2.0
  * @category Instances
  */
 export const URI = 'JsonSchema'
 
 /**
- * @since 1.1.0
+ * @since 1.2.0
  * @category Instances
  */
 export type URI = typeof URI
 
 declare module 'fp-ts/lib/HKT' {
-  interface URItoKind<A> {
-    readonly JsonSchema: Const<JsonSchema, A>
+  interface URItoKind2<E, A> {
+    readonly JsonSchema: Const<JsonSchemaWithDescription, E>
   }
 }
 
 /**
- * @since 1.1.0
+ * @since 1.2.0
  * @category Instances
  */
-export const Schemable: Schemable1<URI> = {
+export const Schemable: Schemable2<URI> = {
   URI,
   literal: (...values) =>
-    pipe(
-      values,
-      RNEA.map(literal => {
-        if (literal === null) return nullSchema
-        switch (typeof literal) {
-          case 'string':
-            return makeStringSchema()
-          case 'number':
-            return makeNumberSchema()
-          default:
-            return booleanSchema
-        }
-      }),
-      schemata => makeSchema(new JsonUnion(schemata)),
-    ),
+    pipe(values, RNEA.map(makeLiteralSchema), schemata => make(new JsonUnion(schemata))),
   string: makeStringSchema(),
   number: makeNumberSchema(),
   boolean: booleanSchema,
-  nullable: schema => makeSchema(new JsonUnion([schema, nullSchema])),
-  struct: makeStructSchema,
-  partial: <A>(properties: { [K in keyof A]: Const<JsonSchema, A[K]> }): Const<
-    JsonSchema,
-    Partial<{ [K in keyof A]: A[K] }>
-  > =>
-    makeStructSchema<Partial<A>>(
-      pipe(
-        properties as Readonly<Record<string, JsonSchema>>,
-        RR.map(({ title, description, ...rest }) =>
-          makeSchema(rest, { title, description, required: false }),
-        ),
-        a => unsafeCoerce(a),
-      ),
-    ),
+  nullable: schema => make(new JsonUnion([schema, nullSchema])),
+  // @ts-expect-error -- typelevel difference
+  struct: s => makeStructSchema(s, Object.keys(s)),
+  // @ts-expect-error -- typelevel difference
+  partial: makeStructSchema,
   record: makeRecordSchema,
   array: makeArraySchema,
   // @ts-expect-error -- typelevel difference
   tuple: <A extends ReadonlyArray<unknown>>(
     ...items: { [K in keyof A]: Const<JsonSchema, A[K]> }
   ): Const<JsonSchema, A> => makeTupleSchema<A>(...items),
-  intersect: right => left => makeSchema(new JsonIntersection([left, right])),
+  intersect: right => left => make(new JsonIntersection([left, right])),
   sum: () => members =>
-    makeSchema(
+    make(
       new JsonUnion(
         pipe(
           members as Readonly<Record<string, Const<JsonSchema, any>>>,
@@ -280,13 +332,9 @@ export const Schemable: Schemable1<URI> = {
         ),
       ),
     ),
-  lazy: (id, f) => {
+  lazy: (_, f) => {
     const get = memoize<void, JsonSchema>(f)
-    return makeSchema(get(), {
-      title: id,
-      description: `Lazy(${id})`,
-      required: true,
-    })
+    return make(get())
   },
   readonly: identity,
 }
