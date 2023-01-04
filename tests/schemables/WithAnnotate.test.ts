@@ -9,7 +9,7 @@ describe('annotation', () => {
     expect(jsonSchema).toEqual({
       type: 'string',
       pattern: '^((0b)[0-1]+?|(0o)[0-7]+?|-?\\d+?|(0x)[0-9A-Fa-f]+?)$',
-      name: 'root',
+      title: 'root',
       description: 'BigIntFromString',
     })
   })

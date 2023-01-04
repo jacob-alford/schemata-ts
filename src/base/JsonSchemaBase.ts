@@ -139,6 +139,131 @@ class JsonIntersection {
 }
 
 // -------------------------------------------------------------------------------------
+// guards
+// -------------------------------------------------------------------------------------
+
+/** @internal */
+const hasType = (
+  type: string,
+  u: JsonSchema,
+): u is JsonSchema & { readonly type: string } => 'type' in u && u.type === type
+
+/** @internal */
+const hasKey = <K extends string>(
+  key: K,
+  u: JsonSchema,
+): u is JsonSchema & { readonly [key in K]: unknown } => key in u
+
+/**
+ * @since 1.2.0
+ * @category Guards
+ */
+export const isJsonEmpty = (u: JsonSchema): u is JsonEmpty =>
+  u instanceof JsonEmpty || Object.keys(u).length === 0
+
+/**
+ * @since 1.2.0
+ * @category Guards
+ */
+export const isJsonString = (u: JsonSchema): u is JsonString =>
+  u instanceof JsonString || hasType('string', u)
+
+/**
+ * @since 1.2.0
+ * @category Guards
+ */
+export const isJsonNumber = (u: JsonSchema): u is JsonNumber =>
+  u instanceof JsonNumber || hasType('number', u)
+
+/**
+ * @since 1.2.0
+ * @category Guards
+ */
+export const isJsonNull = (u: JsonSchema): u is JsonNull =>
+  u instanceof JsonNull || hasType('null', u)
+
+/**
+ * @since 1.2.0
+ * @category Guards
+ */
+export const isJsonInteger = (u: JsonSchema): u is JsonInteger =>
+  u instanceof JsonInteger || hasType('integer', u)
+
+/**
+ * @since 1.2.0
+ * @category Guards
+ */
+export const isJsonBoolean = (u: JsonSchema): u is JsonBoolean =>
+  u instanceof JsonBoolean || hasType('boolean', u)
+
+/**
+ * @since 1.2.0
+ * @category Guards
+ */
+export const isJsonConst = (u: JsonSchema): u is JsonConst => 'const' in u
+
+/**
+ * @since 1.2.0
+ * @category Guards
+ */
+export const isJsonPrimitive = (u: JsonSchema): u is JsonLiteral | JsonNull =>
+  isJsonNull(u) || isJsonBoolean(u) || isJsonNumber(u) || isJsonString(u)
+
+/**
+ * @since 1.2.0
+ * @category Guards
+ */
+export const isJsonLiteral = (u: JsonSchema): u is JsonLiteral =>
+  isJsonConst(u) && isJsonPrimitive(u)
+
+/**
+ * @since 1.2.0
+ * @category Guards
+ */
+export const isJsonStruct = (u: JsonSchema): u is JsonStruct =>
+  u instanceof JsonStruct ||
+  (hasType('object', u) && hasKey('properties', u) && hasKey('required', u))
+
+/**
+ * @since 1.2.0
+ * @category Guards
+ */
+export const isJsonRecord = (u: JsonSchema): u is JsonRecord =>
+  u instanceof JsonRecord || (hasType('object', u) && hasKey('additionalProperties', u))
+
+/**
+ * @since 1.2.0
+ * @category Guards
+ */
+export const isJsonArray = (u: JsonSchema): u is JsonArray =>
+  u instanceof JsonArray || hasType('array', u)
+
+/**
+ * @since 1.2.0
+ * @category Guards
+ */
+export const isJsonExclude = (u: JsonSchema): u is JsonExclude =>
+  isJsonIntersection(u) &&
+  (RNEA.head(u.allOf) instanceof JsonExclude || hasKey('not', RNEA.head(u.allOf))) &&
+  u.allOf.length === 2 &&
+  // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+  isJsonConst((RNEA.head(u.allOf) as JsonExclude).not)
+
+/**
+ * @since 1.2.0
+ * @category Guards
+ */
+export const isJsonUnion = (u: JsonSchema): u is JsonUnion =>
+  u instanceof JsonUnion || hasKey('oneOf', u)
+
+/**
+ * @since 1.2.0
+ * @category Guards
+ */
+export const isJsonIntersection = (u: JsonSchema): u is JsonIntersection =>
+  u instanceof JsonIntersection || hasKey('allOf', u)
+
+// -------------------------------------------------------------------------------------
 // constructors
 // -------------------------------------------------------------------------------------
 
@@ -287,22 +412,22 @@ export const makeExclusionSchema = <A, Z extends A>(
   exclude: Z,
   schema: Const<JsonSchema, A>,
 ): Const<JsonSchema, Exclude<A, Z>> =>
-  make(new JsonIntersection([schema, new JsonExclude(makeConstSchema(exclude))]))
+  make(new JsonIntersection([new JsonExclude(makeConstSchema(exclude)), schema]))
 
 /**
  * @since 1.2.0
  * @category Combintators
  */
 export const annotate: (
-  name?: string,
+  title?: string,
   description?: string,
 ) => (schema: JsonSchema) => Const<JsonSchemaWithDescription, never> =
-  (name, description) => schema =>
-    name === undefined && description === undefined
+  (title, description) => schema =>
+    title === undefined && description === undefined
       ? make(schema)
       : make({
           ...schema,
-          ...(name === undefined ? {} : { name }),
+          ...(title === undefined ? {} : { title }),
           ...(description === undefined ? {} : { description }),
         })
 

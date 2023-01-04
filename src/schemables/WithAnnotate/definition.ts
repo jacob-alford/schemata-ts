@@ -12,7 +12,7 @@ import { HKT2, Kind, Kind2, URIS, URIS2 } from 'fp-ts/HKT'
  */
 export interface WithAnnotateHKT2<S> {
   readonly annotate: (
-    name?: string,
+    title?: string,
     description?: string,
   ) => <E, A>(schema: HKT2<S, E, A>) => HKT2<S, E, A>
 }
@@ -23,7 +23,7 @@ export interface WithAnnotateHKT2<S> {
  */
 export interface WithAnnotate1<S extends URIS> {
   readonly annotate: (
-    name?: string,
+    title?: string,
     description?: string,
   ) => <A>(schema: Kind<S, A>) => Kind<S, A>
 }
@@ -34,7 +34,7 @@ export interface WithAnnotate1<S extends URIS> {
  */
 export interface WithAnnotate2<S extends URIS2> {
   readonly annotate: (
-    name?: string,
+    title?: string,
     description?: string,
   ) => <E, A>(schema: Kind2<S, E, A>) => Kind2<S, E, A>
 }
@@ -45,7 +45,7 @@ export interface WithAnnotate2<S extends URIS2> {
  */
 export interface WithAnnotate2C<S extends URIS2, E> {
   readonly annotate: (
-    name?: string,
+    title?: string,
     description?: string,
   ) => <A>(schema: Kind2<S, E, A>) => Kind2<S, E, A>
 }
