@@ -299,11 +299,13 @@ export const annotate: (
   description?: string,
 ) => (schema: JsonSchema) => Const<JsonSchemaWithDescription, never> =
   (name, description) => schema =>
-    make({
-      ...schema,
-      name,
-      description,
-    })
+    name === undefined && description === undefined
+      ? make(schema)
+      : make({
+          ...schema,
+          ...(name === undefined ? {} : { name }),
+          ...(description === undefined ? {} : { description }),
+        })
 
 // -------------------------------------------------------------------------------------
 // instances
