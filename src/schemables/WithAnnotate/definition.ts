@@ -10,7 +10,7 @@ import { HKT2, Kind, Kind2, URIS, URIS2 } from 'fp-ts/HKT'
  * @since 1.2.0
  * @category Model
  */
-export interface WithAnnotationHKT2<S> {
+export interface WithAnnotateHKT2<S> {
   readonly annotate: (
     name?: string,
     description?: string,
@@ -21,7 +21,7 @@ export interface WithAnnotationHKT2<S> {
  * @since 1.2.0
  * @category Model
  */
-export interface WithAnnotation1<S extends URIS> {
+export interface WithAnnotate1<S extends URIS> {
   readonly annotate: (
     name?: string,
     description?: string,
@@ -32,7 +32,7 @@ export interface WithAnnotation1<S extends URIS> {
  * @since 1.2.0
  * @category Model
  */
-export interface WithAnnotation2<S extends URIS2> {
+export interface WithAnnotate2<S extends URIS2> {
   readonly annotate: (
     name?: string,
     description?: string,
@@ -43,7 +43,7 @@ export interface WithAnnotation2<S extends URIS2> {
  * @since 1.2.0
  * @category Model
  */
-export interface WithAnnotation2C<S extends URIS2, E> {
+export interface WithAnnotate2C<S extends URIS2, E> {
   readonly annotate: (
     name?: string,
     description?: string,

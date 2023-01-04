@@ -7,7 +7,7 @@
  */
 import * as JS from './base/JsonSchemaBase'
 import { SchemableExt2 } from './SchemableExt'
-import * as WithAnnotation from './schemables/WithAnnotation/instances/json-schema'
+import * as WithAnnotate from './schemables/WithAnnotate/instances/json-schema'
 import * as WithBrand from './schemables/WithBrand/instances/json-schema'
 import * as WithCheckDigit from './schemables/WithCheckDigit/instances/json-schema'
 import * as WithDate from './schemables/WithDate/instances/json-schema'
@@ -37,7 +37,7 @@ export type {
  */
 export const Schemable: SchemableExt2<JS.URI> = {
   ...JS.Schemable,
-  ...WithAnnotation.JsonSchema,
+  ...WithAnnotate.JsonSchema,
   ...WithBrand.JsonSchema,
   ...WithCheckDigit.JsonSchema,
   ...WithDate.JsonSchema,

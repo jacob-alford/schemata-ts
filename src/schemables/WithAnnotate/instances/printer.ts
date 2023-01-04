@@ -4,15 +4,15 @@
  *
  * @since 1.2.0
  */
-import * as Eq_ from 'fp-ts/Eq'
 import { constant, identity } from 'fp-ts/function'
 
-import { WithAnnotation1 } from '../definition'
+import * as P from '../../../base/PrinterBase'
+import { WithAnnotate2 } from '../definition'
 
 /**
  * @since 1.2.0
  * @category Instances
  */
-export const Eq: WithAnnotation1<Eq_.URI> = {
+export const Printer: WithAnnotate2<P.URI> = {
   annotate: constant(identity),
 }

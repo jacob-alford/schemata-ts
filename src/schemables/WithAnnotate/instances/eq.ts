@@ -4,15 +4,15 @@
  *
  * @since 1.2.0
  */
+import * as Eq_ from 'fp-ts/Eq'
 import { constant, identity } from 'fp-ts/function'
 
-import * as D from '../../../base/DecoderBase'
-import { WithAnnotation2C } from '../definition'
+import { WithAnnotate1 } from '../definition'
 
 /**
  * @since 1.2.0
  * @category Instances
  */
-export const Decoder: WithAnnotation2C<D.URI, unknown> = {
+export const Eq: WithAnnotate1<Eq_.URI> = {
   annotate: constant(identity),
 }

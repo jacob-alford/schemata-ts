@@ -6,13 +6,13 @@
  */
 import { constant, identity } from 'fp-ts/function'
 
-import * as t from '../../../base/TypeBase'
-import { WithAnnotation1 } from '../definition'
+import * as Arb from '../../../base/ArbitraryBase'
+import { WithAnnotate1 } from '../definition'
 
 /**
  * @since 1.2.0
  * @category Instances
  */
-export const Type: WithAnnotation1<t.URI> = {
+export const Arbitrary: WithAnnotate1<Arb.URI> = {
   annotate: constant(identity),
 }

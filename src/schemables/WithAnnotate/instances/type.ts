@@ -6,13 +6,13 @@
  */
 import { constant, identity } from 'fp-ts/function'
 
-import * as P from '../../../base/PrinterBase'
-import { WithAnnotation2 } from '../definition'
+import * as t from '../../../base/TypeBase'
+import { WithAnnotate1 } from '../definition'
 
 /**
  * @since 1.2.0
  * @category Instances
  */
-export const Printer: WithAnnotation2<P.URI> = {
+export const Type: WithAnnotate1<t.URI> = {
   annotate: constant(identity),
 }

@@ -5,12 +5,12 @@
  * @since 1.2.0
  */
 import * as JS from '../../../base/JsonSchemaBase'
-import { WithAnnotation2 } from '../definition'
+import { WithAnnotate2 } from '../definition'
 
 /**
  * @since 1.2.0
  * @category Instances
  */
-export const JsonSchema: WithAnnotation2<JS.URI> = {
+export const JsonSchema: WithAnnotate2<JS.URI> = {
   annotate: JS.annotate,
 }

@@ -7,7 +7,7 @@
  */
 import * as Arb from './base/ArbitraryBase'
 import { SchemableExt1 } from './SchemableExt'
-import * as WithAnnotation from './schemables/WithAnnotation/instances/arbitrary'
+import * as WithAnnotate from './schemables/WithAnnotate/instances/arbitrary'
 import * as WithBrand from './schemables/WithBrand/instances/arbitrary'
 import * as WithCheckDigit from './schemables/WithCheckDigit/instances/arbitrary'
 import * as WithDate from './schemables/WithDate/instances/arbitrary'
@@ -37,7 +37,7 @@ export type {
  */
 export const Schemable: SchemableExt1<Arb.URI> = {
   ...Arb.Schemable,
-  ...WithAnnotation.Arbitrary,
+  ...WithAnnotate.Arbitrary,
   ...WithBrand.Arbitrary,
   ...WithCheckDigit.Arbitrary,
   ...WithDate.Arbitrary,

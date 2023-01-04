@@ -6,13 +6,13 @@
  */
 import { constant, identity } from 'fp-ts/function'
 
-import * as G from '../../../base/GuardBase'
-import { WithAnnotation1 } from '../definition'
+import * as TD from '../../../base/TaskDecoderBase'
+import { WithAnnotate2C } from '../definition'
 
 /**
  * @since 1.2.0
  * @category Instances
  */
-export const Guard: WithAnnotation1<G.URI> = {
+export const TaskDecoder: WithAnnotate2C<TD.URI, unknown> = {
   annotate: constant(identity),
 }

@@ -7,7 +7,7 @@
  */
 import * as Enc from './base/EncoderBase'
 import { SchemableExt2 } from './SchemableExt'
-import * as WithAnnotation from './schemables/WithAnnotation/instances/encoder'
+import * as WithAnnotate from './schemables/WithAnnotate/instances/encoder'
 import * as WithBrand from './schemables/WithBrand/instances/encoder'
 import * as WithCheckDigit from './schemables/WithCheckDigit/instances/encoder'
 import * as WithDate from './schemables/WithDate/instances/encoder'
@@ -37,7 +37,7 @@ export type {
  */
 export const Schemable: SchemableExt2<Enc.URI> = {
   ...Enc.Schemable,
-  ...WithAnnotation.Encoder,
+  ...WithAnnotate.Encoder,
   ...WithBrand.Encoder,
   ...WithCheckDigit.Encoder,
   ...WithDate.Encoder,

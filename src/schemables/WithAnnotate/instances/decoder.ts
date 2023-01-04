@@ -6,13 +6,13 @@
  */
 import { constant, identity } from 'fp-ts/function'
 
-import * as Enc from '../../../base/EncoderBase'
-import { WithAnnotation2 } from '../definition'
+import * as D from '../../../base/DecoderBase'
+import { WithAnnotate2C } from '../definition'
 
 /**
  * @since 1.2.0
  * @category Instances
  */
-export const Encoder: WithAnnotation2<Enc.URI> = {
+export const Decoder: WithAnnotate2C<D.URI, unknown> = {
   annotate: constant(identity),
 }

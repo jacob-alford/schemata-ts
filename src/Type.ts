@@ -7,7 +7,7 @@
  */
 import * as t from './base/TypeBase'
 import { SchemableExt1 } from './SchemableExt'
-import * as WithAnnotation from './schemables/WithAnnotation/instances/type'
+import * as WithAnnotate from './schemables/WithAnnotate/instances/type'
 import * as WithBrand from './schemables/WithBrand/instances/type'
 import * as WithCheckDigit from './schemables/WithCheckDigit/instances/type'
 import * as WithDate from './schemables/WithDate/instances/type'
@@ -37,7 +37,7 @@ export type {
  */
 export const Schemable: SchemableExt1<t.URI> = {
   ...t.Schemable,
-  ...WithAnnotation.Type,
+  ...WithAnnotate.Type,
   ...WithBrand.Type,
   ...WithCheckDigit.Type,
   ...WithDate.Type,
