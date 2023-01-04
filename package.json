@@ -101,8 +101,5 @@
     "ts-jest": "^26.5.3",
     "ts-node": "^10.8.1",
     "typescript": "^4.2.3"
-  },
-  "dependencies": {
-    "@types/json-schema": "^7.0.11"
   }
 }
