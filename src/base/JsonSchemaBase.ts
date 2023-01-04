@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
 /**
  * Models for JsonSchema as subsets of JSON Schema Draft 4, Draft 6, and Draft 7.
  *
@@ -324,6 +323,7 @@ export const URI = 'JsonSchema'
 export type URI = typeof URI
 
 declare module 'fp-ts/lib/HKT' {
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   interface URItoKind2<E, A> {
     readonly JsonSchema: Const<JsonSchemaWithDescription, E>
   }
