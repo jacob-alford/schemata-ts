@@ -94,6 +94,7 @@
     "glob": "^8.0.3",
     "husky": "^8.0.0",
     "jest": "^26.6.3",
+    "json-schema-library": "^7.4.4",
     "lint-staged": "^13.0.3",
     "markdown-magic": "^2.0.0",
     "prettier": "^2.2.1",

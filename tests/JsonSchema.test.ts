@@ -1,5 +1,8 @@
+import * as fc from 'fast-check'
 import * as Str from 'fp-ts/string'
+import { Draft04, Draft06, Draft07 } from 'json-schema-library'
 
+import { getArbitrary } from '../src/Arbitrary'
 import * as base from '../src/base/JsonSchemaBase'
 import { getJsonSchema } from '../src/JsonSchema'
 import * as S from '../src/schemata'
@@ -98,6 +101,7 @@ describe('JsonSchema', () => {
       ).toBe(true)
     })
   })
+
   describe('derivation', () => {
     const testSchema = S.Readonly(
       S.Struct({
@@ -462,6 +466,53 @@ describe('JsonSchema', () => {
         },
         required: ['type', 'a'],
       })
+    })
+  })
+
+  describe('externally valid', () => {
+    const testSchema = S.Readonly(
+      S.Struct({
+        literal: S.Literal('string', 5, true, null),
+        nully: S.Nullable(S.Int({ min: 0, max: 1 })),
+        rec: S.Record(S.CreditCard),
+        arr: S.Array(S.Json.jsonString),
+
+        tup: S.Tuple(S.Number),
+        sum: S.Sum('type')({
+          a: S.Struct({ type: S.Literal('a'), a: S.Boolean }),
+          b: S.Struct({ type: S.Literal('b'), b: S.Lazy('Sum[b].b', () => S.Natural) }),
+        }),
+        intersection: S.Intersection(S.Struct({ a: S.NonPositiveInt }))(
+          S.Struct({ b: S.NonNegativeFloat, c: S.NonPositiveFloat }),
+        ),
+        int: S.Int(),
+      }),
+    )
+    const jsonSchema = getJsonSchema(testSchema)
+    const arbitrary = getArbitrary(testSchema).arbitrary(fc)
+    it('validates for version 4', () => {
+      const v4 = new Draft04(jsonSchema)
+      fc.assert(
+        fc.property(arbitrary, value => {
+          expect(v4.isValid(value)).toBe(true)
+        }),
+      )
+    })
+    it('validates for version 6', () => {
+      const v6 = new Draft06(jsonSchema)
+      fc.assert(
+        fc.property(arbitrary, value => {
+          expect(v6.isValid(value)).toBe(true)
+        }),
+      )
+    })
+    it('validates for version 7', () => {
+      const v7 = new Draft07(jsonSchema)
+      fc.assert(
+        fc.property(arbitrary, value => {
+          expect(v7.isValid(value)).toBe(true)
+        }),
+      )
     })
   })
 })
