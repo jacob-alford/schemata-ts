@@ -25,6 +25,14 @@ export * from './base/SchemaBase'
 
 export {
   /**
+   * Schemable for annotating a JSON Schema. Interpretation using interpreters other than
+   * JsonSchema will not change the derivation.
+   *
+   * @since 1.2.0
+   */ Schema as Annotation,
+} from './schemables/WithAnnotation/instances/schema'
+export {
+  /**
    * Schemable for constructing a branded newtype
    *
    * @since 1.0.0

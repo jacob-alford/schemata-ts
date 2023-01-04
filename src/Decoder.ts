@@ -7,6 +7,7 @@
  */
 import * as D from './base/DecoderBase'
 import { SchemableExt2C } from './SchemableExt'
+import * as WithAnnotation from './schemables/WithAnnotation/instances/decoder'
 import * as WithBrand from './schemables/WithBrand/instances/decoder'
 import * as WithCheckDigit from './schemables/WithCheckDigit/instances/decoder'
 import * as WithDate from './schemables/WithDate/instances/decoder'
@@ -36,6 +37,7 @@ export type {
  */
 export const Schemable: SchemableExt2C<D.URI> = {
   ...D.Schemable,
+  ...WithAnnotation.Decoder,
   ...WithBrand.Decoder,
   ...WithCheckDigit.Decoder,
   ...WithDate.Decoder,

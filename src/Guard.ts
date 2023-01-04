@@ -7,6 +7,7 @@
  */
 import * as G from './base/GuardBase'
 import { SchemableExt1 } from './SchemableExt'
+import * as WithAnnotation from './schemables/WithAnnotation/instances/guard'
 import * as WithBrand from './schemables/WithBrand/instances/guard'
 import * as WithCheckDigit from './schemables/WithCheckDigit/instances/guard'
 import * as WithDate from './schemables/WithDate/instances/guard'
@@ -36,6 +37,7 @@ export type {
  */
 export const Schemable: SchemableExt1<G.URI> = {
   ...G.Schemable,
+  ...WithAnnotation.Guard,
   ...WithBrand.Guard,
   ...WithCheckDigit.Guard,
   ...WithDate.Guard,

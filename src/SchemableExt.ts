@@ -10,6 +10,12 @@ import { Schemable1, Schemable2C } from 'io-ts/Schemable'
 
 import { Schemable2, SchemableHKT2 } from './base/SchemableBase'
 import {
+  WithAnnotation1,
+  WithAnnotation2,
+  WithAnnotation2C,
+  WithAnnotationHKT2,
+} from './schemables/WithAnnotation/definition'
+import {
   WithBrand1,
   WithBrand2,
   WithBrand2C,
@@ -100,6 +106,7 @@ import {
  */
 export interface SchemableExt<S>
   extends SchemableHKT2<S>,
+    WithAnnotationHKT2<S>,
     WithBrandHKT2<S>,
     WithCheckDigitHKT2<S>,
     WithDateHKT2<S>,
@@ -121,6 +128,7 @@ export interface SchemableExt<S>
  */
 export interface SchemableExt1<S extends URIS>
   extends Schemable1<S>,
+    WithAnnotation1<S>,
     WithBrand1<S>,
     WithCheckDigit1<S>,
     WithDate1<S>,
@@ -142,6 +150,7 @@ export interface SchemableExt1<S extends URIS>
  */
 export interface SchemableExt2<S extends URIS2>
   extends Schemable2<S>,
+    WithAnnotation2<S>,
     WithBrand2<S>,
     WithCheckDigit2<S>,
     WithDate2<S>,
@@ -163,6 +172,7 @@ export interface SchemableExt2<S extends URIS2>
  */
 export interface SchemableExt2C<S extends URIS2>
   extends Schemable2C<S, unknown>,
+    WithAnnotation2C<S, unknown>,
     WithBrand2C<S, unknown>,
     WithCheckDigit2C<S, unknown>,
     WithDate2C<S, unknown>,
