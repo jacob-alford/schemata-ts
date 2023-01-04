@@ -14,6 +14,7 @@ describe('JsonSchema', () => {
       }),
       rec: S.Record(S.CreditCard),
       arr: S.Array(S.Json.jsonString),
+
       tup: S.Tuple(S.JsonFromString, S.Number),
       sum: S.Sum('type')({
         a: S.Struct({ type: S.Literal('a'), a: S.Boolean }),
@@ -22,6 +23,8 @@ describe('JsonSchema', () => {
       intersection: S.Intersection(S.Struct({ a: S.NonPositiveInt }))(
         S.Struct({ b: S.NonNegativeFloat, c: S.NonPositiveFloat }),
       ),
+      date: S.Date.dateFromString,
+      isoDate: S.DateFromIsoString(),
       map: S.Map(Str.Ord, S.String, S.Float()),
       int: S.Int(),
       option: S.Option(69420, S.Number),
@@ -86,6 +89,8 @@ describe('JsonSchema', () => {
       'tup',
       'sum',
       'intersection',
+      'date',
+      'isoDate',
       'map',
       'int',
       'option',
@@ -193,6 +198,20 @@ describe('JsonSchema', () => {
           required: ['type', 'b'],
         },
       ],
+    })
+  })
+  test('date', () => {
+    expect(testValue.properties.date).toStrictEqual({
+      type: 'string',
+      format: 'date',
+    })
+  })
+  test('isoDate', () => {
+    expect(testValue.properties.isoDate).toStrictEqual({
+      type: 'string',
+      description: 'IsoDateString',
+      pattern:
+        '^(((\\d{4}|[+\\x2d]\\d{6})-((0[1-9])|(1[0-2]))-((0[1-9])|(1\\d|[2]\\d|3[0-1]))|((\\d{4}|[+\\x2d]\\d{6})-((0[1-9])|(1[0-2])))|\\d{4}|[+\\x2d]\\d{6})(T| )(((0\\d)|(1\\d|2[0-3])):((0\\d)|(1\\d|[2-4]\\d|5\\d)):((0\\d)|(1\\d|[2-4]\\d|5\\d))\\.(\\d+?)|((0\\d)|(1\\d|2[0-3])):((0\\d)|(1\\d|[2-4]\\d|5\\d)):((0\\d)|(1\\d|[2-4]\\d|5\\d))|((0\\d)|(1\\d|2[0-3])):((0\\d)|(1\\d|[2-4]\\d|5\\d)))(Z|[+\\x2d]((0\\d)|(1\\d|2[0-3])):((0\\d)|(1\\d|[2-4]\\d|5\\d))))$',
     })
   })
   test('intersection', () => {
