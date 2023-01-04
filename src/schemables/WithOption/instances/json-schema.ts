@@ -15,9 +15,8 @@ export const JsonSchema: WithOption2<JS.URI> = {
   optionFromExclude: (exclude, jsA) =>
     /*
      * TODO @jacob-alford: Exclude can technically _not_ be a literal value, and that
-     * might cause problems with non-literal types turning into `boolean`s with the way
-     * `literal` is constructed
+     * might cause problems if the excluded value is not a valid schema value, such as undefined.
      */
     // @ts-expect-error -- typelevel difference
-    JS.makeUnionSchema(JS.makeLiteralSchema(exclude), jsA),
+    JS.makeExclusionSchema(exclude, jsA),
 }

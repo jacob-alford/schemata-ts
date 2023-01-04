@@ -177,7 +177,6 @@ export {
    *
    * Notable features:
    *
-   * - Requires `T` separator between date and time
    * - Requires padded months, days, hours, minutes, and seconds
    * - Can be configured to require a time, time and timezone offset (e.g. `Z` or `±05:00`)
    *   or neither (default is require both).

@@ -14,32 +14,44 @@ import { match } from '../utils'
  * @category Instances
  */
 export const JsonSchema: WithPadding2<JS.URI> = {
-  padLeft: length => () =>
+  padLeft: length => stringSchema =>
     pipe(
       length,
       match({
         MaxLength: ({ maxLength }) =>
           typeof maxLength === 'number'
-            ? JS.makeStringSchema(undefined, maxLength)
-            : JS.makeStringSchema(),
+            ? JS.makeIntersectionSchema(
+                JS.makeStringSchema(undefined, maxLength),
+                stringSchema,
+              )
+            : JS.makeIntersectionSchema(JS.makeStringSchema(), stringSchema),
         ExactLength: ({ exactLength }) =>
           typeof exactLength === 'number'
-            ? JS.makeStringSchema(exactLength, exactLength)
-            : JS.makeStringSchema(),
+            ? JS.makeIntersectionSchema(
+                JS.makeStringSchema(exactLength, exactLength),
+                stringSchema,
+              )
+            : JS.makeIntersectionSchema(JS.makeStringSchema(), stringSchema),
       }),
     ),
-  padRight: length => () =>
+  padRight: length => stringSchema =>
     pipe(
       length,
       match({
         MaxLength: ({ maxLength }) =>
           typeof maxLength === 'number'
-            ? JS.makeStringSchema(undefined, maxLength)
-            : JS.makeStringSchema(),
+            ? JS.makeIntersectionSchema(
+                JS.makeStringSchema(undefined, maxLength),
+                stringSchema,
+              )
+            : JS.makeIntersectionSchema(JS.makeStringSchema(), stringSchema),
         ExactLength: ({ exactLength }) =>
           typeof exactLength === 'number'
-            ? JS.makeStringSchema(exactLength, exactLength)
-            : JS.makeStringSchema(),
+            ? JS.makeIntersectionSchema(
+                JS.makeStringSchema(exactLength, exactLength),
+                stringSchema,
+              )
+            : JS.makeIntersectionSchema(JS.makeStringSchema(), stringSchema),
       }),
     ),
 }

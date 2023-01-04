@@ -6,7 +6,7 @@ import { WithUnknownContainers2 } from '../definition'
  * @since 1.2.0
  * @category Instances
  */
-export const Printer: WithUnknownContainers2<JS.URI> = {
+export const JsonSchema: WithUnknownContainers2<JS.URI> = {
   UnknownArray: JS.makeArraySchema(JS.emptySchema),
   UnknownRecord: JS.makeRecordSchema(JS.emptySchema),
 }

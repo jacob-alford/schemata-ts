@@ -3,6 +3,7 @@
  * Models for JsonSchema as subsets of JSON Schema Draft 4, Draft 6, and Draft 7.
  *
  * @since 1.2.0
+ * @see https://json-schema.org/draft/2020-12/json-schema-validation.html
  */
 import { identity, pipe } from 'fp-ts/function'
 import { Const, make } from 'fp-ts/lib/Const'
@@ -29,7 +30,9 @@ export type JsonSchema =
   | JsonBoolean
   | JsonNull
   | JsonInteger
+  | JsonConst
   | JsonLiteral
+  | JsonExclude
   | JsonStruct
   | JsonRecord
   | JsonArray
@@ -83,30 +86,19 @@ class JsonBoolean {
 }
 
 /** @internal */
-type JsonLiteral =
-  | {
-      readonly type: 'string'
-      readonly const: string
-    }
-  | {
-      readonly type: 'number'
-      readonly const: number
-    }
-  | {
-      readonly type: 'boolean'
-      readonly const: boolean
-    }
-  | {
-      readonly type: 'null'
-      readonly const: null
-    }
+interface JsonConst {
+  readonly const: unknown
+}
+
+/** @internal */
+type JsonLiteral = (JsonBoolean | JsonNumber | JsonString | JsonNull) & JsonConst
 
 /** @internal */
 class JsonStruct {
   readonly type = 'object'
   constructor(
     readonly properties: Readonly<Record<string, JsonSchema>>,
-    readonly required: ReadonlyArray<string> = [],
+    readonly required: ReadonlyArray<string>,
   ) {}
 }
 
@@ -129,6 +121,12 @@ class JsonArray {
 /** @internal */
 class JsonNull {
   readonly type = 'null'
+  readonly const = null
+}
+
+/** @internal */
+class JsonExclude {
+  constructor(readonly not: JsonSchema) {}
 }
 
 /** @internal */
@@ -201,6 +199,16 @@ export const makeIntegerSchema = (
 export const booleanSchema: Const<JsonSchema, boolean> = make(new JsonBoolean())
 
 /**
+ * This is internal because it's not technically accurate to say: `forall value. const:
+ * value` is a valid json schema. However, internally, the only usage is with
+ * OptionFromExclude which is likely to stick with valid JSON types
+ *
+ * @internal
+ */
+export const makeConstSchema = <A>(value: A): Const<JsonSchema, A> =>
+  make({ const: value })
+
+/**
  * @since 1.2.0
  * @category Constructors
  */
@@ -261,7 +269,26 @@ export const nullSchema = make(new JsonNull())
 export const makeUnionSchema = <U extends ReadonlyArray<Const<JsonSchema, unknown>>>(
   ...members: U
 ): Const<JsonSchema, U[number] extends Const<JsonSchema, infer A> ? A : never> =>
-  make(new JsonUnion(members))
+  make(members.length > 1 ? new JsonUnion(members) : members[0])
+
+/**
+ * @since 1.2.0
+ * @category Constructors
+ */
+export const makeIntersectionSchema = <A, B>(
+  left: Const<JsonSchema, A>,
+  right: Const<JsonSchema, B>,
+): Const<JsonSchema, A & B> => make(new JsonIntersection([left, right]))
+
+/**
+ * @since 1.2.0
+ * @category Constructors
+ */
+export const makeExclusionSchema = <A, Z extends A>(
+  exclude: Z,
+  schema: Const<JsonSchema, A>,
+): Const<JsonSchema, Exclude<A, Z>> =>
+  make(new JsonIntersection([schema, new JsonExclude(makeConstSchema(exclude))]))
 
 /**
  * @since 1.2.0
@@ -307,7 +334,9 @@ declare module 'fp-ts/lib/HKT' {
 export const Schemable: Schemable2<URI> = {
   URI,
   literal: (...values) =>
-    pipe(values, RNEA.map(makeLiteralSchema), schemata => make(new JsonUnion(schemata))),
+    pipe(values, RNEA.map(makeLiteralSchema), schemata =>
+      make(schemata.length === 1 ? RNEA.head(schemata) : new JsonUnion(schemata)),
+    ),
   string: makeStringSchema(),
   number: makeNumberSchema(),
   boolean: booleanSchema,
@@ -325,8 +354,8 @@ export const Schemable: Schemable2<URI> = {
   intersect: right => left => make(new JsonIntersection([left, right])),
   sum: () => members =>
     make(
-      new JsonUnion(
-        pipe(
+      makeUnionSchema(
+        ...pipe(
           members as Readonly<Record<string, Const<JsonSchema, any>>>,
           RR.collect(Str.Ord)((_, a) => a),
         ),
