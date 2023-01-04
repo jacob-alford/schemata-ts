@@ -246,7 +246,6 @@ export const isJsonExclude = (u: JsonSchema): u is JsonExclude =>
   isJsonIntersection(u) &&
   (RNEA.head(u.allOf) instanceof JsonExclude || hasKey('not', RNEA.head(u.allOf))) &&
   u.allOf.length === 2 &&
-  // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
   isJsonConst((RNEA.head(u.allOf) as JsonExclude).not)
 
 /**
