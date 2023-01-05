@@ -39,7 +39,7 @@ export const typeOf = (x: unknown): string => (x === null ? 'null' : typeof x)
 export const witherS =
   <E>(sgErrors: Sg.Semigroup<E>) =>
   <In extends Record<string, any>, A>(
-    f: <K extends keyof In>(key: K, value: In[K]) => O.Option<E.Either<E, A>>,
+    f: <K extends keyof In>(key: K, value: In[K]) => E.Either<E, O.Option<A>>,
   ) =>
   (s: In): E.Either<E, { [K in keyof In]: A }> => {
     const errors: E[] = []
@@ -48,13 +48,19 @@ export const witherS =
     for (const key in s) {
       /* Ignores inherited properties */
       if (!hasOwn(s, key)) continue
+
       /* Perform effect */
       const result = f(key, s[key])
+
+      /* add any errors to accumulation */
+      if (E.isLeft(result)) {
+        errors.push(result.left)
+        continue
+      }
+
       /* none => skip */
-      if (O.isNone(result)) continue
-      /* Bail early if effect failed */
-      if (E.isLeft(result.value)) errors.push(result.value.left)
-      /* Otherwise, add result to output */ else out[key] = result.value.right
+      if (O.isNone(result.right)) continue
+      else out[key] = result.right.value
     }
     return RA.isNonEmpty(errors)
       ? E.left(pipe(errors, RNEA.concatAll(sgErrors)))

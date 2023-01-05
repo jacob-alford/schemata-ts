@@ -19,7 +19,7 @@ describe('traverseESO', () => {
       obj,
       witherS(RA.getMonoid())((_, value) => {
         tester(value)
-        return O.some(E.right(value))
+        return E.right(O.some(value))
       }),
     )
     expect(tester).toHaveBeenCalledTimes(1)
@@ -37,7 +37,7 @@ describe('traverseESO', () => {
       obj,
       witherS(RA.getMonoid())((_, value) => {
         tester(value)
-        return O.some(E.right(value))
+        return E.right(O.some(value))
       }),
     )
     expect(tester).toHaveBeenCalledTimes(1)
@@ -52,7 +52,7 @@ describe('traverseESO', () => {
     const result = pipe(
       obj,
       witherS(RA.getMonoid())((_, value) => {
-        return value === 2 ? O.none : O.some(E.right(value))
+        return value === 2 ? E.right(O.none) : E.right(O.some(value))
       }),
     )
     expect(result).toStrictEqual(E.right({ a: 1, c: 3 }))
@@ -68,7 +68,7 @@ describe('traverseESO', () => {
       obj,
       witherS(RA.getMonoid<string>())((_, value) => {
         tester(value)
-        return value >= 2 ? O.some(E.left(['fail'])) : O.some(E.right(value))
+        return value >= 2 ? E.left(['fail']) : E.right(O.some(value))
       }),
     )
     expect(result).toStrictEqual(E.left(['fail', 'fail']))
