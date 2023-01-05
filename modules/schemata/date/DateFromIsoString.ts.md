@@ -1,6 +1,6 @@
 ---
 title: schemata/date/DateFromIsoString.ts
-nav_order: 30
+nav_order: 32
 parent: Modules
 ---
 
@@ -97,7 +97,6 @@ Specification](https://tc39.es/ecma262/#sec-date-time-string-format).
 
 Notable features:
 
-- Requires `T` separator between date and time
 - Requires padded months, days, hours, minutes, and seconds
 - Can be configured to require a time, time and timezone offset (e.g. `Z` or `±05:00`) or
   neither (default is require both).

@@ -1,6 +1,6 @@
 ---
 title: SchemableExt.ts
-nav_order: 24
+nav_order: 26
 parent: Modules
 ---
 
@@ -33,6 +33,7 @@ Added in v1.0.0
 ```ts
 export interface SchemableExt<S>
   extends SchemableHKT2<S>,
+    WithAnnotateHKT2<S>,
     WithBrandHKT2<S>,
     WithCheckDigitHKT2<S>,
     WithDateHKT2<S>,
@@ -58,6 +59,7 @@ Added in v1.0.0
 ```ts
 export interface SchemableExt1<S extends URIS>
   extends Schemable1<S>,
+    WithAnnotate1<S>,
     WithBrand1<S>,
     WithCheckDigit1<S>,
     WithDate1<S>,
@@ -83,6 +85,7 @@ Added in v1.0.0
 ```ts
 export interface SchemableExt2<S extends URIS2>
   extends Schemable2<S>,
+    WithAnnotate2<S>,
     WithBrand2<S>,
     WithCheckDigit2<S>,
     WithDate2<S>,
@@ -108,6 +111,7 @@ Added in v1.0.0
 ```ts
 export interface SchemableExt2C<S extends URIS2>
   extends Schemable2C<S, unknown>,
+    WithAnnotate2C<S, unknown>,
     WithBrand2C<S, unknown>,
     WithCheckDigit2C<S, unknown>,
     WithDate2C<S, unknown>,

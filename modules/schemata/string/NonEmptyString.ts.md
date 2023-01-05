@@ -1,6 +1,6 @@
 ---
 title: schemata/string/NonEmptyString.ts
-nav_order: 59
+nav_order: 61
 parent: Modules
 ---
 

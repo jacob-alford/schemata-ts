@@ -1,6 +1,6 @@
 ---
 title: schemata/string/Jwt.ts
-nav_order: 57
+nav_order: 59
 parent: Modules
 ---
 

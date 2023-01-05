@@ -1,6 +1,6 @@
 ---
 title: schemata.ts
-nav_order: 26
+nav_order: 28
 parent: Modules
 ---
 
@@ -17,6 +17,7 @@ Added in v1.0.0
 <h2 class="text-delta">Table of contents</h2>
 
 - [utils](#utils)
+  - [Annotate](#annotate)
   - [Ascii](#ascii)
   - [Base64](#base64)
   - [Base64Url](#base64url)
@@ -73,6 +74,21 @@ Added in v1.0.0
 ---
 
 # utils
+
+## Annotate
+
+Schemable for annotating a JSON Schema. Interpretation using interpreters other than
+JsonSchema will not change the derivation.
+
+**Signature**
+
+```ts
+export declare const Annotate: (
+  params?: { title?: string | undefined; description?: string | undefined } | undefined
+) => <O, A>(schema: SchemaExt<O, A>) => SchemaExt<O, A>
+```
+
+Added in v1.2.0
 
 ## Ascii
 
@@ -241,7 +257,6 @@ String Specification](https://tc39.es/ecma262/#sec-date-time-string-format).
 
 Notable features:
 
-- Requires `T` separator between date and time
 - Requires padded months, days, hours, minutes, and seconds
 - Can be configured to require a time, time and timezone offset (e.g. `Z` or `±05:00`)
   or neither (default is require both).
