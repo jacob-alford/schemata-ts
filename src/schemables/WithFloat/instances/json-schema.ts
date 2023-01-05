@@ -19,6 +19,6 @@ import { WithFloat2 } from '../definition'
 export const JsonSchema: WithFloat2<JS.URI> = {
   float(params = {}) {
     const { min = -Number.MAX_VALUE, max = Number.MAX_VALUE } = params
-    return JS.makeNumberSchema(min, max)
+    return JS.makeNumberSchema({ minimum: min, maximum: max })
   },
 }

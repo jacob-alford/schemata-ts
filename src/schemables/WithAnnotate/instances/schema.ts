@@ -11,6 +11,6 @@ import * as SC from '../../../SchemaExt'
  * @category Combinators
  */
 export const Schema =
-  (title?: string, description?: string) =>
+  (params?: { title?: string; description?: string }) =>
   <O, A>(schema: SC.SchemaExt<O, A>): SC.SchemaExt<O, A> =>
-    SC.make(s => s.annotate(title, description)(schema(s)))
+    SC.make(s => s.annotate(params)(schema(s)))

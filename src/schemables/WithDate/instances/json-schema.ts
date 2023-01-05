@@ -6,13 +6,11 @@
 import * as JS from '../../../base/JsonSchemaBase'
 import { WithDate2 } from '../definition'
 
-const _ = undefined
-
 /**
  * @since 1.2.0
  * @category Instances
  */
 export const JsonSchema: WithDate2<JS.URI> = {
   date: JS.emptySchema,
-  dateFromString: JS.makeStringSchema(_, _, _, _, _, _, 'date'),
+  dateFromString: JS.makeStringSchema({ format: 'date' }),
 }

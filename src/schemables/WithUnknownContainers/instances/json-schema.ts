@@ -7,6 +7,6 @@ import { WithUnknownContainers2 } from '../definition'
  * @category Instances
  */
 export const JsonSchema: WithUnknownContainers2<JS.URI> = {
-  UnknownArray: JS.makeArraySchema(JS.emptySchema),
+  UnknownArray: JS.makeArraySchema()(JS.emptySchema),
   UnknownRecord: JS.makeRecordSchema(JS.emptySchema),
 }

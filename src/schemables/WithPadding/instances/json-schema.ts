@@ -20,18 +20,14 @@ export const JsonSchema: WithPadding2<JS.URI> = {
       match({
         MaxLength: ({ maxLength }) =>
           typeof maxLength === 'number'
-            ? JS.makeIntersectionSchema(
-                JS.makeStringSchema(undefined, maxLength),
-                stringSchema,
-              )
-            : JS.makeIntersectionSchema(JS.makeStringSchema(), stringSchema),
+            ? JS.makeIntersectionSchema(stringSchema)(JS.makeStringSchema({ maxLength }))
+            : JS.makeIntersectionSchema(stringSchema)(JS.makeStringSchema()),
         ExactLength: ({ exactLength }) =>
           typeof exactLength === 'number'
-            ? JS.makeIntersectionSchema(
-                JS.makeStringSchema(exactLength, exactLength),
-                stringSchema,
+            ? JS.makeIntersectionSchema(stringSchema)(
+                JS.makeStringSchema({ minLength: exactLength, maxLength: exactLength }),
               )
-            : JS.makeIntersectionSchema(JS.makeStringSchema(), stringSchema),
+            : JS.makeIntersectionSchema(stringSchema)(JS.makeStringSchema()),
       }),
     ),
   padRight: length => stringSchema =>
@@ -40,18 +36,14 @@ export const JsonSchema: WithPadding2<JS.URI> = {
       match({
         MaxLength: ({ maxLength }) =>
           typeof maxLength === 'number'
-            ? JS.makeIntersectionSchema(
-                JS.makeStringSchema(undefined, maxLength),
-                stringSchema,
-              )
-            : JS.makeIntersectionSchema(JS.makeStringSchema(), stringSchema),
+            ? JS.makeIntersectionSchema(stringSchema)(JS.makeStringSchema({ maxLength }))
+            : JS.makeIntersectionSchema(stringSchema)(JS.makeStringSchema()),
         ExactLength: ({ exactLength }) =>
           typeof exactLength === 'number'
-            ? JS.makeIntersectionSchema(
-                JS.makeStringSchema(exactLength, exactLength),
-                stringSchema,
+            ? JS.makeIntersectionSchema(stringSchema)(
+                JS.makeStringSchema({ minLength: exactLength, maxLength: exactLength }),
               )
-            : JS.makeIntersectionSchema(JS.makeStringSchema(), stringSchema),
+            : JS.makeIntersectionSchema(stringSchema)(JS.makeStringSchema()),
       }),
     ),
 }

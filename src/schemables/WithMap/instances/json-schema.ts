@@ -11,5 +11,5 @@ import { WithMap2 } from '../definition'
  * @category Instances
  */
 export const JsonSchema: WithMap2<JS.URI> = {
-  mapFromEntries: (_, jsK, jsA) => JS.makeArraySchema(JS.Schemable.tuple(jsK, jsA)),
+  mapFromEntries: (_, jsK, jsA) => JS.makeArraySchema()(JS.Schemable.tuple(jsK, jsA)),
 }

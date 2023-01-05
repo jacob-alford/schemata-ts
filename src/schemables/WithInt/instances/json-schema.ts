@@ -19,6 +19,6 @@ import { WithInt2 } from '../definition'
 export const JsonSchema: WithInt2<JS.URI> = {
   int: (params = {}) => {
     const { min = Number.MIN_SAFE_INTEGER, max = Number.MAX_SAFE_INTEGER } = params
-    return JS.makeIntegerSchema(min, max)
+    return JS.makeIntegerSchema({ minimum: min, maximum: max })
   },
 }

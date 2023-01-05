@@ -38,7 +38,7 @@ describe('JsonSchema', () => {
       expect(base.isJsonLiteral({ type: 'string', const: 'string' })).toBe(true)
     })
     test('isJsonArray', () => {
-      expect(base.isJsonArray(base.makeArraySchema(base.emptySchema))).toBe(true)
+      expect(base.isJsonArray(base.makeArraySchema()(base.emptySchema))).toBe(true)
       expect(base.isJsonArray({ type: 'array', items: {} })).toBe(true)
     })
     test('isJsonStruct', () => {
@@ -61,18 +61,10 @@ describe('JsonSchema', () => {
     })
     test('isJsonExclude', () => {
       expect(
-        base.isJsonExclude(base.makeExclusionSchema(5, base.makeNumberSchema())),
-      ).toBe(true)
-      expect(
         base.isJsonExclude({
-          allOf: [
-            {
-              not: {
-                const: 5,
-              },
-            },
-            { type: 'number' },
-          ],
+          not: {
+            const: 5,
+          },
         }),
       ).toBe(true)
     })
@@ -91,7 +83,7 @@ describe('JsonSchema', () => {
     test('isJsonIntersection', () => {
       expect(
         base.isJsonIntersection(
-          base.makeIntersectionSchema(base.makeStringSchema(), base.makeNumberSchema()),
+          base.makeIntersectionSchema(base.makeStringSchema())(base.makeNumberSchema()),
         ),
       ).toBe(true)
       expect(
