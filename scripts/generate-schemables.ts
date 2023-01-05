@@ -152,6 +152,7 @@ export type SchemableTypeclasses =
   | SchemableTypeclass<'Encoder', 'Enc', 'SchemableExt2', '1.0.0'>
   | SchemableTypeclass<'Arbitrary', 'Arb', 'SchemableExt1', '1.0.0'>
   | SchemableTypeclass<'Printer', 'P', 'SchemableExt2', '1.1.0'>
+  | SchemableTypeclass<'JsonSchema', 'JS', 'SchemableExt2', '1.2.0'>
 
 // #region Typeclass modules
 
@@ -359,6 +360,7 @@ const schemableTypeclasses: ReadonlyArray<SchemableTypeclasses> = [
   ['Encoder', 'Enc', 'SchemableExt2', '1.0.0', 'encoder'],
   ['Arbitrary', 'Arb', 'SchemableExt1', '1.0.0', 'arbitrary'],
   ['Printer', 'P', 'SchemableExt2', '1.1.0', 'printer'],
+  ['JsonSchema', 'JS', 'SchemableExt2', '1.2.0', 'json-schema'],
 ]
 
 const format: Build<void> = C => C.exec('yarn format')

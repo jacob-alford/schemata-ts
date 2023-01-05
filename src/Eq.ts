@@ -7,6 +7,7 @@
  */
 import * as Eq from './base/EqBase'
 import { SchemableExt1 } from './SchemableExt'
+import * as WithAnnotate from './schemables/WithAnnotate/instances/eq'
 import * as WithBrand from './schemables/WithBrand/instances/eq'
 import * as WithCheckDigit from './schemables/WithCheckDigit/instances/eq'
 import * as WithDate from './schemables/WithDate/instances/eq'
@@ -36,6 +37,7 @@ export type {
  */
 export const Schemable: SchemableExt1<Eq.URI> = {
   ...Eq.Schemable,
+  ...WithAnnotate.Eq,
   ...WithBrand.Eq,
   ...WithCheckDigit.Eq,
   ...WithDate.Eq,

@@ -13,7 +13,12 @@
  *   const digit = PB.characterClass(false, ['0', '9'])
  *
  *   const areaCode = pipe(
- *     pipe(PB.char('('), PB.then(PB.times(3)(digit)), PB.then(PB.char(')'))),
+ *     pipe(
+ *       PB.char('('),
+ *       PB.then(PB.times(3)(digit)),
+ *       PB.then(PB.char(')')),
+ *       PB.then(PB.maybe(PB.char(' '))),
+ *     ),
  *     PB.or(PB.times(3)(digit)),
  *     PB.subgroup,
  *   )
@@ -24,11 +29,16 @@
  *
  *   export const usPhoneNumber = pipe(
  *     areaCode,
- *     PB.then(PB.char('-')),
+ *     PB.then(pipe(PB.char('-'), PB.maybe)),
  *     PB.then(prefix),
  *     PB.then(PB.char('-')),
  *     PB.then(lineNumber),
  *   )
+ *
+ *   assert.equal(PB.regexFromPattern(usPhoneNumber).test('(123) 456-7890'), true)
+ *   assert.equal(PB.regexFromPattern(usPhoneNumber).test('(123)456-7890'), true)
+ *   assert.equal(PB.regexFromPattern(usPhoneNumber).test('123-456-7890'), true)
+ *   assert.equal(PB.regexFromPattern(usPhoneNumber).test('1234567890'), false)
  */
 import { pipe } from 'fp-ts/function'
 import * as O from 'fp-ts/Option'

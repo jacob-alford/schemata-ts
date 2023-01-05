@@ -218,28 +218,24 @@ export const boolean: Printer<boolean, boolean> = {
  * @category Primitives
  */
 export const UnknownArray: Printer<Array<unknown>, Array<unknown>> = {
-  domainToJson: input =>
-    pipe(
-      input,
-      RA.traverseWithIndex(printerValidation)((i, v) =>
-        pipe(
-          toJson(v),
-          E.mapLeft(err => new PE.ErrorAtIndex(i, err)),
-        ),
+  domainToJson: flow(
+    RA.traverseWithIndex(printerValidation)((i, v) =>
+      pipe(
+        toJson(v),
+        E.mapLeft(err => new PE.ErrorAtIndex(i, err)),
       ),
-      E.map(safeJsonArray),
     ),
-  codomainToJson: input =>
-    pipe(
-      input,
-      RA.traverseWithIndex(printerValidation)((i, v) =>
-        pipe(
-          toJson(v),
-          E.mapLeft(err => new PE.ErrorAtIndex(i, err)),
-        ),
+    E.map(safeJsonArray),
+  ),
+  codomainToJson: flow(
+    RA.traverseWithIndex(printerValidation)((i, v) =>
+      pipe(
+        toJson(v),
+        E.mapLeft(err => new PE.ErrorAtIndex(i, err)),
       ),
-      E.map(safeJsonArray),
     ),
+    E.map(safeJsonArray),
+  ),
 }
 
 /**
@@ -247,28 +243,24 @@ export const UnknownArray: Printer<Array<unknown>, Array<unknown>> = {
  * @category Primitives
  */
 export const UnknownRecord: Printer<Record<string, unknown>, Record<string, unknown>> = {
-  domainToJson: input =>
-    pipe(
-      input,
-      RR.traverseWithIndex(printerValidation)((key, v) =>
-        pipe(
-          toJson(v),
-          E.mapLeft(err => new PE.ErrorAtKey(key, err)),
-        ),
+  domainToJson: flow(
+    RR.traverseWithIndex(printerValidation)((key, v) =>
+      pipe(
+        toJson(v),
+        E.mapLeft(err => new PE.ErrorAtKey(key, err)),
       ),
-      E.map(safeJsonRecord),
     ),
-  codomainToJson: input =>
-    pipe(
-      input,
-      RR.traverseWithIndex(printerValidation)((key, v) =>
-        pipe(
-          toJson(v),
-          E.mapLeft(err => new PE.ErrorAtKey(key, err)),
-        ),
+    E.map(safeJsonRecord),
+  ),
+  codomainToJson: flow(
+    RR.traverseWithIndex(printerValidation)((key, v) =>
+      pipe(
+        toJson(v),
+        E.mapLeft(err => new PE.ErrorAtKey(key, err)),
       ),
-      E.map(safeJsonRecord),
     ),
+    E.map(safeJsonRecord),
+  ),
 }
 
 // -------------------------------------------------------------------------------------
@@ -318,11 +310,9 @@ export const struct = <P extends Record<string, Printer<any, any>>>(
     pipe(
       properties,
       witherS(PE.semigroupPrintingError)((key, printer) =>
-        O.some(
-          pipe(
-            printer.domainToJson(input[key]),
-            E.mapLeft((err): PE.PrintError => new PE.ErrorAtKey(key as string, err)),
-          ),
+        pipe(
+          printer.domainToJson(input[key]),
+          E.bimap((err): PE.PrintError => new PE.ErrorAtKey(key as string, err), O.some),
         ),
       ),
       E.map(safeJsonRecord),
@@ -331,11 +321,9 @@ export const struct = <P extends Record<string, Printer<any, any>>>(
     pipe(
       properties,
       witherS(PE.semigroupPrintingError)((key, printer) =>
-        O.some(
-          pipe(
-            printer.codomainToJson(input[key]),
-            E.mapLeft(err => new PE.ErrorAtKey(key as string, err)),
-          ),
+        pipe(
+          printer.codomainToJson(input[key]),
+          E.bimap(err => new PE.ErrorAtKey(key as string, err), O.some),
         ),
       ),
       E.map(safeJsonRecord),
@@ -359,7 +347,7 @@ export const partial = <P extends Record<string, Printer<any, any>>>(
         pipe(
           input[key],
           O.fromNullable,
-          O.map(value =>
+          O.traverse(E.Applicative)(value =>
             pipe(
               printer.domainToJson(value),
               E.mapLeft(err => new PE.ErrorAtKey(key as string, err)),
@@ -376,7 +364,7 @@ export const partial = <P extends Record<string, Printer<any, any>>>(
         pipe(
           input[key],
           O.fromNullable,
-          O.map(value =>
+          O.traverse(E.Applicative)(value =>
             pipe(
               printer.codomainToJson(value),
               E.mapLeft(err => new PE.ErrorAtKey(key as string, err)),
@@ -402,7 +390,6 @@ export const record = <E, A>(
         E.mapLeft(err => new PE.ErrorAtKey(k, err)),
       ),
     ),
-
     E.map(safeJsonRecord),
   ),
   codomainToJson: flow(

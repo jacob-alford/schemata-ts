@@ -42,13 +42,9 @@ yarn add schemata-ts
 npm install schemata-ts
 ```
 
-## Codec
+## Codec and Arbitrary
 
 A codec is a typeclass that contains the methods of `Decoder`, `Encoder`, `JsonSerializer`, `JsonDeserializer`, and `Guard`. Decoder and encoder are lossless when composed together. This means that for all domain types for which an encoder encodes to, a decoder will return a valid `E.Right` value.
-
-Likewise, `JsonSerializer` and `JsonDeserializer` are lossless when composed together. Certain data types in Javascript like `NaN`, `undefined`, `Infinity`, and others are not part of the JSON specification, and `JSON.stringify` will turn these values into something different. This means that if you stringify these types and attempt to parse, you will get a different object than you originally started with. Additionally, JSON cannot stringify `bigint`, and cannot contain circular references. Under these circumstances `JSON.stringify` may throw an error.
-
-`JsonSerializer` and `JsonDeserializer` are typeclasses included in a Codec which are lossless when composed together. So anything that successfully stringifies using `JsonSerializer` will successfully parse with `JsonDeserializer` and be equivalent objects. This is useful to avoid bugs when using JSON strings for storing data. Additionally, `JsonDeserializer` will decode the Json string into a domain type for immediate use in your program.
 
 ### User Document Example
 
@@ -140,6 +136,94 @@ assert.deepStrictEqual(
 )
 ```
 
+## Json Serializer and Deserializer
+
+Like encoder and decoder, `JsonSerializer` and `JsonDeserializer` are lossless when composed together. Certain data types in Javascript like `NaN`, `undefined`, `Infinity`, and others are not part of the JSON specification, and `JSON.stringify` will turn these values into something different (or omit them). This means that if you stringify these types and attempt to parse, you will get a different object than you originally started with. Additionally, JSON cannot stringify `bigint`, and cannot contain circular references. Under these circumstances `JSON.stringify` will throw an error.
+
+Anything that successfully stringifies using `JsonSerializer` will successfully parse with `JsonDeserializer` and will be equivalent objects. This is useful to avoid bugs when using JSON strings for storing data. Additionally, `JsonDeserializer` will decode the Json string into a domain type for immediate use in your program.
+
+## Deriving JSON Schema
+
+Schemata-ts comes with its own implementation of [JSON-Schema](https://json-schema.org/) and is a validation standard that can be used to validate artifacts in many other languages and frameworks. Schemata-ts's implementation is compatible with JSON Schema Draft 4, Draft 6, Draft 7, Draft 2019-09, and has partial support for 2020-12. _Note_: string `format` (like regex, contentType, or mediaType) is only available starting with Draft 6, and tuples are not compatible with Draft 2020-12.
+
+### Customer JSON Schema Example
+
+This is a live example generating a JSON Schema in `src/base/JsonSchemaBase.ts`
+
+```ts
+import * as JS from 'schemata-ts/base/JsonSchemaBase'
+import * as S from 'schemata-ts/schemata'
+import { getJsonSchema } from 'schemata-ts/JsonSchema'
+
+const schema = S.Struct({
+  id: S.Natural,
+  jwt: S.Jwt,
+  tag: S.Literal('Customer'),
+})
+
+const jsonSchema = getJsonSchema(schema)
+
+assert.deepStrictEqual(JS.stripIdentity(jsonSchema), {
+  type: 'object',
+  required: ['id', 'jwt', 'tag'],
+  properties: {
+    id: { type: 'integer', minimum: 0, maximum: 9007199254740991 },
+    jwt: {
+      type: 'string',
+      description: 'Jwt',
+      pattern:
+        '^(([A-Za-z0-9_\\x2d]*)\\.([A-Za-z0-9_\\x2d]*)(\\.([A-Za-z0-9_\\x2d]*)){0,1})$',
+    },
+    tag: { type: 'string', const: 'Customer' },
+  },
+})
+```
+
+A note on `JS.stripIdentity` in the above example: internally, JSON Schema is represented as a union of Typescript classes. This is handy when inspecting the schema because the name of the schema is shown next to its properties. Because this prevents equality comparison, schemata-ts exposes a method `stripIdentity` to remove the object's class identity. _Caution_: this method stringifies and parses the schema and may throw if the schema itself contains circularity.
+
+## Pattern Builder
+
+Schemata-ts comes with powerful regex combinators that are used to construct regex from comprehensible atoms. The `Pattern` schema allows extension of a string schema to a subset of strings defined by a pattern. Decoders and Guards guarantee that a string conforms to the specified pattern, Arbitrary generates strings that follow the pattern, and Json Schema generates string schemata that lists the pattern as a property.
+
+### US Phone Number Example
+
+This is a live example validating US Phone numbers found in `src/PatternBuilder.ts`
+
+```ts
+import * as PB from 'schemata-ts/PatternBuilder'
+import { pipe } from 'fp-ts/function'
+
+const digit = PB.characterClass(false, ['0', '9'])
+
+const areaCode = pipe(
+  pipe(
+    PB.char('('),
+    PB.then(PB.times(3)(digit)),
+    PB.then(PB.char(')')),
+    PB.then(PB.maybe(PB.char(' '))),
+  ),
+  PB.or(PB.times(3)(digit)),
+  PB.subgroup,
+)
+
+const prefix = PB.times(3)(digit)
+
+const lineNumber = PB.times(4)(digit)
+
+export const usPhoneNumber = pipe(
+  areaCode,
+  PB.then(pipe(PB.char('-'), PB.maybe)),
+  PB.then(prefix),
+  PB.then(PB.char('-')),
+  PB.then(lineNumber),
+)
+
+assert.equal(PB.regexFromPattern(usPhoneNumber).test('(123) 456-7890'), true)
+assert.equal(PB.regexFromPattern(usPhoneNumber).test('(123)456-7890'), true)
+assert.equal(PB.regexFromPattern(usPhoneNumber).test('123-456-7890'), true)
+assert.equal(PB.regexFromPattern(usPhoneNumber).test('1234567890'), false)
+```
+
 ## Documentation
 
 - [schemata-ts](https://jacob-alford.github.io/schemata-ts/docs/modules)
@@ -203,7 +287,7 @@ Additionally, there are more unlisted base schemable schemata also exported from
 schemata-ts is planned to support the following features in various 1.x and 2.x versions in the near future:
 
 - ~~JsonSerializer and JsonDeserializer: encoding / decoding from Json strings~~ Added in 1.1.0
-- Json Schema: generating JSON-Schema from schemata ([#137](https://github.com/jacob-alford/schemata-ts/issues/137))
+- ~~Json Schema: generating JSON-Schema from schemata ([#137](https://github.com/jacob-alford/schemata-ts/issues/137))~~ Added in 1.2.0
 - Optic Schema: generating optics from schemata ([#134](https://github.com/jacob-alford/schemata-ts/issues/134))
 - Mapped Structs: conversions between struct types, i.e. `snake-case` keys to `camelCase` keys
 - More generic schemata: (SetFromArray, ~~NonEmptyArray~~ Added in 1.1.0)

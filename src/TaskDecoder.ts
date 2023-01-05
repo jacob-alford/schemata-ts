@@ -7,6 +7,7 @@
  */
 import * as TD from './base/TaskDecoderBase'
 import { SchemableExt2C } from './SchemableExt'
+import * as WithAnnotate from './schemables/WithAnnotate/instances/task-decoder'
 import * as WithBrand from './schemables/WithBrand/instances/task-decoder'
 import * as WithCheckDigit from './schemables/WithCheckDigit/instances/task-decoder'
 import * as WithDate from './schemables/WithDate/instances/task-decoder'
@@ -36,6 +37,7 @@ export type {
  */
 export const Schemable: SchemableExt2C<TD.URI> = {
   ...TD.Schemable,
+  ...WithAnnotate.TaskDecoder,
   ...WithBrand.TaskDecoder,
   ...WithCheckDigit.TaskDecoder,
   ...WithDate.TaskDecoder,

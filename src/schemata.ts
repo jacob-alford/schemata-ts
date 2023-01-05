@@ -25,6 +25,14 @@ export * from './base/SchemaBase'
 
 export {
   /**
+   * Schemable for annotating a JSON Schema. Interpretation using interpreters other than
+   * JsonSchema will not change the derivation.
+   *
+   * @since 1.2.0
+   */ Schema as Annotate,
+} from './schemables/WithAnnotate/instances/schema'
+export {
+  /**
    * Schemable for constructing a branded newtype
    *
    * @since 1.0.0
@@ -177,7 +185,6 @@ export {
    *
    * Notable features:
    *
-   * - Requires `T` separator between date and time
    * - Requires padded months, days, hours, minutes, and seconds
    * - Can be configured to require a time, time and timezone offset (e.g. `Z` or `±05:00`)
    *   or neither (default is require both).

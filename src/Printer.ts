@@ -7,6 +7,7 @@
  */
 import * as P from './base/PrinterBase'
 import { SchemableExt2 } from './SchemableExt'
+import * as WithAnnotate from './schemables/WithAnnotate/instances/printer'
 import * as WithBrand from './schemables/WithBrand/instances/printer'
 import * as WithCheckDigit from './schemables/WithCheckDigit/instances/printer'
 import * as WithDate from './schemables/WithDate/instances/printer'
@@ -36,6 +37,7 @@ export type {
  */
 export const Schemable: SchemableExt2<P.URI> = {
   ...P.Schemable,
+  ...WithAnnotate.Printer,
   ...WithBrand.Printer,
   ...WithCheckDigit.Printer,
   ...WithDate.Printer,
