@@ -167,8 +167,7 @@ describe('JsonSchema', () => {
         }),
       }),
     )
-    const jsonSchema = getJsonSchema(testSchema)
-    const testValue = JSON.parse(JSON.stringify(jsonSchema)) as any
+    const testValue = base.stripIdentity(getJsonSchema(testSchema)) as any
     test('struct', () => {
       expect(testValue.type).toBe('object')
       expect(testValue.required).toStrictEqual([
@@ -469,7 +468,7 @@ describe('JsonSchema', () => {
         rec: S.Record(S.CreditCard),
         arr: S.Array(S.Json.jsonString),
 
-        tup: S.Tuple(S.Number),
+        tup: S.Tuple(S.Number, S.Number),
         sum: S.Sum('type')({
           a: S.Struct({ type: S.Literal('a'), a: S.Boolean }),
           b: S.Struct({ type: S.Literal('b'), b: S.Lazy('Sum[b].b', () => S.Natural) }),

@@ -2,6 +2,34 @@
  * Models for JsonSchema as subsets of JSON Schema Draft 4, Draft 6, and Draft 7.
  *
  * @since 1.2.0
+ * @example
+ *   import * as JS from 'schemata-ts/base/JsonSchemaBase'
+ *   import * as S from 'schemata-ts/schemata'
+ *   import { getJsonSchema } from 'schemata-ts/JsonSchema'
+ *
+ *   const schema = S.Struct({
+ *     id: S.Natural,
+ *     jwt: S.Jwt,
+ *     tag: S.Literal('Customer'),
+ *   })
+ *
+ *   const jsonSchema = getJsonSchema(schema)
+ *
+ *   assert.deepStrictEqual(JS.stripIdentity(jsonSchema), {
+ *     type: 'object',
+ *     required: ['id', 'jwt', 'tag'],
+ *     properties: {
+ *       id: { type: 'integer', minimum: 0, maximum: 9007199254740991 },
+ *       jwt: {
+ *         type: 'string',
+ *         description: 'Jwt',
+ *         pattern:
+ *           '^(([A-Za-z0-9_\\x2d]*)\\.([A-Za-z0-9_\\x2d]*)(\\.([A-Za-z0-9_\\x2d]*)){0,1})$',
+ *       },
+ *       tag: { type: 'string', const: 'Customer' },
+ *     },
+ *   })
+ *
  * @see https://json-schema.org/draft/2020-12/json-schema-validation.html
  */
 import { Const, make } from 'fp-ts/Const'
@@ -431,6 +459,19 @@ export const annotate: (params?: {
           ...(title === undefined ? {} : { title }),
           ...(description === undefined ? {} : { description }),
         })
+
+// -------------------------------------------------------------------------------------
+// Destructors
+// -------------------------------------------------------------------------------------
+
+/**
+ * Removes the internal class identities from a `JsonSchema`
+ *
+ * @since 1.2.0
+ * @category Destructors
+ */
+export const stripIdentity: <A>(schema: Const<JsonSchema, A>) => JsonSchema = schema =>
+  JSON.parse(JSON.stringify(schema))
 
 // -------------------------------------------------------------------------------------
 // instances
