@@ -428,8 +428,8 @@ export const makeUnionSchema = <U extends ReadonlyArray<Const<JsonSchema, unknow
  * @category Constructors
  */
 export const makeIntersectionSchema =
-  <A, B>(right: Const<JsonSchema, B>) =>
-  (left: Const<JsonSchema, A>): Const<JsonSchema, A & B> =>
+  <B>(right: Const<JsonSchema, B>) =>
+  <A>(left: Const<JsonSchema, A>): Const<JsonSchema, A & B> =>
     make(new JsonIntersection([left, right]))
 
 /**
