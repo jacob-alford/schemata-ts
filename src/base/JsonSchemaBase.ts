@@ -4,8 +4,8 @@
  * @since 1.2.0
  * @see https://json-schema.org/draft/2020-12/json-schema-validation.html
  */
+import { Const, make } from 'fp-ts/Const'
 import { identity, pipe } from 'fp-ts/function'
-import { Const, make } from 'fp-ts/lib/Const'
 import * as RNEA from 'fp-ts/ReadonlyNonEmptyArray'
 import * as RR from 'fp-ts/ReadonlyRecord'
 import * as Str from 'fp-ts/string'
