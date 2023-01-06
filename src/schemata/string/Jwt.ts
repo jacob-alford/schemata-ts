@@ -9,7 +9,6 @@ import * as PB from 'schemata-ts/PatternBuilder'
 import { make, SchemaExt } from 'schemata-ts/SchemaExt'
 import { base64Url } from 'schemata-ts/schemata/string/Base64Url'
 
-/** @internal */
 interface JwtBrand {
   readonly Jwt: unique symbol
 }

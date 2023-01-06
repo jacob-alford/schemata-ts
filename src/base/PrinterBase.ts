@@ -15,22 +15,18 @@ import { typeOf, witherS } from 'schemata-ts/internal/util'
 import * as PE from 'schemata-ts/PrintError'
 import { WithRefine2 } from 'schemata-ts/schemables/WithRefine/definition'
 
-/** @internal */
 interface JsonStringBrand {
   readonly JsonString: unique symbol
 }
 
-/** @internal */
 interface SafeNumberBrand {
   readonly SafeNumber: unique symbol
 }
 
-/** @internal */
 interface SafeRecordBrand {
   readonly SafeRecord: unique symbol
 }
 
-/** @internal */
 interface SafeArrayBrand {
   readonly SafeArray: unique symbol
 }

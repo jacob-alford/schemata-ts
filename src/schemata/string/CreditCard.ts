@@ -12,7 +12,6 @@ import { luhn } from 'schemata-ts/internal/algorithms'
 import * as PB from 'schemata-ts/PatternBuilder'
 import { make } from 'schemata-ts/SchemaExt'
 
-/** @internal */
 interface CreditCardBrand {
   readonly CreditCard: unique symbol
 }

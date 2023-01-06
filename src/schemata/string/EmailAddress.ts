@@ -12,7 +12,6 @@ import { Branded } from 'io-ts'
 import * as PB from 'schemata-ts/PatternBuilder'
 import { make, SchemaExt } from 'schemata-ts/SchemaExt'
 
-/** @internal */
 interface EmailAddressBrand {
   readonly EmailAddress: unique symbol
 }

@@ -10,7 +10,6 @@ import { Branded } from 'io-ts'
 import * as PB from 'schemata-ts/PatternBuilder'
 import { make, SchemaExt } from 'schemata-ts/SchemaExt'
 
-/** @internal */
 interface Base64Brand {
   readonly Base64: unique symbol
 }

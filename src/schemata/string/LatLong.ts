@@ -8,10 +8,6 @@ import { Branded } from 'io-ts'
 import * as PB from 'schemata-ts/PatternBuilder'
 import { make, SchemaExt } from 'schemata-ts/SchemaExt'
 
-/**
- * @since 1.0.0
- * @internal
- */
 interface LatLongBrand {
   readonly LatLong: unique symbol
 }

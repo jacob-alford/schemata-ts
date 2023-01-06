@@ -30,10 +30,14 @@ export const copyPackageJson: Build<void> = C =>
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
       const clone = Object.assign({}, json as any, {
         main: './index.js',
-        module: './_esm/index.js',
+        module: './_esm/index.mjs',
         exports: {
-          '.': { import: './_esm/index.js', require: './index.js' },
-          './*': { import: './_esm/*.js', require: './*.js' },
+          '.': {
+            import: './_esm/index.mjs',
+            require: './index.js',
+            types: './index.d.ts',
+          },
+          './*': { import: './_esm/*.mjs', require: './*.js', types: './*.d.ts' },
         },
         publishConfig: {
           access: 'public',
@@ -83,8 +87,7 @@ export const rewriteSourceMap: (
               })
             : v,
         ),
-        J.stringify,
-        E.mapLeft(E.toError),
+        E.tryCatchK(clone => JSON.stringify(clone, null, 2), E.toError),
       )
     }),
   )
@@ -106,16 +109,13 @@ export const copyBuildFiles: Build<void> = C =>
 
     /* Copy build/esm to dist/_esm */
     TE.chain(() => C.mkdir('./dist/_esm')),
-    TE.chain(() => C.exec('cp -r ./build/esm/* ./dist/_esm')),
+    TE.chain(() => C.exec('cp -r ./build/mjs/* ./dist/_esm')),
 
     /* Copy build/cjs to dist */
     TE.chain(() => C.exec('cp -r ./build/cjs/* ./dist')),
 
     /* Copy types to dist */
     TE.chain(() => C.exec('cp -r ./build/dts/* ./dist')),
-
-    /* Copy docs to dist/docs */
-    TE.chain(() => C.exec('cp -r ./docs ./dist/docs')),
   )
 
 export const overwriteSourceMaps: Build<void> = C =>

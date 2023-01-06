@@ -13,7 +13,6 @@ import { pipe } from 'fp-ts/function'
 import { Branded } from 'io-ts'
 import { make, SchemaExt } from 'schemata-ts/SchemaExt'
 
-/** @internal */
 interface NonPositiveIntBrand {
   readonly NonPositiveInt: unique symbol
 }
