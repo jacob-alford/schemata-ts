@@ -4,9 +4,8 @@
  * @since 1.0.0
  */
 import * as TD from 'io-ts/TaskDecoder'
-
-import { WithDate2C } from '../definition'
-import { Decoder } from './decoder'
+import { WithDate2C } from 'schemata-ts/schemables/WithDate/definition'
+import { Decoder } from 'schemata-ts/schemables/WithDate/instances/decoder'
 
 /**
  * @since 1.0.0

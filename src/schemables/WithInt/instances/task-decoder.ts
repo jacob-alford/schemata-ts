@@ -11,9 +11,8 @@
  */
 import { pipe } from 'fp-ts/function'
 import * as TD from 'io-ts/TaskDecoder'
-
-import { WithInt2C } from '../definition'
-import { isInt } from '../utils'
+import { WithInt2C } from 'schemata-ts/schemables/WithInt/definition'
+import { isInt } from 'schemata-ts/schemables/WithInt/utils'
 
 /**
  * @since 1.0.0

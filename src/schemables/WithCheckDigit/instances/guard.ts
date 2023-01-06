@@ -4,10 +4,12 @@
  * @since 1.0.0
  */
 import { Branded } from 'io-ts'
-
-import * as G from '../../../base/GuardBase'
-import { CheckDigitVerified, WithCheckDigit1 } from '../definition'
-import { locationToIndex } from '../utils'
+import * as G from 'schemata-ts/base/GuardBase'
+import {
+  CheckDigitVerified,
+  WithCheckDigit1,
+} from 'schemata-ts/schemables/WithCheckDigit/definition'
+import { locationToIndex } from 'schemata-ts/schemables/WithCheckDigit/utils'
 
 /**
  * @since 1.0.0

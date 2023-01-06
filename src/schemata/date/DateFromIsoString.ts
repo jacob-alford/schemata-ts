@@ -18,11 +18,10 @@
  * @since 1.0.0
  */
 import { pipe } from 'fp-ts/function'
-
-import { matchW } from '../../internal/match'
-import * as PB from '../../PatternBuilder'
-import { Guard } from '../../schemables/WithDate/instances/guard'
-import { make, SchemaExt } from '../../SchemaExt'
+import { matchW } from 'schemata-ts/internal/match'
+import * as PB from 'schemata-ts/PatternBuilder'
+import { Guard } from 'schemata-ts/schemables/WithDate/instances/guard'
+import { make, SchemaExt } from 'schemata-ts/SchemaExt'
 
 /**
  * E.g. `2022`

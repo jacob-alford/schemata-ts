@@ -3,9 +3,9 @@
  *
  * @since 1.0.0
  */
-import * as G from '../../../base/GuardBase'
-import { WithPattern1 } from '../definition'
-import { pattern } from '../utils'
+import * as G from 'schemata-ts/base/GuardBase'
+import { WithPattern1 } from 'schemata-ts/schemables/WithPattern/definition'
+import { pattern } from 'schemata-ts/schemables/WithPattern/utils'
 
 /**
  * @since 1.0.0

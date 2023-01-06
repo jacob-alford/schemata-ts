@@ -4,9 +4,8 @@
  * @since 1.2.0
  */
 import { identity } from 'fp-ts/function'
-
-import * as JS from '../../../base/JsonSchemaBase'
-import { WithInvariant2 } from '../definition'
+import * as JS from 'schemata-ts/base/JsonSchemaBase'
+import { WithInvariant2 } from 'schemata-ts/schemables/WithInvariant/definition'
 
 /**
  * @since 1.2.0

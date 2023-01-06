@@ -5,9 +5,8 @@
  * @since 1.2.0
  */
 import { constant, identity } from 'fp-ts/function'
-
-import * as Enc from '../../../base/EncoderBase'
-import { WithAnnotate2 } from '../definition'
+import * as Enc from 'schemata-ts/base/EncoderBase'
+import { WithAnnotate2 } from 'schemata-ts/schemables/WithAnnotate/definition'
 
 /**
  * @since 1.2.0

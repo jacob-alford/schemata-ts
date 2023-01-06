@@ -5,8 +5,7 @@
  */
 import * as Eq_ from 'fp-ts/Eq'
 import { identity } from 'fp-ts/function'
-
-import { WithPadding1 } from '../definition'
+import { WithPadding1 } from 'schemata-ts/schemables/WithPadding/definition'
 
 /**
  * @since 1.0.0

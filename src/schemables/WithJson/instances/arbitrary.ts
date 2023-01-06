@@ -4,10 +4,9 @@
  * @since 1.1.0
  */
 import type { Arbitrary as Arbitrary_ } from 'fast-check'
-
-import * as Arb from '../../../base/ArbitraryBase'
-import { JsonString, SafeJson } from '../../../base/PrinterBase'
-import { WithJson1 } from '../definition'
+import * as Arb from 'schemata-ts/base/ArbitraryBase'
+import { JsonString, SafeJson } from 'schemata-ts/base/PrinterBase'
+import { WithJson1 } from 'schemata-ts/schemables/WithJson/definition'
 
 /**
  * @since 1.1.0

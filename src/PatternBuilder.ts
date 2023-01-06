@@ -44,8 +44,7 @@ import { pipe } from 'fp-ts/function'
 import * as O from 'fp-ts/Option'
 import * as RA from 'fp-ts/ReadonlyArray'
 import * as RNEA from 'fp-ts/ReadonlyNonEmptyArray'
-
-import { matchOnW, matchW } from './internal/match'
+import { matchOnW, matchW } from 'schemata-ts/internal/match'
 
 // Breakdown of RegExp from https://262.ecma-international.org/5.1/#sec-15.10
 // Slightly adapted

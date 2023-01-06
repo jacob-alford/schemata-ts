@@ -5,9 +5,8 @@
  */
 import * as E from 'fp-ts/Either'
 import { flow } from 'fp-ts/function'
-
-import * as D from '../../../base/DecoderBase'
-import { WithInvariant2C } from '../definition'
+import * as D from 'schemata-ts/base/DecoderBase'
+import { WithInvariant2C } from 'schemata-ts/schemables/WithInvariant/definition'
 
 /**
  * @since 1.0.0

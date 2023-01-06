@@ -4,8 +4,7 @@
  * @since 1.0.0
  */
 import * as Enc from 'io-ts/Encoder'
-
-import { WithUnknownContainers2 } from '../definition'
+import { WithUnknownContainers2 } from 'schemata-ts/schemables/WithUnknownContainers/definition'
 
 /**
  * @since 1.0.0

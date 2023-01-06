@@ -87,12 +87,12 @@
  *     E.right(testUsers),
  *   )
  */
-import { Decoder, getDecoder } from './Decoder'
-import { Encoder, getEncoder } from './Encoder'
-import { getGuard, Guard } from './Guard'
-import { getJsonDeserializer, JsonDeserializer } from './JsonDeserializer'
-import { getJsonSerializer, JsonSerializer } from './JsonSerializer'
-import { SchemaExt } from './SchemaExt'
+import { Decoder, getDecoder } from 'schemata-ts/Decoder'
+import { Encoder, getEncoder } from 'schemata-ts/Encoder'
+import { getGuard, Guard } from 'schemata-ts/Guard'
+import { getJsonDeserializer, JsonDeserializer } from 'schemata-ts/JsonDeserializer'
+import { getJsonSerializer, JsonSerializer } from 'schemata-ts/JsonSerializer'
+import { SchemaExt } from 'schemata-ts/SchemaExt'
 
 /**
  * @since 1.0.1

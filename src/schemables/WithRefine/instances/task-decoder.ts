@@ -10,4 +10,4 @@ export {
    * @category Instances
    */
   WithRefine as TaskDecoder,
-} from '../../../base/TaskDecoderBase'
+} from 'schemata-ts/base/TaskDecoderBase'

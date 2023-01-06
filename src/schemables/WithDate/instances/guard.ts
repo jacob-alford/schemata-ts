@@ -4,9 +4,8 @@
  * @since 1.0.0
  */
 import * as G from 'io-ts/Guard'
-
-import { WithDate1 } from '../definition'
-import { isSafeDate } from '../utils'
+import { WithDate1 } from 'schemata-ts/schemables/WithDate/definition'
+import { isSafeDate } from 'schemata-ts/schemables/WithDate/utils'
 
 /**
  * @since 1.0.0

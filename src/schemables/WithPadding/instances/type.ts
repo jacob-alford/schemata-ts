@@ -4,9 +4,8 @@
  * @since 1.0.0
  */
 import * as t from 'io-ts/Type'
-
-import { WithPadding1 } from '../definition'
-import { foldUnion, match } from '../utils'
+import { WithPadding1 } from 'schemata-ts/schemables/WithPadding/definition'
+import { foldUnion, match } from 'schemata-ts/schemables/WithPadding/utils'
 
 /**
  * @since 1.0.0

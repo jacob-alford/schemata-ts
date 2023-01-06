@@ -38,9 +38,8 @@ import * as RNEA from 'fp-ts/ReadonlyNonEmptyArray'
 import * as RR from 'fp-ts/ReadonlyRecord'
 import * as Str from 'fp-ts/string'
 import { memoize } from 'io-ts/Schemable'
-
-import { Int } from '../schemables/WithInt/definition'
-import { Schemable2 } from './SchemableBase'
+import { Schemable2 } from 'schemata-ts/base/SchemableBase'
+import { Int } from 'schemata-ts/schemables/WithInt/definition'
 
 // -------------------------------------------------------------------------------------
 // Model

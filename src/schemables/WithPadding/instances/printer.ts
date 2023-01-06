@@ -3,9 +3,9 @@
  *
  * @since 1.1.0
  */
-import * as P from '../../../base/PrinterBase'
-import { WithPadding2 } from '../definition'
-import { foldUnion, match } from '../utils'
+import * as P from 'schemata-ts/base/PrinterBase'
+import { WithPadding2 } from 'schemata-ts/schemables/WithPadding/definition'
+import { foldUnion, match } from 'schemata-ts/schemables/WithPadding/utils'
 
 /**
  * @since 1.1.0

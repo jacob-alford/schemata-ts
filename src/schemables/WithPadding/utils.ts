@@ -3,7 +3,7 @@
  *
  * @since 1.0.0
  */
-import { matchOnW } from '../../internal/match'
+import { matchOnW } from 'schemata-ts/internal/match'
 
 /** @internal */
 export const match = matchOnW('by')

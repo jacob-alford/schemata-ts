@@ -6,10 +6,15 @@
 import * as E from 'fp-ts/Either'
 import { pipe } from 'fp-ts/function'
 import { Branded } from 'io-ts'
-
-import * as D from '../../../base/DecoderBase'
-import { CheckDigitVerified, WithCheckDigit2C } from '../definition'
-import { locationToIndex, replaceCharAt } from '../utils'
+import * as D from 'schemata-ts/base/DecoderBase'
+import {
+  CheckDigitVerified,
+  WithCheckDigit2C,
+} from 'schemata-ts/schemables/WithCheckDigit/definition'
+import {
+  locationToIndex,
+  replaceCharAt,
+} from 'schemata-ts/schemables/WithCheckDigit/utils'
 
 /**
  * @since 1.0.0

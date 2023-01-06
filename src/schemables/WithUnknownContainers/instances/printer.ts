@@ -1,6 +1,6 @@
 /** @since 1.1.0 */
-import * as P from '../../../base/PrinterBase'
-import { WithUnknownContainers2 } from '../definition'
+import * as P from 'schemata-ts/base/PrinterBase'
+import { WithUnknownContainers2 } from 'schemata-ts/schemables/WithUnknownContainers/definition'
 
 /**
  * @since 1.1.0

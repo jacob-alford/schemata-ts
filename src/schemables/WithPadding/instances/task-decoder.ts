@@ -4,9 +4,8 @@
  * @since 1.0.0
  */
 import * as TD from 'io-ts/TaskDecoder'
-
-import { WithPadding2C } from '../definition'
-import { foldUnion, match } from '../utils'
+import { WithPadding2C } from 'schemata-ts/schemables/WithPadding/definition'
+import { foldUnion, match } from 'schemata-ts/schemables/WithPadding/utils'
 
 /**
  * @since 1.0.0

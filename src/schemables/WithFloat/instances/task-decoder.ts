@@ -11,9 +11,8 @@
  */
 import { pipe } from 'fp-ts/function'
 import * as TD from 'io-ts/TaskDecoder'
-
-import { WithFloat2C } from '../definition'
-import { isFloat } from '../utils'
+import { WithFloat2C } from 'schemata-ts/schemables/WithFloat/definition'
+import { isFloat } from 'schemata-ts/schemables/WithFloat/utils'
 
 /**
  * @since 1.0.0

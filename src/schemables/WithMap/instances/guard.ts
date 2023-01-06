@@ -8,8 +8,7 @@ import { pipe } from 'fp-ts/function'
 import * as Ord from 'fp-ts/Ord'
 import * as RM from 'fp-ts/ReadonlyMap'
 import * as G from 'io-ts/Guard'
-
-import { WithMap1 } from '../definition'
+import { WithMap1 } from 'schemata-ts/schemables/WithMap/definition'
 
 /**
  * @since 1.0.0

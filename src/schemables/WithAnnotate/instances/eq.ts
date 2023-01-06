@@ -6,8 +6,7 @@
  */
 import * as Eq_ from 'fp-ts/Eq'
 import { constant, identity } from 'fp-ts/function'
-
-import { WithAnnotate1 } from '../definition'
+import { WithAnnotate1 } from 'schemata-ts/schemables/WithAnnotate/definition'
 
 /**
  * @since 1.2.0

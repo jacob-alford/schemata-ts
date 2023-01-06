@@ -78,13 +78,12 @@ import { unsafeCoerce } from 'fp-ts/function'
 import { HKT2, Kind, Kind2, URIS, URIS2 } from 'fp-ts/HKT'
 import { interpreter as interpreter_ } from 'io-ts/Schema'
 import { memoize } from 'io-ts/Schemable'
-
 import {
   SchemableExt,
   SchemableExt1,
   SchemableExt2,
   SchemableExt2C,
-} from './SchemableExt'
+} from 'schemata-ts/SchemableExt'
 
 /**
  * @since 1.0.0

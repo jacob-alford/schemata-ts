@@ -3,8 +3,8 @@
  *
  * @since 1.0.0
  */
-import * as G from '../../base/GuardBase'
-import { Pattern, regexFromPattern } from '../../PatternBuilder'
+import * as G from 'schemata-ts/base/GuardBase'
+import { Pattern, regexFromPattern } from 'schemata-ts/PatternBuilder'
 
 /** @internal */
 export const pattern: (

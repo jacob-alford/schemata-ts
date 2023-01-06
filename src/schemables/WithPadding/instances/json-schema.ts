@@ -4,10 +4,9 @@
  * @since 1.2.0
  */
 import { pipe } from 'fp-ts/function'
-
-import * as JS from '../../../base/JsonSchemaBase'
-import { WithPadding2 } from '../definition'
-import { match } from '../utils'
+import * as JS from 'schemata-ts/base/JsonSchemaBase'
+import { WithPadding2 } from 'schemata-ts/schemables/WithPadding/definition'
+import { match } from 'schemata-ts/schemables/WithPadding/utils'
 
 /**
  * @since 1.2.0

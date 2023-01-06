@@ -10,4 +10,4 @@ export {
    * @category Instances
    */
   WithUnknownContainers as Eq,
-} from '../../../base/EqBase'
+} from 'schemata-ts/base/EqBase'

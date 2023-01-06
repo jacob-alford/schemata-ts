@@ -4,9 +4,8 @@
  * @since 1.1.0
  */
 import { identity } from 'fp-ts/function'
-
-import * as P from '../../../base/PrinterBase'
-import { WithCheckDigit2 } from '../definition'
+import * as P from 'schemata-ts/base/PrinterBase'
+import { WithCheckDigit2 } from 'schemata-ts/schemables/WithCheckDigit/definition'
 
 /**
  * @since 1.1.0

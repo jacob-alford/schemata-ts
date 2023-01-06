@@ -10,4 +10,4 @@ export {
    * @category Instances
    */
   WithUnknownContainers as Arbitrary,
-} from '../../../base/ArbitraryBase'
+} from 'schemata-ts/base/ArbitraryBase'

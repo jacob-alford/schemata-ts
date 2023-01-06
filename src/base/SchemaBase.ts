@@ -4,9 +4,8 @@
  * @since 1.0.0
  */
 import { identity } from 'fp-ts/function'
-
-import * as SC from '../SchemaExt'
-import * as S2 from './SchemableBase'
+import * as S2 from 'schemata-ts/base/SchemableBase'
+import * as SC from 'schemata-ts/SchemaExt'
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 type Any = any

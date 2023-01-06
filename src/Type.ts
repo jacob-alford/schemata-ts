@@ -5,31 +5,31 @@
  *
  * @since 1.0.0
  */
-import * as t from './base/TypeBase'
-import { SchemableExt1 } from './SchemableExt'
-import * as WithAnnotate from './schemables/WithAnnotate/instances/type'
-import * as WithBrand from './schemables/WithBrand/instances/type'
-import * as WithCheckDigit from './schemables/WithCheckDigit/instances/type'
-import * as WithDate from './schemables/WithDate/instances/type'
-import * as WithFloat from './schemables/WithFloat/instances/type'
-import * as WithInt from './schemables/WithInt/instances/type'
-import * as WithInvariant from './schemables/WithInvariant/instances/type'
-import * as WithJson from './schemables/WithJson/instances/type'
-import * as WithMap from './schemables/WithMap/instances/type'
-import * as WithOption from './schemables/WithOption/instances/type'
-import * as WithOptional from './schemables/WithOptional/instances/type'
-import * as WithPadding from './schemables/WithPadding/instances/type'
-import * as WithPattern from './schemables/WithPattern/instances/type'
-import * as WithRefine from './schemables/WithRefine/instances/type'
-import * as WithUnknownContainers from './schemables/WithUnknownContainers/instances/type'
-import { interpret } from './SchemaExt'
+import * as t from 'schemata-ts/base/TypeBase'
+import { SchemableExt1 } from 'schemata-ts/SchemableExt'
+import * as WithAnnotate from 'schemata-ts/schemables/WithAnnotate/instances/type'
+import * as WithBrand from 'schemata-ts/schemables/WithBrand/instances/type'
+import * as WithCheckDigit from 'schemata-ts/schemables/WithCheckDigit/instances/type'
+import * as WithDate from 'schemata-ts/schemables/WithDate/instances/type'
+import * as WithFloat from 'schemata-ts/schemables/WithFloat/instances/type'
+import * as WithInt from 'schemata-ts/schemables/WithInt/instances/type'
+import * as WithInvariant from 'schemata-ts/schemables/WithInvariant/instances/type'
+import * as WithJson from 'schemata-ts/schemables/WithJson/instances/type'
+import * as WithMap from 'schemata-ts/schemables/WithMap/instances/type'
+import * as WithOption from 'schemata-ts/schemables/WithOption/instances/type'
+import * as WithOptional from 'schemata-ts/schemables/WithOptional/instances/type'
+import * as WithPadding from 'schemata-ts/schemables/WithPadding/instances/type'
+import * as WithPattern from 'schemata-ts/schemables/WithPattern/instances/type'
+import * as WithRefine from 'schemata-ts/schemables/WithRefine/instances/type'
+import * as WithUnknownContainers from 'schemata-ts/schemables/WithUnknownContainers/instances/type'
+import { interpret } from 'schemata-ts/SchemaExt'
 export type {
   /**
    * @since 1.0.0
    * @category Model
    */
   Type,
-} from './base/TypeBase'
+} from 'schemata-ts/base/TypeBase'
 
 /**
  * @since 1.0.0

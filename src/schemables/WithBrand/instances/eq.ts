@@ -5,8 +5,7 @@
  */
 import * as Eq_ from 'fp-ts/Eq'
 import { identity } from 'fp-ts/function'
-
-import { WithBrand1 } from '../definition'
+import { WithBrand1 } from 'schemata-ts/schemables/WithBrand/definition'
 
 /**
  * @since 1.0.0

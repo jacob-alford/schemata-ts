@@ -5,9 +5,8 @@
  * @since 1.2.0
  */
 import { constant, identity } from 'fp-ts/function'
-
-import * as Arb from '../../../base/ArbitraryBase'
-import { WithAnnotate1 } from '../definition'
+import * as Arb from 'schemata-ts/base/ArbitraryBase'
+import { WithAnnotate1 } from 'schemata-ts/schemables/WithAnnotate/definition'
 
 /**
  * @since 1.2.0

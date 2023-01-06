@@ -8,10 +8,9 @@
  */
 import { pipe } from 'fp-ts/function'
 import { Branded } from 'io-ts'
-
-import { luhn } from '../../internal/algorithms'
-import * as PB from '../../PatternBuilder'
-import { make } from '../../SchemaExt'
+import { luhn } from 'schemata-ts/internal/algorithms'
+import * as PB from 'schemata-ts/PatternBuilder'
+import { make } from 'schemata-ts/SchemaExt'
 
 /** @internal */
 interface CreditCardBrand {

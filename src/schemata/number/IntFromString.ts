@@ -16,11 +16,10 @@
  * @since 1.0.0
  */
 import { pipe } from 'fp-ts/function'
-
-import * as PB from '../../PatternBuilder'
-import * as Int from '../../schemables/WithInt/definition'
-import { Guard } from '../../schemables/WithInt/instances/guard'
-import { make, SchemaExt } from '../../SchemaExt'
+import * as PB from 'schemata-ts/PatternBuilder'
+import * as Int from 'schemata-ts/schemables/WithInt/definition'
+import { Guard } from 'schemata-ts/schemables/WithInt/instances/guard'
+import { make, SchemaExt } from 'schemata-ts/SchemaExt'
 
 /**
  * Controls the output base of the encoded string. Currently only accepts 2, 8, 10, and 16

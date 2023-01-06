@@ -4,9 +4,8 @@
  * @since 1.0.0
  */
 import { identity } from 'fp-ts/function'
-
-import * as G from '../../../base/GuardBase'
-import { WithBrand1 } from '../definition'
+import * as G from 'schemata-ts/base/GuardBase'
+import { WithBrand1 } from 'schemata-ts/schemables/WithBrand/definition'
 
 /**
  * @since 1.0.0

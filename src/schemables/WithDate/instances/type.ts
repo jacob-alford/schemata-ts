@@ -6,9 +6,8 @@
 import { identity } from 'fp-ts/function'
 import * as t_ from 'io-ts'
 import * as t from 'io-ts/Type'
-
-import { WithDate1 } from '../definition'
-import { isSafeDate, isValidDateString } from '../utils'
+import { WithDate1 } from 'schemata-ts/schemables/WithDate/definition'
+import { isSafeDate, isValidDateString } from 'schemata-ts/schemables/WithDate/utils'
 
 /**
  * @since 1.0.0

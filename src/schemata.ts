@@ -15,11 +15,11 @@ export {
   OutputOf,
   /** @since 1.0.0 */
   TypeOf,
-} from './SchemaExt'
+} from 'schemata-ts/SchemaExt'
 
 /** Base schemata */
 
-export * from './base/SchemaBase'
+export * from 'schemata-ts/base/SchemaBase'
 
 /** Schemables */
 
@@ -30,28 +30,28 @@ export {
    *
    * @since 1.2.0
    */ Schema as Annotate,
-} from './schemables/WithAnnotate/instances/schema'
+} from 'schemata-ts/schemables/WithAnnotate/instances/schema'
 export {
   /**
    * Schemable for constructing a branded newtype
    *
    * @since 1.0.0
    */ Schema as Brand,
-} from './schemables/WithBrand/instances/schema'
+} from 'schemata-ts/schemables/WithBrand/instances/schema'
 export {
   /**
    * Schemable for constructing a string with a check digit (e.g. ISBN or Credit Card)
    *
    * @since 1.0.0
    */ Schema as CheckDigit,
-} from './schemables/WithCheckDigit/instances/schema'
+} from 'schemata-ts/schemables/WithCheckDigit/instances/schema'
 export {
   /**
    * Represents valid Date objects, and valid date-strings parsable by `Date.parse`
    *
    * @since 1.0.0
    */ Schema as Date,
-} from './schemables/WithDate/instances/schema'
+} from 'schemata-ts/schemables/WithDate/instances/schema'
 export {
   /**
    * Floating point branded newtype. Parameters: min, max are inclusive.
@@ -64,7 +64,7 @@ export {
    *
    * @since 1.0.0
    */ Schema as Float,
-} from './schemables/WithFloat/instances/schema'
+} from 'schemata-ts/schemables/WithFloat/instances/schema'
 export {
   /**
    * Integer branded newtype. Parameters: min, max are inclusive.
@@ -77,28 +77,28 @@ export {
    *
    * @since 1.0.0
    */ Schema as Int,
-} from './schemables/WithInt/instances/schema'
+} from 'schemata-ts/schemables/WithInt/instances/schema'
 export {
   /**
    * Invariant mapping for schemable
    *
    * @since 1.0.0
    */ Schema as Invariant,
-} from './schemables/WithInvariant/instances/schema'
+} from 'schemata-ts/schemables/WithInvariant/instances/schema'
 export {
   /**
    * A basal schemable for Json and JsonString
    *
    * @since 1.1.0
    */ Schema as Json,
-} from './schemables/WithJson/instances/schema'
+} from 'schemata-ts/schemables/WithJson/instances/schema'
 export {
   /**
    * Represents a ReadonlyMap converted from an expected array of entries.
    *
    * @since 1.0.0
    */ Schema as Map,
-} from './schemables/WithMap/instances/schema'
+} from 'schemata-ts/schemables/WithMap/instances/schema'
 export {
   /**
    * Represents an exclusion of a supplied value where the exclusion is mapped to `None`.
@@ -106,42 +106,42 @@ export {
    *
    * @since 1.0.0
    */ Schema as Option,
-} from './schemables/WithOption/instances/schema'
+} from 'schemata-ts/schemables/WithOption/instances/schema'
 export {
   /**
    * Schemable for widening a type to include undefined. Similar to nullable but for undefined.
    *
    * @since 1.0.0
    */ Schema as Optional,
-} from './schemables/WithOptional/instances/schema'
+} from 'schemata-ts/schemables/WithOptional/instances/schema'
 export {
   /**
    * Adds a character to the right or left of a string until it reaches a certain length.
    *
    * @since 1.0.0
    */ Schema as Padding,
-} from './schemables/WithPadding/instances/schema'
+} from 'schemata-ts/schemables/WithPadding/instances/schema'
 export {
   /**
    * Schemable construction based on Regex combinators
    *
    * @since 1.0.0
    */ Schema as Pattern,
-} from './schemables/WithPattern/instances/schema'
+} from 'schemata-ts/schemables/WithPattern/instances/schema'
 export {
   /**
    * Re- export of `WithRefine` from `io-ts/Schemable/WithRefine`
    *
    * @since 1.0.0
    */ Schema as Refine,
-} from './schemables/WithRefine/instances/schema'
+} from 'schemata-ts/schemables/WithRefine/instances/schema'
 export {
   /**
    * Re- export of `WithUnknownContainers` from `io-ts/Schemable/WithUnknownContainers`
    *
    * @since 1.0.0
    */ Schema as UnknownContainers,
-} from './schemables/WithUnknownContainers/instances/schema'
+} from 'schemata-ts/schemables/WithUnknownContainers/instances/schema'
 
 /** Schemata > boolean */
 
@@ -155,7 +155,7 @@ export {
    * @since 1.0.0
    */
   BooleanFromNumber,
-} from './schemata/boolean/BooleanFromNumber'
+} from 'schemata-ts/schemata/boolean/BooleanFromNumber'
 export {
   /**
    * A boolean value whose encoded representation is either "true" or "false".
@@ -163,7 +163,7 @@ export {
    * @since 1.0.0
    */
   BooleanFromString,
-} from './schemata/boolean/BooleanFromString'
+} from 'schemata-ts/schemata/boolean/BooleanFromString'
 
 /** Schemata > date */
 
@@ -174,7 +174,7 @@ export {
    * @since 1.0.0
    */
   DateFromInt,
-} from './schemata/date/DateFromInt'
+} from 'schemata-ts/schemata/date/DateFromInt'
 export {
   /**
    * The Date parser (used in DateFromString) accepts different strings depending on
@@ -196,7 +196,7 @@ export {
    * @since 1.0.0
    */
   DateFromIsoString,
-} from './schemata/date/DateFromIsoString'
+} from 'schemata-ts/schemata/date/DateFromIsoString'
 export {
   /**
    * Represents Date objects derived from unix time.
@@ -204,7 +204,7 @@ export {
    * @since 1.0.0
    */
   DateFromUnixTime,
-} from './schemata/date/DateFromUnixTime'
+} from 'schemata-ts/schemata/date/DateFromUnixTime'
 
 /** Schemata > generic */
 
@@ -215,7 +215,7 @@ export {
    * @since 1.1.0
    */
   NonEmptyArray,
-} from './schemata/generic/NonEmptyArray'
+} from 'schemata-ts/schemata/generic/NonEmptyArray'
 export {
   /**
    * Represents an optional type which encodes to / decodes from null
@@ -223,7 +223,7 @@ export {
    * @since 1.0.0
    */
   OptionFromNullable,
-} from './schemata/generic/OptionFromNullable'
+} from 'schemata-ts/schemata/generic/OptionFromNullable'
 export {
   /**
    * Represents an optional type which encodes to / decodes from undefined
@@ -231,7 +231,7 @@ export {
    * @since 1.0.0
    */
   OptionFromUndefined,
-} from './schemata/generic/OptionFromUndefined'
+} from 'schemata-ts/schemata/generic/OptionFromUndefined'
 
 /** Schemata > json */
 
@@ -242,7 +242,7 @@ export {
    * @since 1.1.0
    */
   JsonFromString,
-} from './schemata/json/JsonFromString'
+} from 'schemata-ts/schemata/json/JsonFromString'
 
 /** Schemata > number */
 
@@ -253,7 +253,7 @@ export {
    * @since 1.0.0
    */
   BigIntFromString,
-} from './schemata/number/BigIntFromString'
+} from 'schemata-ts/schemata/number/BigIntFromString'
 export {
   /**
    * Floating point branded newtype from strings. Parameters: min, max are inclusive.
@@ -270,7 +270,7 @@ export {
    * @since 1.0.0
    */
   FloatFromString,
-} from './schemata/number/FloatFromString'
+} from 'schemata-ts/schemata/number/FloatFromString'
 export {
   /**
    * Integer branded newtype from string. Parameters: min, max are inclusive.
@@ -290,7 +290,7 @@ export {
    * @since 1.0.0
    */
   IntFromString,
-} from './schemata/number/IntFromString'
+} from 'schemata-ts/schemata/number/IntFromString'
 export {
   /**
    * Natural branded newtype.
@@ -304,7 +304,7 @@ export {
    * @since 1.0.0
    */
   Natural,
-} from './schemata/number/Natural'
+} from 'schemata-ts/schemata/number/Natural'
 export {
   /**
    * Negative floating point branded newtype.
@@ -318,7 +318,7 @@ export {
    * @since 1.0.0
    */
   NegativeFloat,
-} from './schemata/number/NegativeFloat'
+} from 'schemata-ts/schemata/number/NegativeFloat'
 export {
   /**
    * Negative integer branded newtype.
@@ -332,7 +332,7 @@ export {
    * @since 1.0.0
    */
   NegativeInt,
-} from './schemata/number/NegativeInt'
+} from 'schemata-ts/schemata/number/NegativeInt'
 export {
   /**
    * Non-negative floating point branded newtype.
@@ -346,7 +346,7 @@ export {
    * @since 1.0.0
    */
   NonNegativeFloat,
-} from './schemata/number/NonNegativeFloat'
+} from 'schemata-ts/schemata/number/NonNegativeFloat'
 export {
   /**
    * Non-positive floating point branded newtype.
@@ -360,7 +360,7 @@ export {
    * @since 1.0.0
    */
   NonPositiveFloat,
-} from './schemata/number/NonPositiveFloat'
+} from 'schemata-ts/schemata/number/NonPositiveFloat'
 export {
   /**
    * NonPositive integer branded newtype.
@@ -374,7 +374,7 @@ export {
    * @since 1.0.0
    */
   NonPositiveInt,
-} from './schemata/number/NonPositiveInt'
+} from 'schemata-ts/schemata/number/NonPositiveInt'
 export {
   /**
    * Positive Float branded newtype.
@@ -388,7 +388,7 @@ export {
    * @since 1.0.0
    */
   PositiveFloat,
-} from './schemata/number/PositiveFloat'
+} from 'schemata-ts/schemata/number/PositiveFloat'
 export {
   /**
    * Positive integer branded newtype.
@@ -402,7 +402,7 @@ export {
    * @since 1.0.0
    */
   PositiveInt,
-} from './schemata/number/PositiveInt'
+} from 'schemata-ts/schemata/number/PositiveInt'
 
 /** Schemata > string */
 
@@ -413,7 +413,7 @@ export {
    * @since 1.0.0
    */
   Ascii,
-} from './schemata/string/Ascii'
+} from 'schemata-ts/schemata/string/Ascii'
 export {
   /**
    * Representing a Base64-encoded string.
@@ -423,7 +423,7 @@ export {
    * @since 1.0.0
    */
   Base64,
-} from './schemata/string/Base64'
+} from 'schemata-ts/schemata/string/Base64'
 export {
   /**
    * Representing a URL-safe, Base64 encoded string.
@@ -433,7 +433,7 @@ export {
    * @since 1.0.0
    */
   Base64Url,
-} from './schemata/string/Base64Url'
+} from 'schemata-ts/schemata/string/Base64Url'
 export {
   /**
    * Represents strings which are valid Bitcoin addresses.
@@ -441,7 +441,7 @@ export {
    * @since 1.0.0
    */
   BitcoinAddress,
-} from './schemata/string/BitcoinAddress'
+} from 'schemata-ts/schemata/string/BitcoinAddress'
 export {
   /**
    * Represents (some) valid credit card numbers.
@@ -452,7 +452,7 @@ export {
    * @since 1.0.0
    */
   CreditCard,
-} from './schemata/string/CreditCard'
+} from 'schemata-ts/schemata/string/CreditCard'
 export {
   /**
    * Represents strings (email addresses) that conform to the RFC 5322 standard.
@@ -464,7 +464,7 @@ export {
    * @since 1.0.0
    */
   EmailAddress,
-} from './schemata/string/EmailAddress'
+} from 'schemata-ts/schemata/string/EmailAddress'
 export {
   /**
    * Represents strings which are valid Ethereum addresses.
@@ -472,7 +472,7 @@ export {
    * @since 1.0.0
    */
   EthereumAddress,
-} from './schemata/string/EthereumAddress'
+} from 'schemata-ts/schemata/string/EthereumAddress'
 export {
   /**
    * A string of hexadecimal characters.
@@ -480,7 +480,7 @@ export {
    * @since 1.0.0
    */
   Hexadecimal,
-} from './schemata/string/Hexadecimal'
+} from 'schemata-ts/schemata/string/Hexadecimal'
 export {
   /**
    * A valid hexadecimal color value.
@@ -488,7 +488,7 @@ export {
    * @since 1.0.0
    */
   HexColor,
-} from './schemata/string/HexColor'
+} from 'schemata-ts/schemata/string/HexColor'
 export {
   /**
    * An HSL string. Commonly in CSS.
@@ -509,7 +509,7 @@ export {
    *   assert.equal(Guard.is(hslString), true)
    */
   HslColor,
-} from './schemata/string/HslColor'
+} from 'schemata-ts/schemata/string/HslColor'
 export {
   /**
    * A valid, Base64-encoded JWT.
@@ -517,7 +517,7 @@ export {
    * @since 1.0.0
    */
   Jwt,
-} from './schemata/string/Jwt'
+} from 'schemata-ts/schemata/string/Jwt'
 export {
   /**
    * Representing a Lat/Long coordinate.
@@ -525,7 +525,7 @@ export {
    * @since 1.0.0
    */
   LatLong,
-} from './schemata/string/LatLong'
+} from 'schemata-ts/schemata/string/LatLong'
 export {
   /**
    * A string with length greater than one
@@ -533,7 +533,7 @@ export {
    * @since 1.0.0
    */
   NonEmptyString,
-} from './schemata/string/NonEmptyString'
+} from 'schemata-ts/schemata/string/NonEmptyString'
 export {
   /**
    * Represents strings which are valid RGB colors. Permits both absolute and percentage
@@ -542,7 +542,7 @@ export {
    * @since 1.0.0
    */
   RGB,
-} from './schemata/string/RGB'
+} from 'schemata-ts/schemata/string/RGB'
 export {
   /**
    * Represents strings that are UUIDs.
@@ -553,4 +553,4 @@ export {
    * @since 1.0.0
    */
   UUID,
-} from './schemata/string/UUID'
+} from 'schemata-ts/schemata/string/UUID'

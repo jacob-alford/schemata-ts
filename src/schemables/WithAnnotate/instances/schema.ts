@@ -4,7 +4,7 @@
  *
  * @since 1.2.0
  */
-import * as SC from '../../../SchemaExt'
+import * as SC from 'schemata-ts/SchemaExt'
 
 /**
  * @since 1.2.0

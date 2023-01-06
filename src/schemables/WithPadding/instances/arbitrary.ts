@@ -4,10 +4,14 @@
  * @since 1.0.0
  */
 import { flow, pipe } from 'fp-ts/function'
-
-import * as Arb from '../../../base/ArbitraryBase'
-import { WithPadding1 } from '../definition'
-import { foldUnion, match, stripLeftWhile, stripRightWhile } from '../utils'
+import * as Arb from 'schemata-ts/base/ArbitraryBase'
+import { WithPadding1 } from 'schemata-ts/schemables/WithPadding/definition'
+import {
+  foldUnion,
+  match,
+  stripLeftWhile,
+  stripRightWhile,
+} from 'schemata-ts/schemables/WithPadding/utils'
 
 /**
  * @since 1.0.0

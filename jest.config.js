@@ -11,4 +11,8 @@ module.exports = {
       statements: 100,
     },
   },
+  moduleNameMapper: {
+    '^schemata-ts$': '<rootDir>/src/index.ts',
+    '^schemata-ts/(.*)$': '<rootDir>/src/$1',
+  },
 }

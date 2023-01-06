@@ -5,9 +5,8 @@
  */
 import { pipe } from 'fp-ts/function'
 import { Branded } from 'io-ts'
-
-import * as PB from '../../PatternBuilder'
-import { make, SchemaExt } from '../../SchemaExt'
+import * as PB from 'schemata-ts/PatternBuilder'
+import { make, SchemaExt } from 'schemata-ts/SchemaExt'
 
 /** @internal */
 interface HexadecimalBrand {

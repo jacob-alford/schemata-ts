@@ -6,9 +6,8 @@
 import * as E from 'fp-ts/Either'
 import { flow, pipe } from 'fp-ts/function'
 import { Type as Type_ } from 'io-ts'
-
-import * as t from '../../../base/TypeBase'
-import { WithInvariant1 } from '../definition'
+import * as t from 'schemata-ts/base/TypeBase'
+import { WithInvariant1 } from 'schemata-ts/schemables/WithInvariant/definition'
 
 /**
  * @since 1.0.0

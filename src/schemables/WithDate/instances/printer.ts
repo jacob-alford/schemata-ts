@@ -5,11 +5,10 @@
  */
 import * as E from 'fp-ts/Either'
 import { pipe } from 'fp-ts/function'
-
-import * as P from '../../../base/PrinterBase'
-import * as PE from '../../../PrintError'
-import { WithDate2 } from '../definition'
-import { isSafeDate } from '../utils'
+import * as P from 'schemata-ts/base/PrinterBase'
+import * as PE from 'schemata-ts/PrintError'
+import { WithDate2 } from 'schemata-ts/schemables/WithDate/definition'
+import { isSafeDate } from 'schemata-ts/schemables/WithDate/utils'
 
 /**
  * @since 1.1.0

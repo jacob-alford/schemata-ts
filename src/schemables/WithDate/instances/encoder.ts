@@ -4,8 +4,7 @@
  * @since 1.0.0
  */
 import * as Enc from 'io-ts/Encoder'
-
-import { WithDate2 } from '../definition'
+import { WithDate2 } from 'schemata-ts/schemables/WithDate/definition'
 
 /**
  * @since 1.0.0

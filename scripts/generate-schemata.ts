@@ -73,7 +73,7 @@ const makeSchemableSchemaExport = ([
         false,
       ),
     ]),
-    _.createStringLiteral(`./schemables/${nameWith}/instances/schema`),
+    _.createStringLiteral(`schemata-ts/schemables/${nameWith}/instances/schema`),
     undefined,
   )
 
@@ -93,7 +93,7 @@ const makeSchemaExport = (
         true,
       ),
     ]),
-    _.createStringLiteral(`./schemata/${category}/${name}`),
+    _.createStringLiteral(`schemata-ts/schemata/${category}/${name}`),
     undefined,
   )
 
@@ -120,7 +120,7 @@ const typeUtilityReexports = _.createExportDeclaration(
       true,
     ),
   ]),
-  _.createStringLiteral('./SchemaExt'),
+  _.createStringLiteral('schemata-ts/SchemaExt'),
   undefined,
 )
 
@@ -149,7 +149,7 @@ const makeSchemaExportsFile: (
         undefined,
         false,
         undefined,
-        _.createStringLiteral('./base/SchemaBase'),
+        _.createStringLiteral('schemata-ts/base/SchemaBase'),
         undefined,
       ),
       _.createJSDocComment('schemables'),
@@ -227,7 +227,7 @@ const getSchemables: Build<ReadonlyArray<Schemable>> = C =>
     TE.map(
       RA.map(file => {
         const schemable = getSchemableName(file)
-        return tuple(schemable, schemable.slice(4), `./schemables/${schemable}`)
+        return tuple(schemable, schemable.slice(4), `schemata-ts/schemables/${schemable}`)
       }),
     ),
     TE.chain(

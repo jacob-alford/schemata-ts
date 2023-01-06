@@ -4,8 +4,8 @@
  *
  * @since 1.0.0
  */
-import * as Arb from '../../../base/ArbitraryBase'
-import { WithOption1 } from '../definition'
+import * as Arb from 'schemata-ts/base/ArbitraryBase'
+import { WithOption1 } from 'schemata-ts/schemables/WithOption/definition'
 
 /**
  * @since 1.0.0

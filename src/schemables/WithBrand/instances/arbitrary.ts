@@ -4,9 +4,8 @@
  * @since 1.0.0
  */
 import { identity } from 'fp-ts/function'
-
-import * as Arb from '../../../base/ArbitraryBase'
-import { WithBrand1 } from '../definition'
+import * as Arb from 'schemata-ts/base/ArbitraryBase'
+import { WithBrand1 } from 'schemata-ts/schemables/WithBrand/definition'
 
 /**
  * @since 1.0.0

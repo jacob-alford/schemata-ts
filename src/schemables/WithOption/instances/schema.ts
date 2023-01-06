@@ -4,9 +4,9 @@
  *
  * @since 1.0.0
  */
-import { URI as SchemaURI } from '../../../base/SchemaBase'
-import * as SC from '../../../SchemaExt'
-import { WithOption2 } from '../definition'
+import { URI as SchemaURI } from 'schemata-ts/base/SchemaBase'
+import { WithOption2 } from 'schemata-ts/schemables/WithOption/definition'
+import * as SC from 'schemata-ts/SchemaExt'
 
 /**
  * @since 1.0.0

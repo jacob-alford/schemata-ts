@@ -4,8 +4,7 @@
  * @since 1.0.0
  */
 import * as Eq_ from 'fp-ts/Eq'
-
-import { WithDate1 } from '../definition'
+import { WithDate1 } from 'schemata-ts/schemables/WithDate/definition'
 
 /**
  * @since 1.0.0
