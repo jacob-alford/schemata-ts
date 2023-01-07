@@ -4,6 +4,7 @@
   "compilerOptions": {
     "noEmit": true,
     "strict": true,
+    "module": "CommonJS",
     "paths": {
       "schemata-ts": ["./src/index.ts"],
       "schemata-ts/*": ["./src/*"]
