@@ -1,7 +1,8 @@
+<br>
 <div align="center">
   <img src="./assets/the-school-of-athens-crop-2.jpg" style="margin-top: 48px; width: 100%; max-width: 846px; border: 5px solid rgba(205,127,50,0.5); filter: drop-shadow(0 0 0.5rem rgba(0,0,0,0.5));"/>
 </div>
-
+<br><br>
 <h1 align="center" style="margin: 12px 0px 12px 0px; padding-bottom: 12px;">
 schemata-ts
 </h1>
@@ -12,13 +13,13 @@ Write domain types once.  A collection of Schemata inspired by io-ts-types and v
 
 <div align="center">
 
-![Build Status](https://github.com/jacob-alford/schemata-ts/actions/workflows/build.yml/badge.svg)
 [![NPM Version](https://badge.fury.io/js/schemata-ts.svg)](https://badge.fury.io/js/schemata-ts)
 [![Coverage Status](https://coveralls.io/repos/github/jacob-alford/schemata-ts/badge.svg?branch=main)](https://coveralls.io/github/jacob-alford/schemata-ts?branch=main)
 ![Vulnerabilities](https://img.shields.io/snyk/vulnerabilities/npm/schemata-ts)
-![License](https://img.shields.io/github/license/jacob-alford/schemata-ts)
 
 </div>
+
+<br><br>
 
 ## Welcome
 

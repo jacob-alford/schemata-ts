@@ -10,4 +10,4 @@ export {
    * @category Instances
    */
   WithRefine as Guard,
-} from '../../../base/GuardBase'
+} from 'schemata-ts/base/GuardBase'

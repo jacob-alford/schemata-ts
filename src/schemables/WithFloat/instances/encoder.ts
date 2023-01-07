@@ -10,8 +10,7 @@
  * @since 1.0.0
  */
 import * as Enc from 'io-ts/Encoder'
-
-import { WithFloat2 } from '../definition'
+import { WithFloat2 } from 'schemata-ts/schemables/WithFloat/definition'
 
 /**
  * @since 1.0.0

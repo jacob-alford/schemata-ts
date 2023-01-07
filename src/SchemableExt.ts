@@ -7,98 +7,97 @@
  */
 import { URIS, URIS2 } from 'fp-ts/HKT'
 import { Schemable1, Schemable2C } from 'io-ts/Schemable'
-
-import { Schemable2, SchemableHKT2 } from './base/SchemableBase'
+import { Schemable2, SchemableHKT2 } from 'schemata-ts/base/SchemableBase'
 import {
   WithAnnotate1,
   WithAnnotate2,
   WithAnnotate2C,
   WithAnnotateHKT2,
-} from './schemables/WithAnnotate/definition'
+} from 'schemata-ts/schemables/WithAnnotate/definition'
 import {
   WithBrand1,
   WithBrand2,
   WithBrand2C,
   WithBrandHKT2,
-} from './schemables/WithBrand/definition'
+} from 'schemata-ts/schemables/WithBrand/definition'
 import {
   WithCheckDigit1,
   WithCheckDigit2,
   WithCheckDigit2C,
   WithCheckDigitHKT2,
-} from './schemables/WithCheckDigit/definition'
+} from 'schemata-ts/schemables/WithCheckDigit/definition'
 import {
   WithDate1,
   WithDate2,
   WithDate2C,
   WithDateHKT2,
-} from './schemables/WithDate/definition'
+} from 'schemata-ts/schemables/WithDate/definition'
 import {
   WithFloat1,
   WithFloat2,
   WithFloat2C,
   WithFloatHKT2,
-} from './schemables/WithFloat/definition'
+} from 'schemata-ts/schemables/WithFloat/definition'
 import {
   WithInt1,
   WithInt2,
   WithInt2C,
   WithIntHKT2,
-} from './schemables/WithInt/definition'
+} from 'schemata-ts/schemables/WithInt/definition'
 import {
   WithInvariant1,
   WithInvariant2,
   WithInvariant2C,
   WithInvariantHKT2,
-} from './schemables/WithInvariant/definition'
+} from 'schemata-ts/schemables/WithInvariant/definition'
 import {
   WithJson1,
   WithJson2,
   WithJson2C,
   WithJsonHKT2,
-} from './schemables/WithJson/definition'
+} from 'schemata-ts/schemables/WithJson/definition'
 import {
   WithMap1,
   WithMap2,
   WithMap2C,
   WithMapHKT2,
-} from './schemables/WithMap/definition'
+} from 'schemata-ts/schemables/WithMap/definition'
 import {
   WithOption1,
   WithOption2,
   WithOption2C,
   WithOptionHKT2,
-} from './schemables/WithOption/definition'
+} from 'schemata-ts/schemables/WithOption/definition'
 import {
   WithOptional1,
   WithOptional2,
   WithOptional2C,
   WithOptionalHKT2,
-} from './schemables/WithOptional/definition'
+} from 'schemata-ts/schemables/WithOptional/definition'
 import {
   WithPadding1,
   WithPadding2,
   WithPadding2C,
   WithPaddingHKT2,
-} from './schemables/WithPadding/definition'
+} from 'schemata-ts/schemables/WithPadding/definition'
 import {
   WithPattern1,
   WithPattern2,
   WithPattern2C,
   WithPatternHKT2,
-} from './schemables/WithPattern/definition'
+} from 'schemata-ts/schemables/WithPattern/definition'
 import {
   WithRefine1,
   WithRefine2,
   WithRefine2C,
   WithRefineHKT2,
-} from './schemables/WithRefine/definition'
+} from 'schemata-ts/schemables/WithRefine/definition'
 import {
   WithUnknownContainers1,
   WithUnknownContainers2,
   WithUnknownContainers2C,
   WithUnknownContainersHKT2,
-} from './schemables/WithUnknownContainers/definition'
+} from 'schemata-ts/schemables/WithUnknownContainers/definition'
 
 /**
  * @since 1.0.0

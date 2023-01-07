@@ -3,8 +3,8 @@
  *
  * @since 1.0.0
  */
-import * as Arb from '../../../base/ArbitraryBase'
-import { WithInvariant1 } from '../definition'
+import * as Arb from 'schemata-ts/base/ArbitraryBase'
+import { WithInvariant1 } from 'schemata-ts/schemables/WithInvariant/definition'
 
 /**
  * @since 1.0.0

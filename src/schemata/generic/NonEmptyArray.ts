@@ -6,8 +6,7 @@
 import { pipe } from 'fp-ts/function'
 import * as RA from 'fp-ts/ReadonlyArray'
 import * as RNEA from 'fp-ts/ReadonlyNonEmptyArray'
-
-import { make, SchemaExt } from '../../SchemaExt'
+import { make, SchemaExt } from 'schemata-ts/SchemaExt'
 
 /**
  * @since 1.1.0

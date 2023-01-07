@@ -3,7 +3,7 @@
  *
  * @since 1.0.0
  */
-import { Float, FloatParams } from './definition'
+import { Float, FloatParams } from 'schemata-ts/schemables/WithFloat/definition'
 
 /** @since 1.0.0 */
 export const isFloat =

@@ -9,9 +9,9 @@
  *
  * @since 1.0.0
  */
-import * as Arb from '../../../base/ArbitraryBase'
-import { WithInt1 } from '../definition'
-import { isInt } from '../utils'
+import * as Arb from 'schemata-ts/base/ArbitraryBase'
+import { WithInt1 } from 'schemata-ts/schemables/WithInt/definition'
+import { isInt } from 'schemata-ts/schemables/WithInt/utils'
 
 /**
  * @since 1.0.0

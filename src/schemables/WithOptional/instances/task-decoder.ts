@@ -3,8 +3,8 @@
  *
  * @since 1.0.0
  */
-import * as TD from '../../../base/TaskDecoderBase'
-import { WithOptional2C } from '../definition'
+import * as TD from 'schemata-ts/base/TaskDecoderBase'
+import { WithOptional2C } from 'schemata-ts/schemables/WithOptional/definition'
 
 /**
  * @since 1.0.0

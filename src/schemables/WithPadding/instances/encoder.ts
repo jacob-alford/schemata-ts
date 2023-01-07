@@ -5,8 +5,7 @@
  */
 import { identity } from 'fp-ts/function'
 import * as Enc from 'io-ts/Encoder'
-
-import { WithPadding2 } from '../definition'
+import { WithPadding2 } from 'schemata-ts/schemables/WithPadding/definition'
 
 /**
  * @since 1.0.0

@@ -6,9 +6,8 @@
 import * as RA from 'fp-ts/ReadonlyArray'
 import * as RM from 'fp-ts/ReadonlyMap'
 import * as Sg from 'fp-ts/Semigroup'
-
-import * as Arb from '../../../base/ArbitraryBase'
-import { WithMap1 } from '../definition'
+import * as Arb from 'schemata-ts/base/ArbitraryBase'
+import { WithMap1 } from 'schemata-ts/schemables/WithMap/definition'
 
 /**
  * @since 1.0.0

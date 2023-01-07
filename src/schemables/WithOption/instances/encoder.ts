@@ -7,8 +7,7 @@
 import { flow } from 'fp-ts/function'
 import * as O from 'fp-ts/Option'
 import * as Enc from 'io-ts/Encoder'
-
-import { WithOption2 } from '../definition'
+import { WithOption2 } from 'schemata-ts/schemables/WithOption/definition'
 
 /**
  * @since 1.0.0

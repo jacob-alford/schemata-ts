@@ -5,8 +5,7 @@
  */
 import { HKT2, Kind, Kind2, URIS, URIS2 } from 'fp-ts/HKT'
 import * as J from 'fp-ts/Json'
-
-import { JsonString, SafeJson } from '../../base/PrinterBase'
+import { JsonString, SafeJson } from 'schemata-ts/base/PrinterBase'
 
 /**
  * @since 1.1.0

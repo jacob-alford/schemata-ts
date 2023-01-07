@@ -9,8 +9,8 @@
  *
  * @since 1.1.0
  */
-import * as P from '../../../base/PrinterBase'
-import { WithInt2 } from '../definition'
+import * as P from 'schemata-ts/base/PrinterBase'
+import { WithInt2 } from 'schemata-ts/schemables/WithInt/definition'
 
 /**
  * @since 1.1.0

@@ -5,31 +5,31 @@
  *
  * @since 1.0.0
  */
-import * as Arb from './base/ArbitraryBase'
-import { SchemableExt1 } from './SchemableExt'
-import * as WithAnnotate from './schemables/WithAnnotate/instances/arbitrary'
-import * as WithBrand from './schemables/WithBrand/instances/arbitrary'
-import * as WithCheckDigit from './schemables/WithCheckDigit/instances/arbitrary'
-import * as WithDate from './schemables/WithDate/instances/arbitrary'
-import * as WithFloat from './schemables/WithFloat/instances/arbitrary'
-import * as WithInt from './schemables/WithInt/instances/arbitrary'
-import * as WithInvariant from './schemables/WithInvariant/instances/arbitrary'
-import * as WithJson from './schemables/WithJson/instances/arbitrary'
-import * as WithMap from './schemables/WithMap/instances/arbitrary'
-import * as WithOption from './schemables/WithOption/instances/arbitrary'
-import * as WithOptional from './schemables/WithOptional/instances/arbitrary'
-import * as WithPadding from './schemables/WithPadding/instances/arbitrary'
-import * as WithPattern from './schemables/WithPattern/instances/arbitrary'
-import * as WithRefine from './schemables/WithRefine/instances/arbitrary'
-import * as WithUnknownContainers from './schemables/WithUnknownContainers/instances/arbitrary'
-import { interpret } from './SchemaExt'
+import * as Arb from 'schemata-ts/base/ArbitraryBase'
+import { SchemableExt1 } from 'schemata-ts/SchemableExt'
+import * as WithAnnotate from 'schemata-ts/schemables/WithAnnotate/instances/arbitrary'
+import * as WithBrand from 'schemata-ts/schemables/WithBrand/instances/arbitrary'
+import * as WithCheckDigit from 'schemata-ts/schemables/WithCheckDigit/instances/arbitrary'
+import * as WithDate from 'schemata-ts/schemables/WithDate/instances/arbitrary'
+import * as WithFloat from 'schemata-ts/schemables/WithFloat/instances/arbitrary'
+import * as WithInt from 'schemata-ts/schemables/WithInt/instances/arbitrary'
+import * as WithInvariant from 'schemata-ts/schemables/WithInvariant/instances/arbitrary'
+import * as WithJson from 'schemata-ts/schemables/WithJson/instances/arbitrary'
+import * as WithMap from 'schemata-ts/schemables/WithMap/instances/arbitrary'
+import * as WithOption from 'schemata-ts/schemables/WithOption/instances/arbitrary'
+import * as WithOptional from 'schemata-ts/schemables/WithOptional/instances/arbitrary'
+import * as WithPadding from 'schemata-ts/schemables/WithPadding/instances/arbitrary'
+import * as WithPattern from 'schemata-ts/schemables/WithPattern/instances/arbitrary'
+import * as WithRefine from 'schemata-ts/schemables/WithRefine/instances/arbitrary'
+import * as WithUnknownContainers from 'schemata-ts/schemables/WithUnknownContainers/instances/arbitrary'
+import { interpret } from 'schemata-ts/SchemaExt'
 export type {
   /**
    * @since 1.0.0
    * @category Model
    */
   Arbitrary,
-} from './base/ArbitraryBase'
+} from 'schemata-ts/base/ArbitraryBase'
 
 /**
  * @since 1.0.0

@@ -4,8 +4,7 @@
  * @since 1.0.0
  */
 import { HKT2, Kind, Kind2, URIS, URIS2 } from 'fp-ts/HKT'
-
-import { Pattern } from '../../PatternBuilder'
+import { Pattern } from 'schemata-ts/PatternBuilder'
 
 /**
  * @since 1.0.0

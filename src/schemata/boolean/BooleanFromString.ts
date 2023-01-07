@@ -5,9 +5,8 @@
  */
 import { pipe } from 'fp-ts/function'
 import { boolean } from 'io-ts/lib/Guard'
-
-import * as PB from '../../PatternBuilder'
-import { make, SchemaExt } from '../../SchemaExt'
+import * as PB from 'schemata-ts/PatternBuilder'
+import { make, SchemaExt } from 'schemata-ts/SchemaExt'
 
 /**
  * @since 1.0.0

@@ -11,9 +11,8 @@
  */
 import { pipe } from 'fp-ts/function'
 import * as G from 'io-ts/Guard'
-
-import { WithFloat1 } from '../definition'
-import { isFloat } from '../utils'
+import { WithFloat1 } from 'schemata-ts/schemables/WithFloat/definition'
+import { isFloat } from 'schemata-ts/schemables/WithFloat/utils'
 
 /**
  * @since 1.0.0

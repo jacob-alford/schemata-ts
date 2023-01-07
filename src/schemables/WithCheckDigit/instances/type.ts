@@ -5,10 +5,12 @@
  */
 import { pipe } from 'fp-ts/function'
 import { Branded } from 'io-ts'
-
-import * as t from '../../../base/TypeBase'
-import { CheckDigitVerified, WithCheckDigit1 } from '../definition'
-import { locationToIndex } from '../utils'
+import * as t from 'schemata-ts/base/TypeBase'
+import {
+  CheckDigitVerified,
+  WithCheckDigit1,
+} from 'schemata-ts/schemables/WithCheckDigit/definition'
+import { locationToIndex } from 'schemata-ts/schemables/WithCheckDigit/utils'
 
 /**
  * @since 1.0.0

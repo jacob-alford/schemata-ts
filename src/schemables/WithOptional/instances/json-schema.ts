@@ -3,8 +3,8 @@
  *
  * @since 1.2.0
  */
-import * as JS from '../../../base/JsonSchemaBase'
-import { WithOptional2 } from '../definition'
+import * as JS from 'schemata-ts/base/JsonSchemaBase'
+import { WithOptional2 } from 'schemata-ts/schemables/WithOptional/definition'
 
 /**
  * @since 1.2.0

@@ -34,7 +34,7 @@ export const typeOf = (x: unknown): string => (x === null ? 'null' : typeof x)
 /**
  * Performs a validative traversal over a struct's own enumerable properties.
  *
- * Not to be confused with traveling across spain
+ * @internal
  */
 export const witherS =
   <E>(sgErrors: Sg.Semigroup<E>) =>

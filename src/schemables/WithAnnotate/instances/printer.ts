@@ -5,9 +5,8 @@
  * @since 1.2.0
  */
 import { constant, identity } from 'fp-ts/function'
-
-import * as P from '../../../base/PrinterBase'
-import { WithAnnotate2 } from '../definition'
+import * as P from 'schemata-ts/base/PrinterBase'
+import { WithAnnotate2 } from 'schemata-ts/schemables/WithAnnotate/definition'
 
 /**
  * @since 1.2.0

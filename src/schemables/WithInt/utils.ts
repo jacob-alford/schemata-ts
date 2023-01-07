@@ -3,7 +3,7 @@
  *
  * @since 1.0.0
  */
-import { Int, IntParams } from './definition'
+import { Int, IntParams } from 'schemata-ts/schemables/WithInt/definition'
 
 /** @since 1.0.0 */
 export const isInt =

@@ -4,8 +4,7 @@
  * @since 1.0.0
  */
 import { HKT2, Kind, Kind2, URIS, URIS2 } from 'fp-ts/HKT'
-
-import * as G from '../../base/GuardBase'
+import * as G from 'schemata-ts/base/GuardBase'
 
 /**
  * @since 1.0.0

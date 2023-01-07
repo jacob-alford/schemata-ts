@@ -4,9 +4,8 @@
  * @since 1.0.0
  */
 import { identity } from 'fp-ts/function'
-
-import * as Enc from '../../../base/EncoderBase'
-import { WithCheckDigit2 } from '../definition'
+import * as Enc from 'schemata-ts/base/EncoderBase'
+import { WithCheckDigit2 } from 'schemata-ts/schemables/WithCheckDigit/definition'
 
 /**
  * @since 1.0.0

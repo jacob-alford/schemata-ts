@@ -104,7 +104,10 @@ const makeSchemableExtContents: (
       schemableExtHeaderComment,
       makeDestructureImport(['URIS', 'URIS2'], 'fp-ts/HKT'),
       makeDestructureImport(['Schemable1', 'Schemable2C'], 'io-ts/Schemable'),
-      makeDestructureImport(['Schemable2', 'SchemableHKT2'], './base/SchemableBase'),
+      makeDestructureImport(
+        ['Schemable2', 'SchemableHKT2'],
+        'schemata-ts/base/SchemableBase',
+      ),
       ...pipe(
         schemables,
         RA.map(([schemable, path]) =>
@@ -184,7 +187,7 @@ const makeInstanceTypeExport: (tc: SchemableTypeclasses) => ts.ExportDeclaration
         true,
       ),
     ]),
-    _.createStringLiteral(`./base/${typeclassName}Base`),
+    _.createStringLiteral(`schemata-ts/base/${typeclassName}Base`),
     undefined,
   )
 
@@ -283,15 +286,15 @@ const makeSchemableInstanceModuleContents: (
   return pipe(
     [
       moduleHeaderComment(module, sinceVersion),
-      makeModuleStarImport(accessor, `./base/${module}Base`),
-      makeDestructureImport([schemableInstance], './SchemableExt'),
-      makeDestructureImport(['interpret'], './SchemaExt'),
+      makeModuleStarImport(accessor, `schemata-ts/base/${module}Base`),
+      makeDestructureImport([schemableInstance], 'schemata-ts/SchemableExt'),
+      makeDestructureImport(['interpret'], 'schemata-ts/SchemaExt'),
       ...pipe(
         schemables,
         RA.map(([schemable]) =>
           makeModuleStarImport(
             schemable,
-            `./schemables/${schemable}/instances/${lowercaseModule}`,
+            `schemata-ts/schemables/${schemable}/instances/${lowercaseModule}`,
           ),
         ),
       ),
@@ -346,7 +349,7 @@ const getSchemables: Build<ReadonlyArray<Schemable>> = C =>
     TE.map(
       RA.map(fileName => {
         const schemable = getSchemableName(fileName)
-        return tuple(schemable, `./schemables/${schemable}`)
+        return tuple(schemable, `schemata-ts/schemables/${schemable}`)
       }),
     ),
   )

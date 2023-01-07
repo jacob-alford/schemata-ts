@@ -9,8 +9,7 @@ import * as RM from 'fp-ts/ReadonlyMap'
 import * as Sg from 'fp-ts/Semigroup'
 import * as TE from 'fp-ts/TaskEither'
 import * as TD from 'io-ts/TaskDecoder'
-
-import { WithMap2C } from '../definition'
+import { WithMap2C } from 'schemata-ts/schemables/WithMap/definition'
 
 /**
  * @since 1.0.0

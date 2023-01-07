@@ -5,12 +5,11 @@
  */
 import * as E from 'fp-ts/Either'
 import { flow } from 'fp-ts/function'
-
-import { JsonString, safeStringify } from './base/PrinterBase'
-import { getEncoder } from './Encoder'
-import { getPrinter } from './Printer'
-import { PrintError } from './PrintError'
-import { SchemaExt } from './SchemaExt'
+import { JsonString, safeStringify } from 'schemata-ts/base/PrinterBase'
+import { getEncoder } from 'schemata-ts/Encoder'
+import { getPrinter } from 'schemata-ts/Printer'
+import { PrintError } from 'schemata-ts/PrintError'
+import { SchemaExt } from 'schemata-ts/SchemaExt'
 
 /**
  * @since 1.1.0

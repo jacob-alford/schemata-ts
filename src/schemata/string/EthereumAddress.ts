@@ -4,11 +4,9 @@
  * @since 1.0.0
  */
 import { Branded } from 'io-ts'
+import * as PB from 'schemata-ts/PatternBuilder'
+import { make, SchemaExt } from 'schemata-ts/SchemaExt'
 
-import * as PB from '../../PatternBuilder'
-import { make, SchemaExt } from '../../SchemaExt'
-
-/** @internal */
 interface EthereumAddressBrand {
   readonly EthereumAddress: unique symbol
 }

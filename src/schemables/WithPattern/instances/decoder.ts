@@ -3,9 +3,9 @@
  *
  * @since 1.0.0
  */
-import * as D from '../../../base/DecoderBase'
-import { WithPattern2C } from '../definition'
-import { pattern } from '../utils'
+import * as D from 'schemata-ts/base/DecoderBase'
+import { WithPattern2C } from 'schemata-ts/schemables/WithPattern/definition'
+import { pattern } from 'schemata-ts/schemables/WithPattern/utils'
 
 /**
  * @since 1.0.0

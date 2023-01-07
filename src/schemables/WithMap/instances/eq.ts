@@ -5,8 +5,7 @@
  */
 import * as Eq_ from 'fp-ts/Eq'
 import * as RM from 'fp-ts/ReadonlyMap'
-
-import { WithMap1 } from '../definition'
+import { WithMap1 } from 'schemata-ts/schemables/WithMap/definition'
 
 /**
  * @since 1.0.0

@@ -4,8 +4,7 @@
  * @since 1.0.0
  */
 import * as Enc from 'io-ts/Encoder'
-
-import { WithRefine2 } from '../definition'
+import { WithRefine2 } from 'schemata-ts/schemables/WithRefine/definition'
 
 /**
  * @since 1.0.0

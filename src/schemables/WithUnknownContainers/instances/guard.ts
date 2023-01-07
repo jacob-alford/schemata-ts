@@ -10,4 +10,4 @@ export {
    * @category Instances
    */
   WithUnknownContainers as Guard,
-} from '../../../base/GuardBase'
+} from 'schemata-ts/base/GuardBase'

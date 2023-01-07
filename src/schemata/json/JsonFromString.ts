@@ -4,10 +4,9 @@
  * @since 1.1.0
  */
 import { pipe } from 'fp-ts/function'
-
-import * as P from '../../base/PrinterBase'
-import * as Json from '../../schemables/WithJson/instances/guard'
-import { make, SchemaExt } from '../../SchemaExt'
+import * as P from 'schemata-ts/base/PrinterBase'
+import * as Json from 'schemata-ts/schemables/WithJson/instances/guard'
+import { make, SchemaExt } from 'schemata-ts/SchemaExt'
 
 /**
  * @since 1.1.0

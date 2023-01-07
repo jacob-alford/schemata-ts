@@ -5,31 +5,31 @@
  *
  * @since 1.0.0
  */
-import * as Enc from './base/EncoderBase'
-import { SchemableExt2 } from './SchemableExt'
-import * as WithAnnotate from './schemables/WithAnnotate/instances/encoder'
-import * as WithBrand from './schemables/WithBrand/instances/encoder'
-import * as WithCheckDigit from './schemables/WithCheckDigit/instances/encoder'
-import * as WithDate from './schemables/WithDate/instances/encoder'
-import * as WithFloat from './schemables/WithFloat/instances/encoder'
-import * as WithInt from './schemables/WithInt/instances/encoder'
-import * as WithInvariant from './schemables/WithInvariant/instances/encoder'
-import * as WithJson from './schemables/WithJson/instances/encoder'
-import * as WithMap from './schemables/WithMap/instances/encoder'
-import * as WithOption from './schemables/WithOption/instances/encoder'
-import * as WithOptional from './schemables/WithOptional/instances/encoder'
-import * as WithPadding from './schemables/WithPadding/instances/encoder'
-import * as WithPattern from './schemables/WithPattern/instances/encoder'
-import * as WithRefine from './schemables/WithRefine/instances/encoder'
-import * as WithUnknownContainers from './schemables/WithUnknownContainers/instances/encoder'
-import { interpret } from './SchemaExt'
+import * as Enc from 'schemata-ts/base/EncoderBase'
+import { SchemableExt2 } from 'schemata-ts/SchemableExt'
+import * as WithAnnotate from 'schemata-ts/schemables/WithAnnotate/instances/encoder'
+import * as WithBrand from 'schemata-ts/schemables/WithBrand/instances/encoder'
+import * as WithCheckDigit from 'schemata-ts/schemables/WithCheckDigit/instances/encoder'
+import * as WithDate from 'schemata-ts/schemables/WithDate/instances/encoder'
+import * as WithFloat from 'schemata-ts/schemables/WithFloat/instances/encoder'
+import * as WithInt from 'schemata-ts/schemables/WithInt/instances/encoder'
+import * as WithInvariant from 'schemata-ts/schemables/WithInvariant/instances/encoder'
+import * as WithJson from 'schemata-ts/schemables/WithJson/instances/encoder'
+import * as WithMap from 'schemata-ts/schemables/WithMap/instances/encoder'
+import * as WithOption from 'schemata-ts/schemables/WithOption/instances/encoder'
+import * as WithOptional from 'schemata-ts/schemables/WithOptional/instances/encoder'
+import * as WithPadding from 'schemata-ts/schemables/WithPadding/instances/encoder'
+import * as WithPattern from 'schemata-ts/schemables/WithPattern/instances/encoder'
+import * as WithRefine from 'schemata-ts/schemables/WithRefine/instances/encoder'
+import * as WithUnknownContainers from 'schemata-ts/schemables/WithUnknownContainers/instances/encoder'
+import { interpret } from 'schemata-ts/SchemaExt'
 export type {
   /**
    * @since 1.0.0
    * @category Model
    */
   Encoder,
-} from './base/EncoderBase'
+} from 'schemata-ts/base/EncoderBase'
 
 /**
  * @since 1.0.0

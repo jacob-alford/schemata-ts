@@ -5,10 +5,9 @@
  */
 import { pipe } from 'fp-ts/function'
 import * as O from 'fp-ts/Option'
-
-import * as G from '../../base/GuardBase'
-import { getGuard } from '../../Guard'
-import { make, SchemaExt } from '../../SchemaExt'
+import * as G from 'schemata-ts/base/GuardBase'
+import { getGuard } from 'schemata-ts/Guard'
+import { make, SchemaExt } from 'schemata-ts/SchemaExt'
 
 /**
  * @since 1.0.0

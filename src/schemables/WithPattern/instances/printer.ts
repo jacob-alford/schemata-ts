@@ -4,11 +4,10 @@
  * @since 1.1.0
  */
 import * as E from 'fp-ts/Either'
-
-import * as P from '../../../base/PrinterBase'
-import * as PB from '../../../PatternBuilder'
-import * as PE from '../../../PrintError'
-import { WithPattern2 } from '../definition'
+import * as P from 'schemata-ts/base/PrinterBase'
+import * as PB from 'schemata-ts/PatternBuilder'
+import * as PE from 'schemata-ts/PrintError'
+import { WithPattern2 } from 'schemata-ts/schemables/WithPattern/definition'
 
 /**
  * @since 1.1.0

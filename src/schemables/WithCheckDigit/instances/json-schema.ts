@@ -4,9 +4,8 @@
  * @since 1.2.0
  */
 import { identity } from 'fp-ts/function'
-
-import * as JS from '../../../base/JsonSchemaBase'
-import { WithCheckDigit2 } from '../definition'
+import * as JS from 'schemata-ts/base/JsonSchemaBase'
+import { WithCheckDigit2 } from 'schemata-ts/schemables/WithCheckDigit/definition'
 
 /**
  * @since 1.2.0

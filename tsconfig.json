@@ -15,7 +15,11 @@
     "noImplicitReturns": true,
     "noFallthroughCasesInSwitch": true,
     "noUncheckedIndexedAccess": true,
-    "forceConsistentCasingInFileNames": true
+    "forceConsistentCasingInFileNames": true,
+    "paths": {
+      "schemata-ts": ["./src/index.ts"],
+      "schemata-ts/*": ["./src/*"]
+    }
   },
   "exclude": ["build", "dist", "node_modules"]
 }

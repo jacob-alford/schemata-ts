@@ -7,8 +7,7 @@
 import * as Eq_ from 'fp-ts/Eq'
 import { flow, SK } from 'fp-ts/function'
 import * as O from 'fp-ts/Option'
-
-import { WithOption1 } from '../definition'
+import { WithOption1 } from 'schemata-ts/schemables/WithOption/definition'
 
 /**
  * @since 1.0.0

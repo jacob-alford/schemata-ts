@@ -4,10 +4,9 @@
  * @since 1.0.0
  */
 import { pipe } from 'fp-ts/function'
-
-import { Guard } from '../../schemables/WithDate/instances/guard'
-import * as float from '../../schemables/WithFloat/definition'
-import { make, SchemaExt } from '../../SchemaExt'
+import { Guard } from 'schemata-ts/schemables/WithDate/instances/guard'
+import * as float from 'schemata-ts/schemables/WithFloat/definition'
+import { make, SchemaExt } from 'schemata-ts/SchemaExt'
 
 /**
  * @since 1.0.0

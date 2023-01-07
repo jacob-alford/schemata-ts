@@ -5,12 +5,10 @@
  */
 import { pipe } from 'fp-ts/function'
 import { Branded } from 'io-ts'
+import * as PB from 'schemata-ts/PatternBuilder'
+import { make, SchemaExt } from 'schemata-ts/SchemaExt'
+import { base64Url } from 'schemata-ts/schemata/string/Base64Url'
 
-import * as PB from '../../PatternBuilder'
-import { make, SchemaExt } from '../../SchemaExt'
-import { base64Url } from './Base64Url'
-
-/** @internal */
 interface JwtBrand {
   readonly Jwt: unique symbol
 }

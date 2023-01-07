@@ -11,10 +11,9 @@ import * as RM from 'fp-ts/ReadonlyMap'
 import * as Sg from 'fp-ts/Semigroup'
 import { Type as Type_ } from 'io-ts'
 import * as t from 'io-ts/Type'
-
-import { WithMap1 } from '../definition'
-import { Encoder } from './encoder'
-import { Guard } from './guard'
+import { WithMap1 } from 'schemata-ts/schemables/WithMap/definition'
+import { Encoder } from 'schemata-ts/schemables/WithMap/instances/encoder'
+import { Guard } from 'schemata-ts/schemables/WithMap/instances/guard'
 
 /**
  * @since 1.0.0

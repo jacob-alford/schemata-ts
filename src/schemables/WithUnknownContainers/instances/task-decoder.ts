@@ -10,4 +10,4 @@ export {
    * @category Instances
    */
   WithUnknownContainers as TaskDecoder,
-} from '../../../base/TaskDecoderBase'
+} from 'schemata-ts/base/TaskDecoderBase'

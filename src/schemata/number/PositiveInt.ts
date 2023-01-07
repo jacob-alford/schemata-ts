@@ -11,10 +11,8 @@
  */
 import { pipe } from 'fp-ts/function'
 import { Branded } from 'io-ts'
+import { make, SchemaExt } from 'schemata-ts/SchemaExt'
 
-import { make, SchemaExt } from '../../SchemaExt'
-
-/** @internal */
 interface PositiveIntBrand {
   readonly PositiveInt: unique symbol
 }

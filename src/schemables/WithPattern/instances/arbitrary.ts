@@ -5,11 +5,10 @@
  */
 import { pipe } from 'fp-ts/function'
 import * as RA from 'fp-ts/ReadonlyArray'
-
-import * as Arb from '../../../base/ArbitraryBase'
-import { match, matchOn } from '../../../internal/match'
-import * as PB from '../../../PatternBuilder'
-import { WithPattern1 } from '../definition'
+import * as Arb from 'schemata-ts/base/ArbitraryBase'
+import { match, matchOn } from 'schemata-ts/internal/match'
+import * as PB from 'schemata-ts/PatternBuilder'
+import { WithPattern1 } from 'schemata-ts/schemables/WithPattern/definition'
 
 const matchK = matchOn('kind')
 

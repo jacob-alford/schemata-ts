@@ -7,9 +7,8 @@
  * @since 1.0.0
  */
 import { Branded } from 'io-ts'
-
-import * as PB from '../../PatternBuilder'
-import { make, SchemaExt } from '../../SchemaExt'
+import * as PB from 'schemata-ts/PatternBuilder'
+import { make, SchemaExt } from 'schemata-ts/SchemaExt'
 
 const nHexDigits = (n: number) => PB.exactly(n)(PB.hexDigit)
 
@@ -113,10 +112,6 @@ const uuidPattern = {
  */
 export type UUIDVersion = keyof typeof uuidPattern
 
-/**
- * @since 1.0.0
- * @internal
- */
 interface UUIDBrand<Version extends UUIDVersion> {
   readonly UUID: unique symbol
   readonly UUIDVersion: Version

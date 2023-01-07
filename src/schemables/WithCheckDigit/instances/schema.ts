@@ -4,9 +4,8 @@
  * @since 1.0.0
  */
 import { Branded } from 'io-ts'
-
-import * as SC from '../../../SchemaExt'
-import { CheckDigitVerified } from '../definition'
+import { CheckDigitVerified } from 'schemata-ts/schemables/WithCheckDigit/definition'
+import * as SC from 'schemata-ts/SchemaExt'
 
 /**
  * @since 1.0.0

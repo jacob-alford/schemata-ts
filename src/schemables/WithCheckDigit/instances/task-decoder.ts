@@ -6,10 +6,15 @@
 import { pipe } from 'fp-ts/function'
 import * as TE from 'fp-ts/TaskEither'
 import { Branded } from 'io-ts'
-
-import * as TD from '../../../base/TaskDecoderBase'
-import { CheckDigitVerified, WithCheckDigit2C } from '../definition'
-import { locationToIndex, replaceCharAt } from '../utils'
+import * as TD from 'schemata-ts/base/TaskDecoderBase'
+import {
+  CheckDigitVerified,
+  WithCheckDigit2C,
+} from 'schemata-ts/schemables/WithCheckDigit/definition'
+import {
+  locationToIndex,
+  replaceCharAt,
+} from 'schemata-ts/schemables/WithCheckDigit/utils'
 
 /**
  * @since 1.0.0

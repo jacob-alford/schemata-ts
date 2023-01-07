@@ -10,10 +10,9 @@ import { flow } from 'fp-ts/function'
 import * as O from 'fp-ts/Option'
 import * as t_ from 'io-ts'
 import * as t from 'io-ts/Type'
-
-import { WithOption1 } from '../definition'
-import { Encoder } from './encoder'
-import { Guard } from './guard'
+import { WithOption1 } from 'schemata-ts/schemables/WithOption/definition'
+import { Encoder } from 'schemata-ts/schemables/WithOption/instances/encoder'
+import { Guard } from 'schemata-ts/schemables/WithOption/instances/guard'
 
 /**
  * @since 1.0.0

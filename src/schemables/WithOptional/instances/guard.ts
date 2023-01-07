@@ -3,8 +3,8 @@
  *
  * @since 1.0.0
  */
-import * as G from '../../../base/GuardBase'
-import { WithOptional1 } from '../definition'
+import * as G from 'schemata-ts/base/GuardBase'
+import { WithOptional1 } from 'schemata-ts/schemables/WithOptional/definition'
 
 /**
  * @since 1.0.0

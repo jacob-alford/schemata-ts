@@ -9,8 +9,7 @@ import { flow } from 'fp-ts/function'
 import * as O from 'fp-ts/Option'
 import * as TE from 'fp-ts/TaskEither'
 import * as TD from 'io-ts/TaskDecoder'
-
-import { WithOption2C } from '../definition'
+import { WithOption2C } from 'schemata-ts/schemables/WithOption/definition'
 
 /**
  * @since 1.0.0
