@@ -17,14 +17,14 @@
   "module": "./dist/esm/index.mjs",
   "exports": {
     ".": {
-      "require": "./dist/index.js",
+      "types": "./dist/index.d.ts",
       "import": "./dist/esm/index.mjs",
-      "types": "./dist/index.d.ts"
+      "require": "./dist/index.js"
     },
     "./*": {
-      "require": "./dist/*.js",
+      "types": "./dist/*.d.ts",
       "import": "./dist/esm/*.mjs",
-      "types": "./dist/*.d.ts"
+      "require": "./dist/*.js"
     }
   },
   "typesVersions": {

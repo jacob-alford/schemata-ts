@@ -33,11 +33,11 @@ export const copyPackageJson: Build<void> = C =>
         module: './_esm/index.mjs',
         exports: {
           '.': {
+            types: './index.d.ts',
             import: './_esm/index.mjs',
             require: './index.js',
-            types: './index.d.ts',
           },
-          './*': { import: './_esm/*.mjs', require: './*.js', types: './*.d.ts' },
+          './*': { types: './*.d.ts', import: './_esm/*.mjs', require: './*.js' },
         },
         publishConfig: {
           access: 'public',
