@@ -26,7 +26,7 @@ jobs:
         with:
           node-version: ${{ matrix.node-version }}
       - run: yarn install
-      - run: yarn run build
+      - run: yarn run build:pack
       - run: yarn run eslint
       - run: yarn run test:ci
       - name: Coveralls
