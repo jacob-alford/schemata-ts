@@ -211,7 +211,7 @@ export interface WithStructM<S> {
               ? K
               : KOut
             : never
-          : K]: Props[K] extends readonly [any, any, infer Val]
+          : never]: Props[K] extends readonly [any, any, infer Val]
           ? Val extends HKT2<S, any, infer A>
             ? A
             : never
