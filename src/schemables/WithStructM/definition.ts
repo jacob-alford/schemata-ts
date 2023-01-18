@@ -138,16 +138,23 @@ type MapKeyTo = {
 
 /**
  * @since 1.3.0
+ * @category Constructors
+ */
+export const isOptionalFlag = (flag: KeyFlag): flag is OptionalKeyFlag =>
+  flag === OptionalKeyFlag
+
+/**
+ * @since 1.3.0
  * @category Combinators
  */
 export const mapKeyTo: MapKeyTo = mapTo => (prop: any) => [prop[0], mapTo, prop[2]] as any
 
 /**
  * @since 1.3.0
- * @category Constructors
+ * @category Combinators
  */
-export const isOptionalFlag = (flag: KeyFlag): flag is OptionalKeyFlag =>
-  flag === OptionalKeyFlag
+export const keyIsNotMapped = (key: string | KeyNotMapped): key is KeyNotMapped =>
+  key === KeyNotMapped
 
 type Combine<A> = {
   [K in keyof A]: A[K]
@@ -160,7 +167,12 @@ type Combine<A> = {
  * @category Model
  */
 export interface WithStructM<S> {
-  readonly structM: <Props extends Record<string, Prop<any, S, HKT2<S, any, any>, any>>>(
+  readonly structM: <
+    Props extends Record<
+      string,
+      Prop<KeyFlag, S, HKT2<S, unknown, unknown>, string | KeyNotMapped>
+    >,
+  >(
     properties: Props,
   ) => HKT2<
     S,
@@ -226,7 +238,12 @@ export interface WithStructM<S> {
  * @category Model
  */
 export interface WithStructM1<S extends URIS> {
-  readonly structM: <Props extends Record<string, Prop1<any, S, Kind<S, any>, any>>>(
+  readonly structM: <
+    Props extends Record<
+      string,
+      Prop1<KeyFlag, S, Kind<S, unknown>, string | KeyNotMapped>
+    >,
+  >(
     properties: Props,
   ) => Kind<
     S,
@@ -270,7 +287,10 @@ export interface WithStructM1<S extends URIS> {
  */
 export interface WithStructM2<S extends URIS2> {
   readonly structM: <
-    Props extends Record<string, Prop2<any, S, Kind2<S, any, any>, any>>,
+    Props extends Record<
+      string,
+      Prop2<KeyFlag, S, Kind2<S, unknown, unknown>, string | KeyNotMapped>
+    >,
   >(
     properties: Props,
   ) => Kind2<
@@ -338,7 +358,10 @@ export interface WithStructM2<S extends URIS2> {
  */
 export interface WithStructM2C<S extends URIS2, E> {
   readonly structM: <
-    Props extends Record<string, Prop2<any, S, Kind2<S, any, any>, any>>,
+    Props extends Record<
+      string,
+      Prop2<KeyFlag, S, Kind2<S, E, unknown>, string | KeyNotMapped>
+    >,
   >(
     properties: Props,
   ) => Kind2<
