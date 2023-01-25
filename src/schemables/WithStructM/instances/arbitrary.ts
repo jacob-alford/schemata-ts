@@ -22,7 +22,7 @@ export const Arbitrary: WithStructM1<Arb.URI> = {
       const out = {} as any
       pipe(
         properties,
-        forIn((key, [flag, mapToKey, arb]) => () => {
+        forIn((key, { _flag: flag, _keyRemap: mapToKey, _val: arb }) => () => {
           // If key is mapped, but the output already has that key, then the result is an intersection of the two arbitraries
           if (!keyIsNotMapped(mapToKey) && hasOwn(out, mapToKey)) {
             out[mapToKey] = Arb.intersect(arb)(out[mapToKey]).arbitrary(fc)

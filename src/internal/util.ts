@@ -68,6 +68,49 @@ export const witherS =
   }
 
 /**
+ * Performs a validative traversal over a struct's own enumerable properties while mapping
+ * output types.
+ *
+ * @internal
+ */
+export const witherSWithRemap =
+  <E>(sgErrors: Sg.Semigroup<E>) =>
+  <In extends Record<string, any>, A>(
+    f: <K extends keyof In>(
+      key: K,
+      value: In[K],
+    ) => E.Either<E, O.Option<readonly [A, keyof In]>>,
+  ) =>
+  (s: In): E.Either<E, { [K in keyof In]: A }> => {
+    const errors: E[] = []
+    const out: { [K in keyof In]: A } = {} as any
+    /* Enumerable own, Enumerable inherited */
+    for (const key in s) {
+      /* Ignores inherited properties */
+      if (!hasOwn(s, key)) continue
+
+      /* Perform effect */
+      const result = f(key, s[key])
+
+      /* add any errors to accumulation */
+      if (E.isLeft(result)) {
+        errors.push(result.left)
+        continue
+      }
+
+      /* none => skip */
+      if (O.isNone(result.right)) continue
+      else {
+        const [value, newKey] = result.right.value
+        out[newKey] = value
+      }
+    }
+    return RA.isNonEmpty(errors)
+      ? E.left(pipe(errors, RNEA.concatAll(sgErrors)))
+      : E.right(out)
+  }
+
+/**
  * Iterates over an object's own non-inherited enumerable properties.
  *
  * @internal
