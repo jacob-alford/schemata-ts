@@ -1,11 +1,13 @@
+import * as fc from 'fast-check'
 import * as E from 'fp-ts/Either'
 import { pipe } from 'fp-ts/function'
 import * as DE from 'io-ts/DecodeError'
 import * as FS from 'io-ts/FreeSemigroup'
 
+import * as Arb from '../../src/base/ArbitraryBase'
 import * as D from '../../src/base/DecoderBase'
 import { getDecoder } from '../../src/Decoder'
-import * as s from '../../src/schemables/WithStructM/definition'
+import { Arbitrary } from '../../src/schemables/WithStructM/instances/arbitrary'
 import { Decoder } from '../../src/schemables/WithStructM/instances/decoder'
 import * as S from '../../src/schemata'
 
@@ -16,9 +18,21 @@ const decodeOptionFromNullableString = getDecoder(S.OptionFromNullable(S.String)
 
 describe('WithStructM', () => {
   describe('Decoder', () => {
-    const decoder = Decoder.structM({
-      a: s.required(D.string),
-      b: s.optional(D.number),
+    const decoder = Decoder.structM(_ => ({
+      a: _.required(D.string),
+      b: _.optional(D.number),
+    }))
+    // Here we're only taking the first union element if there is an intersection
+    it("behaves as expected when there's an intersection", () => {
+      const decoder = Decoder.structM(_ => ({
+        a: pipe(_.required(D.number), _.mapKeyTo('c')),
+        b: _.optional(D.number),
+        c: _.required(D.string),
+      }))
+      expect(decoder.decode({ a: 1, b: 1, c: 'c' })).toEqual({
+        _tag: 'Right',
+        right: { b: 1, c: 'c' },
+      })
     })
     it('decodes a struct with required and optional properites', () => {
       expect(decoder.decode({ a: 'a' })).toEqual({ _tag: 'Right', right: { a: 'a' } })
@@ -51,11 +65,11 @@ describe('WithStructM', () => {
       )
     })
     it('decodes with a custom key remap', () => {
-      const decoder = Decoder.structM({
-        a: s.required(D.string),
-        b: s.optional(D.number),
-        c: pipe(s.required(D.string), s.mapKeyTo('d')),
-      })
+      const decoder = Decoder.structM(_ => ({
+        a: _.required(D.string),
+        b: _.optional(D.number),
+        c: pipe(_.required(D.string), _.mapKeyTo('d')),
+      }))
       expect(decoder.decode({ a: 'a', c: 'used-to-be-c' })).toEqual({
         _tag: 'Right',
         right: { a: 'a', d: 'used-to-be-c' },
@@ -63,11 +77,11 @@ describe('WithStructM', () => {
     })
     it('decodes with a custom key remap and a rest param', () => {
       const decoder = Decoder.structM(
-        {
-          a: s.required(D.string),
-          b: s.optional(D.number),
-          c: pipe(s.required(D.string), s.mapKeyTo('d')),
-        },
+        _ => ({
+          a: _.required(D.string),
+          b: _.optional(D.number),
+          c: pipe(_.required(D.string), _.mapKeyTo('d')),
+        }),
         { restParam: D.array(D.boolean) },
       )
       expect(
@@ -93,11 +107,11 @@ describe('WithStructM', () => {
     })
     it('fails with invalid rest param', () => {
       const decoder = Decoder.structM(
-        {
-          a: s.required(D.string),
-          b: s.optional(D.number),
-          c: pipe(s.required(D.string), s.mapKeyTo('d')),
-        },
+        _ => ({
+          a: _.required(D.string),
+          b: _.optional(D.number),
+          c: pipe(_.required(D.string), _.mapKeyTo('d')),
+        }),
         { restParam: D.array(D.boolean) },
       )
       expect(
@@ -116,11 +130,11 @@ describe('WithStructM', () => {
     })
     it("doesn't fail without rest elements", () => {
       const decoder = Decoder.structM(
-        {
-          a: s.required(D.string),
-          b: s.optional(D.number),
-          c: pipe(s.required(D.string), s.mapKeyTo('d')),
-        },
+        _ => ({
+          a: _.required(D.string),
+          b: _.optional(D.number),
+          c: pipe(_.required(D.string), _.mapKeyTo('d')),
+        }),
         { restParam: D.array(D.boolean) },
       )
       expect(decoder.decode({ a: 'a', c: 'used-to-be-c' })).toEqual({
@@ -130,9 +144,9 @@ describe('WithStructM', () => {
     })
     describe("Ethan's weird edge cases", () => {
       const decoder = Decoder.structM(
-        {
-          date: s.optional(decodeOptionFromNullableDateFromUnix),
-        },
+        _ => ({
+          date: _.optional(decodeOptionFromNullableDateFromUnix),
+        }),
         { restParam: decodeOptionFromNullableString },
       )
       it('decodes both params', () => {
@@ -182,6 +196,32 @@ describe('WithStructM', () => {
           },
         })
       })
+    })
+  })
+  describe('Arbitrary', () => {
+    const arbitrary = Arbitrary.structM(_ => ({
+      a: _.required(Arb.string),
+      b: _.optional(Arb.number),
+      c: pipe(_.required(Arb.string), _.mapKeyTo('d')),
+    }))
+    const decoder = Decoder.structM(_ => ({
+      a: _.required(D.string),
+      b: _.optional(D.number),
+      c: pipe(_.required(D.string), _.mapKeyTo('d')),
+    }))
+    it('generates valid values', () => {
+      fc.assert(
+        fc.property(arbitrary.arbitrary(fc), value => {
+          expect(decoder.decode(value)).toEqual({
+            _tag: 'Right',
+            right: {
+              a: value.a,
+              b: value.b,
+              d: value.c,
+            },
+          })
+        }),
+      )
     })
   })
 })

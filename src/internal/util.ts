@@ -1,5 +1,5 @@
 import * as E from 'fp-ts/Either'
-import { pipe } from 'fp-ts/function'
+import { pipe, tuple } from 'fp-ts/function'
 import * as IO from 'fp-ts/IO'
 import * as O from 'fp-ts/Option'
 import * as RA from 'fp-ts/ReadonlyArray'
@@ -40,32 +40,10 @@ export const witherS =
   <E>(sgErrors: Sg.Semigroup<E>) =>
   <In extends Record<string, any>, A>(
     f: <K extends keyof In>(key: K, value: In[K]) => E.Either<E, O.Option<A>>,
-  ) =>
-  (s: In): E.Either<E, { [K in keyof In]: A }> => {
-    const errors: E[] = []
-    const out: { [K in keyof In]: A } = {} as any
-    /* Enumerable own, Enumerable inherited */
-    for (const key in s) {
-      /* Ignores inherited properties */
-      if (!hasOwn(s, key)) continue
-
-      /* Perform effect */
-      const result = f(key, s[key])
-
-      /* add any errors to accumulation */
-      if (E.isLeft(result)) {
-        errors.push(result.left)
-        continue
-      }
-
-      /* none => skip */
-      if (O.isNone(result.right)) continue
-      else out[key] = result.right.value
-    }
-    return RA.isNonEmpty(errors)
-      ? E.left(pipe(errors, RNEA.concatAll(sgErrors)))
-      : E.right(out)
-  }
+  ): ((s: In) => E.Either<E, { [K in keyof In]: A }>) =>
+    witherSM<E>(sgErrors)<In, A>((key, value) =>
+      pipe(f(key, value), E.map(O.map(a => tuple(a, key)))),
+    )
 
 /**
  * Performs a validative traversal over a struct's own enumerable properties while mapping
@@ -73,7 +51,7 @@ export const witherS =
  *
  * @internal
  */
-export const witherSWithRemap =
+export const witherSM =
   <E>(sgErrors: Sg.Semigroup<E>) =>
   <In extends Record<string, any>, A>(
     f: <K extends keyof In>(

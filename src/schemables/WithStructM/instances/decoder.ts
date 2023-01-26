@@ -9,11 +9,12 @@ import * as O from 'fp-ts/Option'
 import * as DE from 'io-ts/DecodeError'
 import * as D from 'io-ts/Decoder'
 import * as FS from 'io-ts/FreeSemigroup'
-import { hasOwn, witherSWithRemap } from 'schemata-ts/internal/util'
+import { hasOwn, witherSM } from 'schemata-ts/internal/util'
 import {
   isOptionalFlag,
   isRequiredFlag,
   keyIsNotMapped,
+  structTools,
   WithStructM2C,
 } from 'schemata-ts/schemables/WithStructM/definition'
 
@@ -22,50 +23,49 @@ import {
  * @category Instances
  */
 export const Decoder: WithStructM2C<D.URI, unknown> = {
-  structM: (properties, { restParam } = {}) => ({
+  structM: (getProperties, { restParam } = {}) => ({
     decode: flow(
       D.UnknownRecord.decode,
       E.chain(u => {
+        const properties = getProperties(structTools)
         const outKnown = pipe(
           properties,
-          witherSWithRemap(DE.getSemigroup<string>())(
-            (key, { _flag, _keyRemap, _val }) => {
-              const val: unknown = (u as any)[key]
-              // -- If the input _does not_ have a specified property key _and_ that key is required: return a key failure
-              if (!hasOwn(u, key) && isRequiredFlag(_flag)) {
-                return E.left(
+          witherSM(DE.getSemigroup<string>())((key, { _flag, _keyRemap, _val }) => {
+            const val: unknown = (u as any)[key]
+            // -- If the input _does not_ have a specified property key _and_ that key is required: return a key failure
+            if (!hasOwn(u, key) && isRequiredFlag(_flag)) {
+              return E.left(
+                FS.of(
+                  DE.key(
+                    key as string,
+                    DE.required,
+                    FS.of(DE.leaf(val, 'Missing Required Property')),
+                  ),
+                ),
+              )
+            }
+
+            // -- If the input _does not_ have a specified property key _and_ that key is optional: filter that property out
+            if ((!hasOwn(u, key) || val === undefined) && isOptionalFlag(_flag)) {
+              return E.right(O.none)
+            }
+
+            // -- If the input _does_ have a specified property key: validate it
+            return pipe(
+              _val.decode(val),
+              E.bimap(
+                error =>
                   FS.of(
                     DE.key(
                       key as string,
-                      DE.required,
-                      FS.of(DE.leaf(val, 'Missing Required Property')),
+                      isOptionalFlag(_flag) ? DE.optional : DE.required,
+                      error,
                     ),
                   ),
-                )
-              }
-
-              // -- If the input _does not_ have a specified property key _and_ that key is optional: filter that property out
-              if (!hasOwn(u, key) && isOptionalFlag(_flag)) {
-                return E.right(O.none)
-              }
-
-              // -- If the input _does_ have a specified property key: validate it
-              return pipe(
-                _val.decode(val),
-                E.bimap(
-                  error =>
-                    FS.of(
-                      DE.key(
-                        key as string,
-                        isOptionalFlag(_flag) ? DE.optional : DE.required,
-                        error,
-                      ),
-                    ),
-                  result => O.some([result, keyIsNotMapped(_keyRemap) ? key : _keyRemap]),
-                ),
-              )
-            },
-          ),
+                result => O.some([result, keyIsNotMapped(_keyRemap) ? key : _keyRemap]),
+              ),
+            )
+          }),
         )
 
         // -- If there is no rest parameter specified, return just the decoded known properties
@@ -76,7 +76,7 @@ export const Decoder: WithStructM2C<D.URI, unknown> = {
           E.chain(knownResult =>
             pipe(
               u,
-              witherSWithRemap(DE.getSemigroup<string>())((inputKey, inputValue) => {
+              witherSM(DE.getSemigroup<string>())((inputKey, inputValue) => {
                 // -- If the input key is not a known property key (i.e. it was not specified in the struct) decode it with the rest parameter
                 if (!hasOwn(properties, inputKey) || properties[inputKey] === undefined)
                   return pipe(
