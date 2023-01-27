@@ -258,16 +258,34 @@ export const structTools: StructTools = {
  * @category Model
  */
 export type StructOptions<RestKind> =
-  | {
-      readonly extraProps: 'restParam'
-      readonly restParam: RestKind
-    }
-  | {
-      readonly extraProps: 'error'
-    }
-  | {
-      readonly extraProps: 'strip'
-    }
+  | StructWithRestParam<RestKind>
+  | StrictStruct
+  | StrippedStruct
+
+/**
+ * @since 1.3.0
+ * @category Model
+ */
+interface StructWithRestParam<RestKind> {
+  readonly extraProps: 'restParam'
+  readonly restParam: RestKind
+}
+
+/**
+ * @since 1.3.0
+ * @category Model
+ */
+interface StrictStruct {
+  readonly extraProps: 'error'
+}
+
+/**
+ * @since 1.3.0
+ * @category Model
+ */
+interface StrippedStruct {
+  readonly extraProps: 'strip'
+}
 
 /**
  * @since 1.3.0
@@ -279,7 +297,7 @@ export interface WithStructM<S> {
       string,
       Prop<KeyFlag, S, HKT2<S, unknown, unknown>, string | KeyNotMapped>
     >,
-    RestKind extends HKT2<S, any, any>,
+    RestKind extends HKT2<S, any, any> | undefined,
   >(
     properties: (_: StructTools) => Props,
     params?: StructOptions<RestKind>,
@@ -358,7 +376,7 @@ export interface WithStructM1<S extends URIS> {
       string,
       Prop1<KeyFlag, S, Kind<S, unknown>, string | KeyNotMapped>
     >,
-    RestKind extends Kind<S, any>,
+    RestKind extends Kind<S, any> | undefined,
   >(
     properties: (_: StructTools) => Props,
     params?: StructOptions<RestKind>,
@@ -406,7 +424,7 @@ export interface WithStructM2<S extends URIS2> {
       string,
       Prop2<KeyFlag, S, Kind2<S, any, any>, string | KeyNotMapped>
     >,
-    RestKind extends Kind2<S, any, any>,
+    RestKind extends Kind2<S, any, any> | undefined,
   >(
     properties: (_: StructTools) => Props,
     params?: StructOptions<RestKind>,
@@ -485,7 +503,7 @@ export interface WithStructM2C<S extends URIS2, E> {
       string,
       Prop2<KeyFlag, S, Kind2<S, E, unknown>, string | KeyNotMapped>
     >,
-    RestKind extends Kind2<S, any, any>,
+    RestKind extends Kind2<S, any, any> | undefined,
   >(
     properties: (_: StructTools) => Props,
     params?: StructOptions<RestKind>,
@@ -495,7 +513,9 @@ export interface WithStructM2C<S extends URIS2, E> {
     Combine<
       (RestKind extends undefined
         ? unknown
-        : { [key: string]: RestKind extends Kind2<S, any, infer A> ? A : never }) & {
+        : {
+            [key: string]: RestKind extends Kind2<S, any, infer A> ? A : never
+          }) & {
         [K in keyof Props as Props[K] extends {
           readonly _flag: infer Flag
           readonly _keyRemap: infer KOut

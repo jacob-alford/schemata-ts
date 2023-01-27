@@ -31,7 +31,7 @@ export const Decoder: WithStructM2C<D.URI, unknown> = {
     decode: flow(
       D.UnknownRecord.decode,
       E.chain(u => {
-        const { extraProps } = params
+        const config = params
         const properties = getProperties(structTools)
         const outKnown = pipe(
           properties,
@@ -74,10 +74,10 @@ export const Decoder: WithStructM2C<D.URI, unknown> = {
         )
 
         // -- If parameters are set to strip additional properties, return just the decoded known properties
-        if (extraProps === 'strip') return outKnown
+        if (config.extraProps === 'strip') return outKnown
 
         // -- if extra props are not allowed, return a failure on keys not specified in properties
-        if (extraProps === 'error') {
+        if (config.extraProps === 'error') {
           return pipe(
             u,
             witherSM(DE.getSemigroup<string>())(key => {
@@ -102,7 +102,8 @@ export const Decoder: WithStructM2C<D.URI, unknown> = {
                 // -- If the input key is not a known property key (i.e. it was not specified in the struct) decode it with the rest parameter
                 if (!hasOwn(properties, inputKey) || properties[inputKey] === undefined)
                   return pipe(
-                    params.restParam.decode(inputValue),
+                    // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+                    config.restParam!.decode(inputValue),
                     E.bimap(
                       err => FS.of(DE.key(inputKey as string, DE.optional, err)),
                       result => O.some([result, inputKey]),
