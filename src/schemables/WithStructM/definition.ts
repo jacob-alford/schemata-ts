@@ -245,16 +245,29 @@ export const structTools: StructTools = {
 }
 
 /**
+ * Mapped struct configuration determining how to handle extra (non-specified) fields.
+ * Default is to strip additional params.
+ *
+ * Options:
+ *
+ * - `restParam` - add a rest parameter to the struct
+ * - `error` - decode to an error with extra params
+ * - `strip` - strips additional params
+ *
  * @since 1.3.0
  * @category Model
  */
-export type StructOptions<RestKind> = {
-  /**
-   * Adds a record-like rest property to the struct that will be used for additional
-   * properties not specified in `properties`
-   */
-  readonly restParam?: RestKind
-}
+export type StructOptions<RestKind> =
+  | {
+      readonly extraProps: 'restParam'
+      readonly restParam: RestKind
+    }
+  | {
+      readonly extraProps: 'error'
+    }
+  | {
+      readonly extraProps: 'strip'
+    }
 
 /**
  * @since 1.3.0
@@ -266,7 +279,7 @@ export interface WithStructM<S> {
       string,
       Prop<KeyFlag, S, HKT2<S, unknown, unknown>, string | KeyNotMapped>
     >,
-    RestKind extends HKT2<S, any, any> | undefined,
+    RestKind extends HKT2<S, any, any>,
   >(
     properties: (_: StructTools) => Props,
     params?: StructOptions<RestKind>,
@@ -345,7 +358,7 @@ export interface WithStructM1<S extends URIS> {
       string,
       Prop1<KeyFlag, S, Kind<S, unknown>, string | KeyNotMapped>
     >,
-    RestKind extends Kind<S, any> | undefined,
+    RestKind extends Kind<S, any>,
   >(
     properties: (_: StructTools) => Props,
     params?: StructOptions<RestKind>,
@@ -393,7 +406,7 @@ export interface WithStructM2<S extends URIS2> {
       string,
       Prop2<KeyFlag, S, Kind2<S, any, any>, string | KeyNotMapped>
     >,
-    RestKind extends Kind2<S, any, any> | undefined,
+    RestKind extends Kind2<S, any, any>,
   >(
     properties: (_: StructTools) => Props,
     params?: StructOptions<RestKind>,
@@ -472,7 +485,7 @@ export interface WithStructM2C<S extends URIS2, E> {
       string,
       Prop2<KeyFlag, S, Kind2<S, E, unknown>, string | KeyNotMapped>
     >,
-    RestKind extends Kind2<S, any, any> | undefined,
+    RestKind extends Kind2<S, any, any>,
   >(
     properties: (_: StructTools) => Props,
     params?: StructOptions<RestKind>,

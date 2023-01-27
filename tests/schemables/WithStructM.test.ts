@@ -82,7 +82,7 @@ describe('WithStructM', () => {
           b: _.optional(D.number),
           c: pipe(_.required(D.string), _.mapKeyTo('d')),
         }),
-        { restParam: D.array(D.boolean) },
+        { extraProps: 'restParam', restParam: D.array(D.boolean) },
       )
       expect(
         decoder.decode({
@@ -112,7 +112,7 @@ describe('WithStructM', () => {
           b: _.optional(D.number),
           c: pipe(_.required(D.string), _.mapKeyTo('d')),
         }),
-        { restParam: D.array(D.boolean) },
+        { extraProps: 'restParam', restParam: D.array(D.boolean) },
       )
       expect(
         decoder.decode({
@@ -135,11 +135,36 @@ describe('WithStructM', () => {
           b: _.optional(D.number),
           c: pipe(_.required(D.string), _.mapKeyTo('d')),
         }),
-        { restParam: D.array(D.boolean) },
+        { extraProps: 'restParam', restParam: D.array(D.boolean) },
       )
       expect(decoder.decode({ a: 'a', c: 'used-to-be-c' })).toEqual({
         _tag: 'Right',
         right: { a: 'a', d: 'used-to-be-c' },
+      })
+    })
+    it('fails on additional props', () => {
+      const decoder = Decoder.structM(
+        _ => ({
+          a: _.required(D.string),
+          b: _.optional(D.number),
+          c: pipe(_.required(D.string), _.mapKeyTo('d')),
+        }),
+        { extraProps: 'error' },
+      )
+      expect(
+        decoder.decode({
+          a: 'a',
+          c: 'used-to-be-c',
+          d: "what you're not supposed to be here",
+        }),
+      ).toEqual({
+        _tag: 'Left',
+        left: FS.of(
+          DE.wrap(
+            'Encountered Unexpected Property Keys: ',
+            FS.of(DE.leaf('d', 'Unexpected Property Key')),
+          ),
+        ),
       })
     })
     describe("Ethan's weird edge cases", () => {
@@ -147,7 +172,7 @@ describe('WithStructM', () => {
         _ => ({
           date: _.optional(decodeOptionFromNullableDateFromUnix),
         }),
-        { restParam: decodeOptionFromNullableString },
+        { extraProps: 'restParam', restParam: decodeOptionFromNullableString },
       )
       it('decodes both params', () => {
         const result = decoder.decode({ date: 367722000, dog: 'cat' })

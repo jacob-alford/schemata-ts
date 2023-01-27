@@ -3,6 +3,7 @@
  *
  * @since 1.0.0
  */
+import * as Ap from 'fp-ts/Apply'
 import * as E from 'fp-ts/Either'
 import { flow, pipe } from 'fp-ts/function'
 import * as O from 'fp-ts/Option'
@@ -18,15 +19,19 @@ import {
   WithStructM2C,
 } from 'schemata-ts/schemables/WithStructM/definition'
 
+const decodeErrorValidation = E.getApplicativeValidation(DE.getSemigroup<string>())
+const apSecond = Ap.apSecond(decodeErrorValidation)
+
 /**
  * @since 1.3.0
  * @category Instances
  */
 export const Decoder: WithStructM2C<D.URI, unknown> = {
-  structM: (getProperties, { restParam } = {}) => ({
+  structM: (getProperties, params = { extraProps: 'strip' }) => ({
     decode: flow(
       D.UnknownRecord.decode,
       E.chain(u => {
+        const { extraProps } = params
         const properties = getProperties(structTools)
         const outKnown = pipe(
           properties,
@@ -68,8 +73,25 @@ export const Decoder: WithStructM2C<D.URI, unknown> = {
           }),
         )
 
-        // -- If there is no rest parameter specified, return just the decoded known properties
-        if (restParam === undefined) return outKnown
+        // -- If parameters are set to strip additional properties, return just the decoded known properties
+        if (extraProps === 'strip') return outKnown
+
+        // -- if extra props are not allowed, return a failure on keys not specified in properties
+        if (extraProps === 'error') {
+          return pipe(
+            u,
+            witherSM(DE.getSemigroup<string>())(key => {
+              if (!hasOwn(properties, key)) {
+                return E.left(FS.of(DE.leaf(key, `Unexpected Property Key`)))
+              }
+              return E.right(O.none)
+            }),
+            E.mapLeft(errs =>
+              FS.of(DE.wrap('Encountered Unexpected Property Keys: ', errs)),
+            ),
+            apSecond(outKnown),
+          )
+        }
 
         return pipe(
           outKnown,
@@ -80,7 +102,7 @@ export const Decoder: WithStructM2C<D.URI, unknown> = {
                 // -- If the input key is not a known property key (i.e. it was not specified in the struct) decode it with the rest parameter
                 if (!hasOwn(properties, inputKey) || properties[inputKey] === undefined)
                   return pipe(
-                    restParam.decode(inputValue),
+                    params.restParam.decode(inputValue),
                     E.bimap(
                       err => FS.of(DE.key(inputKey as string, DE.optional, err)),
                       result => O.some([result, inputKey]),
