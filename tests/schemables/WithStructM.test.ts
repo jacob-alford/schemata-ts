@@ -6,9 +6,11 @@ import * as FS from 'io-ts/FreeSemigroup'
 
 import * as Arb from '../../src/base/ArbitraryBase'
 import * as D from '../../src/base/DecoderBase'
+import * as Enc from '../../src/base/EncoderBase'
 import { getDecoder } from '../../src/Decoder'
 import { Arbitrary } from '../../src/schemables/WithStructM/instances/arbitrary'
 import { Decoder } from '../../src/schemables/WithStructM/instances/decoder'
+import { Encoder } from '../../src/schemables/WithStructM/instances/encoder'
 import * as S from '../../src/schemata'
 
 const decodeOptionFromNullableDateFromUnix = getDecoder(
@@ -17,6 +19,57 @@ const decodeOptionFromNullableDateFromUnix = getDecoder(
 const decodeOptionFromNullableString = getDecoder(S.OptionFromNullable(S.String))
 
 describe('WithStructM', () => {
+  describe('Encoder', () => {
+    it('encodes a struct with required and optional properites', () => {
+      const encoder = Encoder.structM(_ => ({
+        a: _.required(Enc.Schemable.string),
+        b: _.optional(Enc.Schemable.number),
+      }))
+      expect(encoder.encode({ a: 'a' })).toEqual({ a: 'a' })
+      expect(encoder.encode({ a: 'a', b: 1 })).toEqual({ a: 'a', b: 1 })
+    })
+    it('encodes with a custom key remap', () => {
+      const encoder = Encoder.structM(_ => ({
+        a: _.required(Enc.Schemable.string),
+        b: _.optional(Enc.Schemable.number),
+        c: pipe(_.required(Enc.Schemable.string), _.mapKeyTo('d')),
+      }))
+      expect(encoder.encode({ a: 'a', d: 'used-to-be-c' })).toEqual({
+        a: 'a',
+        c: 'used-to-be-c',
+      })
+    })
+    it('encodes with a custom key remap and a rest param', () => {
+      const encoder = Encoder.structM(
+        _ => ({
+          a: _.required(Enc.Schemable.string),
+          b: _.optional(Enc.Schemable.number),
+          c: pipe(_.required(Enc.Schemable.string), _.mapKeyTo('d')),
+        }),
+        {
+          extraProps: 'restParam',
+          restParam: Enc.Schemable.array(Enc.Schemable.boolean),
+        },
+      )
+      expect(
+        encoder.encode({
+          a: 'a',
+          d: 'used-to-be-c',
+          e: [true, false],
+          f: [false],
+          g: [],
+          h: [true, true, true],
+        }),
+      ).toEqual({
+        a: 'a',
+        c: 'used-to-be-c',
+        e: [true, false],
+        f: [false],
+        g: [],
+        h: [true, true, true],
+      })
+    })
+  })
   describe('Decoder', () => {
     const decoder = Decoder.structM(_ => ({
       a: _.required(D.string),

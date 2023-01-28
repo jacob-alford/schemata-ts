@@ -1,7 +1,7 @@
 /**
  * WithStructM instance for Decoder
  *
- * @since 1.0.0
+ * @since 1.3.0
  */
 import * as Ap from 'fp-ts/Apply'
 import * as E from 'fp-ts/Either'

@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/ban-types */
 /**
  * Schemable for mapping a struct
  *
@@ -306,7 +307,7 @@ export interface WithStructM<S> {
     Combine<
       (RestKind extends undefined
         ? unknown
-        : { [key: string]: RestKind extends HKT2<S, infer I, any> ? I : never }) & {
+        : { [key: string]: RestKind extends HKT2<S, infer I, any> ? I : never } | {}) & {
         [K in keyof Props as Props[K] extends { readonly _flag: infer Flag }
           ? Flag extends RequiredKeyFlag
             ? K
@@ -331,7 +332,7 @@ export interface WithStructM<S> {
     Combine<
       (RestKind extends undefined
         ? unknown
-        : { [key: string]: RestKind extends HKT2<S, any, infer A> ? A : never }) & {
+        : { [key: string]: RestKind extends HKT2<S, any, infer A> ? A : never } | {}) & {
         [K in keyof Props as Props[K] extends {
           readonly _flag: infer Flag
           readonly _keyRemap: infer KOut
@@ -385,7 +386,7 @@ export interface WithStructM1<S extends URIS> {
     Combine<
       (RestKind extends undefined
         ? unknown
-        : { [key: string]: RestKind extends Kind<S, infer A> ? A : never }) & {
+        : { [key: string]: RestKind extends Kind<S, infer A> ? A : never } | {}) & {
         [K in keyof Props as Props[K] extends {
           readonly _flag: infer Flag
         }
@@ -433,7 +434,7 @@ export interface WithStructM2<S extends URIS2> {
     Combine<
       (RestKind extends undefined
         ? unknown
-        : { [key: string]: RestKind extends Kind2<S, infer I, any> ? I : never }) & {
+        : { [key: string]: RestKind extends Kind2<S, infer I, any> ? I : never } | {}) & {
         [K in keyof Props as Props[K] extends { readonly _flag: infer Flag }
           ? Flag extends RequiredKeyFlag
             ? K
@@ -458,7 +459,7 @@ export interface WithStructM2<S extends URIS2> {
     Combine<
       (RestKind extends undefined
         ? unknown
-        : { [key: string]: RestKind extends Kind2<S, any, infer A> ? A : never }) & {
+        : { [key: string]: RestKind extends Kind2<S, any, infer A> ? A : never } | {}) & {
         [K in keyof Props as Props[K] extends {
           readonly _flag: infer Flag
           readonly _keyRemap: infer KOut
@@ -513,9 +514,11 @@ export interface WithStructM2C<S extends URIS2, E> {
     Combine<
       (RestKind extends undefined
         ? unknown
-        : {
-            [key: string]: RestKind extends Kind2<S, any, infer A> ? A : never
-          }) & {
+        :
+            | {
+                [key: string]: RestKind extends Kind2<S, any, infer A> ? A : never
+              }
+            | {}) & {
         [K in keyof Props as Props[K] extends {
           readonly _flag: infer Flag
           readonly _keyRemap: infer KOut

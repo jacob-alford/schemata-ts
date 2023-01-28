@@ -1,21 +1,66 @@
 /**
- * Represents a ReadonlyMap converted from an expected array of entries.
+ * WithStructM instance for Encoder
  *
- * @since 1.0.0
+ * @since 1.3.0
  */
-import { flow } from 'fp-ts/function'
-import * as RA from 'fp-ts/ReadonlyArray'
-import * as RM from 'fp-ts/ReadonlyMap'
-import * as RTup from 'fp-ts/ReadonlyTuple'
+import { tuple } from 'fp-ts/function'
 import * as Enc from 'io-ts/Encoder'
-import { WithMap2 } from 'schemata-ts/schemables/WithMap/definition'
+import { hasOwn } from 'schemata-ts/internal/util'
+import {
+  keyIsNotMapped,
+  structTools,
+  WithStructM2,
+} from 'schemata-ts/schemables/WithStructM/definition'
 
 /**
  * @since 1.0.0
  * @category Instances
  */
-export const Encoder: WithMap2<Enc.URI> = {
-  mapFromEntries: (ordK, sk, sa) => ({
-    encode: flow(RM.toReadonlyArray(ordK), RA.map(RTup.bimap(sa.encode, sk.encode))),
-  }),
+export const Encoder: WithStructM2<Enc.URI> = {
+  structM: (getProperties, params = { extraProps: 'strip' }) => {
+    const properties = getProperties(structTools)
+    const keyLookup: Record<
+      // -- expected key of the output object
+      string,
+      readonly [inputKey: string, outputKeyEncoder: Enc.Encoder<unknown, unknown>]
+    > = {}
+    for (const key in properties) {
+      // -- ignore inherited properties
+      if (!hasOwn(properties, key)) continue
+      // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+      const { _keyRemap, _val } = properties[key]!
+
+      if (keyIsNotMapped(_keyRemap)) {
+        keyLookup[key] = tuple(key, _val)
+        continue
+      }
+
+      keyLookup[_keyRemap] = tuple(key, _val)
+    }
+    return {
+      encode: output => {
+        const result: Record<string, unknown> = {}
+        for (const key in output) {
+          const inputProps = keyLookup[key]
+
+          if (
+            // -- Param is extra (i.e. possible rest param)
+            (!hasOwn(keyLookup, key) || inputProps === undefined) &&
+            params.extraProps === 'restParam' &&
+            params.restParam !== undefined
+          ) {
+            result[key] = params.restParam.encode(output[key])
+          }
+
+          // -- Param is extra (and additional properties are stripped)
+          if (inputProps === undefined) continue
+
+          const [inputKey, outputKeyEncoder] = inputProps
+
+          result[inputKey] = outputKeyEncoder.encode(output[key])
+        }
+        return result as any
+      },
+    }
+  },
 }
