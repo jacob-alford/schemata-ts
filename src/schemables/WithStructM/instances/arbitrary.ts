@@ -17,7 +17,7 @@ import {
  * @category Instances
  */
 export const Arbitrary: WithStructM1<Arb.URI> = {
-  structM: getProperties => ({
+  structM: (getProperties, params = { extraProps: 'strip' }) => ({
     arbitrary: fc => {
       const properties = getProperties(structTools)
       const out = {} as any
@@ -29,6 +29,15 @@ export const Arbitrary: WithStructM1<Arb.URI> = {
             : arb.arbitrary(fc)
         }),
       )()
+      if (params.extraProps === 'restParam') {
+        const rest = params.restParam
+        if (rest !== undefined) {
+          return Arb.intersect({ arbitrary: fc => fc.record(out) })(
+            Arb.record(rest),
+          ).arbitrary(fc)
+        }
+      }
+
       return fc.record(out) as any
     },
   }),

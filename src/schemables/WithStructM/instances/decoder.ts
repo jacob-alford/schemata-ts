@@ -93,6 +93,9 @@ export const Decoder: WithStructM2C<D.URI, unknown> = {
           )
         }
 
+        const rest = config.restParam
+        if (rest === undefined) return outKnown
+
         return pipe(
           outKnown,
           E.chain(knownResult =>
@@ -102,8 +105,7 @@ export const Decoder: WithStructM2C<D.URI, unknown> = {
                 // -- If the input key is not a known property key (i.e. it was not specified in the struct) decode it with the rest parameter
                 if (!hasOwn(properties, inputKey) || properties[inputKey] === undefined)
                   return pipe(
-                    // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-                    config.restParam!.decode(inputValue),
+                    rest.decode(inputValue),
                     E.bimap(
                       err => FS.of(DE.key(inputKey as string, DE.optional, err)),
                       result => O.some([result, inputKey]),

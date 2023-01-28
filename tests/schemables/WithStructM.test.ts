@@ -167,6 +167,26 @@ describe('WithStructM', () => {
         ),
       })
     })
+    it('acts like strip if restParam is undefined', () => {
+      const decoder = Decoder.structM(
+        _ => ({
+          a: _.required(D.string),
+          b: _.optional(D.number),
+          c: pipe(_.required(D.string), _.mapKeyTo('d')),
+        }),
+        { extraProps: 'restParam', restParam: undefined },
+      )
+      expect(
+        decoder.decode({
+          a: 'a',
+          c: 'used-to-be-c',
+          d: "what you're not supposed to be here",
+        }),
+      ).toEqual({
+        _tag: 'Right',
+        right: { a: 'a', d: 'used-to-be-c' },
+      })
+    })
     describe("Ethan's weird edge cases", () => {
       const decoder = Decoder.structM(
         _ => ({
@@ -224,17 +244,17 @@ describe('WithStructM', () => {
     })
   })
   describe('Arbitrary', () => {
-    const arbitrary = Arbitrary.structM(_ => ({
-      a: _.required(Arb.string),
-      b: _.optional(Arb.number),
-      c: pipe(_.required(Arb.string), _.mapKeyTo('d')),
-    }))
-    const decoder = Decoder.structM(_ => ({
-      a: _.required(D.string),
-      b: _.optional(D.number),
-      c: pipe(_.required(D.string), _.mapKeyTo('d')),
-    }))
     it('generates valid values', () => {
+      const arbitrary = Arbitrary.structM(_ => ({
+        a: _.required(Arb.string),
+        b: _.optional(Arb.number),
+        c: pipe(_.required(Arb.string), _.mapKeyTo('d')),
+      }))
+      const decoder = Decoder.structM(_ => ({
+        a: _.required(D.string),
+        b: _.optional(D.number),
+        c: pipe(_.required(D.string), _.mapKeyTo('d')),
+      }))
       fc.assert(
         fc.property(arbitrary.arbitrary(fc), value => {
           expect(decoder.decode(value)).toEqual({
@@ -244,6 +264,36 @@ describe('WithStructM', () => {
               b: value.b,
               d: value.c,
             },
+          })
+        }),
+      )
+    })
+    it('generates rest params', () => {
+      const arbitrary = Arbitrary.structM(
+        _ => ({
+          a: _.required(Arb.string),
+          b: _.optional(Arb.number),
+          c: pipe(_.required(Arb.string), _.mapKeyTo('d')),
+        }),
+        { extraProps: 'restParam', restParam: Arb.array(Arb.boolean) },
+      )
+      const decoder = Decoder.structM(
+        _ => ({
+          a: _.required(D.string),
+          b: _.optional(D.number),
+          c: pipe(_.required(D.string), _.mapKeyTo('d')),
+        }),
+        { extraProps: 'restParam', restParam: D.array(D.boolean) },
+      )
+      fc.assert(
+        fc.property(arbitrary.arbitrary(fc), value => {
+          expect(decoder.decode(value)).toEqual({
+            _tag: 'Right',
+            right: expect.objectContaining({
+              a: value.a,
+              b: value.b,
+              d: value.c,
+            }),
           })
         }),
       )
