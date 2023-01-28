@@ -69,6 +69,62 @@ describe('WithStructM', () => {
         h: [true, true, true],
       })
     })
+    it('strips additional props', () => {
+      const encoder = Encoder.structM(_ => ({
+        a: _.required(Enc.Schemable.string),
+        b: _.optional(Enc.Schemable.number),
+        c: pipe(_.required(Enc.Schemable.string), _.mapKeyTo('d')),
+      }))
+      const encoder2 = Encoder.structM(
+        _ => ({
+          a: _.required(Enc.Schemable.string),
+          b: _.optional(Enc.Schemable.number),
+          c: pipe(_.required(Enc.Schemable.string), _.mapKeyTo('d')),
+        }),
+        { extraProps: 'error' },
+      )
+      expect(
+        encoder.encode({
+          a: 'a',
+          d: 'used-to-be-c',
+          somethingElse: "I'm not part of the struct",
+        } as any),
+      ).toEqual({
+        a: 'a',
+        c: 'used-to-be-c',
+      })
+      expect(
+        encoder2.encode({
+          a: 'a',
+          d: 'used-to-be-c',
+          somethingElse: "I'm not part of the struct",
+        } as any),
+      ).toEqual({
+        a: 'a',
+        c: 'used-to-be-c',
+      })
+    })
+    it("behaves in a good way when there's an intersection", () => {
+      const encoder = Encoder.structM(_ => ({
+        a: pipe(_.required(Enc.Schemable.number), _.mapKeyTo('c')),
+        b: _.optional(Enc.Schemable.number),
+        c: _.required(Enc.Schemable.string),
+      }))
+      expect(encoder.encode({ b: 1, c: 5 })).toEqual({ b: 1, c: 5 })
+    })
+    it('ignores inherited properties', () => {
+      const encoder = Encoder.structM(_ => ({
+        a: _.required(Enc.Schemable.string),
+        b: _.optional(Enc.Schemable.number),
+        __proto__: {
+          test: 'foo',
+        } as any,
+      }))
+      expect(encoder.encode({ a: 'a', b: 1, __proto__: { c: '5' } } as any)).toEqual({
+        a: 'a',
+        b: 1,
+      })
+    })
   })
   describe('Decoder', () => {
     const decoder = Decoder.structM(_ => ({
