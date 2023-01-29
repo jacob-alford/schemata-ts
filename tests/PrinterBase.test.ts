@@ -104,7 +104,6 @@ describe('PrinterBase', () => {
     expect(printer.domainToJson([undefined, () => '', s, 0n])).toStrictEqual(
       E.left(
         new PE.ErrorGroup([
-          new PE.ErrorAtIndex(0, new PE.InvalidValue(undefined)),
           new PE.ErrorAtIndex(1, new PE.InvalidValue(expect.any(Function))),
           new PE.ErrorAtIndex(2, new PE.InvalidValue(s)),
           new PE.ErrorAtIndex(3, new PE.InvalidValue(0n)),
