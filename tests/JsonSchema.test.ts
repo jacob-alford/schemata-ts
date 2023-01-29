@@ -223,6 +223,8 @@ describe('JsonSchema', () => {
     test('record', () => {
       expect(testValue.properties.rec).toStrictEqual({
         type: 'object',
+        properties: {},
+        required: [],
         additionalProperties: {
           description: 'CreditCard',
           type: 'string',

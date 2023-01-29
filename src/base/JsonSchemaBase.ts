@@ -124,10 +124,15 @@ class JsonStruct {
   constructor(
     readonly properties: Readonly<Record<string, JsonSchema>>,
     readonly required: ReadonlyArray<string>,
+    readonly additionalProperties?: JsonSchema | false,
   ) {}
 }
 
-/** Matches an object with uniform key values */
+/**
+ * Matches an object with uniform key values
+ *
+ * @deprecated Use JsonStruct instead
+ */
 class JsonRecord {
   readonly type = 'object'
   constructor(readonly additionalProperties: JsonSchema) {}
@@ -378,7 +383,9 @@ export const makeStructSchema = <A>(
     [K in keyof A]: Const<JsonSchema, A[K]>
   },
   required: ReadonlyArray<string> = [],
-): Const<JsonSchema, A> => make(new JsonStruct(properties, required))
+  additionalProperties?: JsonSchema | false,
+): Const<JsonSchema, A> =>
+  make(new JsonStruct(properties, required, additionalProperties))
 
 /**
  * @since 1.2.0
@@ -386,7 +393,8 @@ export const makeStructSchema = <A>(
  */
 export const makeRecordSchema = <A>(
   additionalProperties: Const<JsonSchema, A>,
-): Const<JsonSchema, Record<string, A>> => make(new JsonRecord(additionalProperties))
+): Const<JsonSchema, Record<string, A>> =>
+  make(new JsonStruct(new JsonEmpty() as any, [], additionalProperties))
 
 /**
  * @since 1.2.0
