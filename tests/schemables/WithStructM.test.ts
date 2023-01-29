@@ -9,12 +9,14 @@ import * as D from '../../src/base/DecoderBase'
 import * as Enc from '../../src/base/EncoderBase'
 import * as Eq_ from '../../src/base/EqBase'
 import * as G from '../../src/base/GuardBase'
+import * as JS from '../../src/base/JsonSchemaBase'
 import { getDecoder } from '../../src/Decoder'
 import { Arbitrary } from '../../src/schemables/WithStructM/instances/arbitrary'
 import { Decoder } from '../../src/schemables/WithStructM/instances/decoder'
 import { Encoder } from '../../src/schemables/WithStructM/instances/encoder'
 import { Eq } from '../../src/schemables/WithStructM/instances/eq'
 import { Guard } from '../../src/schemables/WithStructM/instances/guard'
+import { JsonSchema } from '../../src/schemables/WithStructM/instances/json-schema'
 import * as S from '../../src/schemata'
 
 const decodeOptionFromNullableDateFromUnix = getDecoder(
@@ -23,6 +25,60 @@ const decodeOptionFromNullableDateFromUnix = getDecoder(
 const decodeOptionFromNullableString = getDecoder(S.OptionFromNullable(S.String))
 
 describe('WithStructM', () => {
+  describe('JsonSchema', () => {
+    it('should return a json schema for a struct with required and optional properties', () => {
+      const jsonSchema = JsonSchema.structM(_ => ({
+        a: _.required(JS.makeStringSchema()),
+        b: _.optional(JS.makeNumberSchema()),
+      }))
+      expect(JS.stripIdentity(jsonSchema)).toEqual({
+        type: 'object',
+        properties: {
+          a: { type: 'string' },
+          b: { type: 'number' },
+        },
+        required: ['a'],
+      })
+    })
+    it('should return a json schema for a struct with required and optional properties and additional properties', () => {
+      const jsonSchema = JsonSchema.structM(
+        _ => ({
+          a: _.required(JS.makeStringSchema()),
+          b: _.optional(JS.makeNumberSchema()),
+        }),
+        { extraProps: 'restParam', restParam: JS.booleanSchema },
+      )
+      expect(JS.stripIdentity(jsonSchema)).toEqual({
+        type: 'object',
+        properties: {
+          a: { type: 'string' },
+          b: { type: 'number' },
+        },
+        required: ['a'],
+        additionalProperties: { type: 'boolean' },
+      })
+    })
+    it('should return a json schema for a struct with no allowed additional params', () => {
+      const jsonSchema = JsonSchema.structM(
+        _ => ({
+          a: _.required(JS.makeStringSchema()),
+          b: _.optional(JS.makeNumberSchema()),
+        }),
+        {
+          extraProps: 'error',
+        },
+      )
+      expect(JS.stripIdentity(jsonSchema)).toEqual({
+        type: 'object',
+        properties: {
+          a: { type: 'string' },
+          b: { type: 'number' },
+        },
+        required: ['a'],
+        additionalProperties: false,
+      })
+    })
+  })
   describe('Guard', () => {
     it('should guard a struct with required and optional properites', () => {
       const guard = Guard.structM(_ => ({
