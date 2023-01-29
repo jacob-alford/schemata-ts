@@ -60,7 +60,6 @@ export type JsonSchema =
   | JsonLiteral
   | JsonExclude
   | JsonStruct
-  | JsonRecord
   | JsonArray
   | JsonUnion
   | JsonIntersection
@@ -126,16 +125,6 @@ class JsonStruct {
     readonly required: ReadonlyArray<string>,
     readonly additionalProperties?: JsonSchema | false,
   ) {}
-}
-
-/**
- * Matches an object with uniform key values
- *
- * @deprecated Use JsonStruct instead
- */
-class JsonRecord {
-  readonly type = 'object'
-  constructor(readonly additionalProperties: JsonSchema) {}
 }
 
 /** Matches a subset of arrays with uniform index values (or specific index values) */
@@ -259,8 +248,8 @@ export const isJsonStruct = (u: JsonSchema): u is JsonStruct =>
  * @since 1.2.0
  * @category Guards
  */
-export const isJsonRecord = (u: JsonSchema): u is JsonRecord =>
-  u instanceof JsonRecord || (hasType('object', u) && hasKey('additionalProperties', u))
+export const isJsonRecord = (u: JsonSchema): u is JsonStruct =>
+  u instanceof JsonStruct || (hasType('object', u) && hasKey('additionalProperties', u))
 
 /**
  * @since 1.2.0
