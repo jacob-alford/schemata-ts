@@ -7,10 +7,12 @@ import * as FS from 'io-ts/FreeSemigroup'
 import * as Arb from '../../src/base/ArbitraryBase'
 import * as D from '../../src/base/DecoderBase'
 import * as Enc from '../../src/base/EncoderBase'
+import * as Eq_ from '../../src/base/EqBase'
 import { getDecoder } from '../../src/Decoder'
 import { Arbitrary } from '../../src/schemables/WithStructM/instances/arbitrary'
 import { Decoder } from '../../src/schemables/WithStructM/instances/decoder'
 import { Encoder } from '../../src/schemables/WithStructM/instances/encoder'
+import { Eq } from '../../src/schemables/WithStructM/instances/eq'
 import * as S from '../../src/schemata'
 
 const decodeOptionFromNullableDateFromUnix = getDecoder(
@@ -19,6 +21,82 @@ const decodeOptionFromNullableDateFromUnix = getDecoder(
 const decodeOptionFromNullableString = getDecoder(S.OptionFromNullable(S.String))
 
 describe('WithStructM', () => {
+  describe('eq', () => {
+    it('should be true for the same object', () => {
+      const eq = Eq.structM(_ => ({
+        a: _.required(Eq_.number),
+        b: _.optional(Eq_.string),
+      }))
+      const a = { a: 1, b: '2' }
+      expect(eq.equals(a, a)).toBe(true)
+    })
+    it('should be true for two equal objects', () => {
+      const eq = Eq.structM(_ => ({
+        a: _.required(Eq_.number),
+        b: _.optional(Eq_.string),
+      }))
+      const a = { a: 1, b: '2' }
+      const b = { a: 1, b: '2' }
+      expect(eq.equals(a, b)).toBe(true)
+    })
+    it('should be false for two different objects', () => {
+      const eq = Eq.structM(_ => ({
+        a: _.required(Eq_.number),
+        b: _.optional(Eq_.string),
+      }))
+      const a = { a: 1, b: '2' }
+      const b = { a: 1, b: '3' }
+      expect(eq.equals(a, b)).toBe(false)
+    })
+    it('should be true with rest params', () => {
+      const eq = Eq.structM(
+        _ => ({
+          a: _.required(Eq_.number),
+          b: _.optional(Eq_.string),
+        }),
+        { extraProps: 'restParam', restParam: Eq_.array(Eq_.boolean) },
+      )
+      const a = { a: 1, b: '2', c: [true, false] }
+      const b = { a: 1, b: '2', c: [true, false] }
+      expect(eq.equals(a, b)).toBe(true)
+    })
+    it('should be false with rest params', () => {
+      const eq = Eq.structM(
+        _ => ({
+          a: _.required(Eq_.number),
+          b: _.optional(Eq_.string),
+        }),
+        { extraProps: 'restParam', restParam: Eq_.array(Eq_.boolean) },
+      )
+      const a = { a: 1, b: '2', c: [true, false] }
+      const b = { a: 1, b: '2', c: [true, true] }
+      expect(eq.equals(a, b)).toBe(false)
+    })
+    it('fails fast for different number of keys', () => {
+      const eq = Eq.structM(
+        _ => ({
+          a: _.required(Eq_.number),
+          b: _.optional(Eq_.string),
+        }),
+        { extraProps: 'restParam', restParam: Eq_.nullable(Eq_.boolean) },
+      )
+      expect(
+        eq.equals({ a: 1, b: '2', c: null, d: true }, { a: 1, b: '2', c: null }),
+      ).toBe(false)
+    })
+    it('fails fast for xKey not in y', () => {
+      const eq = Eq.structM(
+        _ => ({
+          a: _.required(Eq_.number),
+          b: _.optional(Eq_.string),
+        }),
+        { extraProps: 'restParam', restParam: Eq_.nullable(Eq_.boolean) },
+      )
+      expect(
+        eq.equals({ a: 1, b: '2', c: null, d: true }, { a: 1, b: '2', c: null, e: true }),
+      ).toBe(false)
+    })
+  })
   describe('Encoder', () => {
     it('encodes a struct with required and optional properites', () => {
       const encoder = Encoder.structM(_ => ({

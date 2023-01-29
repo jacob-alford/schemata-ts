@@ -373,10 +373,7 @@ export interface WithStructM<S> {
  */
 export interface WithStructM1<S extends URIS> {
   readonly structM: <
-    Props extends Record<
-      string,
-      Prop1<KeyFlag, S, Kind<S, unknown>, string | KeyNotMapped>
-    >,
+    Props extends Record<string, Prop1<KeyFlag, S, Kind<S, any>, string | KeyNotMapped>>,
     RestKind extends Kind<S, any> | undefined,
   >(
     properties: (_: StructTools) => Props,
