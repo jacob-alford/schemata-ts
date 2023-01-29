@@ -17,28 +17,30 @@ import {
  * @category Instances
  */
 export const Arbitrary: WithStructM1<Arb.URI> = {
-  structM: (getProperties, params = { extraProps: 'strip' }) => ({
-    arbitrary: fc => {
-      const properties = getProperties(structTools)
-      const out = {} as any
-      pipe(
-        properties,
-        forIn((key, { _flag: flag, _val: arb }) => () => {
-          out[key] = isOptionalFlag(flag)
-            ? fc.option(arb.arbitrary(fc), { nil: undefined })
-            : arb.arbitrary(fc)
-        }),
-      )()
-      if (params.extraProps === 'restParam') {
-        const rest = params.restParam
-        if (rest !== undefined) {
-          return Arb.intersect({ arbitrary: fc => fc.record(out) })(
-            Arb.record(rest),
-          ).arbitrary(fc)
+  structM: (getProperties, params = { extraProps: 'strip' }) => {
+    const properties = getProperties(structTools)
+    return {
+      arbitrary: fc => {
+        const out = {} as any
+        pipe(
+          properties,
+          forIn((key, { _flag: flag, _val: arb }) => () => {
+            out[key] = isOptionalFlag(flag)
+              ? fc.option(arb.arbitrary(fc), { nil: undefined })
+              : arb.arbitrary(fc)
+          }),
+        )()
+        if (params.extraProps === 'restParam') {
+          const rest = params.restParam
+          if (rest !== undefined) {
+            return Arb.intersect({ arbitrary: fc => fc.record(out) })(
+              Arb.record(rest),
+            ).arbitrary(fc)
+          }
         }
-      }
 
-      return fc.record(out) as any
-    },
-  }),
+        return fc.record(out) as any
+      },
+    }
+  },
 }

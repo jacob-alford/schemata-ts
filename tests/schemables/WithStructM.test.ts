@@ -8,11 +8,13 @@ import * as Arb from '../../src/base/ArbitraryBase'
 import * as D from '../../src/base/DecoderBase'
 import * as Enc from '../../src/base/EncoderBase'
 import * as Eq_ from '../../src/base/EqBase'
+import * as G from '../../src/base/GuardBase'
 import { getDecoder } from '../../src/Decoder'
 import { Arbitrary } from '../../src/schemables/WithStructM/instances/arbitrary'
 import { Decoder } from '../../src/schemables/WithStructM/instances/decoder'
 import { Encoder } from '../../src/schemables/WithStructM/instances/encoder'
 import { Eq } from '../../src/schemables/WithStructM/instances/eq'
+import { Guard } from '../../src/schemables/WithStructM/instances/guard'
 import * as S from '../../src/schemata'
 
 const decodeOptionFromNullableDateFromUnix = getDecoder(
@@ -21,7 +23,75 @@ const decodeOptionFromNullableDateFromUnix = getDecoder(
 const decodeOptionFromNullableString = getDecoder(S.OptionFromNullable(S.String))
 
 describe('WithStructM', () => {
-  describe('eq', () => {
+  describe('Guard', () => {
+    it('should guard a struct with required and optional properites', () => {
+      const guard = Guard.structM(_ => ({
+        a: _.required(G.Schemable.string),
+        b: pipe(_.optional(G.Schemable.number), _.mapKeyTo('d')),
+      }))
+      expect(guard.is({ a: 'a' })).toBe(true)
+      expect(guard.is({ a: 'a', b: 1 })).toBe(true)
+    })
+    it('should guard with a custom key remap', () => {
+      const guard = Guard.structM(_ => ({
+        a: _.required(G.Schemable.string),
+        b: _.optional(G.Schemable.number),
+      }))
+      expect(guard.is({ a: 'a' })).toBe(true)
+      expect(guard.is({ a: 'a', b: 1 })).toBe(true)
+    })
+    it('should fail on extra props', () => {
+      const guard = Guard.structM(
+        _ => ({
+          a: _.required(G.Schemable.string),
+          b: _.optional(G.Schemable.number),
+        }),
+        { extraProps: 'error' },
+      )
+      expect(guard.is({ a: 'a', b: 1, c: 'c' })).toBe(false)
+    })
+    it('acts like strip with undefined restParam', () => {
+      const guard = Guard.structM(
+        _ => ({
+          a: _.required(G.Schemable.string),
+          b: _.optional(G.Schemable.number),
+        }),
+        { extraProps: 'restParam', restParam: undefined },
+      )
+      expect(guard.is({ a: 'a', b: 1, c: 'c' })).toBe(true)
+    })
+    it('should pass with no extra props', () => {
+      const guard = Guard.structM(
+        _ => ({
+          a: _.required(G.Schemable.string),
+          b: _.optional(G.Schemable.number),
+        }),
+        { extraProps: 'error' },
+      )
+      expect(guard.is({ a: 'a', b: 1 })).toBe(true)
+    })
+    it('should fail on bad rest params', () => {
+      const guard = Guard.structM(
+        _ => ({
+          a: _.required(G.Schemable.string),
+          b: _.optional(G.Schemable.number),
+        }),
+        { extraProps: 'restParam', restParam: G.Schemable.boolean },
+      )
+      expect(guard.is({ a: 'a', b: 1, c: 'c' })).toBe(false)
+    })
+    it('should guard with rest params', () => {
+      const guard = Guard.structM(
+        _ => ({
+          a: _.required(G.Schemable.string),
+          b: _.optional(G.Schemable.number),
+        }),
+        { extraProps: 'restParam', restParam: G.Schemable.boolean },
+      )
+      expect(guard.is({ a: 'a', b: 1, c: true })).toBe(true)
+    })
+  })
+  describe('Eq', () => {
     it('should be true for the same object', () => {
       const eq = Eq.structM(_ => ({
         a: _.required(Eq_.number),

@@ -1,7 +1,7 @@
 /**
- * Represents a ReadonlyMap converted from an expected array of entries.
+ * WithStructM instance for Eq
  *
- * @since 1.0.0
+ * @since 1.3.0
  */
 import * as B from 'fp-ts/boolean'
 import { pipe } from 'fp-ts/function'
@@ -12,7 +12,7 @@ import { hasOwn } from 'schemata-ts/internal/util'
 import { structTools, WithStructM1 } from 'schemata-ts/schemables/WithStructM/definition'
 
 /**
- * @since 1.0.0
+ * @since 1.3.0
  * @category Instances
  */
 export const Eq: WithStructM1<Eq_.URI> = {
