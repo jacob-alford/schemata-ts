@@ -3,75 +3,59 @@
  *
  * @since 1.1.0
  */
-import { apS } from 'fp-ts/Apply'
 import * as E from 'fp-ts/Either'
-import { flow, pipe } from 'fp-ts/function'
-import * as RA from 'fp-ts/ReadonlyArray'
-import * as RM from 'fp-ts/ReadonlyMap'
+import { pipe } from 'fp-ts/function'
+import * as O from 'fp-ts/Option'
 import * as P from 'schemata-ts/base/PrinterBase'
+import { hasOwn, witherS } from 'schemata-ts/internal/util'
 import * as PE from 'schemata-ts/PrintError'
-import { WithMap2 } from 'schemata-ts/schemables/WithMap/definition'
-
-const apSV = apS(P.printerValidation)
+import {
+  keyIsNotMapped,
+  structTools,
+  WithStructM2,
+} from 'schemata-ts/schemables/WithStructM/definition'
 
 /**
  * @since 1.1.0
  * @category Instances
  */
-export const Printer: WithMap2<P.URI> = {
-  mapFromEntries: (ordK, sk, sa) => ({
-    domainToJson: flow(
-      RM.toReadonlyArray(ordK),
-      RA.traverseWithIndex(P.printerValidation)((i, [k, a]) =>
-        pipe(
-          E.Do,
-          apSV(
-            'k',
-            pipe(
-              sk.domainToJson(k),
-              E.mapLeft(err => new PE.ErrorAtIndex(0, err)),
-            ),
-          ),
-          apSV(
-            'a',
-            pipe(
-              sa.domainToJson(a),
-              E.mapLeft(err => new PE.ErrorAtIndex(1, err)),
-            ),
-          ),
-          E.bimap(
-            err => new PE.ErrorAtIndex(i, err),
-            ({ k, a }) => P.safeJsonArray([k, a]),
-          ),
-        ),
-      ),
-      E.map(P.safeJsonArray),
-    ),
-    codomainToJson: flow(
-      RA.traverseWithIndex(P.printerValidation)((i, [k, a]) =>
-        pipe(
-          E.Do,
-          apSV(
-            'k',
-            pipe(
-              sk.codomainToJson(k),
-              E.mapLeft(err => new PE.ErrorAtIndex(0, err)),
-            ),
-          ),
-          apSV(
-            'a',
-            pipe(
-              sa.codomainToJson(a),
-              E.mapLeft(err => new PE.ErrorAtIndex(1, err)),
-            ),
-          ),
-          E.bimap(
-            err => new PE.ErrorAtIndex(i, err),
-            ({ k, a }) => P.safeJsonArray([k, a]),
-          ),
-        ),
-      ),
-      E.map(P.safeJsonArray),
-    ),
-  }),
+export const Printer: WithStructM2<P.URI> = {
+  structM: (getProps, params = { extraProps: 'strip' }) => {
+    const properties = getProps(structTools)
+    const printersByKey: Record<string, P.Printer<unknown, unknown>['codomainToJson']> =
+      {}
+    const printersByMappedKey: Record<
+      string,
+      P.Printer<unknown, unknown>['domainToJson']
+    > = {}
+    for (const k in properties) {
+      if (!hasOwn(properties, k)) continue
+      // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+      const { _keyRemap, _val } = properties[k]!
+      printersByKey[k] = _val.codomainToJson
+      printersByMappedKey[keyIsNotMapped(_keyRemap) ? k : _keyRemap] = _val.domainToJson
+    }
+    return {
+      domainToJson: witherS(PE.semigroupPrintingError)((k, val) => {
+        if (hasOwn(printersByMappedKey, k) && printersByMappedKey[k] !== undefined) {
+          // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+          return pipe(printersByMappedKey[k]!(val), E.map(O.some))
+        }
+
+        return params.extraProps === 'restParam' && params.restParam !== undefined
+          ? pipe(params.restParam.domainToJson(val), E.map(O.some))
+          : E.right(O.none)
+      }),
+      codomainToJson: witherS(PE.semigroupPrintingError)((k, val) => {
+        if (hasOwn(printersByKey, k) && printersByKey[k] !== undefined) {
+          // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+          return pipe(printersByKey[k]!(val), E.map(O.some))
+        }
+
+        return params.extraProps === 'restParam' && params.restParam !== undefined
+          ? pipe(params.restParam.codomainToJson(val), E.map(O.some))
+          : E.right(O.none)
+      }),
+    } as any
+  },
 }

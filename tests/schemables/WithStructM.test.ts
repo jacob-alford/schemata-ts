@@ -10,6 +10,7 @@ import * as Enc from '../../src/base/EncoderBase'
 import * as Eq_ from '../../src/base/EqBase'
 import * as G from '../../src/base/GuardBase'
 import * as JS from '../../src/base/JsonSchemaBase'
+import * as P from '../../src/base/PrinterBase'
 import { getDecoder } from '../../src/Decoder'
 import { Arbitrary } from '../../src/schemables/WithStructM/instances/arbitrary'
 import { Decoder } from '../../src/schemables/WithStructM/instances/decoder'
@@ -17,6 +18,7 @@ import { Encoder } from '../../src/schemables/WithStructM/instances/encoder'
 import { Eq } from '../../src/schemables/WithStructM/instances/eq'
 import { Guard } from '../../src/schemables/WithStructM/instances/guard'
 import { JsonSchema } from '../../src/schemables/WithStructM/instances/json-schema'
+import { Printer } from '../../src/schemables/WithStructM/instances/printer'
 import * as S from '../../src/schemata'
 
 const decodeOptionFromNullableDateFromUnix = getDecoder(
@@ -25,6 +27,94 @@ const decodeOptionFromNullableDateFromUnix = getDecoder(
 const decodeOptionFromNullableString = getDecoder(S.OptionFromNullable(S.String))
 
 describe('WithStructM', () => {
+  describe('Printer', () => {
+    it('should print a struct with required and optional properties with remapping', () => {
+      const printer = Printer.structM(_ => ({
+        a: _.required(P.string),
+        b: _.optional(P.number),
+        c: pipe(_.required(P.boolean), _.mapKeyTo('d')),
+      }))
+      expect(printer.codomainToJson({ a: 'a', b: 1, c: true })).toEqual(
+        E.right({
+          a: 'a',
+          b: 1,
+          c: true,
+        }),
+      )
+      expect(printer.domainToJson({ a: 'a', d: false })).toEqual(
+        E.right({ a: 'a', d: false }),
+      )
+    })
+    it('strips with extraProps: error', () => {
+      const printer = Printer.structM(
+        _ => ({
+          a: _.required(P.string),
+          b: _.optional(P.number),
+          c: pipe(_.required(P.boolean), _.mapKeyTo('d')),
+        }),
+        { extraProps: 'error' },
+      )
+      expect(printer.codomainToJson({ a: 'a', b: 1, c: true, d: 'what' } as any)).toEqual(
+        E.right({
+          a: 'a',
+          b: 1,
+          c: true,
+        }),
+      )
+      expect(printer.domainToJson({ a: 'a', d: false, what: 'd' } as any)).toEqual(
+        E.right({
+          a: 'a',
+          d: false,
+        }),
+      )
+    })
+    it('acts like strip for undefined restParam', () => {
+      const printer = Printer.structM(
+        _ => ({
+          a: _.required(P.string),
+          b: _.optional(P.number),
+          c: pipe(_.required(P.boolean), _.mapKeyTo('d')),
+        }),
+        { extraProps: 'restParam', restParam: undefined },
+      )
+      expect(printer.codomainToJson({ a: 'a', b: 1, c: true })).toEqual(
+        E.right({
+          a: 'a',
+          b: 1,
+          c: true,
+        }),
+      )
+      expect(printer.domainToJson({ a: 'a', d: false })).toEqual(
+        E.right({ a: 'a', d: false }),
+      )
+    })
+    it('should print a struct with required and optional properties and additional properties', () => {
+      const printer = Printer.structM(
+        _ => ({
+          a: _.required(P.string),
+          b: _.optional(P.number),
+          __proto__: {
+            c: _.required(P.boolean),
+          } as any,
+        }),
+        { extraProps: 'restParam', restParam: P.boolean },
+      )
+      expect(printer.domainToJson({ a: 'a', b: 1, rest: true })).toEqual(
+        E.right({
+          a: 'a',
+          b: 1,
+          rest: true,
+        }),
+      )
+      expect(printer.codomainToJson({ a: 'a', b: 1, rest: true })).toEqual(
+        E.right({
+          a: 'a',
+          b: 1,
+          rest: true,
+        }),
+      )
+    })
+  })
   describe('JsonSchema', () => {
     it('should return a json schema for a struct with required and optional properties', () => {
       const jsonSchema = JsonSchema.structM(_ => ({

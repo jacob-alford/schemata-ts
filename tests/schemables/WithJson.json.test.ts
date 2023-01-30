@@ -35,7 +35,10 @@ describe('WithJson > json', () => {
     })
     it('invalidates invalid json strings', () => {
       const result = Json.Type.json.decode(undefined)
-      expect(result._tag).toBe('Left')
+      expect(result).toEqual({
+        _tag: 'Right',
+        right: undefined,
+      })
     })
   })
   describe('Guard', () => {

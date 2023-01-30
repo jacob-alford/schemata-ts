@@ -1,10 +1,10 @@
-/* eslint-disable @typescript-eslint/ban-types */
 /**
  * Schemable for mapping a struct
  *
  * @since 1.3.0
  */
 import { HKT2, Kind, Kind2, URIS, URIS2 } from 'fp-ts/HKT'
+/* eslint-disable @typescript-eslint/ban-types */
 
 const OptionalKeyFlag = Symbol()
 type OptionalKeyFlag = typeof OptionalKeyFlag
