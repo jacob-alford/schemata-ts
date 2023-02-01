@@ -1,10 +1,13 @@
 import * as E from 'fp-ts/Either'
-import { pipe, tuple } from 'fp-ts/function'
+import { identity, pipe, tuple } from 'fp-ts/function'
 import * as IO from 'fp-ts/IO'
 import * as O from 'fp-ts/Option'
 import * as RA from 'fp-ts/ReadonlyArray'
 import * as RNEA from 'fp-ts/ReadonlyNonEmptyArray'
+import * as RR from 'fp-ts/ReadonlyRecord'
 import * as Sg from 'fp-ts/Semigroup'
+import * as T from 'fp-ts/Task'
+import * as TE from 'fp-ts/TaskEither'
 
 /* istanbul ignore next */
 /** @internal */
@@ -86,6 +89,45 @@ export const witherSM =
     return RA.isNonEmpty(errors)
       ? E.left(pipe(errors, RNEA.concatAll(sgErrors)))
       : E.right(out)
+  }
+
+const getApplicativeValidationPar = <E>(sgErrors: Sg.Semigroup<E>) =>
+  TE.getApplicativeTaskValidation(T.ApplicativePar, sgErrors)
+
+/** Performs a task-validative traversal over a struct's own enumerable properties. */
+export const witherTaskParSM =
+  <E>(sgErrors: Sg.Semigroup<E>) =>
+  <In extends Record<string, any>, A>(
+    f: <K extends keyof In>(
+      key: K,
+      value: In[K],
+    ) => TE.TaskEither<E, O.Option<readonly [A, keyof In]>>,
+  ) =>
+  (s: In): TE.TaskEither<E, { [K in keyof In]: A }> => {
+    const effects: Record<string, TE.TaskEither<E, O.Option<readonly [A, keyof In]>>> = {}
+
+    /* Enumerable own, Enumerable inherited */
+    for (const key in s) {
+      /* Ignores inherited properties */
+      if (!hasOwn(s, key)) continue
+
+      /* Perform effect */
+      effects[key] = f(key, s[key])
+    }
+
+    return pipe(
+      effects,
+      RR.wither(getApplicativeValidationPar(sgErrors))(identity),
+      TE.map(s => {
+        const out: { [K in keyof In]: A } = {} as any
+        for (const key in s) {
+          // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+          const [value, newKey] = s[key]!
+          out[newKey] = value
+        }
+        return out
+      }),
+    )
   }
 
 /**

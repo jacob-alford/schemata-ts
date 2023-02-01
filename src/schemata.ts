@@ -137,6 +137,13 @@ export {
 } from 'schemata-ts/schemables/WithRefine/instances/schema'
 export {
   /**
+   * Schemable for mapping a struct
+   *
+   * @since 1.3.0
+   */ Schema as StructM,
+} from 'schemata-ts/schemables/WithStructM/instances/schema'
+export {
+  /**
    * Re- export of `WithUnknownContainers` from `io-ts/Schemable/WithUnknownContainers`
    *
    * @since 1.0.0

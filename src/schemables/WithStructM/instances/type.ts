@@ -4,30 +4,24 @@
  * @since 1.0.0
  */
 import * as E from 'fp-ts/Either'
-import { flow } from 'fp-ts/function'
-import * as Ord from 'fp-ts/Ord'
-import * as RA from 'fp-ts/ReadonlyArray'
-import * as RM from 'fp-ts/ReadonlyMap'
-import * as Sg from 'fp-ts/Semigroup'
 import { Type as Type_ } from 'io-ts'
 import * as t from 'io-ts/Type'
-import { WithMap1 } from 'schemata-ts/schemables/WithMap/definition'
-import { Encoder } from 'schemata-ts/schemables/WithMap/instances/encoder'
-import { Guard } from 'schemata-ts/schemables/WithMap/instances/guard'
+import { WithStructM1 } from 'schemata-ts/schemables/WithStructM/definition'
+import { Encoder } from 'schemata-ts/schemables/WithStructM/instances/encoder'
+import { Guard } from 'schemata-ts/schemables/WithStructM/instances/guard'
 
 /**
+ * @deprecated
  * @since 1.0.0
  * @category Instances
  */
-export const Type: WithMap1<t.URI> = {
-  mapFromEntries: <K, A>(ordK: Ord.Ord<K>, typeK: t.Type<K>, typeA: t.Type<A>) =>
+export const Type: WithStructM1<t.URI> = {
+  structM: (makeProperties, params) =>
     new Type_(
-      `ReadonlyMap<${typeK.name},${typeA.name}>`,
-      Guard.mapFromEntries<K, A>(ordK, typeK, typeA).is,
-      flow(
-        t.array(t.tuple(typeK, typeA)).decode,
-        E.map(RM.fromFoldable(ordK, Sg.last(), RA.Foldable)),
-      ),
-      Encoder.mapFromEntries(ordK, typeK, typeA).encode,
+      `mappedStruct`,
+      Guard.structM(makeProperties, params).is,
+      i =>
+        E.left([{ value: i, context: [], message: 'Type not implemented for StructM' }]),
+      Encoder.structM(makeProperties, params).encode,
     ),
 }

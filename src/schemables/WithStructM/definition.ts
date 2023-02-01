@@ -7,13 +7,16 @@ import { HKT2, Kind, Kind2, URIS, URIS2 } from 'fp-ts/HKT'
 /* eslint-disable @typescript-eslint/ban-types */
 
 const OptionalKeyFlag = Symbol()
-type OptionalKeyFlag = typeof OptionalKeyFlag
+/** @internal */
+export type OptionalKeyFlag = typeof OptionalKeyFlag
 
 const RequiredKeyFlag = Symbol()
-type RequiredKeyFlag = typeof RequiredKeyFlag
+/** @internal */
+export type RequiredKeyFlag = typeof RequiredKeyFlag
 
 const KeyNotMapped = Symbol()
-type KeyNotMapped = typeof KeyNotMapped
+/** @internal */
+export type KeyNotMapped = typeof KeyNotMapped
 
 /**
  * @since 1.3.0
@@ -292,7 +295,7 @@ interface StrippedStruct {
  * @since 1.3.0
  * @category Model
  */
-export interface WithStructM<S> {
+export interface WithStructMHKT2<S> {
   readonly structM: <
     Props extends Record<
       string,

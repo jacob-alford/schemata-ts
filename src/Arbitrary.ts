@@ -21,6 +21,7 @@ import * as WithOptional from 'schemata-ts/schemables/WithOptional/instances/arb
 import * as WithPadding from 'schemata-ts/schemables/WithPadding/instances/arbitrary'
 import * as WithPattern from 'schemata-ts/schemables/WithPattern/instances/arbitrary'
 import * as WithRefine from 'schemata-ts/schemables/WithRefine/instances/arbitrary'
+import * as WithStructM from 'schemata-ts/schemables/WithStructM/instances/arbitrary'
 import * as WithUnknownContainers from 'schemata-ts/schemables/WithUnknownContainers/instances/arbitrary'
 import { interpret } from 'schemata-ts/SchemaExt'
 export type {
@@ -51,6 +52,7 @@ export const Schemable: SchemableExt1<Arb.URI> = {
   ...WithPadding.Arbitrary,
   ...WithPattern.Arbitrary,
   ...WithRefine.Arbitrary,
+  ...WithStructM.Arbitrary,
   ...WithUnknownContainers.Arbitrary,
 }
 

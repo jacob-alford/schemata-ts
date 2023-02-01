@@ -34,10 +34,16 @@ describe('WithJson > json', () => {
       expect(result._tag).toBe('Right')
     })
     it('invalidates invalid json strings', () => {
-      const result = Json.Type.json.decode(undefined)
+      const result = Json.Type.json.decode(0n)
       expect(result).toEqual({
-        _tag: 'Right',
-        right: undefined,
+        _tag: 'Left',
+        left: [
+          {
+            context: [],
+            message: 'Json',
+            value: 0n,
+          },
+        ],
       })
     })
   })

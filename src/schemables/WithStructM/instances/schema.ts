@@ -3,16 +3,51 @@
  *
  * @since 1.0.0
  */
-import * as Ord from 'fp-ts/Ord'
-import * as SC from 'schemata-ts/SchemaExt'
+import { identity, pipe } from 'fp-ts/function'
+import { Kind2 } from 'fp-ts/HKT'
+import * as RR from 'fp-ts/ReadonlyRecord'
+import { URI } from 'schemata-ts/base/SchemaBase'
+import {
+  KeyFlag,
+  KeyNotMapped,
+  Prop2,
+  StructTools,
+  structTools,
+  WithStructM2,
+} from 'schemata-ts/schemables/WithStructM/definition'
+
+/**
+ * A tool for reusing struct definitions across multiple struct combinators
+ *
+ * @since 1.3.0
+ * @category Constructors
+ */
+export const defineStruct: <
+  Props extends Record<
+    string,
+    Prop2<KeyFlag, URI, Kind2<URI, unknown, unknown>, string | KeyNotMapped>
+  >,
+>(
+  makeProps: (_: StructTools) => Props,
+) => (_: StructTools) => Props = identity
 
 /**
  * @since 1.0.0
  * @category Instances
  */
-export const Schema = <EK, EA, K extends EK, A extends EA>(
-  ordK: Ord.Ord<K>,
-  sK: SC.SchemaExt<EK, K>,
-  sA: SC.SchemaExt<EA, A>,
-): SC.SchemaExt<ReadonlyArray<readonly [EK, EA]>, ReadonlyMap<K, A>> =>
-  SC.make(S => S.mapFromEntries(ordK, sK(S), sA(S)))
+export const Schema: WithStructM2<URI>['structM'] =
+  (makeProps, params = { extraProps: 'strip' }) =>
+  S => {
+    const properties = makeProps(structTools)
+    const schemafiedProps = pipe(
+      properties,
+      RR.map(({ _val, ...rest }) => ({ _val: _val(S), ...rest })),
+    )
+    if (params.extraProps === 'restParam' && params.restParam !== undefined) {
+      return S.structM(() => schemafiedProps, {
+        extraProps: 'restParam',
+        restParam: params.restParam(S),
+      })
+    }
+    return S.structM(() => schemafiedProps, params as any) as any
+  }

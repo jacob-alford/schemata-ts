@@ -1,10 +1,86 @@
 import * as E from 'fp-ts/Either'
-import { pipe } from 'fp-ts/function'
+import { pipe, tuple } from 'fp-ts/function'
 import * as O from 'fp-ts/Option'
 import * as RA from 'fp-ts/ReadonlyArray'
+import * as TE from 'fp-ts/TaskEither'
 
-import { base64Encode, forIn, urlifyBase64, witherS } from '../src/internal/util'
+import {
+  base64Encode,
+  forIn,
+  urlifyBase64,
+  witherS,
+  witherTaskParSM,
+} from '../src/internal/util'
 import { zipN } from '../test-utils'
+
+describe('witherTaskParSM', () => {
+  it('skips unenumerable properties', async () => {
+    const tester = jest.fn()
+    const obj = {
+      a: 1,
+    }
+    Object.defineProperty(obj, 'b', {
+      value: 2,
+    })
+    const result = pipe(
+      obj,
+      witherTaskParSM(RA.getMonoid())((k, value) => {
+        tester(value)
+        return TE.right(O.some(tuple(value, k)))
+      }),
+    )
+    expect(tester).toHaveBeenCalledTimes(1)
+    expect(await result()).toStrictEqual(E.right({ a: 1 }))
+  })
+  it('skips inherited properties', async () => {
+    const tester = jest.fn()
+    const obj = {
+      a: 1,
+      __proto__: {
+        b: 2,
+      },
+    }
+    const result = pipe(
+      obj,
+      witherTaskParSM(RA.getMonoid())((k, value) => {
+        tester(value)
+        return TE.right(O.some([value, k]))
+      }),
+    )
+    expect(tester).toHaveBeenCalledTimes(1)
+    expect(await result()).toStrictEqual(E.right({ a: 1 }))
+  })
+  it('skips indices on none', async () => {
+    const obj = {
+      a: 1,
+      b: 2,
+      c: 3,
+    }
+    const result = pipe(
+      obj,
+      witherTaskParSM(RA.getMonoid())((k, value) => {
+        return value === 2 ? TE.right(O.none) : TE.right(O.some([value, k]))
+      }),
+    )
+    expect(await result()).toStrictEqual(E.right({ a: 1, c: 3 }))
+  })
+  it('no longer fails fast', async () => {
+    const tester = jest.fn()
+    const obj = {
+      a: 1,
+      b: 2,
+      c: 3,
+    }
+    const result = pipe(
+      obj,
+      witherTaskParSM(RA.getMonoid<string>())((k, value) => {
+        tester(value)
+        return value >= 2 ? TE.left(['fail']) : TE.right(O.some([value, k]))
+      }),
+    )
+    expect(await result()).toStrictEqual(E.left(['fail', 'fail']))
+  })
+})
 
 describe('traverseESO', () => {
   it('skips unenumerable properties', () => {

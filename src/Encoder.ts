@@ -21,6 +21,7 @@ import * as WithOptional from 'schemata-ts/schemables/WithOptional/instances/enc
 import * as WithPadding from 'schemata-ts/schemables/WithPadding/instances/encoder'
 import * as WithPattern from 'schemata-ts/schemables/WithPattern/instances/encoder'
 import * as WithRefine from 'schemata-ts/schemables/WithRefine/instances/encoder'
+import * as WithStructM from 'schemata-ts/schemables/WithStructM/instances/encoder'
 import * as WithUnknownContainers from 'schemata-ts/schemables/WithUnknownContainers/instances/encoder'
 import { interpret } from 'schemata-ts/SchemaExt'
 export type {
@@ -51,6 +52,7 @@ export const Schemable: SchemableExt2<Enc.URI> = {
   ...WithPadding.Encoder,
   ...WithPattern.Encoder,
   ...WithRefine.Encoder,
+  ...WithStructM.Encoder,
   ...WithUnknownContainers.Encoder,
 }
 

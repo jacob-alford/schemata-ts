@@ -11,6 +11,8 @@ import * as Eq_ from '../../src/base/EqBase'
 import * as G from '../../src/base/GuardBase'
 import * as JS from '../../src/base/JsonSchemaBase'
 import * as P from '../../src/base/PrinterBase'
+import * as TD from '../../src/base/TaskDecoderBase'
+import * as t from '../../src/base/TypeBase'
 import { getDecoder } from '../../src/Decoder'
 import { Arbitrary } from '../../src/schemables/WithStructM/instances/arbitrary'
 import { Decoder } from '../../src/schemables/WithStructM/instances/decoder'
@@ -19,6 +21,9 @@ import { Eq } from '../../src/schemables/WithStructM/instances/eq'
 import { Guard } from '../../src/schemables/WithStructM/instances/guard'
 import { JsonSchema } from '../../src/schemables/WithStructM/instances/json-schema'
 import { Printer } from '../../src/schemables/WithStructM/instances/printer'
+import { defineStruct } from '../../src/schemables/WithStructM/instances/schema'
+import { TaskDecoder } from '../../src/schemables/WithStructM/instances/task-decoder'
+import { Type } from '../../src/schemables/WithStructM/instances/type'
 import * as S from '../../src/schemata'
 
 const decodeOptionFromNullableDateFromUnix = getDecoder(
@@ -27,6 +32,37 @@ const decodeOptionFromNullableDateFromUnix = getDecoder(
 const decodeOptionFromNullableString = getDecoder(S.OptionFromNullable(S.String))
 
 describe('WithStructM', () => {
+  describe('Schema', () => {
+    const SomeStructSchemaBase = defineStruct(_ => ({
+      a: _.required(S.String),
+      b: _.optional(S.Number),
+      c: pipe(_.required(S.Boolean), _.mapKeyTo('d')),
+    }))
+    const SomeStructSchema = S.StructM(SomeStructSchemaBase)
+
+    it('should decode a struct with required and optional properties', () => {
+      const decode = getDecoder(SomeStructSchema)
+      expect(decode.decode({ a: 'a', b: 1, c: true })).toStrictEqual(
+        E.right({ a: 'a', b: 1, d: true }),
+      )
+      expect(decode.decode({ a: 'a', c: false })).toEqual(E.right({ a: 'a', d: false }))
+    })
+
+    it('should decode with a rest param', () => {
+      const decode = getDecoder(
+        S.StructM(SomeStructSchemaBase, {
+          extraProps: 'restParam',
+          restParam: S.Natural,
+        }),
+      )
+      expect(decode.decode({ a: 'a', b: 1, c: true, e: 6 } as any)).toEqual(
+        E.right({ a: 'a', b: 1, d: true, e: 6 }),
+      )
+      expect(decode.decode({ a: 'a', c: true, what: 7 } as any)).toEqual(
+        E.right({ a: 'a', d: true, what: 7 }),
+      )
+    })
+  })
   describe('Printer', () => {
     it('should print a struct with required and optional properties with remapping', () => {
       const printer = Printer.structM(_ => ({
@@ -420,6 +456,180 @@ describe('WithStructM', () => {
       })
     })
   })
+  describe('TaskDecoder', () => {
+    const decoder = TaskDecoder.structM(_ => ({
+      a: _.required(TD.string),
+      b: _.optional(TD.number),
+    }))
+    // Here we're only taking the first union element if there is an intersection
+    it("behaves as expected when there's an intersection", async () => {
+      const decoder = TaskDecoder.structM(_ => ({
+        a: pipe(_.required(TD.number), _.mapKeyTo('c')),
+        b: _.optional(TD.number),
+        c: _.required(TD.string),
+      }))
+      expect(await decoder.decode({ a: 1, b: 1, c: 'c' })()).toEqual({
+        _tag: 'Right',
+        right: { b: 1, c: 'c' },
+      })
+    })
+    it('decodes a struct with required and optional properites', async () => {
+      expect(await decoder.decode({ a: 'a' })()).toEqual({
+        _tag: 'Right',
+        right: { a: 'a' },
+      })
+      expect(await decoder.decode({ a: 'a', b: 1 })()).toEqual({
+        _tag: 'Right',
+        right: { a: 'a', b: 1 },
+      })
+    })
+    it('returns a failure for missing required key', async () => {
+      expect(await decoder.decode({ b: 1 })()).toEqual(
+        E.left(
+          FS.of(
+            DE.key(
+              'a',
+              DE.required,
+              FS.of(DE.leaf(undefined, 'Missing Required Property')),
+            ),
+          ),
+        ),
+      )
+    })
+    it('fails for invalid value in optional key', async () => {
+      expect(await decoder.decode({ a: 'a', b: 'b' })()).toEqual(
+        E.left(FS.of(DE.key('b', DE.optional, FS.of(DE.leaf('b', 'number'))))),
+      )
+    })
+    it('fails for invalid value in required key', async () => {
+      expect(await decoder.decode({ a: 1, b: 1 })()).toEqual(
+        E.left(FS.of(DE.key('a', DE.required, FS.of(DE.leaf(1, 'string'))))),
+      )
+    })
+    it('decodes with a custom key remap', async () => {
+      const decoder = TaskDecoder.structM(_ => ({
+        a: _.required(TD.string),
+        b: _.optional(TD.number),
+        c: pipe(_.required(TD.string), _.mapKeyTo('d')),
+      }))
+      expect(await decoder.decode({ a: 'a', c: 'used-to-be-c' })()).toEqual({
+        _tag: 'Right',
+        right: { a: 'a', d: 'used-to-be-c' },
+      })
+    })
+    it('decodes with a custom key remap and a rest param', async () => {
+      const decoder = TaskDecoder.structM(
+        _ => ({
+          a: _.required(TD.string),
+          b: _.optional(TD.number),
+          c: pipe(_.required(TD.string), _.mapKeyTo('d')),
+        }),
+        { extraProps: 'restParam', restParam: TD.array(TD.boolean) },
+      )
+      expect(
+        await decoder.decode({
+          a: 'a',
+          c: 'used-to-be-c',
+          e: [true, false],
+          f: [false],
+          g: [],
+          h: [true, true, true],
+        })(),
+      ).toEqual({
+        _tag: 'Right',
+        right: {
+          a: 'a',
+          d: 'used-to-be-c',
+          e: [true, false],
+          f: [false],
+          g: [],
+          h: [true, true, true],
+        },
+      })
+    })
+    it('fails with invalid rest param', async () => {
+      const decoder = TaskDecoder.structM(
+        _ => ({
+          a: _.required(TD.string),
+          b: _.optional(TD.number),
+          c: pipe(_.required(TD.string), _.mapKeyTo('d')),
+        }),
+        { extraProps: 'restParam', restParam: TD.array(TD.boolean) },
+      )
+      expect(
+        await decoder.decode({
+          a: 'a',
+          c: 'used-to-be-c',
+          e: [true, false],
+          f: [false],
+          g: [],
+          h: [true, true, true],
+          i: 1,
+        })(),
+      ).toEqual(
+        E.left(FS.of(DE.key('i', DE.optional, FS.of(DE.leaf(1, 'Array<unknown>'))))),
+      )
+    })
+    it("doesn't fail without rest elements", async () => {
+      const decoder = TaskDecoder.structM(
+        _ => ({
+          a: _.required(TD.string),
+          b: _.optional(TD.number),
+          c: pipe(_.required(TD.string), _.mapKeyTo('d')),
+        }),
+        { extraProps: 'restParam', restParam: TD.array(TD.boolean) },
+      )
+      expect(await decoder.decode({ a: 'a', c: 'used-to-be-c' })()).toEqual({
+        _tag: 'Right',
+        right: { a: 'a', d: 'used-to-be-c' },
+      })
+    })
+    it('fails on additional props', async () => {
+      const decoder = TaskDecoder.structM(
+        _ => ({
+          a: _.required(TD.string),
+          b: _.optional(TD.number),
+          c: pipe(_.required(TD.string), _.mapKeyTo('d')),
+        }),
+        { extraProps: 'error' },
+      )
+      expect(
+        await decoder.decode({
+          a: 'a',
+          c: 'used-to-be-c',
+          d: "what you're not supposed to be here",
+        })(),
+      ).toEqual({
+        _tag: 'Left',
+        left: FS.of(
+          DE.wrap(
+            'Encountered Unexpected Property Keys: ',
+            FS.of(DE.leaf('d', 'Unexpected Property Key')),
+          ),
+        ),
+      })
+    })
+    it('acts like strip if restParam is undefined', async () => {
+      const decoder = TaskDecoder.structM(
+        _ => ({
+          a: _.required(TD.string),
+          b: _.optional(TD.number),
+          c: pipe(_.required(TD.string), _.mapKeyTo('d')),
+        }),
+        { extraProps: 'restParam', restParam: undefined },
+      )
+      expect(
+        await decoder.decode({
+          a: 'a',
+          c: 'used-to-be-c',
+          d: "what you're not supposed to be here",
+        })(),
+      ).toEqual({
+        _tag: 'Right',
+        right: { a: 'a', d: 'used-to-be-c' },
+      })
+    })
+  })
   describe('Decoder', () => {
     const decoder = Decoder.structM(_ => ({
       a: _.required(D.string),
@@ -700,6 +910,19 @@ describe('WithStructM', () => {
           })
         }),
       )
+    })
+  })
+  describe('Type', () => {
+    it("doesn't fail without rest elements", () => {
+      const decoder = Type.structM(() => ({}), {
+        extraProps: 'restParam',
+        restParam: t.array(t.boolean),
+      })
+      expect(decoder.name).toBe('mappedStruct')
+      expect(decoder.decode('')).toEqual({
+        _tag: 'Left',
+        left: [{ value: '', context: [], message: 'Type not implemented for StructM' }],
+      })
     })
   })
 })
