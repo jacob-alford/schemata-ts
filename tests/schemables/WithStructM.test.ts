@@ -55,10 +55,10 @@ describe('WithStructM', () => {
           restParam: S.Natural,
         }),
       )
-      expect(decode.decode({ a: 'a', b: 1, c: true, e: 6 } as any)).toEqual(
+      expect(decode.decode({ a: 'a', b: 1, c: true, e: 6 })).toEqual(
         E.right({ a: 'a', b: 1, d: true, e: 6 }),
       )
-      expect(decode.decode({ a: 'a', c: true, what: 7 } as any)).toEqual(
+      expect(decode.decode({ a: 'a', c: true, what: 7 })).toEqual(
         E.right({ a: 'a', d: true, what: 7 }),
       )
     })
