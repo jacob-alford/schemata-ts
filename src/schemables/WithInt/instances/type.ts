@@ -15,6 +15,7 @@ import { WithInt1 } from 'schemata-ts/schemables/WithInt/definition'
 import { isInt } from 'schemata-ts/schemables/WithInt/utils'
 
 /**
+ * @deprecated
  * @since 1.0.0
  * @category Instances
  */

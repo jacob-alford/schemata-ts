@@ -8,6 +8,7 @@ import * as t from 'schemata-ts/base/TypeBase'
 import { WithBrand1 } from 'schemata-ts/schemables/WithBrand/definition'
 
 /**
+ * @deprecated
  * @since 1.0.0
  * @category Instances
  */

@@ -10,6 +10,7 @@ import * as t from 'schemata-ts/base/TypeBase'
 import { WithInvariant1 } from 'schemata-ts/schemables/WithInvariant/definition'
 
 /**
+ * @deprecated
  * @since 1.0.0
  * @category Instances
  */

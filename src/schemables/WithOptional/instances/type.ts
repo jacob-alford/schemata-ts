@@ -10,6 +10,7 @@ import { Encoder } from 'schemata-ts/schemables/WithOptional/instances/encoder'
 import { Guard } from 'schemata-ts/schemables/WithOptional/instances/guard'
 
 /**
+ * @deprecated
  * @since 1.0.0
  * @category Instances
  */

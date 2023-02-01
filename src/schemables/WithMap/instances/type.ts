@@ -16,6 +16,7 @@ import { Encoder } from 'schemata-ts/schemables/WithMap/instances/encoder'
 import { Guard } from 'schemata-ts/schemables/WithMap/instances/guard'
 
 /**
+ * @deprecated
  * @since 1.0.0
  * @category Instances
  */
