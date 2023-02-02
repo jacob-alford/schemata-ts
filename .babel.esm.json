@@ -1,3 +1,14 @@
 {
-  "plugins": ["annotate-pure-calls"]
+  "plugins": [
+    ["annotate-pure-calls"],
+    [
+      "transform-rename-import",
+      {
+        "replacements": [
+          { "original": "^fp-ts/(\\w*)$", "replacement": "fp-ts/lib/$1.js" },
+          { "original": "^io-ts/(\\w*)$", "replacement": "io-ts/lib/$1.js" }
+        ]
+      }
+    ]
+  ]
 }

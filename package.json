@@ -14,16 +14,16 @@
     "access": "public"
   },
   "main": "./dist/index.js",
-  "module": "./dist/esm/index.mjs",
+  "module": "./dist/_esm/index.mjs",
   "exports": {
     ".": {
       "types": "./dist/index.d.ts",
-      "import": "./dist/esm/index.mjs",
+      "import": "./dist/_esm/index.mjs",
       "require": "./dist/index.js"
     },
     "./*": {
       "types": "./dist/*.d.ts",
-      "import": "./dist/esm/*.mjs",
+      "import": "./dist/_esm/*.mjs",
       "require": "./dist/*.js"
     }
   },
@@ -85,6 +85,7 @@
     "@typescript-eslint/eslint-plugin": "^4.25.0",
     "@typescript-eslint/parser": "^4.25.0",
     "babel-plugin-annotate-pure-calls": "^0.4.0",
+    "babel-plugin-transform-rename-import": "^2.3.0",
     "colorette": "^2.0.19",
     "concurrently": "^7.2.2",
     "cspell": "^5.5.2",
