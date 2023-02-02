@@ -6,7 +6,7 @@
  *
  * @since 1.0.0
  */
-import { boolean } from 'io-ts/lib/Guard'
+import { boolean } from 'io-ts/Guard'
 import { make, SchemaExt } from 'schemata-ts/SchemaExt'
 
 /**
