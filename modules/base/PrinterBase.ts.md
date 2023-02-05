@@ -298,7 +298,7 @@ A valid Json object
 **Signature**
 
 ```ts
-export type SafeJson = boolean | SafeNumber | string | null | SafeJsonArray | SafeJsonRecord
+export type SafeJson = undefined | boolean | SafeNumber | string | null | SafeJsonArray | SafeJsonRecord
 ```
 
 Added in v1.1.0

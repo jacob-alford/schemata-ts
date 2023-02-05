@@ -1,6 +1,6 @@
 ---
 title: schemata.ts
-nav_order: 28
+nav_order: 27
 parent: Modules
 ---
 
@@ -67,6 +67,7 @@ Added in v1.0.0
   - [PositiveInt](#positiveint)
   - [RGB](#rgb)
   - [Refine](#refine)
+  - [StructM](#structm)
   - [TypeOf](#typeof)
   - [UUID](#uuid)
   - [UnknownContainers](#unknowncontainers)
@@ -822,6 +823,108 @@ export declare const Refine: <A, B>(
 ```
 
 Added in v1.0.0
+
+## StructM
+
+Schemable for mapping a struct
+
+**Signature**
+
+```ts
+export declare const StructM: <Props, RestKind>(
+  properties: (_: StructTools) => Props,
+  params?: StrictStruct | StrippedStruct | StructWithRestParam<RestKind> | undefined
+) => SchemaExt<
+  {
+    [K in keyof ((RestKind extends undefined
+      ? unknown
+      : {} | { [key: string]: RestKind extends SchemaExt<infer E, any> ? E : never }) & {
+      [K in {
+        [K in keyof Props]: Props[K] extends { readonly _flag: unique symbol } ? K : never
+      }[keyof Props]]: Props[K] extends { readonly _val: infer Val }
+        ? Val extends SchemaExt<infer E, any>
+          ? E
+          : never
+        : never
+    } & {
+      [K in { [K in keyof Props]: Props[K] extends { readonly _flag: unique symbol } ? K : never }[keyof Props]]?:
+        | (Props[K] extends { readonly _val: infer Val } ? (Val extends SchemaExt<infer E, any> ? E : never) : never)
+        | undefined
+    })]: ((RestKind extends undefined
+      ? unknown
+      : {} | { [key: string]: RestKind extends SchemaExt<infer E, any> ? E : never }) & {
+      [K in {
+        [K in keyof Props]: Props[K] extends { readonly _flag: unique symbol } ? K : never
+      }[keyof Props]]: Props[K] extends { readonly _val: infer Val }
+        ? Val extends SchemaExt<infer E, any>
+          ? E
+          : never
+        : never
+    } & {
+      [K in { [K in keyof Props]: Props[K] extends { readonly _flag: unique symbol } ? K : never }[keyof Props]]?:
+        | (Props[K] extends { readonly _val: infer Val } ? (Val extends SchemaExt<infer E, any> ? E : never) : never)
+        | undefined
+    })[K]
+  } extends infer B
+    ? B
+    : never,
+  {
+    [K in keyof ((RestKind extends undefined
+      ? unknown
+      : {} | { [key: string]: RestKind extends SchemaExt<any, infer A> ? A : never }) & {
+      [K in {
+        [K in keyof Props]: Props[K] extends { readonly _flag: unique symbol } ? K : never
+      }[keyof Props] as Props[K] extends { readonly _keyRemap: infer KeyOut }
+        ? KeyOut extends unique symbol
+          ? K
+          : KeyOut
+        : never]: Props[K] extends { readonly _val: infer Val }
+        ? Val extends SchemaExt<any, infer A>
+          ? A
+          : never
+        : never
+    } & {
+      [K in {
+        [K in keyof Props]: Props[K] extends { readonly _flag: unique symbol } ? K : never
+      }[keyof Props] as Props[K] extends { readonly _keyRemap: infer KeyOut }
+        ? KeyOut extends unique symbol
+          ? K
+          : KeyOut
+        : never]?:
+        | (Props[K] extends { readonly _val: infer Val } ? (Val extends SchemaExt<any, infer A> ? A : never) : never)
+        | undefined
+    })]: ((RestKind extends undefined
+      ? unknown
+      : {} | { [key: string]: RestKind extends SchemaExt<any, infer A> ? A : never }) & {
+      [K in {
+        [K in keyof Props]: Props[K] extends { readonly _flag: unique symbol } ? K : never
+      }[keyof Props] as Props[K] extends { readonly _keyRemap: infer KeyOut }
+        ? KeyOut extends unique symbol
+          ? K
+          : KeyOut
+        : never]: Props[K] extends { readonly _val: infer Val }
+        ? Val extends SchemaExt<any, infer A>
+          ? A
+          : never
+        : never
+    } & {
+      [K in {
+        [K in keyof Props]: Props[K] extends { readonly _flag: unique symbol } ? K : never
+      }[keyof Props] as Props[K] extends { readonly _keyRemap: infer KeyOut }
+        ? KeyOut extends unique symbol
+          ? K
+          : KeyOut
+        : never]?:
+        | (Props[K] extends { readonly _val: infer Val } ? (Val extends SchemaExt<any, infer A> ? A : never) : never)
+        | undefined
+    })[K]
+  } extends infer B
+    ? B
+    : never
+>
+```
+
+Added in v1.3.0
 
 ## TypeOf
 

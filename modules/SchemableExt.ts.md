@@ -1,6 +1,6 @@
 ---
 title: SchemableExt.ts
-nav_order: 26
+nav_order: 25
 parent: Modules
 ---
 
@@ -47,6 +47,7 @@ export interface SchemableExt<S>
     WithPaddingHKT2<S>,
     WithPatternHKT2<S>,
     WithRefineHKT2<S>,
+    WithStructMHKT2<S>,
     WithUnknownContainersHKT2<S> {}
 ```
 
@@ -73,6 +74,7 @@ export interface SchemableExt1<S extends URIS>
     WithPadding1<S>,
     WithPattern1<S>,
     WithRefine1<S>,
+    WithStructM1<S>,
     WithUnknownContainers1<S> {}
 ```
 
@@ -99,6 +101,7 @@ export interface SchemableExt2<S extends URIS2>
     WithPadding2<S>,
     WithPattern2<S>,
     WithRefine2<S>,
+    WithStructM2<S>,
     WithUnknownContainers2<S> {}
 ```
 
@@ -125,6 +128,7 @@ export interface SchemableExt2C<S extends URIS2>
     WithPadding2C<S, unknown>,
     WithPattern2C<S, unknown>,
     WithRefine2C<S, unknown>,
+    WithStructM2C<S, unknown>,
     WithUnknownContainers2C<S, unknown> {}
 ```
 

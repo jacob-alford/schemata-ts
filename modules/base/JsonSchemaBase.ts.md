@@ -230,7 +230,26 @@ Added in v1.2.0
 ```ts
 export declare const makeStructSchema: <A>(
   properties: { [K in keyof A]: Const<JsonSchema, A[K]> },
-  required?: ReadonlyArray<string>
+  required?: ReadonlyArray<string>,
+  additionalProperties?:
+    | false
+    | JsonEmpty
+    | JsonString
+    | JsonNumber
+    | JsonBoolean
+    | JsonNull
+    | JsonInteger
+    | JsonConst
+    | (JsonString & JsonConst)
+    | (JsonNumber & JsonConst)
+    | (JsonBoolean & JsonConst)
+    | (JsonNull & JsonConst)
+    | JsonExclude
+    | JsonStruct
+    | JsonArray
+    | JsonUnion
+    | JsonIntersection
+    | undefined
 ) => Const<JsonSchema, A>
 ```
 
@@ -408,7 +427,7 @@ Added in v1.2.0
 **Signature**
 
 ```ts
-export declare const isJsonRecord: (u: JsonSchema) => u is JsonRecord
+export declare const isJsonRecord: (u: JsonSchema) => u is JsonStruct
 ```
 
 Added in v1.2.0
@@ -493,7 +512,6 @@ export type JsonSchema =
   | JsonLiteral
   | JsonExclude
   | JsonStruct
-  | JsonRecord
   | JsonArray
   | JsonUnion
   | JsonIntersection

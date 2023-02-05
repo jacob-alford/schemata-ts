@@ -1,6 +1,6 @@
 ---
 title: schemata/string/Base64.ts
-nav_order: 50
+nav_order: 49
 parent: Modules
 ---
 
