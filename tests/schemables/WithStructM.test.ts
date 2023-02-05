@@ -1,8 +1,11 @@
+import { expectTypeOf } from 'expect-type'
 import * as fc from 'fast-check'
 import * as E from 'fp-ts/Either'
 import { pipe } from 'fp-ts/function'
 import * as DE from 'io-ts/DecodeError'
 import * as FS from 'io-ts/FreeSemigroup'
+import { getEncoder } from 'schemata-ts/Encoder'
+import { getGuard } from 'schemata-ts/Guard'
 
 import * as Arb from '../../src/base/ArbitraryBase'
 import * as D from '../../src/base/DecoderBase'
@@ -30,6 +33,57 @@ const decodeOptionFromNullableDateFromUnix = getDecoder(
   S.OptionFromNullable(S.DateFromUnixTime),
 )
 const decodeOptionFromNullableString = getDecoder(S.OptionFromNullable(S.String))
+
+describe.only("type-level 'WithStructM' instances", () => {
+  const testStruct = S.StructM(_ => ({
+    a: _.required(S.String),
+    b: _.optional(S.Number),
+    c: pipe(_.required(S.Boolean), _.mapKeyTo('d')),
+  }))
+  test('decoder', () => {
+    const decoder = getDecoder(testStruct)
+    expectTypeOf<typeof decoder>().toEqualTypeOf<
+      D.Decoder<
+        unknown,
+        {
+          a: string
+          b?: number
+          d: boolean
+        }
+      >
+    >()
+  })
+  test('encoder', () => {
+    const encoder = getEncoder(testStruct)
+    expectTypeOf<typeof encoder>().toEqualTypeOf<
+      Enc.Encoder<
+        {
+          a: string
+          b?: number
+          c: boolean
+        },
+        {
+          a: string
+          b?: number
+          d: boolean
+        }
+      >
+    >()
+  })
+  test('guard', () => {
+    const guard = getGuard(testStruct)
+    expectTypeOf<typeof guard>().toEqualTypeOf<
+      G.Guard<
+        unknown,
+        {
+          a: string
+          b?: number
+          d: boolean
+        }
+      >
+    >()
+  })
+})
 
 describe('WithStructM', () => {
   describe('Schema', () => {
