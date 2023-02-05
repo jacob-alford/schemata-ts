@@ -34,7 +34,7 @@ const decodeOptionFromNullableDateFromUnix = getDecoder(
 )
 const decodeOptionFromNullableString = getDecoder(S.OptionFromNullable(S.String))
 
-describe.only("type-level 'WithStructM' instances", () => {
+describe("type-level 'WithStructM' instances", () => {
   const testStruct = S.StructM(_ => ({
     a: _.required(S.String),
     b: _.optional(S.Number),
