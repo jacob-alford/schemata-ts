@@ -8,6 +8,7 @@ import { WithPadding1 } from 'schemata-ts/schemables/WithPadding/definition'
 import { foldUnion, match } from 'schemata-ts/schemables/WithPadding/utils'
 
 /**
+ * @deprecated
  * @since 1.0.0
  * @category Instances
  */

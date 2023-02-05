@@ -10,6 +10,7 @@ import { WithDate1 } from 'schemata-ts/schemables/WithDate/definition'
 import { isSafeDate, isValidDateString } from 'schemata-ts/schemables/WithDate/utils'
 
 /**
+ * @deprecated
  * @since 1.0.0
  * @category Instances
  */

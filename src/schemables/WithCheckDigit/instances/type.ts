@@ -13,6 +13,7 @@ import {
 import { locationToIndex } from 'schemata-ts/schemables/WithCheckDigit/utils'
 
 /**
+ * @deprecated
  * @since 1.0.0
  * @category Instances
  */

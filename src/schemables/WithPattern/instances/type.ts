@@ -9,6 +9,7 @@ import { WithPattern1 } from 'schemata-ts/schemables/WithPattern/definition'
 import { pattern } from 'schemata-ts/schemables/WithPattern/utils'
 
 /**
+ * @deprecated
  * @since 1.0.0
  * @category Instances
  */

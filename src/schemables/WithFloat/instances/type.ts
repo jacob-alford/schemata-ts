@@ -15,6 +15,7 @@ import { WithFloat1 } from 'schemata-ts/schemables/WithFloat/definition'
 import { isFloat } from 'schemata-ts/schemables/WithFloat/utils'
 
 /**
+ * @deprecated
  * @since 1.0.0
  * @category Instances
  */

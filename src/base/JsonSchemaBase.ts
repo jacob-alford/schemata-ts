@@ -60,7 +60,6 @@ export type JsonSchema =
   | JsonLiteral
   | JsonExclude
   | JsonStruct
-  | JsonRecord
   | JsonArray
   | JsonUnion
   | JsonIntersection
@@ -124,13 +123,8 @@ class JsonStruct {
   constructor(
     readonly properties: Readonly<Record<string, JsonSchema>>,
     readonly required: ReadonlyArray<string>,
+    readonly additionalProperties?: JsonSchema | false,
   ) {}
-}
-
-/** Matches an object with uniform key values */
-class JsonRecord {
-  readonly type = 'object'
-  constructor(readonly additionalProperties: JsonSchema) {}
 }
 
 /** Matches a subset of arrays with uniform index values (or specific index values) */
@@ -254,8 +248,8 @@ export const isJsonStruct = (u: JsonSchema): u is JsonStruct =>
  * @since 1.2.0
  * @category Guards
  */
-export const isJsonRecord = (u: JsonSchema): u is JsonRecord =>
-  u instanceof JsonRecord || (hasType('object', u) && hasKey('additionalProperties', u))
+export const isJsonRecord = (u: JsonSchema): u is JsonStruct =>
+  u instanceof JsonStruct || (hasType('object', u) && hasKey('additionalProperties', u))
 
 /**
  * @since 1.2.0
@@ -378,7 +372,9 @@ export const makeStructSchema = <A>(
     [K in keyof A]: Const<JsonSchema, A[K]>
   },
   required: ReadonlyArray<string> = [],
-): Const<JsonSchema, A> => make(new JsonStruct(properties, required))
+  additionalProperties?: JsonSchema | false,
+): Const<JsonSchema, A> =>
+  make(new JsonStruct(properties, required, additionalProperties))
 
 /**
  * @since 1.2.0
@@ -386,7 +382,8 @@ export const makeStructSchema = <A>(
  */
 export const makeRecordSchema = <A>(
   additionalProperties: Const<JsonSchema, A>,
-): Const<JsonSchema, Record<string, A>> => make(new JsonRecord(additionalProperties))
+): Const<JsonSchema, Record<string, A>> =>
+  make(new JsonStruct(new JsonEmpty() as any, [], additionalProperties))
 
 /**
  * @since 1.2.0

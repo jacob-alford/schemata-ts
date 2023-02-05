@@ -54,6 +54,7 @@ export type SafeNumber = Branded<number, SafeNumberBrand>
  * @category Model
  */
 export type SafeJson =
+  | undefined
   | boolean
   | SafeNumber
   | string
@@ -119,7 +120,7 @@ export const printerValidation = E.getApplicativeValidation(PE.semigroupPrinting
 
 /** @internal */
 export const toJson = (input: unknown): E.Either<PE.PrintError, SafeJson> => {
-  if (input === undefined) return E.left(new PE.InvalidValue(input))
+  if (input === undefined) return E.right(undefined)
   if (typeof input === 'function') return E.left(new PE.InvalidValue(input))
   if (typeof input === 'symbol') return E.left(new PE.InvalidValue(input))
   if (typeof input === 'bigint') return E.left(new PE.InvalidValue(input))

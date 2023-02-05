@@ -1,6 +1,6 @@
 {
   "name": "schemata-ts",
-  "version": "1.2.3",
+  "version": "1.3.0",
   "description": "A collection of Schemata inspired by io-ts-types and validators.js",
   "homepage": "https://jacob-alford.github.io/schemata-ts/",
   "repository": {
@@ -97,6 +97,7 @@
     "eslint-plugin-import": "^2.26.0",
     "eslint-plugin-simple-import-sort": "^7.0.0",
     "eslint-plugin-unused-imports": "^2.0.0",
+    "expect-type": "^0.15.0",
     "fast-check": "^3.1.4",
     "fp-ts": "^2.9.5",
     "fp-ts-laws": "^0.3.0",

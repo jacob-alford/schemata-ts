@@ -9,6 +9,7 @@ import * as t from 'schemata-ts/base/TypeBase'
 import { WithAnnotate1 } from 'schemata-ts/schemables/WithAnnotate/definition'
 
 /**
+ * @deprecated
  * @since 1.2.0
  * @category Instances
  */
