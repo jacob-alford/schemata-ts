@@ -23,5 +23,5 @@ export const Type: WithStructM1<t.URI> = {
       i =>
         E.left([{ value: i, context: [], message: 'Type not implemented for StructM' }]),
       Encoder.structM(makeProperties, params).encode,
-    ),
+    ) as any,
 }

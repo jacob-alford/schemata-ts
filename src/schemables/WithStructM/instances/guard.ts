@@ -4,7 +4,7 @@
  * @since 1.3.0
  */
 import * as B from 'fp-ts/boolean'
-import { pipe } from 'fp-ts/function'
+import { pipe, tuple } from 'fp-ts/function'
 import * as Pred from 'fp-ts/Predicate'
 import * as RR from 'fp-ts/ReadonlyRecord'
 import * as Str from 'fp-ts/string'
@@ -12,6 +12,8 @@ import * as G from 'io-ts/Guard'
 import { hasOwn } from 'schemata-ts/internal/util'
 import {
   isOptionalFlag,
+  KeyFlag,
+  keyIsNotMapped,
   structTools,
   WithStructM1,
 } from 'schemata-ts/schemables/WithStructM/definition'
@@ -23,13 +25,24 @@ import {
 export const Guard: WithStructM1<G.URI> = {
   structM: (getProps, params = { extraProps: 'strip' }) => {
     const properties = getProps(structTools)
+    const remappedProps: Record<string, readonly [KeyFlag, G.Guard<unknown, unknown>]> =
+      {}
+    for (const key in properties) {
+      const prop = properties[key]
+      if (!hasOwn(properties, key) || prop === undefined) continue
+      if (keyIsNotMapped(prop._keyRemap)) {
+        remappedProps[key] = tuple(prop._flag, prop._val)
+        continue
+      }
+      remappedProps[prop._keyRemap] = tuple(prop._flag, prop._val)
+    }
     return {
       is: pipe(
         G.UnknownRecord.is,
         Pred.and(u => {
           const knownKeysAreValid = pipe(
-            properties,
-            RR.foldMapWithIndex(Str.Ord)(B.MonoidAll)((key, { _flag, _val }) => {
+            remappedProps,
+            RR.foldMapWithIndex(Str.Ord)(B.MonoidAll)((key, [_flag, _val]) => {
               const inputAtKey: unknown = (u as any)[key]
 
               if (
@@ -48,7 +61,8 @@ export const Guard: WithStructM1<G.URI> = {
           // -- if extra props are not allowed, return a failure on keys not specified in properties
           if (params.extraProps === 'error') {
             for (const key in u as any) {
-              if (!hasOwn(properties, key) || properties[key] === undefined) return false
+              if (!hasOwn(remappedProps, key) || remappedProps[key] === undefined)
+                return false
             }
             return knownKeysAreValid
           }
@@ -57,7 +71,7 @@ export const Guard: WithStructM1<G.URI> = {
 
           for (const key in u as any) {
             const inputAtKey: unknown = (u as any)[key]
-            if (hasOwn(properties, key) || properties[key] !== undefined) continue
+            if (hasOwn(remappedProps, key) || remappedProps[key] !== undefined) continue
             if (!params.restParam.is(inputAtKey)) return false
           }
           return knownKeysAreValid

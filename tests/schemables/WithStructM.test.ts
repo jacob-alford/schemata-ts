@@ -142,7 +142,7 @@ describe('WithStructM', () => {
           rest: true,
         }),
       )
-      expect(printer.codomainToJson({ a: 'a', b: 1, rest: true })).toEqual(
+      expect(printer.codomainToJson({ a: 'a', b: 1, rest: true } as any)).toEqual(
         E.right({
           a: 'a',
           b: 1,
@@ -210,9 +210,12 @@ describe('WithStructM', () => {
       const guard = Guard.structM(_ => ({
         a: _.required(G.Schemable.string),
         b: pipe(_.optional(G.Schemable.number), _.mapKeyTo('d')),
+        c: pipe(_.required(G.Schemable.boolean), _.mapKeyTo('d')),
       }))
-      expect(guard.is({ a: 'a' })).toBe(true)
-      expect(guard.is({ a: 'a', b: 1 })).toBe(true)
+      expect(guard.is({ a: 'a', c: true })).toBe(false)
+      expect(guard.is({ a: 'a', d: true })).toBe(true)
+      expect(guard.is({ a: 'a', b: 1, c: false })).toBe(false)
+      expect(guard.is({ a: 'a', b: 1, d: false })).toBe(true)
     })
     it('should guard with a custom key remap', () => {
       const guard = Guard.structM(_ => ({
@@ -862,22 +865,17 @@ describe('WithStructM', () => {
         a: _.required(Arb.string),
         b: _.optional(Arb.number),
         c: pipe(_.required(Arb.string), _.mapKeyTo('d')),
+        __proto__: { e: 'f' } as any,
       }))
-      const decoder = Decoder.structM(_ => ({
-        a: _.required(D.string),
-        b: _.optional(D.number),
-        c: pipe(_.required(D.string), _.mapKeyTo('d')),
+      const guard = Guard.structM(_ => ({
+        a: _.required(G.string),
+        b: _.optional(G.number),
+        c: pipe(_.required(G.string), _.mapKeyTo('d')),
+        __proto__: { e: 'f' } as any,
       }))
       fc.assert(
         fc.property(arbitrary.arbitrary(fc), value => {
-          expect(decoder.decode(value)).toEqual({
-            _tag: 'Right',
-            right: {
-              a: value.a,
-              b: value.b,
-              d: value.c,
-            },
-          })
+          expect(guard.is(value)).toBe(true)
         }),
       )
     })
@@ -890,24 +888,17 @@ describe('WithStructM', () => {
         }),
         { extraProps: 'restParam', restParam: Arb.array(Arb.boolean) },
       )
-      const decoder = Decoder.structM(
+      const guard = Guard.structM(
         _ => ({
-          a: _.required(D.string),
-          b: _.optional(D.number),
-          c: pipe(_.required(D.string), _.mapKeyTo('d')),
+          a: _.required(G.string),
+          b: _.optional(G.number),
+          c: pipe(_.required(G.string), _.mapKeyTo('d')),
         }),
-        { extraProps: 'restParam', restParam: D.array(D.boolean) },
+        { extraProps: 'restParam', restParam: G.array(G.boolean) },
       )
       fc.assert(
         fc.property(arbitrary.arbitrary(fc), value => {
-          expect(decoder.decode(value)).toEqual({
-            _tag: 'Right',
-            right: expect.objectContaining({
-              a: value.a,
-              b: value.b,
-              d: value.c,
-            }),
-          })
+          expect(guard.is(value)).toBe(true)
         }),
       )
     })
