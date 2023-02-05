@@ -1,7 +1,16 @@
 {
   "plugins": [
-    "@babel/transform-modules-commonjs",
-    "@babel/plugin-proposal-export-namespace-from",
-    "annotate-pure-calls"
+    ["@babel/transform-modules-commonjs"],
+    ["@babel/plugin-proposal-export-namespace-from"],
+    ["annotate-pure-calls"],
+    [
+      "transform-rename-import",
+      {
+        "replacements": [
+          { "original": "^fp-ts/(\\w*)$", "replacement": "fp-ts/lib/$1.js" },
+          { "original": "^io-ts/(\\w*)$", "replacement": "io-ts/lib/$1.js" }
+        ]
+      }
+    ]
   ]
 }

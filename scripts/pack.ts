@@ -34,10 +34,16 @@ export const copyPackageJson: Build<void> = C =>
         exports: {
           '.': {
             types: './index.d.ts',
+            node: './index.js',
             import: './_esm/index.mjs',
             require: './index.js',
           },
-          './*': { types: './*.d.ts', import: './_esm/*.mjs', require: './*.js' },
+          './*': {
+            types: './*.d.ts',
+            node: './*.js',
+            import: './_esm/*.mjs',
+            require: './*.js',
+          },
         },
         publishConfig: {
           access: 'public',
@@ -78,9 +84,9 @@ export const rewriteSourceMap: (
             ? v.map(source => {
                 let clone = `${source}`
                 if (path_.match(/dist\/_(.+)\//)) {
-                  clone = clone.replace(/(.*)\.\.\/src(.*)/gm, '$1_src$2')
+                  clone = clone.replace(/(.*)\.\.\/src(.*)/gm, '$1src$2')
                 } else {
-                  clone = clone.replace(/(.*)\.\.\/\.\.\/src(.*)/gm, '$1_src$2')
+                  clone = clone.replace(/(.*)\.\.\/\.\.\/src(.*)/gm, '$1src$2')
                 }
                 clone = path.posix.relative(dir, path.posix.join(dir, clone))
                 return clone.startsWith('.') ? clone : './' + clone
@@ -104,8 +110,8 @@ export const copyMetaFiles: Build<ReadonlyArray<void>> = C =>
 
 export const copyBuildFiles: Build<void> = C =>
   pipe(
-    C.mkdir(`./dist/_src`),
-    TE.chain(() => C.exec('cp -r ./src/* ./dist/_src')),
+    C.mkdir(`./dist/src`),
+    TE.chain(() => C.exec('cp -r ./src/* ./dist/src')),
 
     /* Copy build/esm to dist/_esm */
     TE.chain(() => C.mkdir('./dist/_esm')),

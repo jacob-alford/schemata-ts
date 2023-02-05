@@ -11,7 +11,7 @@
     "stripInternal": true,
     "module": "ESNext",
     "target": "ESNext",
-    "tsBuildInfoFile": "./dist/tsconfig.build.tsbuildinfo"
+    "tsBuildInfoFile": "./build/tsconfig.build.tsbuildinfo"
   },
   "include": ["./src"],
   "exclude": ["src/__tests__/*.ts"]
