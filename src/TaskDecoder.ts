@@ -22,6 +22,7 @@ import * as WithPadding from 'schemata-ts/schemables/WithPadding/instances/task-
 import * as WithPattern from 'schemata-ts/schemables/WithPattern/instances/task-decoder'
 import * as WithRefine from 'schemata-ts/schemables/WithRefine/instances/task-decoder'
 import * as WithStructM from 'schemata-ts/schemables/WithStructM/instances/task-decoder'
+import * as WithUnknown from 'schemata-ts/schemables/WithUnknown/instances/task-decoder'
 import * as WithUnknownContainers from 'schemata-ts/schemables/WithUnknownContainers/instances/task-decoder'
 import { interpret } from 'schemata-ts/SchemaExt'
 export type {
@@ -53,6 +54,7 @@ export const Schemable: SchemableExt2C<TD.URI> = {
   ...WithPattern.TaskDecoder,
   ...WithRefine.TaskDecoder,
   ...WithStructM.TaskDecoder,
+  ...WithUnknown.TaskDecoder,
   ...WithUnknownContainers.TaskDecoder,
 }
 

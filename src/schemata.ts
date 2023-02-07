@@ -144,6 +144,13 @@ export {
 } from 'schemata-ts/schemables/WithStructM/instances/schema'
 export {
   /**
+   * Represents an unknown value
+   *
+   * @since 1.3.0
+   */ Schema as Unknown,
+} from 'schemata-ts/schemables/WithUnknown/instances/schema'
+export {
+  /**
    * Re- export of `WithUnknownContainers` from `io-ts/Schemable/WithUnknownContainers`
    *
    * @since 1.0.0
