@@ -22,6 +22,7 @@ import * as WithPadding from 'schemata-ts/schemables/WithPadding/instances/json-
 import * as WithPattern from 'schemata-ts/schemables/WithPattern/instances/json-schema'
 import * as WithRefine from 'schemata-ts/schemables/WithRefine/instances/json-schema'
 import * as WithStructM from 'schemata-ts/schemables/WithStructM/instances/json-schema'
+import * as WithUnknown from 'schemata-ts/schemables/WithUnknown/instances/json-schema'
 import * as WithUnknownContainers from 'schemata-ts/schemables/WithUnknownContainers/instances/json-schema'
 import { interpret } from 'schemata-ts/SchemaExt'
 export type {
@@ -53,6 +54,7 @@ export const Schemable: SchemableExt2<JS.URI> = {
   ...WithPattern.JsonSchema,
   ...WithRefine.JsonSchema,
   ...WithStructM.JsonSchema,
+  ...WithUnknown.JsonSchema,
   ...WithUnknownContainers.JsonSchema,
 }
 

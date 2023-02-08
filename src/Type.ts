@@ -23,6 +23,7 @@ import * as WithPadding from 'schemata-ts/schemables/WithPadding/instances/type'
 import * as WithPattern from 'schemata-ts/schemables/WithPattern/instances/type'
 import * as WithRefine from 'schemata-ts/schemables/WithRefine/instances/type'
 import * as WithStructM from 'schemata-ts/schemables/WithStructM/instances/type'
+import * as WithUnknown from 'schemata-ts/schemables/WithUnknown/instances/type'
 import * as WithUnknownContainers from 'schemata-ts/schemables/WithUnknownContainers/instances/type'
 import { interpret } from 'schemata-ts/SchemaExt'
 export type {
@@ -56,6 +57,7 @@ export const Schemable: SchemableExt1<t.URI> = {
   ...WithPattern.Type,
   ...WithRefine.Type,
   ...WithStructM.Type,
+  ...WithUnknown.Type,
   ...WithUnknownContainers.Type,
 }
 
