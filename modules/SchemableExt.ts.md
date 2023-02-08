@@ -48,6 +48,7 @@ export interface SchemableExt<S>
     WithPatternHKT2<S>,
     WithRefineHKT2<S>,
     WithStructMHKT2<S>,
+    WithUnknownHKT2<S>,
     WithUnknownContainersHKT2<S> {}
 ```
 
@@ -75,6 +76,7 @@ export interface SchemableExt1<S extends URIS>
     WithPattern1<S>,
     WithRefine1<S>,
     WithStructM1<S>,
+    WithUnknown1<S>,
     WithUnknownContainers1<S> {}
 ```
 
@@ -102,6 +104,7 @@ export interface SchemableExt2<S extends URIS2>
     WithPattern2<S>,
     WithRefine2<S>,
     WithStructM2<S>,
+    WithUnknown2<S>,
     WithUnknownContainers2<S> {}
 ```
 
@@ -129,6 +132,7 @@ export interface SchemableExt2C<S extends URIS2>
     WithPattern2C<S, unknown>,
     WithRefine2C<S, unknown>,
     WithStructM2C<S, unknown>,
+    WithUnknown2C<S, unknown>,
     WithUnknownContainers2C<S, unknown> {}
 ```
 

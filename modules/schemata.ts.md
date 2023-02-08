@@ -70,6 +70,7 @@ Added in v1.0.0
   - [StructM](#structm)
   - [TypeOf](#typeof)
   - [UUID](#uuid)
+  - [Unknown](#unknown)
   - [UnknownContainers](#unknowncontainers)
 
 ---
@@ -950,6 +951,18 @@ export declare const UUID: <Version extends 2 | 1 | 4 | 3 | 5 | 'any'>(version: 
 ```
 
 Added in v1.0.0
+
+## Unknown
+
+Represents an unknown value
+
+**Signature**
+
+```ts
+export declare const Unknown: SchemaExt<unknown, unknown>
+```
+
+Added in v1.3.0
 
 ## UnknownContainers
 
