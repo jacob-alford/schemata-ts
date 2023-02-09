@@ -5,21 +5,20 @@
  */
 import { identity } from 'fp-ts/function'
 import { HKT2, Kind, Kind2, URIS, URIS2 } from 'fp-ts/HKT'
-import { URI } from 'schemata-ts/base/SchemaBase'
 
 /**
  * @since 1.3.0
  * @category Model
  */
-export type OptionalKeyFlag = typeof OptionalKeyFlag
-const OptionalKeyFlag = Symbol()
+export type OptionalKeyFlag = 'Optional'
+const OptionalKeyFlag: OptionalKeyFlag = 'Optional'
 
 /**
  * @since 1.3.0
  * @category Model
  */
-export type RequiredKeyFlag = typeof RequiredKeyFlag
-const RequiredKeyFlag = Symbol()
+export type RequiredKeyFlag = 'Required'
+const RequiredKeyFlag: RequiredKeyFlag = 'Required'
 
 /**
  * @since 1.3.0
@@ -85,7 +84,7 @@ export interface Prop2<
   readonly _val: Val
 }
 
-type Required = {
+interface Required {
   /**
    * Used to indicate that a property is required
    *
@@ -141,7 +140,7 @@ export const requiredProp: Required = (val: any) =>
 export const isRequiredFlag = (flag: KeyFlag): flag is RequiredKeyFlag =>
   flag === RequiredKeyFlag
 
-type Optional = {
+interface Optional {
   /**
    * Used to indicate that a property is optional
    *
@@ -190,7 +189,7 @@ export const optionalProp: Optional = (val: any) =>
     _val: val,
   } as any)
 
-type MapKeyTo = {
+interface MapKeyTo {
   /**
    * Used to remap a property's key to a new key in the output type
    *
@@ -255,7 +254,19 @@ export const keyIsNotMapped = (key: string | KeyNotMapped): key is KeyNotMapped 
  * @category Models
  */
 export interface StructDefinition {
-  <Props extends Record<string, Prop2<KeyFlag, URI, any, string | KeyNotMapped>>>(
+  <
+    S extends URIS2,
+    Props extends Record<string, Prop2<KeyFlag, S, any, string | KeyNotMapped>>,
+  >(
+    props: Props,
+  ): Props
+  <
+    S extends URIS,
+    Props extends Record<string, Prop<KeyFlag, S, any, string | KeyNotMapped>>,
+  >(
+    props: Props,
+  ): Props
+  <S, Props extends Record<string, Prop<KeyFlag, S, any, string | KeyNotMapped>>>(
     props: Props,
   ): Props
 }
