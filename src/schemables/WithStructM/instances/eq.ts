@@ -9,15 +9,14 @@ import * as RR from 'fp-ts/ReadonlyRecord'
 import * as Str from 'fp-ts/string'
 import * as Eq_ from 'schemata-ts/base/EqBase'
 import { hasOwn } from 'schemata-ts/internal/util'
-import { structTools, WithStructM1 } from 'schemata-ts/schemables/WithStructM/definition'
+import { WithStructM1 } from 'schemata-ts/schemables/WithStructM/definition'
 
 /**
  * @since 1.3.0
  * @category Instances
  */
 export const Eq: WithStructM1<Eq_.URI> = {
-  structM: (getProperties, params = { extraProps: 'strip' }) => {
-    const properties = getProperties(structTools)
+  structM: (properties, params = { extraProps: 'strip' }) => {
     const eqs: Record<string, Eq_.Eq<unknown>> = pipe(
       properties,
       RR.map(({ _val }) => _val),

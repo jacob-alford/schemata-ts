@@ -10,21 +10,15 @@ import * as RR from 'fp-ts/ReadonlyRecord'
 import * as Str from 'fp-ts/string'
 import * as G from 'io-ts/Guard'
 import { hasOwn } from 'schemata-ts/internal/util'
-import {
-  isOptionalFlag,
-  KeyFlag,
-  keyIsNotMapped,
-  structTools,
-  WithStructM1,
-} from 'schemata-ts/schemables/WithStructM/definition'
+import { WithStructM1 } from 'schemata-ts/schemables/WithStructM/definition'
+import { isOptionalFlag, KeyFlag, keyIsNotMapped } from 'schemata-ts/struct'
 
 /**
  * @since 1.3.0
  * @category Instances
  */
 export const Guard: WithStructM1<G.URI> = {
-  structM: (getProps, params = { extraProps: 'strip' }) => {
-    const properties = getProps(structTools)
+  structM: (properties, params = { extraProps: 'strip' }) => {
     const remappedProps: Record<string, readonly [KeyFlag, G.Guard<unknown, unknown>]> =
       {}
     for (const key in properties) {
