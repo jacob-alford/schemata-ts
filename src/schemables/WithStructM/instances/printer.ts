@@ -1,7 +1,7 @@
 /**
- * Represents a ReadonlyMap converted from an expected array of entries.
+ * WithStructM instance for Printer
  *
- * @since 1.1.0
+ * @since 1.3.0
  */
 import * as E from 'fp-ts/Either'
 import { pipe } from 'fp-ts/function'
@@ -13,7 +13,7 @@ import { WithStructM2 } from 'schemata-ts/schemables/WithStructM/definition'
 import { keyIsNotMapped } from 'schemata-ts/struct'
 
 /**
- * @since 1.1.0
+ * @since 1.3.0
  * @category Instances
  */
 export const Printer: WithStructM2<P.URI> = {

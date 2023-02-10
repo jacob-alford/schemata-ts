@@ -126,7 +126,7 @@ interface Required {
  * @since 1.3.0
  * @category Constructors
  */
-export const requiredProp: Required = (val: any) =>
+export const required: Required = (val: any) =>
   ({
     _flag: RequiredKeyFlag,
     _keyRemap: KeyNotMapped,
@@ -182,7 +182,7 @@ interface Optional {
  * @since 1.3.0
  * @category Constructors
  */
-export const optionalProp: Optional = (val: any) =>
+export const optional: Optional = (val: any) =>
   ({
     _flag: OptionalKeyFlag,
     _keyRemap: KeyNotMapped,
@@ -235,7 +235,7 @@ export const isOptionalFlag = (flag: KeyFlag): flag is OptionalKeyFlag =>
  * Used to remap a property's key to a new key in the output type
  *
  * @since 1.3.0
- * @category Constructors
+ * @category Combinators
  */
 export const mapKeyTo: MapKeyTo = mapTo => (prop: any) => ({
   ...prop,
@@ -249,30 +249,267 @@ export const mapKeyTo: MapKeyTo = mapTo => (prop: any) => ({
 export const keyIsNotMapped = (key: string | KeyNotMapped): key is KeyNotMapped =>
   key === KeyNotMapped
 
-/**
- * @since 1.3.0
- * @category Models
- */
-export interface StructDefinition {
+interface StructDefinition {
+  /**
+   * A convenience function to declare reusable struct definitions with type-safety
+   * without first plugging into StructM
+   *
+   * @since 1.3.0
+   * @category Models
+   */
   <
     S extends URIS2,
-    Props extends Record<string, Prop2<KeyFlag, S, any, string | KeyNotMapped>>,
+    Props extends Record<
+      string,
+      Prop2<KeyFlag, S, Kind2<S, any, any>, string | KeyNotMapped>
+    >,
   >(
     props: Props,
   ): Props
+  /**
+   * A convenience function to declare reusable struct definitions with type-safety
+   * without first plugging into StructM
+   *
+   * @since 1.3.0
+   * @category Models
+   */
   <
     S extends URIS,
-    Props extends Record<string, Prop<KeyFlag, S, any, string | KeyNotMapped>>,
+    Props extends Record<string, Prop1<KeyFlag, S, Kind<S, any>, string | KeyNotMapped>>,
   >(
     props: Props,
   ): Props
-  <S, Props extends Record<string, Prop<KeyFlag, S, any, string | KeyNotMapped>>>(
+  /**
+   * A convenience function to declare reusable struct definitions with type-safety
+   * without first plugging into StructM
+   *
+   * @since 1.3.0
+   * @category Models
+   */
+  <
+    S,
+    Props extends Record<
+      string,
+      Prop<KeyFlag, S, HKT2<S, any, any>, string | KeyNotMapped>
+    >,
+  >(
     props: Props,
   ): Props
 }
 
 /**
  * @since 1.3.0
- * @category Models
+ * @category Constructors
  */
 export const defineStruct: StructDefinition = identity
+
+interface Partial {
+  /**
+   * Remap a StructM definition such that all keys are optional
+   *
+   * @since 1.3.0
+   * @category Models
+   */
+  <
+    S extends URIS2,
+    Props extends Record<
+      string,
+      Prop2<KeyFlag, S, Kind2<S, unknown, unknown>, string | KeyNotMapped>
+    >,
+  >(
+    props: Props,
+  ): {
+    [K in keyof Props]: Props[K] extends Prop2<any, any, infer Val, infer Remap>
+      ? Prop2<OptionalKeyFlag, S, Val, Remap>
+      : never
+  }
+  /**
+   * Remap a StructM definition such that all keys are optional
+   *
+   * @since 1.3.0
+   * @category Models
+   */
+  <
+    S extends URIS,
+    Props extends Record<
+      string,
+      Prop1<KeyFlag, S, Kind<S, unknown>, string | KeyNotMapped>
+    >,
+  >(
+    props: Props,
+  ): {
+    [K in keyof Props]: Props[K] extends Prop1<any, any, infer Val, infer Remap>
+      ? Prop1<OptionalKeyFlag, S, Val, Remap>
+      : never
+  }
+  /**
+   * Remap a StructM definition such that all keys are optional
+   *
+   * @since 1.3.0
+   * @category Models
+   */
+  <
+    S,
+    Props extends Record<
+      string,
+      Prop<KeyFlag, S, HKT2<S, unknown, unknown>, string | KeyNotMapped>
+    >,
+  >(
+    props: Props,
+  ): {
+    [K in keyof Props]: Props[K] extends Prop<any, any, infer Val, infer Remap>
+      ? Prop<OptionalKeyFlag, S, Val, Remap>
+      : never
+  }
+}
+
+/**
+ * Marks all properties as optional
+ *
+ * @since 1.3.0
+ * @category Utilities
+ */
+export const partial: Partial = (
+  props: Record<
+    string,
+    Prop<KeyFlag, URIS2, HKT2<URIS2, unknown, unknown>, string | KeyNotMapped>
+  >,
+) => {
+  const result: Record<
+    string,
+    Prop<KeyFlag, URIS2, HKT2<URIS2, unknown, unknown>, string | KeyNotMapped>
+  > = {}
+  for (const key in props) {
+    // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+    const prop = props[key]!
+    result[key] = { ...prop, _flag: OptionalKeyFlag }
+  }
+  return result as any
+}
+
+interface Complete {
+  /**
+   * Remap a StructM definition such that all keys are required
+   *
+   * @since 1.3.0
+   * @category Models
+   */
+  <
+    S extends URIS2,
+    Props extends Record<
+      string,
+      Prop2<KeyFlag, S, Kind2<S, unknown, unknown>, string | KeyNotMapped>
+    >,
+  >(
+    props: Props,
+  ): {
+    [K in keyof Props]: Props[K] extends Prop2<any, any, infer Val, infer Remap>
+      ? Prop2<RequiredKeyFlag, S, Val, Remap>
+      : never
+  }
+  /**
+   * Remap a StructM definition such that all keys are required
+   *
+   * @since 1.3.0
+   * @category Models
+   */
+  <
+    S extends URIS,
+    Props extends Record<
+      string,
+      Prop1<KeyFlag, S, Kind<S, unknown>, string | KeyNotMapped>
+    >,
+  >(
+    props: Props,
+  ): {
+    [K in keyof Props]: Props[K] extends Prop1<any, any, infer Val, infer Remap>
+      ? Prop1<RequiredKeyFlag, S, Val, Remap>
+      : never
+  }
+  /**
+   * Remap a StructM definition such that all keys are required
+   *
+   * @since 1.3.0
+   * @category Models
+   */
+  <
+    S,
+    Props extends Record<
+      string,
+      Prop<KeyFlag, S, HKT2<S, unknown, unknown>, string | KeyNotMapped>
+    >,
+  >(
+    props: Props,
+  ): {
+    [K in keyof Props]: Props[K] extends Prop<any, any, infer Val, infer Remap>
+      ? Prop<RequiredKeyFlag, S, Val, Remap>
+      : never
+  }
+}
+
+/**
+ * Marks all properties as required.
+ *
+ * @since 1.3.0
+ * @category Utilities
+ */
+export const complete: Complete = (
+  props: Record<
+    string,
+    Prop<KeyFlag, URIS2, HKT2<URIS2, unknown, unknown>, string | KeyNotMapped>
+  >,
+) => {
+  const result: Record<
+    string,
+    Prop<KeyFlag, URIS2, HKT2<URIS2, unknown, unknown>, string | KeyNotMapped>
+  > = {}
+  for (const key in props) {
+    // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+    const prop = props[key]!
+    result[key] = { ...prop, _flag: RequiredKeyFlag }
+  }
+  return result as any
+}
+
+/**
+ * Include only a specified set of keys of an object. Built for StructM but works with any struct
+ *
+ * @since 1.3.0
+ * @category Utilities
+ */
+export const pick =
+  <
+    A extends Record<string, unknown>,
+    Keys extends [keyof A, ...ReadonlyArray<Exclude<keyof A, Keys[0]>>],
+  >(
+    ...keys: Keys
+  ) =>
+  (obj: A): { [K in Keys[number]]: A[K] } => {
+    const result: any = {}
+    for (const key of keys) {
+      result[key] = obj[key]
+    }
+    return result
+  }
+
+/**
+ * Exclude a set of keys from an object. Built for StructM but works with any struct
+ *
+ * @since 1.3.0
+ * @category Utilities
+ */
+export const omit: <
+  A extends Record<string, unknown>,
+  Keys extends [keyof A, ...ReadonlyArray<Exclude<keyof A, Keys[0]>>],
+>(
+  ...omittedKeys: Keys
+) => (obj: A) => { [K in Exclude<keyof A, Keys[number]>]: A[K] } = (...omittedKeys) => {
+  return obj => {
+    const result: any = {}
+    for (const key in obj) {
+      if (omittedKeys.includes(key)) continue
+      result[key] = obj[key]
+    }
+    return result
+  }
+}

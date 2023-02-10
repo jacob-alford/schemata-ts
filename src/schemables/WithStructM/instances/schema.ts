@@ -1,7 +1,7 @@
 /**
- * Represents a ReadonlyMap converted from an expected array of entries.
+ * WithStructM instance for Schema
  *
- * @since 1.0.0
+ * @since 1.3.0
  */
 import { pipe } from 'fp-ts/function'
 import * as RR from 'fp-ts/ReadonlyRecord'
@@ -9,7 +9,7 @@ import { URI } from 'schemata-ts/base/SchemaBase'
 import { WithStructM2 } from 'schemata-ts/schemables/WithStructM/definition'
 
 /**
- * @since 1.0.0
+ * @since 1.3.0
  * @category Instances
  */
 export const Schema: WithStructM2<URI>['structM'] =

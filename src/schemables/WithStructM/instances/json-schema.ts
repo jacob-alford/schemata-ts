@@ -1,7 +1,7 @@
 /**
- * Represents a ReadonlyMap converted from an expected array of entries.
+ * WithStructM instance for JsonSchema
  *
- * @since 1.2.0
+ * @since 1.3.0
  */
 import { Const, make } from 'fp-ts/Const'
 import { pipe, tuple } from 'fp-ts/function'
@@ -15,7 +15,7 @@ import { WithStructM2 } from 'schemata-ts/schemables/WithStructM/definition'
 import { isRequiredFlag } from 'schemata-ts/struct'
 
 /**
- * @since 1.2.0
+ * @since 1.3.0
  * @category Instances
  */
 export const JsonSchema: WithStructM2<JS.URI> = {

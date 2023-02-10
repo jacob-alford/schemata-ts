@@ -1,7 +1,7 @@
 /**
- * Represents a ReadonlyMap converted from an expected array of entries.
+ * WithStructM instance for TaskDecoder
  *
- * @since 1.0.0
+ * @since 1.3.0
  */
 import * as Ap from 'fp-ts/Apply'
 import { flow, pipe } from 'fp-ts/function'
@@ -22,7 +22,7 @@ const decodeErrorValidation = TE.getApplicativeTaskValidation(
 const apSecond = Ap.apSecond(decodeErrorValidation)
 
 /**
- * @since 1.0.0
+ * @since 1.3.0
  * @category Instances
  */
 export const TaskDecoder: WithStructM2C<TD.URI, unknown> = {

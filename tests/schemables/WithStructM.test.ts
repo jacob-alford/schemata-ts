@@ -35,9 +35,9 @@ const decodeOptionFromNullableDateFromUnix = getDecoder(
 const decodeOptionFromNullableString = getDecoder(S.OptionFromNullable(S.String))
 
 const abc = s.defineStruct({
-  a: s.requiredProp(S.String),
-  b: s.optionalProp(S.Number),
-  c: s.mapKeyTo('d')(s.requiredProp(S.Boolean)),
+  a: s.required(S.String),
+  b: s.optional(S.Number),
+  c: s.mapKeyTo('d')(s.required(S.Boolean)),
 })
 
 const ABC = S.StructM(abc)
@@ -119,9 +119,9 @@ describe('WithStructM', () => {
     it('should print a struct with required and optional properties with remapping', () => {
       const printer = Printer.structM(
         s.defineStruct({
-          a: s.requiredProp(P.string),
-          b: s.optionalProp(P.number),
-          c: s.mapKeyTo('d')(s.requiredProp(P.boolean)),
+          a: s.required(P.string),
+          b: s.optional(P.number),
+          c: s.mapKeyTo('d')(s.required(P.boolean)),
         }),
       )
       expect(printer.codomainToJson({ a: 'a', b: 1, c: true })).toEqual(
@@ -138,9 +138,9 @@ describe('WithStructM', () => {
     it('strips with extraProps: error', () => {
       const printer = Printer.structM(
         s.defineStruct({
-          a: s.requiredProp(P.string),
-          b: s.optionalProp(P.number),
-          c: s.mapKeyTo('d')(s.requiredProp(P.boolean)),
+          a: s.required(P.string),
+          b: s.optional(P.number),
+          c: s.mapKeyTo('d')(s.required(P.boolean)),
         }),
         { extraProps: 'error' },
       )
@@ -161,9 +161,9 @@ describe('WithStructM', () => {
     it('acts like strip for undefined restParam', () => {
       const printer = Printer.structM(
         s.defineStruct({
-          a: s.requiredProp(P.string),
-          b: s.optionalProp(P.number),
-          c: s.mapKeyTo('d')(s.requiredProp(P.boolean)),
+          a: s.required(P.string),
+          b: s.optional(P.number),
+          c: s.mapKeyTo('d')(s.required(P.boolean)),
         }),
         { extraProps: 'restParam', restParam: undefined },
       )
@@ -181,10 +181,10 @@ describe('WithStructM', () => {
     it('should print a struct with required and optional properties and additional properties', () => {
       const printer = Printer.structM(
         {
-          a: s.requiredProp(P.string),
-          b: s.optionalProp(P.number),
+          a: s.required(P.string),
+          b: s.optional(P.number),
           __proto__: {
-            c: s.requiredProp(P.boolean),
+            c: s.required(P.boolean),
           } as any,
         },
         { extraProps: 'restParam', restParam: P.boolean },
@@ -208,8 +208,8 @@ describe('WithStructM', () => {
   describe('JsonSchema', () => {
     it('should return a json schema for a struct with required and optional properties', () => {
       const jsonSchema = JsonSchema.structM({
-        a: s.requiredProp(JS.makeStringSchema()),
-        b: s.optionalProp(JS.makeNumberSchema()),
+        a: s.required(JS.makeStringSchema()),
+        b: s.optional(JS.makeNumberSchema()),
       })
       expect(JS.stripIdentity(jsonSchema)).toEqual({
         type: 'object',
@@ -223,8 +223,8 @@ describe('WithStructM', () => {
     it('should return a json schema for a struct with required and optional properties and additional properties', () => {
       const jsonSchema = JsonSchema.structM(
         {
-          a: s.requiredProp(JS.makeStringSchema()),
-          b: s.optionalProp(JS.makeNumberSchema()),
+          a: s.required(JS.makeStringSchema()),
+          b: s.optional(JS.makeNumberSchema()),
         },
         { extraProps: 'restParam', restParam: JS.booleanSchema },
       )
@@ -241,8 +241,8 @@ describe('WithStructM', () => {
     it('should return a json schema for a struct with no allowed additional params', () => {
       const jsonSchema = JsonSchema.structM(
         {
-          a: s.requiredProp(JS.makeStringSchema()),
-          b: s.optionalProp(JS.makeNumberSchema()),
+          a: s.required(JS.makeStringSchema()),
+          b: s.optional(JS.makeNumberSchema()),
         },
         {
           extraProps: 'error',
@@ -262,9 +262,9 @@ describe('WithStructM', () => {
   describe('Guard', () => {
     it('should guard a struct with required and optional properites', () => {
       const guard = Guard.structM({
-        a: s.requiredProp(G.Schemable.string),
-        b: pipe(s.optionalProp(G.Schemable.number), s.mapKeyTo('d')),
-        c: pipe(s.requiredProp(G.Schemable.boolean), s.mapKeyTo('d')),
+        a: s.required(G.Schemable.string),
+        b: pipe(s.optional(G.Schemable.number), s.mapKeyTo('d')),
+        c: pipe(s.required(G.Schemable.boolean), s.mapKeyTo('d')),
       })
       expect(guard.is({ a: 'a', c: true })).toBe(false)
       expect(guard.is({ a: 'a', d: true })).toBe(true)
@@ -273,8 +273,8 @@ describe('WithStructM', () => {
     })
     it('should guard with a custom key remap', () => {
       const guard = Guard.structM({
-        a: s.requiredProp(G.Schemable.string),
-        b: s.optionalProp(G.Schemable.number),
+        a: s.required(G.Schemable.string),
+        b: s.optional(G.Schemable.number),
       })
       expect(guard.is({ a: 'a' })).toBe(true)
       expect(guard.is({ a: 'a', b: 1 })).toBe(true)
@@ -282,8 +282,8 @@ describe('WithStructM', () => {
     it('should fail on extra props', () => {
       const guard = Guard.structM(
         {
-          a: s.requiredProp(G.Schemable.string),
-          b: s.optionalProp(G.Schemable.number),
+          a: s.required(G.Schemable.string),
+          b: s.optional(G.Schemable.number),
         },
         { extraProps: 'error' },
       )
@@ -292,8 +292,8 @@ describe('WithStructM', () => {
     it('acts like strip with undefined restParam', () => {
       const guard = Guard.structM(
         {
-          a: s.requiredProp(G.Schemable.string),
-          b: s.optionalProp(G.Schemable.number),
+          a: s.required(G.Schemable.string),
+          b: s.optional(G.Schemable.number),
         },
         { extraProps: 'restParam', restParam: undefined },
       )
@@ -302,8 +302,8 @@ describe('WithStructM', () => {
     it('should pass with no extra props', () => {
       const guard = Guard.structM(
         {
-          a: s.requiredProp(G.Schemable.string),
-          b: s.optionalProp(G.Schemable.number),
+          a: s.required(G.Schemable.string),
+          b: s.optional(G.Schemable.number),
         },
         { extraProps: 'error' },
       )
@@ -312,8 +312,8 @@ describe('WithStructM', () => {
     it('should fail on bad rest params', () => {
       const guard = Guard.structM(
         {
-          a: s.requiredProp(G.Schemable.string),
-          b: s.optionalProp(G.Schemable.number),
+          a: s.required(G.Schemable.string),
+          b: s.optional(G.Schemable.number),
         },
         { extraProps: 'restParam', restParam: G.Schemable.boolean },
       )
@@ -322,8 +322,8 @@ describe('WithStructM', () => {
     it('should guard with rest params', () => {
       const guard = Guard.structM(
         {
-          a: s.requiredProp(G.Schemable.string),
-          b: s.optionalProp(G.Schemable.number),
+          a: s.required(G.Schemable.string),
+          b: s.optional(G.Schemable.number),
         },
         { extraProps: 'restParam', restParam: G.Schemable.boolean },
       )
@@ -333,16 +333,16 @@ describe('WithStructM', () => {
   describe('Eq', () => {
     it('should be true for the same object', () => {
       const eq = Eq.structM({
-        a: s.requiredProp(Eq_.number),
-        b: s.optionalProp(Eq_.string),
+        a: s.required(Eq_.number),
+        b: s.optional(Eq_.string),
       })
       const a = { a: 1, b: '2' }
       expect(eq.equals(a, a)).toBe(true)
     })
     it('should be true for two equal objects', () => {
       const eq = Eq.structM({
-        a: s.requiredProp(Eq_.number),
-        b: s.optionalProp(Eq_.string),
+        a: s.required(Eq_.number),
+        b: s.optional(Eq_.string),
       })
       const a = { a: 1, b: '2' }
       const b = { a: 1, b: '2' }
@@ -350,8 +350,8 @@ describe('WithStructM', () => {
     })
     it('should be false for two different objects', () => {
       const eq = Eq.structM({
-        a: s.requiredProp(Eq_.number),
-        b: s.optionalProp(Eq_.string),
+        a: s.required(Eq_.number),
+        b: s.optional(Eq_.string),
       })
       const a = { a: 1, b: '2' }
       const b = { a: 1, b: '3' }
@@ -360,8 +360,8 @@ describe('WithStructM', () => {
     it('should be true with rest params', () => {
       const eq = Eq.structM(
         {
-          a: s.requiredProp(Eq_.number),
-          b: s.optionalProp(Eq_.string),
+          a: s.required(Eq_.number),
+          b: s.optional(Eq_.string),
         },
         { extraProps: 'restParam', restParam: Eq_.array(Eq_.boolean) },
       )
@@ -372,8 +372,8 @@ describe('WithStructM', () => {
     it('should be false with rest params', () => {
       const eq = Eq.structM(
         {
-          a: s.requiredProp(Eq_.number),
-          b: s.optionalProp(Eq_.string),
+          a: s.required(Eq_.number),
+          b: s.optional(Eq_.string),
         },
         { extraProps: 'restParam', restParam: Eq_.array(Eq_.boolean) },
       )
@@ -384,8 +384,8 @@ describe('WithStructM', () => {
     it('fails fast for different number of keys', () => {
       const eq = Eq.structM(
         {
-          a: s.requiredProp(Eq_.number),
-          b: s.optionalProp(Eq_.string),
+          a: s.required(Eq_.number),
+          b: s.optional(Eq_.string),
         },
         { extraProps: 'restParam', restParam: Eq_.nullable(Eq_.boolean) },
       )
@@ -396,8 +396,8 @@ describe('WithStructM', () => {
     it('fails fast for xKey not in y', () => {
       const eq = Eq.structM(
         {
-          a: s.requiredProp(Eq_.number),
-          b: s.optionalProp(Eq_.string),
+          a: s.required(Eq_.number),
+          b: s.optional(Eq_.string),
         },
         { extraProps: 'restParam', restParam: Eq_.nullable(Eq_.boolean) },
       )
@@ -409,17 +409,17 @@ describe('WithStructM', () => {
   describe('Encoder', () => {
     it('encodes a struct with required and optional properites', () => {
       const encoder = Encoder.structM({
-        a: s.requiredProp(Enc.Schemable.string),
-        b: s.optionalProp(Enc.Schemable.number),
+        a: s.required(Enc.Schemable.string),
+        b: s.optional(Enc.Schemable.number),
       })
       expect(encoder.encode({ a: 'a' })).toEqual({ a: 'a' })
       expect(encoder.encode({ a: 'a', b: 1 })).toEqual({ a: 'a', b: 1 })
     })
     it('encodes with a custom key remap', () => {
       const encoder = Encoder.structM({
-        a: s.requiredProp(Enc.Schemable.string),
-        b: s.optionalProp(Enc.Schemable.number),
-        c: pipe(s.requiredProp(Enc.Schemable.string), s.mapKeyTo('d')),
+        a: s.required(Enc.Schemable.string),
+        b: s.optional(Enc.Schemable.number),
+        c: pipe(s.required(Enc.Schemable.string), s.mapKeyTo('d')),
       })
       expect(encoder.encode({ a: 'a', d: 'used-to-be-c' })).toEqual({
         a: 'a',
@@ -429,9 +429,9 @@ describe('WithStructM', () => {
     it('encodes with a custom key remap and a rest param', () => {
       const encoder = Encoder.structM(
         {
-          a: s.requiredProp(Enc.Schemable.string),
-          b: s.optionalProp(Enc.Schemable.number),
-          c: pipe(s.requiredProp(Enc.Schemable.string), s.mapKeyTo('d')),
+          a: s.required(Enc.Schemable.string),
+          b: s.optional(Enc.Schemable.number),
+          c: pipe(s.required(Enc.Schemable.string), s.mapKeyTo('d')),
         },
         {
           extraProps: 'restParam',
@@ -458,15 +458,15 @@ describe('WithStructM', () => {
     })
     it('strips additional props', () => {
       const encoder = Encoder.structM({
-        a: s.requiredProp(Enc.Schemable.string),
-        b: s.optionalProp(Enc.Schemable.number),
-        c: pipe(s.requiredProp(Enc.Schemable.string), s.mapKeyTo('d')),
+        a: s.required(Enc.Schemable.string),
+        b: s.optional(Enc.Schemable.number),
+        c: pipe(s.required(Enc.Schemable.string), s.mapKeyTo('d')),
       })
       const encoder2 = Encoder.structM(
         {
-          a: s.requiredProp(Enc.Schemable.string),
-          b: s.optionalProp(Enc.Schemable.number),
-          c: pipe(s.requiredProp(Enc.Schemable.string), s.mapKeyTo('d')),
+          a: s.required(Enc.Schemable.string),
+          b: s.optional(Enc.Schemable.number),
+          c: pipe(s.required(Enc.Schemable.string), s.mapKeyTo('d')),
         },
         { extraProps: 'error' },
       )
@@ -493,16 +493,16 @@ describe('WithStructM', () => {
     })
     it("behaves in a good way when there's an intersection", () => {
       const encoder = Encoder.structM({
-        a: pipe(s.requiredProp(Enc.Schemable.number), s.mapKeyTo('c')),
-        b: s.optionalProp(Enc.Schemable.number),
-        c: s.requiredProp(Enc.Schemable.string),
+        a: pipe(s.required(Enc.Schemable.number), s.mapKeyTo('c')),
+        b: s.optional(Enc.Schemable.number),
+        c: s.required(Enc.Schemable.string),
       })
       expect(encoder.encode({ b: 1, c: 5 })).toEqual({ b: 1, c: 5 })
     })
     it('ignores inherited properties', () => {
       const encoder = Encoder.structM({
-        a: s.requiredProp(Enc.Schemable.string),
-        b: s.optionalProp(Enc.Schemable.number),
+        a: s.required(Enc.Schemable.string),
+        b: s.optional(Enc.Schemable.number),
         __proto__: {
           test: 'foo',
         } as any,
@@ -515,15 +515,15 @@ describe('WithStructM', () => {
   })
   describe('TaskDecoder', () => {
     const decoder = TaskDecoder.structM({
-      a: s.requiredProp(TD.string),
-      b: s.optionalProp(TD.number),
+      a: s.required(TD.string),
+      b: s.optional(TD.number),
     })
     // Here we're only taking the first union element if there is an intersection
     it("behaves as expected when there's an intersection", async () => {
       const decoder = TaskDecoder.structM({
-        a: pipe(s.requiredProp(TD.number), s.mapKeyTo('c')),
-        b: s.optionalProp(TD.number),
-        c: s.requiredProp(TD.string),
+        a: pipe(s.required(TD.number), s.mapKeyTo('c')),
+        b: s.optional(TD.number),
+        c: s.required(TD.string),
       })
       expect(await decoder.decode({ a: 1, b: 1, c: 'c' })()).toEqual({
         _tag: 'Right',
@@ -565,9 +565,9 @@ describe('WithStructM', () => {
     })
     it('decodes with a custom key remap', async () => {
       const decoder = TaskDecoder.structM({
-        a: s.requiredProp(TD.string),
-        b: s.optionalProp(TD.number),
-        c: pipe(s.requiredProp(TD.string), s.mapKeyTo('d')),
+        a: s.required(TD.string),
+        b: s.optional(TD.number),
+        c: pipe(s.required(TD.string), s.mapKeyTo('d')),
       })
       expect(await decoder.decode({ a: 'a', c: 'used-to-be-c' })()).toEqual({
         _tag: 'Right',
@@ -577,9 +577,9 @@ describe('WithStructM', () => {
     it('decodes with a custom key remap and a rest param', async () => {
       const decoder = TaskDecoder.structM(
         {
-          a: s.requiredProp(TD.string),
-          b: s.optionalProp(TD.number),
-          c: pipe(s.requiredProp(TD.string), s.mapKeyTo('d')),
+          a: s.required(TD.string),
+          b: s.optional(TD.number),
+          c: pipe(s.required(TD.string), s.mapKeyTo('d')),
         },
         { extraProps: 'restParam', restParam: TD.array(TD.boolean) },
       )
@@ -607,9 +607,9 @@ describe('WithStructM', () => {
     it('fails with invalid rest param', async () => {
       const decoder = TaskDecoder.structM(
         {
-          a: s.requiredProp(TD.string),
-          b: s.optionalProp(TD.number),
-          c: pipe(s.requiredProp(TD.string), s.mapKeyTo('d')),
+          a: s.required(TD.string),
+          b: s.optional(TD.number),
+          c: pipe(s.required(TD.string), s.mapKeyTo('d')),
         },
         { extraProps: 'restParam', restParam: TD.array(TD.boolean) },
       )
@@ -630,9 +630,9 @@ describe('WithStructM', () => {
     it("doesn't fail without rest elements", async () => {
       const decoder = TaskDecoder.structM(
         {
-          a: s.requiredProp(TD.string),
-          b: s.optionalProp(TD.number),
-          c: pipe(s.requiredProp(TD.string), s.mapKeyTo('d')),
+          a: s.required(TD.string),
+          b: s.optional(TD.number),
+          c: pipe(s.required(TD.string), s.mapKeyTo('d')),
         },
         { extraProps: 'restParam', restParam: TD.array(TD.boolean) },
       )
@@ -644,9 +644,9 @@ describe('WithStructM', () => {
     it('fails on additional props', async () => {
       const decoder = TaskDecoder.structM(
         {
-          a: s.requiredProp(TD.string),
-          b: s.optionalProp(TD.number),
-          c: pipe(s.requiredProp(TD.string), s.mapKeyTo('d')),
+          a: s.required(TD.string),
+          b: s.optional(TD.number),
+          c: pipe(s.required(TD.string), s.mapKeyTo('d')),
         },
         { extraProps: 'error' },
       )
@@ -669,9 +669,9 @@ describe('WithStructM', () => {
     it('acts like strip if restParam is undefined', async () => {
       const decoder = TaskDecoder.structM(
         {
-          a: s.requiredProp(TD.string),
-          b: s.optionalProp(TD.number),
-          c: pipe(s.requiredProp(TD.string), s.mapKeyTo('d')),
+          a: s.required(TD.string),
+          b: s.optional(TD.number),
+          c: pipe(s.required(TD.string), s.mapKeyTo('d')),
         },
         { extraProps: 'restParam', restParam: undefined },
       )
@@ -689,15 +689,15 @@ describe('WithStructM', () => {
   })
   describe('Decoder', () => {
     const decoder = Decoder.structM({
-      a: s.requiredProp(D.string),
-      b: s.optionalProp(D.number),
+      a: s.required(D.string),
+      b: s.optional(D.number),
     })
     // Here we're only taking the first union element if there is an intersection
     it("behaves as expected when there's an intersection", () => {
       const decoder = Decoder.structM({
-        a: pipe(s.requiredProp(D.number), s.mapKeyTo('c')),
-        b: s.optionalProp(D.number),
-        c: s.requiredProp(D.string),
+        a: pipe(s.required(D.number), s.mapKeyTo('c')),
+        b: s.optional(D.number),
+        c: s.required(D.string),
       })
       expect(decoder.decode({ a: 1, b: 1, c: 'c' })).toEqual({
         _tag: 'Right',
@@ -736,9 +736,9 @@ describe('WithStructM', () => {
     })
     it('decodes with a custom key remap', () => {
       const decoder = Decoder.structM({
-        a: s.requiredProp(D.string),
-        b: s.optionalProp(D.number),
-        c: pipe(s.requiredProp(D.string), s.mapKeyTo('d')),
+        a: s.required(D.string),
+        b: s.optional(D.number),
+        c: pipe(s.required(D.string), s.mapKeyTo('d')),
       })
       expect(decoder.decode({ a: 'a', c: 'used-to-be-c' })).toEqual({
         _tag: 'Right',
@@ -748,9 +748,9 @@ describe('WithStructM', () => {
     it('decodes with a custom key remap and a rest param', () => {
       const decoder = Decoder.structM(
         {
-          a: s.requiredProp(D.string),
-          b: s.optionalProp(D.number),
-          c: pipe(s.requiredProp(D.string), s.mapKeyTo('d')),
+          a: s.required(D.string),
+          b: s.optional(D.number),
+          c: pipe(s.required(D.string), s.mapKeyTo('d')),
         },
         { extraProps: 'restParam', restParam: D.array(D.boolean) },
       )
@@ -778,9 +778,9 @@ describe('WithStructM', () => {
     it('fails with invalid rest param', () => {
       const decoder = Decoder.structM(
         {
-          a: s.requiredProp(D.string),
-          b: s.optionalProp(D.number),
-          c: pipe(s.requiredProp(D.string), s.mapKeyTo('d')),
+          a: s.required(D.string),
+          b: s.optional(D.number),
+          c: pipe(s.required(D.string), s.mapKeyTo('d')),
         },
         { extraProps: 'restParam', restParam: D.array(D.boolean) },
       )
@@ -801,9 +801,9 @@ describe('WithStructM', () => {
     it("doesn't fail without rest elements", () => {
       const decoder = Decoder.structM(
         {
-          a: s.requiredProp(D.string),
-          b: s.optionalProp(D.number),
-          c: pipe(s.requiredProp(D.string), s.mapKeyTo('d')),
+          a: s.required(D.string),
+          b: s.optional(D.number),
+          c: pipe(s.required(D.string), s.mapKeyTo('d')),
         },
         { extraProps: 'restParam', restParam: D.array(D.boolean) },
       )
@@ -815,9 +815,9 @@ describe('WithStructM', () => {
     it('fails on additional props', () => {
       const decoder = Decoder.structM(
         {
-          a: s.requiredProp(D.string),
-          b: s.optionalProp(D.number),
-          c: pipe(s.requiredProp(D.string), s.mapKeyTo('d')),
+          a: s.required(D.string),
+          b: s.optional(D.number),
+          c: pipe(s.required(D.string), s.mapKeyTo('d')),
         },
         { extraProps: 'error' },
       )
@@ -840,9 +840,9 @@ describe('WithStructM', () => {
     it('acts like strip if restParam is undefined', () => {
       const decoder = Decoder.structM(
         {
-          a: s.requiredProp(D.string),
-          b: s.optionalProp(D.number),
-          c: pipe(s.requiredProp(D.string), s.mapKeyTo('d')),
+          a: s.required(D.string),
+          b: s.optional(D.number),
+          c: pipe(s.required(D.string), s.mapKeyTo('d')),
         },
         { extraProps: 'restParam', restParam: undefined },
       )
@@ -860,7 +860,7 @@ describe('WithStructM', () => {
     describe("Ethan's weird edge cases", () => {
       const decoder = Decoder.structM(
         {
-          date: s.optionalProp(decodeOptionFromNullableDateFromUnix),
+          date: s.optional(decodeOptionFromNullableDateFromUnix),
         },
         { extraProps: 'restParam', restParam: decodeOptionFromNullableString },
       )
@@ -916,15 +916,15 @@ describe('WithStructM', () => {
   describe('Arbitrary', () => {
     it('generates valid values', () => {
       const arbitrary = Arbitrary.structM({
-        a: s.requiredProp(Arb.string),
-        b: s.optionalProp(Arb.number),
-        c: pipe(s.requiredProp(Arb.string), s.mapKeyTo('d')),
+        a: s.required(Arb.string),
+        b: s.optional(Arb.number),
+        c: pipe(s.required(Arb.string), s.mapKeyTo('d')),
         __proto__: { e: 'f' } as any,
       })
       const guard = Guard.structM({
-        a: s.requiredProp(G.string),
-        b: s.optionalProp(G.number),
-        c: pipe(s.requiredProp(G.string), s.mapKeyTo('d')),
+        a: s.required(G.string),
+        b: s.optional(G.number),
+        c: pipe(s.required(G.string), s.mapKeyTo('d')),
         __proto__: { e: 'f' } as any,
       })
       fc.assert(
@@ -936,17 +936,17 @@ describe('WithStructM', () => {
     it('generates rest params', () => {
       const arbitrary = Arbitrary.structM(
         {
-          a: s.requiredProp(Arb.string),
-          b: s.optionalProp(Arb.number),
-          c: pipe(s.requiredProp(Arb.string), s.mapKeyTo('d')),
+          a: s.required(Arb.string),
+          b: s.optional(Arb.number),
+          c: pipe(s.required(Arb.string), s.mapKeyTo('d')),
         },
         { extraProps: 'restParam', restParam: Arb.array(Arb.boolean) },
       )
       const guard = Guard.structM(
         {
-          a: s.requiredProp(G.string),
-          b: s.optionalProp(G.number),
-          c: pipe(s.requiredProp(G.string), s.mapKeyTo('d')),
+          a: s.required(G.string),
+          b: s.optional(G.number),
+          c: pipe(s.required(G.string), s.mapKeyTo('d')),
         },
         { extraProps: 'restParam', restParam: G.array(G.boolean) },
       )
@@ -959,15 +959,15 @@ describe('WithStructM', () => {
   })
   describe('Type', () => {
     const decoder = Type.structM({
-      a: s.requiredProp(t.string),
-      b: s.optionalProp(t.number),
+      a: s.required(t.string),
+      b: s.optional(t.number),
     })
     // Here we're only taking the first union element if there is an intersection
     it("behaves as expected when there's an intersection", () => {
       const decoder = Type.structM({
-        a: pipe(s.requiredProp(t.number), s.mapKeyTo('c')),
-        b: s.optionalProp(t.number),
-        c: s.requiredProp(t.string),
+        a: pipe(s.required(t.number), s.mapKeyTo('c')),
+        b: s.optional(t.number),
+        c: s.required(t.string),
       })
       expect(decoder.decode({ a: 1, b: 1, c: 'c' })).toEqual({
         _tag: 'Right',
@@ -1010,9 +1010,9 @@ describe('WithStructM', () => {
     })
     it('decodes with a custom key remap', () => {
       const decoder = Decoder.structM({
-        a: s.requiredProp(D.string),
-        b: s.optionalProp(D.number),
-        c: pipe(s.requiredProp(D.string), s.mapKeyTo('d')),
+        a: s.required(D.string),
+        b: s.optional(D.number),
+        c: pipe(s.required(D.string), s.mapKeyTo('d')),
       })
       expect(decoder.decode({ a: 'a', c: 'used-to-be-c' })).toEqual({
         _tag: 'Right',
@@ -1022,9 +1022,9 @@ describe('WithStructM', () => {
     it('decodes with a custom key remap and a rest param', () => {
       const decoder = Decoder.structM(
         {
-          a: s.requiredProp(D.string),
-          b: s.optionalProp(D.number),
-          c: pipe(s.requiredProp(D.string), s.mapKeyTo('d')),
+          a: s.required(D.string),
+          b: s.optional(D.number),
+          c: pipe(s.required(D.string), s.mapKeyTo('d')),
         },
         { extraProps: 'restParam', restParam: D.array(D.boolean) },
       )
@@ -1052,9 +1052,9 @@ describe('WithStructM', () => {
     it('fails with invalid rest param', () => {
       const decoder = Type.structM(
         {
-          a: s.requiredProp(t.string),
-          b: s.optionalProp(t.number),
-          c: pipe(s.requiredProp(t.string), s.mapKeyTo('d')),
+          a: s.required(t.string),
+          b: s.optional(t.number),
+          c: pipe(s.required(t.string), s.mapKeyTo('d')),
         },
         { extraProps: 'restParam', restParam: t.array(t.boolean) },
       )
@@ -1079,9 +1079,9 @@ describe('WithStructM', () => {
     it("doesn't fail without rest elements", () => {
       const decoder = Type.structM(
         {
-          a: s.requiredProp(t.string),
-          b: s.optionalProp(t.number),
-          c: pipe(s.requiredProp(t.string), s.mapKeyTo('d')),
+          a: s.required(t.string),
+          b: s.optional(t.number),
+          c: pipe(s.required(t.string), s.mapKeyTo('d')),
         },
         { extraProps: 'restParam', restParam: t.array(t.boolean) },
       )
@@ -1093,9 +1093,9 @@ describe('WithStructM', () => {
     it('fails on additional props', () => {
       const decoder = Type.structM(
         {
-          a: s.requiredProp(t.string),
-          b: s.optionalProp(t.number),
-          c: pipe(s.requiredProp(t.string), s.mapKeyTo('d')),
+          a: s.required(t.string),
+          b: s.optional(t.number),
+          c: pipe(s.required(t.string), s.mapKeyTo('d')),
         },
         { extraProps: 'error' },
       )
@@ -1115,9 +1115,9 @@ describe('WithStructM', () => {
     it('acts like strip if restParam is undefined', () => {
       const decoder = Type.structM(
         {
-          a: s.requiredProp(t.string),
-          b: s.optionalProp(t.number),
-          c: pipe(s.requiredProp(t.string), s.mapKeyTo('d')),
+          a: s.required(t.string),
+          b: s.optional(t.number),
+          c: pipe(s.required(t.string), s.mapKeyTo('d')),
         },
         { extraProps: 'restParam', restParam: undefined },
       )
