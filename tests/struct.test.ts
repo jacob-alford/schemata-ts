@@ -32,7 +32,45 @@ const capsTestStruct = pipe(
   S.StructM,
 )
 
+const testStructMixed = s.defineStruct({
+  foo_bar: s.required(S.String),
+  'foo-baz': s.optional(S.Number),
+  'Bar Qux': s.mapKeyTo('eeby_deeby')(s.required(S.Boolean)),
+  fooBar: s.mapKeyTo('deeby---eeby')(s.optional(S.Boolean)),
+})
+
+const testStructCamel = s.camelCaseKeys(testStructMixed)
+
 describe('type-level tests', () => {
+  describe('camel case keys', () => {
+    test('camelCaseKeys2', () => {
+      const encoder = getEncoder(S.StructM(testStructCamel))
+      expectTypeOf<typeof encoder>().toEqualTypeOf<
+        Enc.Encoder<
+          { foo_bar: string; 'foo-baz'?: number; 'Bar Qux': boolean; fooBar?: boolean },
+          { fooBar: string; fooBaz?: number; eebyDeeby: boolean; deebyEeby?: boolean }
+        >
+      >()
+    })
+    test('camelCaseKeys2c', () => {
+      const decoder = getDecoder(S.StructM(testStructCamel))
+      expectTypeOf<typeof decoder>().toEqualTypeOf<
+        D.Decoder<
+          unknown,
+          { fooBar: string; fooBaz?: number; eebyDeeby: boolean; deebyEeby?: boolean }
+        >
+      >()
+    })
+    test('camelCaseKeys1', () => {
+      const guard = getGuard(S.StructM(testStructCamel))
+      expectTypeOf<typeof guard>().toEqualTypeOf<
+        G.Guard<
+          unknown,
+          { fooBar: string; fooBaz?: number; eebyDeeby: boolean; deebyEeby?: boolean }
+        >
+      >()
+    })
+  })
   describe('remap keys', () => {
     test('remapKeys2', () => {
       const encoder = getEncoder(capsTestStruct)
@@ -140,6 +178,42 @@ describe('type-level tests', () => {
 })
 
 describe('value-level tests', () => {
+  describe('camel case keys', () => {
+    test('encoder', () => {
+      const encoder = getEncoder(S.StructM(testStructCamel))
+      expect(
+        encoder.encode({ fooBar: 'a', fooBaz: 1, eebyDeeby: true, deebyEeby: undefined }),
+      ).toEqual({
+        foo_bar: 'a',
+        'foo-baz': 1,
+        'Bar Qux': true,
+        fooBar: undefined,
+      })
+    })
+    test('decoder', () => {
+      const decoder = getDecoder(S.StructM(testStructCamel))
+      expect(
+        decoder.decode({
+          foo_bar: 'a',
+          'foo-baz': 1,
+          'Bar Qux': true,
+          fooBar: undefined,
+        }),
+      ).toEqual(
+        D.success({
+          fooBar: 'a',
+          fooBaz: 1,
+          eebyDeeby: true,
+          deebyEeby: undefined,
+        }),
+      )
+    })
+    test('arb / guard', () => {
+      const guard = getGuard(S.StructM(testStructCamel))
+      const arb = getArbitrary(S.StructM(testStructCamel))
+      fc.assert(fc.property(arb.arbitrary(fc), guard.is))
+    })
+  })
   describe('remap keys', () => {
     test('encoder', () => {
       const encoder = getEncoder(capsTestStruct)

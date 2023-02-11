@@ -3,8 +3,10 @@
  *
  * @since 1.3.0
  */
+import { camelCase } from 'change-case'
 import { identity } from 'fp-ts/function'
 import { HKT2, Kind, Kind2, URIS, URIS2 } from 'fp-ts/HKT'
+import { CamelCase } from 'type-fest'
 
 /**
  * @since 1.3.0
@@ -387,6 +389,48 @@ export const mapKeysWith: MapKeysWith =
     }
     return remappedProps
   }
+
+/**
+ * A KeyRemapLambda for remapping keys to camelCase
+ *
+ * @since 1.3.0
+ * @category Combinators
+ */
+export interface CamelCaseLambda extends KeyRemapLambda {
+  readonly output: CamelCase<this['input']>
+}
+
+/**
+ * Remap a struct's non-camel-cased-keys into camelCase
+ *
+ * @since 1.3.0
+ * @category Combinators
+ * @example
+ *   import * as E from 'fp-ts/Either'
+ *   import { getDecoder } from 'schemata-ts/Decoder'
+ *   import * as S from 'schemata-ts/schemata'
+ *   import * as s from 'schemata-ts/struct'
+ *
+ *   const camelFromMixed = s.camelCaseKeys(
+ *     s.defineStruct({
+ *       foo_bar: s.required(S.String),
+ *       'bar-qux': s.optional(S.Number),
+ *       'foo.baz-dan': s.optional(S.Boolean),
+ *     }),
+ *   )
+ *
+ *   const DecoderMapMixedToCamel = getDecoder(S.StructM(camelFromMixed))
+ *
+ *   assert.deepStrictEqual(
+ *     DecoderMapMixedToCamel.decode({
+ *       foo_bar: 'foo',
+ *       'bar-qux': 1,
+ *       'foo.baz-dan': true,
+ *     }),
+ *     E.right({ fooBar: 'foo', barQux: 1, fooBazDan: true }),
+ *   )
+ */
+export const camelCaseKeys = mapKeysWith<CamelCaseLambda>(str => camelCase(`${str}`))
 
 interface StructDefinition {
   /**
