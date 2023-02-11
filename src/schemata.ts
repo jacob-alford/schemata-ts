@@ -246,6 +246,15 @@ export {
    */
   OptionFromUndefined,
 } from 'schemata-ts/schemata/generic/OptionFromUndefined'
+export {
+  /**
+   * An array input that's converted to a ReadonlySet. Note: does not abide the encoder
+   * <-> decoder law, but follows a less strict idempotence law.
+   *
+   * @since 1.3.0
+   */
+  SetFromArray,
+} from 'schemata-ts/schemata/generic/SetFromArray'
 
 /** Schemata > json */
 
