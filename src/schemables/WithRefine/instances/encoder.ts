@@ -3,6 +3,7 @@
  *
  * @since 1.0.0
  */
+import { identity } from 'fp-ts/function'
 import * as Enc from 'io-ts/Encoder'
 import { WithRefine2 } from 'schemata-ts/schemables/WithRefine/definition'
 
@@ -11,6 +12,5 @@ import { WithRefine2 } from 'schemata-ts/schemables/WithRefine/definition'
  * @category Instances
  */
 export const Encoder: WithRefine2<Enc.URI> = {
-  // @ts-expect-error -- refinement only changes type-level information, but types don't check out here
-  refine: () => Enc.id,
+  refine: () => identity,
 }
