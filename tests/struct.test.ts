@@ -19,7 +19,43 @@ const testStruct = s.defineStruct({
   d: s.mapKeyTo('f')(s.optional(S.Unknown)),
 })
 
+interface CapitalizeLambda extends s.KeyRemapLambda {
+  readonly output: Capitalize<this['input']>
+}
+
+const capitalize: (s: string) => string = s =>
+  `${s.substring(0, 1).toUpperCase()}${s.substring(1)}`
+
+const capsTestStruct = pipe(
+  testStruct,
+  s.mapKeysWith<CapitalizeLambda>(capitalize),
+  S.StructM,
+)
+
 describe('type-level tests', () => {
+  describe('remap keys', () => {
+    test('remapKeys2', () => {
+      const encoder = getEncoder(capsTestStruct)
+      expectTypeOf<typeof encoder>().toEqualTypeOf<
+        Enc.Encoder<
+          { a: string; b?: number; c: boolean; d?: unknown },
+          { A: string; B?: number; E: boolean; F?: unknown }
+        >
+      >()
+    })
+    test('remapKeys2c', () => {
+      const decoder = getDecoder(capsTestStruct)
+      expectTypeOf<typeof decoder>().toEqualTypeOf<
+        D.Decoder<unknown, { A: string; B?: number; E: boolean; F?: unknown }>
+      >()
+    })
+    test('remapKeys1', () => {
+      const guard = getGuard(capsTestStruct)
+      expectTypeOf<typeof guard>().toEqualTypeOf<
+        G.Guard<unknown, { A: string; B?: number; E: boolean; F?: unknown }>
+      >()
+    })
+  })
   describe('defineStruct', () => {
     test('defineStruct2', () => {
       const struct = getEncoder(S.StructM(testStruct))
@@ -104,6 +140,28 @@ describe('type-level tests', () => {
 })
 
 describe('value-level tests', () => {
+  describe('remap keys', () => {
+    test('encoder', () => {
+      const encoder = getEncoder(capsTestStruct)
+      expect(encoder.encode({ A: 'a', B: 1, E: true, F: undefined })).toEqual({
+        a: 'a',
+        b: 1,
+        c: true,
+        d: undefined,
+      })
+    })
+    test('decoder', () => {
+      const decoder = getDecoder(capsTestStruct)
+      expect(decoder.decode({ a: 'a', b: 1, c: true, d: undefined })).toEqual(
+        D.success({ A: 'a', B: 1, E: true, F: undefined }),
+      )
+    })
+    test('arb / guard', () => {
+      const guard = getGuard(capsTestStruct)
+      const arb = getArbitrary(capsTestStruct)
+      fc.assert(fc.property(arb.arbitrary(fc), guard.is))
+    })
+  })
   describe('partial', () => {
     test('encoder', () => {
       const partial = getEncoder(S.StructM(s.partial(testStruct)))

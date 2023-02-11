@@ -249,6 +249,145 @@ export const mapKeyTo: MapKeyTo = mapTo => (prop: any) => ({
 export const keyIsNotMapped = (key: string | KeyNotMapped): key is KeyNotMapped =>
   key === KeyNotMapped
 
+/**
+ * A type-level key remap provider
+ *
+ * @since 1.3.0
+ * @category Models
+ */
+export interface KeyRemapLambda {
+  readonly input: string
+  readonly output: string
+}
+
+/**
+ * Applies a remap type-level function to a remap lambda
+ *
+ * @since 1.3.0
+ * @category Models
+ */
+export type ApplyKeyRemap<R extends KeyRemapLambda, Val extends string> = R extends {
+  readonly input: string
+}
+  ? (R & {
+      readonly input: Val
+    })['output']
+  : {
+      readonly R: R
+      readonly input: (val: Val) => Val
+    }
+
+interface MapKeysWith {
+  /**
+   * Used to remap a struct's keys using a provided type-level function and equivalent string mapper
+   *
+   * @since 1.3.0
+   */
+  <R extends KeyRemapLambda>(mapping: (s: string) => string): <
+    S extends URIS2,
+    Props extends Record<
+      string,
+      Prop2<KeyFlag, S, Kind2<S, any, any>, string | KeyNotMapped>
+    >,
+  >(
+    props: Props,
+  ) => {
+    [K in keyof Props]: Props[K] extends Prop2<infer Flag, any, infer Val, infer Remap>
+      ? Remap extends KeyNotMapped
+        ? Prop2<Flag, S, Val, ApplyKeyRemap<R, K & string>>
+        : Prop2<Flag, S, Val, ApplyKeyRemap<R, Remap & string>>
+      : never
+  }
+  /**
+   * Used to remap a struct's keys using a provided type-level function and equivalent string mapper
+   *
+   * @since 1.3.0
+   */
+  <R extends KeyRemapLambda>(mapping: (s: string) => string): <
+    S extends URIS,
+    Props extends Record<string, Prop1<KeyFlag, S, Kind<S, any>, string | KeyNotMapped>>,
+  >(
+    props: Props,
+  ) => {
+    [K in keyof Props]: Props[K] extends Prop1<infer Flag, any, infer Val, infer Remap>
+      ? Remap extends KeyNotMapped
+        ? Prop1<Flag, S, Val, ApplyKeyRemap<R, K & string>>
+        : Prop1<Flag, S, Val, ApplyKeyRemap<R, Remap & string>>
+      : never
+  }
+  /**
+   * Used to remap a struct's keys using a provided type-level function and equivalent string mapper
+   *
+   * @since 1.3.0
+   */
+  <R extends KeyRemapLambda>(mapping: (s: string) => string): <
+    S,
+    Props extends Record<
+      string,
+      Prop<KeyFlag, S, HKT2<S, any, any>, string | KeyNotMapped>
+    >,
+  >(
+    props: Props,
+  ) => {
+    [K in keyof Props]: Props[K] extends Prop<infer Flag, any, infer Val, infer Remap>
+      ? Remap extends KeyNotMapped
+        ? Prop<Flag, S, Val, ApplyKeyRemap<R, K & string>>
+        : Prop<Flag, S, Val, ApplyKeyRemap<R, Remap & string>>
+      : never
+  }
+}
+
+/**
+ * Remap a struct's keys using provided RemapLambda, and string-mapping function
+ *
+ * @since 1.3.0
+ * @category Combinators
+ * @example
+ *   import * as E from 'fp-ts/Either'
+ *   import { pipe } from 'fp-ts/function'
+ *   import { getDecoder } from 'schemata-ts/Decoder'
+ *   import * as S from 'schemata-ts/schemata'
+ *   import * as s from 'schemata-ts/struct'
+ *
+ *   interface CapitalizeLambda extends s.KeyRemapLambda {
+ *     readonly output: Capitalize<this['input']>
+ *   }
+ *
+ *   const capitalize: (s: string) => string = s =>
+ *     `${s.substring(0, 1).toUpperCase()}${s.substring(1)}`
+ *
+ *   const MappedStructDecoder = pipe(
+ *     s.defineStruct({
+ *       foo: s.required(S.String),
+ *       bar: s.optional(S.Number),
+ *       qux: s.optional(S.Boolean),
+ *     }),
+ *     s.mapKeysWith<CapitalizeLambda>(capitalize),
+ *     S.StructM,
+ *     getDecoder,
+ *   )
+ *
+ *   assert.deepStrictEqual(
+ *     MappedStructDecoder.decode({ foo: 'foo', bar: 1 }),
+ *     E.right({ Foo: 'foo', Bar: 1 }),
+ *   )
+ */
+export const mapKeysWith: MapKeysWith =
+  mapping => (props: Record<string, Prop<KeyFlag, unknown, any, any>>) => {
+    const remappedProps: any = {}
+    for (const key in props) {
+      // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+      const prop = props[key]!
+      remappedProps[key] = {
+        ...prop,
+        _keyRemap: keyIsNotMapped(prop._keyRemap)
+          ? mapping(key)
+          : mapping(prop._keyRemap),
+      }
+    }
+    return remappedProps
+  }
+
 interface StructDefinition {
   /**
    * A convenience function to declare reusable struct definitions with type-safety
