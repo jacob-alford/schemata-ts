@@ -11,13 +11,8 @@ import * as DE from 'io-ts/DecodeError'
 import * as D from 'io-ts/Decoder'
 import * as FS from 'io-ts/FreeSemigroup'
 import { hasOwn, witherSM } from 'schemata-ts/internal/util'
-import {
-  isOptionalFlag,
-  isRequiredFlag,
-  keyIsNotMapped,
-  structTools,
-  WithStructM2C,
-} from 'schemata-ts/schemables/WithStructM/definition'
+import { WithStructM2C } from 'schemata-ts/schemables/WithStructM/definition'
+import { isOptionalFlag, isRequiredFlag, keyIsNotMapped } from 'schemata-ts/struct'
 
 const decodeErrorValidation = E.getApplicativeValidation(DE.getSemigroup<string>())
 const apSecond = Ap.apSecond(decodeErrorValidation)
@@ -27,8 +22,7 @@ const apSecond = Ap.apSecond(decodeErrorValidation)
  * @category Instances
  */
 export const Decoder: WithStructM2C<D.URI, unknown> = {
-  structM: (getProperties, params = { extraProps: 'strip' }) => {
-    const properties = getProperties(structTools)
+  structM: (properties, params = { extraProps: 'strip' }) => {
     return {
       decode: flow(
         D.UnknownRecord.decode,

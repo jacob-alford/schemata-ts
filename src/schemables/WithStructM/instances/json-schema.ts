@@ -1,7 +1,7 @@
 /**
- * Represents a ReadonlyMap converted from an expected array of entries.
+ * WithStructM instance for JsonSchema
  *
- * @since 1.2.0
+ * @since 1.3.0
  */
 import { Const, make } from 'fp-ts/Const'
 import { pipe, tuple } from 'fp-ts/function'
@@ -11,19 +11,15 @@ import * as RR from 'fp-ts/ReadonlyRecord'
 import * as Sg from 'fp-ts/Semigroup'
 import * as Str from 'fp-ts/string'
 import * as JS from 'schemata-ts/base/JsonSchemaBase'
-import {
-  isRequiredFlag,
-  structTools,
-  WithStructM2,
-} from 'schemata-ts/schemables/WithStructM/definition'
+import { WithStructM2 } from 'schemata-ts/schemables/WithStructM/definition'
+import { isRequiredFlag } from 'schemata-ts/struct'
 
 /**
- * @since 1.2.0
+ * @since 1.3.0
  * @category Instances
  */
 export const JsonSchema: WithStructM2<JS.URI> = {
-  structM: (getProps, params = { extraProps: 'strip' }) => {
-    const properties = getProps(structTools)
+  structM: (properties, params = { extraProps: 'strip' }) => {
     const [requiredKeys, jsonSchema] = pipe(
       properties,
       RR.foldMapWithIndex(Str.Ord)(
