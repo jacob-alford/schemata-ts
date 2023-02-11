@@ -241,17 +241,19 @@ assert.equal(PB.regexFromPattern(usPhoneNumber).test('1234567890'), false)
 | `Float.float`         | Base Schemable |
 | `Json.json`           | Base Schemable |
 | `Json.jsonFromString` | Base Schemable |
+| Unknown               | Base Schemable |
+| BigIntFromString      | Conversion     |
 | BooleanFromString     | Conversion     |
 | BooleanFromNumber     | Conversion     |
 | DateFromInt           | Conversion     |
 | DateFromIsoString     | Conversion     |
 | DateFromUnixTime      | Conversion     |
-| OptionFromNullable    | Conversion     |
-| OptionFromUndefined   | Conversion     |
-| BigIntFromString      | Conversion     |
 | FloatFromString       | Conversion     |
 | IntFromString         | Conversion     |
 | JsonFromString        | Conversion     |
+| OptionFromNullable    | Conversion     |
+| OptionFromUndefined   | Conversion     |
+| SetFromArray          | Conversion     |
 | NonEmptyArray         | Generic        |
 | Natural               | Number         |
 | NegativeFloat         | Number         |
@@ -279,17 +281,12 @@ assert.equal(PB.regexFromPattern(usPhoneNumber).test('1234567890'), false)
 
 Additionally, there are more unlisted base schemable schemata also exported from `schemata-ts/schemata`. These can be used to construct more complex schemata. There are many examples of custom schemata in `src/schemata` to use as a reference.
 
-## fp-ts next
-
-`Schemata-ts`'s implementation of Schema is built on io-ts `Schemable`. This library wraps schemable with a schema-based API. The future of io-ts is likewise a schema system: [@fp-ts/schema](https://github.com/fp-ts/schema). The approach of `@fp-ts/schema` is for all schemata to be represented as an abstract syntax tree (AST), and then compiled using `Provider`s. This mechanism searches for the AST's instance within a nested map of symbols. This approach is similar to the Schemable method in that they both are a collection of instructions, and ways to compose those instructions together. The upside to the schemable system is that all the available instructions are known to the type system and do not require key-lookups.
-
 ## Future Features
 
 schemata-ts is planned to support the following features in various 1.x and 2.x versions in the near future:
 
 - ~~JsonSerializer and JsonDeserializer: encoding / decoding from Json strings~~ Added in 1.1.0
 - ~~Json Schema: generating JSON-Schema from schemata ([#137](https://github.com/jacob-alford/schemata-ts/issues/137))~~ Added in 1.2.0
-- Optic Schema: generating optics from schemata ([#134](https://github.com/jacob-alford/schemata-ts/issues/134))
-- Mapped Structs: conversions between struct types, i.e. `snake-case` keys to `camelCase` keys
-- More generic schemata: (SetFromArray, ~~NonEmptyArray~~ Added in 1.1.0)
+- ~~Mapped Structs: conversions between struct types, i.e. `snake-case` keys to `camelCase` keys~~ Added in 1.3.0
+- More generic schemata: (~~SetFromArray~~ Added in 1.3.0, ~~NonEmptyArray~~ Added in 1.1.0)
 - More validator.js branded schemata
