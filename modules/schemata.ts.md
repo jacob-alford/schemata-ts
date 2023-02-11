@@ -67,6 +67,7 @@ Added in v1.0.0
   - [PositiveInt](#positiveint)
   - [RGB](#rgb)
   - [Refine](#refine)
+  - [SetFromArray](#setfromarray)
   - [StructM](#structm)
   - [TypeOf](#typeof)
   - [UUID](#uuid)
@@ -824,6 +825,19 @@ export declare const Refine: <A, B>(
 ```
 
 Added in v1.0.0
+
+## SetFromArray
+
+An array input that's converted to a ReadonlySet. Note: does not abide the encoder
+<-> decoder law, but follows a less strict idempotence law.
+
+**Signature**
+
+```ts
+export declare const SetFromArray: SetFromArrayS
+```
+
+Added in v1.3.0
 
 ## StructM
 
