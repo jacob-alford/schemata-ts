@@ -833,95 +833,19 @@ Schemable for mapping a struct
 
 ```ts
 export declare const StructM: <Props, RestKind>(
-  properties: (_: StructTools) => Props,
+  properties: Props,
   params?: StrictStruct | StrippedStruct | StructWithRestParam<RestKind> | undefined
 ) => SchemaExt<
-  {
-    [K in keyof ((RestKind extends undefined
-      ? unknown
-      : {} | { [key: string]: RestKind extends SchemaExt<infer E, any> ? E : never }) & {
-      [K in {
-        [K in keyof Props]: Props[K] extends { readonly _flag: unique symbol } ? K : never
-      }[keyof Props]]: Props[K] extends { readonly _val: infer Val }
-        ? Val extends SchemaExt<infer E, any>
-          ? E
-          : never
-        : never
-    } & {
-      [K in { [K in keyof Props]: Props[K] extends { readonly _flag: unique symbol } ? K : never }[keyof Props]]?:
-        | (Props[K] extends { readonly _val: infer Val } ? (Val extends SchemaExt<infer E, any> ? E : never) : never)
-        | undefined
-    })]: ((RestKind extends undefined
-      ? unknown
-      : {} | { [key: string]: RestKind extends SchemaExt<infer E, any> ? E : never }) & {
-      [K in {
-        [K in keyof Props]: Props[K] extends { readonly _flag: unique symbol } ? K : never
-      }[keyof Props]]: Props[K] extends { readonly _val: infer Val }
-        ? Val extends SchemaExt<infer E, any>
-          ? E
-          : never
-        : never
-    } & {
-      [K in { [K in keyof Props]: Props[K] extends { readonly _flag: unique symbol } ? K : never }[keyof Props]]?:
-        | (Props[K] extends { readonly _val: infer Val } ? (Val extends SchemaExt<infer E, any> ? E : never) : never)
-        | undefined
-    })[K]
-  } extends infer B
-    ? B
-    : never,
-  {
-    [K in keyof ((RestKind extends undefined
-      ? unknown
-      : {} | { [key: string]: RestKind extends SchemaExt<any, infer A> ? A : never }) & {
-      [K in {
-        [K in keyof Props]: Props[K] extends { readonly _flag: unique symbol } ? K : never
-      }[keyof Props] as Props[K] extends { readonly _keyRemap: infer KeyOut }
-        ? KeyOut extends unique symbol
-          ? K
-          : KeyOut
-        : never]: Props[K] extends { readonly _val: infer Val }
-        ? Val extends SchemaExt<any, infer A>
-          ? A
-          : never
-        : never
-    } & {
-      [K in {
-        [K in keyof Props]: Props[K] extends { readonly _flag: unique symbol } ? K : never
-      }[keyof Props] as Props[K] extends { readonly _keyRemap: infer KeyOut }
-        ? KeyOut extends unique symbol
-          ? K
-          : KeyOut
-        : never]?:
-        | (Props[K] extends { readonly _val: infer Val } ? (Val extends SchemaExt<any, infer A> ? A : never) : never)
-        | undefined
-    })]: ((RestKind extends undefined
-      ? unknown
-      : {} | { [key: string]: RestKind extends SchemaExt<any, infer A> ? A : never }) & {
-      [K in {
-        [K in keyof Props]: Props[K] extends { readonly _flag: unique symbol } ? K : never
-      }[keyof Props] as Props[K] extends { readonly _keyRemap: infer KeyOut }
-        ? KeyOut extends unique symbol
-          ? K
-          : KeyOut
-        : never]: Props[K] extends { readonly _val: infer Val }
-        ? Val extends SchemaExt<any, infer A>
-          ? A
-          : never
-        : never
-    } & {
-      [K in {
-        [K in keyof Props]: Props[K] extends { readonly _flag: unique symbol } ? K : never
-      }[keyof Props] as Props[K] extends { readonly _keyRemap: infer KeyOut }
-        ? KeyOut extends unique symbol
-          ? K
-          : KeyOut
-        : never]?:
-        | (Props[K] extends { readonly _val: infer Val } ? (Val extends SchemaExt<any, infer A> ? A : never) : never)
-        | undefined
-    })[K]
-  } extends infer B
-    ? B
-    : never
+  Combine<
+    RestInput2<'SchemaExt', RestKind> & { [K in RequiredProps<Props>]: Input2<'SchemaExt', Props[K]> } & {
+      [K in OptionalProps<Props>]?: Input2<'SchemaExt', Props[K]> | undefined
+    }
+  >,
+  Combine<
+    RestOutput2<'SchemaExt', RestKind> & {
+      [K in RequiredProps<Props> as RemapKey<K, Props[K]>]: Output2<'SchemaExt', Props[K]>
+    } & { [K in OptionalProps<Props> as RemapKey<K, Props[K]>]?: Output2<'SchemaExt', Props[K]> | undefined }
+  >
 >
 ```
 
