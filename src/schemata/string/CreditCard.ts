@@ -7,7 +7,7 @@
  * @since 1.0.0
  */
 import { pipe } from 'fp-ts/function'
-import { Branded } from 'io-ts'
+import { Branded } from 'schemata-ts/brand'
 import { luhn } from 'schemata-ts/internal/algorithms'
 import * as PB from 'schemata-ts/PatternBuilder'
 import { make } from 'schemata-ts/SchemaExt'

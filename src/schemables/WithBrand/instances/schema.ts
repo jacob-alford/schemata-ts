@@ -3,7 +3,7 @@
  *
  * @since 1.0.0
  */
-import { Branded } from 'io-ts'
+import { Branded } from 'schemata-ts/brand'
 import * as SC from 'schemata-ts/SchemaExt'
 
 /**

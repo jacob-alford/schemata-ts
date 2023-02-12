@@ -10,7 +10,7 @@
  * @since 1.0.0
  */
 import { pipe } from 'fp-ts/function'
-import { Branded } from 'io-ts'
+import { Branded } from 'schemata-ts/brand'
 import { make, SchemaExt } from 'schemata-ts/SchemaExt'
 
 interface NaturalBrand {

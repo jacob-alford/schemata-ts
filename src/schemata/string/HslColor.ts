@@ -17,7 +17,7 @@
  *   assert.equal(Guard.is(hslString), true)
  */
 import { pipe } from 'fp-ts/function'
-import { Branded } from 'io-ts'
+import { Branded } from 'schemata-ts/brand'
 import * as PB from 'schemata-ts/PatternBuilder'
 import { make, SchemaExt } from 'schemata-ts/SchemaExt'
 
