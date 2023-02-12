@@ -224,6 +224,14 @@ export {
 
 export {
   /**
+   * A schema for wrapping an inner schema's output value in a newtype.
+   *
+   * @since 1.4.0
+   */
+  Newtype,
+} from 'schemata-ts/schemata/generic/Newtype'
+export {
+  /**
    * A read-only Array containing one or more elements.
    *
    * @since 1.1.0
