@@ -1,6 +1,6 @@
 ---
 title: schemata/date/DateFromIsoString.ts
-nav_order: 31
+nav_order: 34
 parent: Modules
 ---
 

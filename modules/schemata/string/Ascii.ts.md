@@ -1,6 +1,6 @@
 ---
 title: schemata/string/Ascii.ts
-nav_order: 49
+nav_order: 53
 parent: Modules
 ---
 

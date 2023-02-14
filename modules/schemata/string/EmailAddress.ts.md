@@ -1,6 +1,6 @@
 ---
 title: schemata/string/EmailAddress.ts
-nav_order: 54
+nav_order: 58
 parent: Modules
 ---
 

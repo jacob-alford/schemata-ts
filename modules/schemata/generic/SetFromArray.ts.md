@@ -1,6 +1,6 @@
 ---
 title: schemata/generic/SetFromArray.ts
-nav_order: 36
+nav_order: 40
 parent: Modules
 ---
 

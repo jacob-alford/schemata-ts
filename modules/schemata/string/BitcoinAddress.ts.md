@@ -1,6 +1,6 @@
 ---
 title: schemata/string/BitcoinAddress.ts
-nav_order: 52
+nav_order: 56
 parent: Modules
 ---
 

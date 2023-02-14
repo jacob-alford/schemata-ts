@@ -1,6 +1,6 @@
 ---
 title: schemata/generic/NonEmptyArray.ts
-nav_order: 33
+nav_order: 37
 parent: Modules
 ---
 

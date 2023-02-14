@@ -1,6 +1,6 @@
 ---
 title: schemata.ts
-nav_order: 27
+nav_order: 30
 parent: Modules
 ---
 
@@ -51,6 +51,7 @@ Added in v1.0.0
   - [Natural](#natural)
   - [NegativeFloat](#negativefloat)
   - [NegativeInt](#negativeint)
+  - [Newtype](#newtype)
   - [NonEmptyArray](#nonemptyarray)
   - [NonEmptyString](#nonemptystring)
   - [NonNegativeFloat](#nonnegativefloat)
@@ -592,6 +593,18 @@ export declare const NegativeInt: NegativeIntS
 ```
 
 Added in v1.0.0
+
+## Newtype
+
+A schema for wrapping an inner schema's output value in a newtype.
+
+**Signature**
+
+```ts
+export declare const Newtype: NewtypeS
+```
+
+Added in v1.4.0
 
 ## NonEmptyArray
 
