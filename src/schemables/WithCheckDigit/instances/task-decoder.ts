@@ -5,8 +5,8 @@
  */
 import { pipe } from 'fp-ts/function'
 import * as TE from 'fp-ts/TaskEither'
-import { Branded } from 'io-ts'
 import * as TD from 'schemata-ts/base/TaskDecoderBase'
+import { Branded } from 'schemata-ts/brand'
 import {
   CheckDigitVerified,
   WithCheckDigit2C,

@@ -3,8 +3,8 @@
  *
  * @since 1.0.0
  */
-import { Branded } from 'io-ts'
 import * as G from 'schemata-ts/base/GuardBase'
+import { Branded } from 'schemata-ts/brand'
 import {
   CheckDigitVerified,
   WithCheckDigit1,
