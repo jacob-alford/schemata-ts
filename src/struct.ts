@@ -3,9 +3,9 @@
  *
  * @since 1.3.0
  */
-import { camelCase } from 'change-case'
 import { identity } from 'fp-ts/function'
 import { HKT2, Kind, Kind2, URIS, URIS2 } from 'fp-ts/HKT'
+import { camelCase } from 'schemata-ts/internal/camelcase'
 import { CamelCase } from 'type-fest'
 
 /**
@@ -254,7 +254,7 @@ export const keyIsNotMapped = (key: string | KeyNotMapped): key is KeyNotMapped 
 /**
  * A type-level key remap provider
  *
- * @since 1.3.0
+ * @since 1.4.0
  * @category Models
  */
 export interface KeyRemapLambda {
@@ -265,7 +265,7 @@ export interface KeyRemapLambda {
 /**
  * Applies a remap type-level function to a remap lambda
  *
- * @since 1.3.0
+ * @since 1.4.0
  * @category Models
  */
 export type ApplyKeyRemap<R extends KeyRemapLambda, Val extends string> = R extends {
@@ -283,9 +283,11 @@ interface MapKeysWith {
   /**
    * Used to remap a struct's keys using a provided type-level function and equivalent string mapper
    *
-   * @since 1.3.0
+   * @since 1.4.0
    */
-  <R extends KeyRemapLambda>(mapping: (s: string) => string): <
+  <R extends KeyRemapLambda>(
+    mapping: <S extends string>(s: S) => ApplyKeyRemap<KeyRemapLambda, S>,
+  ): <
     S extends URIS2,
     Props extends Record<
       string,
@@ -303,9 +305,11 @@ interface MapKeysWith {
   /**
    * Used to remap a struct's keys using a provided type-level function and equivalent string mapper
    *
-   * @since 1.3.0
+   * @since 1.4.0
    */
-  <R extends KeyRemapLambda>(mapping: (s: string) => string): <
+  <R extends KeyRemapLambda>(
+    mapping: <S extends string>(s: S) => ApplyKeyRemap<KeyRemapLambda, S>,
+  ): <
     S extends URIS,
     Props extends Record<string, Prop1<KeyFlag, S, Kind<S, any>, string | KeyNotMapped>>,
   >(
@@ -320,9 +324,11 @@ interface MapKeysWith {
   /**
    * Used to remap a struct's keys using a provided type-level function and equivalent string mapper
    *
-   * @since 1.3.0
+   * @since 1.4.0
    */
-  <R extends KeyRemapLambda>(mapping: (s: string) => string): <
+  <R extends KeyRemapLambda>(
+    mapping: <S extends string>(s: S) => ApplyKeyRemap<KeyRemapLambda, S>,
+  ): <
     S,
     Props extends Record<
       string,
@@ -342,7 +348,7 @@ interface MapKeysWith {
 /**
  * Remap a struct's keys using provided RemapLambda, and string-mapping function
  *
- * @since 1.3.0
+ * @since 1.4.0
  * @category Combinators
  * @example
  *   import * as E from 'fp-ts/Either'
@@ -393,17 +399,17 @@ export const mapKeysWith: MapKeysWith =
 /**
  * A KeyRemapLambda for remapping keys to camelCase
  *
- * @since 1.3.0
+ * @since 1.4.0
  * @category Combinators
  */
 export interface CamelCaseLambda extends KeyRemapLambda {
-  readonly output: CamelCase<this['input']>
+  readonly output: CamelCase<this['input'], { preserveConsecutiveUppercase: true }>
 }
 
 /**
  * Remap a struct's non-camel-cased-keys into camelCase
  *
- * @since 1.3.0
+ * @since 1.4.0
  * @category Combinators
  * @example
  *   import * as E from 'fp-ts/Either'
@@ -415,7 +421,7 @@ export interface CamelCaseLambda extends KeyRemapLambda {
  *     s.defineStruct({
  *       foo_bar: s.required(S.String),
  *       'bar-qux': s.optional(S.Number),
- *       'foo.baz-dan': s.optional(S.Boolean),
+ *       '--foo_baz-dan___': s.optional(S.Boolean),
  *     }),
  *   )
  *
@@ -425,12 +431,12 @@ export interface CamelCaseLambda extends KeyRemapLambda {
  *     DecoderMapMixedToCamel.decode({
  *       foo_bar: 'foo',
  *       'bar-qux': 1,
- *       'foo.baz-dan': true,
+ *       '--foo_baz-dan___': true,
  *     }),
  *     E.right({ fooBar: 'foo', barQux: 1, fooBazDan: true }),
  *   )
  */
-export const camelCaseKeys = mapKeysWith<CamelCaseLambda>(str => camelCase(`${str}`))
+export const camelCaseKeys = mapKeysWith<CamelCaseLambda>(camelCase)
 
 interface StructDefinition {
   /**
