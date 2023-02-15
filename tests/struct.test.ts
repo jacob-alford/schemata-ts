@@ -213,6 +213,18 @@ describe('value-level tests', () => {
       const arb = getArbitrary(S.StructM(testStructCamel))
       fc.assert(fc.property(arb.arbitrary(fc), guard.is))
     })
+    test('arb / encoder / decoder round trip', () => {
+      const encoder = getEncoder(S.StructM(testStructCamel))
+      const decoder = getDecoder(S.StructM(testStructCamel))
+      const arb = getArbitrary(S.StructM(testStructCamel))
+      fc.assert(
+        fc.property(arb.arbitrary(fc), x => {
+          const encoded = encoder.encode(x)
+          const decoded = decoder.decode(encoded)
+          expect(decoded).toEqual(D.success(x))
+        }),
+      )
+    })
   })
   describe('remap keys', () => {
     test('encoder', () => {
@@ -234,6 +246,18 @@ describe('value-level tests', () => {
       const guard = getGuard(capsTestStruct)
       const arb = getArbitrary(capsTestStruct)
       fc.assert(fc.property(arb.arbitrary(fc), guard.is))
+    })
+    test('arb / encoder / decoder round trip', () => {
+      const encoder = getEncoder(capsTestStruct)
+      const decoder = getDecoder(capsTestStruct)
+      const arb = getArbitrary(capsTestStruct)
+      fc.assert(
+        fc.property(arb.arbitrary(fc), x => {
+          const encoded = encoder.encode(x)
+          const decoded = decoder.decode(encoded)
+          expect(decoded).toEqual(D.success(x))
+        }),
+      )
     })
   })
   describe('partial', () => {
