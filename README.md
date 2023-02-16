@@ -245,6 +245,7 @@ assert.equal(PB.regexFromPattern(usPhoneNumber).test('1234567890'), false)
 | BigIntFromString      | Conversion     |
 | BooleanFromString     | Conversion     |
 | BooleanFromNumber     | Conversion     |
+| CamelCaseFromMixed    | Conversion     |
 | DateFromInt           | Conversion     |
 | DateFromIsoString     | Conversion     |
 | DateFromUnixTime      | Conversion     |
@@ -280,13 +281,3 @@ assert.equal(PB.regexFromPattern(usPhoneNumber).test('1234567890'), false)
 | UUID                  | String         |
 
 Additionally, there are more unlisted base schemable schemata also exported from `schemata-ts/schemata`. These can be used to construct more complex schemata. There are many examples of custom schemata in `src/schemata` to use as a reference.
-
-## Future Features
-
-schemata-ts is planned to support the following features in various 1.x and 2.x versions in the near future:
-
-- ~~JsonSerializer and JsonDeserializer: encoding / decoding from Json strings~~ Added in 1.1.0
-- ~~Json Schema: generating JSON-Schema from schemata ([#137](https://github.com/jacob-alford/schemata-ts/issues/137))~~ Added in 1.2.0
-- ~~Mapped Structs: conversions between struct types, i.e. `snake-case` keys to `camelCase` keys~~ Added in 1.3.0
-- More generic schemata: (~~SetFromArray~~ Added in 1.3.0, ~~NonEmptyArray~~ Added in 1.1.0)
-- More validator.js branded schemata
