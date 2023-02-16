@@ -16,6 +16,8 @@ Added in v1.0.0
 
 <h2 class="text-delta">Table of contents</h2>
 
+- [Model](#model)
+  - [CamelCaseFromMixed](#camelcasefrommixed)
 - [utils](#utils)
   - [Annotate](#annotate)
   - [Ascii](#ascii)
@@ -76,6 +78,21 @@ Added in v1.0.0
   - [UnknownContainers](#unknowncontainers)
 
 ---
+
+# Model
+
+## CamelCaseFromMixed
+
+The same as the `Struct` schema combinator, but keys are transformed to camel case in
+the output type.
+
+**Signature**
+
+```ts
+export declare const CamelCaseFromMixed: CamelCaseFromMixedS
+```
+
+Added in v1.4.0
 
 # utils
 

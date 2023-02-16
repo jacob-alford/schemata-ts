@@ -1,6 +1,6 @@
 ---
 title: struct.ts
-nav_order: 68
+nav_order: 69
 parent: Modules
 ---
 
@@ -15,11 +15,15 @@ Added in v1.3.0
 <h2 class="text-delta">Table of contents</h2>
 
 - [Combinators](#combinators)
+  - [CamelCaseLambda (interface)](#camelcaselambda-interface)
+  - [camelCaseKeys](#camelcasekeys)
   - [mapKeyTo](#mapkeyto)
+  - [mapKeysWith](#mapkeyswith)
 - [Constructors](#constructors)
   - [defineStruct](#definestruct)
   - [optional](#optional)
   - [required](#required)
+  - [struct](#struct)
 - [Guards](#guards)
   - [isOptionalFlag](#isoptionalflag)
   - [isRequiredFlag](#isrequiredflag)
@@ -32,6 +36,9 @@ Added in v1.3.0
   - [Prop1 (interface)](#prop1-interface)
   - [Prop2 (interface)](#prop2-interface)
   - [RequiredKeyFlag (type alias)](#requiredkeyflag-type-alias)
+- [Models](#models)
+  - [ApplyKeyRemap (type alias)](#applykeyremap-type-alias)
+  - [KeyRemapLambda (interface)](#keyremaplambda-interface)
 - [Utilities](#utilities)
   - [complete](#complete)
   - [omit](#omit)
@@ -41,6 +48,80 @@ Added in v1.3.0
 ---
 
 # Combinators
+
+## CamelCaseLambda (interface)
+
+A KeyRemapLambda for remapping keys to camelCase
+
+**Signature**
+
+```ts
+export interface CamelCaseLambda extends KeyRemapLambda {
+  readonly output: CamelCase<this['input'], { preserveConsecutiveUppercase: true }>
+}
+```
+
+Added in v1.4.0
+
+## camelCaseKeys
+
+Remap a struct's non-camel-cased-keys into camelCase
+
+**Signature**
+
+```ts
+export declare const camelCaseKeys: <S, Props>(
+  props: Props
+) => {
+  [K in keyof Props]: Props[K] extends Prop2<infer Flag, any, infer Val, infer Remap>
+    ? Remap extends typeof KeyNotMapped
+      ? Prop2<Flag, S, Val, CamelCase<string & K, { preserveConsecutiveUppercase: true }>>
+      : Prop2<Flag, S, Val, CamelCase<string & Remap, { preserveConsecutiveUppercase: true }>>
+    : never
+}
+```
+
+**Example**
+
+```ts
+import * as S from 'schemata-ts/schemata'
+import * as s from 'schemata-ts/struct'
+import { getEncoder } from 'schemata-ts/Encoder'
+
+const databasePerson = s.struct({
+  first_name: S.String,
+  last_name: S.String,
+  age: S.Number,
+  is_married: S.BooleanFromString,
+})
+
+const DatabasePerson = S.StructM(s.camelCaseKeys(databasePerson))
+
+// DatabasePerson will have the type:
+// SchemaExt<
+//   { first_name: string, last_name: string, age: number, is_married: string },
+//   { firstName: string, lastName: string, age: number, isMarried: boolean }
+// >
+
+const encoder = getEncoder(DatabasePerson)
+
+assert.deepStrictEqual(
+  encoder.encode({
+    firstName: 'John',
+    lastName: 'Doe',
+    age: 42,
+    isMarried: false,
+  }),
+  {
+    first_name: 'John',
+    last_name: 'Doe',
+    age: 42,
+    is_married: 'false',
+  }
+)
+```
+
+Added in v1.4.0
 
 ## mapKeyTo
 
@@ -52,7 +133,78 @@ Used to remap a property's key to a new key in the output type
 export declare const mapKeyTo: MapKeyTo
 ```
 
+**Example**
+
+```ts
+import * as fc from 'fast-check'
+import * as S from 'schemata-ts/schemata'
+import * as s from 'schemata-ts/struct'
+import { getArbitrary } from 'schemata-ts/Arbitrary'
+import { getGuard } from 'schemata-ts/Guard'
+
+const databasePerson = s.defineStruct({
+  first_name: s.mapKeyTo('firstName')(s.required(S.String)),
+  last_name: s.mapKeyTo('lastName')(s.required(S.String)),
+  age: s.required(S.Number),
+  is_married: s.mapKeyTo('isMarried')(s.required(S.BooleanFromString)),
+})
+
+const DatabasePerson = S.StructM(databasePerson)
+
+// DatabasePerson will have the type:
+// SchemaExt<
+//   { first_name: string, last_name: string, age: number, is_married: string },
+//   { firstName: string, lastName: string, age: number, isMarried: boolean }
+// >
+
+const arbitrary = getArbitrary(DatabasePerson).arbitrary(fc)
+const guard = getGuard(DatabasePerson)
+
+fc.assert(fc.property(arbitrary, guard.is))
+```
+
 Added in v1.3.0
+
+## mapKeysWith
+
+Remap a struct's keys using provided RemapLambda, and string-mapping function
+
+**Signature**
+
+```ts
+export declare const mapKeysWith: MapKeysWith
+```
+
+**Example**
+
+```ts
+import * as E from 'fp-ts/Either'
+import { pipe } from 'fp-ts/function'
+import { getDecoder } from 'schemata-ts/Decoder'
+import * as S from 'schemata-ts/schemata'
+import * as s from 'schemata-ts/struct'
+
+interface CapitalizeLambda extends s.KeyRemapLambda {
+  readonly output: Capitalize<this['input']>
+}
+
+const capitalize: (s: string) => string = (s) => `${s.substring(0, 1).toUpperCase()}${s.substring(1)}`
+
+const MappedStructDecoder = pipe(
+  s.defineStruct({
+    foo: s.required(S.String),
+    bar: s.optional(S.Number),
+    qux: s.optional(S.Boolean),
+  }),
+  s.mapKeysWith<CapitalizeLambda>(capitalize),
+  S.StructM,
+  getDecoder
+)
+
+assert.deepStrictEqual(MappedStructDecoder.decode({ foo: 'foo', bar: 1 }), E.right({ Foo: 'foo', Bar: 1 }))
+```
+
+Added in v1.4.0
 
 # Constructors
 
@@ -62,6 +214,31 @@ Added in v1.3.0
 
 ```ts
 export declare const defineStruct: StructDefinition
+```
+
+**Example**
+
+```ts
+import * as fc from 'fast-check'
+import * as S from 'schemata-ts/schemata'
+import * as s from 'schemata-ts/struct'
+import { getGuard } from 'schemata-ts/Guard'
+import { getArbitrary } from 'schemata-ts/Arbitrary'
+
+const someDomainType = s.defineStruct({
+  a: s.required(S.String),
+  b: s.required(S.BooleanFromNumber),
+})
+
+const SomeDomainTypeSchema = S.StructM(someDomainType)
+
+// SomeDomainType will have the type:
+// SchemaExt<{ a: string, b: number }, { a: string, b: boolean }>
+
+const arbitrary = getArbitrary(SomeDomainTypeSchema).arbitrary(fc)
+const guard = getGuard(SomeDomainTypeSchema)
+
+fc.assert(fc.property(arbitrary, guard.is))
 ```
 
 Added in v1.3.0
@@ -89,6 +266,49 @@ export declare const required: Required
 ```
 
 Added in v1.3.0
+
+## struct
+
+Defines a StructM declaration where all keys are required
+
+**Signature**
+
+```ts
+export declare const struct: Struct
+```
+
+**Example**
+
+```ts
+import * as S from 'schemata-ts/schemata'
+import * as s from 'schemata-ts/struct'
+import { getEncoder } from 'schemata-ts/Encoder'
+
+const someDomainType = s.struct({
+  a: S.String,
+  b: S.BooleanFromNumber,
+})
+
+const SomeDomainTypeSchema = S.StructM(someDomainType)
+
+// SomeDomainTypeSchema will have the type:
+// SchemaExt<{ a: string, b: number }, { a: string, b: boolean }>
+
+const encoder = getEncoder(SomeDomainTypeSchema)
+
+assert.deepStrictEqual(
+  encoder.encode({
+    a: 'foo',
+    b: false,
+  }),
+  {
+    a: 'foo',
+    b: 0,
+  }
+)
+```
+
+Added in v1.4.0
 
 # Guards
 
@@ -221,6 +441,44 @@ export type RequiredKeyFlag = 'Required'
 ```
 
 Added in v1.3.0
+
+# Models
+
+## ApplyKeyRemap (type alias)
+
+Applies a remap type-level function to a remap lambda
+
+**Signature**
+
+```ts
+export type ApplyKeyRemap<R extends KeyRemapLambda, Val extends string> = R extends {
+  readonly input: string
+}
+  ? (R & {
+      readonly input: Val
+    })['output']
+  : {
+      readonly R: R
+      readonly input: (val: Val) => Val
+    }
+```
+
+Added in v1.4.0
+
+## KeyRemapLambda (interface)
+
+A type-level key remap provider
+
+**Signature**
+
+```ts
+export interface KeyRemapLambda {
+  readonly input: string
+  readonly output: string
+}
+```
+
+Added in v1.4.0
 
 # Utilities
 
