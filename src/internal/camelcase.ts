@@ -11,7 +11,7 @@ import * as Pred from 'fp-ts/Predicate'
 import * as RA from 'fp-ts/ReadonlyArray'
 import * as Str from 'fp-ts/string'
 import * as PB from 'schemata-ts/PatternBuilder'
-import { type CamelCase } from 'type-fest'
+import type { CamelCase } from 'type-fest'
 
 /** Convert a character code to character */
 const cc: (code: number) => string = String.fromCharCode

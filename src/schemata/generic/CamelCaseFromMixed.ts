@@ -7,7 +7,7 @@
  */
 import { InputOf, make, OutputOf, SchemaExt } from 'schemata-ts/SchemaExt'
 import * as s from 'schemata-ts/struct'
-import { CamelCase } from 'type-fest'
+import type { CamelCase } from 'type-fest'
 
 /**
  * @since 1.4.0

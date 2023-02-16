@@ -6,7 +6,7 @@
 import { identity } from 'fp-ts/function'
 import { HKT2, Kind, Kind2, URIS, URIS2 } from 'fp-ts/HKT'
 import { camelCase } from 'schemata-ts/internal/camelcase'
-import { CamelCase } from 'type-fest'
+import type { CamelCase } from 'type-fest'
 
 /**
  * @since 1.3.0
