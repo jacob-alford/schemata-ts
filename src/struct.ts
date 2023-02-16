@@ -27,7 +27,7 @@ const RequiredKeyFlag: RequiredKeyFlag = 'Required'
  * @category Model
  */
 export type KeyNotMapped = typeof KeyNotMapped
-const KeyNotMapped = Symbol()
+const KeyNotMapped = Symbol.for('schemata-ts/struct/KeyNotMapped')
 
 /**
  * @since 1.3.0
@@ -238,6 +238,32 @@ export const isOptionalFlag = (flag: KeyFlag): flag is OptionalKeyFlag =>
  *
  * @since 1.3.0
  * @category Combinators
+ * @example
+ *   import * as fc from 'fast-check'
+ *   import * as S from 'schemata-ts/schemata'
+ *   import * as s from 'schemata-ts/struct'
+ *   import { getArbitrary } from 'schemata-ts/Arbitrary'
+ *   import { getGuard } from 'schemata-ts/Guard'
+ *
+ *   const databasePerson = s.defineStruct({
+ *     first_name: s.mapKeyTo('firstName')(s.required(S.String)),
+ *     last_name: s.mapKeyTo('lastName')(s.required(S.String)),
+ *     age: s.required(S.Number),
+ *     is_married: s.mapKeyTo('isMarried')(s.required(S.BooleanFromString)),
+ *   })
+ *
+ *   const DatabasePerson = S.StructM(databasePerson)
+ *
+ *   // DatabasePerson will have the type:
+ *   // SchemaExt<
+ *   //   { first_name: string, last_name: string, age: number, is_married: string },
+ *   //   { firstName: string, lastName: string, age: number, isMarried: boolean }
+ *   // >
+ *
+ *   const arbitrary = getArbitrary(DatabasePerson).arbitrary(fc)
+ *   const guard = getGuard(DatabasePerson)
+ *
+ *   fc.assert(fc.property(arbitrary, guard.is))
  */
 export const mapKeyTo: MapKeyTo = mapTo => (prop: any) => ({
   ...prop,
@@ -412,28 +438,40 @@ export interface CamelCaseLambda extends KeyRemapLambda {
  * @since 1.4.0
  * @category Combinators
  * @example
- *   import * as E from 'fp-ts/Either'
- *   import { getDecoder } from 'schemata-ts/Decoder'
  *   import * as S from 'schemata-ts/schemata'
  *   import * as s from 'schemata-ts/struct'
+ *   import { getEncoder } from 'schemata-ts/Encoder'
  *
- *   const camelFromMixed = s.camelCaseKeys(
- *     s.defineStruct({
- *       foo_bar: s.required(S.String),
- *       'bar-qux': s.optional(S.Number),
- *       '--foo_baz-dan___': s.optional(S.Boolean),
- *     }),
- *   )
+ *   const databasePerson = s.struct({
+ *     first_name: S.String,
+ *     last_name: S.String,
+ *     age: S.Number,
+ *     is_married: S.BooleanFromString,
+ *   })
  *
- *   const DecoderMapMixedToCamel = getDecoder(S.StructM(camelFromMixed))
+ *   const DatabasePerson = S.StructM(s.camelCaseKeys(databasePerson))
+ *
+ *   // DatabasePerson will have the type:
+ *   // SchemaExt<
+ *   //   { first_name: string, last_name: string, age: number, is_married: string },
+ *   //   { firstName: string, lastName: string, age: number, isMarried: boolean }
+ *   // >
+ *
+ *   const encoder = getEncoder(DatabasePerson)
  *
  *   assert.deepStrictEqual(
- *     DecoderMapMixedToCamel.decode({
- *       foo_bar: 'foo',
- *       'bar-qux': 1,
- *       '--foo_baz-dan___': true,
+ *     encoder.encode({
+ *       firstName: 'John',
+ *       lastName: 'Doe',
+ *       age: 42,
+ *       isMarried: false,
  *     }),
- *     E.right({ fooBar: 'foo', barQux: 1, fooBazDan: true }),
+ *     {
+ *       first_name: 'John',
+ *       last_name: 'Doe',
+ *       age: 42,
+ *       is_married: 'false',
+ *     },
  *   )
  */
 export const camelCaseKeys = mapKeysWith<CamelCaseLambda>(camelCase)
@@ -489,6 +527,27 @@ interface StructDefinition {
 /**
  * @since 1.3.0
  * @category Constructors
+ * @example
+ *   import * as fc from 'fast-check'
+ *   import * as S from 'schemata-ts/schemata'
+ *   import * as s from 'schemata-ts/struct'
+ *   import { getGuard } from 'schemata-ts/Guard'
+ *   import { getArbitrary } from 'schemata-ts/Arbitrary'
+ *
+ *   const someDomainType = s.defineStruct({
+ *     a: s.required(S.String),
+ *     b: s.required(S.BooleanFromNumber),
+ *   })
+ *
+ *   const SomeDomainTypeSchema = S.StructM(someDomainType)
+ *
+ *   // SomeDomainType will have the type:
+ *   // SchemaExt<{ a: string, b: number }, { a: string, b: boolean }>
+ *
+ *   const arbitrary = getArbitrary(SomeDomainTypeSchema).arbitrary(fc)
+ *   const guard = getGuard(SomeDomainTypeSchema)
+ *
+ *   fc.assert(fc.property(arbitrary, guard.is))
  */
 export const defineStruct: StructDefinition = identity
 
@@ -527,6 +586,33 @@ interface Struct {
  *
  * @since 1.4.0
  * @category Constructors
+ * @example
+ *   import * as S from 'schemata-ts/schemata'
+ *   import * as s from 'schemata-ts/struct'
+ *   import { getEncoder } from 'schemata-ts/Encoder'
+ *
+ *   const someDomainType = s.struct({
+ *     a: S.String,
+ *     b: S.BooleanFromNumber,
+ *   })
+ *
+ *   const SomeDomainTypeSchema = S.StructM(someDomainType)
+ *
+ *   // SomeDomainTypeSchema will have the type:
+ *   // SchemaExt<{ a: string, b: number }, { a: string, b: boolean }>
+ *
+ *   const encoder = getEncoder(SomeDomainTypeSchema)
+ *
+ *   assert.deepStrictEqual(
+ *     encoder.encode({
+ *       a: 'foo',
+ *       b: false,
+ *     }),
+ *     {
+ *       a: 'foo',
+ *       b: 0,
+ *     },
+ *   )
  */
 export const struct: Struct = (props: Record<string, HKT2<unknown, any, any>>) => {
   const remappedProps: Record<
@@ -536,11 +622,7 @@ export const struct: Struct = (props: Record<string, HKT2<unknown, any, any>>) =
   for (const key in props) {
     // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
     const prop = props[key]!
-    remappedProps[key] = {
-      _val: prop,
-      _keyRemap: KeyNotMapped,
-      _flag: RequiredKeyFlag,
-    }
+    remappedProps[key] = required(prop)
   }
   return remappedProps
 }
