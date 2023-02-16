@@ -43,6 +43,12 @@ yarn add schemata-ts
 npm install schemata-ts
 ```
 
+## Documentation
+
+- [schemata-ts](https://jacob-alford.github.io/schemata-ts/docs/modules)
+- [fp-ts](https://gcanti.github.io/fp-ts/modules/)
+- [io-ts](https://gcanti.github.io/io-ts)
+
 ## Codec and Arbitrary
 
 A codec is a typeclass that contains the methods of `Decoder`, `Encoder`, `JsonSerializer`, `JsonDeserializer`, and `Guard`. Decoder and encoder are lossless when composed together. This means that for all domain types for which an encoder encodes to, a decoder will return a valid `E.Right` value.
@@ -225,11 +231,220 @@ assert.equal(PB.regexFromPattern(usPhoneNumber).test('123-456-7890'), true)
 assert.equal(PB.regexFromPattern(usPhoneNumber).test('1234567890'), false)
 ```
 
-## Documentation
+## Advanced Structs and Key Transformations
 
-- [schemata-ts](https://jacob-alford.github.io/schemata-ts/docs/modules)
-- [fp-ts](https://gcanti.github.io/fp-ts/modules/)
-- [io-ts](https://gcanti.github.io/io-ts)
+Schemata-ts has powerful tools for constructing domain artifacts that are strongly-typed plain javascript objects. There are a few ways to build the same schema, and some ways are more powerful than others. If, for instance, domain types are fragmented and need to compose in different ways, they can't be changed once they've been turned into schemata. `schemata-ts/struct` has built-in combinators for composing struct definitions together in elegant ways.
+
+### Declaring a struct schema
+
+There are a few ways to declare a struct-based schema. The first is to use the `Struct` schema exported with all the other schemata from `schemata-ts/schemata`:
+
+```typescript
+import * as E from 'fp-ts/Either'
+import * as S from 'schemata-ts/schemata'
+import { getDecoder } from 'schemata-ts/Decoder'
+
+const SomeDomainType = S.Struct({
+  a: S.String,
+  b: S.BooleanFromNumber,
+})
+
+// SomeDomainType will have the type:
+// SchemaExt<{ a: string, b: number }, { a: string, b: boolean }>
+
+const decoder = getDecoder(SomeDomainType)
+
+assert.deepStrictEqual(
+  decoder.decode({
+    a: 'foo',
+    b: 0,
+  }),
+  E.right({
+    a: 'foo',
+    b: false,
+  }),
+)
+```
+
+The next few ways use the `schemata-ts/struct` module to define meta-definitions of structs. Once the struct has been constructed as it needs, it can be plugged into the `StructM` schema, and used anywhere else schemata are used.
+
+The following results in the same schema as defined in the above example:
+
+```typescript
+import * as S from 'schemata-ts/schemata'
+import * as s from 'schemata-ts/struct'
+import { getEncoder } from 'schemata-ts/Encoder'
+
+const someDomainType = s.struct({
+  a: S.String,
+  b: S.BooleanFromNumber,
+})
+
+const SomeDomainTypeSchema = S.StructM(someDomainType)
+
+// SomeDomainType will have the type:
+// SchemaExt<{ a: string, b: number }, { a: string, b: boolean }>
+
+const encoder = getEncoder(SomeDomainTypeSchema)
+
+assert.deepStrictEqual(
+  encoder.encode({
+    a: 'foo',
+    b: false,
+  }),
+  {
+    a: 'foo',
+    b: 0,
+  },
+)
+```
+
+The final way to write this domain type is to use `struct.defineStruct` which differs from `struct` in that each property key must explicitly specify whether the key is required or optional.
+
+The following results in the same schema as defined in the above two examples:
+
+```typescript
+import * as fc from 'fast-check'
+import * as S from 'schemata-ts/schemata'
+import * as s from 'schemata-ts/struct'
+import { getGuard } from 'schemata-ts/Guard'
+import { getArbitrary } from 'schemata-ts/Arbitrary'
+
+const someDomainType = s.defineStruct({
+  a: s.required(S.String),
+  b: s.required(S.BooleanFromNumber),
+})
+
+const SomeDomainTypeSchema = S.StructM(someDomainType)
+
+// SomeDomainType will have the type:
+// SchemaExt<{ a: string, b: number }, { a: string, b: boolean }>
+
+const arbitrary = getArbitrary(SomeDomainTypeSchema).arbitrary(fc)
+const guard = getGuard(SomeDomainTypeSchema)
+
+fc.assert(fc.property(arbitrary, guard.is))
+```
+
+### CamelCase Keys
+
+As of 1.4.0, schemata-ts has built in combinators for constructing domain types where the expected input type contains mixed case keys (words separated by [any whitespace character](https://en.wikipedia.org/wiki/Whitespace_character#Unicode), hyphens, and underscores) whose output is camelCase. Like struct above, there are a few ways to do this. This first example is using the `CamelCaseFromMixed` schema of `schemata-ts/schemata`.
+
+```typescript
+import * as E from 'fp-ts/Either'
+import * as S from 'schemata-ts/schemata'
+import { getDecoder } from 'schemata-ts/Decoder'
+
+const DatabasePerson = S.CamelCaseFromMixed({
+  first_name: S.String,
+  last_name: S.String,
+  age: S.Number,
+  is_married: S.BooleanFromString,
+})
+
+// DatabasePerson will have the type:
+// SchemaExt<
+//   { first_name: string, last_name: string, age: number, is_married: string },
+//   { firstName: string, lastName: string, age: number, isMarried: boolean }
+// >
+
+const decoder = getDecoder(DatabasePerson)
+
+assert.deepStrictEqual(
+  decoder.decode({
+    first_name: 'John',
+    last_name: 'Doe',
+    age: 42,
+    is_married: 'false',
+  }),
+  E.right({
+    firstName: 'John',
+    lastName: 'Doe',
+    age: 42,
+    isMarried: false,
+  }),
+)
+```
+
+The following example is identical to the above except it uses the `camelCaseKeys` combinator of the struct module.
+
+```typescript
+import * as S from 'schemata-ts/schemata'
+import * as s from 'schemata-ts/struct'
+import { getEncoder } from 'schemata-ts/Encoder'
+
+const databasePerson = s.struct({
+  first_name: S.String,
+  last_name: S.String,
+  age: S.Number,
+  is_married: S.BooleanFromString,
+})
+
+const DatabasePerson = S.StructM(s.camelCaseKeys(databasePerson))
+
+// DatabasePerson will have the type:
+// SchemaExt<
+//   { first_name: string, last_name: string, age: number, is_married: string },
+//   { firstName: string, lastName: string, age: number, isMarried: boolean }
+// >
+
+const encoder = getEncoder(DatabasePerson)
+
+assert.deepStrictEqual(
+  encoder.encode({
+    firstName: 'John',
+    lastName: 'Doe',
+    age: 42,
+    isMarried: false,
+  }),
+  {
+    first_name: 'John',
+    last_name: 'Doe',
+    age: 42,
+    is_married: 'false',
+  },
+)
+```
+
+The following example is identical to the above, except the keys being mapped to are explicitly specified using `defineStruct`:
+
+```typescript
+import * as fc from 'fast-check'
+import * as S from 'schemata-ts/schemata'
+import * as s from 'schemata-ts/struct'
+import { getArbitrary } from 'schemata-ts/Arbitrary'
+import { getGuard } from 'schemata-ts/Guard'
+
+const databasePerson = s.defineStruct({
+  first_name: s.mapKeyTo('firstName')(s.required(S.String)),
+  last_name: s.mapKeyTo('lastName')(s.required(S.String)),
+  age: s.required(S.Number),
+  is_married: s.mapKeyTo('isMarried')(s.required(S.BooleanFromString)),
+})
+
+const DatabasePerson = S.StructM(databasePerson)
+
+// DatabasePerson will have the type:
+// SchemaExt<
+//   { first_name: string, last_name: string, age: number, is_married: string },
+//   { firstName: string, lastName: string, age: number, isMarried: boolean }
+// >
+
+const arbitrary = getArbitrary(DatabasePerson).arbitrary(fc)
+const guard = getGuard(DatabasePerson)
+
+fc.assert(fc.property(arbitrary, guard.is))
+```
+
+Furthermore, `schemata-ts` has several utilities for working with structs:
+
+| Name      | Description                                  |
+| --------- | -------------------------------------------- |
+| partial   | Marks all properties as optional             |
+| complete  | Marks all properties as required             |
+| pick      | Keep only specified keys                     |
+| omit      | Remove specified keys                        |
+| mapKeysTo | Apply a mapping function to an object's keys |
 
 ## Exported Schemata
 

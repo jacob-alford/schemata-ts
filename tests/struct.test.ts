@@ -332,19 +332,19 @@ describe('value-level tests', () => {
   })
   describe('struct', () => {
     test('encoder', () => {
-      const partial = getEncoder(S.StructM(s.complete(plainStruct)))
-      expect(partial.encode({ a: 'a', b: true })).toEqual({
+      const encoder = getEncoder(S.StructM(plainStruct))
+      expect(encoder.encode({ a: 'a', b: true })).toEqual({
         a: 'a',
         b: 1,
       })
     })
     test('decoder', () => {
-      const partial = getDecoder(S.StructM(s.complete(plainStruct)))
-      expect(partial.decode({ a: 'a', b: 0 })).toEqual(D.success({ a: 'a', b: false }))
+      const decoder = getDecoder(S.StructM(plainStruct))
+      expect(decoder.decode({ a: 'a', b: 0 })).toEqual(D.success({ a: 'a', b: false }))
     })
     test('arb / guard', () => {
-      const g = getGuard(S.StructM(s.complete(plainStruct)))
-      const arb = getArbitrary(S.StructM(s.complete(plainStruct)))
+      const g = getGuard(S.StructM(plainStruct))
+      const arb = getArbitrary(S.StructM(plainStruct))
       fc.assert(fc.property(arb.arbitrary(fc), g.is))
     })
   })
