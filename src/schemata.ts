@@ -224,6 +224,16 @@ export {
 
 export {
   /**
+   * The same as the `Struct` schema combinator, but keys are transformed to camel case in
+   * the output type.
+   *
+   * @since 1.4.0
+   * @category Model
+   */
+  CamelCaseFromMixed,
+} from 'schemata-ts/schemata/generic/CamelCaseFromMixed'
+export {
+  /**
    * A schema for wrapping an inner schema's output value in a newtype.
    *
    * @since 1.4.0
