@@ -19,6 +19,11 @@ const testStruct = s.defineStruct({
   d: s.mapKeyTo('f')(s.optional(S.Unknown)),
 })
 
+const plainStruct = s.struct({
+  a: S.String,
+  b: S.BooleanFromNumber,
+})
+
 interface CapitalizeLambda extends s.KeyRemapLambda {
   readonly output: Capitalize<this['input']>
 }
@@ -91,6 +96,26 @@ describe('type-level tests', () => {
       const guard = getGuard(capsTestStruct)
       expectTypeOf<typeof guard>().toEqualTypeOf<
         G.Guard<unknown, { A: string; B?: number; E: boolean; F?: unknown }>
+      >()
+    })
+  })
+  describe('struct', () => {
+    test('struct2', () => {
+      const struct = getEncoder(S.StructM(plainStruct))
+      expectTypeOf<typeof struct>().toEqualTypeOf<
+        Enc.Encoder<{ a: string; b: number }, { a: string; b: boolean }>
+      >()
+    })
+    test('struct2c', () => {
+      const struct = getDecoder(S.StructM(plainStruct))
+      expectTypeOf<typeof struct>().toEqualTypeOf<
+        D.Decoder<unknown, { a: string; b: boolean }>
+      >()
+    })
+    test('struct1', () => {
+      const struct = getGuard(S.StructM(plainStruct))
+      expectTypeOf<typeof struct>().toEqualTypeOf<
+        G.Guard<unknown, { a: string; b: boolean }>
       >()
     })
   })
@@ -302,6 +327,24 @@ describe('value-level tests', () => {
     test('arb / guard', () => {
       const g = getGuard(S.StructM(s.complete(testStruct)))
       const arb = getArbitrary(S.StructM(s.complete(testStruct)))
+      fc.assert(fc.property(arb.arbitrary(fc), g.is))
+    })
+  })
+  describe('struct', () => {
+    test('encoder', () => {
+      const partial = getEncoder(S.StructM(s.complete(plainStruct)))
+      expect(partial.encode({ a: 'a', b: true })).toEqual({
+        a: 'a',
+        b: 1,
+      })
+    })
+    test('decoder', () => {
+      const partial = getDecoder(S.StructM(s.complete(plainStruct)))
+      expect(partial.decode({ a: 'a', b: 0 })).toEqual(D.success({ a: 'a', b: false }))
+    })
+    test('arb / guard', () => {
+      const g = getGuard(S.StructM(s.complete(plainStruct)))
+      const arb = getArbitrary(S.StructM(s.complete(plainStruct)))
       fc.assert(fc.property(arb.arbitrary(fc), g.is))
     })
   })

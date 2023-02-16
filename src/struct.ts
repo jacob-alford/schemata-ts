@@ -492,6 +492,59 @@ interface StructDefinition {
  */
 export const defineStruct: StructDefinition = identity
 
+interface Struct {
+  /**
+   * A convenience function to declare a struct where all keys are required
+   *
+   * @since 1.4.0
+   * @category Models
+   */
+  <S extends URIS2, Props extends Record<string, Kind2<S, any, any>>>(props: Props): {
+    [K in keyof Props]: Prop2<RequiredKeyFlag, S, Props[K], KeyNotMapped>
+  }
+  /**
+   * A convenience function to declare a struct where all keys are required
+   *
+   * @since 1.4.0
+   * @category Models
+   */
+  <S extends URIS, Props extends Record<string, Kind<S, any>>>(props: Props): {
+    [K in keyof Props]: Prop1<RequiredKeyFlag, S, Props[K], KeyNotMapped>
+  }
+  /**
+   * A convenience function to declare a struct where all keys are required
+   *
+   * @since 1.4.0
+   * @category Models
+   */
+  <S, Props extends Record<string, HKT2<S, any, any>>>(props: Props): {
+    [K in keyof Props]: Prop<RequiredKeyFlag, S, Props[K], KeyNotMapped>
+  }
+}
+
+/**
+ * Defines a StructM declaration where all keys are required
+ *
+ * @since 1.4.0
+ * @category Constructors
+ */
+export const struct: Struct = (props: Record<string, HKT2<unknown, any, any>>) => {
+  const remappedProps: Record<
+    string,
+    Prop<RequiredKeyFlag, unknown, HKT2<unknown, any, any>, KeyNotMapped>
+  > = {}
+  for (const key in props) {
+    // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+    const prop = props[key]!
+    remappedProps[key] = {
+      _val: prop,
+      _keyRemap: KeyNotMapped,
+      _flag: RequiredKeyFlag,
+    }
+  }
+  return remappedProps
+}
+
 interface Partial {
   /**
    * Remap a StructM definition such that all keys are optional
