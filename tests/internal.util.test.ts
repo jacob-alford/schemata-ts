@@ -1,8 +1,11 @@
+import { expectTypeOf } from 'expect-type'
 import * as E from 'fp-ts/Either'
 import { pipe, tuple } from 'fp-ts/function'
 import * as O from 'fp-ts/Option'
 import * as RA from 'fp-ts/ReadonlyArray'
 import * as TE from 'fp-ts/TaskEither'
+import { camelCase } from 'schemata-ts/internal/camelcase'
+import { CamelCase } from 'type-fest'
 
 import {
   base64Encode,
@@ -12,6 +15,117 @@ import {
   witherTaskParSM,
 } from '../src/internal/util'
 import { zipN } from '../test-utils'
+
+type CamelCaseFst<T extends ReadonlyArray<readonly [string, string]>> = {
+  [K in keyof T]: CamelCase<T[K][0], { preserveConsecutiveUppercase: false }>
+}
+type Snd<T extends ReadonlyArray<readonly [string, string]>> = {
+  [K in keyof T]: T[K][1]
+}
+
+describe('camelCase', () => {
+  describe('type-fest type helper tests', () => {
+    const testCases = [
+      ['FooBar', 'fooBar'],
+      ['foo-bar', 'fooBar'],
+      ['foo-bar-abc-123', 'fooBarAbc123'],
+      ['foo bar', 'fooBar'],
+      ['foo_bar', 'fooBar'],
+      ['foobar', 'foobar'],
+      ['foo-bar_abc xyzBarFoo', 'fooBarAbcXyzBarFoo'],
+      ['-webkit-animation', 'webkitAnimation'],
+      ['--very-prefixed', 'veryPrefixed'],
+      ['foo____bar', 'fooBar'],
+      ['FOO', 'foo'],
+      ['foo', 'foo'],
+      ['FOO_BAR', 'fooBar'],
+      ['FOO-BAR', 'fooBar'],
+      // non-matching camelcase tests
+      ['IDs', 'iDs'],
+      ['FooIDs', 'fooIDs'],
+      ['foo.bar', 'foo.bar'], // <-- not handling period separators
+      ['..foo..bar..', '..foo..bar..'], // <-- not handling period separators
+      ['.', '.'], // <-- not handling period separators
+      ['..', '..'], // <-- not handling period separators
+    ] as const
+    type TestCases = typeof testCases
+    type Inputs = CamelCaseFst<TestCases>
+    type Results = Snd<TestCases>
+    expectTypeOf<Inputs>().toEqualTypeOf<Results>()
+    test.each(testCases)('should convert %s to %s', (input, expected) => {
+      expect(camelCase(input)).toBe(expected)
+    })
+  })
+  describe('camelcase npm test cases', () => {
+    const testCases = [
+      ['foo', 'foo'],
+      ['foo-bar', 'fooBar'],
+      ['foo-bar-baz', 'fooBarBaz'],
+      ['foo--bar', 'fooBar'],
+      ['--foo-bar', 'fooBar'],
+      ['--foo--bar', 'fooBar'],
+      ['FOO-BAR', 'fooBar'],
+      ['FOÈ-BAR', 'foèBar'],
+      ['-foo-bar-', 'fooBar'],
+      ['--foo--bar--', 'fooBar'],
+      ['foo-1', 'foo1'],
+      ['foo_bar', 'fooBar'],
+      ['__foo__bar__', 'fooBar'],
+      ['foo bar', 'fooBar'],
+      ['  foo  bar  ', 'fooBar'],
+      ['-', ''],
+      [' - ', ''],
+      ['fooBar', 'fooBar'],
+      ['fooBar-baz', 'fooBarBaz'],
+      ['foìBar-baz', 'foìBarBaz'],
+      ['fooBarBaz-bazzy', 'fooBarBazBazzy'],
+      ['FBBazzy', 'fbBazzy'],
+      ['F', 'f'],
+      ['FooBar', 'fooBar'],
+      ['Foo', 'foo'],
+      ['FOO', 'foo'],
+      ['--', ''],
+      ['', ''],
+      ['_', ''],
+      [' ', ''],
+      ['--', ''],
+      ['  ', ''],
+      ['__', ''],
+      ['--__--_--_', ''],
+      ['foo bar?', 'fooBar?'],
+      ['foo bar!', 'fooBar!'],
+      ['foo bar$', 'fooBar$'],
+      ['foo-bar#', 'fooBar#'],
+      ['XMLHttpRequest', 'xmlHttpRequest'],
+      ['AjaxXMLHttpRequest', 'ajaxXmlHttpRequest'],
+      ['Ajax-XMLHttpRequest', 'ajaxXmlHttpRequest'],
+      ['mGridCol6@md', 'mGridCol6@md'],
+      ['A::a', 'a::a'],
+      ['Hello1World', 'hello1World'],
+      ['Hello11World', 'hello11World'],
+      ['hello1world', 'hello1World'],
+      ['Hello1World11foo', 'hello1World11Foo'],
+      ['Hello1', 'hello1'],
+      ['hello1', 'hello1'],
+      ['1Hello', '1Hello'],
+      ['1hello', '1Hello'],
+      ['h2w', 'h2W'],
+      ['розовый_пушистый-единороги', 'розовыйПушистыйЕдинороги'],
+      ['розовый_пушистый-единороги', 'розовыйПушистыйЕдинороги'],
+      ['РОЗОВЫЙ_ПУШИСТЫЙ-ЕДИНОРОГИ', 'розовыйПушистыйЕдинороги'],
+      ['桑德在这里。', '桑德在这里。'],
+      ['桑德在这里。', '桑德在这里。'],
+      ['桑德_在这里。', '桑德在这里。'],
+    ] as const
+    type TestCases = typeof testCases
+    type Inputs = CamelCaseFst<TestCases>
+    type Results = Snd<TestCases>
+    expectTypeOf<Inputs>().toEqualTypeOf<Results>()
+    test.each(testCases)('should convert %s to %s', (input, expected) => {
+      expect(camelCase(input)).toBe(expected)
+    })
+  })
+})
 
 describe('witherTaskParSM', () => {
   it('skips unenumerable properties', async () => {

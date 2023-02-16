@@ -161,7 +161,11 @@ export const partial = <A>(properties: { [K in keyof A]: Arbitrary<A[K]> }): Arb
  * @category Combinators
  */
 export const record = <A>(codomain: Arbitrary<A>): Arbitrary<Record<string, A>> => ({
-  arbitrary: fc => fc.dictionary(string.arbitrary(fc), codomain.arbitrary(fc)),
+  arbitrary: fc =>
+    fc.dictionary(
+      string.arbitrary(fc).filter(s => s !== '__proto__'),
+      codomain.arbitrary(fc),
+    ),
 })
 
 /**
