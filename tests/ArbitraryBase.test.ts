@@ -1,7 +1,7 @@
 import * as fc from 'fast-check'
 import { pipe } from 'fp-ts/function'
 
-import * as Arb from '../src/base/ArbitraryBase'
+import * as Arb from '../src/Arbitrary'
 import * as G from '../src/Guard'
 import { typeOf } from '../src/internal/util'
 import * as SC from '../src/SchemaExt'

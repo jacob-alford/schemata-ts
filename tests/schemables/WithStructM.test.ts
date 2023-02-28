@@ -7,7 +7,7 @@ import * as FS from 'io-ts/FreeSemigroup'
 import { getEncoder } from 'schemata-ts/Encoder'
 import { getGuard } from 'schemata-ts/Guard'
 
-import * as Arb from '../../src/base/ArbitraryBase'
+import * as Arb from '../../src/Arbitrary'
 import * as D from '../../src/base/DecoderBase'
 import * as Enc from '../../src/base/EncoderBase'
 import * as Eq_ from '../../src/base/EqBase'

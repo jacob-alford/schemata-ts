@@ -4,7 +4,7 @@
  * @since 1.3.0
  */
 import { identity } from 'fp-ts/function'
-import { HKT2, Kind, Kind2, URIS, URIS2 } from 'fp-ts/HKT'
+import { Kind, TypeLambda } from 'schemata-ts/HKT'
 import { camelCase } from 'schemata-ts/internal/camelcase'
 import type { CamelCase } from 'type-fest'
 
@@ -43,83 +43,13 @@ export type KeyFlag = OptionalKeyFlag | RequiredKeyFlag
  */
 export interface Prop<
   Flag extends KeyFlag,
-  S,
-  Val extends HKT2<S, any, any>,
+  S extends TypeLambda,
+  Val extends Kind<S, any, any>,
   K extends string | KeyNotMapped,
 > {
   readonly _flag: Flag
   readonly _keyRemap: K
   readonly _val: Val
-}
-
-/**
- * Meta information for a Kind for if the key is optional or required, and if the key is remapped
- *
- * @since 1.3.0
- * @category Model
- */
-export interface Prop1<
-  Flag extends KeyFlag,
-  S extends URIS,
-  Val extends Kind<S, any>,
-  K extends string | KeyNotMapped,
-> {
-  readonly _flag: Flag
-  readonly _keyRemap: K
-  readonly _val: Val
-}
-
-/**
- * Meta information for a Kind2 for if the key is optional or required, and if the key is remapped
- *
- * @since 1.3.0
- * @category Model
- */
-export interface Prop2<
-  Flag extends KeyFlag,
-  S extends URIS2,
-  Val extends Kind2<S, any, any>,
-  K extends string | KeyNotMapped,
-> {
-  readonly _flag: Flag
-  readonly _keyRemap: K
-  readonly _val: Val
-}
-
-interface Required {
-  /**
-   * Used to indicate that a property is required
-   *
-   * @since 1.3.0
-   */
-  <S extends URIS2, Val extends Kind2<S, any, any>>(val: Val): Prop2<
-    RequiredKeyFlag,
-    S,
-    Val,
-    KeyNotMapped
-  >
-  /**
-   * Used to indicate that a property is required
-   *
-   * @since 1.3.0
-   */
-  <S extends URIS, Val extends Kind<S, any>>(val: Val): Prop1<
-    RequiredKeyFlag,
-    S,
-    Val,
-    KeyNotMapped
-  >
-  /**
-   * Used to indicate that a property is required
-   *
-   * @since 1.3.0
-   */
-  <S, Val extends HKT2<S, any, any>>(val: Val): Prop<
-    RequiredKeyFlag,
-    S,
-    Val,
-    KeyNotMapped
-  >
 }
 
 /**
@@ -128,12 +58,13 @@ interface Required {
  * @since 1.3.0
  * @category Constructors
  */
-export const required: Required = (val: any) =>
-  ({
-    _flag: RequiredKeyFlag,
-    _keyRemap: KeyNotMapped,
-    _val: val,
-  } as any)
+export const required: <S extends TypeLambda, Val extends Kind<S, any, any>>(
+  val: Val,
+) => Prop<RequiredKeyFlag, S, Val, KeyNotMapped> = val => ({
+  _flag: RequiredKeyFlag,
+  _keyRemap: KeyNotMapped,
+  _val: val,
+})
 
 /**
  * @since 1.3.0
@@ -142,89 +73,19 @@ export const required: Required = (val: any) =>
 export const isRequiredFlag = (flag: KeyFlag): flag is RequiredKeyFlag =>
   flag === RequiredKeyFlag
 
-interface Optional {
-  /**
-   * Used to indicate that a property is optional
-   *
-   * @since 1.3.0
-   */
-  <S extends URIS2, Val extends Kind2<S, any, any>>(val: Val): Prop2<
-    OptionalKeyFlag,
-    S,
-    Val,
-    KeyNotMapped
-  >
-  /**
-   * Used to indicate that a property is optional
-   *
-   * @since 1.3.0
-   */
-  <S extends URIS, Val extends Kind<S, any>>(val: Val): Prop1<
-    OptionalKeyFlag,
-    S,
-    Val,
-    KeyNotMapped
-  >
-  /**
-   * Used to indicate that a property is optional
-   *
-   * @since 1.3.0
-   */
-  <S, Val extends HKT2<S, any, any>>(val: Val): Prop<
-    OptionalKeyFlag,
-    S,
-    Val,
-    KeyNotMapped
-  >
-}
-
 /**
  * Indicates that a property is optional
  *
  * @since 1.3.0
  * @category Constructors
  */
-export const optional: Optional = (val: any) =>
-  ({
-    _flag: OptionalKeyFlag,
-    _keyRemap: KeyNotMapped,
-    _val: val,
-  } as any)
-
-interface MapKeyTo {
-  /**
-   * Used to remap a property's key to a new key in the output type
-   *
-   * @since 1.3.0
-   */
-  <K extends string>(mapTo: K): <
-    Flag extends KeyFlag,
-    S extends URIS2,
-    Val extends Kind2<S, any, any>,
-  >(
-    prop: Prop2<Flag, S, Val, KeyNotMapped>,
-  ) => Prop2<Flag, S, Val, K>
-  /**
-   * Used to remap a property's key to a new key in the output type
-   *
-   * @since 1.3.0
-   */
-  <K extends string>(mapTo: K): <
-    Flag extends KeyFlag,
-    S extends URIS,
-    Val extends Kind<S, any>,
-  >(
-    prop: Prop1<Flag, S, Val, KeyNotMapped>,
-  ) => Prop1<Flag, S, Val, K>
-  /**
-   * Used to remap a property's key to a new key in the output type
-   *
-   * @since 1.3.0
-   */
-  <K extends string>(mapTo: K): <Flag extends KeyFlag, S, Val extends HKT2<S, any, any>>(
-    prop: Prop<Flag, S, Val, KeyNotMapped>,
-  ) => Prop<Flag, S, Val, K>
-}
+export const optional: <S extends TypeLambda, Val extends Kind<S, any, any>>(
+  val: Val,
+) => Prop<OptionalKeyFlag, S, Val, KeyNotMapped> = val => ({
+  _flag: OptionalKeyFlag,
+  _keyRemap: KeyNotMapped,
+  _val: val,
+})
 
 /**
  * @since 1.3.0
@@ -265,7 +126,11 @@ export const isOptionalFlag = (flag: KeyFlag): flag is OptionalKeyFlag =>
  *
  *   fc.assert(fc.property(arbitrary, guard.is))
  */
-export const mapKeyTo: MapKeyTo = mapTo => (prop: any) => ({
+export const mapKeyTo: <K extends string>(
+  mapTo: K,
+) => <Flag extends KeyFlag, S extends TypeLambda, Val extends Kind<S, any, any>>(
+  prop: Prop<Flag, S, Val, KeyNotMapped>,
+) => Prop<Flag, S, Val, K> = mapTo => prop => ({
   ...prop,
   _keyRemap: mapTo,
 })
@@ -305,70 +170,27 @@ export type ApplyKeyRemap<R extends KeyRemapLambda, Val extends string> = R exte
       readonly input: (val: Val) => Val
     }
 
-interface MapKeysWith {
-  /**
-   * Used to remap a struct's keys using a provided type-level function and equivalent string mapper
-   *
-   * @since 1.4.0
-   */
-  <R extends KeyRemapLambda>(
-    mapping: <S extends string>(s: S) => ApplyKeyRemap<KeyRemapLambda, S>,
-  ): <
-    S extends URIS2,
-    Props extends Record<
-      string,
-      Prop2<KeyFlag, S, Kind2<S, any, any>, string | KeyNotMapped>
-    >,
-  >(
-    props: Props,
-  ) => {
-    [K in keyof Props]: Props[K] extends Prop2<infer Flag, any, infer Val, infer Remap>
-      ? Remap extends KeyNotMapped
-        ? Prop2<Flag, S, Val, ApplyKeyRemap<R, K & string>>
-        : Prop2<Flag, S, Val, ApplyKeyRemap<R, Remap & string>>
-      : never
-  }
-  /**
-   * Used to remap a struct's keys using a provided type-level function and equivalent string mapper
-   *
-   * @since 1.4.0
-   */
-  <R extends KeyRemapLambda>(
-    mapping: <S extends string>(s: S) => ApplyKeyRemap<KeyRemapLambda, S>,
-  ): <
-    S extends URIS,
-    Props extends Record<string, Prop1<KeyFlag, S, Kind<S, any>, string | KeyNotMapped>>,
-  >(
-    props: Props,
-  ) => {
-    [K in keyof Props]: Props[K] extends Prop1<infer Flag, any, infer Val, infer Remap>
-      ? Remap extends KeyNotMapped
-        ? Prop1<Flag, S, Val, ApplyKeyRemap<R, K & string>>
-        : Prop1<Flag, S, Val, ApplyKeyRemap<R, Remap & string>>
-      : never
-  }
-  /**
-   * Used to remap a struct's keys using a provided type-level function and equivalent string mapper
-   *
-   * @since 1.4.0
-   */
-  <R extends KeyRemapLambda>(
-    mapping: <S extends string>(s: S) => ApplyKeyRemap<KeyRemapLambda, S>,
-  ): <
-    S,
-    Props extends Record<
-      string,
-      Prop<KeyFlag, S, HKT2<S, any, any>, string | KeyNotMapped>
-    >,
-  >(
-    props: Props,
-  ) => {
-    [K in keyof Props]: Props[K] extends Prop<infer Flag, any, infer Val, infer Remap>
-      ? Remap extends KeyNotMapped
-        ? Prop<Flag, S, Val, ApplyKeyRemap<R, K & string>>
-        : Prop<Flag, S, Val, ApplyKeyRemap<R, Remap & string>>
-      : never
-  }
+/**
+ * Used to remap a struct's keys using a provided type-level function and equivalent string mapper
+ *
+ * @since 1.4.0
+ */
+type MapKeysWith = <R extends KeyRemapLambda>(
+  mapping: <S extends string>(s: S) => ApplyKeyRemap<KeyRemapLambda, S>,
+) => <
+  S extends TypeLambda,
+  Props extends Record<
+    string,
+    Prop<KeyFlag, S, Kind<S, any, any>, string | KeyNotMapped>
+  >,
+>(
+  props: Props,
+) => {
+  [K in keyof Props]: Props[K] extends Prop<infer Flag, any, infer Val, infer Remap>
+    ? Remap extends KeyNotMapped
+      ? Prop<Flag, S, Val, ApplyKeyRemap<R, K & string>>
+      : Prop<Flag, S, Val, ApplyKeyRemap<R, Remap & string>>
+    : never
 }
 
 /**
@@ -407,7 +229,7 @@ interface MapKeysWith {
  *   )
  */
 export const mapKeysWith: MapKeysWith =
-  mapping => (props: Record<string, Prop<KeyFlag, unknown, any, any>>) => {
+  mapping => (props: Record<string, Prop<KeyFlag, any, any, any>>) => {
     const remappedProps: any = {}
     for (const key in props) {
       // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
@@ -476,54 +298,6 @@ export interface CamelCaseLambda extends KeyRemapLambda {
  */
 export const camelCaseKeys = mapKeysWith<CamelCaseLambda>(camelCase)
 
-interface StructDefinition {
-  /**
-   * A convenience function to declare reusable struct definitions with type-safety
-   * without first plugging into StructM
-   *
-   * @since 1.3.0
-   * @category Models
-   */
-  <
-    S extends URIS2,
-    Props extends Record<
-      string,
-      Prop2<KeyFlag, S, Kind2<S, any, any>, string | KeyNotMapped>
-    >,
-  >(
-    props: Props,
-  ): Props
-  /**
-   * A convenience function to declare reusable struct definitions with type-safety
-   * without first plugging into StructM
-   *
-   * @since 1.3.0
-   * @category Models
-   */
-  <
-    S extends URIS,
-    Props extends Record<string, Prop1<KeyFlag, S, Kind<S, any>, string | KeyNotMapped>>,
-  >(
-    props: Props,
-  ): Props
-  /**
-   * A convenience function to declare reusable struct definitions with type-safety
-   * without first plugging into StructM
-   *
-   * @since 1.3.0
-   * @category Models
-   */
-  <
-    S,
-    Props extends Record<
-      string,
-      Prop<KeyFlag, S, HKT2<S, any, any>, string | KeyNotMapped>
-    >,
-  >(
-    props: Props,
-  ): Props
-}
-
 /**
  * @since 1.3.0
  * @category Constructors
@@ -549,37 +323,15 @@ interface StructDefinition {
  *
  *   fc.assert(fc.property(arbitrary, guard.is))
  */
-export const defineStruct: StructDefinition = identity
-
-interface Struct {
-  /**
-   * A convenience function to declare a struct where all keys are required
-   *
-   * @since 1.4.0
-   * @category Models
-   */
-  <S extends URIS2, Props extends Record<string, Kind2<S, any, any>>>(props: Props): {
-    [K in keyof Props]: Prop2<RequiredKeyFlag, S, Props[K], KeyNotMapped>
-  }
-  /**
-   * A convenience function to declare a struct where all keys are required
-   *
-   * @since 1.4.0
-   * @category Models
-   */
-  <S extends URIS, Props extends Record<string, Kind<S, any>>>(props: Props): {
-    [K in keyof Props]: Prop1<RequiredKeyFlag, S, Props[K], KeyNotMapped>
-  }
-  /**
-   * A convenience function to declare a struct where all keys are required
-   *
-   * @since 1.4.0
-   * @category Models
-   */
-  <S, Props extends Record<string, HKT2<S, any, any>>>(props: Props): {
-    [K in keyof Props]: Prop<RequiredKeyFlag, S, Props[K], KeyNotMapped>
-  }
-}
+export const defineStruct: <
+  S extends TypeLambda,
+  Props extends Record<
+    string,
+    Prop<KeyFlag, S, Kind<S, any, any>, string | KeyNotMapped>
+  >,
+>(
+  props: Props,
+) => Props = identity
 
 /**
  * Defines a StructM declaration where all keys are required
@@ -614,77 +366,38 @@ interface Struct {
  *     },
  *   )
  */
-export const struct: Struct = (props: Record<string, HKT2<unknown, any, any>>) => {
+export const struct: <
+  S extends TypeLambda,
+  Props extends Record<string, Kind<S, any, any>>,
+>(
+  props: Props,
+) => {
+  [K in keyof Props]: Prop<RequiredKeyFlag, S, Props[K], KeyNotMapped>
+} = props => {
   const remappedProps: Record<
     string,
-    Prop<RequiredKeyFlag, unknown, HKT2<unknown, any, any>, KeyNotMapped>
+    Prop<RequiredKeyFlag, any, Kind<any, any, any>, KeyNotMapped>
   > = {}
   for (const key in props) {
     // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
     const prop = props[key]!
     remappedProps[key] = required(prop)
   }
-  return remappedProps
+  return remappedProps as any
 }
 
-interface Partial {
-  /**
-   * Remap a StructM definition such that all keys are optional
-   *
-   * @since 1.3.0
-   * @category Models
-   */
-  <
-    S extends URIS2,
-    Props extends Record<
-      string,
-      Prop2<KeyFlag, S, Kind2<S, unknown, unknown>, string | KeyNotMapped>
-    >,
-  >(
-    props: Props,
-  ): {
-    [K in keyof Props]: Props[K] extends Prop2<any, any, infer Val, infer Remap>
-      ? Prop2<OptionalKeyFlag, S, Val, Remap>
-      : never
-  }
-  /**
-   * Remap a StructM definition such that all keys are optional
-   *
-   * @since 1.3.0
-   * @category Models
-   */
-  <
-    S extends URIS,
-    Props extends Record<
-      string,
-      Prop1<KeyFlag, S, Kind<S, unknown>, string | KeyNotMapped>
-    >,
-  >(
-    props: Props,
-  ): {
-    [K in keyof Props]: Props[K] extends Prop1<any, any, infer Val, infer Remap>
-      ? Prop1<OptionalKeyFlag, S, Val, Remap>
-      : never
-  }
-  /**
-   * Remap a StructM definition such that all keys are optional
-   *
-   * @since 1.3.0
-   * @category Models
-   */
-  <
-    S,
-    Props extends Record<
-      string,
-      Prop<KeyFlag, S, HKT2<S, unknown, unknown>, string | KeyNotMapped>
-    >,
-  >(
-    props: Props,
-  ): {
-    [K in keyof Props]: Props[K] extends Prop<any, any, infer Val, infer Remap>
-      ? Prop<OptionalKeyFlag, S, Val, Remap>
-      : never
-  }
+type Partial = <
+  S extends TypeLambda,
+  Props extends Record<
+    string,
+    Prop<KeyFlag, S, Kind<S, unknown, unknown>, string | KeyNotMapped>
+  >,
+>(
+  props: Props,
+) => {
+  [K in keyof Props]: Props[K] extends Prop<any, any, infer Val, infer Remap>
+    ? Prop<OptionalKeyFlag, S, Val, Remap>
+    : never
 }
 
 /**
@@ -693,15 +406,10 @@ interface Partial {
  * @since 1.3.0
  * @category Utilities
  */
-export const partial: Partial = (
-  props: Record<
-    string,
-    Prop<KeyFlag, URIS2, HKT2<URIS2, unknown, unknown>, string | KeyNotMapped>
-  >,
-) => {
+export const partial: Partial = props => {
   const result: Record<
     string,
-    Prop<KeyFlag, URIS2, HKT2<URIS2, unknown, unknown>, string | KeyNotMapped>
+    Prop<KeyFlag, any, Kind<any, unknown, unknown>, string | KeyNotMapped>
   > = {}
   for (const key in props) {
     // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
@@ -711,64 +419,18 @@ export const partial: Partial = (
   return result as any
 }
 
-interface Complete {
-  /**
-   * Remap a StructM definition such that all keys are required
-   *
-   * @since 1.3.0
-   * @category Models
-   */
-  <
-    S extends URIS2,
-    Props extends Record<
-      string,
-      Prop2<KeyFlag, S, Kind2<S, unknown, unknown>, string | KeyNotMapped>
-    >,
-  >(
-    props: Props,
-  ): {
-    [K in keyof Props]: Props[K] extends Prop2<any, any, infer Val, infer Remap>
-      ? Prop2<RequiredKeyFlag, S, Val, Remap>
-      : never
-  }
-  /**
-   * Remap a StructM definition such that all keys are required
-   *
-   * @since 1.3.0
-   * @category Models
-   */
-  <
-    S extends URIS,
-    Props extends Record<
-      string,
-      Prop1<KeyFlag, S, Kind<S, unknown>, string | KeyNotMapped>
-    >,
-  >(
-    props: Props,
-  ): {
-    [K in keyof Props]: Props[K] extends Prop1<any, any, infer Val, infer Remap>
-      ? Prop1<RequiredKeyFlag, S, Val, Remap>
-      : never
-  }
-  /**
-   * Remap a StructM definition such that all keys are required
-   *
-   * @since 1.3.0
-   * @category Models
-   */
-  <
-    S,
-    Props extends Record<
-      string,
-      Prop<KeyFlag, S, HKT2<S, unknown, unknown>, string | KeyNotMapped>
-    >,
-  >(
-    props: Props,
-  ): {
-    [K in keyof Props]: Props[K] extends Prop<any, any, infer Val, infer Remap>
-      ? Prop<RequiredKeyFlag, S, Val, Remap>
-      : never
-  }
+type Complete = <
+  S extends TypeLambda,
+  Props extends Record<
+    string,
+    Prop<KeyFlag, S, Kind<S, unknown, unknown>, string | KeyNotMapped>
+  >,
+>(
+  props: Props,
+) => {
+  [K in keyof Props]: Props[K] extends Prop<any, any, infer Val, infer Remap>
+    ? Prop<RequiredKeyFlag, S, Val, Remap>
+    : never
 }
 
 /**
@@ -777,15 +439,10 @@ interface Complete {
  * @since 1.3.0
  * @category Utilities
  */
-export const complete: Complete = (
-  props: Record<
-    string,
-    Prop<KeyFlag, URIS2, HKT2<URIS2, unknown, unknown>, string | KeyNotMapped>
-  >,
-) => {
+export const complete: Complete = props => {
   const result: Record<
     string,
-    Prop<KeyFlag, URIS2, HKT2<URIS2, unknown, unknown>, string | KeyNotMapped>
+    Prop<KeyFlag, any, Kind<any, unknown, unknown>, string | KeyNotMapped>
   > = {}
   for (const key in props) {
     // eslint-disable-next-line @typescript-eslint/no-non-null-assertion

@@ -3,10 +3,10 @@
  *
  * @since 1.3.0
  */
-import { HKT2, Kind, Kind2, URIS, URIS2 } from 'fp-ts/HKT'
+import { Kind, TypeLambda } from 'schemata-ts/HKT'
 import { Combine } from 'schemata-ts/internal/type-utils'
 import * as _ from 'schemata-ts/schemables/WithStructM/type-utils'
-import { KeyFlag, KeyNotMapped, Prop, Prop1, Prop2 } from 'schemata-ts/struct'
+import { KeyFlag, KeyNotMapped, Prop } from 'schemata-ts/struct'
 
 /**
  * Mapped struct configuration determining how to handle extra (non-specified) fields.
@@ -55,17 +55,17 @@ interface StrippedStruct {
  * @since 1.3.0
  * @category Model
  */
-export interface WithStructMHKT2<S> {
+export interface WithStructM<S extends TypeLambda> {
   readonly structM: <
     Props extends Record<
       string,
-      Prop<KeyFlag, S, HKT2<S, unknown, unknown>, string | KeyNotMapped>
+      Prop<KeyFlag, S, Kind<S, unknown, unknown>, string | KeyNotMapped>
     >,
-    RestKind extends HKT2<S, any, any> | undefined,
+    RestKind extends Kind<S, any, any> | undefined,
   >(
     properties: Props,
     params?: StructOptions<RestKind>,
-  ) => HKT2<
+  ) => Kind<
     S,
     Combine<
       _.RestInputHKT2<S, RestKind> & {
@@ -85,95 +85,6 @@ export interface WithStructMHKT2<S> {
           S,
           Props[K]
         >
-      }
-    >
-  >
-}
-
-/**
- * @since 1.3.0
- * @category Model
- */
-export interface WithStructM1<S extends URIS> {
-  readonly structM: <
-    Props extends Record<string, Prop1<KeyFlag, S, Kind<S, any>, string | KeyNotMapped>>,
-    RestKind extends Kind<S, any> | undefined,
-  >(
-    properties: Props,
-    params?: StructOptions<RestKind>,
-  ) => Kind<
-    S,
-    Combine<
-      _.RestValue1<S, RestKind> & {
-        [K in _.RequiredProps<Props> as _.RemapKey<K, Props[K]>]: _.InnerValue1<
-          S,
-          Props[K]
-        >
-      } & {
-        [K in _.OptionalProps<Props> as _.RemapKey<K, Props[K]>]?: _.InnerValue1<
-          S,
-          Props[K]
-        >
-      }
-    >
-  >
-}
-
-/**
- * @since 1.3.0
- * @category Model
- */
-export interface WithStructM2<S extends URIS2> {
-  readonly structM: <
-    Props extends Record<
-      string,
-      Prop2<KeyFlag, S, Kind2<S, any, any>, string | KeyNotMapped>
-    >,
-    RestKind extends Kind2<S, any, any> | undefined,
-  >(
-    properties: Props,
-    params?: StructOptions<RestKind>,
-  ) => Kind2<
-    S,
-    Combine<
-      _.RestInput2<S, RestKind> & {
-        [K in _.RequiredProps<Props>]: _.Input2<S, Props[K]>
-      } & {
-        [K in _.OptionalProps<Props>]?: _.Input2<S, Props[K]>
-      }
-    >,
-    Combine<
-      _.RestOutput2<S, RestKind> & {
-        [K in _.RequiredProps<Props> as _.RemapKey<K, Props[K]>]: _.Output2<S, Props[K]>
-      } & {
-        [K in _.OptionalProps<Props> as _.RemapKey<K, Props[K]>]?: _.Output2<S, Props[K]>
-      }
-    >
-  >
-}
-
-/**
- * @since 1.3.0
- * @category Model
- */
-export interface WithStructM2C<S extends URIS2, E> {
-  readonly structM: <
-    Props extends Record<
-      string,
-      Prop2<KeyFlag, S, Kind2<S, E, unknown>, string | KeyNotMapped>
-    >,
-    RestKind extends Kind2<S, any, any> | undefined,
-  >(
-    properties: Props,
-    params?: StructOptions<RestKind>,
-  ) => Kind2<
-    S,
-    E,
-    Combine<
-      _.RestOutput2<S, RestKind> & {
-        [K in _.RequiredProps<Props> as _.RemapKey<K, Props[K]>]: _.Output2<S, Props[K]>
-      } & {
-        [K in _.OptionalProps<Props> as _.RemapKey<K, Props[K]>]?: _.Output2<S, Props[K]>
       }
     >
   >

@@ -74,44 +74,34 @@
  *
  *   assert.equal(invalidInput._tag, 'Left')
  */
-import { unsafeCoerce } from 'fp-ts/function'
-import { HKT2, Kind, Kind2, URIS, URIS2 } from 'fp-ts/HKT'
-import { interpreter as interpreter_ } from 'io-ts/Schema'
-import { memoize } from 'io-ts/Schemable'
-import {
-  SchemableExt,
-  SchemableExt1,
-  SchemableExt2,
-  SchemableExt2C,
-} from 'schemata-ts/SchemableExt'
+import { Kind, TypeLambda } from 'schemata-ts/HKT'
+import { Schemable } from 'schemata-ts/Schemable'
 
 /**
  * @since 1.0.0
  * @category Model
  */
-export interface SchemaExt<E, A> {
-  <S>(S: SchemableExt<S>): HKT2<S, E, A>
+export interface Schema<E, A> {
+  <S extends TypeLambda>(S: Schemable<S>): Kind<S, E, A>
 }
 
-/**
- * @since 1.0.0
- * @category Model
- */
-export type Interpreter = {
-  <S extends URIS2>(S: SchemableExt2<S>): <E, A>(
-    schema: SchemaExt<E, A>,
-  ) => Kind2<S, E, A>
-  <S extends URIS2>(S: SchemableExt2C<S>): <A>(
-    schema: SchemaExt<unknown, A>,
-  ) => Kind2<S, unknown, A>
-  <S extends URIS>(S: SchemableExt1<S>): <A>(schema: SchemaExt<unknown, A>) => Kind<S, A>
+const memoize = <A, B>(f: (a: A) => B): ((a: A) => B) => {
+  const cache = new Map()
+  return a => {
+    if (!cache.has(a)) {
+      const b = f(a)
+      cache.set(a, b)
+      return b
+    }
+    return cache.get(a)
+  }
 }
 
 /**
  * @since 1.0.0
  * @category Constructors
  */
-export function make<E, A>(f: SchemaExt<E, A>): SchemaExt<E, A> {
+export function make<E, A>(f: Schema<E, A>): Schema<E, A> {
   return memoize(f)
 }
 
@@ -138,7 +128,7 @@ export function make<E, A>(f: SchemaExt<E, A>): SchemaExt<E, A> {
  *   assert.deepStrictEqual(encoder.encode(O.some('a')), 'a')
  *   assert.deepStrictEqual(encoder.encode(O.none), null)
  */
-export type TypeOf<S> = S extends SchemaExt<unknown, infer A> ? A : never
+export type TypeOf<S> = S extends Schema<unknown, infer A> ? A : never
 
 /**
  * Extract the output of a schema.
@@ -156,7 +146,7 @@ export type OutputOf<S> = TypeOf<S>
  * @since 1.0.0
  * @category Utilities
  */
-export type InputOf<S> = S extends SchemaExt<infer I, unknown> ? I : never
+export type InputOf<S> = S extends Schema<infer I, unknown> ? I : never
 
 /**
  * Derives a typeclass instance from a Schema by supplying Schemable. i.e. `schemata-ts/Decoder`
@@ -164,4 +154,6 @@ export type InputOf<S> = S extends SchemaExt<infer I, unknown> ? I : never
  * @since 1.0.0
  * @category Destructors
  */
-export const interpret: Interpreter = unsafeCoerce(interpreter_)
+export const interpret: <S extends TypeLambda>(
+  S: Schemable<S>,
+) => <E, A>(schema: Schema<E, A>) => Kind<S, E, A> = S => schema => schema(S)

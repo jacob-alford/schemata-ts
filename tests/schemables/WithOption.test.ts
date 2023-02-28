@@ -8,7 +8,7 @@ import * as G from 'io-ts/Guard'
 import * as TD from 'io-ts/TaskDecoder'
 import * as t from 'io-ts/Type'
 
-import * as Arb from '../../src/base/ArbitraryBase'
+import * as Arb from '../../src/Arbitrary'
 import * as Enc from '../../src/base/EncoderBase'
 import * as P from '../../src/base/PrinterBase'
 import * as SC from '../../src/base/SchemaBase'

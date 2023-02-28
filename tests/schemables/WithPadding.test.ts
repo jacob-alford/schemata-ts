@@ -1,7 +1,7 @@
 import * as E from 'fp-ts/Either'
 import { pipe } from 'fp-ts/function'
 
-import * as Arb from '../../src/base/ArbitraryBase'
+import * as Arb from '../../src/Arbitrary'
 import * as D from '../../src/base/DecoderBase'
 import * as Enc from '../../src/base/EncoderBase'
 import * as Eq from '../../src/base/EqBase'
