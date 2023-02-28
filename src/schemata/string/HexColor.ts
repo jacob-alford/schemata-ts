@@ -6,7 +6,7 @@
 import { pipe } from 'fp-ts/function'
 import { Branded } from 'schemata-ts/brand'
 import * as PB from 'schemata-ts/PatternBuilder'
-import { make, SchemaExt } from 'schemata-ts/SchemaExt'
+import { make, Schema } from 'schemata-ts/Schema'
 
 interface HexColorBrand {
   readonly HexColor: unique symbol
@@ -24,7 +24,7 @@ export type HexColor = Branded<string, HexColorBrand>
  * @since 1.0.0
  * @category Model
  */
-export type HexColorS = SchemaExt<string, HexColor>
+export type HexColorS = Schema<string, HexColor>
 
 /**
  * /^#?([0-9A-F]{3}|[0-9A-F]{4}|[0-9A-F]{6}|[0-9A-F]{8})$/i

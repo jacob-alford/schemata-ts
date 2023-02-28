@@ -6,9 +6,9 @@
 import * as E from 'fp-ts/Either'
 import { flow } from 'fp-ts/function'
 import * as J from 'fp-ts/Json'
-import { DecodeError } from 'schemata-ts/base/DecoderBase'
+import { DecodeError } from 'schemata-ts/DecodeError'
 import { getDecoder } from 'schemata-ts/Decoder'
-import { SchemaExt } from 'schemata-ts/SchemaExt'
+import { Schema } from 'schemata-ts/Schema'
 
 /**
  * @since 1.1.0
@@ -40,9 +40,7 @@ export const isParseError = (u: unknown): u is ParseError => u instanceof ParseE
  * @since 1.1.0
  * @category Interpreters
  */
-export const getJsonDeserializer = <E, A>(
-  schema: SchemaExt<E, A>,
-): JsonDeserializer<A> => {
+export const getJsonDeserializer = <E, A>(schema: Schema<E, A>): JsonDeserializer<A> => {
   const decoder = getDecoder(schema)
   return {
     parse: flow(

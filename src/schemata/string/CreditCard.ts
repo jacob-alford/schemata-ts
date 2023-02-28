@@ -10,7 +10,7 @@ import { pipe } from 'fp-ts/function'
 import { Branded } from 'schemata-ts/brand'
 import { luhn } from 'schemata-ts/internal/algorithms'
 import * as PB from 'schemata-ts/PatternBuilder'
-import { make } from 'schemata-ts/SchemaExt'
+import { make } from 'schemata-ts/Schema'
 
 interface CreditCardBrand {
   readonly CreditCard: unique symbol

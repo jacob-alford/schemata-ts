@@ -17,9 +17,9 @@
  */
 import { pipe } from 'fp-ts/function'
 import * as PB from 'schemata-ts/PatternBuilder'
+import { make, Schema } from 'schemata-ts/Schema'
 import * as Int from 'schemata-ts/schemables/WithInt/definition'
 import { Guard } from 'schemata-ts/schemables/WithInt/instances/guard'
-import { make, SchemaExt } from 'schemata-ts/SchemaExt'
 
 /**
  * Controls the output base of the encoded string. Currently only accepts 2, 8, 10, and 16
@@ -38,7 +38,7 @@ export type IntFromStringParams = {
  */
 export type IntFromStringS = (
   params?: Int.IntParams & IntFromStringParams,
-) => SchemaExt<string, Int.Int>
+) => Schema<string, Int.Int>
 
 /**
  * @since 1.0.0

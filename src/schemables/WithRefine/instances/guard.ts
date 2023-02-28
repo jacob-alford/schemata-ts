@@ -1,13 +1,11 @@
-/**
- * Re-export of `WithRefine` from `io-ts/Schemable/WithRefine`
- *
- * @since 1.0.0
- */
+/** @since 1.0.0 */
+import { pipe } from 'fp-ts/function'
+import { compose } from 'fp-ts/Refinement'
+import * as G from 'schemata-ts/Guard'
+import { WithRefine } from 'schemata-ts/schemables/WithRefine/definition'
 
-export {
-  /**
-   * @since 1.0.0
-   * @category Instances
-   */
-  WithRefine as Guard,
-} from 'schemata-ts/base/GuardBase'
+export const WithRefineGuard: WithRefine<G.SchemableLambda> = {
+  refine: refinement => from => ({
+    is: pipe(from.is, compose(refinement)),
+  }),
+}

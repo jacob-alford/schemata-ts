@@ -6,7 +6,7 @@
 import { pipe } from 'fp-ts/function'
 import { Branded } from 'schemata-ts/brand'
 import * as PB from 'schemata-ts/PatternBuilder'
-import { make, SchemaExt } from 'schemata-ts/SchemaExt'
+import { make, Schema } from 'schemata-ts/Schema'
 import { base64Url } from 'schemata-ts/schemata/string/Base64Url'
 
 interface JwtBrand {
@@ -25,7 +25,7 @@ export type Jwt = Branded<string, JwtBrand>
  * @since 1.0.0
  * @category Model
  */
-export type JwtS = SchemaExt<string, Jwt>
+export type JwtS = Schema<string, Jwt>
 
 /**
  * /^(base64).(base64)(.(base64)){0,1}$/

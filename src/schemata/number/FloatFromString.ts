@@ -14,17 +14,15 @@
  */
 import { pipe } from 'fp-ts/function'
 import * as PB from 'schemata-ts/PatternBuilder'
+import { make, Schema } from 'schemata-ts/Schema'
 import * as Float from 'schemata-ts/schemables/WithFloat/definition'
 import { Guard } from 'schemata-ts/schemables/WithFloat/instances/guard'
-import { make, SchemaExt } from 'schemata-ts/SchemaExt'
 
 /**
  * @since 1.0.0
  * @category Model
  */
-export type FloatFromStringS = (
-  params?: Float.FloatParams,
-) => SchemaExt<string, Float.Float>
+export type FloatFromStringS = (params?: Float.FloatParams) => Schema<string, Float.Float>
 
 /**
  * Negative floats with at least one digit before the decimal point.

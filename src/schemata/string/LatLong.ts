@@ -6,7 +6,7 @@
 import { pipe } from 'fp-ts/function'
 import { Branded } from 'schemata-ts/brand'
 import * as PB from 'schemata-ts/PatternBuilder'
-import { make, SchemaExt } from 'schemata-ts/SchemaExt'
+import { make, Schema } from 'schemata-ts/Schema'
 
 interface LatLongBrand {
   readonly LatLong: unique symbol
@@ -24,7 +24,7 @@ export type LatLong = Branded<string, LatLongBrand>
  * @since 1.0.0
  * @category Model
  */
-export type LatLongS = SchemaExt<string, LatLong>
+export type LatLongS = Schema<string, LatLong>
 
 const latPattern = pipe(
   PB.maybe(PB.characterClass(false, '+', '-')),

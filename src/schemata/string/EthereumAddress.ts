@@ -5,7 +5,7 @@
  */
 import { Branded } from 'schemata-ts/brand'
 import * as PB from 'schemata-ts/PatternBuilder'
-import { make, SchemaExt } from 'schemata-ts/SchemaExt'
+import { make, Schema } from 'schemata-ts/Schema'
 
 interface EthereumAddressBrand {
   readonly EthereumAddress: unique symbol
@@ -23,7 +23,7 @@ export type EthereumAddress = Branded<string, EthereumAddressBrand>
  * @since 1.0.0
  * @category Pattern
  */
-export type EthereumAddressS = SchemaExt<string, EthereumAddress>
+export type EthereumAddressS = Schema<string, EthereumAddress>
 
 /**
  * @since 1.0.0

@@ -7,7 +7,7 @@ import { flow, pipe } from 'fp-ts/function'
 import * as O from 'fp-ts/Option'
 import * as Str from 'fp-ts/string'
 import * as PB from 'schemata-ts/PatternBuilder'
-import { make, SchemaExt } from 'schemata-ts/SchemaExt'
+import { make, Schema } from 'schemata-ts/Schema'
 
 /**
  * Controls the output base of the encoded string. Currently only accepts 2, 8, 10, and
@@ -25,7 +25,7 @@ export type BigIntFromStringParams = {
  */
 export type BigIntFromStringS = (
   params?: BigIntFromStringParams,
-) => SchemaExt<string, bigint>
+) => Schema<string, bigint>
 
 /**
  * @since 1.0.0
@@ -96,7 +96,7 @@ const baseToPrefix = (base: BigIntFromStringParams['encodeToBase']): string => {
  * @category Schema
  */
 export const BigIntFromString: BigIntFromStringS = (params = {}) =>
-  make(S =>
+  make<string, bigint>(S =>
     pipe(
       S.pattern(bigIntString, 'BigIntFromString'),
       S.refine(
@@ -109,7 +109,10 @@ export const BigIntFromString: BigIntFromStringS = (params = {}) =>
           ),
         'SafeBigIntString',
       ),
-      S.imap({ is: (b): b is bigint => typeof b === 'bigint' }, 'BigIntFromString')(
+      S.imap(
+        { is: (b: unknown): b is bigint => typeof b === 'bigint' },
+        'BigIntFromString',
+      )(
         (s: string) => BigInt(s),
         (n: bigint) =>
           `${baseToPrefix(params.encodeToBase)}${n.toString(params.encodeToBase ?? 10)}`,

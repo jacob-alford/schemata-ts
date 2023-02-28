@@ -1,45 +1,9 @@
-/**
- * Re-export of `WithRefine` from `io-ts/Schemable/WithRefine`
- *
- * @since 1.0.0
- */
-import { HKT2, Kind2, URIS2 } from 'fp-ts/HKT'
 import { Refinement } from 'fp-ts/Refinement'
+import { SchemableKind, SchemableLambda } from 'schemata-ts/HKT'
 
-/**
- * @since 1.0.0
- * @category Model
- */
-export interface WithRefineHKT2<S> {
+export interface WithRefine<S extends SchemableLambda> {
   readonly refine: <A, B extends A>(
     refinement: Refinement<A, B>,
-    id: string,
-  ) => <O>(from: HKT2<S, O, A>) => HKT2<S, O, B>
+    refinedName: string,
+  ) => <O>(from: SchemableKind<S, O, A>) => SchemableKind<S, O, B>
 }
-
-export {
-  /**
-   * @since 1.0.0
-   * @category Model
-   */
-  WithRefine1,
-} from 'io-ts/Schemable'
-
-/**
- * @since 1.0.0
- * @category Model
- */
-export interface WithRefine2<S extends URIS2> {
-  readonly refine: <A, B extends A>(
-    refinement: Refinement<A, B>,
-    id: string,
-  ) => <O>(from: Kind2<S, O, A>) => Kind2<S, O, B>
-}
-
-export {
-  /**
-   * @since 1.0.0
-   * @category Model
-   */
-  WithRefine2C,
-} from 'io-ts/Schemable'

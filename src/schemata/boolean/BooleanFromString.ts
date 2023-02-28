@@ -4,15 +4,15 @@
  * @since 1.0.0
  */
 import { pipe } from 'fp-ts/function'
-import { boolean } from 'io-ts/Guard'
+import { boolean } from 'schemata-ts/Guard'
 import * as PB from 'schemata-ts/PatternBuilder'
-import { make, SchemaExt } from 'schemata-ts/SchemaExt'
+import { make, Schema } from 'schemata-ts/Schema'
 
 /**
  * @since 1.0.0
  * @category Model
  */
-export type BooleanS = SchemaExt<string, boolean>
+export type BooleanS = Schema<string, boolean>
 
 /**
  * @since 1.0.0

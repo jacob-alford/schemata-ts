@@ -1,14 +1,9 @@
-/**
- * Schemable construction based on Regex combinators
- *
- * @since 1.0.0
- */
 import { pipe } from 'fp-ts/function'
 import * as RA from 'fp-ts/ReadonlyArray'
-import * as Arb from 'schemata-ts/base/ArbitraryBase'
+import * as Arb from 'schemata-ts/Arbitrary'
 import { match, matchOn } from 'schemata-ts/internal/match'
 import * as PB from 'schemata-ts/PatternBuilder'
-import { WithPattern1 } from 'schemata-ts/schemables/WithPattern/definition'
+import { WithPattern } from 'schemata-ts/schemables/WithPattern/definition'
 
 const matchK = matchOn('kind')
 
@@ -92,30 +87,6 @@ const chainConcatAll: (
   }),
 )
 
-/**
- * Construct a `fast-check` `Arbitrary` instance from a given `Pattern`.
- *
- * @since 1.0.0
- */
-export const arbitraryFromPattern: (pattern: PB.Pattern) => Arb.Arbitrary<string> = match(
-  {
-    atom: arbitraryFromAtom,
-    disjunction: ({ left, right }) => ({
-      arbitrary: fc =>
-        fc.oneof(
-          arbitraryFromPattern(left).arbitrary(fc),
-          arbitraryFromPattern(right).arbitrary(fc),
-        ),
-    }),
-    quantifiedAtom: arbitraryFromQuantifiedAtom,
-    termSequence: ({ terms }) => pipe(terms.map(arbitraryFromTerm), chainConcatAll),
-  },
-)
-
-/**
- * @since 1.0.0
- * @category Instances
- */
-export const Arbitrary: WithPattern1<Arb.URI> = {
+export const WithPatternArbitrary: WithPattern<Arb.SchemableLambda> = {
   pattern: arbitraryFromPattern,
 }

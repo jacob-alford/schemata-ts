@@ -5,11 +5,11 @@
  */
 import * as E from 'fp-ts/Either'
 import { flow } from 'fp-ts/function'
-import { JsonString, safeStringify } from 'schemata-ts/base/PrinterBase'
 import { getEncoder } from 'schemata-ts/Encoder'
+import { JsonString, safeStringify } from 'schemata-ts/Printer'
 import { getPrinter } from 'schemata-ts/Printer'
 import { PrintError } from 'schemata-ts/PrintError'
-import { SchemaExt } from 'schemata-ts/SchemaExt'
+import { Schema } from 'schemata-ts/Schema'
 
 /**
  * @since 1.1.0
@@ -25,7 +25,7 @@ export interface JsonSerializer<A> {
  * @since 1.1.0
  * @category Interpreters
  */
-export const getJsonSerializer = <E, A>(schema: SchemaExt<E, A>): JsonSerializer<A> => {
+export const getJsonSerializer = <E, A>(schema: Schema<E, A>): JsonSerializer<A> => {
   const printer = getPrinter(schema)
   const encoder = getEncoder(schema)
   return {

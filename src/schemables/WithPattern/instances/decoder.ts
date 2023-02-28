@@ -1,17 +1,12 @@
-/**
- * Schemable construction based on Regex combinators
- *
- * @since 1.0.0
- */
-import * as D from 'schemata-ts/base/DecoderBase'
-import { WithPattern2C } from 'schemata-ts/schemables/WithPattern/definition'
+import { pipe } from 'fp-ts/function'
+import * as TC from 'schemata-ts/internal/Transcoder'
+import { WithPattern } from 'schemata-ts/schemables/WithPattern/definition'
 import { pattern } from 'schemata-ts/schemables/WithPattern/utils'
 
-/**
- * @since 1.0.0
- * @category Instances
- */
-export const Decoder: WithPattern2C<D.URI, unknown> = {
+export const WithPatternTranscoder: WithPattern<TC.SchemableLambda> = {
   pattern: (p, desc, caseInsensitive) =>
-    D.fromGuard(pattern(p, desc, caseInsensitive), desc),
+    pipe(
+      pattern(p, desc, caseInsensitive),
+      D.fromGuard(u => TC.decodeErrors(TC.typeMismatch(desc, u))),
+    ),
 }

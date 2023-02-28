@@ -1,17 +1,7 @@
-/**
- * Represents an exclusion of a supplied value where the exclusion is mapped to `None`.
- * Requires an inner schemable, and an Eq instance which defaults to strict equality.
- *
- * @since 1.2.0
- */
-import * as JS from 'schemata-ts/base/JsonSchemaBase'
-import { WithOption2 } from 'schemata-ts/schemables/WithOption/definition'
+import * as JS from 'schemata-ts/internal/json-schema'
+import { WithOption } from 'schemata-ts/schemables/WithOption/definition'
 
-/**
- * @since 1.2.0
- * @category Instances
- */
-export const JsonSchema: WithOption2<JS.URI> = {
+export const WithOptionJsonSchema: WithOption<JS.SchemableLambda> = {
   optionFromExclude: (exclude, jsA) =>
     /*
      * TODO @jacob-alford: Exclude can technically _not_ be a literal value, and that

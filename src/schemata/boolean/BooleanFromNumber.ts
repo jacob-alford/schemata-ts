@@ -6,14 +6,8 @@
  *
  * @since 1.0.0
  */
-import { boolean } from 'io-ts/Guard'
-import { make, SchemaExt } from 'schemata-ts/SchemaExt'
-
-/**
- * @since 1.0.0
- * @category Model
- */
-export type BooleanS = SchemaExt<number, boolean>
+import { boolean } from 'schemata-ts/Guard'
+import { make, Schema } from 'schemata-ts/Schema'
 
 /**
  * A boolean value whose encoded representation is a number, where 0 is false and 1 is true.
@@ -24,9 +18,9 @@ export type BooleanS = SchemaExt<number, boolean>
  * @since 1.0.0
  * @category Schema
  */
-export const BooleanFromNumber: BooleanS = make(s =>
+export const BooleanFromNumber: Schema<number, boolean> = make(s =>
   s.imap(boolean, 'BooleanFromNumber')(
     n => n !== 0,
     b => (b ? 1 : 0),
-  )(s.number),
+  )(s.float()),
 )

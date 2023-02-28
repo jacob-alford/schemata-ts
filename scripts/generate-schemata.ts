@@ -120,7 +120,7 @@ const typeUtilityReexports = _.createExportDeclaration(
       true,
     ),
   ]),
-  _.createStringLiteral('schemata-ts/SchemaExt'),
+  _.createStringLiteral('schemata-ts/Schema'),
   undefined,
 )
 

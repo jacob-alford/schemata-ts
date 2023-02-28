@@ -4,15 +4,15 @@
  * @since 1.0.0
  */
 import { pipe } from 'fp-ts/function'
+import { make, Schema } from 'schemata-ts/Schema'
 import { Guard } from 'schemata-ts/schemables/WithDate/instances/guard'
 import * as float from 'schemata-ts/schemables/WithFloat/definition'
-import { make, SchemaExt } from 'schemata-ts/SchemaExt'
 
 /**
  * @since 1.0.0
  * @category Model
  */
-export type DateFromUnixTimeS = SchemaExt<number, Date>
+export type DateFromUnixTimeS = Schema<number, Date>
 
 /**
  * Represents Date objects derived from unix time.

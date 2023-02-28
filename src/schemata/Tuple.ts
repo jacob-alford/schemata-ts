@@ -1,0 +1,33 @@
+/**
+ * A schema for n-tuples
+ *
+ * @since 1.4.0
+ * @category Model
+ */
+import { pipe } from 'fp-ts/function'
+import * as RA from 'fp-ts/ReadonlyArray'
+import { InputOf, make, OutputOf, Schema } from 'schemata-ts/Schema'
+
+/**
+ * A schema for n-tuples
+ *
+ * @since 1.0.0
+ * @category Combinators
+ */
+export const Tuple = <T extends ReadonlyArray<Schema<any, any>>>(
+  ...items: T
+): Schema<
+  {
+    [K in keyof T]: InputOf<T[K]>
+  },
+  {
+    [K in keyof T]: OutputOf<T[K]>
+  }
+> =>
+  make(S =>
+    pipe(
+      items,
+      RA.map(schema => schema(S)),
+      schemable => S.tuple(...schemable),
+    ),
+  )

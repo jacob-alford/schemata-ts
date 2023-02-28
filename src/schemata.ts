@@ -15,11 +15,11 @@ export {
   OutputOf,
   /** @since 1.0.0 */
   TypeOf,
-} from 'schemata-ts/SchemaExt'
+} from 'schemata-ts/Schema'
 
 /** Base schemata */
 
-export * from 'schemata-ts/base/SchemaBase'
+export * from 'schemata-ts/Schema'
 
 /** Schemables */
 

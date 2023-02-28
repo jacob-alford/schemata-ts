@@ -5,7 +5,7 @@
  */
 import { Branded } from 'schemata-ts/brand'
 import * as PB from 'schemata-ts/PatternBuilder'
-import { make, SchemaExt } from 'schemata-ts/SchemaExt'
+import { make, Schema } from 'schemata-ts/Schema'
 
 interface RGBBrand {
   readonly RGB: unique symbol
@@ -23,7 +23,7 @@ export type RGB = Branded<string, RGBBrand>
  * @since 1.0.0
  * @category Model
  */
-export type RGBS = SchemaExt<string, RGB>
+export type RGBS = Schema<string, RGB>
 
 const rgbColor = PB.sequence(
   PB.exactString('rgb('),

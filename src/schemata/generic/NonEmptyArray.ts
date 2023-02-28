@@ -6,15 +6,15 @@
 import { pipe } from 'fp-ts/function'
 import * as RA from 'fp-ts/ReadonlyArray'
 import * as RNEA from 'fp-ts/ReadonlyNonEmptyArray'
-import { make, SchemaExt } from 'schemata-ts/SchemaExt'
+import { make, Schema } from 'schemata-ts/Schema'
 
 /**
  * @since 1.1.0
  * @category Model
  */
 export type NonEmptyArrayS = <A, O>(
-  sA: SchemaExt<O, A>,
-) => SchemaExt<Array<O>, RNEA.ReadonlyNonEmptyArray<A>>
+  sA: Schema<O, A>,
+) => Schema<Array<O>, RNEA.ReadonlyNonEmptyArray<A>>
 
 /**
  * A read-only Array containing one or more elements.

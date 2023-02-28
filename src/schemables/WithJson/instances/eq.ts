@@ -1,20 +1,11 @@
-/**
- * A basal schemable for Json and JsonString
- *
- * @since 1.1.0
- */
 import { unsafeCoerce } from 'fp-ts/function'
 import * as RA from 'fp-ts/ReadonlyArray'
 import * as RR from 'fp-ts/ReadonlyRecord'
-import * as Eq_ from 'schemata-ts/base/EqBase'
-import { SafeJson } from 'schemata-ts/base/PrinterBase'
-import { WithJson1 } from 'schemata-ts/schemables/WithJson/definition'
+import * as Eq_ from 'schemata-ts/Eq'
+import { SafeJson } from 'schemata-ts/Printer'
+import { WithJson } from 'schemata-ts/schemables/WithJson/definition'
 
-/**
- * @since 1.1.0
- * @category Instances
- */
-export const Eq: WithJson1<Eq_.URI> = {
+export const WithJsonEq: WithJson<Eq_.SchemableLambda> = {
   json: {
     equals: (x, y) =>
       x === y ||

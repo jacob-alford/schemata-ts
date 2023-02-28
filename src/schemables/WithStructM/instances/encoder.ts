@@ -1,19 +1,10 @@
-/**
- * WithStructM instance for Encoder
- *
- * @since 1.3.0
- */
 import { tuple } from 'fp-ts/function'
-import * as Enc from 'io-ts/Encoder'
+import * as Enc from 'schemata-ts/Encoder'
 import { hasOwn } from 'schemata-ts/internal/util'
-import { WithStructM2 } from 'schemata-ts/schemables/WithStructM/definition'
+import { WithStructM } from 'schemata-ts/schemables/WithStructM/definition'
 import { keyIsNotMapped } from 'schemata-ts/struct'
 
-/**
- * @since 1.3.0
- * @category Instances
- */
-export const Encoder: WithStructM2<Enc.URI> = {
+export const WithStructMEncoder: WithStructM<Enc.SchemableLambda> = {
   structM: (properties, params = { extraProps: 'strip' }) => {
     const keyLookup: Record<
       // -- expected key of the output object

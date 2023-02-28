@@ -1,11 +1,6 @@
-/**
- * Adds a character to the right or left of a string until it reaches a certain length.
- *
- * @since 1.0.0
- */
 import { flow, pipe } from 'fp-ts/function'
-import * as Arb from 'schemata-ts/base/ArbitraryBase'
-import { WithPadding1 } from 'schemata-ts/schemables/WithPadding/definition'
+import * as Arb from 'schemata-ts/Arbitrary'
+import { WithPadding } from 'schemata-ts/schemables/WithPadding/definition'
 import {
   foldUnion,
   match,
@@ -13,11 +8,7 @@ import {
   stripRightWhile,
 } from 'schemata-ts/schemables/WithPadding/utils'
 
-/**
- * @since 1.0.0
- * @category Instances
- */
-export const Arbitrary: WithPadding1<Arb.URI> = {
+export const WithPaddingArbitrary: WithPadding<Arb.SchemableLambda> = {
   padLeft: (length, char) => aS => ({
     arbitrary: fc =>
       pipe(

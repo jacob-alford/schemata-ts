@@ -1,24 +1,15 @@
-/**
- * Represents a ReadonlyMap converted from an expected array of entries.
- *
- * @since 1.1.0
- */
 import { apS } from 'fp-ts/Apply'
 import * as E from 'fp-ts/Either'
 import { flow, pipe } from 'fp-ts/function'
 import * as RA from 'fp-ts/ReadonlyArray'
 import * as RM from 'fp-ts/ReadonlyMap'
-import * as P from 'schemata-ts/base/PrinterBase'
+import * as P from 'schemata-ts/Printer'
 import * as PE from 'schemata-ts/PrintError'
-import { WithMap2 } from 'schemata-ts/schemables/WithMap/definition'
+import { WithMap } from 'schemata-ts/schemables/WithMap/definition'
 
 const apSV = apS(P.printerValidation)
 
-/**
- * @since 1.1.0
- * @category Instances
- */
-export const Printer: WithMap2<P.URI> = {
+export const WithMapPrinter: WithMap<P.SchemableLambda> = {
   mapFromEntries: (ordK, sk, sa) => ({
     domainToJson: flow(
       RM.toReadonlyArray(ordK),

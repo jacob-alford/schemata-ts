@@ -1,13 +1,8 @@
-/**
- * Re-export of `WithRefine` from `io-ts/Schemable/WithRefine`
- *
- * @since 1.0.0
- */
+import * as Arb from 'schemata-ts/Arbitrary'
+import { WithRefine } from 'schemata-ts/schemables/WithRefine/definition'
 
-export {
-  /**
-   * @since 1.0.0
-   * @category Instances
-   */
-  WithRefine as Arbitrary,
-} from 'schemata-ts/base/ArbitraryBase'
+export const WithRefineArbitrary: WithRefine<Arb.SchemableLambda> = {
+  refine: refinement => from => ({
+    arbitrary: fc => from.arbitrary(fc).filter(refinement),
+  }),
+}

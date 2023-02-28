@@ -4,7 +4,7 @@
  *
  * @since 1.4.0
  */
-import { InputOf, make, OutputOf, SchemaExt } from 'schemata-ts/SchemaExt'
+import { InputOf, make, OutputOf, Schema } from 'schemata-ts/Schema'
 import * as s from 'schemata-ts/struct'
 import type { CamelCase } from 'type-fest'
 
@@ -12,9 +12,9 @@ import type { CamelCase } from 'type-fest'
  * @since 1.4.0
  * @category Model
  */
-export type CamelCaseFromMixedS = <T extends Record<string, SchemaExt<unknown, unknown>>>(
+export type CamelCaseFromMixedS = <T extends Record<string, Schema<unknown, unknown>>>(
   props: T,
-) => SchemaExt<
+) => Schema<
   {
     [K in keyof T]: InputOf<T[K]>
   },
@@ -42,7 +42,7 @@ export type CamelCaseFromMixedS = <T extends Record<string, SchemaExt<unknown, u
  *   })
  *
  *   // DatabasePerson will have the type:
- *   // SchemaExt<
+ *   // Schema<
  *   //   { first_name: string, last_name: string, age: number, is_married: string },
  *   //   { firstName: string, lastName: string, age: number, isMarried: boolean }
  *   // >

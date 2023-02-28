@@ -1,150 +1,285 @@
 /**
- * A collection of utility functions for mapping `DecodeError`s from io-ts/DecodeError.
+ * Represents an error ADT that occurs while parsing an unknown value
  *
- * @since 1.0.1
- * @example
- *   import * as E from 'fp-ts/Either'
- *   import * as Str from 'fp-ts/string'
- *   import { pipe } from 'fp-ts/function'
- *   import { getDecoder } from 'schemata-ts/Decoder'
- *   import { foldMap } from 'schemata-ts/DecodeError'
- *   import * as S from 'schemata-ts/schemata'
- *
- *   const User = S.Struct({
- *     name: S.NonEmptyString,
- *     favoriteIntegers: S.Array(S.Int()),
- *   })
- *
- *   const decoder = getDecoder(User)
- *
- *   type DomainError = string
- *
- *   const mapError = foldMap(Str.Semigroup)<DomainError>({
- *     Leaf: (got, err) => `Expected ${err}, but Received ${got === '' ? '""' : got}; `,
- *     Key: (key, kind, errors) => `At property key ${key} (${kind}): ${errors}`,
- *     Index: (index, kind, errors) => `At index ${index} (${kind}): ${errors}`,
- *     Member: (index, errors) => `At Union Member ${index}: ${errors}`,
- *     Lazy: (_, errors) => errors,
- *     Wrap: (error, errors) => `${error}; ${errors}`,
- *   })
- *
- *   const input = {
- *     name: '',
- *     favoriteIntegers: [1, NaN, 3, 4.1, 5],
- *   }
- *
- *   const result = pipe(decoder.decode(input), E.mapLeft(mapError))
- *
- *   assert.deepStrictEqual(
- *     result,
- *     E.left(
- *       'At property key name (required): Expected NonEmptyString, but Received ""; At property key favoriteIntegers (required): At index 1 (optional): Expected number, but Received NaN; At index 3 (optional): Expected int, but Received 4.1; ',
- *     ),
- *   )
+ * @since 2.0.0
  */
+import { flow, pipe } from 'fp-ts/function'
+import * as RA from 'fp-ts/ReadonlyArray'
+import * as RNEA from 'fp-ts/ReadonlyNonEmptyArray'
 import * as Sg from 'fp-ts/Semigroup'
-import * as DE from 'io-ts/DecodeError'
-import * as FSg from 'io-ts/FreeSemigroup'
-
-export {
-  /**
-   * Draws a `DecodeError` as a tree structure using indentation markings and newlines.
-   *
-   * @since 1.0.1
-   * @category Destructors
-   */
-  draw as drawTree,
-} from 'io-ts/Decoder'
+import * as Str from 'fp-ts/string'
 
 /**
- * Converts a DecodeError to a type of a given Semigroup using a supplied instance and
- * mapping function.
+ * Represents an error ADT that occurs while parsing an unknown value
  *
- * @since 1.0.1
+ * @since 2.0.0
+ * @category Model
+ */
+export type DecodeError =
+  | TypeMismatch
+  | UnexpectedValue
+  | ErrorAtIndex
+  | ErrorAtKey
+  | ErrorAtUnionMember
+
+/**
+ * A readonly non-empty array of decode errors
+ *
+ * @since 2.0.0
+ * @category Model
+ */
+export class DecodeErrors {
+  readonly _tag = 'DecodeErrors'
+  constructor(readonly errors: RNEA.ReadonlyNonEmptyArray<DecodeError>) {}
+}
+
+/**
+ * Represents a mismatched value
+ *
+ * @since 2.0.0
+ * @category Model
+ */
+export class TypeMismatch {
+  readonly _tag = 'TypeMismatch'
+  constructor(readonly expected: string, readonly actual: unknown) {}
+}
+
+/**
+ * Represents an error for when a value is present but was not expected
+ *
+ * @since 2.0.0
+ * @category Model
+ */
+export class UnexpectedValue {
+  readonly _tag = 'UnexpectedValue'
+  constructor(readonly actual: unknown) {}
+}
+
+/**
+ * Represents an error at a specific index
+ *
+ * @since 2.0.0
+ * @category Model
+ */
+export class ErrorAtIndex {
+  readonly _tag = 'ErrorAtIndex'
+  constructor(readonly index: number, readonly errors: DecodeErrors) {}
+}
+
+/**
+ * Represents an error at a specific key
+ *
+ * @since 2.0.0
+ * @category Model
+ */
+export class ErrorAtKey {
+  readonly _tag = 'ErrorAtKey'
+  constructor(readonly key: string, readonly errors: DecodeErrors) {}
+}
+
+/**
+ * Represents an error that occurred for a particular union member
+ *
+ * @since 2.0.0
+ * @category Model
+ */
+export class ErrorAtUnionMember {
+  readonly _tag = 'ErrorAtUnionMember'
+  constructor(readonly member: number | string, readonly errors: DecodeErrors) {}
+}
+
+/**
+ * @since 2.0.0
+ * @category Instances
+ */
+export const Semigroup: Sg.Semigroup<DecodeErrors> = {
+  concat: (x, y) =>
+    x.errors.length === 0
+      ? y
+      : y.errors.length === 0
+      ? x
+      : new DecodeErrors(RNEA.concat(y.errors)(x.errors)),
+}
+
+/**
+ * Flattens a `DecodeError` tree into a common Monoid
+ *
+ * @since 2.0.0
  * @category Destructors
- * @example
- *   import * as E from 'fp-ts/Either'
- *   import * as Str from 'fp-ts/string'
- *   import { pipe } from 'fp-ts/function'
- *   import { getDecoder } from 'schemata-ts/Decoder'
- *   import { foldMap } from 'schemata-ts/DecodeError'
- *   import * as S from 'schemata-ts/schemata'
+ */
+export const fold =
+  <S>(S: Sg.Semigroup<S>) =>
+  (matchers: {
+    readonly TypeMismatch: (e: TypeMismatch) => S
+    readonly UnexpectedValue: (e: UnexpectedValue) => S
+    readonly ErrorAtIndex: (e: ErrorAtIndex) => S
+    readonly ErrorAtKey: (e: ErrorAtKey) => S
+    readonly ErrorAtUnionMember: (e: ErrorAtUnionMember) => S
+  }) =>
+  (e: DecodeErrors): S =>
+    pipe(
+      e.errors,
+      RNEA.foldMap(S)(err => {
+        switch (err._tag) {
+          case 'TypeMismatch':
+            return matchers.TypeMismatch(err)
+          case 'UnexpectedValue':
+            return matchers.UnexpectedValue(err)
+          case 'ErrorAtIndex':
+            return matchers.ErrorAtIndex(err)
+          case 'ErrorAtKey':
+            return matchers.ErrorAtKey(err)
+          case 'ErrorAtUnionMember':
+            return matchers.ErrorAtUnionMember(err)
+        }
+      }),
+    )
+
+/**
+ * Flattens a `DecodeError` tree into a common Monoid with access to the current accumulation
  *
- *   const User = S.Struct({
- *     name: S.NonEmptyString,
- *     favoriteIntegers: S.Array(S.Int()),
- *   })
- *
- *   const decoder = getDecoder(User)
- *
- *   type DomainError = string
- *
- *   const mapError = foldMap(Str.Semigroup)<DomainError>({
- *     Leaf: (got, err) => `Expected ${err}, but Received ${got === '' ? '""' : got}; `,
- *     Key: (key, kind, errors) => `At property key ${key} (${kind}): ${errors}`,
- *     Index: (index, kind, errors) => `At index ${index} (${kind}): ${errors}`,
- *     Member: (index, errors) => `At Union Member ${index}: ${errors}`,
- *     Lazy: (_, errors) => errors,
- *     Wrap: (error, errors) => `${error}; ${errors}`,
- *   })
- *
- *   const input = {
- *     name: '',
- *     favoriteIntegers: [1, NaN, 3, 4.1, 5],
- *   }
- *
- *   const result = pipe(decoder.decode(input), E.mapLeft(mapError))
- *
- *   assert.deepStrictEqual(
- *     result,
- *     E.left(
- *       'At property key name (required): Expected NonEmptyString, but Received ""; At property key favoriteIntegers (required): At index 1 (optional): Expected number, but Received NaN; At index 3 (optional): Expected int, but Received 4.1; ',
- *     ),
- *   )
+ * @since 2.0.0
+ * @category Destructors
  */
 export const foldMap =
   <S>(S: Sg.Semigroup<S>) =>
-  <E>(matchers: {
-    readonly Leaf: (input: unknown, e: E) => S
-    readonly Key: (key: string, kind: DE.Kind, errors: S) => S
-    readonly Index: (index: number, kind: DE.Kind, errors: S) => S
-    readonly Member: (index: number, errors: S) => S
-    readonly Lazy: (id: string, errors: S) => S
-    readonly Wrap: (error: E, errors: S) => S
-  }) =>
-  (errors: FSg.FreeSemigroup<DE.DecodeError<E>>): S => {
-    const foldDecodeError: (params: DE.DecodeError<E>) => S = DE.fold({
-      Leaf: matchers.Leaf,
-      Key: (key, kind, errors) => matchers.Key(key, kind, foldFreeSemigroup(errors)),
-      Index: (index, kind, errors) =>
-        matchers.Index(index, kind, foldFreeSemigroup(errors)),
-      Member: (index, errors) => matchers.Member(index, foldFreeSemigroup(errors)),
-      Lazy: (id, errors) => matchers.Lazy(id, foldFreeSemigroup(errors)),
-      Wrap: (error, errors) => matchers.Wrap(error, foldFreeSemigroup(errors)),
+  (matchers: {
+    readonly TypeMismatch: (expected: string, actual: unknown) => S
+    readonly UnexpectedValue: (actual: unknown) => S
+    readonly ErrorAtIndex: (index: number, errors: S) => S
+    readonly ErrorAtKey: (key: string, errors: S) => S
+    readonly ErrorAtUnionMember: (member: number | string, errors: S) => S
+  }): ((e: DecodeErrors) => S) =>
+    fold(S)({
+      TypeMismatch: ({ expected, actual }) => matchers.TypeMismatch(expected, actual),
+      UnexpectedValue: actual => matchers.UnexpectedValue(actual),
+      ErrorAtIndex: ({ index, errors }) =>
+        matchers.ErrorAtIndex(index, foldMap(S)(matchers)(errors)),
+      ErrorAtKey: ({ key, errors }) =>
+        matchers.ErrorAtKey(key, foldMap(S)(matchers)(errors)),
+      ErrorAtUnionMember: ({ member, errors }) =>
+        matchers.ErrorAtUnionMember(member, foldMap(S)(matchers)(errors)),
     })
 
-    const foldFreeSemigroup: (errors: FSg.FreeSemigroup<DE.DecodeError<E>>) => S =
-      FSg.fold(foldDecodeError, (left, right) =>
-        S.concat(foldFreeSemigroup(left), foldFreeSemigroup(right)),
-      )
-
-    return foldFreeSemigroup(errors)
+/**
+ * Flattens a `DecodeError` tree into a common Monoid with access to the current
+ * accumulation and current level of depth
+ *
+ * @since 2.0.0
+ * @category Destructors
+ */
+export const foldMapWithDepth =
+  <S>(S: Sg.Semigroup<S>) =>
+  (matchers: {
+    readonly TypeMismatch: (expected: string, actual: unknown, depth: number) => S
+    readonly UnexpectedValue: (actual: unknown, depth: number) => S
+    readonly ErrorAtIndex: (index: number, errors: S, depth: number) => S
+    readonly ErrorAtKey: (key: string, errors: S, depth: number) => S
+    readonly ErrorAtUnionMember: (member: number | string, errors: S, depth: number) => S
+  }) =>
+  (e: DecodeErrors): S => {
+    const go =
+      (depth: number) =>
+      (e: DecodeErrors): S =>
+        pipe(
+          e.errors,
+          RNEA.foldMap(S)(err => {
+            switch (err._tag) {
+              case 'TypeMismatch':
+                return matchers.TypeMismatch(err.expected, err.actual, depth)
+              case 'UnexpectedValue':
+                return matchers.UnexpectedValue(err.actual, depth)
+              case 'ErrorAtIndex':
+                return matchers.ErrorAtIndex(err.index, go(depth + 1)(err.errors), depth)
+              case 'ErrorAtKey':
+                return matchers.ErrorAtKey(err.key, go(depth + 1)(err.errors), depth)
+              case 'ErrorAtUnionMember':
+                return matchers.ErrorAtUnionMember(
+                  err.member,
+                  go(depth + 1)(err.errors),
+                  depth,
+                )
+            }
+          }),
+        )
+    return go(0)(e)
   }
 
 /**
- * Disregards a DecodeError's structure, mapping and combining into/using a supplied Semigroup.
+ * Draws a tree of `DecodeError` values with configurable markings
  *
- * @since 1.0.1
+ * @since 2.0.0
  * @category Destructors
  */
-export const foldMapFlat =
-  <S>(S: Sg.Semigroup<S>) =>
-  <E>(fold: (e: E) => S): ((errors: FSg.FreeSemigroup<DE.DecodeError<E>>) => S) =>
-    foldMap(S)<E>({
-      Leaf: (_, e) => fold(e),
-      Key: (_, __, errors) => errors,
-      Index: (_, __, errors) => errors,
-      Member: (_, errors) => errors,
-      Lazy: (_, errors) => errors,
-      Wrap: (_, errors) => errors,
-    })
+export const drawLinesWithMarkings = (params: {
+  readonly indentationString: (depth: number, isLastChild: boolean) => string
+}): ((err: DecodeErrors) => ReadonlyArray<string>) =>
+  foldMapWithDepth(RA.getMonoid<string>())({
+    TypeMismatch: (expected, actual) => [
+      `Expected ${expected} but got ${String(actual)}`,
+    ],
+    UnexpectedValue: actual => [`Unexpected value: ${String(actual)}`],
+    ErrorAtIndex: (index, errors, depth) =>
+      pipe(
+        [`Error at index ${index}`],
+        RA.concat(
+          pipe(
+            errors,
+            RA.mapWithIndex(
+              (i, e) =>
+                `${params.indentationString(depth, i === errors.length - 1)}${
+                  e.includes('─') ? '─' : ' '
+                }${e}`,
+            ),
+          ),
+        ),
+      ),
+    ErrorAtKey: (key, errors, depth) =>
+      pipe(
+        [`Error at key ${key}`],
+        RA.concat(
+          pipe(
+            errors,
+            RA.mapWithIndex(
+              (i, e) =>
+                `${params.indentationString(depth, i === errors.length - 1)}${
+                  e.includes('─') ? '─' : ' '
+                }${e}`,
+            ),
+          ),
+        ),
+      ),
+    ErrorAtUnionMember: (member, errors, depth) =>
+      pipe(
+        [`Error at union member ${member}`],
+        RA.concat(
+          pipe(
+            errors,
+            RA.mapWithIndex(
+              (i, e) =>
+                `${params.indentationString(depth, i === errors.length - 1)}${
+                  e.includes('─') ? '─' : ' '
+                }${e}`,
+            ),
+          ),
+        ),
+      ),
+  })
+
+/**
+ * Draws a tree of `DecodeError` values
+ *
+ * @since 2.0.0
+ * @category Destructors
+ */
+export const drawTree = flow(
+  drawLinesWithMarkings({
+    indentationString: (depth, isLastChild) =>
+      `${depth === 0 ? (isLastChild ? '└─' : '├─') : '─'}${'─'.repeat(depth * 2)}`,
+  }),
+  as =>
+    pipe(
+      as,
+      RA.foldMapWithIndex(Str.Monoid)((i, e) => e + (i === as.length - 1 ? '' : `\n`)),
+    ),
+)
