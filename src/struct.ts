@@ -116,7 +116,7 @@ export const isOptionalFlag = (flag: KeyFlag): flag is OptionalKeyFlag =>
  *   const DatabasePerson = S.StructM(databasePerson)
  *
  *   // DatabasePerson will have the type:
- *   // SchemaExt<
+ *   // Schema<
  *   //   { first_name: string, last_name: string, age: number, is_married: string },
  *   //   { firstName: string, lastName: string, age: number, isMarried: boolean }
  *   // >
@@ -274,7 +274,7 @@ export interface CamelCaseLambda extends KeyRemapLambda {
  *   const DatabasePerson = S.StructM(s.camelCaseKeys(databasePerson))
  *
  *   // DatabasePerson will have the type:
- *   // SchemaExt<
+ *   // Schema<
  *   //   { first_name: string, last_name: string, age: number, is_married: string },
  *   //   { firstName: string, lastName: string, age: number, isMarried: boolean }
  *   // >
@@ -316,7 +316,7 @@ export const camelCaseKeys = mapKeysWith<CamelCaseLambda>(camelCase)
  *   const SomeDomainTypeSchema = S.StructM(someDomainType)
  *
  *   // SomeDomainType will have the type:
- *   // SchemaExt<{ a: string, b: number }, { a: string, b: boolean }>
+ *   // Schema<{ a: string, b: number }, { a: string, b: boolean }>
  *
  *   const arbitrary = getArbitrary(SomeDomainTypeSchema).arbitrary(fc)
  *   const guard = getGuard(SomeDomainTypeSchema)
@@ -351,7 +351,7 @@ export const defineStruct: <
  *   const SomeDomainTypeSchema = S.StructM(someDomainType)
  *
  *   // SomeDomainTypeSchema will have the type:
- *   // SchemaExt<{ a: string, b: number }, { a: string, b: boolean }>
+ *   // Schema<{ a: string, b: number }, { a: string, b: boolean }>
  *
  *   const encoder = getEncoder(SomeDomainTypeSchema)
  *

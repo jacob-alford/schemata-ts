@@ -9,7 +9,7 @@
  *
  * @since 1.1.0
  */
-import * as P from 'schemata-ts/base/PrinterBase'
+import * as P from 'schemata-ts/Printer'
 import { WithFloat2 } from 'schemata-ts/schemables/WithFloat/definition'
 
 /**

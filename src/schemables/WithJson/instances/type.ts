@@ -4,7 +4,7 @@
  * @since 1.1.0
  */
 import { failure, success, Type as Type_ } from 'io-ts'
-import * as t from 'schemata-ts/base/TypeBase'
+import * as t from 'schemata-ts/Type'
 import { WithJson1 } from 'schemata-ts/schemables/WithJson/definition'
 import { Encoder } from 'schemata-ts/schemables/WithJson/instances/encoder'
 import { Guard } from 'schemata-ts/schemables/WithJson/instances/guard'

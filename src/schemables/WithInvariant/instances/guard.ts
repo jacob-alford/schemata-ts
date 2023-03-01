@@ -3,7 +3,7 @@
  *
  * @since 1.0.0
  */
-import * as G from 'schemata-ts/base/GuardBase'
+import * as G from 'schemata-ts/Guard'
 import { WithInvariant1 } from 'schemata-ts/schemables/WithInvariant/definition'
 
 /**

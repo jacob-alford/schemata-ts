@@ -5,7 +5,7 @@
  * @since 1.2.0
  */
 import { constant, identity } from 'fp-ts/function'
-import * as TD from 'schemata-ts/base/TaskDecoderBase'
+import * as TD from 'schemata-ts/TaskDecoder'
 import { WithAnnotate2C } from 'schemata-ts/schemables/WithAnnotate/definition'
 
 /**

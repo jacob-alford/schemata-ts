@@ -10,4 +10,4 @@ export {
    * @category Instances
    */
   WithRefine as Eq,
-} from 'schemata-ts/base/EqBase'
+} from 'schemata-ts/Eq'

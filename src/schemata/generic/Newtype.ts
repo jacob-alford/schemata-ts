@@ -7,7 +7,7 @@ import { pipe } from 'fp-ts/function'
 import { getGuard } from 'schemata-ts/Guard'
 import { Iso } from 'schemata-ts/iso'
 import * as Nt from 'schemata-ts/newtype'
-import { make, SchemaExt } from 'schemata-ts/SchemaExt'
+import { make, Schema } from 'schemata-ts/Schema'
 
 /**
  * @since 1.4.0
@@ -16,7 +16,7 @@ import { make, SchemaExt } from 'schemata-ts/SchemaExt'
 export type NewtypeS = <N extends Nt.Newtype<any, any>>(
   iso: Iso<N, Nt.CarrierOf<N>>,
   name: string,
-) => <O>(innerType: SchemaExt<O, Nt.CarrierOf<N>>) => SchemaExt<O, N>
+) => <O>(innerType: Schema<O, Nt.CarrierOf<N>>) => Schema<O, N>
 
 /**
  * A schema for wrapping an inner schema's output value in a newtype.

@@ -7,7 +7,7 @@ import * as SC from '../../src/base/SchemaBase'
 import * as D from '../../src/Decoder'
 import { Encoder } from '../../src/schemables/WithRefine/instances/encoder'
 import { Schema } from '../../src/schemables/WithRefine/instances/schema'
-import { interpret } from '../../src/SchemaExt'
+import { interpret } from '../../src/Schema'
 import * as S from '../../src/schemata'
 
 describe('WithRefine', () => {

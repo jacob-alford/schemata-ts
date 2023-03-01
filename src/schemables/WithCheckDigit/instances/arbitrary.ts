@@ -3,7 +3,7 @@
  *
  * @since 1.0.0
  */
-import * as Arb from 'schemata-ts/base/ArbitraryBase'
+import * as Arb from 'schemata-ts/Arbitrary'
 import { Branded } from 'schemata-ts/brand'
 import {
   CheckDigitVerified,

@@ -3,7 +3,7 @@
  *
  * @since 1.0.0
  */
-import * as Eq_ from 'schemata-ts/base/EqBase'
+import * as Eq_ from 'schemata-ts/Eq'
 import { WithPattern1 } from 'schemata-ts/schemables/WithPattern/definition'
 
 /**

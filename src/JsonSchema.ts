@@ -3,7 +3,7 @@
  *
  * @since 1.2.0
  * @example
- *   import * as JS from 'schemata-ts/base/JsonSchemaBase'
+ *   import * as JS from 'schemata-ts/JsonSchema'
  *   import * as S from 'schemata-ts/schemata'
  *   import { getJsonSchema } from 'schemata-ts/JsonSchema'
  *
@@ -38,7 +38,7 @@ import * as RNEA from 'fp-ts/ReadonlyNonEmptyArray'
 import * as RR from 'fp-ts/ReadonlyRecord'
 import * as Str from 'fp-ts/string'
 import { memoize } from 'io-ts/Schemable'
-import { Schemable2 } from 'schemata-ts/base/SchemableBase'
+import { Schemable2 } from 'schemata-ts/Schemable'
 import { Int } from 'schemata-ts/schemables/WithInt/definition'
 
 // -------------------------------------------------------------------------------------

@@ -2,7 +2,7 @@ import * as fc from 'fast-check'
 
 import { Schemable } from '../src/Arbitrary'
 import * as PB from '../src/PatternBuilder'
-import { interpret, make } from '../src/SchemaExt'
+import { interpret, make } from '../src/Schema'
 
 describe('Arbitrary', () => {
   const User = make(S => S.struct({ name: S.string }))

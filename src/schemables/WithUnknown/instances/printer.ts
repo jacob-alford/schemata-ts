@@ -3,7 +3,7 @@
  *
  * @since 1.3.0
  */
-import * as P from 'schemata-ts/base/PrinterBase'
+import * as P from 'schemata-ts/Printer'
 import { WithUnknown2 } from 'schemata-ts/schemables/WithUnknown/definition'
 
 /**

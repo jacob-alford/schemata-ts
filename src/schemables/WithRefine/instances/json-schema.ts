@@ -1,6 +1,6 @@
 /** @since 1.2.0 */
 import { identity } from 'fp-ts/function'
-import * as JS from 'schemata-ts/base/JsonSchemaBase'
+import * as JS from 'schemata-ts/JsonSchema'
 import { WithRefine2 } from 'schemata-ts/schemables/WithRefine/definition'
 
 /**

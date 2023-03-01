@@ -6,7 +6,7 @@
 import { pipe } from 'fp-ts/function'
 import { Branded } from 'schemata-ts/brand'
 import * as PB from 'schemata-ts/PatternBuilder'
-import { make, SchemaExt } from 'schemata-ts/SchemaExt'
+import { make, Schema } from 'schemata-ts/Schema'
 
 interface BitcoinAddressBrand {
   readonly BitcoinAddress: unique symbol
@@ -24,7 +24,7 @@ export type BitcoinAddress = Branded<string, BitcoinAddressBrand>
  * @since 1.0.0
  * @category Pattern
  */
-export type BitcoinAddressS = SchemaExt<string, BitcoinAddress>
+export type BitcoinAddressS = Schema<string, BitcoinAddress>
 
 /**
  * /^(bc1)[a-z0-9]{25,39}$/

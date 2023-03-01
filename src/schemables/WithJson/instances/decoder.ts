@@ -3,7 +3,7 @@
  *
  * @since 1.1.0
  */
-import * as D from 'schemata-ts/base/DecoderBase'
+import * as D from 'schemata-ts/Decoder'
 import { WithJson2C } from 'schemata-ts/schemables/WithJson/definition'
 import { Guard } from 'schemata-ts/schemables/WithJson/instances/guard'
 

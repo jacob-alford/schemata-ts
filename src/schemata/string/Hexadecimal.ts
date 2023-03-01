@@ -6,7 +6,7 @@
 import { pipe } from 'fp-ts/function'
 import { Branded } from 'schemata-ts/brand'
 import * as PB from 'schemata-ts/PatternBuilder'
-import { make, SchemaExt } from 'schemata-ts/SchemaExt'
+import { make, Schema } from 'schemata-ts/Schema'
 
 interface HexadecimalBrand {
   readonly Hexadecimal: unique symbol
@@ -24,7 +24,7 @@ export type Hexadecimal = Branded<string, HexadecimalBrand>
  * @since 1.0.0
  * @category Model
  */
-export type HexadecimalS = SchemaExt<string, Hexadecimal>
+export type HexadecimalS = Schema<string, Hexadecimal>
 
 /**
  * @since 1.0.0

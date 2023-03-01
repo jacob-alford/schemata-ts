@@ -6,8 +6,8 @@
 import { unsafeCoerce } from 'fp-ts/function'
 import * as RA from 'fp-ts/ReadonlyArray'
 import * as RR from 'fp-ts/ReadonlyRecord'
-import * as Eq_ from 'schemata-ts/base/EqBase'
-import { SafeJson } from 'schemata-ts/base/PrinterBase'
+import * as Eq_ from 'schemata-ts/Eq'
+import { SafeJson } from 'schemata-ts/Printer'
 import { WithJson1 } from 'schemata-ts/schemables/WithJson/definition'
 
 /**

@@ -19,7 +19,7 @@
 import { pipe } from 'fp-ts/function'
 import { Branded } from 'schemata-ts/brand'
 import * as PB from 'schemata-ts/PatternBuilder'
-import { make, SchemaExt } from 'schemata-ts/SchemaExt'
+import { make, Schema } from 'schemata-ts/Schema'
 
 interface HslColorBrand {
   readonly HslColor: unique symbol
@@ -49,7 +49,7 @@ export type HslColor = Branded<string, HslColorBrand>
  * @since 1.0.0
  * @category Model
  */
-export type HslColorS = SchemaExt<string, HslColor>
+export type HslColorS = Schema<string, HslColor>
 
 const anyDecimal = PB.subgroup(
   PB.sequence(PB.char('.'), PB.atLeastOne({ greedy: true })(PB.digit)),

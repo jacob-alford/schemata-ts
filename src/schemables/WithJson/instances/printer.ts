@@ -5,7 +5,7 @@
  */
 import * as E from 'fp-ts/Either'
 import { flow } from 'fp-ts/function'
-import * as P from 'schemata-ts/base/PrinterBase'
+import * as P from 'schemata-ts/Printer'
 import { WithJson2 } from 'schemata-ts/schemables/WithJson/definition'
 
 /**

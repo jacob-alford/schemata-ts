@@ -5,17 +5,17 @@
  */
 import { pipe } from 'fp-ts/function'
 import * as O from 'fp-ts/Option'
-import * as G from 'schemata-ts/base/GuardBase'
+import * as G from 'schemata-ts/Guard'
 import { getGuard } from 'schemata-ts/Guard'
-import { make, SchemaExt } from 'schemata-ts/SchemaExt'
+import { make, Schema } from 'schemata-ts/Schema'
 
 /**
  * @since 1.0.0
  * @category Model
  */
 export type OptionFromUndefinedS = <A, O>(
-  sA: SchemaExt<O, A>,
-) => SchemaExt<O | undefined, O.Option<A>>
+  sA: Schema<O, A>,
+) => Schema<O | undefined, O.Option<A>>
 
 /**
  * Represents an optional type which encodes to / decodes from undefined
@@ -24,8 +24,8 @@ export type OptionFromUndefinedS = <A, O>(
  * @category Schema
  */
 export const OptionFromUndefined: OptionFromUndefinedS = <A, O>(
-  sA: SchemaExt<O, A>,
-): SchemaExt<O | undefined, O.Option<A>> =>
+  sA: Schema<O, A>,
+): Schema<O | undefined, O.Option<A>> =>
   make(S =>
     pipe(
       S.optional(sA(S)),

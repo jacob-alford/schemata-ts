@@ -21,7 +21,7 @@ import { pipe } from 'fp-ts/function'
 import { matchW } from 'schemata-ts/internal/match'
 import * as PB from 'schemata-ts/PatternBuilder'
 import { Guard } from 'schemata-ts/schemables/WithDate/instances/guard'
-import { make, SchemaExt } from 'schemata-ts/SchemaExt'
+import { make, Schema } from 'schemata-ts/Schema'
 
 /**
  * E.g. `2022`
@@ -282,7 +282,7 @@ export type DateFromIsoStringParams = {
  */
 export type DateFromIsoStringS = (
   params?: DateFromIsoStringParams,
-) => SchemaExt<string, Date>
+) => Schema<string, Date>
 
 /**
  * The Date parser (used in DateFromString) accepts different strings depending on

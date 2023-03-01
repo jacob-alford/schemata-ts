@@ -6,8 +6,8 @@
 import * as E from 'fp-ts/Either'
 import { pipe } from 'fp-ts/function'
 import * as J from 'fp-ts/Json'
-import * as G from 'schemata-ts/base/GuardBase'
-import { JsonString, SafeJson, toJson } from 'schemata-ts/base/PrinterBase'
+import * as G from 'schemata-ts/Guard'
+import { JsonString, SafeJson, toJson } from 'schemata-ts/Printer'
 import { WithJson1 } from 'schemata-ts/schemables/WithJson/definition'
 
 /**

@@ -158,7 +158,7 @@ Schemata-ts comes with its own implementation of [JSON-Schema](https://json-sche
 This is a live example generating a JSON Schema in `src/base/JsonSchemaBase.ts`
 
 ```ts
-import * as JS from 'schemata-ts/base/JsonSchemaBase'
+import * as JS from 'schemata-ts/JsonSchema'
 import * as S from 'schemata-ts/schemata'
 import { getJsonSchema } from 'schemata-ts/JsonSchema'
 
@@ -250,7 +250,7 @@ const SomeDomainType = S.Struct({
 })
 
 // SomeDomainType will have the type:
-// SchemaExt<{ a: string, b: number }, { a: string, b: boolean }>
+// Schema<{ a: string, b: number }, { a: string, b: boolean }>
 
 const decoder = getDecoder(SomeDomainType)
 
@@ -283,7 +283,7 @@ const someDomainType = s.struct({
 const SomeDomainTypeSchema = S.StructM(someDomainType)
 
 // SomeDomainType will have the type:
-// SchemaExt<{ a: string, b: number }, { a: string, b: boolean }>
+// Schema<{ a: string, b: number }, { a: string, b: boolean }>
 
 const encoder = getEncoder(SomeDomainTypeSchema)
 
@@ -318,7 +318,7 @@ const someDomainType = s.defineStruct({
 const SomeDomainTypeSchema = S.StructM(someDomainType)
 
 // SomeDomainType will have the type:
-// SchemaExt<{ a: string, b: number }, { a: string, b: boolean }>
+// Schema<{ a: string, b: number }, { a: string, b: boolean }>
 
 const arbitrary = getArbitrary(SomeDomainTypeSchema).arbitrary(fc)
 const guard = getGuard(SomeDomainTypeSchema)
@@ -343,7 +343,7 @@ const DatabasePerson = S.CamelCaseFromMixed({
 })
 
 // DatabasePerson will have the type:
-// SchemaExt<
+// Schema<
 //   { first_name: string, last_name: string, age: number, is_married: string },
 //   { firstName: string, lastName: string, age: number, isMarried: boolean }
 // >
@@ -383,7 +383,7 @@ const databasePerson = s.struct({
 const DatabasePerson = S.StructM(s.camelCaseKeys(databasePerson))
 
 // DatabasePerson will have the type:
-// SchemaExt<
+// Schema<
 //   { first_name: string, last_name: string, age: number, is_married: string },
 //   { firstName: string, lastName: string, age: number, isMarried: boolean }
 // >
@@ -425,7 +425,7 @@ const databasePerson = s.defineStruct({
 const DatabasePerson = S.StructM(databasePerson)
 
 // DatabasePerson will have the type:
-// SchemaExt<
+// Schema<
 //   { first_name: string, last_name: string, age: number, is_married: string },
 //   { firstName: string, lastName: string, age: number, isMarried: boolean }
 // >

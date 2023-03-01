@@ -1,5 +1,5 @@
 import { Schemable } from '../src/Eq'
-import { interpret, make } from '../src/SchemaExt'
+import { interpret, make } from '../src/Schema'
 
 describe('Eq', () => {
   const User = make(S => S.struct({ name: S.string }))

@@ -7,7 +7,7 @@ import * as SC from '../../src/base/SchemaBase'
 import * as TD from '../../src/base/TaskDecoderBase'
 import * as t from '../../src/base/TypeBase'
 import * as D from '../../src/Decoder'
-import { interpret } from '../../src/SchemaExt'
+import { interpret } from '../../src/Schema'
 import {
   Encoder,
   Eq,

@@ -3,7 +3,7 @@
  *
  * @since 1.3.0
  */
-import * as Arb from 'schemata-ts/base/ArbitraryBase'
+import * as Arb from 'schemata-ts/Arbitrary'
 import { WithUnknown1 } from 'schemata-ts/schemables/WithUnknown/definition'
 
 /**

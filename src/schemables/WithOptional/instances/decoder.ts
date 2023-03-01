@@ -3,7 +3,7 @@
  *
  * @since 1.0.0
  */
-import * as D from 'schemata-ts/base/DecoderBase'
+import * as D from 'schemata-ts/Decoder'
 import { WithOptional2C } from 'schemata-ts/schemables/WithOptional/definition'
 
 /**

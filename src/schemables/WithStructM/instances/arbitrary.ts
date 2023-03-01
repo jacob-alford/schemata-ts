@@ -4,7 +4,7 @@
  * @since 1.3.0
  */
 import { pipe, tuple } from 'fp-ts/function'
-import * as Arb from 'schemata-ts/base/ArbitraryBase'
+import * as Arb from 'schemata-ts/Arbitrary'
 import { forIn, hasOwn } from 'schemata-ts/internal/util'
 import { WithStructM1 } from 'schemata-ts/schemables/WithStructM/definition'
 import { isOptionalFlag, KeyFlag, keyIsNotMapped } from 'schemata-ts/struct'

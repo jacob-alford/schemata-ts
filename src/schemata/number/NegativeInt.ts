@@ -11,7 +11,7 @@
  */
 import { pipe } from 'fp-ts/function'
 import { Branded } from 'schemata-ts/brand'
-import { make, SchemaExt } from 'schemata-ts/SchemaExt'
+import { make, Schema } from 'schemata-ts/Schema'
 
 interface NegativeIntBrand {
   readonly NegativeInt: unique symbol
@@ -35,7 +35,7 @@ export type NegativeInt = Branded<number, NegativeIntBrand>
  * @since 1.0.0
  * @category Model
  */
-export type NegativeIntS = SchemaExt<number, NegativeInt>
+export type NegativeIntS = Schema<number, NegativeInt>
 
 /**
  * Negative integer branded newtype.

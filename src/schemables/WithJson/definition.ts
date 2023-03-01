@@ -4,7 +4,7 @@
  * @since 1.1.0
  */
 import * as J from 'fp-ts/Json'
-import { JsonString, SafeJson } from 'schemata-ts/base/PrinterBase'
+import { JsonString, SafeJson } from 'schemata-ts/Printer'
 import { Kind, TypeLambda } from 'schemata-ts/HKT'
 
 /**

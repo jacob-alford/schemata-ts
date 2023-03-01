@@ -4,7 +4,7 @@
  * @since 1.0.0
  */
 import { pipe } from 'fp-ts/function'
-import * as t from 'schemata-ts/base/TypeBase'
+import * as t from 'schemata-ts/Type'
 import { Branded } from 'schemata-ts/brand'
 import {
   CheckDigitVerified,

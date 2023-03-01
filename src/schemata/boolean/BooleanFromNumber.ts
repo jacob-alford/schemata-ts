@@ -7,13 +7,13 @@
  * @since 1.0.0
  */
 import { boolean } from 'io-ts/Guard'
-import { make, SchemaExt } from 'schemata-ts/SchemaExt'
+import { make, Schema } from 'schemata-ts/Schema'
 
 /**
  * @since 1.0.0
  * @category Model
  */
-export type BooleanS = SchemaExt<number, boolean>
+export type BooleanS = Schema<number, boolean>
 
 /**
  * A boolean value whose encoded representation is a number, where 0 is false and 1 is true.

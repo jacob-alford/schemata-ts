@@ -10,4 +10,4 @@ export {
    * @category Instances
    */
   WithRefine as Arbitrary,
-} from 'schemata-ts/base/ArbitraryBase'
+} from 'schemata-ts/Arbitrary'

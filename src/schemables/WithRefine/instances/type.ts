@@ -11,4 +11,4 @@ export {
    * @category Instances
    */
   WithRefine as Type,
-} from 'schemata-ts/base/TypeBase'
+} from 'schemata-ts/Type'

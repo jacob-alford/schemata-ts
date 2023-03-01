@@ -1,5 +1,5 @@
 /** @since 1.1.0 */
-import * as P from 'schemata-ts/base/PrinterBase'
+import * as P from 'schemata-ts/Printer'
 import { WithRefine2 } from 'schemata-ts/schemables/WithRefine/definition'
 
 /**

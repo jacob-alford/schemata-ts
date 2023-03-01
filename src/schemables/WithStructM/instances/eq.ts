@@ -7,7 +7,7 @@ import * as B from 'fp-ts/boolean'
 import { pipe } from 'fp-ts/function'
 import * as RR from 'fp-ts/ReadonlyRecord'
 import * as Str from 'fp-ts/string'
-import * as Eq_ from 'schemata-ts/base/EqBase'
+import * as Eq_ from 'schemata-ts/Eq'
 import { hasOwn } from 'schemata-ts/internal/util'
 import { WithStructM1 } from 'schemata-ts/schemables/WithStructM/definition'
 

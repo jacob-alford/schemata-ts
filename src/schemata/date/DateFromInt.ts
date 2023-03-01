@@ -6,13 +6,13 @@
 import { pipe } from 'fp-ts/function'
 import { Guard } from 'schemata-ts/schemables/WithDate/instances/guard'
 import * as int from 'schemata-ts/schemables/WithInt/definition'
-import { make, SchemaExt } from 'schemata-ts/SchemaExt'
+import { make, Schema } from 'schemata-ts/Schema'
 
 /**
  * @since 1.0.0
  * @category Model
  */
-export type DateFromIntS = SchemaExt<number, Date>
+export type DateFromIntS = Schema<number, Date>
 
 /**
  * Represents Date objects derived from time in milliseconds.

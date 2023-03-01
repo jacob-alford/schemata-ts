@@ -4,7 +4,7 @@
  * @since 1.0.0
  */
 import * as t_ from 'io-ts'
-import * as t from 'schemata-ts/base/TypeBase'
+import * as t from 'schemata-ts/Type'
 import { WithOptional1 } from 'schemata-ts/schemables/WithOptional/definition'
 import { Encoder } from 'schemata-ts/schemables/WithOptional/instances/encoder'
 import { Guard } from 'schemata-ts/schemables/WithOptional/instances/guard'

@@ -4,8 +4,8 @@
  * @since 1.0.0
  */
 import { identity } from 'fp-ts/function'
-import * as S2 from 'schemata-ts/base/SchemableBase'
-import * as SC from 'schemata-ts/SchemaExt'
+import * as S2 from 'schemata-ts/Schemable'
+import * as SC from 'schemata-ts/Schema'
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 type Any = any
@@ -14,7 +14,7 @@ type Any = any
  * @since 1.0.0
  * @category Instances
  */
-export const URI = 'SchemaExt'
+export const URI = 'Schema'
 
 /**
  * @since 1.0.0
@@ -24,7 +24,7 @@ export type URI = typeof URI
 
 declare module 'fp-ts/lib/HKT' {
   interface URItoKind2<E, A> {
-    readonly SchemaExt: SC.SchemaExt<E, A>
+    readonly Schema: SC.Schema<E, A>
   }
 }
 
@@ -74,7 +74,7 @@ export const Nullable: S2.Schemable2<URI>['nullable'] = or =>
  *   })
  *
  *   // SomeDomainType will have the type:
- *   // SchemaExt<{ a: string, b: number }, { a: string, b: boolean }>
+ *   // Schema<{ a: string, b: number }, { a: string, b: boolean }>
  *
  *   const decoder = getDecoder(SomeDomainType)
  *
@@ -144,9 +144,9 @@ export const Intersection: S2.Schemable2<URI>['intersect'] = right => left =>
  */
 export const Sum =
   <T extends string>(tag: T) =>
-  <MS extends Record<string, SC.SchemaExt<Any, Any>>>(
+  <MS extends Record<string, SC.Schema<Any, Any>>>(
     members: MS,
-  ): SC.SchemaExt<OutputOf<MS[keyof MS]>, TypeOf<MS[keyof MS]>> =>
+  ): SC.Schema<OutputOf<MS[keyof MS]>, TypeOf<MS[keyof MS]>> =>
     SC.make(_ => {
       const out = {} as Any
       for (const [tag, taggedSchema] of Object.entries(members)) {
@@ -172,10 +172,10 @@ export const Readonly: S2.Schemable2<URI>['readonly'] = identity
  * @since 1.0.0
  * @category Utilities
  */
-export type TypeOf<S> = S extends SC.SchemaExt<Any, infer A> ? A : never
+export type TypeOf<S> = S extends SC.Schema<Any, infer A> ? A : never
 
 /**
  * @since 1.0.0
  * @category Utilities
  */
-export type OutputOf<S> = S extends SC.SchemaExt<infer O, Any> ? O : never
+export type OutputOf<S> = S extends SC.Schema<infer O, Any> ? O : never

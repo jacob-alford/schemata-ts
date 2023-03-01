@@ -3,7 +3,7 @@
  *
  * @since 1.0.0
  */
-import * as Enc from 'schemata-ts/base/EncoderBase'
+import * as Enc from 'schemata-ts/Encoder'
 import { WithOptional2 } from 'schemata-ts/schemables/WithOptional/definition'
 
 /**

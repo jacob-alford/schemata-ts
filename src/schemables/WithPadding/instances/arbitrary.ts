@@ -4,7 +4,7 @@
  * @since 1.0.0
  */
 import { flow, pipe } from 'fp-ts/function'
-import * as Arb from 'schemata-ts/base/ArbitraryBase'
+import * as Arb from 'schemata-ts/Arbitrary'
 import { WithPadding1 } from 'schemata-ts/schemables/WithPadding/definition'
 import {
   foldUnion,

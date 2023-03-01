@@ -3,7 +3,7 @@
  *
  * @since 1.1.0
  */
-import * as P from 'schemata-ts/base/PrinterBase'
+import * as P from 'schemata-ts/Printer'
 import { WithPadding2 } from 'schemata-ts/schemables/WithPadding/definition'
 import { foldUnion, match } from 'schemata-ts/schemables/WithPadding/utils'
 

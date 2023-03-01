@@ -4,7 +4,7 @@
  * @since 1.0.0
  */
 import { flow } from 'fp-ts/function'
-import * as Enc from 'schemata-ts/base/EncoderBase'
+import * as Enc from 'schemata-ts/Encoder'
 import { WithInvariant2 } from 'schemata-ts/schemables/WithInvariant/definition'
 
 /**

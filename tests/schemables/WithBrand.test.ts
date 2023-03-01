@@ -7,7 +7,7 @@ import * as SC from '../../src/base/SchemaBase'
 import * as D from '../../src/Decoder'
 import { Printer } from '../../src/schemables/WithBrand/instances/printer'
 import * as B from '../../src/schemables/WithBrand/instances/schema'
-import { interpret } from '../../src/SchemaExt'
+import { interpret } from '../../src/Schema'
 
 describe('WithBrand', () => {
   test('Brand', () => {

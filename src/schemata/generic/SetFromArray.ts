@@ -9,7 +9,7 @@ import { Ord } from 'fp-ts/Ord'
 import * as RS from 'fp-ts/ReadonlySet'
 import * as G from 'io-ts/Guard'
 import { getGuard } from 'schemata-ts/Guard'
-import { make, SchemaExt } from 'schemata-ts/SchemaExt'
+import { make, Schema } from 'schemata-ts/Schema'
 
 /**
  * @since 1.3.0
@@ -17,7 +17,7 @@ import { make, SchemaExt } from 'schemata-ts/SchemaExt'
  */
 export type SetFromArrayS = <A>(
   ordA: Ord<A>,
-) => <O>(sA: SchemaExt<O, A>) => SchemaExt<Array<O>, ReadonlySet<A>>
+) => <O>(sA: Schema<O, A>) => Schema<Array<O>, ReadonlySet<A>>
 
 const getSetGuard = <A>(
   guard: G.Guard<unknown, A>,

@@ -9,7 +9,7 @@
  *
  * @since 1.0.0
  */
-import * as Arb from 'schemata-ts/base/ArbitraryBase'
+import * as Arb from 'schemata-ts/Arbitrary'
 import { WithFloat1 } from 'schemata-ts/schemables/WithFloat/definition'
 import { isFloat } from 'schemata-ts/schemables/WithFloat/utils'
 

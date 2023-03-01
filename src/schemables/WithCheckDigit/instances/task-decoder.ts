@@ -5,7 +5,7 @@
  */
 import { pipe } from 'fp-ts/function'
 import * as TE from 'fp-ts/TaskEither'
-import * as TD from 'schemata-ts/base/TaskDecoderBase'
+import * as TD from 'schemata-ts/TaskDecoder'
 import { Branded } from 'schemata-ts/brand'
 import {
   CheckDigitVerified,

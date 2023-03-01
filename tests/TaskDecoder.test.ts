@@ -1,4 +1,4 @@
-import { interpret, make } from '../src/SchemaExt'
+import { interpret, make } from '../src/Schema'
 import { Schemable } from '../src/TaskDecoder'
 
 describe('TaskDecoder', () => {

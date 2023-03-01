@@ -5,7 +5,7 @@
  * @since 1.2.0
  */
 import { constant, identity } from 'fp-ts/function'
-import * as D from 'schemata-ts/base/DecoderBase'
+import * as D from 'schemata-ts/Decoder'
 import { WithAnnotate2C } from 'schemata-ts/schemables/WithAnnotate/definition'
 
 /**

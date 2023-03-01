@@ -5,7 +5,7 @@
  */
 import { pipe } from 'fp-ts/function'
 import * as RA from 'fp-ts/ReadonlyArray'
-import * as Arb from 'schemata-ts/base/ArbitraryBase'
+import * as Arb from 'schemata-ts/Arbitrary'
 import { match, matchOn } from 'schemata-ts/internal/match'
 import * as PB from 'schemata-ts/PatternBuilder'
 import { WithPattern1 } from 'schemata-ts/schemables/WithPattern/definition'

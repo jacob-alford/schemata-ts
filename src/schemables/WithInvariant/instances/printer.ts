@@ -4,7 +4,7 @@
  * @since 1.1.0
  */
 import { flow } from 'fp-ts/function'
-import * as P from 'schemata-ts/base/PrinterBase'
+import * as P from 'schemata-ts/Printer'
 import { WithInvariant2 } from 'schemata-ts/schemables/WithInvariant/definition'
 
 /**

@@ -5,7 +5,7 @@
  * @since 1.2.0
  */
 import { constant, identity } from 'fp-ts/function'
-import * as G from 'schemata-ts/base/GuardBase'
+import * as G from 'schemata-ts/Guard'
 import { WithAnnotate1 } from 'schemata-ts/schemables/WithAnnotate/definition'
 
 /**

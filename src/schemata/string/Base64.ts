@@ -8,7 +8,7 @@
 import { pipe } from 'fp-ts/function'
 import { Branded } from 'schemata-ts/brand'
 import * as PB from 'schemata-ts/PatternBuilder'
-import { make, SchemaExt } from 'schemata-ts/SchemaExt'
+import { make, Schema } from 'schemata-ts/Schema'
 
 interface Base64Brand {
   readonly Base64: unique symbol
@@ -28,7 +28,7 @@ export type Base64 = Branded<string, Base64Brand>
  * @since 1.0.0
  * @category Model
  */
-export type Base64S = SchemaExt<string, Base64>
+export type Base64S = Schema<string, Base64>
 
 /** @internal */
 const base64Characters = pipe(PB.alnum, PB.and(PB.characterClass(false, '+', '/')))

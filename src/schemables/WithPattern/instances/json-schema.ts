@@ -4,7 +4,7 @@
  * @since 1.2.0
  */
 import { pipe } from 'fp-ts/function'
-import * as JS from 'schemata-ts/base/JsonSchemaBase'
+import * as JS from 'schemata-ts/JsonSchema'
 import * as PB from 'schemata-ts/PatternBuilder'
 import { WithPattern2 } from 'schemata-ts/schemables/WithPattern/definition'
 

@@ -10,7 +10,7 @@ import * as E from '../src/Encoder'
 import * as Eq from '../src/Eq'
 import * as G from '../src/Guard'
 import * as P from '../src/Printer'
-import { interpret, SchemaExt } from '../src/SchemaExt'
+import { interpret, Schema } from '../src/Schema'
 import * as TD from '../src/TaskDecoder'
 import * as T from '../src/Type'
 
@@ -64,7 +64,7 @@ export const zipN: ZipN = (...args: ReadonlyArray<ReadonlyArray<Any>>) => {
 }
 
 // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
-export const getAllInstances = <E, A>(schema: SchemaExt<E, A>) => ({
+export const getAllInstances = <E, A>(schema: Schema<E, A>) => ({
   Arbitrary: interpret(Arb.Schemable)(schema),
   Decoder: interpret(D.Schemable)(schema),
   Encoder: interpret(E.Schemable)(schema),

@@ -11,7 +11,7 @@
  */
 import { pipe } from 'fp-ts/function'
 import { Branded } from 'schemata-ts/brand'
-import { make, SchemaExt } from 'schemata-ts/SchemaExt'
+import { make, Schema } from 'schemata-ts/Schema'
 
 interface NonPositiveFloatBrand {
   readonly NonPositiveFloat: unique symbol
@@ -35,7 +35,7 @@ export type NonPositiveFloat = Branded<number, NonPositiveFloatBrand>
  * @since 1.0.0
  * @category Model
  */
-export type NonPositiveFloatS = SchemaExt<number, NonPositiveFloat>
+export type NonPositiveFloatS = Schema<number, NonPositiveFloat>
 
 /**
  * Non-positive floating point branded newtype.

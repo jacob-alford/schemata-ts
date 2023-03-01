@@ -5,7 +5,7 @@
  */
 import { pipe } from 'fp-ts/function'
 import * as RR from 'fp-ts/ReadonlyRecord'
-import { URI } from 'schemata-ts/base/SchemaBase'
+import { URI } from 'schemata-ts/Schema'
 import { WithStructM2 } from 'schemata-ts/schemables/WithStructM/definition'
 
 /**

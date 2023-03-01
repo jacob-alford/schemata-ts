@@ -5,7 +5,7 @@
  */
 import * as E from 'fp-ts/Either'
 import { pipe } from 'fp-ts/function'
-import * as D from 'schemata-ts/base/DecoderBase'
+import * as D from 'schemata-ts/Decoder'
 import { Branded } from 'schemata-ts/brand'
 import {
   CheckDigitVerified,

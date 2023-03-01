@@ -9,7 +9,7 @@
  *
  * @since 1.0.0
  */
-import * as Arb from 'schemata-ts/base/ArbitraryBase'
+import * as Arb from 'schemata-ts/Arbitrary'
 import { WithInt1 } from 'schemata-ts/schemables/WithInt/definition'
 import { isInt } from 'schemata-ts/schemables/WithInt/utils'
 

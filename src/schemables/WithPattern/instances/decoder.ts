@@ -3,7 +3,7 @@
  *
  * @since 1.0.0
  */
-import * as D from 'schemata-ts/base/DecoderBase'
+import * as D from 'schemata-ts/Decoder'
 import { WithPattern2C } from 'schemata-ts/schemables/WithPattern/definition'
 import { pattern } from 'schemata-ts/schemables/WithPattern/utils'
 

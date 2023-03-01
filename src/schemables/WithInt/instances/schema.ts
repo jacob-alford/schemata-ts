@@ -9,9 +9,9 @@
  *
  * @since 1.0.0
  */
-import { URI as SchemaURI } from 'schemata-ts/base/SchemaBase'
+import { URI as SchemaURI } from 'schemata-ts/Schema'
 import { WithInt2 } from 'schemata-ts/schemables/WithInt/definition'
-import * as SC from 'schemata-ts/SchemaExt'
+import * as SC from 'schemata-ts/Schema'
 
 /**
  * @since 1.0.0

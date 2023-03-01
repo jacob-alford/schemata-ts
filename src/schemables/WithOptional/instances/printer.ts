@@ -4,7 +4,7 @@
  * @since 1.1.0
  */
 import * as E from 'fp-ts/Either'
-import * as P from 'schemata-ts/base/PrinterBase'
+import * as P from 'schemata-ts/Printer'
 import * as PE from 'schemata-ts/PrintError'
 import { WithOptional2 } from 'schemata-ts/schemables/WithOptional/definition'
 

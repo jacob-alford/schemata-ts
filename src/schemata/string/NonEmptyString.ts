@@ -5,7 +5,7 @@
  */
 import { pipe } from 'fp-ts/function'
 import { Branded } from 'schemata-ts/brand'
-import { make, SchemaExt } from 'schemata-ts/SchemaExt'
+import { make, Schema } from 'schemata-ts/Schema'
 
 interface NonEmptyStringBrand {
   readonly NonEmptyString: unique symbol
@@ -23,7 +23,7 @@ export type NonEmptyString = Branded<string, NonEmptyStringBrand>
  * @since 1.0.0
  * @category Model
  */
-export type NonEmptyStringS = SchemaExt<string, NonEmptyString>
+export type NonEmptyStringS = Schema<string, NonEmptyString>
 
 /**
  * A string with length greater than one

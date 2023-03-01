@@ -11,7 +11,7 @@
  */
 import { pipe } from 'fp-ts/function'
 import { Branded } from 'schemata-ts/brand'
-import { make, SchemaExt } from 'schemata-ts/SchemaExt'
+import { make, Schema } from 'schemata-ts/Schema'
 
 interface NaturalBrand {
   readonly Natural: unique symbol
@@ -35,7 +35,7 @@ export type Natural = Branded<number, NaturalBrand>
  * @since 1.0.0
  * @category Model
  */
-export type NaturalS = SchemaExt<number, Natural>
+export type NaturalS = Schema<number, Natural>
 
 /**
  * Natural branded newtype.

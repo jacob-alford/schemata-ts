@@ -3,7 +3,7 @@
  *
  * @since 1.0.0
  */
-import * as Arb from 'schemata-ts/base/ArbitraryBase'
+import * as Arb from 'schemata-ts/Arbitrary'
 import { WithDate1 } from 'schemata-ts/schemables/WithDate/definition'
 import { isSafeDate } from 'schemata-ts/schemables/WithDate/utils'
 

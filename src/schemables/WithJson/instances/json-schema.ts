@@ -3,7 +3,7 @@
  *
  * @since 1.2.0
  */
-import * as JS from 'schemata-ts/base/JsonSchemaBase'
+import * as JS from 'schemata-ts/JsonSchema'
 import { WithJson2 } from 'schemata-ts/schemables/WithJson/definition'
 
 /**

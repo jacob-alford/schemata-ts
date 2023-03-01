@@ -10,4 +10,4 @@ export {
    * @category Instances
    */
   WithRefine as Decoder,
-} from 'schemata-ts/base/DecoderBase'
+} from 'schemata-ts/Decoder'

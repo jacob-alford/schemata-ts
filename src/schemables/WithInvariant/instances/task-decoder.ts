@@ -5,7 +5,7 @@
  */
 import { flow } from 'fp-ts/function'
 import * as TE from 'fp-ts/TaskEither'
-import * as TD from 'schemata-ts/base/TaskDecoderBase'
+import * as TD from 'schemata-ts/TaskDecoder'
 import { WithInvariant2C } from 'schemata-ts/schemables/WithInvariant/definition'
 
 /**

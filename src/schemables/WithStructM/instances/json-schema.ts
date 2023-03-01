@@ -10,7 +10,7 @@ import * as RA from 'fp-ts/ReadonlyArray'
 import * as RR from 'fp-ts/ReadonlyRecord'
 import * as Sg from 'fp-ts/Semigroup'
 import * as Str from 'fp-ts/string'
-import * as JS from 'schemata-ts/base/JsonSchemaBase'
+import * as JS from 'schemata-ts/JsonSchema'
 import { WithStructM2 } from 'schemata-ts/schemables/WithStructM/definition'
 import { isRequiredFlag } from 'schemata-ts/struct'
 
