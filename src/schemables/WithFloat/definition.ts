@@ -10,7 +10,7 @@
  * @since 1.0.0
  */
 import { Branded } from 'schemata-ts/brand'
-import { Kind, TypeLambda } from 'schemata-ts/HKT'
+import { SchemableKind, SchemableLambda } from 'schemata-ts/HKT'
 
 interface FloatBrand {
   readonly Float: unique symbol
@@ -43,7 +43,7 @@ export type FloatParams = {
  * @since 1.0.0
  * @category Model
  */
-export interface WithFloat<S extends TypeLambda> {
+export interface WithFloat<S extends SchemableLambda> {
   /**
    * Floating point branded newtype. Parameters: min, max are inclusive.
    *
@@ -55,5 +55,5 @@ export interface WithFloat<S extends TypeLambda> {
    *
    * @since 1.0.0
    */
-  float: (params?: FloatParams) => Kind<S, number, Float>
+  float: (params?: FloatParams) => SchemableKind<S, number, Float>
 }

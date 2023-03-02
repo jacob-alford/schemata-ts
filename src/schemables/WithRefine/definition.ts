@@ -4,15 +4,15 @@
  * @since 1.0.0
  */
 import { Refinement } from 'fp-ts/Refinement'
-import { Kind, TypeLambda } from 'schemata-ts/HKT'
+import { SchemableKind, SchemableLambda } from 'schemata-ts/HKT'
 
 /**
  * @since 1.0.0
  * @category Model
  */
-export interface WithRefine<S extends TypeLambda> {
+export interface WithRefine<S extends SchemableLambda> {
   readonly refine: <A, B extends A>(
     refinement: Refinement<A, B>,
     id: string,
-  ) => <O>(from: Kind<S, O, A>) => Kind<S, O, B>
+  ) => <O>(from: SchemableKind<S, O, A>) => SchemableKind<S, O, B>
 }

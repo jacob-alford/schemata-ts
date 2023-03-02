@@ -3,17 +3,17 @@
  *
  * @since 1.3.0
  */
-import { Kind, TypeLambda } from 'schemata-ts/HKT'
+import { SchemableKind, SchemableLambda } from 'schemata-ts/HKT'
 
 /**
  * @since 1.3.0
  * @category Model
  */
-export interface WithUnknown<S extends TypeLambda> {
+export interface WithUnknown<S extends SchemableLambda> {
   /**
    * Represents an unknown value
    *
    * @since 1.3.0
    */
-  unknown: Kind<S, unknown, unknown>
+  unknown: SchemableKind<S, unknown, unknown>
 }

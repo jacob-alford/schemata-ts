@@ -5,7 +5,7 @@
  *
  * @since 1.0.0
  */
-import { TypeLambda } from 'schemata-ts/HKT'
+import { SchemableLambda } from 'schemata-ts/HKT'
 import { WithAnnotate } from 'schemata-ts/schemables/WithAnnotate/definition'
 import { WithCheckDigit } from 'schemata-ts/schemables/WithCheckDigit/definition'
 import { WithDate } from 'schemata-ts/schemables/WithDate/definition'
@@ -26,7 +26,7 @@ import { WithUnknown } from 'schemata-ts/schemables/WithUnknown/definition'
  * @since 2.0.0
  * @category Instances
  */
-export interface Schemable<S extends TypeLambda>
+export interface Schemable<S extends SchemableLambda>
   extends WithAnnotate<S>,
     WithCheckDigit<S>,
     WithDate<S>,

@@ -3,7 +3,7 @@
  *
  * @since 1.3.0
  */
-import { Kind, TypeLambda } from 'schemata-ts/HKT'
+import { SchemableKind, SchemableLambda } from 'schemata-ts/HKT'
 import { Combine } from 'schemata-ts/internal/type-utils'
 import * as _ from 'schemata-ts/schemables/WithStructM/type-utils'
 import { KeyFlag, KeyNotMapped, Prop } from 'schemata-ts/struct'
@@ -55,17 +55,17 @@ interface StrippedStruct {
  * @since 1.3.0
  * @category Model
  */
-export interface WithStructM<S extends TypeLambda> {
+export interface WithStructM<S extends SchemableLambda> {
   readonly structM: <
     Props extends Record<
       string,
-      Prop<KeyFlag, S, Kind<S, unknown, unknown>, string | KeyNotMapped>
+      Prop<KeyFlag, S, SchemableKind<S, unknown, unknown>, string | KeyNotMapped>
     >,
-    RestKind extends Kind<S, any, any> | undefined,
+    RestKind extends SchemableKind<S, any, any> | undefined,
   >(
     properties: Props,
     params?: StructOptions<RestKind>,
-  ) => Kind<
+  ) => SchemableKind<
     S,
     Combine<
       _.RestInputHKT2<S, RestKind> & {

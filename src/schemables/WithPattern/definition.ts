@@ -3,14 +3,14 @@
  *
  * @since 1.0.0
  */
-import { Kind, TypeLambda } from 'schemata-ts/HKT'
+import { SchemableKind, SchemableLambda } from 'schemata-ts/HKT'
 import { Pattern } from 'schemata-ts/PatternBuilder'
 
 /**
  * @since 1.0.0
  * @category Model
  */
-export interface WithPattern<S extends TypeLambda> {
+export interface WithPattern<S extends SchemableLambda> {
   /**
    * Schemable construction based on Regex combinators
    *
@@ -20,5 +20,5 @@ export interface WithPattern<S extends TypeLambda> {
     pattern: Pattern,
     description: string,
     caseInsensitive?: boolean,
-  ) => Kind<S, string, string>
+  ) => SchemableKind<S, string, string>
 }

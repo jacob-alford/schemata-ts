@@ -5,21 +5,21 @@
  */
 import * as J from 'fp-ts/Json'
 import { JsonString, SafeJson } from 'schemata-ts/Printer'
-import { Kind, TypeLambda } from 'schemata-ts/HKT'
+import { SchemableKind, SchemableLambda } from 'schemata-ts/HKT'
 
 /**
  * @since 1.1.0
  * @category Model
  */
-export interface WithJson<S extends TypeLambda> {
+export interface WithJson<S extends SchemableLambda> {
   /**
    * @since 1.1.0
    * @category Model
    */
-  readonly json: Kind<S, J.Json, SafeJson>
+  readonly json: SchemableKind<S, J.Json, SafeJson>
   /**
    * @since 1.1.0
    * @category Model
    */
-  readonly jsonString: Kind<S, string, JsonString>
+  readonly jsonString: SchemableKind<S, string, JsonString>
 }

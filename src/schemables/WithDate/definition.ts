@@ -3,19 +3,19 @@
  *
  * @since 1.0.0
  */
-import { Kind, TypeLambda } from 'schemata-ts/HKT'
+import { SchemableKind, SchemableLambda } from 'schemata-ts/HKT'
 
 /**
  * @since 1.0.0
  * @category Model
  */
-export interface WithDate<S extends TypeLambda> {
+export interface WithDate<S extends SchemableLambda> {
   /**
    * Represents valid Date objects
    *
    * @since 1.0.0
    */
-  date: Kind<S, Date, Date>
+  date: SchemableKind<S, Date, Date>
 
   /**
    * Represents valid date-strings that can be parsed by `Date.parse` and converted into
@@ -23,5 +23,5 @@ export interface WithDate<S extends TypeLambda> {
    *
    * @since 1.0.0
    */
-  dateFromString: Kind<S, string, Date>
+  dateFromString: SchemableKind<S, string, Date>
 }

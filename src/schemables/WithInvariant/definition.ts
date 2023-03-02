@@ -4,13 +4,13 @@
  * @since 1.0.0
  */
 import * as G from 'schemata-ts/Guard'
-import { Kind, TypeLambda } from 'schemata-ts/HKT'
+import { SchemableKind, SchemableLambda } from 'schemata-ts/HKT'
 
 /**
  * @since 1.0.0
  * @category Model
  */
-export interface WithInvariant<S extends TypeLambda> {
+export interface WithInvariant<S extends SchemableLambda> {
   /**
    * Invariant mapping for schemable
    *
@@ -19,5 +19,8 @@ export interface WithInvariant<S extends TypeLambda> {
   readonly imap: <B>(
     guardB: G.Guard<unknown, B>,
     name: string,
-  ) => <A>(f: (a: A) => B, g: (b: B) => A) => <O>(target: Kind<S, O, A>) => Kind<S, O, B>
+  ) => <A>(
+    f: (a: A) => B,
+    g: (b: B) => A,
+  ) => <O>(target: SchemableKind<S, O, A>) => SchemableKind<S, O, B>
 }

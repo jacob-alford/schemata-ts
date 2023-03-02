@@ -4,7 +4,7 @@
  * @since 1.0.0
  */
 import { Branded } from 'schemata-ts/brand'
-import { Kind, TypeLambda } from 'schemata-ts/HKT'
+import { SchemableKind, SchemableLambda } from 'schemata-ts/HKT'
 
 /** @since 1.0.0 */
 export interface CheckDigitVerified {
@@ -15,9 +15,11 @@ export interface CheckDigitVerified {
  * @since 1.0.0
  * @category Model
  */
-export interface WithCheckDigit<S extends TypeLambda> {
+export interface WithCheckDigit<S extends SchemableLambda> {
   readonly checkDigit: (
     algorithm: (s: string) => string,
     location: number | ((s: string) => number),
-  ) => <O>(target: Kind<S, O, string>) => Kind<S, O, Branded<string, CheckDigitVerified>>
+  ) => <O>(
+    target: SchemableKind<S, O, string>,
+  ) => SchemableKind<S, O, Branded<string, CheckDigitVerified>>
 }

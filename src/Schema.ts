@@ -74,7 +74,7 @@
  *
  *   assert.equal(invalidInput._tag, 'Left')
  */
-import { Kind, TypeLambda } from 'schemata-ts/HKT'
+import { SchemableKind, SchemableLambda } from 'schemata-ts/HKT'
 import { Schemable } from 'schemata-ts/Schemable'
 
 /**
@@ -82,7 +82,7 @@ import { Schemable } from 'schemata-ts/Schemable'
  * @category Model
  */
 export interface Schema<E, A> {
-  <S extends TypeLambda>(S: Schemable<S>): Kind<S, E, A>
+  <S extends SchemableLambda>(S: Schemable<S>): SchemableKind<S, E, A>
 }
 
 const memoize = <A, B>(f: (a: A) => B): ((a: A) => B) => {
@@ -154,6 +154,6 @@ export type InputOf<S> = S extends Schema<infer I, unknown> ? I : never
  * @since 1.0.0
  * @category Destructors
  */
-export const interpret: <S extends TypeLambda>(
+export const interpret: <S extends SchemableLambda>(
   S: Schemable<S>,
-) => <E, A>(schema: Schema<E, A>) => Kind<S, E, A> = S => schema => schema(S)
+) => <E, A>(schema: Schema<E, A>) => SchemableKind<S, E, A> = S => schema => schema(S)

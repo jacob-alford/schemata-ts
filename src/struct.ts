@@ -4,7 +4,7 @@
  * @since 1.3.0
  */
 import { identity } from 'fp-ts/function'
-import { Kind, TypeLambda } from 'schemata-ts/HKT'
+import { SchemableKind, SchemableLambda } from 'schemata-ts/HKT'
 import { camelCase } from 'schemata-ts/internal/camelcase'
 import type { CamelCase } from 'type-fest'
 
@@ -43,8 +43,8 @@ export type KeyFlag = OptionalKeyFlag | RequiredKeyFlag
  */
 export interface Prop<
   Flag extends KeyFlag,
-  S extends TypeLambda,
-  Val extends Kind<S, any, any>,
+  S extends SchemableLambda,
+  Val extends SchemableKind<S, any, any>,
   K extends string | KeyNotMapped,
 > {
   readonly _flag: Flag
@@ -58,7 +58,10 @@ export interface Prop<
  * @since 1.3.0
  * @category Constructors
  */
-export const required: <S extends TypeLambda, Val extends Kind<S, any, any>>(
+export const required: <
+  S extends SchemableLambda,
+  Val extends SchemableKind<S, any, any>,
+>(
   val: Val,
 ) => Prop<RequiredKeyFlag, S, Val, KeyNotMapped> = val => ({
   _flag: RequiredKeyFlag,
@@ -79,7 +82,10 @@ export const isRequiredFlag = (flag: KeyFlag): flag is RequiredKeyFlag =>
  * @since 1.3.0
  * @category Constructors
  */
-export const optional: <S extends TypeLambda, Val extends Kind<S, any, any>>(
+export const optional: <
+  S extends SchemableLambda,
+  Val extends SchemableKind<S, any, any>,
+>(
   val: Val,
 ) => Prop<OptionalKeyFlag, S, Val, KeyNotMapped> = val => ({
   _flag: OptionalKeyFlag,
@@ -128,7 +134,11 @@ export const isOptionalFlag = (flag: KeyFlag): flag is OptionalKeyFlag =>
  */
 export const mapKeyTo: <K extends string>(
   mapTo: K,
-) => <Flag extends KeyFlag, S extends TypeLambda, Val extends Kind<S, any, any>>(
+) => <
+  Flag extends KeyFlag,
+  S extends SchemableLambda,
+  Val extends SchemableKind<S, any, any>,
+>(
   prop: Prop<Flag, S, Val, KeyNotMapped>,
 ) => Prop<Flag, S, Val, K> = mapTo => prop => ({
   ...prop,
@@ -178,10 +188,10 @@ export type ApplyKeyRemap<R extends KeyRemapLambda, Val extends string> = R exte
 type MapKeysWith = <R extends KeyRemapLambda>(
   mapping: <S extends string>(s: S) => ApplyKeyRemap<KeyRemapLambda, S>,
 ) => <
-  S extends TypeLambda,
+  S extends SchemableLambda,
   Props extends Record<
     string,
-    Prop<KeyFlag, S, Kind<S, any, any>, string | KeyNotMapped>
+    Prop<KeyFlag, S, SchemableKind<S, any, any>, string | KeyNotMapped>
   >,
 >(
   props: Props,
@@ -324,10 +334,10 @@ export const camelCaseKeys = mapKeysWith<CamelCaseLambda>(camelCase)
  *   fc.assert(fc.property(arbitrary, guard.is))
  */
 export const defineStruct: <
-  S extends TypeLambda,
+  S extends SchemableLambda,
   Props extends Record<
     string,
-    Prop<KeyFlag, S, Kind<S, any, any>, string | KeyNotMapped>
+    Prop<KeyFlag, S, SchemableKind<S, any, any>, string | KeyNotMapped>
   >,
 >(
   props: Props,
@@ -367,8 +377,8 @@ export const defineStruct: <
  *   )
  */
 export const struct: <
-  S extends TypeLambda,
-  Props extends Record<string, Kind<S, any, any>>,
+  S extends SchemableLambda,
+  Props extends Record<string, SchemableKind<S, any, any>>,
 >(
   props: Props,
 ) => {
@@ -376,7 +386,7 @@ export const struct: <
 } = props => {
   const remappedProps: Record<
     string,
-    Prop<RequiredKeyFlag, any, Kind<any, any, any>, KeyNotMapped>
+    Prop<RequiredKeyFlag, any, SchemableKind<any, any, any>, KeyNotMapped>
   > = {}
   for (const key in props) {
     // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
@@ -387,10 +397,10 @@ export const struct: <
 }
 
 type Partial = <
-  S extends TypeLambda,
+  S extends SchemableLambda,
   Props extends Record<
     string,
-    Prop<KeyFlag, S, Kind<S, unknown, unknown>, string | KeyNotMapped>
+    Prop<KeyFlag, S, SchemableKind<S, unknown, unknown>, string | KeyNotMapped>
   >,
 >(
   props: Props,
@@ -409,7 +419,7 @@ type Partial = <
 export const partial: Partial = props => {
   const result: Record<
     string,
-    Prop<KeyFlag, any, Kind<any, unknown, unknown>, string | KeyNotMapped>
+    Prop<KeyFlag, any, SchemableKind<any, unknown, unknown>, string | KeyNotMapped>
   > = {}
   for (const key in props) {
     // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
@@ -420,10 +430,10 @@ export const partial: Partial = props => {
 }
 
 type Complete = <
-  S extends TypeLambda,
+  S extends SchemableLambda,
   Props extends Record<
     string,
-    Prop<KeyFlag, S, Kind<S, unknown, unknown>, string | KeyNotMapped>
+    Prop<KeyFlag, S, SchemableKind<S, unknown, unknown>, string | KeyNotMapped>
   >,
 >(
   props: Props,
@@ -442,7 +452,7 @@ type Complete = <
 export const complete: Complete = props => {
   const result: Record<
     string,
-    Prop<KeyFlag, any, Kind<any, unknown, unknown>, string | KeyNotMapped>
+    Prop<KeyFlag, any, SchemableKind<any, unknown, unknown>, string | KeyNotMapped>
   > = {}
   for (const key in props) {
     // eslint-disable-next-line @typescript-eslint/no-non-null-assertion

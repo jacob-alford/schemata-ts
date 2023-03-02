@@ -10,7 +10,7 @@
  * @since 1.0.0
  */
 import { Branded } from 'schemata-ts/brand'
-import { Kind, TypeLambda } from 'schemata-ts/HKT'
+import { SchemableKind, SchemableLambda } from 'schemata-ts/HKT'
 
 interface IntBrand {
   readonly Int: unique symbol
@@ -43,7 +43,7 @@ export type IntParams = {
  * @since 1.0.0
  * @category Model
  */
-export interface WithInt<S extends TypeLambda> {
+export interface WithInt<S extends SchemableLambda> {
   /**
    * Integer branded newtype. Parameters: min, max are inclusive.
    *
@@ -56,5 +56,5 @@ export interface WithInt<S extends TypeLambda> {
    * @since 1.0.0
    * @category Model
    */
-  int: (params?: IntParams) => Kind<S, number, Int>
+  int: (params?: IntParams) => SchemableKind<S, number, Int>
 }

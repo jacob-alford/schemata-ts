@@ -4,13 +4,13 @@
  * @since 1.0.0
  */
 import * as Ord from 'fp-ts/Ord'
-import { Kind, TypeLambda } from 'schemata-ts/HKT'
+import { SchemableKind, SchemableLambda } from 'schemata-ts/HKT'
 
 /**
  * @since 1.0.0
  * @category Model
  */
-export interface WithMap<S extends TypeLambda> {
+export interface WithMap<S extends SchemableLambda> {
   /**
    * Represents a ReadonlyMap converted from an expected array of entries.
    *
@@ -19,7 +19,7 @@ export interface WithMap<S extends TypeLambda> {
    */
   readonly mapFromEntries: <EK, EA, K extends EK, A extends EA>(
     ordEK: Ord.Ord<K>,
-    sk: Kind<S, EK, K>,
-    sa: Kind<S, EA, A>,
-  ) => Kind<S, ReadonlyArray<readonly [K, A]>, ReadonlyMap<K, A>>
+    sk: SchemableKind<S, EK, K>,
+    sa: SchemableKind<S, EA, A>,
+  ) => SchemableKind<S, ReadonlyArray<readonly [K, A]>, ReadonlyMap<K, A>>
 }

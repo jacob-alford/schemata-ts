@@ -3,7 +3,7 @@
  *
  * @since 1.0.0
  */
-import { Kind, TypeLambda } from 'schemata-ts/HKT'
+import { SchemableKind, SchemableLambda } from 'schemata-ts/HKT'
 
 /**
  * @since 1.0.0
@@ -20,7 +20,7 @@ export type PaddingLength =
  * @since 1.0.0
  * @category Model
  */
-export interface WithPadding<S extends TypeLambda> {
+export interface WithPadding<S extends SchemableLambda> {
   /**
    * Adds a character to the left of a string until it reaches a certain length.
    *
@@ -29,7 +29,7 @@ export interface WithPadding<S extends TypeLambda> {
   readonly padLeft: (
     length: PaddingLength,
     char: string,
-  ) => (sa: Kind<S, string, string>) => Kind<S, string, string>
+  ) => (sa: SchemableKind<S, string, string>) => SchemableKind<S, string, string>
 
   /**
    * Adds a character to the right of a string until it reaches a certain length.
@@ -39,5 +39,5 @@ export interface WithPadding<S extends TypeLambda> {
   readonly padRight: (
     length: PaddingLength,
     char: string,
-  ) => (sa: Kind<S, string, string>) => Kind<S, string, string>
+  ) => (sa: SchemableKind<S, string, string>) => SchemableKind<S, string, string>
 }
