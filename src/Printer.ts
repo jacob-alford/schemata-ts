@@ -9,10 +9,10 @@ import * as O from 'fp-ts/Option'
 import * as RA from 'fp-ts/ReadonlyArray'
 import * as RR from 'fp-ts/ReadonlyRecord'
 import * as S from 'io-ts/Schemable'
-import { Schemable2 } from 'schemata-ts/Schemable'
 import { Branded } from 'schemata-ts/brand'
 import { typeOf, witherS } from 'schemata-ts/internal/util'
 import * as PE from 'schemata-ts/PrintError'
+import { Schemable2 } from 'schemata-ts/Schemable'
 import { WithRefine2 } from 'schemata-ts/schemables/WithRefine/definition'
 
 interface JsonStringBrand {

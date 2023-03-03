@@ -5,9 +5,9 @@ import { getEncoder } from 'schemata-ts/Encoder'
 import * as Enc from '../../src/base/EncoderBase'
 import * as SC from '../../src/base/SchemaBase'
 import * as D from '../../src/Decoder'
+import { interpret } from '../../src/Schema'
 import { Encoder } from '../../src/schemables/WithRefine/instances/encoder'
 import { Schema } from '../../src/schemables/WithRefine/instances/schema'
-import { interpret } from '../../src/Schema'
 import * as S from '../../src/schemata'
 
 describe('WithRefine', () => {

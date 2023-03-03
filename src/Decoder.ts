@@ -5,12 +5,13 @@
  */
 import { Alt1 } from 'fp-ts/Alt'
 import * as E from 'fp-ts/Either'
-import { flow, pipe } from 'fp-ts/function'
 import { Functor1 } from 'fp-ts/Functor'
 import { Invariant1 } from 'fp-ts/Invariant'
+import { NaturalTransformation11 } from 'fp-ts/lib/NaturalTransformation'
 import { ReadonlyNonEmptyArray } from 'fp-ts/ReadonlyNonEmptyArray'
-import { DecodeError } from 'schemata-ts/DecodeError'
-import { Guard } from 'schemata-ts/Guard'
+import * as DE from 'schemata-ts/DecodeError'
+import * as DT from 'schemata-ts/DecoderT'
+import * as G from 'schemata-ts/Guard'
 import * as hkt from 'schemata-ts/HKT'
 
 // ------------------
@@ -22,7 +23,7 @@ import * as hkt from 'schemata-ts/HKT'
  * @category Model
  */
 export interface Decoder<A> {
-  readonly decode: (u: unknown) => E.Either<ReadonlyNonEmptyArray<DecodeError>, A>
+  readonly decode: (u: unknown) => E.Either<ReadonlyNonEmptyArray<DE.DecodeError>, A>
 }
 
 // ------------------
@@ -30,15 +31,78 @@ export interface Decoder<A> {
 // ------------------
 
 /**
- * Constructs a decoder from a guard
+ * @since 2.0.0
+ * @category Constructors
+ */
+export const success = DT.success(E.Pointed)
+
+/**
+ * A failure case for a value that does not match the expected type
  *
  * @since 2.0.0
  * @category Constructors
  */
-export const fromGuard: <A>(
-  guard: Guard<A>,
-  onError: (u: unknown) => ReadonlyNonEmptyArray<DecodeError>,
-) => Decoder<A> = (guard, onError) => ({
+export const typeMismatch = DT.typeMismatch(E.MonadThrow)
+
+/**
+ * A failure case for an unexpected value
+ *
+ * @since 2.0.0
+ * @category Constructors
+ */
+export const unexpectedValue = DT.unexpectedValue(E.MonadThrow)
+
+/**
+ * A failure case at a specific index
+ *
+ * @since 2.0.0
+ * @category Constructors
+ */
+export const errorAtIndex = DT.errorAtIndex(E.MonadThrow)
+
+/**
+ * A failure case at a specific key
+ *
+ * @since 2.0.0
+ * @category Constructors
+ */
+export const errorAtKey = DT.errorAtKey(E.MonadThrow)
+
+/**
+ * A failure case for a union member
+ *
+ * @since 2.0.0
+ * @category Constructors
+ */
+export const errorAtUnionMember = DT.errorAtUnionMember(E.MonadThrow)
+
+// ------------------
+// combinators
+// ------------------
+
+export {
+  /**
+   * Interprets a schema as a decoder
+   *
+   * @since 2.0.0
+   * @category Interpreters
+   */
+  getDecoder,
+} from 'schemata-ts/derivations/DecoderSchemable'
+
+// ------------------
+// natural transformations
+// ------------------
+
+/**
+ * Constructs a decoder from a guard
+ *
+ * @since 2.0.0
+ * @category Natural Transformations
+ */
+export const fromGuard: (
+  onError: (u: unknown) => ReadonlyNonEmptyArray<DE.DecodeError>,
+) => NaturalTransformation11<G.URI, URI> = onError => guard => ({
   decode: E.fromPredicate(guard.is, onError),
 })
 
@@ -81,16 +145,8 @@ export interface SchemableLambda extends hkt.SchemableLambda {
 }
 
 // non-pipeables
-const map_: Functor1<URI>['map'] = (fa, f) => ({
-  decode: flow(fa.decode, E.map(f)),
-})
-const alt_: Alt1<URI>['alt'] = (fa, that) => ({
-  decode: u =>
-    pipe(
-      fa.decode(u),
-      E.alt(() => that().decode(u)),
-    ),
-})
+const map_: Functor1<URI>['map'] = DT.map(E.Functor)
+const alt_: Alt1<URI>['alt'] = DT.alt(E.Alt)
 
 /**
  * @since 2.0.0

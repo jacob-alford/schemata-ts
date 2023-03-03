@@ -28,8 +28,7 @@ import * as WithUnknown from 'schemata-ts/schemables/WithUnknown/instances/decod
  * @since 2.0.0
  * @category Instances
  */
-const DecoderSchemable: Schemable<D.TypeLambda> = {
-  ...D.Schemable,
+const DecoderSchemable: Schemable<D.SchemableLambda> = {
   ...WithAnnotate.Decoder,
   ...WithCheckDigit.Decoder,
   ...WithDate.Decoder,

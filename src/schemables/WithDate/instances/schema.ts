@@ -4,8 +4,8 @@
  * @since 1.0.0
  */
 import { URI as SchemaURI } from 'schemata-ts/Schema'
-import { WithDate2 } from 'schemata-ts/schemables/WithDate/definition'
 import * as SC from 'schemata-ts/Schema'
+import { WithDate2 } from 'schemata-ts/schemables/WithDate/definition'
 
 /**
  * @since 1.0.0

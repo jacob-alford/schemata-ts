@@ -4,8 +4,8 @@
  * @since 1.1.0
  */
 import * as E from 'fp-ts/Either'
-import * as P from 'schemata-ts/Printer'
 import * as PB from 'schemata-ts/PatternBuilder'
+import * as P from 'schemata-ts/Printer'
 import * as PE from 'schemata-ts/PrintError'
 import { WithPattern2 } from 'schemata-ts/schemables/WithPattern/definition'
 

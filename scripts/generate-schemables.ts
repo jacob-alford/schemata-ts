@@ -35,7 +35,7 @@ export const makeSchemableTypeclass: (
       _.createTypeParameterDeclaration(
         undefined,
         _.createIdentifier('S'),
-        _.createTypeReferenceNode(_.createIdentifier('TypeLambda')),
+        _.createTypeReferenceNode(_.createIdentifier('SchemableLambda')),
         undefined,
       ),
     ],
@@ -70,7 +70,7 @@ const makeSchemableContents: (
   return pipe(
     [
       schemableHeaderComment,
-      makeDestructureImport(['TypeLambda'], 'schemata-ts/HKT'),
+      makeDestructureImport(['SchemableLambda'], 'schemata-ts/HKT'),
       ...pipe(
         schemables,
         RA.map(([schemable, path]) =>
@@ -139,19 +139,13 @@ const makeSchemableInstance: (
             _.createTypeReferenceNode(
               _.createQualifiedName(
                 _.createIdentifier(accessor),
-                _.createIdentifier('TypeLambda'),
+                _.createIdentifier('SchemableLambda'),
               ),
               undefined,
             ),
           ]),
           _.createObjectLiteralExpression(
             [
-              _.createSpreadAssignment(
-                _.createPropertyAccessExpression(
-                  _.createIdentifier(accessor),
-                  _.createIdentifier('Schemable'),
-                ),
-              ),
               ...pipe(
                 schemables,
                 RA.map(([schemable]) =>

@@ -5,9 +5,9 @@ import { Brand } from 'schemata-ts/brand'
 import * as P from '../../src/base/PrinterBase'
 import * as SC from '../../src/base/SchemaBase'
 import * as D from '../../src/Decoder'
+import { interpret } from '../../src/Schema'
 import { Printer } from '../../src/schemables/WithBrand/instances/printer'
 import * as B from '../../src/schemables/WithBrand/instances/schema'
-import { interpret } from '../../src/Schema'
 
 describe('WithBrand', () => {
   test('Brand', () => {

@@ -5,8 +5,8 @@
  */
 import * as E from 'fp-ts/Either'
 import { flow } from 'fp-ts/function'
-import { JsonString, safeStringify } from 'schemata-ts/Printer'
 import { getEncoder } from 'schemata-ts/Encoder'
+import { JsonString, safeStringify } from 'schemata-ts/Printer'
 import { getPrinter } from 'schemata-ts/Printer'
 import { PrintError } from 'schemata-ts/PrintError'
 import { Schema } from 'schemata-ts/Schema'

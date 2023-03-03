@@ -14,9 +14,9 @@
  */
 import { pipe } from 'fp-ts/function'
 import * as PB from 'schemata-ts/PatternBuilder'
+import { make, Schema } from 'schemata-ts/Schema'
 import * as Float from 'schemata-ts/schemables/WithFloat/definition'
 import { Guard } from 'schemata-ts/schemables/WithFloat/instances/guard'
-import { make, Schema } from 'schemata-ts/Schema'
 
 /**
  * @since 1.0.0

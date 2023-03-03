@@ -28,8 +28,7 @@ import * as WithUnknown from 'schemata-ts/schemables/WithUnknown/instances/guard
  * @since 2.0.0
  * @category Instances
  */
-const GuardSchemable: Schemable<G.TypeLambda> = {
-  ...G.Schemable,
+const GuardSchemable: Schemable<G.SchemableLambda> = {
   ...WithAnnotate.Guard,
   ...WithCheckDigit.Guard,
   ...WithDate.Guard,

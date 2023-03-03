@@ -8,6 +8,7 @@ import { identity, pipe } from 'fp-ts/function'
 import * as RA from 'fp-ts/ReadonlyArray'
 import * as RR from 'fp-ts/ReadonlyRecord'
 import * as S from 'io-ts/Schemable'
+import * as hkt from 'schemata-ts/HKT'
 import { forIn, typeOf } from 'schemata-ts/internal/util'
 
 /**
@@ -285,6 +286,22 @@ declare module 'fp-ts/lib/HKT' {
   interface URItoKind<A> {
     readonly Arbitrary: Arbitrary<A>
   }
+}
+
+/**
+ * @since 2.0.0
+ * @category Type Lambdas
+ */
+export interface TypeLambda extends hkt.TypeLambda {
+  readonly type: Arbitrary<this['Target']>
+}
+
+/**
+ * @since 2.0.0
+ * @category Type Lambdas
+ */
+export interface SchemableLambda extends hkt.SchemableLambda {
+  readonly type: Arbitrary<this['Output']>
 }
 
 /**

@@ -28,8 +28,7 @@ import * as WithUnknown from 'schemata-ts/schemables/WithUnknown/instances/print
  * @since 2.0.0
  * @category Instances
  */
-const PrinterSchemable: Schemable<P.TypeLambda> = {
-  ...P.Schemable,
+const PrinterSchemable: Schemable<P.SchemableLambda> = {
   ...WithAnnotate.Printer,
   ...WithCheckDigit.Printer,
   ...WithDate.Printer,

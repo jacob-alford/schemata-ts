@@ -5,8 +5,8 @@
  */
 import { pipe } from 'fp-ts/function'
 import * as P from 'schemata-ts/Printer'
-import * as Json from 'schemata-ts/schemables/WithJson/instances/guard'
 import { make, Schema } from 'schemata-ts/Schema'
+import * as Json from 'schemata-ts/schemables/WithJson/instances/guard'
 
 /**
  * @since 1.1.0

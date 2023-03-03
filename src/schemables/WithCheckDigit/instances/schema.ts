@@ -4,8 +4,8 @@
  * @since 1.0.0
  */
 import { Branded } from 'schemata-ts/brand'
-import { CheckDigitVerified } from 'schemata-ts/schemables/WithCheckDigit/definition'
 import * as SC from 'schemata-ts/Schema'
+import { CheckDigitVerified } from 'schemata-ts/schemables/WithCheckDigit/definition'
 
 /**
  * @since 1.0.0

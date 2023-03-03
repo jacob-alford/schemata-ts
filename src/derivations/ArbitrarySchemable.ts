@@ -28,8 +28,7 @@ import * as WithUnknown from 'schemata-ts/schemables/WithUnknown/instances/arbit
  * @since 2.0.0
  * @category Instances
  */
-const ArbitrarySchemable: Schemable<Arb.TypeLambda> = {
-  ...Arb.Schemable,
+const ArbitrarySchemable: Schemable<Arb.SchemableLambda> = {
   ...WithAnnotate.Arbitrary,
   ...WithCheckDigit.Arbitrary,
   ...WithDate.Arbitrary,

@@ -20,8 +20,8 @@
 import { pipe } from 'fp-ts/function'
 import { matchW } from 'schemata-ts/internal/match'
 import * as PB from 'schemata-ts/PatternBuilder'
-import { Guard } from 'schemata-ts/schemables/WithDate/instances/guard'
 import { make, Schema } from 'schemata-ts/Schema'
+import { Guard } from 'schemata-ts/schemables/WithDate/instances/guard'
 
 /**
  * E.g. `2022`

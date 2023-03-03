@@ -2,7 +2,7 @@ import * as E from 'fp-ts/Either'
 
 import * as SC from '../src/base/SchemaBase'
 import * as D from '../src/Decoder'
-import { interpret, Schema } from '../src/Schema'
+import { interpret } from '../src/Schema'
 
 describe('SchemaBase', () => {
   test('Literal', () => {

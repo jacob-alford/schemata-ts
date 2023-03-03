@@ -4,8 +4,8 @@
  * @since 1.0.0
  */
 import { URI as SchemaURI } from 'schemata-ts/Schema'
-import { WithRefine2 } from 'schemata-ts/schemables/WithRefine/definition'
 import * as SC from 'schemata-ts/Schema'
+import { WithRefine2 } from 'schemata-ts/schemables/WithRefine/definition'
 
 /**
  * @since 1.0.0

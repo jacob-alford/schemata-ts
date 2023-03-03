@@ -1,12 +1,20 @@
 /**
- * An instance of `Schemable` for io-ts/Encoder
+ * Represents a typeclass and data type for encoding values that are the transformed
+ * output of decoder to its expected input
  *
- * @since 1.0.0
+ * @since 2.0.0
  */
-import * as Enc from 'io-ts/Encoder'
-import { Schemable2 } from 'schemata-ts/Schemable'
 
-export * from 'io-ts/Encoder'
+/**
+ * Represents a typeclass and data type for encoding values that are the transformed
+ * output of decoder to its expected input
+ *
+ * @since 2.0.0
+ * @category Model
+ */
+export interface Encoder<I, O> {
+  readonly encode: (a: I) => O
+}
 
 /**
  * An instance of `Schemable` for io-ts/Encoder

@@ -28,8 +28,7 @@ import * as WithUnknown from 'schemata-ts/schemables/WithUnknown/instances/encod
  * @since 2.0.0
  * @category Instances
  */
-const EncoderSchemable: Schemable<Enc.TypeLambda> = {
-  ...Enc.Schemable,
+const EncoderSchemable: Schemable<Enc.SchemableLambda> = {
   ...WithAnnotate.Encoder,
   ...WithCheckDigit.Encoder,
   ...WithDate.Encoder,

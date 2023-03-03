@@ -28,8 +28,7 @@ import * as WithUnknown from 'schemata-ts/schemables/WithUnknown/instances/eq'
  * @since 2.0.0
  * @category Instances
  */
-const EqSchemable: Schemable<Eq.TypeLambda> = {
-  ...Eq.Schemable,
+const EqSchemable: Schemable<Eq.SchemableLambda> = {
   ...WithAnnotate.Eq,
   ...WithCheckDigit.Eq,
   ...WithDate.Eq,

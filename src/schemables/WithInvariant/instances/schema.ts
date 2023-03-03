@@ -4,8 +4,8 @@
  * @since 1.0.0
  */
 import { URI as SchemaURI } from 'schemata-ts/Schema'
-import { WithInvariant2 } from 'schemata-ts/schemables/WithInvariant/definition'
 import * as SC from 'schemata-ts/Schema'
+import { WithInvariant2 } from 'schemata-ts/schemables/WithInvariant/definition'
 
 /**
  * @since 1.0.0

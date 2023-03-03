@@ -6,7 +6,7 @@
 import * as E from 'fp-ts/Either'
 import { flow } from 'fp-ts/function'
 import * as J from 'fp-ts/Json'
-import { DecodeError } from 'schemata-ts/Decoder'
+import { DecodeError } from 'schemata-ts/DecodeError'
 import { getDecoder } from 'schemata-ts/Decoder'
 import { Schema } from 'schemata-ts/Schema'
 

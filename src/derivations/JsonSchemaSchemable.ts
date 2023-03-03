@@ -28,8 +28,7 @@ import * as WithUnknown from 'schemata-ts/schemables/WithUnknown/instances/json-
  * @since 2.0.0
  * @category Instances
  */
-const JsonSchemaSchemable: Schemable<JS.TypeLambda> = {
-  ...JS.Schemable,
+const JsonSchemaSchemable: Schemable<JS.SchemableLambda> = {
   ...WithAnnotate.JsonSchema,
   ...WithCheckDigit.JsonSchema,
   ...WithDate.JsonSchema,
