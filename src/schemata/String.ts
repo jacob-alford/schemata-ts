@@ -12,4 +12,4 @@ import { StringParams } from 'schemata-ts/schemables/WithPrimitives/definition'
  * @since 1.0.0
  */
 export const String = (params?: StringParams): Schema<string, string> =>
-  make<string, string>(s => s.string(params))
+  make(s => s.string(params))

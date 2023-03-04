@@ -10,4 +10,4 @@ import { make } from 'schemata-ts/Schema'
  *
  * @since 1.0.0
  */
-export const Unknown = make<unknown, unknown>(s => s.unknown)
+export const Unknown = make(s => s.unknown)

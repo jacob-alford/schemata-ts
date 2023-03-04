@@ -419,7 +419,12 @@ type Partial = <
 export const partial: Partial = props => {
   const result: Record<
     string,
-    Prop<KeyFlag, any, SchemableKind<any, unknown, unknown>, string | KeyNotMapped>
+    Prop<
+      KeyFlag,
+      any,
+      SchemableKind<SchemableLambda, unknown, unknown>,
+      string | KeyNotMapped
+    >
   > = {}
   for (const key in props) {
     // eslint-disable-next-line @typescript-eslint/no-non-null-assertion

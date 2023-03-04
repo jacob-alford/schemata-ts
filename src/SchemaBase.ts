@@ -63,44 +63,6 @@ export const Nullable: S2.Schemable2<URI>['nullable'] = or =>
 /**
  * @since 1.0.0
  * @category Combinators
- * @example
- *   import * as E from 'fp-ts/Either'
- *   import * as S from 'schemata-ts/schemata'
- *   import { getDecoder } from 'schemata-ts/Decoder'
- *
- *   const SomeDomainType = S.Struct({
- *     a: S.String,
- *     b: S.BooleanFromNumber,
- *   })
- *
- *   // SomeDomainType will have the type:
- *   // Schema<{ a: string, b: number }, { a: string, b: boolean }>
- *
- *   const decoder = getDecoder(SomeDomainType)
- *
- *   assert.deepStrictEqual(
- *     decoder.decode({
- *       a: 'foo',
- *       b: 0,
- *     }),
- *     E.right({
- *       a: 'foo',
- *       b: false,
- *     }),
- *   )
- */
-export const Struct: S2.Schemable2<URI>['struct'] = props =>
-  SC.make(_ => {
-    const out = {} as Any
-    for (const [key, schemaKey] of Object.entries(props)) {
-      out[key] = schemaKey(_)
-    }
-    return _.struct(out) as Any
-  })
-
-/**
- * @since 1.0.0
- * @category Combinators
  */
 export const Partial: S2.Schemable2<URI>['partial'] = props =>
   SC.make(_ => {

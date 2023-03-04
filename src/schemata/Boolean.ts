@@ -10,4 +10,4 @@ import { make } from 'schemata-ts/Schema'
  *
  * @since 1.0.0
  */
-export const Boolean = make<boolean, boolean>(s => s.boolean)
+export const Boolean = make(s => s.boolean)

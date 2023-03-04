@@ -39,11 +39,4 @@ export const Int = <
     Min extends undefined ? MinSafeInt : Min,
     Max extends undefined ? MaxSafeInt : Max
   >
-> =>
-  make<
-    number,
-    Integer<
-      Min extends undefined ? MinSafeInt : Min,
-      Max extends undefined ? MaxSafeInt : Max
-    >
-  >(s => s.int(params))
+> => make(s => s.int(params))

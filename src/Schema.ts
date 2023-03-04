@@ -98,8 +98,15 @@ const memoize = <A, B>(f: (a: A) => B): ((a: A) => B) => {
 }
 
 /** @internal */
-export function make<E, A>(f: Schema<E, A>): Schema<E, A> {
-  return memoize(f)
+export const make = <S extends Schema<any, any>>(
+  f: S,
+): S extends (...args: ReadonlyArray<any>) => {
+  Input: (...args: ReadonlyArray<any>) => infer E
+  Output: (...args: ReadonlyArray<any>) => infer A
+}
+  ? Schema<E, A>
+  : never => {
+  return memoize(f) as any
 }
 
 /**

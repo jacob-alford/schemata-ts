@@ -16,5 +16,4 @@ export const Literal = <
   Literals extends ReadonlyNonEmptyArray<string | number | boolean | null>,
 >(
   ...values: Literals
-): Schema<Literals[number], Literals[number]> =>
-  make<Literals[number], Literals[number]>(s => s.literal(...(values as any)))
+): Schema<Literals[number], Literals[number]> => make(s => s.literal(...(values as any)))
