@@ -38,8 +38,16 @@ import * as RNEA from 'fp-ts/ReadonlyNonEmptyArray'
 import * as RR from 'fp-ts/ReadonlyRecord'
 import * as Str from 'fp-ts/string'
 import { memoize } from 'io-ts/Schemable'
+import * as hkt from 'schemata-ts/HKT'
 import { Schemable2 } from 'schemata-ts/Schemable'
-import { Int } from 'schemata-ts/schemables/WithInt/definition'
+import {
+  Float,
+  Integer,
+  MaxNegativeFloat,
+  MaxPositiveFloat,
+  MaxSafeInt,
+  MinSafeInt,
+} from 'schemata-ts/schemables/WithPrimitives/definition'
 
 // -------------------------------------------------------------------------------------
 // Model
@@ -320,23 +328,41 @@ export const makeStringSchema = (
  * @since 1.2.0
  * @category Constructors
  */
-export const makeNumberSchema = (
+export const makeNumberSchema = <
+  Min extends number | undefined = undefined,
+  Max extends number | undefined = undefined,
+>(
   params: {
-    minimum?: number
-    maximum?: number
+    minimum?: Min
+    maximum?: Max
   } = {},
-): Const<JsonSchema, number> => make(new JsonNumber(params.minimum, params.maximum))
+): Const<
+  JsonSchema,
+  Float<
+    Min extends undefined ? MaxNegativeFloat : Min,
+    Max extends undefined ? MaxPositiveFloat : Max
+  >
+> => make(new JsonNumber(params.minimum, params.maximum))
 
 /**
  * @since 1.2.0
  * @category Constructors
  */
-export const makeIntegerSchema = (
+export const makeIntegerSchema = <
+  Min extends number | undefined = undefined,
+  Max extends number | undefined = undefined,
+>(
   params: {
-    minimum?: number
-    maximum?: number
+    minimum?: Min
+    maximum?: Max
   } = {},
-): Const<JsonSchema, Int> => make(new JsonInteger(params.minimum, params.maximum))
+): Const<
+  JsonSchema,
+  Integer<
+    Min extends undefined ? MinSafeInt : Min,
+    Max extends undefined ? MaxSafeInt : Max
+  >
+> => make(new JsonInteger(params.minimum, params.maximum))
 
 /**
  * @since 1.2.0
@@ -490,6 +516,22 @@ declare module 'fp-ts/lib/HKT' {
   interface URItoKind2<E, A> {
     readonly JsonSchema: Const<JsonSchemaWithDescription, E>
   }
+}
+
+/**
+ * @since 2.0.0
+ * @category Type Lambdas
+ */
+export interface TypeLambda extends hkt.TypeLambda {
+  readonly type: Const<JsonSchemaWithDescription, this['In']>
+}
+
+/**
+ * @since 2.0.0
+ * @category Type Lambdas
+ */
+export interface SchemableLambda extends hkt.SchemableLambda {
+  readonly type: Const<JsonSchemaWithDescription, this['Input']>
 }
 
 /**

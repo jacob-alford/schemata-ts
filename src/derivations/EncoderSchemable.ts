@@ -11,8 +11,6 @@ import { Schemable } from 'schemata-ts/Schemable'
 import * as WithAnnotate from 'schemata-ts/schemables/WithAnnotate/instances/encoder'
 import * as WithCheckDigit from 'schemata-ts/schemables/WithCheckDigit/instances/encoder'
 import * as WithDate from 'schemata-ts/schemables/WithDate/instances/encoder'
-import * as WithFloat from 'schemata-ts/schemables/WithFloat/instances/encoder'
-import * as WithInt from 'schemata-ts/schemables/WithInt/instances/encoder'
 import * as WithInvariant from 'schemata-ts/schemables/WithInvariant/instances/encoder'
 import * as WithJson from 'schemata-ts/schemables/WithJson/instances/encoder'
 import * as WithMap from 'schemata-ts/schemables/WithMap/instances/encoder'
@@ -20,9 +18,9 @@ import * as WithOption from 'schemata-ts/schemables/WithOption/instances/encoder
 import * as WithOptional from 'schemata-ts/schemables/WithOptional/instances/encoder'
 import * as WithPadding from 'schemata-ts/schemables/WithPadding/instances/encoder'
 import * as WithPattern from 'schemata-ts/schemables/WithPattern/instances/encoder'
+import * as WithPrimitives from 'schemata-ts/schemables/WithPrimitives/instances/encoder'
 import * as WithRefine from 'schemata-ts/schemables/WithRefine/instances/encoder'
 import * as WithStructM from 'schemata-ts/schemables/WithStructM/instances/encoder'
-import * as WithUnknown from 'schemata-ts/schemables/WithUnknown/instances/encoder'
 
 /**
  * @since 2.0.0
@@ -32,8 +30,6 @@ const EncoderSchemable: Schemable<Enc.SchemableLambda> = {
   ...WithAnnotate.Encoder,
   ...WithCheckDigit.Encoder,
   ...WithDate.Encoder,
-  ...WithFloat.Encoder,
-  ...WithInt.Encoder,
   ...WithInvariant.Encoder,
   ...WithJson.Encoder,
   ...WithMap.Encoder,
@@ -41,9 +37,9 @@ const EncoderSchemable: Schemable<Enc.SchemableLambda> = {
   ...WithOptional.Encoder,
   ...WithPadding.Encoder,
   ...WithPattern.Encoder,
+  ...WithPrimitives.Encoder,
   ...WithRefine.Encoder,
   ...WithStructM.Encoder,
-  ...WithUnknown.Encoder,
 }
 
 /**

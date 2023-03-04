@@ -29,44 +29,10 @@ export interface TaskDecoder<A> {
 export const success = DT.success(TE.Pointed)
 
 /**
- * A failure case for a value that does not match the expected type
- *
  * @since 2.0.0
  * @category Constructors
  */
-export const typeMismatch = DT.typeMismatch(TE.MonadThrow)
-
-/**
- * A failure case for an unexpected value
- *
- * @since 2.0.0
- * @category Constructors
- */
-export const unexpectedValue = DT.unexpectedValue(TE.MonadThrow)
-
-/**
- * A failure case at a specific index
- *
- * @since 2.0.0
- * @category Constructors
- */
-export const errorAtIndex = DT.errorAtIndex(TE.MonadThrow)
-
-/**
- * A failure case at a specific key
- *
- * @since 2.0.0
- * @category Constructors
- */
-export const errorAtKey = DT.errorAtKey(TE.MonadThrow)
-
-/**
- * A failure case for a union member
- *
- * @since 2.0.0
- * @category Constructors
- */
-export const errorAtUnionMember = DT.errorAtUnionMember(TE.MonadThrow)
+export const failure = DT.failure(TE.MonadThrow)
 
 // ------------------
 // combinators

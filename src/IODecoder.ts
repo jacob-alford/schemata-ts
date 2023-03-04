@@ -30,44 +30,10 @@ export interface IODecoder<A> {
 export const success = DT.success(IOE.Pointed)
 
 /**
- * A failure case for a value that does not match the expected type
- *
  * @since 2.0.0
  * @category Constructors
  */
-export const typeMismatch = DT.typeMismatch(IOE.MonadThrow)
-
-/**
- * A failure case for an unexpected value
- *
- * @since 2.0.0
- * @category Constructors
- */
-export const unexpectedValue = DT.unexpectedValue(IOE.MonadThrow)
-
-/**
- * A failure case at a specific index
- *
- * @since 2.0.0
- * @category Constructors
- */
-export const errorAtIndex = DT.errorAtIndex(IOE.MonadThrow)
-
-/**
- * A failure case at a specific key
- *
- * @since 2.0.0
- * @category Constructors
- */
-export const errorAtKey = DT.errorAtKey(IOE.MonadThrow)
-
-/**
- * A failure case for a union member
- *
- * @since 2.0.0
- * @category Constructors
- */
-export const errorAtUnionMember = DT.errorAtUnionMember(IOE.MonadThrow)
+export const failure = DT.failure(IOE.MonadThrow)
 
 // ------------------
 // constructors

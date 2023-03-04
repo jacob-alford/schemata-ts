@@ -9,8 +9,6 @@ import { SchemableLambda } from 'schemata-ts/HKT'
 import { WithAnnotate } from 'schemata-ts/schemables/WithAnnotate/definition'
 import { WithCheckDigit } from 'schemata-ts/schemables/WithCheckDigit/definition'
 import { WithDate } from 'schemata-ts/schemables/WithDate/definition'
-import { WithFloat } from 'schemata-ts/schemables/WithFloat/definition'
-import { WithInt } from 'schemata-ts/schemables/WithInt/definition'
 import { WithInvariant } from 'schemata-ts/schemables/WithInvariant/definition'
 import { WithJson } from 'schemata-ts/schemables/WithJson/definition'
 import { WithMap } from 'schemata-ts/schemables/WithMap/definition'
@@ -18,9 +16,9 @@ import { WithOption } from 'schemata-ts/schemables/WithOption/definition'
 import { WithOptional } from 'schemata-ts/schemables/WithOptional/definition'
 import { WithPadding } from 'schemata-ts/schemables/WithPadding/definition'
 import { WithPattern } from 'schemata-ts/schemables/WithPattern/definition'
+import { WithPrimitives } from 'schemata-ts/schemables/WithPrimitives/definition'
 import { WithRefine } from 'schemata-ts/schemables/WithRefine/definition'
 import { WithStructM } from 'schemata-ts/schemables/WithStructM/definition'
-import { WithUnknown } from 'schemata-ts/schemables/WithUnknown/definition'
 
 /**
  * @since 2.0.0
@@ -30,8 +28,6 @@ export interface Schemable<S extends SchemableLambda>
   extends WithAnnotate<S>,
     WithCheckDigit<S>,
     WithDate<S>,
-    WithFloat<S>,
-    WithInt<S>,
     WithInvariant<S>,
     WithJson<S>,
     WithMap<S>,
@@ -39,6 +35,6 @@ export interface Schemable<S extends SchemableLambda>
     WithOptional<S>,
     WithPadding<S>,
     WithPattern<S>,
+    WithPrimitives<S>,
     WithRefine<S>,
-    WithStructM<S>,
-    WithUnknown<S> {}
+    WithStructM<S> {}

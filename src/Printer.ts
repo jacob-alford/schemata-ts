@@ -10,6 +10,7 @@ import * as RA from 'fp-ts/ReadonlyArray'
 import * as RR from 'fp-ts/ReadonlyRecord'
 import * as S from 'io-ts/Schemable'
 import { Branded } from 'schemata-ts/brand'
+import * as hkt from 'schemata-ts/HKT'
 import { typeOf, witherS } from 'schemata-ts/internal/util'
 import * as PE from 'schemata-ts/PrintError'
 import { Schemable2 } from 'schemata-ts/Schemable'
@@ -591,6 +592,22 @@ declare module 'fp-ts/lib/HKT' {
   interface URItoKind2<E, A> {
     readonly Printer: Printer<E, A>
   }
+}
+
+/**
+ * @since 2.0.0
+ * @category Type Lambdas
+ */
+export interface TypeLambda extends hkt.TypeLambda {
+  readonly type: Printer<this['In'], this['Target']>
+}
+
+/**
+ * @since 2.0.0
+ * @category Type Lambdas
+ */
+export interface SchemableLambda extends hkt.SchemableLambda {
+  readonly type: Printer<this['Input'], this['Output']>
 }
 
 /**

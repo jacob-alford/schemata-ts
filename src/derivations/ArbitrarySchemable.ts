@@ -11,8 +11,6 @@ import { Schemable } from 'schemata-ts/Schemable'
 import * as WithAnnotate from 'schemata-ts/schemables/WithAnnotate/instances/arbitrary'
 import * as WithCheckDigit from 'schemata-ts/schemables/WithCheckDigit/instances/arbitrary'
 import * as WithDate from 'schemata-ts/schemables/WithDate/instances/arbitrary'
-import * as WithFloat from 'schemata-ts/schemables/WithFloat/instances/arbitrary'
-import * as WithInt from 'schemata-ts/schemables/WithInt/instances/arbitrary'
 import * as WithInvariant from 'schemata-ts/schemables/WithInvariant/instances/arbitrary'
 import * as WithJson from 'schemata-ts/schemables/WithJson/instances/arbitrary'
 import * as WithMap from 'schemata-ts/schemables/WithMap/instances/arbitrary'
@@ -20,9 +18,9 @@ import * as WithOption from 'schemata-ts/schemables/WithOption/instances/arbitra
 import * as WithOptional from 'schemata-ts/schemables/WithOptional/instances/arbitrary'
 import * as WithPadding from 'schemata-ts/schemables/WithPadding/instances/arbitrary'
 import * as WithPattern from 'schemata-ts/schemables/WithPattern/instances/arbitrary'
+import * as WithPrimitives from 'schemata-ts/schemables/WithPrimitives/instances/arbitrary'
 import * as WithRefine from 'schemata-ts/schemables/WithRefine/instances/arbitrary'
 import * as WithStructM from 'schemata-ts/schemables/WithStructM/instances/arbitrary'
-import * as WithUnknown from 'schemata-ts/schemables/WithUnknown/instances/arbitrary'
 
 /**
  * @since 2.0.0
@@ -32,8 +30,6 @@ const ArbitrarySchemable: Schemable<Arb.SchemableLambda> = {
   ...WithAnnotate.Arbitrary,
   ...WithCheckDigit.Arbitrary,
   ...WithDate.Arbitrary,
-  ...WithFloat.Arbitrary,
-  ...WithInt.Arbitrary,
   ...WithInvariant.Arbitrary,
   ...WithJson.Arbitrary,
   ...WithMap.Arbitrary,
@@ -41,9 +37,9 @@ const ArbitrarySchemable: Schemable<Arb.SchemableLambda> = {
   ...WithOptional.Arbitrary,
   ...WithPadding.Arbitrary,
   ...WithPattern.Arbitrary,
+  ...WithPrimitives.Arbitrary,
   ...WithRefine.Arbitrary,
   ...WithStructM.Arbitrary,
-  ...WithUnknown.Arbitrary,
 }
 
 /**

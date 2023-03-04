@@ -11,8 +11,6 @@ import { Schemable } from 'schemata-ts/Schemable'
 import * as WithAnnotate from 'schemata-ts/schemables/WithAnnotate/instances/json-schema'
 import * as WithCheckDigit from 'schemata-ts/schemables/WithCheckDigit/instances/json-schema'
 import * as WithDate from 'schemata-ts/schemables/WithDate/instances/json-schema'
-import * as WithFloat from 'schemata-ts/schemables/WithFloat/instances/json-schema'
-import * as WithInt from 'schemata-ts/schemables/WithInt/instances/json-schema'
 import * as WithInvariant from 'schemata-ts/schemables/WithInvariant/instances/json-schema'
 import * as WithJson from 'schemata-ts/schemables/WithJson/instances/json-schema'
 import * as WithMap from 'schemata-ts/schemables/WithMap/instances/json-schema'
@@ -20,9 +18,9 @@ import * as WithOption from 'schemata-ts/schemables/WithOption/instances/json-sc
 import * as WithOptional from 'schemata-ts/schemables/WithOptional/instances/json-schema'
 import * as WithPadding from 'schemata-ts/schemables/WithPadding/instances/json-schema'
 import * as WithPattern from 'schemata-ts/schemables/WithPattern/instances/json-schema'
+import * as WithPrimitives from 'schemata-ts/schemables/WithPrimitives/instances/json-schema'
 import * as WithRefine from 'schemata-ts/schemables/WithRefine/instances/json-schema'
 import * as WithStructM from 'schemata-ts/schemables/WithStructM/instances/json-schema'
-import * as WithUnknown from 'schemata-ts/schemables/WithUnknown/instances/json-schema'
 
 /**
  * @since 2.0.0
@@ -32,8 +30,6 @@ const JsonSchemaSchemable: Schemable<JS.SchemableLambda> = {
   ...WithAnnotate.JsonSchema,
   ...WithCheckDigit.JsonSchema,
   ...WithDate.JsonSchema,
-  ...WithFloat.JsonSchema,
-  ...WithInt.JsonSchema,
   ...WithInvariant.JsonSchema,
   ...WithJson.JsonSchema,
   ...WithMap.JsonSchema,
@@ -41,9 +37,9 @@ const JsonSchemaSchemable: Schemable<JS.SchemableLambda> = {
   ...WithOptional.JsonSchema,
   ...WithPadding.JsonSchema,
   ...WithPattern.JsonSchema,
+  ...WithPrimitives.JsonSchema,
   ...WithRefine.JsonSchema,
   ...WithStructM.JsonSchema,
-  ...WithUnknown.JsonSchema,
 }
 
 /**

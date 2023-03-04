@@ -37,12 +37,20 @@ export interface Decoder<A> {
 export const success = DT.success(E.Pointed)
 
 /**
+ * @since 2.0.0
+ * @category Constructors
+ */
+export const failure = DT.failure(E.MonadThrow)
+
+/**
  * A failure case for a value that does not match the expected type
  *
  * @since 2.0.0
  * @category Constructors
  */
-export const typeMismatch = DT.typeMismatch(E.MonadThrow)
+export const typeMismatch = (
+  ...args: ConstructorParameters<typeof DE.TypeMismatch>
+): ReadonlyNonEmptyArray<DE.DecodeError> => [new DE.TypeMismatch(...args)]
 
 /**
  * A failure case for an unexpected value
@@ -50,7 +58,9 @@ export const typeMismatch = DT.typeMismatch(E.MonadThrow)
  * @since 2.0.0
  * @category Constructors
  */
-export const unexpectedValue = DT.unexpectedValue(E.MonadThrow)
+export const unexpectedValue = (
+  ...args: ConstructorParameters<typeof DE.UnexpectedValue>
+): ReadonlyNonEmptyArray<DE.DecodeError> => [new DE.UnexpectedValue(...args)]
 
 /**
  * A failure case at a specific index
@@ -58,7 +68,9 @@ export const unexpectedValue = DT.unexpectedValue(E.MonadThrow)
  * @since 2.0.0
  * @category Constructors
  */
-export const errorAtIndex = DT.errorAtIndex(E.MonadThrow)
+export const errorAtIndex = (
+  ...args: ConstructorParameters<typeof DE.ErrorAtIndex>
+): ReadonlyNonEmptyArray<DE.DecodeError> => [new DE.ErrorAtIndex(...args)]
 
 /**
  * A failure case at a specific key
@@ -66,7 +78,9 @@ export const errorAtIndex = DT.errorAtIndex(E.MonadThrow)
  * @since 2.0.0
  * @category Constructors
  */
-export const errorAtKey = DT.errorAtKey(E.MonadThrow)
+export const errorAtKey = (
+  ...args: ConstructorParameters<typeof DE.ErrorAtKey>
+): ReadonlyNonEmptyArray<DE.DecodeError> => [new DE.ErrorAtKey(...args)]
 
 /**
  * A failure case for a union member
@@ -74,7 +88,9 @@ export const errorAtKey = DT.errorAtKey(E.MonadThrow)
  * @since 2.0.0
  * @category Constructors
  */
-export const errorAtUnionMember = DT.errorAtUnionMember(E.MonadThrow)
+export const errorAtUnionMember = (
+  ...args: ConstructorParameters<typeof DE.ErrorAtUnionMember>
+): ReadonlyNonEmptyArray<DE.DecodeError> => [new DE.ErrorAtUnionMember(...args)]
 
 // ------------------
 // combinators

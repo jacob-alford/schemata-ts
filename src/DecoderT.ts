@@ -148,134 +148,22 @@ export const success: {
  * @since 2.0.0
  * @category Constructors
  */
-export const typeMismatch: {
+export const failure: {
   <M extends URIS4>(M: MonadThrow4<M>): <A = never>(
-    ...args: ConstructorParameters<typeof DE.TypeMismatch>
+    error: DE.DecodeError,
   ) => Kind4<M, never, unknown, ReadonlyNonEmptyArray<DE.DecodeError>, A>
   <M extends URIS3>(M: MonadThrow3<M>): <A = never>(
-    ...args: ConstructorParameters<typeof DE.TypeMismatch>
+    error: DE.DecodeError,
   ) => Kind3<M, unknown, ReadonlyNonEmptyArray<DE.DecodeError>, A>
   <M extends URIS2>(M: MonadThrow2<M>): <A = never>(
-    ...args: ConstructorParameters<typeof DE.TypeMismatch>
+    error: DE.DecodeError,
   ) => Kind2<M, ReadonlyNonEmptyArray<DE.DecodeError>, A>
-  <M extends URIS>(M: MonadThrow1<M>): <A = never>(
-    ...args: ConstructorParameters<typeof DE.TypeMismatch>
-  ) => Kind<M, A>
-  <M>(M: MonadThrow<M>): <A = never>(
-    ...args: ConstructorParameters<typeof DE.TypeMismatch>
-  ) => HKT<M, A>
+  <M extends URIS>(M: MonadThrow1<M>): <A = never>(error: DE.DecodeError) => Kind<M, A>
+  <M>(M: MonadThrow<M>): <A = never>(error: DE.DecodeError) => HKT<M, A>
 } =
   <M>(M: MonadThrow<M>) =>
-  <A = never>(...args: ConstructorParameters<typeof DE.TypeMismatch>): HKT<M, A> =>
-    M.throwError([new DE.TypeMismatch(...args)])
-
-/**
- * A failure case for an unexpected value
- *
- * @since 2.0.0
- * @category Constructors
- */
-export const unexpectedValue: {
-  <M extends URIS4>(M: MonadThrow4<M>): <A = never>(
-    ...args: ConstructorParameters<typeof DE.UnexpectedValue>
-  ) => Kind4<M, never, unknown, ReadonlyNonEmptyArray<DE.DecodeError>, A>
-  <M extends URIS3>(M: MonadThrow3<M>): <A = never>(
-    ...args: ConstructorParameters<typeof DE.UnexpectedValue>
-  ) => Kind3<M, unknown, ReadonlyNonEmptyArray<DE.DecodeError>, A>
-  <M extends URIS2>(M: MonadThrow2<M>): <A = never>(
-    ...args: ConstructorParameters<typeof DE.UnexpectedValue>
-  ) => Kind2<M, ReadonlyNonEmptyArray<DE.DecodeError>, A>
-  <M extends URIS>(M: MonadThrow1<M>): <A = never>(
-    ...args: ConstructorParameters<typeof DE.UnexpectedValue>
-  ) => Kind<M, A>
-  <M>(M: MonadThrow<M>): <A = never>(
-    ...args: ConstructorParameters<typeof DE.UnexpectedValue>
-  ) => HKT<M, A>
-} =
-  <M>(M: MonadThrow<M>) =>
-  <A = never>(...args: ConstructorParameters<typeof DE.UnexpectedValue>): HKT<M, A> =>
-    M.throwError([new DE.UnexpectedValue(...args)])
-
-/**
- * A failure case at a specific index
- *
- * @since 2.0.0
- * @category Constructors
- */
-export const errorAtIndex: {
-  <M extends URIS4>(M: MonadThrow4<M>): <A = never>(
-    ...args: ConstructorParameters<typeof DE.ErrorAtIndex>
-  ) => Kind4<M, never, unknown, ReadonlyNonEmptyArray<DE.DecodeError>, A>
-  <M extends URIS3>(M: MonadThrow3<M>): <A = never>(
-    ...args: ConstructorParameters<typeof DE.ErrorAtIndex>
-  ) => Kind3<M, unknown, ReadonlyNonEmptyArray<DE.DecodeError>, A>
-  <M extends URIS2>(M: MonadThrow2<M>): <A = never>(
-    ...args: ConstructorParameters<typeof DE.ErrorAtIndex>
-  ) => Kind2<M, ReadonlyNonEmptyArray<DE.DecodeError>, A>
-  <M extends URIS>(M: MonadThrow1<M>): <A = never>(
-    ...args: ConstructorParameters<typeof DE.ErrorAtIndex>
-  ) => Kind<M, A>
-  <M>(M: MonadThrow<M>): <A = never>(
-    ...args: ConstructorParameters<typeof DE.ErrorAtIndex>
-  ) => HKT<M, A>
-} =
-  <M>(M: MonadThrow<M>) =>
-  <A = never>(...args: ConstructorParameters<typeof DE.ErrorAtIndex>): HKT<M, A> =>
-    M.throwError([new DE.ErrorAtIndex(...args)])
-
-/**
- * A failure case at a specific key
- *
- * @since 2.0.0
- * @category Constructors
- */
-export const errorAtKey: {
-  <M extends URIS4>(M: MonadThrow4<M>): <A = never>(
-    ...args: ConstructorParameters<typeof DE.ErrorAtKey>
-  ) => Kind4<M, never, unknown, ReadonlyNonEmptyArray<DE.DecodeError>, A>
-  <M extends URIS3>(M: MonadThrow3<M>): <A = never>(
-    ...args: ConstructorParameters<typeof DE.ErrorAtKey>
-  ) => Kind3<M, unknown, ReadonlyNonEmptyArray<DE.DecodeError>, A>
-  <M extends URIS2>(M: MonadThrow2<M>): <A = never>(
-    ...args: ConstructorParameters<typeof DE.ErrorAtKey>
-  ) => Kind2<M, ReadonlyNonEmptyArray<DE.DecodeError>, A>
-  <M extends URIS>(M: MonadThrow1<M>): <A = never>(
-    ...args: ConstructorParameters<typeof DE.ErrorAtKey>
-  ) => Kind<M, A>
-  <M>(M: MonadThrow<M>): <A = never>(
-    ...args: ConstructorParameters<typeof DE.ErrorAtKey>
-  ) => HKT<M, A>
-} =
-  <M>(M: MonadThrow<M>) =>
-  <A = never>(...args: ConstructorParameters<typeof DE.ErrorAtKey>): HKT<M, A> =>
-    M.throwError([new DE.ErrorAtKey(...args)])
-
-/**
- * A failure case for a union member
- *
- * @since 2.0.0
- * @category Constructors
- */
-export const errorAtUnionMember: {
-  <M extends URIS4>(M: MonadThrow4<M>): <A = never>(
-    ...args: ConstructorParameters<typeof DE.ErrorAtUnionMember>
-  ) => Kind4<M, never, unknown, ReadonlyNonEmptyArray<DE.DecodeError>, A>
-  <M extends URIS3>(M: MonadThrow3<M>): <A = never>(
-    ...args: ConstructorParameters<typeof DE.ErrorAtUnionMember>
-  ) => Kind3<M, unknown, ReadonlyNonEmptyArray<DE.DecodeError>, A>
-  <M extends URIS2>(M: MonadThrow2<M>): <A = never>(
-    ...args: ConstructorParameters<typeof DE.ErrorAtUnionMember>
-  ) => Kind2<M, ReadonlyNonEmptyArray<DE.DecodeError>, A>
-  <M extends URIS>(M: MonadThrow1<M>): <A = never>(
-    ...args: ConstructorParameters<typeof DE.ErrorAtUnionMember>
-  ) => Kind<M, A>
-  <M>(M: MonadThrow<M>): <A = never>(
-    ...args: ConstructorParameters<typeof DE.ErrorAtUnionMember>
-  ) => HKT<M, A>
-} =
-  <M>(M: MonadThrow<M>) =>
-  <A = never>(...args: ConstructorParameters<typeof DE.ErrorAtUnionMember>): HKT<M, A> =>
-    M.throwError([new DE.ErrorAtUnionMember(...args)])
+  <A = never>(error: DE.DecodeError): HKT<M, A> =>
+    M.throwError([error])
 
 // ------------------
 // instance methods

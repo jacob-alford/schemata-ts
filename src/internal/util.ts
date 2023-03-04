@@ -9,6 +9,12 @@ import * as Sg from 'fp-ts/Semigroup'
 import * as T from 'fp-ts/Task'
 import * as TE from 'fp-ts/TaskEither'
 
+/** @internal */
+export const getLeft = <E>(either: E.Either<E, never>): E => (either as E.Left<E>).left
+
+/** @internal */
+export const getRight = <A>(either: E.Either<never, A>): A => (either as E.Right<A>).right
+
 /* istanbul ignore next */
 /** @internal */
 export const base64Encode = (s: string): string =>

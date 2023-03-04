@@ -21,6 +21,20 @@ export interface Guard<A> {
 }
 
 // ------------------
+// constructors
+// ------------------
+
+/**
+ * Constructs a guard from predicate function
+ *
+ * @since 2.0.0
+ * @category Constructors
+ */
+export const fromPredicate = <A>(predicate: (u: unknown) => u is A): Guard<A> => ({
+  is: predicate,
+})
+
+// ------------------
 // instances
 // ------------------
 

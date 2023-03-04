@@ -97,10 +97,7 @@ const memoize = <A, B>(f: (a: A) => B): ((a: A) => B) => {
   }
 }
 
-/**
- * @since 1.0.0
- * @category Constructors
- */
+/** @internal */
 export function make<E, A>(f: Schema<E, A>): Schema<E, A> {
   return memoize(f)
 }

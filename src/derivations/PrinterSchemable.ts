@@ -11,8 +11,6 @@ import { Schemable } from 'schemata-ts/Schemable'
 import * as WithAnnotate from 'schemata-ts/schemables/WithAnnotate/instances/printer'
 import * as WithCheckDigit from 'schemata-ts/schemables/WithCheckDigit/instances/printer'
 import * as WithDate from 'schemata-ts/schemables/WithDate/instances/printer'
-import * as WithFloat from 'schemata-ts/schemables/WithFloat/instances/printer'
-import * as WithInt from 'schemata-ts/schemables/WithInt/instances/printer'
 import * as WithInvariant from 'schemata-ts/schemables/WithInvariant/instances/printer'
 import * as WithJson from 'schemata-ts/schemables/WithJson/instances/printer'
 import * as WithMap from 'schemata-ts/schemables/WithMap/instances/printer'
@@ -20,9 +18,9 @@ import * as WithOption from 'schemata-ts/schemables/WithOption/instances/printer
 import * as WithOptional from 'schemata-ts/schemables/WithOptional/instances/printer'
 import * as WithPadding from 'schemata-ts/schemables/WithPadding/instances/printer'
 import * as WithPattern from 'schemata-ts/schemables/WithPattern/instances/printer'
+import * as WithPrimitives from 'schemata-ts/schemables/WithPrimitives/instances/printer'
 import * as WithRefine from 'schemata-ts/schemables/WithRefine/instances/printer'
 import * as WithStructM from 'schemata-ts/schemables/WithStructM/instances/printer'
-import * as WithUnknown from 'schemata-ts/schemables/WithUnknown/instances/printer'
 
 /**
  * @since 2.0.0
@@ -32,8 +30,6 @@ const PrinterSchemable: Schemable<P.SchemableLambda> = {
   ...WithAnnotate.Printer,
   ...WithCheckDigit.Printer,
   ...WithDate.Printer,
-  ...WithFloat.Printer,
-  ...WithInt.Printer,
   ...WithInvariant.Printer,
   ...WithJson.Printer,
   ...WithMap.Printer,
@@ -41,9 +37,9 @@ const PrinterSchemable: Schemable<P.SchemableLambda> = {
   ...WithOptional.Printer,
   ...WithPadding.Printer,
   ...WithPattern.Printer,
+  ...WithPrimitives.Printer,
   ...WithRefine.Printer,
   ...WithStructM.Printer,
-  ...WithUnknown.Printer,
 }
 
 /**
