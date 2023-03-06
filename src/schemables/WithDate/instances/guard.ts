@@ -3,15 +3,15 @@
  *
  * @since 1.0.0
  */
-import * as G from 'io-ts/Guard'
-import { WithDate1 } from 'schemata-ts/schemables/WithDate/definition'
+import * as G from 'schemata-ts/Guard'
+import { WithDate } from 'schemata-ts/schemables/WithDate/definition'
 import { isSafeDate } from 'schemata-ts/schemables/WithDate/utils'
 
 /**
  * @since 1.0.0
  * @category Instances
  */
-export const Guard: WithDate1<G.URI> = {
+export const Guard: WithDate<G.SchemableLambda> = {
   date: {
     is: isSafeDate,
   },

@@ -3,15 +3,19 @@
  *
  * @since 1.0.0
  */
+import { pipe } from 'fp-ts/function'
 import * as D from 'schemata-ts/Decoder'
-import { WithPattern2C } from 'schemata-ts/schemables/WithPattern/definition'
+import { WithPattern } from 'schemata-ts/schemables/WithPattern/definition'
 import { pattern } from 'schemata-ts/schemables/WithPattern/utils'
 
 /**
  * @since 1.0.0
  * @category Instances
  */
-export const Decoder: WithPattern2C<D.URI, unknown> = {
+export const Decoder: WithPattern<D.SchemableLambda> = {
   pattern: (p, desc, caseInsensitive) =>
-    D.fromGuard(pattern(p, desc, caseInsensitive), desc),
+    pipe(
+      pattern(p, desc, caseInsensitive),
+      D.fromGuard(u => D.liftDecodeError(D.typeMismatch(desc, u))),
+    ),
 }

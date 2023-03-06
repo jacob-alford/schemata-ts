@@ -9,7 +9,7 @@ import { Branded } from 'schemata-ts/brand'
 import * as D from 'schemata-ts/Decoder'
 import {
   CheckDigitVerified,
-  WithCheckDigit2C,
+  WithCheckDigit,
 } from 'schemata-ts/schemables/WithCheckDigit/definition'
 import {
   locationToIndex,
@@ -20,7 +20,7 @@ import {
  * @since 1.0.0
  * @category Instances
  */
-export const Decoder: WithCheckDigit2C<D.URI, unknown> = {
+export const Decoder: WithCheckDigit<D.SchemableLambda> = {
   checkDigit: (algorithm, location) => dec => ({
     decode: s =>
       pipe(
@@ -29,9 +29,14 @@ export const Decoder: WithCheckDigit2C<D.URI, unknown> = {
           E.fromPredicate(
             (s): s is Branded<string, CheckDigitVerified> =>
               s[locationToIndex(s, location)] === algorithm(s),
-            s => D.error(s, replaceCharAt(s, locationToIndex(s, location), algorithm(s))),
+            s =>
+              D.typeMismatch(
+                s,
+                replaceCharAt(s, locationToIndex(s, location), algorithm(s)),
+              ),
           ),
         ),
+        E.mapLeft(e => D.liftDecodeError(e)),
       ),
   }),
 }

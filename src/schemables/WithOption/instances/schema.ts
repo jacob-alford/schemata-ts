@@ -6,13 +6,13 @@
  */
 import { URI as SchemaURI } from 'schemata-ts/Schema'
 import * as SC from 'schemata-ts/Schema'
-import { WithOption2 } from 'schemata-ts/schemables/WithOption/definition'
+import { WithOption } from 'schemata-ts/schemables/WithOption/definition'
 
 /**
  * @since 1.0.0
  * @category Instances
  */
-export const Schema: WithOption2<SchemaURI>['optionFromExclude'] = (
+export const Schema: WithOption<Schem.SchemableLambda>['optionFromExclude'] = (
   exclude,
   schemaA,
   eq,

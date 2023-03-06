@@ -5,12 +5,12 @@
  */
 import { identity } from 'fp-ts/function'
 import * as P from 'schemata-ts/Printer'
-import { WithCheckDigit2 } from 'schemata-ts/schemables/WithCheckDigit/definition'
+import { WithCheckDigit } from 'schemata-ts/schemables/WithCheckDigit/definition'
 
 /**
  * @since 1.1.0
  * @category Instances
  */
-export const Printer: WithCheckDigit2<P.URI> = {
+export const Printer: WithCheckDigit<P.SchemableLambda> = {
   checkDigit: () => identity,
 }

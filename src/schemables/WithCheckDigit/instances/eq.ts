@@ -3,14 +3,14 @@
  *
  * @since 1.0.0
  */
-import * as Eq_ from 'fp-ts/Eq'
 import { identity } from 'fp-ts/function'
-import { WithCheckDigit1 } from 'schemata-ts/schemables/WithCheckDigit/definition'
+import * as Eq_ from 'schemata-ts/Eq'
+import { WithCheckDigit } from 'schemata-ts/schemables/WithCheckDigit/definition'
 
 /**
  * @since 1.0.0
  * @category Instances
  */
-export const Eq: WithCheckDigit1<Eq_.URI> = {
+export const Eq: WithCheckDigit<Eq_.SchemableLambda> = {
   checkDigit: () => identity,
 }

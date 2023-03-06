@@ -4,12 +4,12 @@
  * @since 1.0.0
  */
 import * as Eq_ from 'schemata-ts/Eq'
-import { WithPattern1 } from 'schemata-ts/schemables/WithPattern/definition'
+import { WithPattern } from 'schemata-ts/schemables/WithPattern/definition'
 
 /**
  * @since 1.0.0
  * @category Instances
  */
-export const Eq: WithPattern1<Eq_.URI> = {
+export const Eq: WithPattern<Eq_.SchemableLambda> = {
   pattern: () => Eq_.string,
 }

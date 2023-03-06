@@ -3,14 +3,14 @@
  *
  * @since 1.0.0
  */
-import * as Eq_ from 'fp-ts/Eq'
-import { WithDate1 } from 'schemata-ts/schemables/WithDate/definition'
+import * as Eq_ from 'schemata-ts/Eq'
+import { WithDate } from 'schemata-ts/schemables/WithDate/definition'
 
 /**
  * @since 1.0.0
  * @category Instances
  */
-export const Eq: WithDate1<Eq_.URI> = {
+export const Eq: WithDate<Eq_.SchemableLambda> = {
   date: {
     equals: (x, y) => x.getTime() === y.getTime(),
   },

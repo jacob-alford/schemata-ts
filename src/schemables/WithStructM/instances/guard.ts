@@ -8,16 +8,16 @@ import { pipe, tuple } from 'fp-ts/function'
 import * as Pred from 'fp-ts/Predicate'
 import * as RR from 'fp-ts/ReadonlyRecord'
 import * as Str from 'fp-ts/string'
-import * as G from 'io-ts/Guard'
+import * as G from 'schemata-ts/Guard'
 import { hasOwn } from 'schemata-ts/internal/util'
-import { WithStructM1 } from 'schemata-ts/schemables/WithStructM/definition'
+import { WithStructM } from 'schemata-ts/schemables/WithStructM/definition'
 import { isOptionalFlag, KeyFlag, keyIsNotMapped } from 'schemata-ts/struct'
 
 /**
  * @since 1.3.0
  * @category Instances
  */
-export const Guard: WithStructM1<G.URI> = {
+export const Guard: WithStructM<G.SchemableLambda> = {
   structM: (properties, params = { extraProps: 'strip' }) => {
     const remappedProps: Record<string, readonly [KeyFlag, G.Guard<unknown, unknown>]> =
       {}

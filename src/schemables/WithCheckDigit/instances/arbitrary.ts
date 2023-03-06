@@ -7,7 +7,7 @@ import * as Arb from 'schemata-ts/Arbitrary'
 import { Branded } from 'schemata-ts/brand'
 import {
   CheckDigitVerified,
-  WithCheckDigit1,
+  WithCheckDigit,
 } from 'schemata-ts/schemables/WithCheckDigit/definition'
 import {
   locationToIndex,
@@ -18,7 +18,7 @@ import {
  * @since 1.0.0
  * @category Instances
  */
-export const Arbitrary: WithCheckDigit1<Arb.URI> = {
+export const Arbitrary: WithCheckDigit<Arb.SchemableLambda> = {
   checkDigit: (algorithm, location) => arb => ({
     arbitrary: fc =>
       arb

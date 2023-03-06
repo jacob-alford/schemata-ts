@@ -5,13 +5,13 @@
  */
 import { URI as SchemaURI } from 'schemata-ts/Schema'
 import * as SC from 'schemata-ts/Schema'
-import { WithDate2 } from 'schemata-ts/schemables/WithDate/definition'
+import { WithDate } from 'schemata-ts/schemables/WithDate/definition'
 
 /**
  * @since 1.0.0
  * @category Instances
  */
-export const Schema: WithDate2<SchemaURI> = {
+export const Schema: WithDate<SchemaURI> = {
   date: SC.make(S => S.date),
   dateFromString: SC.make(S => S.dateFromString),
 }

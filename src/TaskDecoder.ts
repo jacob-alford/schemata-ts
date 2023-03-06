@@ -1,11 +1,9 @@
-import { Alt1 } from 'fp-ts/Alt'
-import { Functor1 } from 'fp-ts/Functor'
-import { Invariant1 } from 'fp-ts/Invariant'
-import { ReadonlyNonEmptyArray } from 'fp-ts/ReadonlyNonEmptyArray'
+import { Alt2 } from 'fp-ts/Alt'
+import { Functor2 } from 'fp-ts/Functor'
+import { Invariant2 } from 'fp-ts/Invariant'
 import * as TE from 'fp-ts/TaskEither'
-import { DecodeError } from 'schemata-ts/DecodeError'
+import { DecodeFailure } from 'schemata-ts/DecodeError'
 import * as DT from 'schemata-ts/DecoderT'
-import * as hkt from 'schemata-ts/HKT'
 import { Schema } from 'schemata-ts/Schema'
 
 /**
@@ -14,8 +12,8 @@ import { Schema } from 'schemata-ts/Schema'
  * @since 2.0.0
  * @category Model
  */
-export interface TaskDecoder<A> {
-  readonly decode: (u: unknown) => TE.TaskEither<ReadonlyNonEmptyArray<DecodeError>, A>
+export interface TaskDecoder<I, A> {
+  readonly decode: (u: unknown) => TE.TaskEither<DecodeFailure<I>, A>
 }
 
 // ------------------
@@ -42,7 +40,7 @@ export const failure = DT.failure(TE.MonadThrow)
  * @since 2.0.0
  * @category Interpreters
  */
-export const getTaskDecoder: <E, A>(schema: Schema<E, A>) => TaskDecoder<A> =
+export const getTaskDecoder: <I, A>(schema: Schema<I, A>) => TaskDecoder<I, A> =
   DT.makeDecodeInterpreter(TE.FromEither)
 
 // ------------------
@@ -62,22 +60,14 @@ export const URI = 'schemata-ts/TaskDecoder'
 export type URI = typeof URI
 
 declare module 'fp-ts/lib/HKT' {
-  interface URItoKind<A> {
-    readonly [URI]: TaskDecoder<A>
+  interface URItoKind2<E, A> {
+    readonly [URI]: TaskDecoder<E, A>
   }
 }
 
-/**
- * @since 2.0.0
- * @category Type Lambdas
- */
-export interface TypeLambda extends hkt.TypeLambda {
-  readonly type: TaskDecoder<this['Target']>
-}
-
 // non-pipeables
-const map_: Functor1<URI>['map'] = DT.map(TE.Functor)
-const alt_: Alt1<URI>['alt'] = DT.alt(TE.Alt)
+const map_: Functor2<URI>['map'] = DT.map(TE.Functor)
+const altW_ = DT.altW(TE.Alt)
 
 /**
  * @since 2.0.0
@@ -86,13 +76,13 @@ const alt_: Alt1<URI>['alt'] = DT.alt(TE.Alt)
 export const imap: <A, B>(
   f: (a: A) => B,
   g: (b: B) => A,
-) => (fa: TaskDecoder<A>) => TaskDecoder<B> = f => fa => map_(fa, f)
+) => <I>(fa: TaskDecoder<I, A>) => TaskDecoder<I, B> = f => fa => map_(fa, f)
 
 /**
  * @since 2.0.0
  * @category Instances
  */
-export const Invariant: Invariant1<URI> = {
+export const Invariant: Invariant2<URI> = {
   URI,
   imap: map_,
 }
@@ -101,15 +91,15 @@ export const Invariant: Invariant1<URI> = {
  * @since 2.0.0
  * @category Instance Methods
  */
-export const map: <A, B>(f: (a: A) => B) => (fa: TaskDecoder<A>) => TaskDecoder<B> =
-  f => fa =>
-    map_(fa, f)
+export const map: <A, B>(
+  f: (a: A) => B,
+) => <I>(fa: TaskDecoder<I, A>) => TaskDecoder<I, B> = f => fa => map_(fa, f)
 
 /**
  * @since 2.0.0
  * @category Instances
  */
-export const Functor: Functor1<URI> = {
+export const Functor: Functor2<URI> = {
   URI,
   map: map_,
 }
@@ -118,15 +108,24 @@ export const Functor: Functor1<URI> = {
  * @since 2.0.0
  * @category Instance Methods
  */
-export const alt: <A>(
-  that: () => TaskDecoder<A>,
-) => (fa: TaskDecoder<A>) => TaskDecoder<A> = that => fa => alt_(fa, that)
+export const altW: <I2, A>(
+  that: () => TaskDecoder<I2, A>,
+) => <I1>(fa: TaskDecoder<I1, A>) => TaskDecoder<I1 | I2, A> = that => fa =>
+  altW_(fa, that)
+
+/**
+ * @since 2.0.0
+ * @category Instance Methods
+ */
+export const alt: <I, A>(
+  that: () => TaskDecoder<I, A>,
+) => (fa: TaskDecoder<I, A>) => TaskDecoder<I, A> = altW
 
 /**
  * @since 2.0.0
  * @category Instances
  */
-export const Alt: Alt1<URI> = {
+export const Alt: Alt2<URI> = {
   ...Functor,
-  alt: alt_,
+  alt: altW_,
 }

@@ -4,13 +4,13 @@
  * @since 1.2.0
  */
 import * as JS from 'schemata-ts/JsonSchema'
-import { WithDate2 } from 'schemata-ts/schemables/WithDate/definition'
+import { WithDate } from 'schemata-ts/schemables/WithDate/definition'
 
 /**
  * @since 1.2.0
  * @category Instances
  */
-export const JsonSchema: WithDate2<JS.URI> = {
+export const JsonSchema: WithDate<JS.SchemableLambda> = {
   date: JS.emptySchema,
   dateFromString: JS.makeStringSchema({ format: 'date' }),
 }

@@ -6,12 +6,12 @@
  */
 import { constant, identity } from 'fp-ts/function'
 import * as D from 'schemata-ts/Decoder'
-import { WithAnnotate2C } from 'schemata-ts/schemables/WithAnnotate/definition'
+import { WithAnnotate } from 'schemata-ts/schemables/WithAnnotate/definition'
 
 /**
  * @since 1.2.0
  * @category Instances
  */
-export const Decoder: WithAnnotate2C<D.URI, unknown> = {
+export const Decoder: WithAnnotate<D.SchemableLambda> = {
   annotate: constant(identity),
 }

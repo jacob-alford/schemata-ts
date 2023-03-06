@@ -5,17 +5,17 @@
  * @since 1.0.0
  */
 import * as E from 'fp-ts/Either'
-import * as Eq_ from 'fp-ts/Eq'
 import { flow } from 'fp-ts/function'
 import * as O from 'fp-ts/Option'
-import * as D from 'io-ts/Decoder'
-import { WithOption2C } from 'schemata-ts/schemables/WithOption/definition'
+import * as D from 'schemata-ts/Decoder'
+import * as Eq_ from 'schemata-ts/Eq'
+import { WithOption } from 'schemata-ts/schemables/WithOption/definition'
 
 /**
  * @since 1.0.0
  * @category Instances
  */
-export const Decoder: WithOption2C<D.URI, unknown> = {
+export const Decoder: WithOption<D.SchemableLambda> = {
   optionFromExclude: (exclude, sa, eqA = Eq_.eqStrict) => ({
     decode: flow(sa.decode, E.map(O.fromPredicate(a => !eqA.equals(a, exclude)))),
   }),

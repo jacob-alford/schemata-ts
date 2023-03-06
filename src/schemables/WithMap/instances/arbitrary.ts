@@ -7,13 +7,13 @@ import * as RA from 'fp-ts/ReadonlyArray'
 import * as RM from 'fp-ts/ReadonlyMap'
 import * as Sg from 'fp-ts/Semigroup'
 import * as Arb from 'schemata-ts/Arbitrary'
-import { WithMap1 } from 'schemata-ts/schemables/WithMap/definition'
+import { WithMap } from 'schemata-ts/schemables/WithMap/definition'
 
 /**
  * @since 1.0.0
  * @category Instances
  */
-export const Arbitrary: WithMap1<Arb.URI> = {
+export const Arbitrary: WithMap<Arb.SchemableLambda> = {
   mapFromEntries: (ordK, arbK, arbA) => ({
     arbitrary: fc =>
       fc

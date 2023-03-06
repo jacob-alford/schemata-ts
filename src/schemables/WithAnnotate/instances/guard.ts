@@ -6,12 +6,12 @@
  */
 import { constant, identity } from 'fp-ts/function'
 import * as G from 'schemata-ts/Guard'
-import { WithAnnotate1 } from 'schemata-ts/schemables/WithAnnotate/definition'
+import { WithAnnotate } from 'schemata-ts/schemables/WithAnnotate/definition'
 
 /**
  * @since 1.2.0
  * @category Instances
  */
-export const Guard: WithAnnotate1<G.URI> = {
+export const Guard: WithAnnotate<G.SchemableLambda> = {
   annotate: constant(identity),
 }

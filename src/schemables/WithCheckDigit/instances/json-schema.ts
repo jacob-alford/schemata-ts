@@ -5,12 +5,12 @@
  */
 import { identity } from 'fp-ts/function'
 import * as JS from 'schemata-ts/JsonSchema'
-import { WithCheckDigit2 } from 'schemata-ts/schemables/WithCheckDigit/definition'
+import { WithCheckDigit } from 'schemata-ts/schemables/WithCheckDigit/definition'
 
 /**
  * @since 1.2.0
  * @category Instances
  */
-export const JsonSchema: WithCheckDigit2<JS.URI> = {
+export const JsonSchema: WithCheckDigit<JS.SchemableLambda> = {
   checkDigit: () => identity,
 }

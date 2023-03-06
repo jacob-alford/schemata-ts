@@ -5,13 +5,13 @@
  */
 import { identity } from 'fp-ts/function'
 import * as Enc from 'io-ts/Encoder'
-import { WithPadding2 } from 'schemata-ts/schemables/WithPadding/definition'
+import { WithPadding } from 'schemata-ts/schemables/WithPadding/definition'
 
 /**
  * @since 1.0.0
  * @category Instances
  */
-export const Encoder: WithPadding2<Enc.URI> = {
+export const Encoder: WithPadding<Enc.SchemableLambda> = {
   padLeft: () => identity,
   padRight: () => identity,
 }

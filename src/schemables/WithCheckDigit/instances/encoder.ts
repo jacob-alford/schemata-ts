@@ -5,12 +5,12 @@
  */
 import { identity } from 'fp-ts/function'
 import * as Enc from 'schemata-ts/Encoder'
-import { WithCheckDigit2 } from 'schemata-ts/schemables/WithCheckDigit/definition'
+import { WithCheckDigit } from 'schemata-ts/schemables/WithCheckDigit/definition'
 
 /**
  * @since 1.0.0
  * @category Instances
  */
-export const Encoder: WithCheckDigit2<Enc.URI> = {
+export const Encoder: WithCheckDigit<Enc.SchemableLambda> = {
   checkDigit: () => identity,
 }

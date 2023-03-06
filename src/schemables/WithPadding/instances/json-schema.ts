@@ -5,14 +5,14 @@
  */
 import { pipe } from 'fp-ts/function'
 import * as JS from 'schemata-ts/JsonSchema'
-import { WithPadding2 } from 'schemata-ts/schemables/WithPadding/definition'
+import { WithPadding } from 'schemata-ts/schemables/WithPadding/definition'
 import { match } from 'schemata-ts/schemables/WithPadding/utils'
 
 /**
  * @since 1.2.0
  * @category Instances
  */
-export const JsonSchema: WithPadding2<JS.URI> = {
+export const JsonSchema: WithPadding<JS.SchemableLambda> = {
   padLeft: length => stringSchema =>
     pipe(
       length,

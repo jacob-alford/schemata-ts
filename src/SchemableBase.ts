@@ -4,7 +4,6 @@
  * @since 1.0.0
  */
 import { HKT2, Kind2, URIS2 } from 'fp-ts/HKT'
-import { Literal } from 'io-ts/Schemable'
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 type Any = any

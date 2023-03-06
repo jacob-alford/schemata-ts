@@ -3,12 +3,13 @@
  *
  * @since 2.0.0
  */
-import { Alt1 } from 'fp-ts/Alt'
+import { Alt2 } from 'fp-ts/Alt'
+import { make } from 'fp-ts/Const'
 import * as E from 'fp-ts/Either'
-import { Functor1 } from 'fp-ts/Functor'
-import { Invariant1 } from 'fp-ts/Invariant'
-import { NaturalTransformation11 } from 'fp-ts/lib/NaturalTransformation'
-import { ReadonlyNonEmptyArray } from 'fp-ts/ReadonlyNonEmptyArray'
+import { Lazy } from 'fp-ts/function'
+import { Functor2 } from 'fp-ts/Functor'
+import { Invariant2 } from 'fp-ts/Invariant'
+import { NaturalTransformation12C } from 'fp-ts/NaturalTransformation'
 import * as DE from 'schemata-ts/DecodeError'
 import * as DT from 'schemata-ts/DecoderT'
 import * as G from 'schemata-ts/Guard'
@@ -22,8 +23,8 @@ import * as hkt from 'schemata-ts/HKT'
  * @since 2.0.0
  * @category Model
  */
-export interface Decoder<A> {
-  readonly decode: (u: unknown) => E.Either<ReadonlyNonEmptyArray<DE.DecodeError>, A>
+export interface Decoder<I, A> {
+  readonly decode: (u: unknown) => E.Either<DE.DecodeFailure<I>, A>
 }
 
 // ------------------
@@ -50,7 +51,7 @@ export const failure = DT.failure(E.MonadThrow)
  */
 export const typeMismatch = (
   ...args: ConstructorParameters<typeof DE.TypeMismatch>
-): ReadonlyNonEmptyArray<DE.DecodeError> => [new DE.TypeMismatch(...args)]
+): DE.DecodeErrors => new DE.DecodeErrors([new DE.TypeMismatch(...args)])
 
 /**
  * A failure case for an unexpected value
@@ -60,7 +61,7 @@ export const typeMismatch = (
  */
 export const unexpectedValue = (
   ...args: ConstructorParameters<typeof DE.UnexpectedValue>
-): ReadonlyNonEmptyArray<DE.DecodeError> => [new DE.UnexpectedValue(...args)]
+): DE.DecodeErrors => new DE.DecodeErrors([new DE.UnexpectedValue(...args)])
 
 /**
  * A failure case at a specific index
@@ -70,7 +71,7 @@ export const unexpectedValue = (
  */
 export const errorAtIndex = (
   ...args: ConstructorParameters<typeof DE.ErrorAtIndex>
-): ReadonlyNonEmptyArray<DE.DecodeError> => [new DE.ErrorAtIndex(...args)]
+): DE.DecodeErrors => new DE.DecodeErrors([new DE.ErrorAtIndex(...args)])
 
 /**
  * A failure case at a specific key
@@ -80,7 +81,7 @@ export const errorAtIndex = (
  */
 export const errorAtKey = (
   ...args: ConstructorParameters<typeof DE.ErrorAtKey>
-): ReadonlyNonEmptyArray<DE.DecodeError> => [new DE.ErrorAtKey(...args)]
+): DE.DecodeErrors => new DE.DecodeErrors([new DE.ErrorAtKey(...args)])
 
 /**
  * A failure case for a union member
@@ -90,7 +91,7 @@ export const errorAtKey = (
  */
 export const errorAtUnionMember = (
   ...args: ConstructorParameters<typeof DE.ErrorAtUnionMember>
-): ReadonlyNonEmptyArray<DE.DecodeError> => [new DE.ErrorAtUnionMember(...args)]
+): DE.DecodeErrors => new DE.DecodeErrors([new DE.ErrorAtUnionMember(...args)])
 
 // ------------------
 // combinators
@@ -116,10 +117,23 @@ export {
  * @since 2.0.0
  * @category Natural Transformations
  */
-export const fromGuard: (
-  onError: (u: unknown) => ReadonlyNonEmptyArray<DE.DecodeError>,
-) => NaturalTransformation11<G.URI, URI> = onError => guard => ({
+export const fromGuard: <E>(
+  onError: (u: unknown) => DE.DecodeFailure<E>,
+) => NaturalTransformation12C<G.URI, URI, E> = onError => guard => ({
   decode: E.fromPredicate(guard.is, onError),
+})
+
+/**
+ * Constructs a decoder from a predicate
+ *
+ * @since 2.0.0
+ * @category Natural Transformations
+ */
+export const fromPredicate: <I, A>(
+  predicate: (u: unknown) => u is A,
+  onError: (u: unknown) => DE.DecodeFailure<I>,
+) => Decoder<I, A> = (predicate, onError) => ({
+  decode: E.fromPredicate(predicate, onError),
 })
 
 // ------------------
@@ -139,8 +153,8 @@ export const URI = 'schemata-ts/Decoder'
 export type URI = typeof URI
 
 declare module 'fp-ts/lib/HKT' {
-  interface URItoKind<A> {
-    readonly [URI]: Decoder<A>
+  interface URItoKind2<E, A> {
+    readonly [URI]: Decoder<E, A>
   }
 }
 
@@ -148,21 +162,16 @@ declare module 'fp-ts/lib/HKT' {
  * @since 2.0.0
  * @category Type Lambdas
  */
-export interface TypeLambda extends hkt.TypeLambda {
-  readonly type: Decoder<this['Target']>
+export interface SchemableLambda extends hkt.SchemableLambda {
+  readonly type: Decoder<this['Input'], this['Output']>
 }
 
-/**
- * @since 2.0.0
- * @category Type Lambdas
- */
-export interface SchemableLambda extends hkt.SchemableLambda {
-  readonly type: Decoder<this['Output']>
-}
+/** @internal */
+export const liftDecodeError: <I>(failure: DE.DecodeErrors) => DE.DecodeFailure<I> = make
 
 // non-pipeables
-const map_: Functor1<URI>['map'] = DT.map(E.Functor)
-const alt_: Alt1<URI>['alt'] = DT.alt(E.Alt)
+const map_: Functor2<URI>['map'] = DT.map(E.Functor)
+const altW_ = DT.altW(E.Alt)
 
 /**
  * @since 2.0.0
@@ -171,13 +180,13 @@ const alt_: Alt1<URI>['alt'] = DT.alt(E.Alt)
 export const imap: <A, B>(
   f: (a: A) => B,
   g: (b: B) => A,
-) => (fa: Decoder<A>) => Decoder<B> = f => fa => map_(fa, f)
+) => <I>(fa: Decoder<I, A>) => Decoder<I, B> = f => fa => map_(fa, f)
 
 /**
  * @since 2.0.0
  * @category Instances
  */
-export const Invariant: Invariant1<URI> = {
+export const Invariant: Invariant2<URI> = {
   URI,
   imap: map_,
 }
@@ -186,14 +195,15 @@ export const Invariant: Invariant1<URI> = {
  * @since 2.0.0
  * @category Instance Methods
  */
-export const map: <A, B>(f: (a: A) => B) => (fa: Decoder<A>) => Decoder<B> = f => fa =>
-  map_(fa, f)
+export const map: <A, B>(f: (a: A) => B) => <E>(fa: Decoder<E, A>) => Decoder<E, B> =
+  f => fa =>
+    map_(fa, f)
 
 /**
  * @since 2.0.0
  * @category Instances
  */
-export const Functor: Functor1<URI> = {
+export const Functor: Functor2<URI> = {
   URI,
   map: map_,
 }
@@ -202,15 +212,23 @@ export const Functor: Functor1<URI> = {
  * @since 2.0.0
  * @category Instance Methods
  */
-export const alt: <A>(that: () => Decoder<A>) => (fa: Decoder<A>) => Decoder<A> =
-  that => fa =>
-    alt_(fa, that)
+export const altW: <I2, A>(
+  that: Lazy<Decoder<I2, A>>,
+) => <I1>(fa: Decoder<I1, A>) => Decoder<I1 | I2, A> = that => fa => altW_(fa, that)
+
+/**
+ * @since 2.0.0
+ * @category Instance Methods
+ */
+export const alt: <I, A>(
+  that: () => Decoder<I, A>,
+) => (fa: Decoder<I, A>) => Decoder<I, A> = altW
 
 /**
  * @since 2.0.0
  * @category Instances
  */
-export const Alt: Alt1<URI> = {
+export const Alt: Alt2<URI> = {
   ...Functor,
-  alt: alt_,
+  alt: altW_,
 }

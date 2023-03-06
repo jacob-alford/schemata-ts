@@ -5,7 +5,7 @@
  */
 import { flow, pipe } from 'fp-ts/function'
 import * as Arb from 'schemata-ts/Arbitrary'
-import { WithPadding1 } from 'schemata-ts/schemables/WithPadding/definition'
+import { WithPadding } from 'schemata-ts/schemables/WithPadding/definition'
 import {
   foldUnion,
   match,
@@ -17,7 +17,7 @@ import {
  * @since 1.0.0
  * @category Instances
  */
-export const Arbitrary: WithPadding1<Arb.URI> = {
+export const Arbitrary: WithPadding<Arb.SchemableLambda> = {
   padLeft: (length, char) => aS => ({
     arbitrary: fc =>
       pipe(

@@ -8,14 +8,14 @@ import { flow } from 'fp-ts/function'
 import * as RA from 'fp-ts/ReadonlyArray'
 import * as RM from 'fp-ts/ReadonlyMap'
 import * as Sg from 'fp-ts/Semigroup'
-import * as D from 'io-ts/Decoder'
-import { WithMap2C } from 'schemata-ts/schemables/WithMap/definition'
+import * as D from 'schemata-ts/Decoder'
+import { WithMap } from 'schemata-ts/schemables/WithMap/definition'
 
 /**
  * @since 1.0.0
  * @category Instances
  */
-export const Decoder: WithMap2C<D.URI, unknown> = {
+export const Decoder: WithMap<D.SchemableLambda> = {
   mapFromEntries: (ordK, sk, sa) => ({
     decode: flow(
       D.array(D.tuple(sk, sa)).decode,

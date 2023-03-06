@@ -1,12 +1,10 @@
-import { Alt1 } from 'fp-ts/Alt'
-import { Functor1 } from 'fp-ts/Functor'
-import { Invariant1 } from 'fp-ts/Invariant'
+import { Alt2 } from 'fp-ts/Alt'
+import { Functor2 } from 'fp-ts/Functor'
+import { Invariant2 } from 'fp-ts/Invariant'
 import * as IOE from 'fp-ts/IOEither'
-import { ReadonlyNonEmptyArray } from 'fp-ts/ReadonlyNonEmptyArray'
-import { DecodeError } from 'schemata-ts/DecodeError'
+import { DecodeFailure } from 'schemata-ts/DecodeError'
 import { makeDecodeInterpreter } from 'schemata-ts/DecoderT'
 import * as DT from 'schemata-ts/DecoderT'
-import * as hkt from 'schemata-ts/HKT'
 import { Schema } from 'schemata-ts/Schema'
 
 /**
@@ -15,8 +13,8 @@ import { Schema } from 'schemata-ts/Schema'
  * @since 2.0.0
  * @category Model
  */
-export interface IODecoder<A> {
-  readonly decode: (u: unknown) => IOE.IOEither<ReadonlyNonEmptyArray<DecodeError>, A>
+export interface IODecoder<I, A> {
+  readonly decode: (u: unknown) => IOE.IOEither<DecodeFailure<I>, A>
 }
 
 // ------------------
@@ -43,7 +41,7 @@ export const failure = DT.failure(IOE.MonadThrow)
  * @since 2.0.0
  * @category Interpreters
  */
-export const getIODecoder: <E, A>(schema: Schema<E, A>) => IODecoder<A> =
+export const getIODecoder: <I, A>(schema: Schema<I, A>) => IODecoder<I, A> =
   makeDecodeInterpreter(IOE.FromEither)
 
 // ------------------
@@ -63,22 +61,14 @@ export const URI = 'schemata-ts/IODecoder'
 export type URI = typeof URI
 
 declare module 'fp-ts/lib/HKT' {
-  interface URItoKind<A> {
-    readonly [URI]: IODecoder<A>
+  interface URItoKind2<E, A> {
+    readonly [URI]: IODecoder<E, A>
   }
 }
 
-/**
- * @since 2.0.0
- * @category Type Lambdas
- */
-export interface TypeLambda extends hkt.TypeLambda {
-  readonly type: IODecoder<this['Target']>
-}
-
 // non-pipeables
-const map_: Functor1<URI>['map'] = DT.map(IOE.Functor)
-const alt_: Alt1<URI>['alt'] = DT.alt(IOE.Alt)
+const map_: Functor2<URI>['map'] = DT.map(IOE.Functor)
+const altW_ = DT.altW(IOE.Alt)
 
 /**
  * @since 2.0.0
@@ -87,13 +77,13 @@ const alt_: Alt1<URI>['alt'] = DT.alt(IOE.Alt)
 export const imap: <A, B>(
   f: (a: A) => B,
   g: (b: B) => A,
-) => (fa: IODecoder<A>) => IODecoder<B> = f => fa => map_(fa, f)
+) => <I>(fa: IODecoder<I, A>) => IODecoder<I, B> = f => fa => map_(fa, f)
 
 /**
  * @since 2.0.0
  * @category Instances
  */
-export const Invariant: Invariant1<URI> = {
+export const Invariant: Invariant2<URI> = {
   URI,
   imap: map_,
 }
@@ -102,7 +92,7 @@ export const Invariant: Invariant1<URI> = {
  * @since 2.0.0
  * @category Instance Methods
  */
-export const map: <A, B>(f: (a: A) => B) => (fa: IODecoder<A>) => IODecoder<B> =
+export const map: <A, B>(f: (a: A) => B) => <I>(fa: IODecoder<I, A>) => IODecoder<I, B> =
   f => fa =>
     map_(fa, f)
 
@@ -110,7 +100,7 @@ export const map: <A, B>(f: (a: A) => B) => (fa: IODecoder<A>) => IODecoder<B> =
  * @since 2.0.0
  * @category Instances
  */
-export const Functor: Functor1<URI> = {
+export const Functor: Functor2<URI> = {
   URI,
   map: map_,
 }
@@ -119,15 +109,23 @@ export const Functor: Functor1<URI> = {
  * @since 2.0.0
  * @category Instance Methods
  */
-export const alt: <A>(that: () => IODecoder<A>) => (fa: IODecoder<A>) => IODecoder<A> =
-  that => fa =>
-    alt_(fa, that)
+export const altW: <I2, A>(
+  that: () => IODecoder<I2, A>,
+) => <I1>(fa: IODecoder<I1, A>) => IODecoder<I1 | I2, A> = that => fa => altW_(fa, that)
+
+/**
+ * @since 2.0.0
+ * @category Instance Methods
+ */
+export const alt: <I, A>(
+  that: () => IODecoder<I, A>,
+) => (fa: IODecoder<I, A>) => IODecoder<I, A> = altW
 
 /**
  * @since 2.0.0
  * @category Instances
  */
-export const Alt: Alt1<URI> = {
+export const Alt: Alt2<URI> = {
   ...Functor,
-  alt: alt_,
+  alt: altW_,
 }

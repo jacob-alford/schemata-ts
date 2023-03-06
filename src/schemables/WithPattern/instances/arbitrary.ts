@@ -8,7 +8,7 @@ import * as RA from 'fp-ts/ReadonlyArray'
 import * as Arb from 'schemata-ts/Arbitrary'
 import { match, matchOn } from 'schemata-ts/internal/match'
 import * as PB from 'schemata-ts/PatternBuilder'
-import { WithPattern1 } from 'schemata-ts/schemables/WithPattern/definition'
+import { WithPattern } from 'schemata-ts/schemables/WithPattern/definition'
 
 const matchK = matchOn('kind')
 
@@ -116,6 +116,6 @@ export const arbitraryFromPattern: (pattern: PB.Pattern) => Arb.Arbitrary<string
  * @since 1.0.0
  * @category Instances
  */
-export const Arbitrary: WithPattern1<Arb.URI> = {
+export const Arbitrary: WithPattern<Arb.SchemableLambda> = {
   pattern: arbitraryFromPattern,
 }

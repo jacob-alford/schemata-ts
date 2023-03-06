@@ -7,19 +7,15 @@ import * as B from 'fp-ts/boolean'
 import { pipe } from 'fp-ts/function'
 import * as Ord from 'fp-ts/Ord'
 import * as RM from 'fp-ts/ReadonlyMap'
-import * as G from 'io-ts/Guard'
-import { WithMap1 } from 'schemata-ts/schemables/WithMap/definition'
+import * as G from 'schemata-ts/Guard'
+import { WithMap } from 'schemata-ts/schemables/WithMap/definition'
 
 /**
  * @since 1.0.0
  * @category Instances
  */
-export const Guard: WithMap1<G.URI> = {
-  mapFromEntries: <K, A>(
-    ordK: Ord.Ord<K>,
-    sk: G.Guard<unknown, K>,
-    sa: G.Guard<unknown, A>,
-  ) => ({
+export const Guard: WithMap<G.SchemableLambda> = {
+  mapFromEntries: <K, A>(ordK: Ord.Ord<K>, sk: G.Guard<K>, sa: G.Guard<A>) => ({
     is: (a): a is ReadonlyMap<K, A> =>
       a instanceof Map &&
       pipe(

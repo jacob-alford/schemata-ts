@@ -7,14 +7,14 @@ import * as E from 'fp-ts/Either'
 import { pipe } from 'fp-ts/function'
 import * as P from 'schemata-ts/Printer'
 import * as PE from 'schemata-ts/PrintError'
-import { WithDate2 } from 'schemata-ts/schemables/WithDate/definition'
+import { WithDate } from 'schemata-ts/schemables/WithDate/definition'
 import { isSafeDate } from 'schemata-ts/schemables/WithDate/utils'
 
 /**
  * @since 1.1.0
  * @category Instances
  */
-export const Printer: WithDate2<P.URI> = {
+export const Printer: WithDate<P.SchemableLambda> = {
   date: {
     domainToJson: date =>
       pipe(

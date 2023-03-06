@@ -3,14 +3,14 @@
  *
  * @since 1.0.0
  */
-import * as Eq_ from 'fp-ts/Eq'
-import { WithOptional1 } from 'schemata-ts/schemables/WithOptional/definition'
+import * as Eq_ from 'schemata-ts/Eq'
+import { WithOptional } from 'schemata-ts/schemables/WithOptional/definition'
 
 /**
  * @since 1.0.0
  * @category Instances
  */
-export const Eq: WithOptional1<Eq_.URI> = {
+export const Eq: WithOptional<Eq_.SchemableLambda> = {
   optional: eqA => ({
     equals: (x, y) =>
       x === undefined ? y === undefined : y !== undefined && eqA.equals(x, y),

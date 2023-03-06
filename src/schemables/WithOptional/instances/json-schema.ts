@@ -4,13 +4,13 @@
  * @since 1.2.0
  */
 import * as JS from 'schemata-ts/JsonSchema'
-import { WithOptional2 } from 'schemata-ts/schemables/WithOptional/definition'
+import { WithOptional } from 'schemata-ts/schemables/WithOptional/definition'
 
 /**
  * @since 1.2.0
  * @category Instances
  */
-export const JsonSchema: WithOptional2<JS.URI> = {
+export const JsonSchema: WithOptional<JS.SchemableLambda> = {
   // Undefined is not a valid JSON Value
   optional: () => JS.emptySchema,
 }

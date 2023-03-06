@@ -11,14 +11,14 @@ import * as RR from 'fp-ts/ReadonlyRecord'
 import * as Sg from 'fp-ts/Semigroup'
 import * as Str from 'fp-ts/string'
 import * as JS from 'schemata-ts/JsonSchema'
-import { WithStructM2 } from 'schemata-ts/schemables/WithStructM/definition'
+import { WithStructM } from 'schemata-ts/schemables/WithStructM/definition'
 import { isRequiredFlag } from 'schemata-ts/struct'
 
 /**
  * @since 1.3.0
  * @category Instances
  */
-export const JsonSchema: WithStructM2<JS.URI> = {
+export const JsonSchema: WithStructM<JS.SchemableLambda> = {
   structM: (properties, params = { extraProps: 'strip' }) => {
     const [requiredKeys, jsonSchema] = pipe(
       properties,

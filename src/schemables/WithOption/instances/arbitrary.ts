@@ -5,13 +5,13 @@
  * @since 1.0.0
  */
 import * as Arb from 'schemata-ts/Arbitrary'
-import { WithOption1 } from 'schemata-ts/schemables/WithOption/definition'
+import { WithOption } from 'schemata-ts/schemables/WithOption/definition'
 
 /**
  * @since 1.0.0
  * @category Instances
  */
-export const Arbitrary: WithOption1<Arb.URI> = {
+export const Arbitrary: WithOption<Arb.SchemableLambda> = {
   optionFromExclude: (_, arbA) => ({
     arbitrary: fc =>
       fc.oneof(

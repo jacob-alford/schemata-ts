@@ -4,7 +4,7 @@
  * @since 1.0.0
  */
 import { pipe } from 'fp-ts/function'
-import { boolean } from 'io-ts/Guard'
+import { boolean } from 'schemata-ts/Guard'
 import * as PB from 'schemata-ts/PatternBuilder'
 import { make, Schema } from 'schemata-ts/Schema'
 

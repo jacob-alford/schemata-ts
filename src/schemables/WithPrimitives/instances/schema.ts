@@ -11,10 +11,11 @@
  */
 import { URI as SchemaURI } from 'schemata-ts/Schema'
 import * as SC from 'schemata-ts/Schema'
-import { WithInt2 } from 'schemata-ts/schemables/WithInt/definition'
+import { WithInt } from 'schemata-ts/schemables/WithInt/definition'
 
 /**
  * @since 1.0.0
  * @category Instances
  */
-export const Schema: WithInt2<SchemaURI>['int'] = params => SC.make(S => S.int(params))
+export const Schema: WithInt<Schem.SchemableLambda>['int'] = params =>
+  SC.make(S => S.int(params))

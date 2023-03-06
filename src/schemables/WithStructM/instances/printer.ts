@@ -9,14 +9,14 @@ import * as O from 'fp-ts/Option'
 import { hasOwn, witherS } from 'schemata-ts/internal/util'
 import * as P from 'schemata-ts/Printer'
 import * as PE from 'schemata-ts/PrintError'
-import { WithStructM2 } from 'schemata-ts/schemables/WithStructM/definition'
+import { WithStructM } from 'schemata-ts/schemables/WithStructM/definition'
 import { keyIsNotMapped } from 'schemata-ts/struct'
 
 /**
  * @since 1.3.0
  * @category Instances
  */
-export const Printer: WithStructM2<P.URI> = {
+export const Printer: WithStructM<P.SchemableLambda> = {
   structM: (properties, params = { extraProps: 'strip' }) => {
     const printersByKey: Record<string, P.Printer<unknown, unknown>['codomainToJson']> =
       {}

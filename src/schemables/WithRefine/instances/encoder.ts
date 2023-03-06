@@ -5,12 +5,12 @@
  */
 import { identity } from 'fp-ts/function'
 import * as Enc from 'io-ts/Encoder'
-import { WithRefine2 } from 'schemata-ts/schemables/WithRefine/definition'
+import { WithRefine } from 'schemata-ts/schemables/WithRefine/definition'
 
 /**
  * @since 1.0.0
  * @category Instances
  */
-export const Encoder: WithRefine2<Enc.URI> = {
+export const Encoder: WithRefine<Enc.SchemableLambda> = {
   refine: () => identity,
 }

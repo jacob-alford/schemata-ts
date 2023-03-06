@@ -6,12 +6,12 @@
  */
 import { constant, identity } from 'fp-ts/function'
 import * as Arb from 'schemata-ts/Arbitrary'
-import { WithAnnotate1 } from 'schemata-ts/schemables/WithAnnotate/definition'
+import { WithAnnotate } from 'schemata-ts/schemables/WithAnnotate/definition'
 
 /**
  * @since 1.2.0
  * @category Instances
  */
-export const Arbitrary: WithAnnotate1<Arb.URI> = {
+export const Arbitrary: WithAnnotate<Arb.SchemableLambda> = {
   annotate: constant(identity),
 }

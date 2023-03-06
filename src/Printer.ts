@@ -14,7 +14,7 @@ import * as hkt from 'schemata-ts/HKT'
 import { typeOf, witherS } from 'schemata-ts/internal/util'
 import * as PE from 'schemata-ts/PrintError'
 import { Schemable2 } from 'schemata-ts/Schemable'
-import { WithRefine2 } from 'schemata-ts/schemables/WithRefine/definition'
+import { WithRefine } from 'schemata-ts/schemables/WithRefine/definition'
 
 interface JsonStringBrand {
   readonly JsonString: unique symbol

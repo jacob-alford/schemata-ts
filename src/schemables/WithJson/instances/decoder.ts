@@ -3,15 +3,22 @@
  *
  * @since 1.1.0
  */
+import { pipe } from 'fp-ts/function'
 import * as D from 'schemata-ts/Decoder'
-import { WithJson2C } from 'schemata-ts/schemables/WithJson/definition'
+import { WithJson } from 'schemata-ts/schemables/WithJson/definition'
 import { Guard } from 'schemata-ts/schemables/WithJson/instances/guard'
 
 /**
  * @since 1.1.0
  * @category Instances
  */
-export const Decoder: WithJson2C<D.URI, unknown> = {
-  json: D.fromGuard(Guard.json, 'Json'),
-  jsonString: D.fromGuard(Guard.jsonString, 'JsonString'),
+export const Decoder: WithJson<D.SchemableLambda> = {
+  json: pipe(
+    Guard.json,
+    D.fromGuard(u => D.liftDecodeError(D.typeMismatch('Json', u))),
+  ),
+  jsonString: pipe(
+    Guard.jsonString,
+    D.fromGuard(u => D.liftDecodeError(D.typeMismatch('JsonString', u))),
+  ),
 }

@@ -3,15 +3,15 @@
  *
  * @since 1.0.0
  */
-import * as Eq_ from 'fp-ts/Eq'
 import { identity } from 'fp-ts/function'
-import { WithPadding1 } from 'schemata-ts/schemables/WithPadding/definition'
+import * as Eq_ from 'schemata-ts/Eq'
+import { WithPadding } from 'schemata-ts/schemables/WithPadding/definition'
 
 /**
  * @since 1.0.0
  * @category Instances
  */
-export const Eq: WithPadding1<Eq_.URI> = {
+export const Eq: WithPadding<Eq_.SchemableLambda> = {
   padLeft: () => identity,
   padRight: () => identity,
 }

@@ -4,13 +4,13 @@
  * @since 1.0.0
  */
 import * as G from 'schemata-ts/Guard'
-import { WithOptional1 } from 'schemata-ts/schemables/WithOptional/definition'
+import { WithOptional } from 'schemata-ts/schemables/WithOptional/definition'
 
 /**
  * @since 1.0.0
  * @category Instances
  */
-export const Guard: WithOptional1<G.URI> = {
+export const Guard: WithOptional<G.SchemableLambda> = {
   optional: <A>(gA: G.Guard<unknown, A>): G.Guard<unknown, A | undefined> => ({
     is: (a): a is A | undefined => a === undefined || gA.is(a),
   }),

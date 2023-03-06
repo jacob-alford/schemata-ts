@@ -6,12 +6,12 @@
  */
 import { constant, identity } from 'fp-ts/function'
 import * as P from 'schemata-ts/Printer'
-import { WithAnnotate2 } from 'schemata-ts/schemables/WithAnnotate/definition'
+import { WithAnnotate } from 'schemata-ts/schemables/WithAnnotate/definition'
 
 /**
  * @since 1.2.0
  * @category Instances
  */
-export const Printer: WithAnnotate2<P.URI> = {
+export const Printer: WithAnnotate<P.SchemableLambda> = {
   annotate: constant(identity),
 }

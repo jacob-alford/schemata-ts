@@ -8,13 +8,13 @@ import * as RA from 'fp-ts/ReadonlyArray'
 import * as RR from 'fp-ts/ReadonlyRecord'
 import * as Eq_ from 'schemata-ts/Eq'
 import { SafeJson } from 'schemata-ts/Printer'
-import { WithJson1 } from 'schemata-ts/schemables/WithJson/definition'
+import { WithJson } from 'schemata-ts/schemables/WithJson/definition'
 
 /**
  * @since 1.1.0
  * @category Instances
  */
-export const Eq: WithJson1<Eq_.URI> = {
+export const Eq: WithJson<Eq_.SchemableLambda> = {
   json: {
     equals: (x, y) =>
       x === y ||

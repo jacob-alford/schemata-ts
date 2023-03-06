@@ -4,8 +4,8 @@
  *
  * @since 1.0.0
  */
-import * as Eq_ from 'fp-ts/Eq'
 import * as O from 'fp-ts/Option'
+import * as Eq_ from 'schemata-ts/Eq'
 import { SchemableKind, SchemableLambda } from 'schemata-ts/HKT'
 
 /**

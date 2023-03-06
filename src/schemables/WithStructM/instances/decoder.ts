@@ -8,10 +8,10 @@ import * as E from 'fp-ts/Either'
 import { flow, pipe } from 'fp-ts/function'
 import * as O from 'fp-ts/Option'
 import * as DE from 'io-ts/DecodeError'
-import * as D from 'io-ts/Decoder'
 import * as FS from 'io-ts/FreeSemigroup'
+import * as D from 'schemata-ts/Decoder'
 import { hasOwn, witherSM } from 'schemata-ts/internal/util'
-import { WithStructM2C } from 'schemata-ts/schemables/WithStructM/definition'
+import { WithStructM } from 'schemata-ts/schemables/WithStructM/definition'
 import { isOptionalFlag, isRequiredFlag, keyIsNotMapped } from 'schemata-ts/struct'
 
 const decodeErrorValidation = E.getApplicativeValidation(DE.getSemigroup<string>())
@@ -21,7 +21,7 @@ const apSecond = Ap.apSecond(decodeErrorValidation)
  * @since 1.3.0
  * @category Instances
  */
-export const Decoder: WithStructM2C<D.URI, unknown> = {
+export const Decoder: WithStructM<D.SchemableLambda> = {
   structM: (properties, params = { extraProps: 'strip' }) => {
     return {
       decode: flow(

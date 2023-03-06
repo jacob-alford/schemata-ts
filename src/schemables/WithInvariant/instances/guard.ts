@@ -4,12 +4,12 @@
  * @since 1.0.0
  */
 import * as G from 'schemata-ts/Guard'
-import { WithInvariant1 } from 'schemata-ts/schemables/WithInvariant/definition'
+import { WithInvariant } from 'schemata-ts/schemables/WithInvariant/definition'
 
 /**
  * @since 1.0.0
  * @category Instances
  */
-export const Guard: WithInvariant1<G.URI> = {
+export const Guard: WithInvariant<G.SchemableLambda> = {
   imap: gB => () => () => gB,
 }

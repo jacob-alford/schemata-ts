@@ -7,7 +7,7 @@
 import { pipe } from 'fp-ts/function'
 import { Ord } from 'fp-ts/Ord'
 import * as RS from 'fp-ts/ReadonlySet'
-import * as G from 'io-ts/Guard'
+import * as G from 'schemata-ts/Guard'
 import { getGuard } from 'schemata-ts/Guard'
 import { make, Schema } from 'schemata-ts/Schema'
 

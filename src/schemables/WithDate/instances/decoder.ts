@@ -3,8 +3,9 @@
  *
  * @since 1.0.0
  */
-import * as D from 'io-ts/Decoder'
-import { WithDate2C } from 'schemata-ts/schemables/WithDate/definition'
+import { pipe } from 'fp-ts/function'
+import * as D from 'schemata-ts/Decoder'
+import { WithDate } from 'schemata-ts/schemables/WithDate/definition'
 import { Guard } from 'schemata-ts/schemables/WithDate/instances/guard'
 import { isValidDateString } from 'schemata-ts/schemables/WithDate/utils'
 
@@ -12,10 +13,15 @@ import { isValidDateString } from 'schemata-ts/schemables/WithDate/utils'
  * @since 1.0.0
  * @category Instances
  */
-export const Decoder: WithDate2C<D.URI, unknown> = {
-  date: D.fromGuard(Guard.date, 'Date.date'),
-  dateFromString: {
-    decode: s =>
-      isValidDateString(s) ? D.success(new Date(s)) : D.failure(s, 'Date.dateFromString'),
-  },
+export const Decoder: WithDate<D.SchemableLambda> = {
+  date: pipe(
+    Guard.date,
+    D.fromGuard(u => D.liftDecodeError(D.typeMismatch('Date', u))),
+  ),
+  dateFromString: pipe(
+    D.fromPredicate(isValidDateString, u =>
+      D.liftDecodeError<string>(D.typeMismatch(String(u), 'Date.dateFromString')),
+    ),
+    D.map(d => new Date(d)),
+  ),
 }

@@ -4,13 +4,13 @@
  * @since 1.0.0
  */
 import * as Enc from 'schemata-ts/Encoder'
-import { WithOptional2 } from 'schemata-ts/schemables/WithOptional/definition'
+import { WithOptional } from 'schemata-ts/schemables/WithOptional/definition'
 
 /**
  * @since 1.0.0
  * @category Instances
  */
-export const Encoder: WithOptional2<Enc.URI> = {
+export const Encoder: WithOptional<Enc.SchemableLambda> = {
   optional: ea => ({
     encode: a => (a === undefined ? undefined : ea.encode(a)),
   }),

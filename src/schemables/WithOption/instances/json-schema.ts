@@ -5,13 +5,13 @@
  * @since 1.2.0
  */
 import * as JS from 'schemata-ts/JsonSchema'
-import { WithOption2 } from 'schemata-ts/schemables/WithOption/definition'
+import { WithOption } from 'schemata-ts/schemables/WithOption/definition'
 
 /**
  * @since 1.2.0
  * @category Instances
  */
-export const JsonSchema: WithOption2<JS.URI> = {
+export const JsonSchema: WithOption<JS.SchemableLambda> = {
   optionFromExclude: (exclude, jsA) =>
     /*
      * TODO @jacob-alford: Exclude can technically _not_ be a literal value, and that

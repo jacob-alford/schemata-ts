@@ -6,13 +6,13 @@
 import { pipe } from 'fp-ts/function'
 import * as JS from 'schemata-ts/JsonSchema'
 import * as PB from 'schemata-ts/PatternBuilder'
-import { WithPattern2 } from 'schemata-ts/schemables/WithPattern/definition'
+import { WithPattern } from 'schemata-ts/schemables/WithPattern/definition'
 
 /**
  * @since 1.2.0
  * @category Instances
  */
-export const JsonSchema: WithPattern2<JS.URI> = {
+export const JsonSchema: WithPattern<JS.SchemableLambda> = {
   pattern: (pattern, description, caseInsensitive) =>
     pipe(
       JS.makeStringSchema({

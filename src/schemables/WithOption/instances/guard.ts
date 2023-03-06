@@ -4,14 +4,14 @@
  *
  * @since 1.0.0
  */
-import * as G from 'io-ts/Guard'
-import { WithOption1 } from 'schemata-ts/schemables/WithOption/definition'
+import * as G from 'schemata-ts/Guard'
+import { WithOption } from 'schemata-ts/schemables/WithOption/definition'
 
 /**
  * @since 1.0.0
  * @category Instances
  */
-export const Guard: WithOption1<G.URI> = {
+export const Guard: WithOption<G.SchemableLambda> = {
   optionFromExclude: (_, guardA) =>
     G.union(
       G.struct({

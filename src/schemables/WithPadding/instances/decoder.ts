@@ -3,15 +3,15 @@
  *
  * @since 1.0.0
  */
-import * as D from 'io-ts/Decoder'
-import { WithPadding2C } from 'schemata-ts/schemables/WithPadding/definition'
+import * as D from 'schemata-ts/Decoder'
+import { WithPadding } from 'schemata-ts/schemables/WithPadding/definition'
 import { foldUnion, match } from 'schemata-ts/schemables/WithPadding/utils'
 
 /**
  * @since 1.0.0
  * @category Instances
  */
-export const Decoder: WithPadding2C<D.URI, unknown> = {
+export const Decoder: WithPadding<D.SchemableLambda> = {
   padLeft: match({
     MaxLength: ({ maxLength }) =>
       D.refine(

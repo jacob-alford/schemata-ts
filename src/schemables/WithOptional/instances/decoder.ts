@@ -3,15 +3,21 @@
  *
  * @since 1.0.0
  */
+import * as E from 'fp-ts/Either'
+import { pipe } from 'fp-ts/function'
 import * as D from 'schemata-ts/Decoder'
-import { WithOptional2C } from 'schemata-ts/schemables/WithOptional/definition'
+import { WithOptional } from 'schemata-ts/schemables/WithOptional/definition'
 
 /**
  * @since 1.0.0
  * @category Instances
  */
-export const Decoder: WithOptional2C<D.URI, unknown> = {
+export const Decoder: WithOptional<D.SchemableLambda> = {
   optional: da => ({
-    decode: u => (u === undefined ? D.success(u) : da.decode(u)),
+    decode: u =>
+      pipe(
+        u === undefined ? D.success(u) : da.decode(u),
+        E.mapLeft(e => D.liftDecodeError(e)),
+      ),
   }),
 }

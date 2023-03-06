@@ -4,13 +4,15 @@
  *
  * @since 1.0.0
  */
-import * as Eq_ from 'fp-ts/Eq'
 import { flow, SK } from 'fp-ts/function'
 import * as O from 'fp-ts/Option'
-import { WithOption1 } from 'schemata-ts/schemables/WithOption/definition'
+import * as Eq_ from 'schemata-ts/Eq'
+import { WithOption } from 'schemata-ts/schemables/WithOption/definition'
 
 /**
  * @since 1.0.0
  * @category Instances
  */
-export const Eq: WithOption1<Eq_.URI> = { optionFromExclude: flow(SK, O.getEq) }
+export const Eq: WithOption<Eq_.SchemableLambda> = {
+  optionFromExclude: flow(SK, O.getEq),
+}

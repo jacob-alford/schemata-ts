@@ -3,6 +3,7 @@
  *
  * @since 2.0.0
  */
+import { Const } from 'fp-ts/Const'
 import { flow, pipe } from 'fp-ts/function'
 import * as RA from 'fp-ts/ReadonlyArray'
 import * as RNEA from 'fp-ts/ReadonlyNonEmptyArray'
@@ -21,6 +22,23 @@ export type DecodeError =
   | ErrorAtIndex
   | ErrorAtKey
   | ErrorAtUnionMember
+
+/**
+ * A readonly non-empty array of decode errors
+ *
+ * @since 2.0.0
+ * @category Model
+ */
+export class DecodeErrors {
+  readonly _tag = 'DecodeErrors'
+  constructor(readonly errors: RNEA.ReadonlyNonEmptyArray<DecodeError>) {}
+}
+
+/**
+ * @since 2.0.0
+ * @category Model
+ */
+export type DecodeFailure<E> = Const<DecodeErrors, E>
 
 /**
  * Represents a mismatched value
@@ -52,10 +70,7 @@ export class UnexpectedValue {
  */
 export class ErrorAtIndex {
   readonly _tag = 'ErrorAtIndex'
-  constructor(
-    readonly index: number,
-    readonly errors: RNEA.ReadonlyNonEmptyArray<DecodeError>,
-  ) {}
+  constructor(readonly index: number, readonly errors: DecodeErrors) {}
 }
 
 /**
@@ -66,10 +81,7 @@ export class ErrorAtIndex {
  */
 export class ErrorAtKey {
   readonly _tag = 'ErrorAtKey'
-  constructor(
-    readonly key: string,
-    readonly errors: RNEA.ReadonlyNonEmptyArray<DecodeError>,
-  ) {}
+  constructor(readonly key: string, readonly errors: DecodeErrors) {}
 }
 
 /**
@@ -80,10 +92,20 @@ export class ErrorAtKey {
  */
 export class ErrorAtUnionMember {
   readonly _tag = 'ErrorAtUnionMember'
-  constructor(
-    readonly member: number | string,
-    readonly errors: RNEA.ReadonlyNonEmptyArray<DecodeError>,
-  ) {}
+  constructor(readonly member: number | string, readonly errors: DecodeErrors) {}
+}
+
+/**
+ * @since 2.0.0
+ * @category Instances
+ */
+export const Semigroup: Sg.Semigroup<DecodeErrors> = {
+  concat: (x, y) =>
+    x.errors.length === 0
+      ? y
+      : y.errors.length === 0
+      ? x
+      : new DecodeErrors(RNEA.concat(y.errors)(x.errors)),
 }
 
 /**
@@ -100,21 +122,25 @@ export const fold =
     readonly ErrorAtIndex: (e: ErrorAtIndex) => S
     readonly ErrorAtKey: (e: ErrorAtKey) => S
     readonly ErrorAtUnionMember: (e: ErrorAtUnionMember) => S
-  }): ((e: RNEA.ReadonlyNonEmptyArray<DecodeError>) => S) =>
-    RNEA.foldMap(S)(err => {
-      switch (err._tag) {
-        case 'TypeMismatch':
-          return matchers.TypeMismatch(err)
-        case 'UnexpectedValue':
-          return matchers.UnexpectedValue(err)
-        case 'ErrorAtIndex':
-          return matchers.ErrorAtIndex(err)
-        case 'ErrorAtKey':
-          return matchers.ErrorAtKey(err)
-        case 'ErrorAtUnionMember':
-          return matchers.ErrorAtUnionMember(err)
-      }
-    })
+  }) =>
+  (e: DecodeErrors): S =>
+    pipe(
+      e.errors,
+      RNEA.foldMap(S)(err => {
+        switch (err._tag) {
+          case 'TypeMismatch':
+            return matchers.TypeMismatch(err)
+          case 'UnexpectedValue':
+            return matchers.UnexpectedValue(err)
+          case 'ErrorAtIndex':
+            return matchers.ErrorAtIndex(err)
+          case 'ErrorAtKey':
+            return matchers.ErrorAtKey(err)
+          case 'ErrorAtUnionMember':
+            return matchers.ErrorAtUnionMember(err)
+        }
+      }),
+    )
 
 /**
  * Flattens a `DecodeError` tree into a common Monoid with access to the current accumulation
@@ -130,20 +156,16 @@ export const foldMap =
     readonly ErrorAtIndex: (index: number, errors: S) => S
     readonly ErrorAtKey: (key: string, errors: S) => S
     readonly ErrorAtUnionMember: (member: number | string, errors: S) => S
-  }): ((e: RNEA.ReadonlyNonEmptyArray<DecodeError>) => S) =>
-    RNEA.foldMap(S)(err => {
-      switch (err._tag) {
-        case 'TypeMismatch':
-          return matchers.TypeMismatch(err.expected, err.actual)
-        case 'UnexpectedValue':
-          return matchers.UnexpectedValue(err.actual)
-        case 'ErrorAtIndex':
-          return matchers.ErrorAtIndex(err.index, foldMap(S)(matchers)(err.errors))
-        case 'ErrorAtKey':
-          return matchers.ErrorAtKey(err.key, foldMap(S)(matchers)(err.errors))
-        case 'ErrorAtUnionMember':
-          return matchers.ErrorAtUnionMember(err.member, foldMap(S)(matchers)(err.errors))
-      }
+  }): ((e: DecodeErrors) => S) =>
+    fold(S)({
+      TypeMismatch: ({ expected, actual }) => matchers.TypeMismatch(expected, actual),
+      UnexpectedValue: actual => matchers.UnexpectedValue(actual),
+      ErrorAtIndex: ({ index, errors }) =>
+        matchers.ErrorAtIndex(index, foldMap(S)(matchers)(errors)),
+      ErrorAtKey: ({ key, errors }) =>
+        matchers.ErrorAtKey(key, foldMap(S)(matchers)(errors)),
+      ErrorAtUnionMember: ({ member, errors }) =>
+        matchers.ErrorAtUnionMember(member, foldMap(S)(matchers)(errors)),
     })
 
 /**
@@ -162,26 +184,31 @@ export const foldMapWithDepth =
     readonly ErrorAtKey: (key: string, errors: S, depth: number) => S
     readonly ErrorAtUnionMember: (member: number | string, errors: S, depth: number) => S
   }) =>
-  (e: RNEA.ReadonlyNonEmptyArray<DecodeError>): S => {
-    const go = (depth: number): ((e: RNEA.ReadonlyNonEmptyArray<DecodeError>) => S) =>
-      RNEA.foldMap(S)(err => {
-        switch (err._tag) {
-          case 'TypeMismatch':
-            return matchers.TypeMismatch(err.expected, err.actual, depth)
-          case 'UnexpectedValue':
-            return matchers.UnexpectedValue(err.actual, depth)
-          case 'ErrorAtIndex':
-            return matchers.ErrorAtIndex(err.index, go(depth + 1)(err.errors), depth)
-          case 'ErrorAtKey':
-            return matchers.ErrorAtKey(err.key, go(depth + 1)(err.errors), depth)
-          case 'ErrorAtUnionMember':
-            return matchers.ErrorAtUnionMember(
-              err.member,
-              go(depth + 1)(err.errors),
-              depth,
-            )
-        }
-      })
+  (e: DecodeErrors): S => {
+    const go =
+      (depth: number) =>
+      (e: DecodeErrors): S =>
+        pipe(
+          e.errors,
+          RNEA.foldMap(S)(err => {
+            switch (err._tag) {
+              case 'TypeMismatch':
+                return matchers.TypeMismatch(err.expected, err.actual, depth)
+              case 'UnexpectedValue':
+                return matchers.UnexpectedValue(err.actual, depth)
+              case 'ErrorAtIndex':
+                return matchers.ErrorAtIndex(err.index, go(depth + 1)(err.errors), depth)
+              case 'ErrorAtKey':
+                return matchers.ErrorAtKey(err.key, go(depth + 1)(err.errors), depth)
+              case 'ErrorAtUnionMember':
+                return matchers.ErrorAtUnionMember(
+                  err.member,
+                  go(depth + 1)(err.errors),
+                  depth,
+                )
+            }
+          }),
+        )
     return go(0)(e)
   }
 
@@ -193,7 +220,7 @@ export const foldMapWithDepth =
  */
 export const drawLinesWithMarkings = (params: {
   readonly indentationString: (depth: number, isLastChild: boolean) => string
-}): ((err: RNEA.ReadonlyNonEmptyArray<DecodeError>) => ReadonlyArray<string>) =>
+}): ((err: DecodeErrors) => ReadonlyArray<string>) =>
   foldMapWithDepth(RA.getMonoid<string>())({
     TypeMismatch: (expected, actual) => [
       `Expected ${expected} but got ${String(actual)}`,
