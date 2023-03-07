@@ -10,6 +10,7 @@ import { Lazy } from 'fp-ts/function'
 import { Functor2 } from 'fp-ts/Functor'
 import { Invariant2 } from 'fp-ts/Invariant'
 import { NaturalTransformation12C } from 'fp-ts/NaturalTransformation'
+import * as RNEA from 'fp-ts/ReadonlyNonEmptyArray'
 import * as DE from 'schemata-ts/DecodeError'
 import * as DT from 'schemata-ts/DecoderT'
 import * as G from 'schemata-ts/Guard'
@@ -44,6 +45,15 @@ export const success = DT.success(E.Pointed)
 export const failure = DT.failure(E.MonadThrow)
 
 /**
+ * A collection of failure cases
+ *
+ * @since 2.0.0
+ * @category Constructors
+ */
+export const decodeErrors = (
+  ...errors: RNEA.ReadonlyNonEmptyArray<DE.DecodeError>
+): DE.DecodeErrors => new DE.DecodeErrors(errors)
+/**
  * A failure case for a value that does not match the expected type
  *
  * @since 2.0.0
@@ -51,7 +61,7 @@ export const failure = DT.failure(E.MonadThrow)
  */
 export const typeMismatch = (
   ...args: ConstructorParameters<typeof DE.TypeMismatch>
-): DE.DecodeErrors => new DE.DecodeErrors([new DE.TypeMismatch(...args)])
+): DE.DecodeError => new DE.TypeMismatch(...args)
 
 /**
  * A failure case for an unexpected value
@@ -61,7 +71,7 @@ export const typeMismatch = (
  */
 export const unexpectedValue = (
   ...args: ConstructorParameters<typeof DE.UnexpectedValue>
-): DE.DecodeErrors => new DE.DecodeErrors([new DE.UnexpectedValue(...args)])
+): DE.DecodeError => new DE.UnexpectedValue(...args)
 
 /**
  * A failure case at a specific index
@@ -71,7 +81,7 @@ export const unexpectedValue = (
  */
 export const errorAtIndex = (
   ...args: ConstructorParameters<typeof DE.ErrorAtIndex>
-): DE.DecodeErrors => new DE.DecodeErrors([new DE.ErrorAtIndex(...args)])
+): DE.DecodeError => new DE.ErrorAtIndex(...args)
 
 /**
  * A failure case at a specific key
@@ -81,7 +91,7 @@ export const errorAtIndex = (
  */
 export const errorAtKey = (
   ...args: ConstructorParameters<typeof DE.ErrorAtKey>
-): DE.DecodeErrors => new DE.DecodeErrors([new DE.ErrorAtKey(...args)])
+): DE.DecodeError => new DE.ErrorAtKey(...args)
 
 /**
  * A failure case for a union member
@@ -91,7 +101,7 @@ export const errorAtKey = (
  */
 export const errorAtUnionMember = (
   ...args: ConstructorParameters<typeof DE.ErrorAtUnionMember>
-): DE.DecodeErrors => new DE.DecodeErrors([new DE.ErrorAtUnionMember(...args)])
+): DE.DecodeError => new DE.ErrorAtUnionMember(...args)
 
 // ------------------
 // combinators
@@ -167,7 +177,12 @@ export interface SchemableLambda extends hkt.SchemableLambda {
 }
 
 /** @internal */
-export const liftDecodeError: <I>(failure: DE.DecodeErrors) => DE.DecodeFailure<I> = make
+export const liftDecodeErrors: <I>(failure: DE.DecodeErrors) => DE.DecodeFailure<I> = make
+
+/** @internal */
+export const liftDecodeError: <I>(
+  failure: DE.DecodeError,
+) => DE.DecodeFailure<I> = errs => liftDecodeErrors(new DE.DecodeErrors(RNEA.of(errs)))
 
 // non-pipeables
 const map_: Functor2<URI>['map'] = DT.map(E.Functor)

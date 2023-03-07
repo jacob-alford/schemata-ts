@@ -127,11 +127,13 @@ export const makeDecodeInterpreter: {
  * @category Constructors
  */
 export const success: {
-  <M extends URIS4>(M: Pointed4<M>): <A>(
+  <M extends URIS4>(M: Pointed4<M>): <I, A>(
     a: A,
-  ) => Kind4<M, never, unknown, DE.DecodeErrors, A>
-  <M extends URIS3>(M: Pointed3<M>): <A>(a: A) => Kind3<M, unknown, DE.DecodeErrors, A>
-  <M extends URIS2>(M: Pointed2<M>): <A>(a: A) => Kind2<M, DE.DecodeErrors, A>
+  ) => Kind4<M, never, unknown, DE.DecodeFailure<I>, A>
+  <M extends URIS3>(M: Pointed3<M>): <I, A>(
+    a: A,
+  ) => Kind3<M, unknown, DE.DecodeFailure<I>, A>
+  <M extends URIS2>(M: Pointed2<M>): <I, A>(a: A) => Kind2<M, DE.DecodeFailure<I>, A>
   <M extends URIS>(M: Pointed1<M>): <A>(a: A) => Kind<M, A>
   <M>(M: Pointed<M>): <A>(a: A) => HKT<M, A>
 } =

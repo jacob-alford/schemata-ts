@@ -4,7 +4,7 @@
  * @since 1.3.0
  */
 import { tuple } from 'fp-ts/function'
-import * as Enc from 'io-ts/Encoder'
+import * as Enc from 'schemata-ts/Encoder'
 import { hasOwn } from 'schemata-ts/internal/util'
 import { WithStructM } from 'schemata-ts/schemables/WithStructM/definition'
 import { keyIsNotMapped } from 'schemata-ts/struct'

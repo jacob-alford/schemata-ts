@@ -522,14 +522,6 @@ declare module 'fp-ts/lib/HKT' {
  * @since 2.0.0
  * @category Type Lambdas
  */
-export interface TypeLambda extends hkt.TypeLambda {
-  readonly type: Const<JsonSchemaWithDescription, this['In']>
-}
-
-/**
- * @since 2.0.0
- * @category Type Lambdas
- */
 export interface SchemableLambda extends hkt.SchemableLambda {
   readonly type: Const<JsonSchemaWithDescription, this['Input']>
 }

@@ -30,13 +30,14 @@ export const Decoder: WithCheckDigit<D.SchemableLambda> = {
             (s): s is Branded<string, CheckDigitVerified> =>
               s[locationToIndex(s, location)] === algorithm(s),
             s =>
-              D.typeMismatch(
-                s,
-                replaceCharAt(s, locationToIndex(s, location), algorithm(s)),
+              D.liftDecodeError(
+                D.typeMismatch(
+                  s,
+                  replaceCharAt(s, locationToIndex(s, location), algorithm(s)),
+                ),
               ),
           ),
         ),
-        E.mapLeft(e => D.liftDecodeError(e)),
       ),
   }),
 }

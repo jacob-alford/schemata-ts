@@ -1,6 +1,5 @@
 import { flow, pipe } from 'fp-ts/function'
 import * as RNEA from 'fp-ts/ReadonlyNonEmptyArray'
-import * as DE from 'schemata-ts/DecodeError'
 import * as D from 'schemata-ts/Decoder'
 import { WithPrimitives } from 'schemata-ts/schemables/WithPrimitives/definition'
 import { Guard } from 'schemata-ts/schemables/WithPrimitives/instances/guard'
@@ -33,11 +32,10 @@ export const Decoder: WithPrimitives<D.SchemableLambda> = {
       D.fromGuard(u =>
         pipe(
           literals,
-          RNEA.chainWithIndex(
-            (i, literal) =>
-              D.errorAtUnionMember(i, D.typeMismatch(String(literal), u)).errors,
+          RNEA.mapWithIndex((i, literal) =>
+            D.errorAtUnionMember(i, D.decodeErrors(D.typeMismatch(String(literal), u))),
           ),
-          errs => D.liftDecodeError(new DE.DecodeErrors(errs)),
+          errs => D.liftDecodeErrors(D.decodeErrors(...(errs as any))),
         ),
       ),
     ),

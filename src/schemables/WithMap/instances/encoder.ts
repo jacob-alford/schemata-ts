@@ -7,7 +7,7 @@ import { flow } from 'fp-ts/function'
 import * as RA from 'fp-ts/ReadonlyArray'
 import * as RM from 'fp-ts/ReadonlyMap'
 import * as RTup from 'fp-ts/ReadonlyTuple'
-import * as Enc from 'io-ts/Encoder'
+import * as Enc from 'schemata-ts/Encoder'
 import { WithMap } from 'schemata-ts/schemables/WithMap/definition'
 
 /**

@@ -38,7 +38,7 @@ export class DecodeErrors {
  * @since 2.0.0
  * @category Model
  */
-export type DecodeFailure<E> = Const<DecodeErrors, E>
+export type DecodeFailure<I> = Const<DecodeErrors, I>
 
 /**
  * Represents a mismatched value

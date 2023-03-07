@@ -11,7 +11,7 @@ import { WithOptional } from 'schemata-ts/schemables/WithOptional/definition'
  * @category Instances
  */
 export const Guard: WithOptional<G.SchemableLambda> = {
-  optional: <A>(gA: G.Guard<unknown, A>): G.Guard<unknown, A | undefined> => ({
+  optional: <A>(gA: G.Guard<A>): G.Guard<A | undefined> => ({
     is: (a): a is A | undefined => a === undefined || gA.is(a),
   }),
 }
