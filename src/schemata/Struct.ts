@@ -5,7 +5,14 @@
  * @category Model
  */
 import { SchemableKind, SchemableLambda } from 'schemata-ts/HKT'
-import { InputOf, make, OutputOf, Schema } from 'schemata-ts/Schema'
+import {
+  OptionalInputProps,
+  OptionalOutputProps,
+  RequiredInputProps,
+  RequiredOutputProps,
+} from 'schemata-ts/internal/schema-utils'
+import { Combine } from 'schemata-ts/internal/type-utils'
+import { make, Schema } from 'schemata-ts/Schema'
 import * as s from 'schemata-ts/struct'
 
 /**
@@ -42,18 +49,14 @@ import * as s from 'schemata-ts/struct'
 export const Struct = <T extends Record<string, Schema<unknown, unknown>>>(
   props: T,
 ): Schema<
-  {
-    [K in keyof T]: InputOf<T[K]>
-  },
-  {
-    [K in keyof T]: OutputOf<T[K]>
-  }
+  Combine<OptionalInputProps<T> & RequiredInputProps<T>>,
+  Combine<OptionalOutputProps<T> & RequiredOutputProps<T>>
 > =>
   make(S => {
     const hktStruct: Record<
       string,
       s.Prop<
-        s.RequiredKeyFlag,
+        s.KeyFlag,
         SchemableLambda,
         SchemableKind<SchemableLambda, unknown, unknown>,
         s.KeyNotMapped
@@ -62,6 +65,10 @@ export const Struct = <T extends Record<string, Schema<unknown, unknown>>>(
     for (const key in props) {
       // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
       const prop = props[key]!
+      if (s.hasImplicitOptional(prop)) {
+        hktStruct[key] = s.optional(prop(S))
+        continue
+      }
       hktStruct[key] = s.required(prop(S))
     }
     return S.structM(hktStruct as any)

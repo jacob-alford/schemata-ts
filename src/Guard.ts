@@ -35,6 +35,20 @@ export const fromPredicate = <A>(predicate: (u: unknown) => u is A): Guard<A> =>
 })
 
 // ------------------
+// combinators
+// ------------------
+
+export {
+  /**
+   * Interprets a schema as a decoder
+   *
+   * @since 2.0.0
+   * @category Interpreters
+   */
+  getGuard,
+} from 'schemata-ts/derivations/GuardSchemable'
+
+// ------------------
 // instances
 // ------------------
 

@@ -5,13 +5,18 @@
  */
 import * as D from 'schemata-ts/Decoder'
 import { WithOptional } from 'schemata-ts/schemables/WithOptional/definition'
+import { makeImplicitOptional } from 'schemata-ts/struct'
 
 /**
  * @since 1.0.0
  * @category Instances
  */
 export const Decoder: WithOptional<D.SchemableLambda> = {
-  optional: da => ({
-    decode: u => (u === undefined ? D.success<never, any>(u) : da.decode(u)),
-  }),
+  optional: da =>
+    makeImplicitOptional(
+      {
+        decode: u => (u === undefined ? D.success<never, any>(u) : da.decode(u)),
+      },
+      decoder => Object.assign({}, decoder),
+    ),
 }

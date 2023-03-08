@@ -4,6 +4,7 @@
  * @since 1.0.0
  */
 import { SchemableKind, SchemableLambda } from 'schemata-ts/HKT'
+import { ImplicitOptional } from 'schemata-ts/struct'
 
 /**
  * @since 1.0.0
@@ -17,5 +18,5 @@ export interface WithOptional<S extends SchemableLambda> {
    */
   readonly optional: <O, A>(
     target: SchemableKind<S, O, A>,
-  ) => SchemableKind<S, O | undefined, A | undefined>
+  ) => ImplicitOptional & SchemableKind<S, O | undefined, A | undefined>
 }

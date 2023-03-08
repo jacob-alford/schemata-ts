@@ -6,6 +6,7 @@
 import { identity } from 'fp-ts/function'
 import { SchemableKind, SchemableLambda } from 'schemata-ts/HKT'
 import { camelCase } from 'schemata-ts/internal/camelcase'
+import { hasOwn } from 'schemata-ts/internal/util'
 import type { CamelCase } from 'type-fest'
 
 /**
@@ -14,6 +15,30 @@ import type { CamelCase } from 'type-fest'
  */
 export type OptionalKeyFlag = 'Optional'
 const OptionalKeyFlag: OptionalKeyFlag = 'Optional'
+
+/** @internal */
+export type ImplicitOptionalFlag = typeof ImplicitOptionalFlag
+const ImplicitOptionalFlag = Symbol.for('schemata-ts/struct/ImplicitOptionalFlag')
+
+/** @internal */
+export interface ImplicitOptional {
+  [ImplicitOptionalFlag]: ImplicitOptionalFlag
+}
+
+const implicitOptional: ImplicitOptional = {
+  [ImplicitOptionalFlag]: ImplicitOptionalFlag,
+}
+
+/** @internal */
+export const makeImplicitOptional: <T>(
+  val: T,
+  clone: (val: T) => T,
+) => ImplicitOptional & T = (val, clone) =>
+  Object.assign(clone(val) as any, implicitOptional)
+
+/** @internal */
+export const hasImplicitOptional = (u: unknown): u is ImplicitOptional =>
+  hasOwn(u as any, ImplicitOptionalFlag)
 
 /**
  * @since 1.3.0
