@@ -3,93 +3,73 @@
  *
  * @since 1.3.0
  */
-import { HKT2, Kind, Kind2, URIS, URIS2 } from 'fp-ts/HKT'
-import { KeyNotMapped, OptionalKeyFlag, RequiredKeyFlag } from 'schemata-ts/struct'
+import { SchemableKind, SchemableLambda } from 'schemata-ts/HKT'
+import * as s from 'schemata-ts/struct'
 /* eslint-disable @typescript-eslint/ban-types */
 
 /** @since 1.3.0 */
-export type OptionalProps<T> = {
-  [K in keyof T]: T[K] extends { readonly _flag: OptionalKeyFlag } ? K : never
-}[keyof T]
-
-/** @since 1.3.0 */
-export type RequiredProps<T> = {
-  [K in keyof T]: T[K] extends { readonly _flag: RequiredKeyFlag } ? K : never
-}[keyof T]
-
-/** @since 1.3.0 */
 export type RemapKey<KeyIn, Prop> = Prop extends { readonly _keyRemap: infer KeyOut }
-  ? KeyOut extends KeyNotMapped
+  ? KeyOut extends s.KeyNotMapped
     ? KeyIn
     : KeyOut
   : never
 
-/** @since 1.3.0 */
-export type InnerValue1<S extends URIS, Prop> = Prop extends {
+/** @since 2.0.0 */
+export type InnerInput<S extends SchemableLambda, Prop> = Prop extends {
   readonly _val: infer Val
 }
-  ? Val extends Kind<S, infer A>
-    ? A
+  ? Val extends SchemableKind<S, infer I, any>
+    ? I
     : never
   : never
 
-/** @since 1.3.0 */
-export type RestValue1<S extends URIS, RestKind> = RestKind extends undefined
-  ? unknown
-  : { [key: string]: RestKind extends Kind<S, infer A> ? A : never } | {}
-
-/** @since 1.3.0 */
-export type InputHKT2<S, Prop> = Prop extends {
+/** @since 2.0.0 */
+export type InnerOutput<S extends SchemableLambda, Prop> = Prop extends {
   readonly _val: infer Val
 }
-  ? Val extends HKT2<S, infer E, any>
-    ? E
+  ? Val extends s.ImplicitOptional & SchemableKind<S, any, infer O>
+    ? O
+    : Val extends SchemableKind<S, any, infer O>
+    ? O
     : never
   : never
 
-/** @since 1.3.0 */
-export type OutputHKT2<S, Prop> = Prop extends {
-  readonly _val: infer Val
+/** @since 2.0.0 */
+export type OptionalInputProps<
+  S extends SchemableLambda,
+  T extends Record<string, s.Prop<S, SchemableKind<S, any, any>, any>>,
+> = {
+  [K in keyof T as T[K]['_val'] extends s.ImplicitOptional ? K : never]?: InnerInput<
+    S,
+    T[K]
+  >
 }
-  ? Val extends HKT2<S, any, infer A>
-    ? A
-    : never
-  : never
 
-/** @since 1.3.0 */
-export type RestInputHKT2<S, RestKind> = RestKind extends undefined
-  ? unknown
-  : { [key: string]: RestKind extends HKT2<S, infer E, any> ? E : never } | {}
-
-/** @since 1.3.0 */
-export type RestOutputHKT2<S, RestKind> = RestKind extends undefined
-  ? unknown
-  : { [key: string]: RestKind extends HKT2<S, any, infer A> ? A : never } | {}
-
-/** @since 1.3.0 */
-export type Input2<S extends URIS2, Prop> = Prop extends {
-  readonly _val: infer Val
+/** @since 2.0.0 */
+export type RequiredInputProps<
+  S extends SchemableLambda,
+  T extends Record<string, s.Prop<S, SchemableKind<S, any, any>, any>>,
+> = {
+  [K in keyof T as T[K]['_val'] extends s.ImplicitOptional ? never : K]: InnerInput<
+    S,
+    T[K]
+  >
 }
-  ? Val extends Kind2<S, infer E, any>
-    ? E
-    : never
-  : never
 
-/** @since 1.3.0 */
-export type Output2<S extends URIS2, Prop> = Prop extends {
-  readonly _val: infer Val
+/** @since 2.0.0 */
+export type OutputProps<
+  S extends SchemableLambda,
+  T extends Record<string, s.Prop<S, SchemableKind<S, any, any>, any>>,
+> = {
+  [K in keyof T]: InnerOutput<S, T[K]>
 }
-  ? Val extends Kind2<S, any, infer A>
-    ? A
-    : never
-  : never
 
-/** @since 1.3.0 */
-export type RestInput2<S extends URIS2, RestKind> = RestKind extends undefined
+/** @since 2.0.0 */
+export type RestInput<S extends SchemableLambda, RestKind> = RestKind extends undefined
   ? unknown
-  : { [key: string]: RestKind extends Kind2<S, infer E, any> ? E : never } | {}
+  : { [key: string]: RestKind extends SchemableKind<S, infer I, any> ? I : never } | {}
 
-/** @since 1.3.0 */
-export type RestOutput2<S extends URIS2, RestKind> = RestKind extends undefined
+/** @since 2.0.0 */
+export type RestOutput<S extends SchemableLambda, RestKind> = RestKind extends undefined
   ? unknown
-  : { [key: string]: RestKind extends Kind2<S, any, infer A> ? A : never } | {}
+  : { [key: string]: RestKind extends SchemableKind<S, any, infer O> ? O : never } | {}

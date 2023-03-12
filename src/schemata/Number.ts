@@ -3,11 +3,13 @@
  *
  * @since 1.0.0
  */
-import { Float } from 'schemata-ts/schemata/Float'
+import { type Float } from 'schemata-ts/float'
+import { Schema } from 'schemata-ts/Schema'
+import { Float as Floating } from 'schemata-ts/schemata/Float'
 
 /**
  * The number javascript type, represents a float of any valid value
  *
  * @since 1.0.0
  */
-export const Number = Float()
+export const Number: Schema<number, Float> = Floating()

@@ -6,7 +6,7 @@
 import { SchemableKind, SchemableLambda } from 'schemata-ts/HKT'
 import { Combine } from 'schemata-ts/internal/type-utils'
 import * as _ from 'schemata-ts/schemables/WithStructM/type-utils'
-import { KeyFlag, KeyNotMapped, Prop } from 'schemata-ts/struct'
+import { KeyNotMapped, Prop } from 'schemata-ts/struct'
 
 /**
  * Mapped struct configuration determining how to handle extra (non-specified) fields.
@@ -59,7 +59,7 @@ export interface WithStructM<S extends SchemableLambda> {
   readonly structM: <
     Props extends Record<
       string,
-      Prop<KeyFlag, S, SchemableKind<S, unknown, unknown>, string | KeyNotMapped>
+      Prop<S, SchemableKind<S, any, any>, string | KeyNotMapped>
     >,
     RestKind extends SchemableKind<S, any, any> | undefined,
   >(
@@ -68,24 +68,10 @@ export interface WithStructM<S extends SchemableLambda> {
   ) => SchemableKind<
     S,
     Combine<
-      _.RestInputHKT2<S, RestKind> & {
-        [K in _.RequiredProps<Props>]: _.InputHKT2<S, Props[K]>
-      } & {
-        [K in _.OptionalProps<Props>]?: _.InputHKT2<S, Props>
-      }
+      _.RestInput<S, RestKind> &
+        _.OptionalInputProps<S, Props> &
+        _.RequiredInputProps<S, Props>
     >,
-    Combine<
-      _.RestOutputHKT2<S, RestKind> & {
-        [K in _.RequiredProps<Props> as _.RemapKey<K, Props[K]>]: _.OutputHKT2<
-          S,
-          Props[K]
-        >
-      } & {
-        [K in _.OptionalProps<Props> as _.RemapKey<K, Props[K]>]?: _.OutputHKT2<
-          S,
-          Props[K]
-        >
-      }
-    >
+    Combine<_.RestOutput<S, RestKind> & _.OutputProps<S, Props>>
   >
 }

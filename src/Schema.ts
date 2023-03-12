@@ -74,7 +74,7 @@
  *
  *   assert.equal(invalidInput._tag, 'Left')
  */
-import { SchemableKind, SchemableLambda } from 'schemata-ts/HKT'
+import * as hkt from 'schemata-ts/HKT'
 import { Schemable } from 'schemata-ts/Schemable'
 
 /**
@@ -82,7 +82,15 @@ import { Schemable } from 'schemata-ts/Schemable'
  * @category Model
  */
 export interface Schema<E, A> {
-  <S extends SchemableLambda>(S: Schemable<S>): SchemableKind<S, E, A>
+  <S extends hkt.SchemableLambda>(S: Schemable<S>): hkt.SchemableKind<S, E, A>
+}
+
+/**
+ * @since 2.0.0
+ * @category Type Lambdas
+ */
+export interface SchemableLambda extends hkt.SchemableLambda {
+  readonly type: Schema<this['Input'], this['Output']>
 }
 
 const memoize = <A, B>(f: (a: A) => B): ((a: A) => B) => {
@@ -160,4 +168,4 @@ export type InputOf<S> = S extends Schema<infer I, unknown> ? I : never
  */
 export const interpret: <S extends SchemableLambda>(
   S: Schemable<S>,
-) => <E, A>(schema: Schema<E, A>) => SchemableKind<S, E, A> = S => schema => schema(S)
+) => <E, A>(schema: Schema<E, A>) => hkt.SchemableKind<S, E, A> = S => schema => schema(S)

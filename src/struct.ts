@@ -9,13 +9,6 @@ import { camelCase } from 'schemata-ts/internal/camelcase'
 import { hasOwn } from 'schemata-ts/internal/util'
 import type { CamelCase } from 'type-fest'
 
-/**
- * @since 1.3.0
- * @category Model
- */
-export type OptionalKeyFlag = 'Optional'
-const OptionalKeyFlag: OptionalKeyFlag = 'Optional'
-
 /** @internal */
 export type ImplicitOptionalFlag = typeof ImplicitOptionalFlag
 const ImplicitOptionalFlag = Symbol.for('schemata-ts/struct/ImplicitOptionalFlag')
@@ -44,21 +37,8 @@ export const hasImplicitOptional = (u: unknown): u is ImplicitOptional =>
  * @since 1.3.0
  * @category Model
  */
-export type RequiredKeyFlag = 'Required'
-const RequiredKeyFlag: RequiredKeyFlag = 'Required'
-
-/**
- * @since 1.3.0
- * @category Model
- */
 export type KeyNotMapped = typeof KeyNotMapped
 const KeyNotMapped = Symbol.for('schemata-ts/struct/KeyNotMapped')
-
-/**
- * @since 1.3.0
- * @category Model
- */
-export type KeyFlag = OptionalKeyFlag | RequiredKeyFlag
 
 /**
  * Meta information for an HKT2 for if the key is optional or required, and if the key is remapped
@@ -67,12 +47,10 @@ export type KeyFlag = OptionalKeyFlag | RequiredKeyFlag
  * @category Model
  */
 export interface Prop<
-  Flag extends KeyFlag,
   S extends SchemableLambda,
   Val extends SchemableKind<S, any, any>,
   K extends string | KeyNotMapped,
 > {
-  readonly _flag: Flag
   readonly _keyRemap: K
   readonly _val: Val
 }
@@ -83,47 +61,12 @@ export interface Prop<
  * @since 1.3.0
  * @category Constructors
  */
-export const required: <
-  S extends SchemableLambda,
-  Val extends SchemableKind<S, any, any>,
->(
+export const prop: <S extends SchemableLambda, Val extends SchemableKind<S, any, any>>(
   val: Val,
-) => Prop<RequiredKeyFlag, S, Val, KeyNotMapped> = val => ({
-  _flag: RequiredKeyFlag,
+) => Prop<S, Val, KeyNotMapped> = val => ({
   _keyRemap: KeyNotMapped,
   _val: val,
 })
-
-/**
- * @since 1.3.0
- * @category Guards
- */
-export const isRequiredFlag = (flag: KeyFlag): flag is RequiredKeyFlag =>
-  flag === RequiredKeyFlag
-
-/**
- * Indicates that a property is optional
- *
- * @since 1.3.0
- * @category Constructors
- */
-export const optional: <
-  S extends SchemableLambda,
-  Val extends SchemableKind<S, any, any>,
->(
-  val: Val,
-) => Prop<OptionalKeyFlag, S, Val, KeyNotMapped> = val => ({
-  _flag: OptionalKeyFlag,
-  _keyRemap: KeyNotMapped,
-  _val: val,
-})
-
-/**
- * @since 1.3.0
- * @category Guards
- */
-export const isOptionalFlag = (flag: KeyFlag): flag is OptionalKeyFlag =>
-  flag === OptionalKeyFlag
 
 /**
  * Used to remap a property's key to a new key in the output type
@@ -159,13 +102,9 @@ export const isOptionalFlag = (flag: KeyFlag): flag is OptionalKeyFlag =>
  */
 export const mapKeyTo: <K extends string>(
   mapTo: K,
-) => <
-  Flag extends KeyFlag,
-  S extends SchemableLambda,
-  Val extends SchemableKind<S, any, any>,
->(
-  prop: Prop<Flag, S, Val, KeyNotMapped>,
-) => Prop<Flag, S, Val, K> = mapTo => prop => ({
+) => <S extends SchemableLambda, Val extends SchemableKind<S, any, any>>(
+  prop: Prop<S, Val, KeyNotMapped>,
+) => Prop<S, Val, K> = mapTo => prop => ({
   ...prop,
   _keyRemap: mapTo,
 })
@@ -216,15 +155,15 @@ type MapKeysWith = <R extends KeyRemapLambda>(
   S extends SchemableLambda,
   Props extends Record<
     string,
-    Prop<KeyFlag, S, SchemableKind<S, any, any>, string | KeyNotMapped>
+    Prop<S, SchemableKind<S, any, any>, string | KeyNotMapped>
   >,
 >(
   props: Props,
 ) => {
-  [K in keyof Props]: Props[K] extends Prop<infer Flag, any, infer Val, infer Remap>
+  [K in keyof Props]: Props[K] extends Prop<any, infer Val, infer Remap>
     ? Remap extends KeyNotMapped
-      ? Prop<Flag, S, Val, ApplyKeyRemap<R, K & string>>
-      : Prop<Flag, S, Val, ApplyKeyRemap<R, Remap & string>>
+      ? Prop<S, Val, ApplyKeyRemap<R, K & string>>
+      : Prop<S, Val, ApplyKeyRemap<R, Remap & string>>
     : never
 }
 
@@ -264,7 +203,7 @@ type MapKeysWith = <R extends KeyRemapLambda>(
  *   )
  */
 export const mapKeysWith: MapKeysWith =
-  mapping => (props: Record<string, Prop<KeyFlag, any, any, any>>) => {
+  mapping => (props: Record<string, Prop<any, any, any>>) => {
     const remappedProps: any = {}
     for (const key in props) {
       // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
@@ -362,7 +301,7 @@ export const defineStruct: <
   S extends SchemableLambda,
   Props extends Record<
     string,
-    Prop<KeyFlag, S, SchemableKind<S, any, any>, string | KeyNotMapped>
+    Prop<S, SchemableKind<S, any, any>, string | KeyNotMapped>
   >,
 >(
   props: Props,
@@ -407,89 +346,18 @@ export const struct: <
 >(
   props: Props,
 ) => {
-  [K in keyof Props]: Prop<RequiredKeyFlag, S, Props[K], KeyNotMapped>
+  [K in keyof Props]: Prop<S, Props[K], KeyNotMapped>
 } = props => {
   const remappedProps: Record<
     string,
-    Prop<RequiredKeyFlag, any, SchemableKind<any, any, any>, KeyNotMapped>
+    Prop<any, SchemableKind<any, any, any>, KeyNotMapped>
   > = {}
   for (const key in props) {
     // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-    const prop = props[key]!
-    remappedProps[key] = required(prop)
+    const prop_ = props[key]!
+    remappedProps[key] = prop(prop_)
   }
   return remappedProps as any
-}
-
-type Partial = <
-  S extends SchemableLambda,
-  Props extends Record<
-    string,
-    Prop<KeyFlag, S, SchemableKind<S, unknown, unknown>, string | KeyNotMapped>
-  >,
->(
-  props: Props,
-) => {
-  [K in keyof Props]: Props[K] extends Prop<any, any, infer Val, infer Remap>
-    ? Prop<OptionalKeyFlag, S, Val, Remap>
-    : never
-}
-
-/**
- * Marks all properties as optional
- *
- * @since 1.3.0
- * @category Utilities
- */
-export const partial: Partial = props => {
-  const result: Record<
-    string,
-    Prop<
-      KeyFlag,
-      any,
-      SchemableKind<SchemableLambda, unknown, unknown>,
-      string | KeyNotMapped
-    >
-  > = {}
-  for (const key in props) {
-    // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-    const prop = props[key]!
-    result[key] = { ...prop, _flag: OptionalKeyFlag }
-  }
-  return result as any
-}
-
-type Complete = <
-  S extends SchemableLambda,
-  Props extends Record<
-    string,
-    Prop<KeyFlag, S, SchemableKind<S, unknown, unknown>, string | KeyNotMapped>
-  >,
->(
-  props: Props,
-) => {
-  [K in keyof Props]: Props[K] extends Prop<any, any, infer Val, infer Remap>
-    ? Prop<RequiredKeyFlag, S, Val, Remap>
-    : never
-}
-
-/**
- * Marks all properties as required.
- *
- * @since 1.3.0
- * @category Utilities
- */
-export const complete: Complete = props => {
-  const result: Record<
-    string,
-    Prop<KeyFlag, any, SchemableKind<any, unknown, unknown>, string | KeyNotMapped>
-  > = {}
-  for (const key in props) {
-    // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-    const prop = props[key]!
-    result[key] = { ...prop, _flag: RequiredKeyFlag }
-  }
-  return result as any
 }
 
 /**

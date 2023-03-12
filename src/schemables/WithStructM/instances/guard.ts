@@ -4,14 +4,14 @@
  * @since 1.3.0
  */
 import * as B from 'fp-ts/boolean'
-import { pipe, tuple } from 'fp-ts/function'
+import { pipe } from 'fp-ts/function'
 import * as Pred from 'fp-ts/Predicate'
 import * as RR from 'fp-ts/ReadonlyRecord'
 import * as Str from 'fp-ts/string'
 import * as G from 'schemata-ts/Guard'
 import { hasOwn } from 'schemata-ts/internal/util'
 import { WithStructM } from 'schemata-ts/schemables/WithStructM/definition'
-import { isOptionalFlag, KeyFlag, keyIsNotMapped } from 'schemata-ts/struct'
+import { keyIsNotMapped } from 'schemata-ts/struct'
 
 /**
  * @since 1.3.0
@@ -19,32 +19,24 @@ import { isOptionalFlag, KeyFlag, keyIsNotMapped } from 'schemata-ts/struct'
  */
 export const Guard: WithStructM<G.SchemableLambda> = {
   structM: (properties, params = { extraProps: 'strip' }) => {
-    const remappedProps: Record<string, readonly [KeyFlag, G.Guard<unknown, unknown>]> =
-      {}
+    const remappedProps: Record<string, G.Guard<unknown>> = {}
     for (const key in properties) {
-      const prop = properties[key]
-      if (!hasOwn(properties, key) || prop === undefined) continue
+      // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+      const prop = properties[key]!
       if (keyIsNotMapped(prop._keyRemap)) {
-        remappedProps[key] = tuple(prop._flag, prop._val)
+        remappedProps[key] = prop._val
         continue
       }
-      remappedProps[prop._keyRemap] = tuple(prop._flag, prop._val)
+      remappedProps[prop._keyRemap] = prop._val
     }
     return {
       is: pipe(
-        G.UnknownRecord.is,
+        (u: unknown) => typeof u === 'object' && u !== null && !Array.isArray(u),
         Pred.and(u => {
           const knownKeysAreValid = pipe(
             remappedProps,
-            RR.foldMapWithIndex(Str.Ord)(B.MonoidAll)((key, [_flag, _val]) => {
+            RR.foldMapWithIndex(Str.Ord)(B.MonoidAll)((key, _val) => {
               const inputAtKey: unknown = (u as any)[key]
-
-              if (
-                isOptionalFlag(_flag) &&
-                (!hasOwn(u as any, key) || inputAtKey === undefined)
-              )
-                return true
-
               return _val.is(inputAtKey)
             }),
           )

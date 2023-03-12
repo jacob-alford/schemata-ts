@@ -50,7 +50,7 @@ interface FloatBrand<Min extends number, Max extends number> {
  * @since 1.0.0
  * @category Model
  */
-export type Float<Min extends number, Max extends number> = Branded<
-  number,
-  FloatBrand<Min, Max>
->
+export type Float<
+  Min extends number = MaxNegativeFloat,
+  Max extends number = MaxPositiveFloat,
+> = Branded<number, FloatBrand<Min, Max>>
