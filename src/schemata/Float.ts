@@ -9,13 +9,9 @@
  *
  * @since 1.0.0
  */
+import { Float as Floating, MaxNegativeFloat, MaxPositiveFloat } from 'schemata-ts/float'
 import { make, Schema } from 'schemata-ts/Schema'
-import {
-  BoundedParams,
-  Float as Floating,
-  MaxNegativeFloat,
-  MaxPositiveFloat,
-} from 'schemata-ts/schemables/WithPrimitives/definition'
+import { BoundedParams } from 'schemata-ts/schemables/WithPrimitives/definition'
 
 /**
  * Floating point branded newtype. Parameters: min, max are inclusive.

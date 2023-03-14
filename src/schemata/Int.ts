@@ -9,13 +9,9 @@
  *
  * @since 1.0.0
  */
+import { Integer, MaxSafeInt, MinSafeInt } from 'schemata-ts/integer'
 import { make, Schema } from 'schemata-ts/Schema'
-import {
-  BoundedParams,
-  Integer,
-  MaxSafeInt,
-  MinSafeInt,
-} from 'schemata-ts/schemables/WithPrimitives/definition'
+import { BoundedParams } from 'schemata-ts/schemables/WithPrimitives/definition'
 
 /**
  * Integer branded newtype. Parameters: min, max are inclusive.

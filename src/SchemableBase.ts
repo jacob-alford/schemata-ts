@@ -30,13 +30,6 @@ type EnsureTagKind2<S extends URIS2, T extends string, M> = {
 export interface Schemable2<S extends URIS2> {
   readonly URI: S
   readonly nullable: <O, A>(or: Kind2<S, O, A>) => Kind2<S, null | O, null | A>
-  readonly struct: <Properties extends Record<PropertyKey, Kind2<S, Any, Any>>>(
-    properties: Properties,
-  ) => Kind2<
-    S,
-    { [K in keyof Properties]: EofKind2<S, Properties[K]> },
-    { [K in keyof Properties]: AofKind2<S, Properties[K]> }
-  >
   readonly partial: <Properties extends Record<PropertyKey, Kind2<S, Any, Any>>>(
     properties: Properties,
   ) => Kind2<
