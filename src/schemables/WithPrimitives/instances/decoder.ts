@@ -8,23 +8,23 @@ import { Guard } from 'schemata-ts/schemables/WithPrimitives/instances/guard'
 export const Decoder: WithPrimitives<D.SchemableLambda> = {
   string: flow(
     Guard.string,
-    D.fromGuard(u => D.liftDecodeError(D.typeMismatch('String', u))),
+    D.fromGuard(u => D.liftDecodeError(D.typeMismatch('string', u))),
   ),
   int: flow(
     Guard.int,
-    D.fromGuard(u => D.liftDecodeError(D.typeMismatch('Int', u))),
+    D.fromGuard(u => D.liftDecodeError(D.typeMismatch('int', u))),
   ),
   float: flow(
     Guard.float,
-    D.fromGuard(u => D.liftDecodeError(D.typeMismatch('Float', u))),
+    D.fromGuard(u => D.liftDecodeError(D.typeMismatch('float', u))),
   ),
   boolean: pipe(
     Guard.boolean,
-    D.fromGuard(u => D.liftDecodeError(D.typeMismatch('Boolean', u))),
+    D.fromGuard(u => D.liftDecodeError(D.typeMismatch('boolean', u))),
   ),
   unknown: pipe(
     Guard.unknown,
-    D.fromGuard(u => D.liftDecodeError(D.typeMismatch('Unknown', u))),
+    D.fromGuard(u => D.liftDecodeError(D.typeMismatch('unknown', u))),
   ),
   literal: (...literals) =>
     pipe(

@@ -7,6 +7,7 @@
  */
 import { SchemableLambda } from 'schemata-ts/HKT'
 import { WithAnnotate } from 'schemata-ts/schemables/WithAnnotate/definition'
+import { WithArray } from 'schemata-ts/schemables/WithArray/definition'
 import { WithCheckDigit } from 'schemata-ts/schemables/WithCheckDigit/definition'
 import { WithDate } from 'schemata-ts/schemables/WithDate/definition'
 import { WithInvariant } from 'schemata-ts/schemables/WithInvariant/definition'
@@ -26,6 +27,7 @@ import { WithStructM } from 'schemata-ts/schemables/WithStructM/definition'
  */
 export interface Schemable<S extends SchemableLambda>
   extends WithAnnotate<S>,
+    WithArray<S>,
     WithCheckDigit<S>,
     WithDate<S>,
     WithInvariant<S>,

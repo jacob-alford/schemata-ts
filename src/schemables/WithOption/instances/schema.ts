@@ -4,7 +4,6 @@
  *
  * @since 1.0.0
  */
-import { URI as SchemaURI } from 'schemata-ts/Schema'
 import * as SC from 'schemata-ts/Schema'
 import { WithOption } from 'schemata-ts/schemables/WithOption/definition'
 

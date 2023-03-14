@@ -7,7 +7,7 @@ import { pipe } from 'fp-ts/function'
 import * as RR from 'fp-ts/ReadonlyRecord'
 import * as _ from 'schemata-ts/internal/schema-utils'
 import { Combine } from 'schemata-ts/internal/type-utils'
-import { Schema, SchemableLambda } from 'schemata-ts/Schema'
+import { Schema } from 'schemata-ts/Schema'
 import { StructOptions } from 'schemata-ts/schemables/WithStructM/definition'
 import { KeyNotMapped, Prop } from 'schemata-ts/struct'
 

@@ -166,6 +166,6 @@ export type InputOf<S> = S extends Schema<infer I, unknown> ? I : never
  * @since 1.0.0
  * @category Destructors
  */
-export const interpret: <S extends SchemableLambda>(
+export const interpret: <S extends hkt.SchemableLambda>(
   S: Schemable<S>,
 ) => <E, A>(schema: Schema<E, A>) => hkt.SchemableKind<S, E, A> = S => schema => schema(S)

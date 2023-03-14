@@ -6,13 +6,12 @@
 import { Alt2 } from 'fp-ts/Alt'
 import { make } from 'fp-ts/Const'
 import * as E from 'fp-ts/Either'
-import { Lazy } from 'fp-ts/function'
+import { Lazy, pipe } from 'fp-ts/function'
 import { Functor2 } from 'fp-ts/Functor'
 import { Invariant2 } from 'fp-ts/Invariant'
 import { NaturalTransformation12C } from 'fp-ts/NaturalTransformation'
 import * as RNEA from 'fp-ts/ReadonlyNonEmptyArray'
 import * as DE from 'schemata-ts/DecodeError'
-import * as DT from 'schemata-ts/DecoderT'
 import * as G from 'schemata-ts/Guard'
 import * as hkt from 'schemata-ts/HKT'
 
@@ -36,13 +35,15 @@ export interface Decoder<I, A> {
  * @since 2.0.0
  * @category Constructors
  */
-export const success = DT.success(E.Pointed)
+export const success: <I, A>(a: A) => E.Either<DE.DecodeFailure<I>, A> = E.right
 
 /**
  * @since 2.0.0
  * @category Constructors
  */
-export const failure = DT.failure(E.MonadThrow)
+export const failure: <I, A>(
+  e: DE.DecodeErrors,
+) => E.Either<DE.DecodeFailure<I>, A> = errors => E.throwError(liftDecodeErrors(errors))
 
 /**
  * A collection of failure cases
@@ -107,15 +108,15 @@ export const errorAtUnionMember = (
 // combinators
 // ------------------
 
-export {
-  /**
-   * Interprets a schema as a decoder
-   *
-   * @since 2.0.0
-   * @category Interpreters
-   */
-  getDecoder,
-} from 'schemata-ts/derivations/DecoderSchemable'
+// export {
+//   /**
+//    * Interprets a schema as a decoder
+//    *
+//    * @since 2.0.0
+//    * @category Interpreters
+//    */
+//   getDecoder,
+// } from 'schemata-ts/derivations/DecoderSchemable'
 
 // ------------------
 // natural transformations
@@ -185,8 +186,15 @@ export const liftDecodeError: <I>(
 ) => DE.DecodeFailure<I> = errs => liftDecodeErrors(new DE.DecodeErrors(RNEA.of(errs)))
 
 // non-pipeables
-const map_: Functor2<URI>['map'] = DT.map(E.Functor)
-const altW_ = DT.altW(E.Alt)
+const map_: Functor2<URI>['map'] = (fa, f) => ({
+  decode: u => E.Functor.map(fa.decode(u), f),
+})
+const altW_ = <I1, I2, A>(
+  self: Decoder<I1, A>,
+  that: Lazy<Decoder<I2, A>>,
+): Decoder<I1 | I2, A> => ({
+  decode: u => E.Alt.alt(self.decode(u), () => that().decode(u) as any),
+})
 
 /**
  * @since 2.0.0

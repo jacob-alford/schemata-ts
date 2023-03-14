@@ -9,6 +9,7 @@ import * as JS from 'schemata-ts/JsonSchema'
 import { interpret } from 'schemata-ts/Schema'
 import { Schemable } from 'schemata-ts/Schemable'
 import * as WithAnnotate from 'schemata-ts/schemables/WithAnnotate/instances/json-schema'
+import * as WithArray from 'schemata-ts/schemables/WithArray/instances/json-schema'
 import * as WithCheckDigit from 'schemata-ts/schemables/WithCheckDigit/instances/json-schema'
 import * as WithDate from 'schemata-ts/schemables/WithDate/instances/json-schema'
 import * as WithInvariant from 'schemata-ts/schemables/WithInvariant/instances/json-schema'
@@ -28,6 +29,7 @@ import * as WithStructM from 'schemata-ts/schemables/WithStructM/instances/json-
  */
 const JsonSchemaSchemable: Schemable<JS.SchemableLambda> = {
   ...WithAnnotate.JsonSchema,
+  ...WithArray.JsonSchema,
   ...WithCheckDigit.JsonSchema,
   ...WithDate.JsonSchema,
   ...WithInvariant.JsonSchema,

@@ -1,13 +1,12 @@
-/**
- * Re-export of `WithRefine` from `io-ts/Schemable/WithRefine`
- *
- * @since 1.0.0
- */
+/** @since 1.0.0 */
+import { identity } from 'fp-ts/function'
+import * as Eq_ from 'schemata-ts/Eq'
+import { WithRefine } from 'schemata-ts/schemables/WithRefine/definition'
 
-export {
-  /**
-   * @since 1.0.0
-   * @category Instances
-   */
-  WithRefine as Eq,
-} from 'schemata-ts/Eq'
+/**
+ * @since 1.0.0
+ * @category Instances
+ */
+export const Eq: WithRefine<Eq_.SchemableLambda> = {
+  refine: () => identity,
+}

@@ -9,10 +9,9 @@ import * as D from '../src/Decoder'
 import * as E from '../src/Encoder'
 import * as Eq from '../src/Eq'
 import * as G from '../src/Guard'
+import * as JS from '../src/JsonSchema'
 import * as P from '../src/Printer'
-import { interpret, Schema } from '../src/Schema'
-import * as TD from '../src/TaskDecoder'
-import * as T from '../src/Type'
+import { Schema } from '../src/Schema'
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 type Any = any
@@ -65,12 +64,10 @@ export const zipN: ZipN = (...args: ReadonlyArray<ReadonlyArray<Any>>) => {
 
 // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
 export const getAllInstances = <E, A>(schema: Schema<E, A>) => ({
-  Arbitrary: interpret(Arb.Schemable)(schema),
-  Decoder: interpret(D.Schemable)(schema),
-  Encoder: interpret(E.Schemable)(schema),
-  Eq: interpret(Eq.Schemable)(schema),
-  Guard: interpret(G.Schemable)(schema),
-  TaskDecoder: interpret(TD.Schemable)(schema),
-  Type: interpret(T.Schemable)(schema),
-  Printer: interpret(P.Schemable)(schema),
+  Arbitrary: Arb.getArbitrary(schema),
+  Decoder: D.getDecoder(schema),
+  Encoder: E.getEncoder(schema),
+  Eq: Eq.getEq(schema),
+  Guard: G.getGuard(schema),
+  Printer: P.getPrinter(schema),
 })

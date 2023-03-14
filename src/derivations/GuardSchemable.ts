@@ -9,6 +9,7 @@ import * as G from 'schemata-ts/Guard'
 import { interpret } from 'schemata-ts/Schema'
 import { Schemable } from 'schemata-ts/Schemable'
 import * as WithAnnotate from 'schemata-ts/schemables/WithAnnotate/instances/guard'
+import * as WithArray from 'schemata-ts/schemables/WithArray/instances/guard'
 import * as WithCheckDigit from 'schemata-ts/schemables/WithCheckDigit/instances/guard'
 import * as WithDate from 'schemata-ts/schemables/WithDate/instances/guard'
 import * as WithInvariant from 'schemata-ts/schemables/WithInvariant/instances/guard'
@@ -28,6 +29,7 @@ import * as WithStructM from 'schemata-ts/schemables/WithStructM/instances/guard
  */
 const GuardSchemable: Schemable<G.SchemableLambda> = {
   ...WithAnnotate.Guard,
+  ...WithArray.Guard,
   ...WithCheckDigit.Guard,
   ...WithDate.Guard,
   ...WithInvariant.Guard,

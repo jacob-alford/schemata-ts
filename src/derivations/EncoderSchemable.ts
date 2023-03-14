@@ -9,6 +9,7 @@ import * as Enc from 'schemata-ts/Encoder'
 import { interpret } from 'schemata-ts/Schema'
 import { Schemable } from 'schemata-ts/Schemable'
 import * as WithAnnotate from 'schemata-ts/schemables/WithAnnotate/instances/encoder'
+import * as WithArray from 'schemata-ts/schemables/WithArray/instances/encoder'
 import * as WithCheckDigit from 'schemata-ts/schemables/WithCheckDigit/instances/encoder'
 import * as WithDate from 'schemata-ts/schemables/WithDate/instances/encoder'
 import * as WithInvariant from 'schemata-ts/schemables/WithInvariant/instances/encoder'
@@ -28,6 +29,7 @@ import * as WithStructM from 'schemata-ts/schemables/WithStructM/instances/encod
  */
 const EncoderSchemable: Schemable<Enc.SchemableLambda> = {
   ...WithAnnotate.Encoder,
+  ...WithArray.Encoder,
   ...WithCheckDigit.Encoder,
   ...WithDate.Encoder,
   ...WithInvariant.Encoder,

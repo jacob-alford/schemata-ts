@@ -58,7 +58,7 @@ export const Decoder: WithStructM<D.SchemableLambda> = {
                 ),
               )
             }
-            return E.right(O.none)
+            return E.right(O.zero<any>()) as any
           }),
           apSecond(outKnown),
         )

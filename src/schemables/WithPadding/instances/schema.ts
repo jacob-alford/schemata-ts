@@ -3,7 +3,6 @@
  *
  * @since 1.0.0
  */
-import { URI as SchemaURI } from 'schemata-ts/Schema'
 import * as SC from 'schemata-ts/Schema'
 import { WithPadding } from 'schemata-ts/schemables/WithPadding/definition'
 

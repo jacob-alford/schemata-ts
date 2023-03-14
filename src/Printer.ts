@@ -13,8 +13,6 @@ import { Branded } from 'schemata-ts/brand'
 import * as hkt from 'schemata-ts/HKT'
 import { typeOf, witherS } from 'schemata-ts/internal/util'
 import * as PE from 'schemata-ts/PrintError'
-import { Schemable2 } from 'schemata-ts/Schemable'
-import { WithRefine } from 'schemata-ts/schemables/WithRefine/definition'
 
 interface JsonStringBrand {
   readonly JsonString: unique symbol
@@ -114,6 +112,20 @@ export interface Printer<E, A> {
 
 /** @internal */
 export const printerValidation = E.getApplicativeValidation(PE.semigroupPrintingError)
+
+// ------------------
+// combinators
+// ------------------
+
+// export {
+//   /**
+//    * Interprets a schema as a printer
+//    *
+//    * @since 2.0.0
+//    * @category Interpreters
+//    */
+//   getPrinter,
+// } from 'schemata-ts/derivations/PrinterSchemable'
 
 // -------------------------------------------------------------------------------------
 // constructors
@@ -268,11 +280,11 @@ export const UnknownRecord: Printer<Record<string, unknown>, Record<string, unkn
  * @since 1.1.0
  * @category Combinators
  */
-export const refine: WithRefine2<URI>['refine'] = (f, id) => pa => ({
-  domainToJson: a =>
-    f(a) ? pa.domainToJson(a) : E.left(new PE.NamedError(id, new PE.InvalidValue(a))),
-  codomainToJson: pa.codomainToJson,
-})
+// export const refine: WithRefine2<URI>['refine'] = (f, id) => pa => ({
+//   domainToJson: a =>
+//     f(a) ? pa.domainToJson(a) : E.left(new PE.NamedError(id, new PE.InvalidValue(a))),
+//   codomainToJson: pa.codomainToJson,
+// })
 
 /**
  * @since 1.1.0
@@ -598,38 +610,8 @@ declare module 'fp-ts/lib/HKT' {
  * @since 2.0.0
  * @category Type Lambdas
  */
-export interface TypeLambda extends hkt.TypeLambda {
-  readonly type: Printer<this['In'], this['Target']>
-}
-
-/**
- * @since 2.0.0
- * @category Type Lambdas
- */
 export interface SchemableLambda extends hkt.SchemableLambda {
   readonly type: Printer<this['Input'], this['Output']>
-}
-
-/**
- * @since 1.1.0
- * @category Instances
- */
-export const Schemable: Schemable2<URI> = {
-  URI,
-  literal,
-  string,
-  number,
-  boolean,
-  nullable,
-  struct,
-  partial,
-  record,
-  array,
-  tuple,
-  intersect,
-  sum,
-  lazy,
-  readonly,
 }
 
 // -------------------------------------------------------------------------------------

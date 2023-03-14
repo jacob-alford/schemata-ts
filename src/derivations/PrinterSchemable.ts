@@ -9,6 +9,7 @@ import * as P from 'schemata-ts/Printer'
 import { interpret } from 'schemata-ts/Schema'
 import { Schemable } from 'schemata-ts/Schemable'
 import * as WithAnnotate from 'schemata-ts/schemables/WithAnnotate/instances/printer'
+import * as WithArray from 'schemata-ts/schemables/WithArray/instances/printer'
 import * as WithCheckDigit from 'schemata-ts/schemables/WithCheckDigit/instances/printer'
 import * as WithDate from 'schemata-ts/schemables/WithDate/instances/printer'
 import * as WithInvariant from 'schemata-ts/schemables/WithInvariant/instances/printer'
@@ -28,6 +29,7 @@ import * as WithStructM from 'schemata-ts/schemables/WithStructM/instances/print
  */
 const PrinterSchemable: Schemable<P.SchemableLambda> = {
   ...WithAnnotate.Printer,
+  ...WithArray.Printer,
   ...WithCheckDigit.Printer,
   ...WithDate.Printer,
   ...WithInvariant.Printer,

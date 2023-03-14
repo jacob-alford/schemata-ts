@@ -9,6 +9,7 @@ import * as Arb from 'schemata-ts/Arbitrary'
 import { interpret } from 'schemata-ts/Schema'
 import { Schemable } from 'schemata-ts/Schemable'
 import * as WithAnnotate from 'schemata-ts/schemables/WithAnnotate/instances/arbitrary'
+import * as WithArray from 'schemata-ts/schemables/WithArray/instances/arbitrary'
 import * as WithCheckDigit from 'schemata-ts/schemables/WithCheckDigit/instances/arbitrary'
 import * as WithDate from 'schemata-ts/schemables/WithDate/instances/arbitrary'
 import * as WithInvariant from 'schemata-ts/schemables/WithInvariant/instances/arbitrary'
@@ -28,6 +29,7 @@ import * as WithStructM from 'schemata-ts/schemables/WithStructM/instances/arbit
  */
 const ArbitrarySchemable: Schemable<Arb.SchemableLambda> = {
   ...WithAnnotate.Arbitrary,
+  ...WithArray.Arbitrary,
   ...WithCheckDigit.Arbitrary,
   ...WithDate.Arbitrary,
   ...WithInvariant.Arbitrary,

@@ -9,7 +9,7 @@ import * as RA from 'fp-ts/ReadonlyArray'
 import * as RR from 'fp-ts/ReadonlyRecord'
 import * as S from 'io-ts/Schemable'
 import * as hkt from 'schemata-ts/HKT'
-import { forIn, typeOf } from 'schemata-ts/internal/util'
+import { typeOf } from 'schemata-ts/internal/util'
 
 /**
  * @since 1.0.0
@@ -18,6 +18,20 @@ import { forIn, typeOf } from 'schemata-ts/internal/util'
 export interface Arbitrary<A> {
   readonly arbitrary: (fc: typeof FastCheck) => FastCheck.Arbitrary<A>
 }
+
+// ------------------
+// combinators
+// ------------------
+
+export {
+  /**
+   * Interprets a schema as a decoder
+   *
+   * @since 2.0.0
+   * @category Interpreters
+   */
+  getArbitrary,
+} from 'schemata-ts/derivations/ArbitrarySchemable'
 
 /**
  * @since 1.0.0
@@ -133,48 +147,8 @@ declare module 'fp-ts/lib/HKT' {
  * @since 2.0.0
  * @category Type Lambdas
  */
-export interface TypeLambda extends hkt.TypeLambda {
-  readonly type: Arbitrary<this['Target']>
-}
-
-/**
- * @since 2.0.0
- * @category Type Lambdas
- */
 export interface SchemableLambda extends hkt.SchemableLambda {
   readonly type: Arbitrary<this['Output']>
-}
-
-/**
- * @since 1.0.0
- * @category Instances
- */
-export const Schemable: S.Schemable1<URI> = {
-  URI,
-  literal,
-  string,
-  number,
-  boolean,
-  nullable,
-  type: struct,
-  struct,
-  partial,
-  record,
-  array,
-  tuple: tuple as S.Schemable1<URI>['tuple'],
-  intersect,
-  sum,
-  lazy: (_, f) => lazy(f),
-  readonly,
-}
-
-/**
- * @since 1.0.0
- * @category Instances
- */
-export const WithUnknownContainers: S.WithUnknownContainers1<URI> = {
-  UnknownArray,
-  UnknownRecord,
 }
 
 /**
