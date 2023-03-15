@@ -16,6 +16,10 @@ import { WithMap } from 'schemata-ts/schemables/WithMap/definition'
  */
 export const Encoder: WithMap<Enc.SchemableLambda> = {
   mapFromEntries: (ordK, sk, sa) => ({
-    encode: flow(RM.toReadonlyArray(ordK), RA.map(RTup.bimap(sa.encode, sk.encode))),
+    encode: flow(
+      RM.toReadonlyArray(ordK),
+      RA.map(RTup.bimap(sa.encode, sk.encode)),
+      RA.toArray,
+    ),
   }),
 }

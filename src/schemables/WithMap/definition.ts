@@ -21,5 +21,5 @@ export interface WithMap<S extends SchemableLambda> {
     ordEK: Ord.Ord<K>,
     sk: SchemableKind<S, EK, K>,
     sa: SchemableKind<S, EA, A>,
-  ) => SchemableKind<S, ReadonlyArray<readonly [K, A]>, ReadonlyMap<K, A>>
+  ) => SchemableKind<S, Array<readonly [EK, EA]>, ReadonlyMap<K, A>>
 }

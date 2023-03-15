@@ -6,7 +6,7 @@
 import { Alt2 } from 'fp-ts/Alt'
 import { make } from 'fp-ts/Const'
 import * as E from 'fp-ts/Either'
-import { Lazy, pipe } from 'fp-ts/function'
+import { Lazy } from 'fp-ts/function'
 import { Functor2 } from 'fp-ts/Functor'
 import { Invariant2 } from 'fp-ts/Invariant'
 import { NaturalTransformation12C } from 'fp-ts/NaturalTransformation'

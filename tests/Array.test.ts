@@ -1,6 +1,6 @@
 import * as D from 'schemata-ts/Decoder'
 import { getDecoder } from 'schemata-ts/derivations/DecoderSchemable'
-// import { getEncoder } from 'schemata-ts/derivations/EncoderSchemable'
+import { getEncoder } from 'schemata-ts/derivations/EncoderSchemable'
 // import * as Arb from 'schemata-ts/Arbitrary'
 // import * as G from 'schemata-ts/Guard'
 // import * as Eq from 'schemata-ts/Eq'
@@ -8,8 +8,10 @@ import { getDecoder } from 'schemata-ts/derivations/DecoderSchemable'
 import { Array } from 'schemata-ts/schemata/Array'
 import { String } from 'schemata-ts/schemata/String'
 
-const Decoder = getDecoder(Array(String()))
-// const Encoder = getEncoder(Array(String()))
+const Schema = Array(String())
+
+const Decoder = getDecoder(Schema)
+const Encoder = getEncoder(Schema)
 
 describe('Array.Decoder', () => {
   it('should decode an array of strings', () => {
@@ -32,8 +34,8 @@ describe('Array.Decoder', () => {
   })
 })
 
-// describe('Array.Encoder', () => {
-//   it('should encode an array of strings', () => {
-//     expect(Encoder.encode(['a', 'b', 'c'])).toEqual(['a', 'b', 'c'])
-//   })
-// })
+describe('Array.Encoder', () => {
+  it('should encode an array of strings', () => {
+    expect(Encoder.encode(['a', 'b', 'c'])).toEqual(['a', 'b', 'c'])
+  })
+})
