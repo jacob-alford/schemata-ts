@@ -6,7 +6,6 @@
 import { SchemableKind, SchemableLambda } from 'schemata-ts/HKT'
 import { Combine } from 'schemata-ts/internal/type-utils'
 import * as _ from 'schemata-ts/schemables/WithStructM/type-utils'
-import { KeyNotMapped, Prop } from 'schemata-ts/struct'
 
 /**
  * Mapped struct configuration determining how to handle extra (non-specified) fields.
@@ -57,10 +56,7 @@ interface StrippedStruct {
  */
 export interface WithStructM<S extends SchemableLambda> {
   readonly structM: <
-    Props extends Record<
-      string,
-      Prop<S, SchemableKind<S, any, any>, string | KeyNotMapped>
-    >,
+    Props extends Record<string, SchemableKind<S, any, any>>,
     RestKind extends SchemableKind<S, any, any> | undefined,
   >(
     properties: Props,

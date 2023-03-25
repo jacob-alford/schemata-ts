@@ -33,7 +33,6 @@ export const Decoder: WithArray<D.SchemableLambda> = {
           ),
         ),
       ),
-      E.mapLeft(errs => D.liftDecodeErrors(errs)),
     ),
   }),
   tuple: (...components) => ({
@@ -52,10 +51,7 @@ export const Decoder: WithArray<D.SchemableLambda> = {
           ),
         ),
       ),
-      E.bimap(
-        errs => D.liftDecodeErrors(errs),
-        a => unsafeCoerce(a),
-      ),
+      E.map(a => unsafeCoerce(a)),
     ),
   }),
 }

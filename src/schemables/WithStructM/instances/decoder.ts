@@ -11,7 +11,7 @@ import * as DE from 'schemata-ts/DecodeError'
 import * as D from 'schemata-ts/Decoder'
 import { witherSM } from 'schemata-ts/internal/util'
 import { WithStructM } from 'schemata-ts/schemables/WithStructM/definition'
-import { keyIsNotMapped } from 'schemata-ts/struct'
+import { getKeyRemap } from 'schemata-ts/struct'
 
 const decodeErrorValidation = E.getApplicativeValidation(DE.Semigroup)
 const apSecond = Ap.apSecond(decodeErrorValidation)
@@ -32,13 +32,16 @@ export const Decoder: WithStructM<D.SchemableLambda> = {
       const outKnown = pipe(
         properties,
         witherSM(DE.Semigroup)((key, prop) => {
-          const { _keyRemap, _val } = prop
           const inputVal: unknown = (u as any)[key]
+          const newKey = pipe(
+            getKeyRemap(prop),
+            O.getOrElse(() => key as string),
+          )
           return pipe(
-            _val.decode(inputVal),
+            prop.decode(inputVal),
             E.bimap(
               keyErrors => D.decodeErrors(D.errorAtKey(key as string, keyErrors)),
-              result => O.some([result, keyIsNotMapped(_keyRemap) ? key : _keyRemap]),
+              result => O.some([result, newKey]),
             ),
           )
         }),

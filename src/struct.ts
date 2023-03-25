@@ -3,7 +3,8 @@
  *
  * @since 1.3.0
  */
-import { identity } from 'fp-ts/function'
+import { identity, pipe } from 'fp-ts/function'
+import * as O from 'fp-ts/Option'
 import { SchemableKind, SchemableLambda } from 'schemata-ts/HKT'
 import { camelCase } from 'schemata-ts/internal/camelcase'
 import { hasOwn } from 'schemata-ts/internal/util'
@@ -13,7 +14,11 @@ import type { CamelCase } from 'type-fest'
 export type ImplicitOptionalFlag = typeof ImplicitOptionalFlag
 const ImplicitOptionalFlag = Symbol.for('schemata-ts/struct/ImplicitOptionalFlag')
 
-/** @internal */
+/**
+ * Determines types for whose key is optional
+ *
+ * @since 2.0.0
+ */
 export interface ImplicitOptional {
   [ImplicitOptionalFlag]: ImplicitOptionalFlag
 }
@@ -33,88 +38,30 @@ export const makeImplicitOptional: <T>(
 export const hasImplicitOptional = (u: unknown): u is ImplicitOptional =>
   hasOwn(u as any, ImplicitOptionalFlag)
 
-/**
- * @since 1.3.0
- * @category Model
- */
-export type KeyNotMapped = typeof KeyNotMapped
-const KeyNotMapped = Symbol.for('schemata-ts/struct/KeyNotMapped')
+/** @internal */
+export type KeyRemap = typeof KeyRemap
+const KeyRemap = Symbol.for('schemata-ts/struct/KeyRemap')
 
 /**
- * Meta information for an HKT2 for if the key is optional or required, and if the key is remapped
+ * Determines types for whose key is remapped
  *
- * @since 1.3.0
- * @category Model
+ * @since 2.0.0
  */
-export interface Prop<
-  S extends SchemableLambda,
-  Val extends SchemableKind<S, any, any>,
-  K extends string | KeyNotMapped,
-> {
-  readonly _keyRemap: K
-  readonly _val: Val
+export interface RemappedKey<K extends string> {
+  [KeyRemap]: K
 }
 
-/**
- * Indicates that a property is required
- *
- * @since 1.3.0
- * @category Constructors
- */
-export const prop: <S extends SchemableLambda, Val extends SchemableKind<S, any, any>>(
-  val: Val,
-) => Prop<S, Val, KeyNotMapped> = val => ({
-  _keyRemap: KeyNotMapped,
-  _val: val,
-})
+/** @internal */
+export const remapKey: <T, K extends string>(
+  val: T,
+  clone: (val: T) => T,
+  key: K,
+) => RemappedKey<K> & T = (val, clone, key) =>
+  Object.assign(clone(val) as any, { [KeyRemap]: key })
 
-/**
- * Used to remap a property's key to a new key in the output type
- *
- * @since 1.3.0
- * @category Combinators
- * @example
- *   import * as fc from 'fast-check'
- *   import * as S from 'schemata-ts/schemata'
- *   import * as s from 'schemata-ts/struct'
- *   import { getArbitrary } from 'schemata-ts/Arbitrary'
- *   import { getGuard } from 'schemata-ts/Guard'
- *
- *   const databasePerson = s.defineStruct({
- *     first_name: s.mapKeyTo('firstName')(s.required(S.String)),
- *     last_name: s.mapKeyTo('lastName')(s.required(S.String)),
- *     age: s.required(S.Number),
- *     is_married: s.mapKeyTo('isMarried')(s.required(S.BooleanFromString)),
- *   })
- *
- *   const DatabasePerson = S.StructM(databasePerson)
- *
- *   // DatabasePerson will have the type:
- *   // Schema<
- *   //   { first_name: string, last_name: string, age: number, is_married: string },
- *   //   { firstName: string, lastName: string, age: number, isMarried: boolean }
- *   // >
- *
- *   const arbitrary = getArbitrary(DatabasePerson).arbitrary(fc)
- *   const guard = getGuard(DatabasePerson)
- *
- *   fc.assert(fc.property(arbitrary, guard.is))
- */
-export const mapKeyTo: <K extends string>(
-  mapTo: K,
-) => <S extends SchemableLambda, Val extends SchemableKind<S, any, any>>(
-  prop: Prop<S, Val, KeyNotMapped>,
-) => Prop<S, Val, K> = mapTo => prop => ({
-  ...prop,
-  _keyRemap: mapTo,
-})
-
-/**
- * @since 1.3.0
- * @category Guards
- */
-export const keyIsNotMapped = (key: string | KeyNotMapped): key is KeyNotMapped =>
-  key === KeyNotMapped
+/** @internal */
+export const getKeyRemap = (val: unknown): O.Option<string> =>
+  hasOwn(val as any, KeyRemap) ? O.some((val as any)[KeyRemap]) : O.none
 
 /**
  * A type-level key remap provider
@@ -153,18 +100,13 @@ type MapKeysWith = <R extends KeyRemapLambda>(
   mapping: <S extends string>(s: S) => ApplyKeyRemap<KeyRemapLambda, S>,
 ) => <
   S extends SchemableLambda,
-  Props extends Record<
-    string,
-    Prop<S, SchemableKind<S, any, any>, string | KeyNotMapped>
-  >,
+  Props extends Record<string, SchemableKind<S, any, any>>,
 >(
   props: Props,
 ) => {
-  [K in keyof Props]: Props[K] extends Prop<any, infer Val, infer Remap>
-    ? Remap extends KeyNotMapped
-      ? Prop<S, Val, ApplyKeyRemap<R, K & string>>
-      : Prop<S, Val, ApplyKeyRemap<R, Remap & string>>
-    : never
+  [K in keyof Props]: Props[K] extends RemappedKey<infer Mapped> & infer Prop
+    ? RemappedKey<ApplyKeyRemap<R, Mapped>> & Prop
+    : RemappedKey<ApplyKeyRemap<R, K & string>> & Props[K]
 }
 
 /**
@@ -202,21 +144,23 @@ type MapKeysWith = <R extends KeyRemapLambda>(
  *     E.right({ Foo: 'foo', Bar: 1 }),
  *   )
  */
-export const mapKeysWith: MapKeysWith =
-  mapping => (props: Record<string, Prop<any, any, any>>) => {
-    const remappedProps: any = {}
-    for (const key in props) {
-      // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-      const prop = props[key]!
-      remappedProps[key] = {
-        ...prop,
-        _keyRemap: keyIsNotMapped(prop._keyRemap)
-          ? mapping(key)
-          : mapping(prop._keyRemap),
-      }
-    }
-    return remappedProps
+export const mapKeysWith: MapKeysWith = mapping => (props: Record<string, any>) => {
+  const remappedProps: any = {}
+  for (const key in props) {
+    // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+    const prop = props[key]!
+    remappedProps[key] = remapKey(
+      prop,
+      val => Object.assign({}, val),
+      pipe(
+        getKeyRemap(prop),
+        O.getOrElse(() => key),
+        mapping,
+      ),
+    )
   }
+  return remappedProps
+}
 
 /**
  * A KeyRemapLambda for remapping keys to camelCase
@@ -273,42 +217,7 @@ export interface CamelCaseLambda extends KeyRemapLambda {
 export const camelCaseKeys = mapKeysWith<CamelCaseLambda>(camelCase)
 
 /**
- * @since 1.3.0
- * @category Constructors
- * @example
- *   import * as fc from 'fast-check'
- *   import * as S from 'schemata-ts/schemata'
- *   import * as s from 'schemata-ts/struct'
- *   import { getGuard } from 'schemata-ts/Guard'
- *   import { getArbitrary } from 'schemata-ts/Arbitrary'
- *
- *   const someDomainType = s.defineStruct({
- *     a: s.required(S.String),
- *     b: s.required(S.BooleanFromNumber),
- *   })
- *
- *   const SomeDomainTypeSchema = S.StructM(someDomainType)
- *
- *   // SomeDomainType will have the type:
- *   // Schema<{ a: string, b: number }, { a: string, b: boolean }>
- *
- *   const arbitrary = getArbitrary(SomeDomainTypeSchema).arbitrary(fc)
- *   const guard = getGuard(SomeDomainTypeSchema)
- *
- *   fc.assert(fc.property(arbitrary, guard.is))
- */
-export const defineStruct: <
-  S extends SchemableLambda,
-  Props extends Record<
-    string,
-    Prop<S, SchemableKind<S, any, any>, string | KeyNotMapped>
-  >,
->(
-  props: Props,
-) => Props = identity
-
-/**
- * Defines a StructM declaration where all keys are required
+ * Defines a reusable struct declaration for use with `Struct`
  *
  * @since 1.4.0
  * @category Constructors
@@ -322,7 +231,7 @@ export const defineStruct: <
  *     b: S.BooleanFromNumber,
  *   })
  *
- *   const SomeDomainTypeSchema = S.StructM(someDomainType)
+ *   const SomeDomainTypeSchema = S.Struct(someDomainType)
  *
  *   // SomeDomainTypeSchema will have the type:
  *   // Schema<{ a: string, b: number }, { a: string, b: boolean }>
@@ -345,20 +254,7 @@ export const struct: <
   Props extends Record<string, SchemableKind<S, any, any>>,
 >(
   props: Props,
-) => {
-  [K in keyof Props]: Prop<S, Props[K], KeyNotMapped>
-} = props => {
-  const remappedProps: Record<
-    string,
-    Prop<any, SchemableKind<any, any, any>, KeyNotMapped>
-  > = {}
-  for (const key in props) {
-    // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-    const prop_ = props[key]!
-    remappedProps[key] = prop(prop_)
-  }
-  return remappedProps as any
-}
+) => Props = identity
 
 /**
  * Include only a specified set of keys of an object. Built for StructM but works with any struct

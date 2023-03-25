@@ -16,11 +16,11 @@ import { isValidDateString } from 'schemata-ts/schemables/WithDate/utils'
 export const Decoder: WithDate<D.SchemableLambda> = {
   date: pipe(
     Guard.date,
-    D.fromGuard(u => D.liftDecodeError(D.typeMismatch('Date', u))),
+    D.fromGuard(u => D.decodeErrors(D.typeMismatch('Date', u))),
   ),
   dateFromString: pipe(
     D.fromPredicate(isValidDateString, u =>
-      D.liftDecodeError<string>(D.typeMismatch(String(u), 'Date.dateFromString')),
+      D.decodeErrors(D.typeMismatch(String(u), 'Date.dateFromString')),
     ),
     D.map(d => new Date(d)),
   ),

@@ -3,7 +3,6 @@
  *
  * @since 2.0.0
  */
-import { Const } from 'fp-ts/Const'
 import { flow, pipe } from 'fp-ts/function'
 import * as RA from 'fp-ts/ReadonlyArray'
 import * as RNEA from 'fp-ts/ReadonlyNonEmptyArray'
@@ -33,12 +32,6 @@ export class DecodeErrors {
   readonly _tag = 'DecodeErrors'
   constructor(readonly errors: RNEA.ReadonlyNonEmptyArray<DecodeError>) {}
 }
-
-/**
- * @since 2.0.0
- * @category Model
- */
-export type DecodeFailure<I> = Const<DecodeErrors, I>
 
 /**
  * Represents a mismatched value

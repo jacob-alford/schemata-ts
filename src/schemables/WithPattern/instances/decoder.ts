@@ -16,6 +16,6 @@ export const Decoder: WithPattern<D.SchemableLambda> = {
   pattern: (p, desc, caseInsensitive) =>
     pipe(
       pattern(p, desc, caseInsensitive),
-      D.fromGuard(u => D.liftDecodeError(D.typeMismatch(desc, u))),
+      D.fromGuard(u => D.decodeErrors(D.typeMismatch(desc, u))),
     ),
 }

@@ -12,7 +12,7 @@ export const Decoder: WithRefine<D.SchemableLambda> = {
   refine: (refinement, refinedName) => from => ({
     decode: flow(
       from.decode,
-      E.filterOrElse(refinement, u => D.liftDecodeError(D.typeMismatch(refinedName, u))),
+      E.filterOrElse(refinement, u => D.decodeErrors(D.typeMismatch(refinedName, u))),
     ),
   }),
 }

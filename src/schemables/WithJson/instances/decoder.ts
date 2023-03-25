@@ -15,10 +15,10 @@ import { Guard } from 'schemata-ts/schemables/WithJson/instances/guard'
 export const Decoder: WithJson<D.SchemableLambda> = {
   json: pipe(
     Guard.json,
-    D.fromGuard(u => D.liftDecodeError(D.typeMismatch('Json', u))),
+    D.fromGuard(u => D.decodeErrors(D.typeMismatch('Json', u))),
   ),
   jsonString: pipe(
     Guard.jsonString,
-    D.fromGuard(u => D.liftDecodeError(D.typeMismatch('JsonString', u))),
+    D.fromGuard(u => D.decodeErrors(D.typeMismatch('JsonString', u))),
   ),
 }

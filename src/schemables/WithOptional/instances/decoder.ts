@@ -15,7 +15,7 @@ export const Decoder: WithOptional<D.SchemableLambda> = {
   optional: da =>
     makeImplicitOptional(
       {
-        decode: u => (u === undefined ? D.success<never, any>(u) : da.decode(u)),
+        decode: u => (u === undefined ? D.success<any>(u) : da.decode(u)),
       },
       decoder => Object.assign({}, decoder),
     ),

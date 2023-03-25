@@ -8,23 +8,23 @@ import { Guard } from 'schemata-ts/schemables/WithPrimitives/instances/guard'
 export const Decoder: WithPrimitives<D.SchemableLambda> = {
   string: flow(
     Guard.string,
-    D.fromGuard(u => D.liftDecodeError(D.typeMismatch('string', u))),
+    D.fromGuard(u => D.decodeErrors(D.typeMismatch('string', u))),
   ),
   int: flow(
     Guard.int,
-    D.fromGuard(u => D.liftDecodeError(D.typeMismatch('int', u))),
+    D.fromGuard(u => D.decodeErrors(D.typeMismatch('int', u))),
   ),
   float: flow(
     Guard.float,
-    D.fromGuard(u => D.liftDecodeError(D.typeMismatch('float', u))),
+    D.fromGuard(u => D.decodeErrors(D.typeMismatch('float', u))),
   ),
   boolean: pipe(
     Guard.boolean,
-    D.fromGuard(u => D.liftDecodeError(D.typeMismatch('boolean', u))),
+    D.fromGuard(u => D.decodeErrors(D.typeMismatch('boolean', u))),
   ),
   unknown: pipe(
     Guard.unknown,
-    D.fromGuard(u => D.liftDecodeError(D.typeMismatch('unknown', u))),
+    D.fromGuard(u => D.decodeErrors(D.typeMismatch('unknown', u))),
   ),
   literal: (...literals) =>
     pipe(
@@ -35,7 +35,7 @@ export const Decoder: WithPrimitives<D.SchemableLambda> = {
           RNEA.mapWithIndex((i, literal) =>
             D.errorAtUnionMember(i, D.decodeErrors(D.typeMismatch(String(literal), u))),
           ),
-          errs => D.liftDecodeErrors(D.decodeErrors(...(errs as any))),
+          errs => D.decodeErrors(...(errs as any)),
         ),
       ),
     ),
