@@ -4,19 +4,19 @@
  *
  * @since 1.0.0
  */
-import * as E from 'fp-ts/Either'
 import { flow } from 'fp-ts/function'
 import * as O from 'fp-ts/Option'
+import * as TE from 'fp-ts/TaskEither'
 import * as Eq_ from 'schemata-ts/Eq'
-import * as D from 'schemata-ts/internal/Decoder'
+import * as PD from 'schemata-ts/internal/ParallelDecoder'
 import { WithOption } from 'schemata-ts/schemables/WithOption/definition'
 
 /**
  * @since 1.0.0
  * @category Instances
  */
-export const Decoder: WithOption<D.SchemableLambda> = {
+export const ParallelDecoder: WithOption<PD.SchemableLambda> = {
   optionFromExclude: (exclude, sa, eqA = Eq_.eqStrict) => ({
-    decode: flow(sa.decode, E.map(O.fromPredicate(a => !eqA.equals(a, exclude)))),
+    decode: flow(sa.decode, TE.map(O.fromPredicate(a => !eqA.equals(a, exclude)))),
   }),
 }

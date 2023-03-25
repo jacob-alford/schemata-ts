@@ -4,7 +4,7 @@
  * @since 1.0.0
  */
 import { pipe } from 'fp-ts/function'
-import * as D from 'schemata-ts/Decoder'
+import * as D from 'schemata-ts/internal/Decoder'
 import { WithPattern } from 'schemata-ts/schemables/WithPattern/definition'
 import { pattern } from 'schemata-ts/schemables/WithPattern/utils'
 

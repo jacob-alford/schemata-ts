@@ -4,7 +4,7 @@
  * @since 1.0.0
  */
 import { pipe } from 'fp-ts/function'
-import * as D from 'schemata-ts/Decoder'
+import * as D from 'schemata-ts/internal/Decoder'
 import { WithDate } from 'schemata-ts/schemables/WithDate/definition'
 import { Guard } from 'schemata-ts/schemables/WithDate/instances/guard'
 import { isValidDateString } from 'schemata-ts/schemables/WithDate/utils'

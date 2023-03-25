@@ -3,10 +3,11 @@
  *
  * @since 1.0.0
  */
-import * as E from 'fp-ts/Either'
 import { pipe } from 'fp-ts/function'
+import * as TE from 'fp-ts/TaskEither'
 import { Branded } from 'schemata-ts/brand'
 import * as D from 'schemata-ts/internal/Decoder'
+import * as PD from 'schemata-ts/internal/ParallelDecoder'
 import {
   CheckDigitVerified,
   WithCheckDigit,
@@ -20,13 +21,13 @@ import {
  * @since 1.0.0
  * @category Instances
  */
-export const Decoder: WithCheckDigit<D.SchemableLambda> = {
+export const ParallelDecoder: WithCheckDigit<PD.SchemableLambda> = {
   checkDigit: (algorithm, location) => dec => ({
     decode: s =>
       pipe(
         dec.decode(s),
-        E.chain(
-          E.fromPredicate(
+        TE.chain(
+          TE.fromPredicate(
             (s): s is Branded<string, CheckDigitVerified> =>
               s[locationToIndex(s, location)] === algorithm(s),
             s =>

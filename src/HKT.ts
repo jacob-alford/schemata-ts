@@ -31,3 +31,9 @@ export type InputOf<
   F extends SchemableLambda,
   K extends SchemableKind<F, any, any>,
 > = K extends SchemableKind<F, infer Input, any> ? Input : never
+
+/** @internal */
+export type OutputOf<
+  F extends SchemableLambda,
+  K extends SchemableKind<F, any, any>,
+> = K extends SchemableKind<F, any, infer Output> ? Output : never

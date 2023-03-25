@@ -3,16 +3,16 @@
  *
  * @since 1.0.0
  */
-import * as D from 'schemata-ts/internal/Decoder'
+import * as PD from 'schemata-ts/internal/ParallelDecoder'
 import { WithPadding } from 'schemata-ts/schemables/WithPadding/definition'
 import { foldUnion, match } from 'schemata-ts/schemables/WithPadding/utils'
-import { Decoder as WithRefine } from 'schemata-ts/schemables/WithRefine/instances/decoder'
+import { ParallelDecoder as WithRefine } from 'schemata-ts/schemables/WithRefine/instances/parallel-decoder'
 
 /**
  * @since 1.0.0
  * @category Instances
  */
-export const Decoder: WithPadding<D.SchemableLambda> = {
+export const ParallelDecoder: WithPadding<PD.SchemableLambda> = {
   padLeft: match({
     MaxLength: ({ maxLength }) =>
       WithRefine.refine(

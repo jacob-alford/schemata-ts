@@ -5,7 +5,7 @@ import * as N from 'fp-ts/number'
 import * as RA from 'fp-ts/ReadonlyArray'
 
 import * as Arb from '../src/Arbitrary'
-import * as D from '../src/Decoder'
+import * as D from '../src/internal/Decoder'
 import * as E from '../src/Encoder'
 import * as Eq from '../src/Eq'
 import * as G from '../src/Guard'

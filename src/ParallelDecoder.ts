@@ -1,17 +1,18 @@
 /**
- * A decoder is a typeclass and data-type for parsing unknown values and transforming them
+ * A parallel decoder is identical to a decoder except in instances when multiple items
+ * are decoded at once, for instance with Arrays and Structs.
  *
  * @since 2.0.0
  */
 import { Alt1 } from 'fp-ts/Alt'
-import * as E from 'fp-ts/Either'
 import { Functor1 } from 'fp-ts/Functor'
 import { Invariant1 } from 'fp-ts/Invariant'
 import { NaturalTransformation11 } from 'fp-ts/NaturalTransformation'
 import * as RNEA from 'fp-ts/ReadonlyNonEmptyArray'
+import * as TE from 'fp-ts/TaskEither'
 import * as DE from 'schemata-ts/DecodeError'
 import * as G from 'schemata-ts/Guard'
-import * as I from 'schemata-ts/internal/Decoder'
+import * as I from 'schemata-ts/internal/ParallelDecoder'
 
 // ------------------
 // models
@@ -21,8 +22,8 @@ import * as I from 'schemata-ts/internal/Decoder'
  * @since 2.0.0
  * @category Model
  */
-export interface Decoder<A> {
-  readonly decode: (u: unknown) => E.Either<DE.DecodeErrors, A>
+export interface ParallelDecoder<A> {
+  readonly decode: (u: unknown) => TE.TaskEither<DE.DecodeErrors, A>
 }
 
 // ------------------
@@ -33,72 +34,14 @@ export interface Decoder<A> {
  * @since 2.0.0
  * @category Constructors
  */
-export const success: <A>(a: A) => E.Either<DE.DecodeErrors, A> = I.success
+export const success: <A>(a: A) => TE.TaskEither<DE.DecodeErrors, A> = I.success
 
 /**
  * @since 2.0.0
  * @category Constructors
  */
-export const failure: <A>(e: DE.DecodeErrors) => E.Either<DE.DecodeErrors, A> = I.failure
-
-/**
- * A collection of failure cases
- *
- * @since 2.0.0
- * @category Constructors
- */
-export const decodeErrors: (
-  ...errors: RNEA.ReadonlyNonEmptyArray<DE.DecodeError>
-) => DE.DecodeErrors = I.decodeErrors
-/**
- * A failure case for a value that does not match the expected type
- *
- * @since 2.0.0
- * @category Constructors
- */
-export const typeMismatch: (
-  ...args: ConstructorParameters<typeof DE.TypeMismatch>
-) => DE.DecodeError = I.typeMismatch
-
-/**
- * A failure case for an unexpected value
- *
- * @since 2.0.0
- * @category Constructors
- */
-export const unexpectedValue: (
-  ...args: ConstructorParameters<typeof DE.UnexpectedValue>
-) => DE.DecodeError = I.unexpectedValue
-
-/**
- * A failure case at a specific index
- *
- * @since 2.0.0
- * @category Constructors
- */
-export const errorAtIndex: (
-  ...args: ConstructorParameters<typeof DE.ErrorAtIndex>
-) => DE.DecodeError = I.errorAtIndex
-
-/**
- * A failure case at a specific key
- *
- * @since 2.0.0
- * @category Constructors
- */
-export const errorAtKey: (
-  ...args: ConstructorParameters<typeof DE.ErrorAtKey>
-) => DE.DecodeError = I.errorAtKey
-
-/**
- * A failure case for a union member
- *
- * @since 2.0.0
- * @category Constructors
- */
-export const errorAtUnionMember: (
-  ...args: ConstructorParameters<typeof DE.ErrorAtUnionMember>
-) => DE.DecodeError = I.errorAtUnionMember
+export const failure: <A>(e: DE.DecodeErrors) => TE.TaskEither<DE.DecodeErrors, A> =
+  I.failure
 
 // ------------------
 // combinators
@@ -137,7 +80,7 @@ export const fromGuard: (
 export const fromPredicate: <A>(
   predicate: (u: unknown) => u is A,
   onError: (u: unknown) => DE.DecodeErrors,
-) => Decoder<A> = I.fromPredicate
+) => ParallelDecoder<A> = I.fromPredicate
 
 // ------------------
 // instances
@@ -157,7 +100,7 @@ export type URI = typeof URI
 
 declare module 'fp-ts/lib/HKT' {
   interface URItoKind<A> {
-    readonly [URI]: Decoder<A>
+    readonly [URI]: ParallelDecoder<A>
   }
 }
 
@@ -168,7 +111,7 @@ declare module 'fp-ts/lib/HKT' {
 export const imap: <A, B>(
   f: (a: A) => B,
   g: (b: B) => A,
-) => (fa: Decoder<A>) => Decoder<B> = I.imap
+) => (fa: ParallelDecoder<A>) => ParallelDecoder<B> = I.imap
 
 /**
  * @since 2.0.0
@@ -180,7 +123,9 @@ export const Invariant: Invariant1<URI> = I.Invariant
  * @since 2.0.0
  * @category Instance Methods
  */
-export const map: <A, B>(f: (a: A) => B) => (fa: Decoder<A>) => Decoder<B> = I.map
+export const map: <A, B>(
+  f: (a: A) => B,
+) => (fa: ParallelDecoder<A>) => ParallelDecoder<B> = I.map
 
 /**
  * @since 2.0.0
@@ -192,7 +137,9 @@ export const Functor: Functor1<URI> = I.Functor
  * @since 2.0.0
  * @category Instance Methods
  */
-export const alt: <A>(that: () => Decoder<A>) => (fa: Decoder<A>) => Decoder<A> = I.alt
+export const alt: <A>(
+  that: () => ParallelDecoder<A>,
+) => (fa: ParallelDecoder<A>) => ParallelDecoder<A> = I.alt
 
 /**
  * @since 2.0.0

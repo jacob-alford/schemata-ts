@@ -4,7 +4,7 @@
  * @since 1.1.0
  */
 import { pipe } from 'fp-ts/function'
-import * as D from 'schemata-ts/Decoder'
+import * as D from 'schemata-ts/internal/Decoder'
 import { WithJson } from 'schemata-ts/schemables/WithJson/definition'
 import { Guard } from 'schemata-ts/schemables/WithJson/instances/guard'
 

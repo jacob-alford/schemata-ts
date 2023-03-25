@@ -3,7 +3,7 @@
  *
  * @since 1.0.0
  */
-import * as D from 'schemata-ts/internal/Decoder'
+import * as PD from 'schemata-ts/internal/ParallelDecoder'
 import { WithOptional } from 'schemata-ts/schemables/WithOptional/definition'
 import { makeImplicitOptional } from 'schemata-ts/struct'
 
@@ -11,11 +11,11 @@ import { makeImplicitOptional } from 'schemata-ts/struct'
  * @since 1.0.0
  * @category Instances
  */
-export const Decoder: WithOptional<D.SchemableLambda> = {
+export const ParallelDecoder: WithOptional<PD.SchemableLambda> = {
   optional: da =>
     makeImplicitOptional(
       {
-        decode: u => (u === undefined ? D.success<any>(u) : da.decode(u)),
+        decode: u => (u === undefined ? PD.success<any>(u) : da.decode(u)),
       },
       decoder => Object.assign({}, decoder),
     ),

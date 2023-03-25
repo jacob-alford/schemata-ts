@@ -1,7 +1,7 @@
 import * as E from 'fp-ts/Either'
 
 import * as SC from '../src/base/SchemaBase'
-import * as D from '../src/Decoder'
+import * as D from '../src/internal/Decoder'
 import { interpret } from '../src/Schema'
 
 describe('SchemaBase', () => {

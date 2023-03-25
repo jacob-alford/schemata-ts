@@ -5,13 +5,13 @@
  * @since 1.2.0
  */
 import { constant, identity } from 'fp-ts/function'
-import * as D from 'schemata-ts/internal/Decoder'
+import * as PD from 'schemata-ts/internal/ParallelDecoder'
 import { WithAnnotate } from 'schemata-ts/schemables/WithAnnotate/definition'
 
 /**
  * @since 1.2.0
  * @category Instances
  */
-export const Decoder: WithAnnotate<D.SchemableLambda> = {
+export const ParallelDecoder: WithAnnotate<PD.SchemableLambda> = {
   annotate: constant(identity),
 }

@@ -2,7 +2,7 @@ import * as fc from 'fast-check'
 
 import { getArbitrary } from '../src/Arbitrary'
 import * as SC from '../src/base/SchemaBase'
-import { getDecoder } from '../src/Decoder'
+import { getDecoder } from '../src/internal/Decoder'
 import { getEncoder } from '../src/Encoder'
 import { getEq } from '../src/Eq'
 import { getGuard } from '../src/Guard'

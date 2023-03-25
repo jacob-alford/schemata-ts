@@ -1,6 +1,6 @@
 import { flow, pipe } from 'fp-ts/function'
 import * as RNEA from 'fp-ts/ReadonlyNonEmptyArray'
-import * as D from 'schemata-ts/Decoder'
+import * as D from 'schemata-ts/internal/Decoder'
 import { WithPrimitives } from 'schemata-ts/schemables/WithPrimitives/definition'
 import { Guard } from 'schemata-ts/schemables/WithPrimitives/instances/guard'
 

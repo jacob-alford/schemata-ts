@@ -5,13 +5,14 @@
  */
 import { Alt1 } from 'fp-ts/Alt'
 import * as E from 'fp-ts/Either'
+import { Lazy } from 'fp-ts/function'
 import { Functor1 } from 'fp-ts/Functor'
 import { Invariant1 } from 'fp-ts/Invariant'
 import { NaturalTransformation11 } from 'fp-ts/NaturalTransformation'
 import * as RNEA from 'fp-ts/ReadonlyNonEmptyArray'
 import * as DE from 'schemata-ts/DecodeError'
 import * as G from 'schemata-ts/Guard'
-import * as I from 'schemata-ts/internal/Decoder'
+import * as hkt from 'schemata-ts/HKT'
 
 // ------------------
 // models
@@ -33,13 +34,14 @@ export interface Decoder<A> {
  * @since 2.0.0
  * @category Constructors
  */
-export const success: <A>(a: A) => E.Either<DE.DecodeErrors, A> = I.success
+export const success: <A>(a: A) => E.Either<DE.DecodeErrors, A> = E.right
 
 /**
  * @since 2.0.0
  * @category Constructors
  */
-export const failure: <A>(e: DE.DecodeErrors) => E.Either<DE.DecodeErrors, A> = I.failure
+export const failure: <A>(e: DE.DecodeErrors) => E.Either<DE.DecodeErrors, A> =
+  E.throwError
 
 /**
  * A collection of failure cases
@@ -47,18 +49,18 @@ export const failure: <A>(e: DE.DecodeErrors) => E.Either<DE.DecodeErrors, A> = 
  * @since 2.0.0
  * @category Constructors
  */
-export const decodeErrors: (
+export const decodeErrors = (
   ...errors: RNEA.ReadonlyNonEmptyArray<DE.DecodeError>
-) => DE.DecodeErrors = I.decodeErrors
+): DE.DecodeErrors => new DE.DecodeErrors(errors)
 /**
  * A failure case for a value that does not match the expected type
  *
  * @since 2.0.0
  * @category Constructors
  */
-export const typeMismatch: (
+export const typeMismatch = (
   ...args: ConstructorParameters<typeof DE.TypeMismatch>
-) => DE.DecodeError = I.typeMismatch
+): DE.DecodeError => new DE.TypeMismatch(...args)
 
 /**
  * A failure case for an unexpected value
@@ -66,9 +68,9 @@ export const typeMismatch: (
  * @since 2.0.0
  * @category Constructors
  */
-export const unexpectedValue: (
+export const unexpectedValue = (
   ...args: ConstructorParameters<typeof DE.UnexpectedValue>
-) => DE.DecodeError = I.unexpectedValue
+): DE.DecodeError => new DE.UnexpectedValue(...args)
 
 /**
  * A failure case at a specific index
@@ -76,9 +78,9 @@ export const unexpectedValue: (
  * @since 2.0.0
  * @category Constructors
  */
-export const errorAtIndex: (
+export const errorAtIndex = (
   ...args: ConstructorParameters<typeof DE.ErrorAtIndex>
-) => DE.DecodeError = I.errorAtIndex
+): DE.DecodeError => new DE.ErrorAtIndex(...args)
 
 /**
  * A failure case at a specific key
@@ -86,9 +88,9 @@ export const errorAtIndex: (
  * @since 2.0.0
  * @category Constructors
  */
-export const errorAtKey: (
+export const errorAtKey = (
   ...args: ConstructorParameters<typeof DE.ErrorAtKey>
-) => DE.DecodeError = I.errorAtKey
+): DE.DecodeError => new DE.ErrorAtKey(...args)
 
 /**
  * A failure case for a union member
@@ -96,23 +98,23 @@ export const errorAtKey: (
  * @since 2.0.0
  * @category Constructors
  */
-export const errorAtUnionMember: (
+export const errorAtUnionMember = (
   ...args: ConstructorParameters<typeof DE.ErrorAtUnionMember>
-) => DE.DecodeError = I.errorAtUnionMember
+): DE.DecodeError => new DE.ErrorAtUnionMember(...args)
 
 // ------------------
 // combinators
 // ------------------
 
-export {
-  /**
-   * Interprets a schema as a decoder
-   *
-   * @since 2.0.0
-   * @category Interpreters
-   */
-  getDecoder,
-} from 'schemata-ts/derivations/DecoderSchemable'
+// export {
+//   /**
+//    * Interprets a schema as a decoder
+//    *
+//    * @since 2.0.0
+//    * @category Interpreters
+//    */
+//   getDecoder,
+// } from 'schemata-ts/derivations/DecoderSchemable'
 
 // ------------------
 // natural transformations
@@ -126,7 +128,9 @@ export {
  */
 export const fromGuard: (
   onError: (u: unknown) => DE.DecodeErrors,
-) => NaturalTransformation11<G.URI, URI> = I.fromGuard
+) => NaturalTransformation11<G.URI, URI> = onError => guard => ({
+  decode: E.fromPredicate(guard.is, onError),
+})
 
 /**
  * Constructs a decoder from a predicate
@@ -137,7 +141,9 @@ export const fromGuard: (
 export const fromPredicate: <A>(
   predicate: (u: unknown) => u is A,
   onError: (u: unknown) => DE.DecodeErrors,
-) => Decoder<A> = I.fromPredicate
+) => Decoder<A> = (predicate, onError) => ({
+  decode: E.fromPredicate(predicate, onError),
+})
 
 // ------------------
 // instances
@@ -147,7 +153,7 @@ export const fromPredicate: <A>(
  * @since 2.0.0
  * @category Instances
  */
-export const URI = I.URI
+export const URI = 'schemata-ts/Decoder'
 
 /**
  * @since 2.0.0
@@ -163,39 +169,67 @@ declare module 'fp-ts/lib/HKT' {
 
 /**
  * @since 2.0.0
+ * @category Type Lambdas
+ */
+export interface SchemableLambda extends hkt.SchemableLambda {
+  readonly type: Decoder<this['Output']>
+}
+
+// non-pipeables
+const map_: Functor1<URI>['map'] = (fa, f) => ({
+  decode: u => E.Functor.map(fa.decode(u), f),
+})
+const alt_ = <A>(self: Decoder<A>, that: Lazy<Decoder<A>>): Decoder<A> => ({
+  decode: u => E.Alt.alt(self.decode(u), () => that().decode(u) as any),
+})
+
+/**
+ * @since 2.0.0
  * @category Instance Methods
  */
 export const imap: <A, B>(
   f: (a: A) => B,
   g: (b: B) => A,
-) => (fa: Decoder<A>) => Decoder<B> = I.imap
+) => (fa: Decoder<A>) => Decoder<B> = f => fa => map_(fa, f)
 
 /**
  * @since 2.0.0
  * @category Instances
  */
-export const Invariant: Invariant1<URI> = I.Invariant
+export const Invariant: Invariant1<URI> = {
+  URI,
+  imap: map_,
+}
 
 /**
  * @since 2.0.0
  * @category Instance Methods
  */
-export const map: <A, B>(f: (a: A) => B) => (fa: Decoder<A>) => Decoder<B> = I.map
+export const map: <A, B>(f: (a: A) => B) => (fa: Decoder<A>) => Decoder<B> = f => fa =>
+  map_(fa, f)
 
 /**
  * @since 2.0.0
  * @category Instances
  */
-export const Functor: Functor1<URI> = I.Functor
+export const Functor: Functor1<URI> = {
+  URI,
+  map: map_,
+}
 
 /**
  * @since 2.0.0
  * @category Instance Methods
  */
-export const alt: <A>(that: () => Decoder<A>) => (fa: Decoder<A>) => Decoder<A> = I.alt
+export const alt: <A>(that: () => Decoder<A>) => (fa: Decoder<A>) => Decoder<A> =
+  that => self =>
+    alt_(self, that)
 
 /**
  * @since 2.0.0
  * @category Instances
  */
-export const Alt: Alt1<URI> = I.Alt
+export const Alt: Alt1<URI> = {
+  ...Functor,
+  alt: alt_,
+}

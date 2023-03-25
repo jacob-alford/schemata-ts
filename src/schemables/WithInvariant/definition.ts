@@ -17,7 +17,7 @@ export interface WithInvariant<S extends SchemableLambda> {
    * @since 1.0.0
    */
   readonly imap: <B>(
-    guardB: G.Guard<unknown, B>,
+    guardB: G.Guard<B>,
     name: string,
   ) => <A>(
     f: (a: A) => B,

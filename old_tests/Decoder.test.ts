@@ -1,4 +1,4 @@
-import { Schemable } from '../src/Decoder'
+import { Schemable } from '../src/internal/Decoder'
 import { interpret, make } from '../src/Schema'
 
 describe('Decoder', () => {
