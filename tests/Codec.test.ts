@@ -58,7 +58,6 @@ describe('Codec', () => {
            * have already been decoded
            */
           integers: [1.1, NaN, -Infinity] as any,
-          /** This turns into an error because the schema is OptionFromUndefined */
           activeStatus: O.none,
           /* Same here */
           id: '' as any,
@@ -83,7 +82,6 @@ describe('Codec', () => {
                   ),
                 ]),
               ),
-              new PE.ErrorAtKey('activeStatus', new PE.InvalidValue(undefined)),
             ]),
           ),
         )
