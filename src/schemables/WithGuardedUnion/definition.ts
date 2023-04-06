@@ -16,6 +16,7 @@ export const ordGuardedPrecedentedUnionMember: Ord.Ord<
   GuardedPrecedentedUnionMember<any>
 > = pipe(
   N.Ord,
+  Ord.reverse,
   Ord.contramap(m => m.precedence),
 )
 
