@@ -5,7 +5,6 @@
  */
 import * as E from 'fp-ts/Either'
 import * as P from 'schemata-ts/base/PrinterBase'
-import * as PE from 'schemata-ts/PrintError'
 import { WithOptional2 } from 'schemata-ts/schemables/WithOptional/definition'
 
 /**
@@ -14,9 +13,7 @@ import { WithOptional2 } from 'schemata-ts/schemables/WithOptional/definition'
  */
 export const Printer: WithOptional2<P.URI> = {
   optional: ea => ({
-    domainToJson: a =>
-      a === undefined ? E.left(new PE.InvalidValue(a)) : ea.domainToJson(a),
-    codomainToJson: e =>
-      e === undefined ? E.left(new PE.InvalidValue(e)) : ea.codomainToJson(e),
+    domainToJson: a => (a === undefined ? E.right(undefined) : ea.domainToJson(a)),
+    codomainToJson: e => (e === undefined ? E.right(undefined) : ea.codomainToJson(e)),
   }),
 }
