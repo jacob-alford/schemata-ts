@@ -3,8 +3,7 @@
  *
  * @since 1.2.0
  */
-import { unsafeCoerce } from 'fp-ts/function'
-import * as JS from 'schemata-ts/JsonSchema'
+import * as JS from 'schemata-ts/internal/json-schema'
 import { WithArray } from 'schemata-ts/schemables/WithArray/definition'
 
 /**
@@ -12,6 +11,6 @@ import { WithArray } from 'schemata-ts/schemables/WithArray/definition'
  * @category Instances
  */
 export const JsonSchema: WithArray<JS.SchemableLambda> = {
-  array: JS.makeArraySchema(),
-  tuple: unsafeCoerce(JS.makeTupleSchema),
+  array: item => JS.make(new JS.JsonArray(item)),
+  tuple: (...items) => JS.make(new JS.JsonArray(items, items.length, items.length)),
 }

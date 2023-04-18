@@ -4,7 +4,7 @@
  * @since 1.2.0
  */
 import { pipe } from 'fp-ts/function'
-import * as JS from 'schemata-ts/JsonSchema'
+import * as JS from 'schemata-ts/internal/json-schema'
 import { WithPadding } from 'schemata-ts/schemables/WithPadding/definition'
 import { match } from 'schemata-ts/schemables/WithPadding/utils'
 
@@ -19,14 +19,26 @@ export const JsonSchema: WithPadding<JS.SchemableLambda> = {
       match({
         MaxLength: ({ maxLength }) =>
           typeof maxLength === 'number'
-            ? JS.makeIntersectionSchema(stringSchema)(JS.makeStringSchema({ maxLength }))
-            : JS.makeIntersectionSchema(stringSchema)(JS.makeStringSchema()),
+            ? JS.make<string>(
+                new JS.JsonIntersection([
+                  stringSchema,
+                  new JS.JsonString(undefined, maxLength),
+                ]),
+              )
+            : JS.make<string>(
+                new JS.JsonIntersection([stringSchema, new JS.JsonString()]),
+              ),
         ExactLength: ({ exactLength }) =>
           typeof exactLength === 'number'
-            ? JS.makeIntersectionSchema(stringSchema)(
-                JS.makeStringSchema({ minLength: exactLength, maxLength: exactLength }),
+            ? JS.make<string>(
+                new JS.JsonIntersection([
+                  stringSchema,
+                  new JS.JsonString(exactLength, exactLength),
+                ]),
               )
-            : JS.makeIntersectionSchema(stringSchema)(JS.makeStringSchema()),
+            : JS.make<string>(
+                new JS.JsonIntersection([stringSchema, new JS.JsonString()]),
+              ),
       }),
     ),
   padRight: length => stringSchema =>
@@ -35,14 +47,26 @@ export const JsonSchema: WithPadding<JS.SchemableLambda> = {
       match({
         MaxLength: ({ maxLength }) =>
           typeof maxLength === 'number'
-            ? JS.makeIntersectionSchema(stringSchema)(JS.makeStringSchema({ maxLength }))
-            : JS.makeIntersectionSchema(stringSchema)(JS.makeStringSchema()),
+            ? JS.make<string>(
+                new JS.JsonIntersection([
+                  stringSchema,
+                  new JS.JsonString(undefined, maxLength),
+                ]),
+              )
+            : JS.make<string>(
+                new JS.JsonIntersection([stringSchema, new JS.JsonString()]),
+              ),
         ExactLength: ({ exactLength }) =>
           typeof exactLength === 'number'
-            ? JS.makeIntersectionSchema(stringSchema)(
-                JS.makeStringSchema({ minLength: exactLength, maxLength: exactLength }),
+            ? JS.make<string>(
+                new JS.JsonIntersection([
+                  stringSchema,
+                  new JS.JsonString(exactLength, exactLength),
+                ]),
               )
-            : JS.makeIntersectionSchema(stringSchema)(JS.makeStringSchema()),
+            : JS.make<string>(
+                new JS.JsonIntersection([stringSchema, new JS.JsonString()]),
+              ),
       }),
     ),
 }

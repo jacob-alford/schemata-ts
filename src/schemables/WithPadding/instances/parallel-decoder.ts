@@ -3,7 +3,7 @@
  *
  * @since 1.0.0
  */
-import * as PD from 'schemata-ts/internal/ParallelDecoder'
+import * as PD from 'schemata-ts/internal/parallel-decoder'
 import { WithPadding } from 'schemata-ts/schemables/WithPadding/definition'
 import { foldUnion, match } from 'schemata-ts/schemables/WithPadding/utils'
 import { ParallelDecoder as WithRefine } from 'schemata-ts/schemables/WithRefine/instances/parallel-decoder'

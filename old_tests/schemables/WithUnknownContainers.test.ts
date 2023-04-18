@@ -1,6 +1,6 @@
 import * as E from 'fp-ts/Either'
 
-import * as D from '../../src/internal/Decoder'
+import * as D from '../../src/internal/decoder'
 import { interpret } from '../../src/Schema'
 import { Schema } from '../../src/schemables/WithUnknownContainers/instances/schema'
 

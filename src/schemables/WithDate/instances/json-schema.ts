@@ -3,7 +3,7 @@
  *
  * @since 1.2.0
  */
-import * as JS from 'schemata-ts/JsonSchema'
+import * as JS from 'schemata-ts/internal/json-schema'
 import { WithDate } from 'schemata-ts/schemables/WithDate/definition'
 
 /**
@@ -11,6 +11,16 @@ import { WithDate } from 'schemata-ts/schemables/WithDate/definition'
  * @category Instances
  */
 export const JsonSchema: WithDate<JS.SchemableLambda> = {
-  date: JS.emptySchema,
-  dateFromString: JS.makeStringSchema({ format: 'date' }),
+  date: JS.make(new JS.JsonEmpty()),
+  dateFromString: JS.make(
+    new JS.JsonString(
+      undefined,
+      undefined,
+      undefined,
+      undefined,
+      undefined,
+      undefined,
+      'date',
+    ),
+  ),
 }

@@ -10,7 +10,7 @@ import * as RA from 'fp-ts/ReadonlyArray'
 import * as RR from 'fp-ts/ReadonlyRecord'
 import * as Sg from 'fp-ts/Semigroup'
 import * as Str from 'fp-ts/string'
-import * as JS from 'schemata-ts/JsonSchema'
+import * as JS from 'schemata-ts/internal/json-schema'
 import { WithStructM } from 'schemata-ts/schemables/WithStructM/definition'
 import { hasImplicitOptional } from 'schemata-ts/struct'
 

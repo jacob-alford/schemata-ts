@@ -1,5 +1,5 @@
 import { flow, pipe } from 'fp-ts/function'
-import * as PD from 'schemata-ts/internal/ParallelDecoder'
+import * as PD from 'schemata-ts/internal/parallel-decoder'
 import { WithPrimitives } from 'schemata-ts/schemables/WithPrimitives/definition'
 import { Decoder } from 'schemata-ts/schemables/WithPrimitives/instances/decoder'
 

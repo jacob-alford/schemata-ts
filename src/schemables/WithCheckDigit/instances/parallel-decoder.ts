@@ -7,7 +7,7 @@ import { pipe } from 'fp-ts/function'
 import * as TE from 'fp-ts/TaskEither'
 import { Branded } from 'schemata-ts/brand'
 import * as D from 'schemata-ts/internal/Decoder'
-import * as PD from 'schemata-ts/internal/ParallelDecoder'
+import * as PD from 'schemata-ts/internal/parallel-decoder'
 import {
   CheckDigitVerified,
   WithCheckDigit,

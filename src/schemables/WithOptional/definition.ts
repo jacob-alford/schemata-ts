@@ -16,7 +16,7 @@ export interface WithOptional<S extends SchemableLambda> {
    *
    * @since 1.0.0
    */
-  readonly optional: <O, A>(
-    target: SchemableKind<S, O, A>,
-  ) => ImplicitOptional & SchemableKind<S, O | undefined, A | undefined>
+  readonly optional: <I, A>(
+    target: SchemableKind<S, I, A>,
+  ) => ImplicitOptional & SchemableKind<S, I | undefined, A | undefined>
 }

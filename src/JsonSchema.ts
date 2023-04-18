@@ -33,21 +33,9 @@
  * @see https://json-schema.org/draft/2020-12/json-schema-validation.html
  */
 import { Const, make } from 'fp-ts/Const'
-import { identity, pipe } from 'fp-ts/function'
-import * as RNEA from 'fp-ts/ReadonlyNonEmptyArray'
-import * as RR from 'fp-ts/ReadonlyRecord'
-import * as Str from 'fp-ts/string'
-import { memoize } from 'io-ts/Schemable'
-import * as hkt from 'schemata-ts/HKT'
-import { Schemable2 } from 'schemata-ts/Schemable'
-import {
-  Float,
-  Integer,
-  MaxNegativeFloat,
-  MaxPositiveFloat,
-  MaxSafeInt,
-  MinSafeInt,
-} from 'schemata-ts/schemables/WithPrimitives/definition'
+import { Float, MaxNegativeFloat, MaxPositiveFloat } from 'schemata-ts/float'
+import { Integer, MaxSafeInt, MinSafeInt } from 'schemata-ts/integer'
+import * as I from 'schemata-ts/internal/json-schema'
 
 // -------------------------------------------------------------------------------------
 // Model
@@ -57,251 +45,52 @@ import {
  * @since 1.2.0
  * @category Model
  */
-export type JsonSchema =
-  | JsonEmpty
-  | JsonString
-  | JsonNumber
-  | JsonBoolean
-  | JsonNull
-  | JsonInteger
-  | JsonConst
-  | JsonLiteral
-  | JsonExclude
-  | JsonStruct
-  | JsonArray
-  | JsonUnion
-  | JsonIntersection
+export type JsonSchemaValue =
+  | I.JsonEmpty
+  | I.JsonString
+  | I.JsonNumber
+  | I.JsonBoolean
+  | I.JsonNull
+  | I.JsonInteger
+  | I.JsonConst
+  | I.JsonLiteral
+  | I.JsonExclude
+  | I.JsonStruct
+  | I.JsonArray
+  | I.JsonUnion
+  | I.JsonIntersection
 
 /**
  * @since 1.2.0
  * @category Model
  */
-export type JsonSchemaWithDescription = JsonSchema & Description
+export type JsonSchema = JsonSchemaValue & I.Description
 
-interface Description {
-  readonly title?: string
-  readonly description?: string
-}
+// ------------------
+// Constructors
+// ------------------
 
-/** Matches anything */
-class JsonEmpty {}
-
-/** Matches a subset of strings */
-class JsonString {
-  readonly type = 'string'
-  constructor(
-    readonly minLength?: number,
-    readonly maxLength?: number,
-    readonly pattern?: string,
-    readonly contentEncoding?: string,
-    readonly contentMediaType?: string,
-    readonly contentSchema?: JsonSchema,
-    readonly format?: string,
-  ) {}
-}
-
-/** Matches a subset of floats */
-class JsonNumber {
-  readonly type = 'number'
-  constructor(readonly minimum?: number, readonly maximum?: number) {}
-}
-
-/** Matches a subset of integers */
-class JsonInteger implements Omit<JsonNumber, 'type'> {
-  readonly type = 'integer'
-  constructor(readonly minimum?: number, readonly maximum?: number) {}
-}
-
-/** Matches true or false */
-class JsonBoolean {
-  readonly type = 'boolean'
-}
-
-/** Matches a constant value */
-interface JsonConst {
-  readonly const: unknown
-}
-
-/** Matches a boolean, number, string, or null constant value */
-type JsonLiteral = (JsonBoolean | JsonNumber | JsonString | JsonNull) & JsonConst
-
-/** Matches a set of properties with a given set of required properties. */
-class JsonStruct {
-  readonly type = 'object'
-  constructor(
-    readonly properties: Readonly<Record<string, JsonSchema>>,
-    readonly required: ReadonlyArray<string>,
-    readonly additionalProperties?: JsonSchema | false,
-  ) {}
-}
-
-/** Matches a subset of arrays with uniform index values (or specific index values) */
-class JsonArray {
-  readonly type = 'array'
-  constructor(
-    readonly items: JsonSchema | ReadonlyArray<JsonSchema>,
-    readonly minItems?: number,
-    readonly maxItems?: number,
-  ) {}
-}
-
-/** Matches null exactly */
-class JsonNull {
-  readonly type = 'null'
-  readonly const = null
-}
-
-/** Negates a schema */
-class JsonExclude {
-  constructor(readonly not: JsonSchema) {}
-}
-
-/** Matches any of the supplied schemas */
-class JsonUnion {
-  constructor(readonly oneOf: ReadonlyArray<JsonSchema>) {}
-}
-
-/** Matches all of the supplied schemas */
-class JsonIntersection {
-  constructor(readonly allOf: RNEA.ReadonlyNonEmptyArray<JsonSchema>) {}
-}
-
-// -------------------------------------------------------------------------------------
-// guards
-// -------------------------------------------------------------------------------------
-
-/** @internal */
-const hasType = (
-  type: string,
-  u: JsonSchema,
-): u is JsonSchema & { readonly type: string } => 'type' in u && u.type === type
-
-/** @internal */
-const hasKey = <K extends string>(
-  key: K,
-  u: JsonSchema,
-): u is JsonSchema & { readonly [key in K]: unknown } => key in u
-
-/**
- * @since 1.2.0
- * @category Guards
- */
-export const isJsonEmpty = (u: JsonSchema): u is JsonEmpty =>
-  u instanceof JsonEmpty || Object.keys(u).length === 0
-
-/**
- * @since 1.2.0
- * @category Guards
- */
-export const isJsonString = (u: JsonSchema): u is JsonString =>
-  u instanceof JsonString || hasType('string', u)
-
-/**
- * @since 1.2.0
- * @category Guards
- */
-export const isJsonNumber = (u: JsonSchema): u is JsonNumber =>
-  u instanceof JsonNumber || hasType('number', u)
-
-/**
- * @since 1.2.0
- * @category Guards
- */
-export const isJsonNull = (u: JsonSchema): u is JsonNull =>
-  u instanceof JsonNull || hasType('null', u)
-
-/**
- * @since 1.2.0
- * @category Guards
- */
-export const isJsonInteger = (u: JsonSchema): u is JsonInteger =>
-  u instanceof JsonInteger || hasType('integer', u)
-
-/**
- * @since 1.2.0
- * @category Guards
- */
-export const isJsonBoolean = (u: JsonSchema): u is JsonBoolean =>
-  u instanceof JsonBoolean || hasType('boolean', u)
-
-/**
- * @since 1.2.0
- * @category Guards
- */
-export const isJsonConst = (u: JsonSchema): u is JsonConst => 'const' in u
-
-/**
- * @since 1.2.0
- * @category Guards
- */
-export const isJsonPrimitive = (u: JsonSchema): u is JsonLiteral | JsonNull =>
-  isJsonNull(u) || isJsonBoolean(u) || isJsonNumber(u) || isJsonString(u)
-
-/**
- * @since 1.2.0
- * @category Guards
- */
-export const isJsonLiteral = (u: JsonSchema): u is JsonLiteral =>
-  isJsonConst(u) && isJsonPrimitive(u)
-
-/**
- * @since 1.2.0
- * @category Guards
- */
-export const isJsonStruct = (u: JsonSchema): u is JsonStruct =>
-  u instanceof JsonStruct ||
-  (hasType('object', u) && hasKey('properties', u) && hasKey('required', u))
-
-/**
- * @since 1.2.0
- * @category Guards
- */
-export const isJsonRecord = (u: JsonSchema): u is JsonStruct =>
-  u instanceof JsonStruct || (hasType('object', u) && hasKey('additionalProperties', u))
-
-/**
- * @since 1.2.0
- * @category Guards
- */
-export const isJsonArray = (u: JsonSchema): u is JsonArray =>
-  u instanceof JsonArray || hasType('array', u)
-
-/**
- * @since 1.2.0
- * @category Guards
- */
-export const isJsonExclude = (u: JsonSchema): u is JsonExclude =>
-  u instanceof JsonExclude || hasKey('not', u)
-
-/**
- * @since 1.2.0
- * @category Guards
- */
-export const isJsonUnion = (u: JsonSchema): u is JsonUnion =>
-  u instanceof JsonUnion || hasKey('oneOf', u)
-
-/**
- * @since 1.2.0
- * @category Guards
- */
-export const isJsonIntersection = (u: JsonSchema): u is JsonIntersection =>
-  u instanceof JsonIntersection || hasKey('allOf', u)
-
-// -------------------------------------------------------------------------------------
-// constructors
-// -------------------------------------------------------------------------------------
+export {
+  /**
+   * Interprets a schema as a json-schema.
+   *
+   * @since 1.2.0
+   * @category Interpreters
+   */
+  getJsonSchema,
+} from 'schemata-ts/derivations/JsonSchemaSchemable'
 
 /**
  * @since 1.2.0
  * @category Constructors
  */
-export const emptySchema = make(new JsonEmpty())
+export const emptySchema = make(new I.JsonEmpty())
 
 /**
  * @since 1.2.0
  * @category Constructors
  */
-export const makeStringSchema = (
+export const string = (
   params: {
     minLength?: number
     maxLength?: number
@@ -313,7 +102,7 @@ export const makeStringSchema = (
   } = {},
 ): Const<JsonSchema, string> =>
   make(
-    new JsonString(
+    new I.JsonString(
       params.minLength,
       params.maxLength,
       params.pattern,
@@ -328,7 +117,7 @@ export const makeStringSchema = (
  * @since 1.2.0
  * @category Constructors
  */
-export const makeNumberSchema = <
+export const number = <
   Min extends number | undefined = undefined,
   Max extends number | undefined = undefined,
 >(
@@ -342,13 +131,13 @@ export const makeNumberSchema = <
     Min extends undefined ? MaxNegativeFloat : Min,
     Max extends undefined ? MaxPositiveFloat : Max
   >
-> => make(new JsonNumber(params.minimum, params.maximum))
+> => make(new I.JsonNumber(params.minimum, params.maximum))
 
 /**
  * @since 1.2.0
  * @category Constructors
  */
-export const makeIntegerSchema = <
+export const integer = <
   Min extends number | undefined = undefined,
   Max extends number | undefined = undefined,
 >(
@@ -362,13 +151,13 @@ export const makeIntegerSchema = <
     Min extends undefined ? MinSafeInt : Min,
     Max extends undefined ? MaxSafeInt : Max
   >
-> => make(new JsonInteger(params.minimum, params.maximum))
+> => make(new I.JsonInteger(params.minimum, params.maximum))
 
 /**
  * @since 1.2.0
  * @category Constructors
  */
-export const booleanSchema: Const<JsonSchema, boolean> = make(new JsonBoolean())
+export const booleanSchema: Const<JsonSchema, boolean> = make(new I.JsonBoolean())
 
 /**
  * This is internal because it's not technically accurate to say: `forall value. const:
@@ -377,92 +166,91 @@ export const booleanSchema: Const<JsonSchema, boolean> = make(new JsonBoolean())
  *
  * @internal
  */
-export const makeConstSchema = <A>(value: A): Const<JsonSchema, A> =>
-  make({ const: value })
+export const _const = <A>(value: A): Const<JsonSchema, A> => make({ const: value })
 
 /**
  * @since 1.2.0
  * @category Constructors
  */
-export const makeLiteralSchema = <A extends string | number | boolean | null>(
+export const literal = <A extends string | number | boolean | null>(
   value: A,
 ): Const<JsonSchema, A> =>
-  value === null ? make(new JsonNull()) : make({ type: typeof value, const: value })
+  value === null ? make(new I.JsonNull()) : make({ type: typeof value, const: value })
 
 /**
  * @since 1.2.0
  * @category Constructors
  */
-export const makeStructSchema = <A>(
+export const struct = <A>(
   properties: {
     [K in keyof A]: Const<JsonSchema, A[K]>
   },
   required: ReadonlyArray<string> = [],
   additionalProperties?: JsonSchema | false,
 ): Const<JsonSchema, A> =>
-  make(new JsonStruct(properties, required, additionalProperties))
+  make(new I.JsonStruct(properties, required, additionalProperties))
 
 /**
  * @since 1.2.0
  * @category Constructors
  */
-export const makeRecordSchema = <A>(
+export const record = <A>(
   additionalProperties: Const<JsonSchema, A>,
 ): Const<JsonSchema, Record<string, A>> =>
-  make(new JsonStruct(new JsonEmpty() as any, [], additionalProperties))
+  make(new I.JsonStruct(new I.JsonEmpty() as any, [], additionalProperties))
 
 /**
  * @since 1.2.0
  * @category Constructors
  */
-export const makeArraySchema =
+export const array =
   (params: { minItems?: number; maxItems?: number } = {}) =>
   <A>(items: Const<JsonSchema, A>): Const<JsonSchema, Array<A>> =>
-    make(new JsonArray(items, params.minItems, params.maxItems))
+    make(new I.JsonArray(items, params.minItems, params.maxItems))
 
 /**
  * @since 1.2.0
  * @category Constructors
  */
-export const makeTupleSchema = <A extends ReadonlyArray<unknown>>(
+export const tuple = <A extends ReadonlyArray<unknown>>(
   ...items: {
     [K in keyof A]: Const<JsonSchema, A[K]>
   }
-): Const<JsonSchema, A> => make(new JsonArray(items, items.length, items.length))
+): Const<JsonSchema, A> => make(new I.JsonArray(items, items.length, items.length))
 
 /**
  * @since 1.2.0
  * @category Constructors
  */
-export const nullSchema = make(new JsonNull())
+export const nullSchema = make(new I.JsonNull())
 
 /**
  * @since 1.2.0
  * @category Constructors
  */
-export const makeUnionSchema = <U extends ReadonlyArray<Const<JsonSchema, unknown>>>(
+export const union = <U extends ReadonlyArray<Const<JsonSchema, unknown>>>(
   ...members: U
 ): Const<JsonSchema, U[number] extends Const<JsonSchema, infer A> ? A : never> =>
-  make(members.length > 1 ? new JsonUnion(members) : members[0])
+  make(members.length > 1 ? new I.JsonUnion(members) : members[0])
 
 /**
  * @since 1.2.0
  * @category Constructors
  */
-export const makeIntersectionSchema =
+export const intersection =
   <B>(right: Const<JsonSchema, B>) =>
   <A>(left: Const<JsonSchema, A>): Const<JsonSchema, A & B> =>
-    make(new JsonIntersection([left, right]))
+    make(new I.JsonIntersection([left, right]))
 
 /**
  * @since 1.2.0
  * @category Constructors
  */
-export const makeExclusionSchema = <A, Z extends A>(
+export const exclusion = <A, Z extends A>(
   exclude: Z,
   schema: Const<JsonSchema, A>,
 ): Const<JsonSchema, Exclude<A, Z>> =>
-  make(new JsonIntersection([new JsonExclude(makeConstSchema(exclude)), schema]))
+  make(new I.JsonIntersection([new I.JsonExclude(_const(exclude)), schema]))
 
 /**
  * @since 1.2.0
@@ -471,7 +259,7 @@ export const makeExclusionSchema = <A, Z extends A>(
 export const annotate: (params?: {
   title?: string
   description?: string
-}) => (schema: JsonSchema) => Const<JsonSchemaWithDescription, never> =
+}) => (schema: JsonSchema) => Const<JsonSchema, never> =
   ({ title, description } = {}) =>
   schema =>
     title === undefined && description === undefined
@@ -499,70 +287,8 @@ export const stripIdentity: <A>(schema: Const<JsonSchema, A>) => JsonSchema = sc
 // instances
 // -------------------------------------------------------------------------------------
 
-/**
- * @since 1.2.0
- * @category Instances
- */
+/** @since 1.2.0 */
 export const URI = 'JsonSchema'
 
-/**
- * @since 1.2.0
- * @category Instances
- */
+/** @since 1.2.0 */
 export type URI = typeof URI
-
-declare module 'fp-ts/lib/HKT' {
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  interface URItoKind2<E, A> {
-    readonly JsonSchema: Const<JsonSchemaWithDescription, E>
-  }
-}
-
-/**
- * @since 2.0.0
- * @category Type Lambdas
- */
-export interface SchemableLambda extends hkt.SchemableLambda {
-  readonly type: Const<JsonSchemaWithDescription, this['Input']>
-}
-
-/**
- * @since 1.2.0
- * @category Instances
- */
-export const Schemable: Schemable2<URI> = {
-  URI,
-  literal: (...values) =>
-    pipe(values, RNEA.map(makeLiteralSchema), schemata =>
-      make(schemata.length === 1 ? RNEA.head(schemata) : new JsonUnion(schemata)),
-    ),
-  string: makeStringSchema(),
-  number: makeNumberSchema(),
-  boolean: booleanSchema,
-  nullable: schema => make(new JsonUnion([schema, nullSchema])),
-  // @ts-expect-error -- typelevel difference
-  struct: s => makeStructSchema(s, Object.keys(s)),
-  // @ts-expect-error -- typelevel difference
-  partial: makeStructSchema,
-  record: makeRecordSchema,
-  array: makeArraySchema(),
-  // @ts-expect-error -- typelevel difference
-  tuple: <A extends ReadonlyArray<unknown>>(
-    ...items: { [K in keyof A]: Const<JsonSchema, A[K]> }
-  ): Const<JsonSchema, A> => makeTupleSchema<A>(...items),
-  intersect: right => left => make(new JsonIntersection([left, right])),
-  sum: () => members =>
-    make(
-      makeUnionSchema(
-        ...pipe(
-          members as Readonly<Record<string, Const<JsonSchema, any>>>,
-          RR.collect(Str.Ord)((_, a) => a),
-        ),
-      ),
-    ),
-  lazy: (_, f) => {
-    const get = memoize<void, JsonSchema>(f)
-    return make(get())
-  },
-  readonly: identity,
-}

@@ -10,7 +10,7 @@ import * as SC from 'schemata-ts/Schema'
  * @since 1.2.0
  * @category Combinators
  */
-export const Schema =
+export const Annotate =
   (params?: { title?: string; description?: string }) =>
   <O, A>(schema: SC.Schema<O, A>): SC.Schema<O, A> =>
     SC.make(s => s.annotate(params)(schema(s)))

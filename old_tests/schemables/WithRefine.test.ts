@@ -4,7 +4,7 @@ import { getEncoder } from 'schemata-ts/Encoder'
 
 import * as Enc from '../../src/base/EncoderBase'
 import * as SC from '../../src/base/SchemaBase'
-import * as D from '../../src/internal/Decoder'
+import * as D from '../../src/internal/decoder'
 import { interpret } from '../../src/Schema'
 import { Encoder } from '../../src/schemables/WithRefine/instances/encoder'
 import { Schema } from '../../src/schemables/WithRefine/instances/schema'

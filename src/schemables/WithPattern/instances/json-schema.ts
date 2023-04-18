@@ -4,7 +4,7 @@
  * @since 1.2.0
  */
 import { pipe } from 'fp-ts/function'
-import * as JS from 'schemata-ts/JsonSchema'
+import * as JS from 'schemata-ts/internal/json-schema'
 import * as PB from 'schemata-ts/PatternBuilder'
 import { WithPattern } from 'schemata-ts/schemables/WithPattern/definition'
 
@@ -15,9 +15,13 @@ import { WithPattern } from 'schemata-ts/schemables/WithPattern/definition'
 export const JsonSchema: WithPattern<JS.SchemableLambda> = {
   pattern: (pattern, description, caseInsensitive) =>
     pipe(
-      JS.makeStringSchema({
-        pattern: PB.regexFromPattern(pattern, caseInsensitive).source,
-      }),
-      JS.annotate({ description }),
+      JS.make<string>(
+        new JS.JsonString(
+          undefined,
+          undefined,
+          PB.regexFromPattern(pattern, caseInsensitive).source,
+        ),
+      ),
+      JS.addDescription({ description }),
     ),
 }

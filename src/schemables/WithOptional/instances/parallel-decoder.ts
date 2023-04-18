@@ -3,7 +3,7 @@
  *
  * @since 1.0.0
  */
-import * as PD from 'schemata-ts/internal/ParallelDecoder'
+import * as PD from 'schemata-ts/internal/parallel-decoder'
 import { WithOptional } from 'schemata-ts/schemables/WithOptional/definition'
 import { makeImplicitOptional } from 'schemata-ts/struct'
 

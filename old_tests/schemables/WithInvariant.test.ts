@@ -6,7 +6,7 @@ import * as G from '../../src/base/GuardBase'
 import * as SC from '../../src/base/SchemaBase'
 import * as TD from '../../src/base/TaskDecoderBase'
 import * as t from '../../src/base/TypeBase'
-import * as D from '../../src/internal/Decoder'
+import * as D from '../../src/internal/decoder'
 import { interpret } from '../../src/Schema'
 import {
   Encoder,

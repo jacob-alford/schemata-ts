@@ -1,5 +1,5 @@
 import { schemata } from '../src'
-import { getDecoder } from '../src/internal/Decoder'
+import { getDecoder } from '../src/internal/decoder'
 
 describe('Decoder', () => {
   const User = schemata.Struct({ name: schemata.String })

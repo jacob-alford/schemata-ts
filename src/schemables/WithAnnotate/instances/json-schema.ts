@@ -4,7 +4,7 @@
  *
  * @since 1.2.0
  */
-import * as JS from 'schemata-ts/JsonSchema'
+import * as JS from 'schemata-ts/internal/json-schema'
 import { WithAnnotate } from 'schemata-ts/schemables/WithAnnotate/definition'
 
 /**
@@ -12,5 +12,5 @@ import { WithAnnotate } from 'schemata-ts/schemables/WithAnnotate/definition'
  * @category Instances
  */
 export const JsonSchema: WithAnnotate<JS.SchemableLambda> = {
-  annotate: JS.annotate,
+  annotate: JS.addDescription,
 }

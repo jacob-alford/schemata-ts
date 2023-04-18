@@ -3,7 +3,7 @@
  *
  * @since 1.0.0
  */
-import * as PD from 'schemata-ts/internal/ParallelDecoder'
+import * as PD from 'schemata-ts/internal/parallel-decoder'
 import { WithDate } from 'schemata-ts/schemables/WithDate/definition'
 import { Decoder } from 'schemata-ts/schemables/WithDate/instances/decoder'
 

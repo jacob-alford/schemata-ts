@@ -8,11 +8,10 @@ import { Alt1 } from 'fp-ts/Alt'
 import { Functor1 } from 'fp-ts/Functor'
 import { Invariant1 } from 'fp-ts/Invariant'
 import { NaturalTransformation11 } from 'fp-ts/NaturalTransformation'
-import * as RNEA from 'fp-ts/ReadonlyNonEmptyArray'
 import * as TE from 'fp-ts/TaskEither'
 import * as DE from 'schemata-ts/DecodeError'
 import * as G from 'schemata-ts/Guard'
-import * as I from 'schemata-ts/internal/ParallelDecoder'
+import * as I from 'schemata-ts/internal/parallel-decoder'
 
 // ------------------
 // models

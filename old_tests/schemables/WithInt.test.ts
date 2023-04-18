@@ -1,7 +1,7 @@
 import * as E from 'fp-ts/Either'
 import { unsafeCoerce } from 'fp-ts/function'
 
-import { getDecoder } from '../../src/internal/Decoder'
+import { getDecoder } from '../../src/internal/decoder'
 import { Int } from '../../src/schemables/WithInt/definition'
 import { isInt } from '../../src/schemables/WithInt/utils'
 import { validateArbitrary } from '../../test-utils'

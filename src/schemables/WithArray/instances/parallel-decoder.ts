@@ -9,7 +9,7 @@ import * as T from 'fp-ts/Task'
 import * as TE from 'fp-ts/TaskEither'
 import * as DE from 'schemata-ts/DecodeError'
 import * as D from 'schemata-ts/internal/Decoder'
-import * as PD from 'schemata-ts/internal/ParallelDecoder'
+import * as PD from 'schemata-ts/internal/parallel-decoder'
 import { WithArray } from 'schemata-ts/schemables/WithArray/definition'
 
 const validateArray = TE.fromPredicate(
