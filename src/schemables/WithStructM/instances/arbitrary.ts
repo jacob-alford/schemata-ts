@@ -1,19 +1,10 @@
-/**
- * WithStructM instance for Arbitrary
- *
- * @since 1.3.0
- */
 import { pipe } from 'fp-ts/function'
 import * as Arb from 'schemata-ts/Arbitrary'
 import { forIn, hasOwn } from 'schemata-ts/internal/util'
 import { WithStructM } from 'schemata-ts/schemables/WithStructM/definition'
 import { hasImplicitOptional, keyIsNotMapped } from 'schemata-ts/struct'
 
-/**
- * @since 1.3.0
- * @category Instances
- */
-export const Arbitrary: WithStructM<Arb.SchemableLambda> = {
+export const WithStructMArbitrary: WithStructM<Arb.SchemableLambda> = {
   structM: (properties, params = { extraProps: 'strip' }) => {
     const remappedProps: Record<string, Arb.Arbitrary<unknown>> = {}
     for (const key in properties) {

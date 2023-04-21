@@ -1,14 +1,14 @@
 import { pipe } from 'fp-ts/function'
 import * as RNEA from 'fp-ts/ReadonlyNonEmptyArray'
-import * as DE from 'schemata-ts/DecodeError'
-import * as D from 'schemata-ts/internal/Decoder'
+import * as TCE from 'schemata-ts/TranscodeError'
+import * as TC from 'schemata-ts/internal/Transcoder'
 import {
   ordGuardedPrecedentedUnionMember,
   WithGuardedUnion,
 } from 'schemata-ts/schemables/WithGuardedUnion/definition'
 
 /** @since 2.0.0 */
-export const Decoder: WithGuardedUnion<D.SchemableLambda> = {
+export const WithGuardedUnionTranscoder: WithGuardedUnion<TC.SchemableLambda> = {
   guardedUnion: (name, ...members) => {
     const sortedMembers = pipe(members, RNEA.sort(ordGuardedPrecedentedUnionMember))
     return {
@@ -22,7 +22,7 @@ export const Decoder: WithGuardedUnion<D.SchemableLambda> = {
         return pipe(
           sortedMembers,
           RNEA.mapWithIndex(i =>
-            D.errorAtUnionMember(i, D.decodeErrors(D.typeMismatch(name, u))),
+            D.errorAtUnionMember(i, TC.decodeErrors(TC.typeMismatch(name, u))),
           ),
           errs =>
             D.decodeErrors(

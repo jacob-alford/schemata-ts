@@ -10,7 +10,7 @@ const isNumber = (n: unknown): n is number => typeof n === 'number'
 const isNull = (n: unknown): n is null => n === null
 
 /** @since 2.0.0 */
-export const Guard: WithPrimitives<G.SchemableLambda> = {
+export const WithPrimitivesGuard: WithPrimitives<G.SchemableLambda> = {
   string: (params = {}) => ({
     is: (s): s is string =>
       isString(s) &&

@@ -1,15 +1,6 @@
-/**
- * Invariant mapping for schemable
- *
- * @since 1.0.0
- */
-import * as D from 'schemata-ts/internal/Decoder'
+import * as TC from 'schemata-ts/internal/Transcoder'
 import { WithInvariant } from 'schemata-ts/schemables/WithInvariant/definition'
 
-/**
- * @since 1.0.0
- * @category Instances
- */
-export const Decoder: WithInvariant<D.SchemableLambda> = {
+export const WithInvariantTranscoder: WithInvariant<TC.SchemableLambda> = {
   imap: () => D.map,
 }

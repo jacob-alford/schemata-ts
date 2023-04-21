@@ -1,16 +1,14 @@
 /**
- * A transcoder is a printer-parser that decodes from unknown value of an expected input
- * type to a known value, and encodes an input value to an output type. Decoding and
- * encoding are fallible operations that returns `Lefts` upon invalid input types and
- * encoding failures respectively.
+ * Transcoder par is a transcoder that executes its task in parallel for transactions that
+ * are parallelizable such as for arrays and structs.
  *
  * @since 2.0.0
  */
-import * as E from 'fp-ts/Either'
 import { Invariant2 } from 'fp-ts/Invariant'
 import * as RNEA from 'fp-ts/ReadonlyNonEmptyArray'
-import * as I from 'schemata-ts/internal/transcoder'
-import * as TE from 'schemata-ts/TranscodeError'
+import * as TE from 'fp-ts/TaskEither'
+import * as I from 'schemata-ts/internal/transcoder-par'
+import * as TCE from 'schemata-ts/TranscodeError'
 
 // ------------------
 // models
@@ -20,9 +18,9 @@ import * as TE from 'schemata-ts/TranscodeError'
  * @since 2.0.0
  * @category Model
  */
-export interface Transcoder<I, O> {
-  readonly decode: (u: unknown) => E.Either<TE.TranscodeErrors, O>
-  readonly encode: (o: O) => E.Either<TE.TranscodeErrors, I>
+export interface TranscoderPar<I, O> {
+  readonly decode: (u: unknown) => TE.TaskEither<TCE.TranscodeErrors, O>
+  readonly encode: (o: O) => TE.TaskEither<TCE.TranscodeErrors, I>
 }
 
 // ------------------
@@ -33,14 +31,15 @@ export interface Transcoder<I, O> {
  * @since 2.0.0
  * @category Constructors
  */
-export const success: <A>(a: A) => E.Either<TE.TranscodeErrors, A> = I.success
+export const success: <A>(a: A) => TE.TaskEither<TCE.TranscodeErrors, A> = I.success
 
 /**
  * @since 2.0.0
  * @category Constructors
  */
-export const failure: <A>(e: TE.TranscodeErrors) => E.Either<TE.TranscodeErrors, A> =
-  I.failure
+export const failure: <A>(
+  e: TCE.TranscodeErrors,
+) => TE.TaskEither<TCE.TranscodeErrors, A> = I.failure
 
 /**
  * A collection of failure cases
@@ -49,8 +48,8 @@ export const failure: <A>(e: TE.TranscodeErrors) => E.Either<TE.TranscodeErrors,
  * @category Constructors
  */
 export const decodeErrors: (
-  ...errors: RNEA.ReadonlyNonEmptyArray<TE.TranscodeError>
-) => TE.TranscodeErrors = I.decodeErrors
+  ...errors: RNEA.ReadonlyNonEmptyArray<TCE.TranscodeError>
+) => TCE.TranscodeErrors = I.decodeErrors
 /**
  * A failure case for a value that does not match the expected type
  *
@@ -58,8 +57,8 @@ export const decodeErrors: (
  * @category Constructors
  */
 export const typeMismatch: (
-  ...args: ConstructorParameters<typeof TE.TypeMismatch>
-) => TE.TranscodeError = I.typeMismatch
+  ...args: ConstructorParameters<typeof TCE.TypeMismatch>
+) => TCE.TranscodeError = I.typeMismatch
 
 /**
  * A failure case for an unexpected value
@@ -68,8 +67,8 @@ export const typeMismatch: (
  * @category Constructors
  */
 export const unexpectedValue: (
-  ...args: ConstructorParameters<typeof TE.TranscodeErrors>
-) => TE.TranscodeError = I.unexpectedValue
+  ...args: ConstructorParameters<typeof TCE.TranscodeErrors>
+) => TCE.TranscodeError = I.unexpectedValue
 
 /**
  * A failure case at a specific index
@@ -78,8 +77,8 @@ export const unexpectedValue: (
  * @category Constructors
  */
 export const errorAtIndex: (
-  ...args: ConstructorParameters<typeof TE.ErrorAtIndex>
-) => TE.TranscodeError = I.errorAtIndex
+  ...args: ConstructorParameters<typeof TCE.ErrorAtIndex>
+) => TCE.TranscodeError = I.errorAtIndex
 
 /**
  * A failure case at a specific key
@@ -88,8 +87,8 @@ export const errorAtIndex: (
  * @category Constructors
  */
 export const errorAtKey: (
-  ...args: ConstructorParameters<typeof TE.ErrorAtKey>
-) => TE.TranscodeError = I.errorAtKey
+  ...args: ConstructorParameters<typeof TCE.ErrorAtKey>
+) => TCE.TranscodeError = I.errorAtKey
 
 /**
  * A failure case for a union member
@@ -98,8 +97,8 @@ export const errorAtKey: (
  * @category Constructors
  */
 export const errorAtUnionMember: (
-  ...args: ConstructorParameters<typeof TE.ErrorAtUnionMember>
-) => TE.TranscodeError = I.errorAtUnionMember
+  ...args: ConstructorParameters<typeof TCE.ErrorAtUnionMember>
+) => TCE.TranscodeError = I.errorAtUnionMember
 
 // ------------------
 // combinators
@@ -112,8 +111,8 @@ export {
    * @since 2.0.0
    * @category Interpreters
    */
-  getTranscoder,
-} from 'schemata-ts/derivations/TranscoderSchemable'
+  getTranscoderPar,
+} from 'schemata-ts/derivations/TranscoderParSchemable'
 
 // ------------------
 // instances
@@ -138,7 +137,7 @@ export type URI = typeof URI
 export const imap: <A, B>(
   f: (a: A) => B,
   g: (b: B) => A,
-) => <I>(fa: Transcoder<I, A>) => Transcoder<I, B> = I.imap
+) => <I>(fa: TranscoderPar<I, A>) => TranscoderPar<I, B> = I.imap
 
 /**
  * @since 2.0.0
@@ -151,5 +150,5 @@ export const Invariant: Invariant2<URI> = I.Invariant
  * @category Instance Methods
  */
 export const alt: <I, A>(
-  that: () => Transcoder<I, A>,
-) => (fa: Transcoder<I, A>) => Transcoder<I, A> = I.alt
+  that: () => TranscoderPar<I, A>,
+) => (fa: TranscoderPar<I, A>) => TranscoderPar<I, A> = I.alt

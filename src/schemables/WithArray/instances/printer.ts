@@ -1,8 +1,3 @@
-/**
- * Schemable for widening a type to include undefined. Similar to nullable but for undefined.
- *
- * @since 1.1.0
- */
 import * as E from 'fp-ts/Either'
 import { flow, pipe } from 'fp-ts/function'
 import * as RA from 'fp-ts/ReadonlyArray'
@@ -10,11 +5,7 @@ import * as P from 'schemata-ts/Printer'
 import * as PE from 'schemata-ts/PrintError'
 import { WithArray } from 'schemata-ts/schemables/WithArray/definition'
 
-/**
- * @since 1.1.0
- * @category Instances
- */
-export const Printer: WithArray<P.SchemableLambda> = {
+export const WithArrayPrinter: WithArray<P.SchemableLambda> = {
   array: item => ({
     domainToJson: flow(
       RA.traverseWithIndex(P.printerValidation)((i, a) =>

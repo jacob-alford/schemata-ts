@@ -1,17 +1,8 @@
-/**
- * Schemable for widening a type to include undefined. Similar to nullable but for undefined.
- *
- * @since 1.0.0
- */
-import * as D from 'schemata-ts/internal/Decoder'
+import * as TC from 'schemata-ts/internal/Transcoder'
 import { WithOptional } from 'schemata-ts/schemables/WithOptional/definition'
 import { makeImplicitOptional } from 'schemata-ts/struct'
 
-/**
- * @since 1.0.0
- * @category Instances
- */
-export const Decoder: WithOptional<D.SchemableLambda> = {
+export const WithOptionalTranscoder: WithOptional<TC.SchemableLambda> = {
   optional: da =>
     makeImplicitOptional(
       {

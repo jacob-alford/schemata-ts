@@ -1,37 +1,28 @@
-/**
- * WithStructM instance for Decoder
- *
- * @since 1.3.0
- */
 import * as Ap from 'fp-ts/Apply'
 import * as E from 'fp-ts/Either'
 import { pipe, tuple } from 'fp-ts/function'
 import * as O from 'fp-ts/Option'
-import * as DE from 'schemata-ts/DecodeError'
-import * as D from 'schemata-ts/internal/Decoder'
+import * as TCE from 'schemata-ts/TranscodeError'
+import * as TC from 'schemata-ts/internal/Transcoder'
 import { witherSM } from 'schemata-ts/internal/util'
 import { WithStructM } from 'schemata-ts/schemables/WithStructM/definition'
 import { getKeyRemap } from 'schemata-ts/struct'
 
-const decodeErrorValidation = E.getApplicativeValidation(DE.Semigroup)
+const decodeErrorValidation = E.getApplicativeValidation(TCE.Semigroup)
 const apSecond = Ap.apSecond(decodeErrorValidation)
 
-/**
- * @since 1.3.0
- * @category Instances
- */
-export const Decoder: WithStructM<D.SchemableLambda> = {
+export const WithStructMTranscoder: WithStructM<TC.SchemableLambda> = {
   structM: (properties, params = { extraProps: 'strip' }) => ({
     decode: (u): any => {
       // --- typeof returns 'object' for null and arrays
       if (u === null || typeof u !== 'object' || Array.isArray(u)) {
-        return D.failure(D.decodeErrors(D.typeMismatch('object', u)))
+        return D.failure(TC.decodeErrors(TC.typeMismatch('object', u)))
       }
 
       // --- decode all known properties of an object's own non-inherited properties
       const outKnown = pipe(
         properties,
-        witherSM(DE.Semigroup)((key, prop) => {
+        witherSM(TCE.Semigroup)((key, prop) => {
           const inputVal: unknown = (u as any)[key]
           const newKey = pipe(
             getKeyRemap(prop),
@@ -40,7 +31,7 @@ export const Decoder: WithStructM<D.SchemableLambda> = {
           return pipe(
             prop.decode(inputVal),
             E.bimap(
-              keyErrors => D.decodeErrors(D.errorAtKey(key as string, keyErrors)),
+              keyErrors => TC.decodeErrors(TC.errorAtKey(key as string, keyErrors)),
               result => O.some([result, newKey]),
             ),
           )
@@ -53,11 +44,11 @@ export const Decoder: WithStructM<D.SchemableLambda> = {
       if (params.extraProps === 'error') {
         return pipe(
           u,
-          witherSM(DE.Semigroup)((key, value) => {
+          witherSM(TCE.Semigroup)((key, value) => {
             if (properties[key] === undefined) {
               return D.failure(
                 D.decodeErrors(
-                  D.errorAtKey(key as string, D.decodeErrors(D.unexpectedValue(value))),
+                  D.errorAtKey(key as string, TC.decodeErrors(TC.unexpectedValue(value))),
                 ),
               )
             }
@@ -76,7 +67,7 @@ export const Decoder: WithStructM<D.SchemableLambda> = {
         E.chain(knownResult =>
           pipe(
             u,
-            witherSM(DE.Semigroup)((inputKey, inputValue) => {
+            witherSM(TCE.Semigroup)((inputKey, inputValue) => {
               const knownPropAtKey = properties[inputKey]
 
               // -- If the input key is not a known property key (i.e. it was not specified in the struct) decode it with the rest parameter
@@ -84,7 +75,7 @@ export const Decoder: WithStructM<D.SchemableLambda> = {
                 return pipe(
                   rest.decode(inputValue),
                   E.bimap(
-                    errs => D.decodeErrors(D.errorAtKey(inputKey, errs)),
+                    errs => TC.decodeErrors(TC.errorAtKey(inputKey, errs)),
                     result => O.some(tuple(result, inputKey)) as any,
                   ),
                 )

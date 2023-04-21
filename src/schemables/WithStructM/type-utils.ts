@@ -1,8 +1,3 @@
-/**
- * Type utils for WithStructM
- *
- * @since 1.3.0
- */
 import { SchemableKind, SchemableLambda } from 'schemata-ts/HKT'
 import * as s from 'schemata-ts/struct'
 /* eslint-disable @typescript-eslint/ban-types */

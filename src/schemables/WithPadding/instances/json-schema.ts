@@ -1,18 +1,9 @@
-/**
- * Adds a character to the right or left of a string until it reaches a certain length.
- *
- * @since 1.2.0
- */
 import { pipe } from 'fp-ts/function'
 import * as JS from 'schemata-ts/internal/json-schema'
 import { WithPadding } from 'schemata-ts/schemables/WithPadding/definition'
 import { match } from 'schemata-ts/schemables/WithPadding/utils'
 
-/**
- * @since 1.2.0
- * @category Instances
- */
-export const JsonSchema: WithPadding<JS.SchemableLambda> = {
+export const WithPaddingJsonSchema: WithPadding<JS.SchemableLambda> = {
   padLeft: length => stringSchema =>
     pipe(
       length,

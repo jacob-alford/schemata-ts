@@ -1,18 +1,14 @@
 /** @since 1.0.0 */
 import * as E from 'fp-ts/Either'
 import { flow } from 'fp-ts/function'
-import * as D from 'schemata-ts/internal/Decoder'
+import * as TC from 'schemata-ts/internal/Transcoder'
 import { WithRefine } from 'schemata-ts/schemables/WithRefine/definition'
 
-/**
- * @since 1.0.0
- * @category Instances
- */
-export const Decoder: WithRefine<D.SchemableLambda> = {
+export const WithRefineTranscoder: WithRefine<TC.SchemableLambda> = {
   refine: (refinement, refinedName) => from => ({
     decode: flow(
       from.decode,
-      E.filterOrElse(refinement, u => D.decodeErrors(D.typeMismatch(refinedName, u))),
+      E.filterOrElse(refinement, u => TC.decodeErrors(TC.typeMismatch(refinedName, u))),
     ),
   }),
 }

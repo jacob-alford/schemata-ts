@@ -1,8 +1,3 @@
-/**
- * Schemable for constructing a string with a check digit (e.g. ISBN or Credit Card)
- *
- * @since 1.0.0
- */
 import * as Arb from 'schemata-ts/Arbitrary'
 import { Branded } from 'schemata-ts/brand'
 import {
@@ -14,11 +9,7 @@ import {
   replaceCharAt,
 } from 'schemata-ts/schemables/WithCheckDigit/utils'
 
-/**
- * @since 1.0.0
- * @category Instances
- */
-export const Arbitrary: WithCheckDigit<Arb.SchemableLambda> = {
+export const WithCheckDigitArbitrary: WithCheckDigit<Arb.SchemableLambda> = {
   checkDigit: (algorithm, location) => arb => ({
     arbitrary: fc =>
       arb

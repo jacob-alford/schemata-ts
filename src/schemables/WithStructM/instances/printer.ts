@@ -1,8 +1,3 @@
-/**
- * WithStructM instance for Printer
- *
- * @since 1.3.0
- */
 import * as E from 'fp-ts/Either'
 import { pipe } from 'fp-ts/function'
 import * as O from 'fp-ts/Option'
@@ -12,11 +7,7 @@ import * as PE from 'schemata-ts/PrintError'
 import { WithStructM } from 'schemata-ts/schemables/WithStructM/definition'
 import { keyIsNotMapped } from 'schemata-ts/struct'
 
-/**
- * @since 1.3.0
- * @category Instances
- */
-export const Printer: WithStructM<P.SchemableLambda> = {
+export const WithStructMPrinter: WithStructM<P.SchemableLambda> = {
   structM: (properties, params = { extraProps: 'strip' }) => {
     const printersByKey: Record<string, P.Printer<unknown, unknown>['codomainToJson']> =
       {}

@@ -1,16 +1,7 @@
-/**
- * Schemable for widening a type to include undefined. Similar to nullable but for undefined.
- *
- * @since 1.0.0
- */
 import * as G from 'schemata-ts/Guard'
 import { WithArray } from 'schemata-ts/schemables/WithArray/definition'
 
-/**
- * @since 1.0.0
- * @category Instances
- */
-export const Guard: WithArray<G.SchemableLambda> = {
+export const WithArrayGuard: WithArray<G.SchemableLambda> = {
   array: <A>(item: G.Guard<A>) => ({
     is: (u): u is ReadonlyArray<A> => Array.isArray(u) && u.every(item.is),
   }),

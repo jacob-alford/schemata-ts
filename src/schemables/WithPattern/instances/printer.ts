@@ -1,19 +1,10 @@
-/**
- * Schemable construction based on Regex combinators
- *
- * @since 1.1.0
- */
 import * as E from 'fp-ts/Either'
 import * as PB from 'schemata-ts/PatternBuilder'
 import * as P from 'schemata-ts/Printer'
 import * as PE from 'schemata-ts/PrintError'
 import { WithPattern } from 'schemata-ts/schemables/WithPattern/definition'
 
-/**
- * @since 1.1.0
- * @category Instances
- */
-export const Printer: WithPattern<P.SchemableLambda> = {
+export const WithPatternPrinter: WithPattern<P.SchemableLambda> = {
   pattern: (pattern, description, caseSensitive) => ({
     domainToJson: E.fromPredicate(
       (value): value is string => PB.regexFromPattern(pattern, caseSensitive).test(value),

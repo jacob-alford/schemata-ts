@@ -1,8 +1,3 @@
-/**
- * Utilities for `WithPattern`
- *
- * @since 1.0.0
- */
 import * as G from 'schemata-ts/Guard'
 import { Pattern, regexFromPattern } from 'schemata-ts/PatternBuilder'
 

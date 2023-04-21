@@ -1,12 +1,7 @@
-/**
- * Schemable for constructing a string with a check digit (e.g. ISBN or Credit Card)
- *
- * @since 1.0.0
- */
 import { pipe } from 'fp-ts/function'
 import * as TE from 'fp-ts/TaskEither'
 import { Branded } from 'schemata-ts/brand'
-import * as D from 'schemata-ts/internal/Decoder'
+import * as TC from 'schemata-ts/internal/Transcoder'
 import * as PD from 'schemata-ts/internal/parallel-decoder'
 import {
   CheckDigitVerified,
@@ -17,11 +12,7 @@ import {
   replaceCharAt,
 } from 'schemata-ts/schemables/WithCheckDigit/utils'
 
-/**
- * @since 1.0.0
- * @category Instances
- */
-export const ParallelDecoder: WithCheckDigit<PD.SchemableLambda> = {
+export const WithCheckDigitParallelDecoder: WithCheckDigit<PD.SchemableLambda> = {
   checkDigit: (algorithm, location) => dec => ({
     decode: s =>
       pipe(

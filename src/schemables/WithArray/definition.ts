@@ -1,10 +1,6 @@
 /** @since 1.0.0 */
 import { SchemableKind, SchemableLambda } from 'schemata-ts/HKT'
 
-/**
- * @since 1.0.0
- * @category Model
- */
 export interface WithArray<S extends SchemableLambda> {
   readonly array: <I, A>(
     target: SchemableKind<S, I, A>,

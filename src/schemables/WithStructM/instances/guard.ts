@@ -1,8 +1,3 @@
-/**
- * WithStructM instance for Guard
- *
- * @since 1.3.0
- */
 import * as B from 'fp-ts/boolean'
 import { pipe } from 'fp-ts/function'
 import * as Pred from 'fp-ts/Predicate'
@@ -13,11 +8,7 @@ import { hasOwn } from 'schemata-ts/internal/util'
 import { WithStructM } from 'schemata-ts/schemables/WithStructM/definition'
 import { keyIsNotMapped } from 'schemata-ts/struct'
 
-/**
- * @since 1.3.0
- * @category Instances
- */
-export const Guard: WithStructM<G.SchemableLambda> = {
+export const WithStructMGuard: WithStructM<G.SchemableLambda> = {
   structM: (properties, params = { extraProps: 'strip' }) => {
     const remappedProps: Record<string, G.Guard<unknown>> = {}
     for (const key in properties) {

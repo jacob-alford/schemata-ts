@@ -1,30 +1,30 @@
 import { flow, pipe } from 'fp-ts/function'
 import * as RNEA from 'fp-ts/ReadonlyNonEmptyArray'
-import * as D from 'schemata-ts/internal/Decoder'
+import * as TC from 'schemata-ts/internal/Transcoder'
 import { WithPrimitives } from 'schemata-ts/schemables/WithPrimitives/definition'
 import { Guard } from 'schemata-ts/schemables/WithPrimitives/instances/guard'
 
 /** @since 2.0.0 */
-export const Decoder: WithPrimitives<D.SchemableLambda> = {
+export const WithPrimitivesTranscoder: WithPrimitives<TC.SchemableLambda> = {
   string: flow(
     Guard.string,
-    D.fromGuard(u => D.decodeErrors(D.typeMismatch('string', u))),
+    D.fromGuard(u => TC.decodeErrors(TC.typeMismatch('string', u))),
   ),
   int: flow(
     Guard.int,
-    D.fromGuard(u => D.decodeErrors(D.typeMismatch('int', u))),
+    D.fromGuard(u => TC.decodeErrors(TC.typeMismatch('int', u))),
   ),
   float: flow(
     Guard.float,
-    D.fromGuard(u => D.decodeErrors(D.typeMismatch('float', u))),
+    D.fromGuard(u => TC.decodeErrors(TC.typeMismatch('float', u))),
   ),
   boolean: pipe(
     Guard.boolean,
-    D.fromGuard(u => D.decodeErrors(D.typeMismatch('boolean', u))),
+    D.fromGuard(u => TC.decodeErrors(TC.typeMismatch('boolean', u))),
   ),
   unknown: pipe(
     Guard.unknown,
-    D.fromGuard(u => D.decodeErrors(D.typeMismatch('unknown', u))),
+    D.fromGuard(u => TC.decodeErrors(TC.typeMismatch('unknown', u))),
   ),
   literal: (...literals) =>
     pipe(
@@ -33,7 +33,7 @@ export const Decoder: WithPrimitives<D.SchemableLambda> = {
         pipe(
           literals,
           RNEA.mapWithIndex((i, literal) =>
-            D.errorAtUnionMember(i, D.decodeErrors(D.typeMismatch(String(literal), u))),
+            D.errorAtUnionMember(i, TC.decodeErrors(TC.typeMismatch(String(literal), u))),
           ),
           errs => D.decodeErrors(...(errs as any)),
         ),

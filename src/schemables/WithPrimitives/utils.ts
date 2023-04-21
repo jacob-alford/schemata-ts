@@ -1,8 +1,3 @@
-/**
- * Utilies for `WithInt`
- *
- * @since 1.0.0
- */
 import {
   BoundedParams,
   Float,

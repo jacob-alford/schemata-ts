@@ -1,38 +1,8 @@
-/**
- * Schemable with string, float, int, boolean, null, literal, and unknown
- *
- * @since 2.0.0
- */
 import { ReadonlyNonEmptyArray } from 'fp-ts/ReadonlyNonEmptyArray'
 import { Float, MaxNegativeFloat, MaxPositiveFloat } from 'schemata-ts/float'
 import { SchemableKind, SchemableLambda } from 'schemata-ts/HKT'
 import { Integer, MaxSafeInt, MinSafeInt } from 'schemata-ts/integer'
 
-/**
- * @since 1.0.0
- * @category Model
- */
-export type BoundedParams<
-  Min extends number | undefined,
-  Max extends number | undefined,
-> = {
-  readonly min?: Min
-  readonly max?: Max
-}
-
-/**
- * @since 2.0.0
- * @category Model
- */
-export type StringParams = {
-  readonly minLength?: number
-  readonly maxLength?: number
-}
-
-/**
- * @since 2.0.0
- * @category Model
- */
 export interface WithPrimitives<S extends SchemableLambda> {
   /**
    * Represents string inputs / outputs

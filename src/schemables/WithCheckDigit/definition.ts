@@ -1,8 +1,3 @@
-/**
- * Schemable for constructing a string with a check digit (e.g. ISBN or Credit Card)
- *
- * @since 1.0.0
- */
 import { Branded } from 'schemata-ts/brand'
 import { SchemableKind, SchemableLambda } from 'schemata-ts/HKT'
 
@@ -11,10 +6,6 @@ export interface CheckDigitVerified {
   readonly CheckDigitVerified: unique symbol
 }
 
-/**
- * @since 1.0.0
- * @category Model
- */
 export interface WithCheckDigit<S extends SchemableLambda> {
   readonly checkDigit: (
     algorithm: (s: string) => string,

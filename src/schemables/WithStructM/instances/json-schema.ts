@@ -1,8 +1,3 @@
-/**
- * WithStructM instance for JsonSchema
- *
- * @since 1.3.0
- */
 import { Const, make } from 'fp-ts/Const'
 import { pipe, tuple } from 'fp-ts/function'
 import * as Mn from 'fp-ts/Monoid'
@@ -14,11 +9,7 @@ import * as JS from 'schemata-ts/internal/json-schema'
 import { WithStructM } from 'schemata-ts/schemables/WithStructM/definition'
 import { hasImplicitOptional } from 'schemata-ts/struct'
 
-/**
- * @since 1.3.0
- * @category Instances
- */
-export const JsonSchema: WithStructM<JS.SchemableLambda> = {
+export const WithStructMJsonSchema: WithStructM<JS.SchemableLambda> = {
   structM: (properties, params = { extraProps: 'strip' }) => {
     const [requiredKeys, jsonSchema] = pipe(
       properties,
