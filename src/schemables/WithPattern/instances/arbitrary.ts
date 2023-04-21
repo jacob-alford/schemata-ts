@@ -1,6 +1,6 @@
 import { pipe } from 'fp-ts/function'
 import * as RA from 'fp-ts/ReadonlyArray'
-import * as Arb from 'schemata-ts/Arbitrary'
+import * as Arb from 'schemata-ts/internal/arbitrary'
 import { match, matchOn } from 'schemata-ts/internal/match'
 import * as PB from 'schemata-ts/PatternBuilder'
 import { WithPattern } from 'schemata-ts/schemables/WithPattern/definition'

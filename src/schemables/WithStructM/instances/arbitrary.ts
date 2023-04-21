@@ -1,5 +1,5 @@
 import { pipe } from 'fp-ts/function'
-import * as Arb from 'schemata-ts/Arbitrary'
+import * as Arb from 'schemata-ts/internal/arbitrary'
 import { forIn, hasOwn } from 'schemata-ts/internal/util'
 import { WithStructM } from 'schemata-ts/schemables/WithStructM/definition'
 import { hasImplicitOptional, keyIsNotMapped } from 'schemata-ts/struct'

@@ -4,6 +4,7 @@ import * as RNEA from 'fp-ts/ReadonlyNonEmptyArray'
 import * as TE from 'fp-ts/TaskEither'
 import * as G from 'schemata-ts/Guard'
 import * as hkt from 'schemata-ts/HKT'
+import { Transcoder } from 'schemata-ts/internal/Transcoder'
 import * as TCE from 'schemata-ts/TranscodeError'
 
 /** @internal */
@@ -69,6 +70,14 @@ export const fromPredicate: <I, O>(
   decode: TE.fromPredicate(predicate, onError),
 })
 
+/** @internal */
+export const fromTranscoder: <I, O>(
+  transcoder: Transcoder<I, O>,
+) => TranscoderPar<I, O> = tc => ({
+  decode: flow(tc.decode, TE.fromEither),
+  encode: flow(tc.encode, TE.fromEither),
+})
+
 /** @since 2.0.0 */
 export const URI = 'schemata-ts/TranscoderPar'
 
@@ -81,7 +90,7 @@ declare module 'fp-ts/lib/HKT' {
   }
 }
 
-/** @internal */
+/** @since 2.0.0 */
 export interface SchemableLambda extends hkt.SchemableLambda {
   readonly type: TranscoderPar<this['Input'], this['Output']>
 }

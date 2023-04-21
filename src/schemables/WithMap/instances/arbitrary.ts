@@ -1,7 +1,7 @@
 import * as RA from 'fp-ts/ReadonlyArray'
 import * as RM from 'fp-ts/ReadonlyMap'
 import * as Sg from 'fp-ts/Semigroup'
-import * as Arb from 'schemata-ts/Arbitrary'
+import * as Arb from 'schemata-ts/internal/arbitrary'
 import { WithMap } from 'schemata-ts/schemables/WithMap/definition'
 
 export const WithMapArbitrary: WithMap<Arb.SchemableLambda> = {

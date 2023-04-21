@@ -1,5 +1,5 @@
 import type { Arbitrary as Arbitrary_ } from 'fast-check'
-import * as Arb from 'schemata-ts/Arbitrary'
+import * as Arb from 'schemata-ts/internal/arbitrary'
 import { JsonString, SafeJson } from 'schemata-ts/Printer'
 import { WithJson } from 'schemata-ts/schemables/WithJson/definition'
 

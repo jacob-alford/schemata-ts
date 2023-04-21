@@ -1,5 +1,5 @@
-import * as Arb from 'schemata-ts/Arbitrary'
 import { Branded } from 'schemata-ts/brand'
+import * as Arb from 'schemata-ts/internal/arbitrary'
 import {
   CheckDigitVerified,
   WithCheckDigit,

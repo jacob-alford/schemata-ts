@@ -1,9 +1,9 @@
-import * as PD from 'schemata-ts/internal/parallel-decoder'
+import * as TCP from 'schemata-ts/internal/transcoder-par'
 import { WithPadding } from 'schemata-ts/schemables/WithPadding/definition'
 import { foldUnion, match } from 'schemata-ts/schemables/WithPadding/utils'
 import { ParallelDecoder as WithRefine } from 'schemata-ts/schemables/WithRefine/instances/parallel-decoder'
 
-export const WithPaddingParallelDecoder: WithPadding<PD.SchemableLambda> = {
+export const WithPaddingTranscoderPar: WithPadding<TCP.SchemableLambda> = {
   padLeft: match({
     MaxLength: ({ maxLength }) =>
       WithRefine.refine(

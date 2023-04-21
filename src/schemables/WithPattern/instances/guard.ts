@@ -1,4 +1,4 @@
-import * as G from 'schemata-ts/Guard'
+import * as G from 'schemata-ts/internal/guard'
 import { WithPattern } from 'schemata-ts/schemables/WithPattern/definition'
 import { pattern } from 'schemata-ts/schemables/WithPattern/utils'
 

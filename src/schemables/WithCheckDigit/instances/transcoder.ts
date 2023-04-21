@@ -13,6 +13,7 @@ import {
 
 export const WithCheckDigitTranscoder: WithCheckDigit<TC.SchemableLambda> = {
   checkDigit: (algorithm, location) => dec => ({
+    encode: dec.encode,
     decode: s =>
       pipe(
         dec.decode(s),
@@ -21,8 +22,8 @@ export const WithCheckDigitTranscoder: WithCheckDigit<TC.SchemableLambda> = {
             (s): s is Branded<string, CheckDigitVerified> =>
               s[locationToIndex(s, location)] === algorithm(s),
             s =>
-              D.decodeErrors(
-                D.typeMismatch(
+              TC.transcodeErrors(
+                TC.typeMismatch(
                   s,
                   replaceCharAt(s, locationToIndex(s, location), algorithm(s)),
                 ),

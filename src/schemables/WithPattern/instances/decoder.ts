@@ -7,6 +7,6 @@ export const WithPatternTranscoder: WithPattern<TC.SchemableLambda> = {
   pattern: (p, desc, caseInsensitive) =>
     pipe(
       pattern(p, desc, caseInsensitive),
-      D.fromGuard(u => TC.decodeErrors(TC.typeMismatch(desc, u))),
+      D.fromGuard(u => TC.transcodeErrors(TC.typeMismatch(desc, u))),
     ),
 }

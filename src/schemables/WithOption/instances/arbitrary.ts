@@ -1,4 +1,4 @@
-import * as Arb from 'schemata-ts/Arbitrary'
+import * as Arb from 'schemata-ts/internal/arbitrary'
 import { WithOption } from 'schemata-ts/schemables/WithOption/definition'
 
 export const WithOptionArbitrary: WithOption<Arb.SchemableLambda> = {
