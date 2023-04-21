@@ -3,7 +3,7 @@ import * as RA from 'fp-ts/ReadonlyArray'
 import * as RM from 'fp-ts/ReadonlyMap'
 import * as Sg from 'fp-ts/Semigroup'
 import * as TE from 'fp-ts/TaskEither'
-import * as PD from 'schemata-ts/internal/parallel-decoder'
+import * as TCP from 'schemata-ts/internal/transcoder-par'
 import { ParallelDecoder as WithArray } from 'schemata-ts/schemables/WithArray/instances/parallel-decoder'
 import { WithMap } from 'schemata-ts/schemables/WithMap/definition'
 

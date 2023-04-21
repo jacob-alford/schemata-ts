@@ -2,7 +2,7 @@ import * as B from 'fp-ts/boolean'
 import { pipe } from 'fp-ts/function'
 import * as Ord from 'fp-ts/Ord'
 import * as RM from 'fp-ts/ReadonlyMap'
-import * as G from 'schemata-ts/Guard'
+import * as G from 'schemata-ts/internal/guard'
 import { WithMap } from 'schemata-ts/schemables/WithMap/definition'
 
 export const WithMapGuard: WithMap<G.SchemableLambda> = {

@@ -1,4 +1,4 @@
-import * as Arb from 'schemata-ts/Arbitrary'
+import * as Arb from 'schemata-ts/internal/arbitrary'
 import { WithPrimitives } from 'schemata-ts/schemables/WithPrimitives/definition'
 import { isFloat, isInt } from 'schemata-ts/schemables/WithPrimitives/utils'
 

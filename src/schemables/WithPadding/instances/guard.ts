@@ -1,4 +1,4 @@
-import * as G from 'schemata-ts/Guard'
+import * as G from 'schemata-ts/internal/guard'
 import { WithPadding } from 'schemata-ts/schemables/WithPadding/definition'
 import { foldUnion, match } from 'schemata-ts/schemables/WithPadding/utils'
 

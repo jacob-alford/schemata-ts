@@ -1,6 +1,6 @@
 import { flow } from 'fp-ts/function'
 import { ReadonlyNonEmptyArray } from 'fp-ts/ReadonlyNonEmptyArray'
-import * as G from 'schemata-ts/Guard'
+import * as G from 'schemata-ts/internal/guard'
 import { WithPrimitives } from 'schemata-ts/schemables/WithPrimitives/definition'
 import { isFloat, isInt } from 'schemata-ts/schemables/WithPrimitives/utils'
 

@@ -1,4 +1,4 @@
-import * as G from 'schemata-ts/Guard'
+import * as G from 'schemata-ts/internal/guard'
 import { Pattern, regexFromPattern } from 'schemata-ts/PatternBuilder'
 
 /** @internal */

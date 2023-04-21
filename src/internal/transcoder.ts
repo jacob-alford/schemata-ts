@@ -20,7 +20,7 @@ export const failure: <A>(e: TE.TranscodeErrors) => E.Either<TE.TranscodeErrors,
   E.throwError
 
 /** @internal */
-export const decodeErrors = (
+export const transcodeErrors = (
   ...errors: RNEA.ReadonlyNonEmptyArray<TE.TranscodeError>
 ): TE.TranscodeErrors => new TE.TranscodeErrors(errors)
 
@@ -80,7 +80,7 @@ declare module 'fp-ts/lib/HKT' {
   }
 }
 
-/** @internal */
+/** @since 2.0.0 */
 export interface SchemableLambda extends hkt.SchemableLambda {
   readonly type: Transcoder<this['Input'], this['Output']>
 }

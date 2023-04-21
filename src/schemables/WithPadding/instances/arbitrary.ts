@@ -1,5 +1,5 @@
 import { flow, pipe } from 'fp-ts/function'
-import * as Arb from 'schemata-ts/Arbitrary'
+import * as Arb from 'schemata-ts/internal/arbitrary'
 import { WithPadding } from 'schemata-ts/schemables/WithPadding/definition'
 import {
   foldUnion,

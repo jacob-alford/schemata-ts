@@ -48,9 +48,9 @@ export const failure: <A>(e: TE.TranscodeErrors) => E.Either<TE.TranscodeErrors,
  * @since 2.0.0
  * @category Constructors
  */
-export const decodeErrors: (
+export const transcodeErrors: (
   ...errors: RNEA.ReadonlyNonEmptyArray<TE.TranscodeError>
-) => TE.TranscodeErrors = I.decodeErrors
+) => TE.TranscodeErrors = I.transcodeErrors
 /**
  * A failure case for a value that does not match the expected type
  *

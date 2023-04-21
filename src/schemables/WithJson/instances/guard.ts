@@ -1,7 +1,7 @@
 import * as E from 'fp-ts/Either'
 import { pipe } from 'fp-ts/function'
 import * as J from 'fp-ts/Json'
-import * as G from 'schemata-ts/Guard'
+import * as G from 'schemata-ts/internal/guard'
 import { JsonString, SafeJson, toJson } from 'schemata-ts/Printer'
 import { WithJson } from 'schemata-ts/schemables/WithJson/definition'
 import { Guard as P } from 'schemata-ts/schemables/WithPrimitives/instances/guard'

@@ -16,7 +16,7 @@ export const WithStructMTranscoder: WithStructM<TC.SchemableLambda> = {
     decode: (u): any => {
       // --- typeof returns 'object' for null and arrays
       if (u === null || typeof u !== 'object' || Array.isArray(u)) {
-        return D.failure(TC.decodeErrors(TC.typeMismatch('object', u)))
+        return D.failure(TC.transcodeErrors(TC.typeMismatch('object', u)))
       }
 
       // --- decode all known properties of an object's own non-inherited properties
@@ -31,7 +31,7 @@ export const WithStructMTranscoder: WithStructM<TC.SchemableLambda> = {
           return pipe(
             prop.decode(inputVal),
             E.bimap(
-              keyErrors => TC.decodeErrors(TC.errorAtKey(key as string, keyErrors)),
+              keyErrors => TC.transcodeErrors(TC.errorAtKey(key as string, keyErrors)),
               result => O.some([result, newKey]),
             ),
           )
@@ -48,7 +48,10 @@ export const WithStructMTranscoder: WithStructM<TC.SchemableLambda> = {
             if (properties[key] === undefined) {
               return D.failure(
                 D.decodeErrors(
-                  D.errorAtKey(key as string, TC.decodeErrors(TC.unexpectedValue(value))),
+                  D.errorAtKey(
+                    key as string,
+                    TC.transcodeErrors(TC.unexpectedValue(value)),
+                  ),
                 ),
               )
             }
@@ -75,7 +78,7 @@ export const WithStructMTranscoder: WithStructM<TC.SchemableLambda> = {
                 return pipe(
                   rest.decode(inputValue),
                   E.bimap(
-                    errs => TC.decodeErrors(TC.errorAtKey(inputKey, errs)),
+                    errs => TC.transcodeErrors(TC.errorAtKey(inputKey, errs)),
                     result => O.some(tuple(result, inputKey)) as any,
                   ),
                 )

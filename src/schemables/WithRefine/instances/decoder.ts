@@ -8,7 +8,9 @@ export const WithRefineTranscoder: WithRefine<TC.SchemableLambda> = {
   refine: (refinement, refinedName) => from => ({
     decode: flow(
       from.decode,
-      E.filterOrElse(refinement, u => TC.decodeErrors(TC.typeMismatch(refinedName, u))),
+      E.filterOrElse(refinement, u =>
+        TC.transcodeErrors(TC.typeMismatch(refinedName, u)),
+      ),
     ),
   }),
 }

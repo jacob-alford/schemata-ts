@@ -1,4 +1,4 @@
-import * as G from 'schemata-ts/Guard'
+import * as G from 'schemata-ts/internal/guard'
 import { WithDate } from 'schemata-ts/schemables/WithDate/definition'
 import { isSafeDate } from 'schemata-ts/schemables/WithDate/utils'
 
