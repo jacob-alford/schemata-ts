@@ -11,7 +11,7 @@ import * as TCE from 'schemata-ts/TranscodeError'
 const decodeErrorValidation = E.getApplicativeValidation(TCE.Semigroup)
 const apSecond = Ap.apSecond(decodeErrorValidation)
 
-export const WithStructMTranscoder: WithStructM<TC.SchemableLambda> = {
+export const StructMTranscoder: WithStructM<TC.SchemableLambda> = {
   structM: (properties, params = { extraProps: 'strip' }) => ({
     decode: (u): any => {
       // --- typeof returns 'object' for null and arrays

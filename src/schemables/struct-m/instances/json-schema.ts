@@ -9,7 +9,7 @@ import * as JS from 'schemata-ts/internal/json-schema'
 import { WithStructM } from 'schemata-ts/schemables/structm/definition'
 import { hasImplicitOptional } from 'schemata-ts/struct'
 
-export const WithStructMJsonSchema: WithStructM<JS.SchemableLambda> = {
+export const StructMJsonSchema: WithStructM<JS.SchemableLambda> = {
   structM: (properties, params = { extraProps: 'strip' }) => {
     const [requiredKeys, jsonSchema] = pipe(
       properties,

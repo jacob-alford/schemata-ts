@@ -3,7 +3,7 @@ import * as TC from 'schemata-ts/internal/Transcoder'
 import { WithPattern } from 'schemata-ts/schemables/pattern/definition'
 import { pattern } from 'schemata-ts/schemables/pattern/utils'
 
-export const WithPatternTranscoder: WithPattern<TC.SchemableLambda> = {
+export const PatternTranscoder: WithPattern<TC.SchemableLambda> = {
   pattern: (p, desc, caseInsensitive) =>
     pipe(
       pattern(p, desc, caseInsensitive),

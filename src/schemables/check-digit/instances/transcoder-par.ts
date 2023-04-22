@@ -9,7 +9,7 @@ import {
 } from 'schemata-ts/schemables/check-digit/definition'
 import { locationToIndex, replaceCharAt } from 'schemata-ts/schemables/check-digit/utils'
 
-export const WithCheckDigitTranscoderPar: WithCheckDigit<TCP.SchemableLambda> = {
+export const CheckDigitTranscoderPar: WithCheckDigit<TCP.SchemableLambda> = {
   checkDigit: (algorithm, location) => tc => ({
     encode: tc.encode,
     decode: s =>

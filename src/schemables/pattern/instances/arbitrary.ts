@@ -87,6 +87,6 @@ const chainConcatAll: (
   }),
 )
 
-export const WithPatternArbitrary: WithPattern<Arb.SchemableLambda> = {
+export const PatternArbitrary: WithPattern<Arb.SchemableLambda> = {
   pattern: arbitraryFromPattern,
 }

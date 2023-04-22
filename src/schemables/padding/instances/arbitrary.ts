@@ -8,7 +8,7 @@ import {
   stripRightWhile,
 } from 'schemata-ts/schemables/padding/utils'
 
-export const WithPaddingArbitrary: WithPadding<Arb.SchemableLambda> = {
+export const PaddingArbitrary: WithPadding<Arb.SchemableLambda> = {
   padLeft: (length, char) => aS => ({
     arbitrary: fc =>
       pipe(

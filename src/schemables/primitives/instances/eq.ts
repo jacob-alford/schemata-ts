@@ -6,7 +6,7 @@ import * as Eq_ from 'schemata-ts/Eq'
 import { WithPrimitives } from 'schemata-ts/schemables/primitives/definition'
 
 /** @since 2.0.0 */
-export const WithPrimitivesEq: WithPrimitives<Eq_.SchemableLambda> = {
+export const PrimitivesEq: WithPrimitives<Eq_.SchemableLambda> = {
   string: constant(Str.Eq),
   int: constant(N.Eq),
   float: constant(N.Eq),

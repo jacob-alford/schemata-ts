@@ -7,7 +7,7 @@ import {
 } from 'schemata-ts/schemables/guarded-union/definition'
 import * as TCE from 'schemata-ts/TranscodeError'
 
-export const WithGuardedUnionTranscoder: WithGuardedUnion<TC.SchemableLambda> = {
+export const GuardedUnionTranscoder: WithGuardedUnion<TC.SchemableLambda> = {
   guardedUnion: (name, ...members) => {
     const sortedMembers = pipe(members, RNEA.sort(ordGuardedPrecedentedUnionMember))
     return {

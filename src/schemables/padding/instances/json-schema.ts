@@ -3,7 +3,7 @@ import * as JS from 'schemata-ts/internal/json-schema'
 import { WithPadding } from 'schemata-ts/schemables/padding/definition'
 import { match } from 'schemata-ts/schemables/padding/utils'
 
-export const WithPaddingJsonSchema: WithPadding<JS.SchemableLambda> = {
+export const PaddingJsonSchema: WithPadding<JS.SchemableLambda> = {
   padLeft: length => stringSchema =>
     pipe(
       length,

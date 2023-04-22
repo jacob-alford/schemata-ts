@@ -1,8 +1,8 @@
 import * as TCP from 'schemata-ts/internal/transcoder-par'
 import { WithDate } from 'schemata-ts/schemables/date/definition'
-import { WithDateTranscoder as Transcoder } from 'schemata-ts/schemables/date/instances/transcoder'
+import { DateTranscoder as Transcoder } from 'schemata-ts/schemables/date/instances/transcoder'
 
-export const WithDateTranscoderPar: WithDate<TCP.SchemableLambda> = {
+export const DateTranscoderPar: WithDate<TCP.SchemableLambda> = {
   date: TCP.fromTranscoder(Transcoder.date),
   dateFromString: TCP.fromTranscoder(Transcoder.dateFromString),
 }

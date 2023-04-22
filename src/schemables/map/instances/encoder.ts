@@ -5,7 +5,7 @@ import * as RTup from 'fp-ts/ReadonlyTuple'
 import * as Enc from 'schemata-ts/Encoder'
 import { WithMap } from 'schemata-ts/schemables/map/definition'
 
-export const WithMapEncoder: WithMap<Enc.SchemableLambda> = {
+export const MapEncoder: WithMap<Enc.SchemableLambda> = {
   mapFromEntries: (ordK, sk, sa) => ({
     encode: flow(
       RM.toReadonlyArray(ordK),

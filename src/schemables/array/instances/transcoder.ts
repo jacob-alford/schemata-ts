@@ -12,7 +12,7 @@ const validateArray = E.fromPredicate(
 
 const applicativeValidation = E.getApplicativeValidation(TCE.Semigroup)
 
-export const WithArrayTranscoder: WithArray<TC.SchemableLambda> = {
+export const ArrayTranscoder: WithArray<TC.SchemableLambda> = {
   array: item => ({
     encode: flow(E.traverseArray(item.encode)),
     decode: flow(

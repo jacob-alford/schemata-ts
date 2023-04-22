@@ -6,7 +6,7 @@ import {
   WithGuardedUnion,
 } from 'schemata-ts/schemables/guarded-union/definition'
 
-export const WithGuardedUnionEq: WithGuardedUnion<Eq_.SchemableLambda> = {
+export const GuardedUnionEq: WithGuardedUnion<Eq_.SchemableLambda> = {
   guardedUnion: (_name, ...members) => {
     const sortedMembers = pipe(members, RNEA.sort(ordGuardedPrecedentedUnionMember))
     return {

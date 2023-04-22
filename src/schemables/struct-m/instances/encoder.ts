@@ -4,7 +4,7 @@ import { hasOwn } from 'schemata-ts/internal/util'
 import { WithStructM } from 'schemata-ts/schemables/structm/definition'
 import { keyIsNotMapped } from 'schemata-ts/struct'
 
-export const WithStructMEncoder: WithStructM<Enc.SchemableLambda> = {
+export const StructMEncoder: WithStructM<Enc.SchemableLambda> = {
   structM: (properties, params = { extraProps: 'strip' }) => {
     const keyLookup: Record<
       // -- expected key of the output object

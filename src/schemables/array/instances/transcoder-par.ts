@@ -17,7 +17,7 @@ const applicativeValidation = TE.getApplicativeTaskValidation(
   TCE.Semigroup,
 )
 
-export const WithArrayTranscoderPar: WithArray<TCP.SchemableLambda> = {
+export const ArrayTranscoderPar: WithArray<TCP.SchemableLambda> = {
   array: item => ({
     encode: RA.traverseWithIndex(applicativeValidation)((i, u) =>
       pipe(

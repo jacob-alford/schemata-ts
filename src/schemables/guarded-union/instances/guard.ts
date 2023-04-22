@@ -8,7 +8,7 @@ import {
   WithGuardedUnion,
 } from 'schemata-ts/schemables/guarded-union/definition'
 
-export const WithGuardedUnionGuard: WithGuardedUnion<G.SchemableLambda> = {
+export const GuardedUnionGuard: WithGuardedUnion<G.SchemableLambda> = {
   guardedUnion: <
     T extends RNEA.ReadonlyNonEmptyArray<
       GuardedPrecedentedUnionMember<G.SchemableLambda>

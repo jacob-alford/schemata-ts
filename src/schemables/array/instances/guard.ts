@@ -1,7 +1,7 @@
 import * as G from 'schemata-ts/internal/guard'
 import { WithArray } from 'schemata-ts/schemables/array/definition'
 
-export const WithArrayGuard: WithArray<G.SchemableLambda> = {
+export const ArrayGuard: WithArray<G.SchemableLambda> = {
   array: <A>(item: G.Guard<A>) => ({
     is: (u): u is ReadonlyArray<A> => Array.isArray(u) && u.every(item.is),
   }),

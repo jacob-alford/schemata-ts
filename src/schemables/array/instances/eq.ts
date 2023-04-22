@@ -2,7 +2,7 @@ import * as RA from 'fp-ts/ReadonlyArray'
 import * as Eq_ from 'schemata-ts/Eq'
 import { WithArray } from 'schemata-ts/schemables/array/definition'
 
-export const WithArrayEq: WithArray<Eq_.SchemableLambda> = {
+export const ArrayEq: WithArray<Eq_.SchemableLambda> = {
   array: RA.getEq,
   tuple: (...eqs) =>
     Eq_.fromEquals((a, b) => {

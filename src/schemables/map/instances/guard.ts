@@ -5,7 +5,7 @@ import * as RM from 'fp-ts/ReadonlyMap'
 import * as G from 'schemata-ts/internal/guard'
 import { WithMap } from 'schemata-ts/schemables/map/definition'
 
-export const WithMapGuard: WithMap<G.SchemableLambda> = {
+export const MapGuard: WithMap<G.SchemableLambda> = {
   mapFromEntries: <K, A>(ordK: Ord.Ord<K>, sk: G.Guard<K>, sa: G.Guard<A>) => ({
     is: (a): a is ReadonlyMap<K, A> =>
       a instanceof Map &&
