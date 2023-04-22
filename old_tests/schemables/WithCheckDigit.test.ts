@@ -1,8 +1,8 @@
 import * as E from 'fp-ts/Either'
 import { pipe } from 'fp-ts/function'
 
-import * as D from '../../src/internal/decoder'
 import { luhn } from '../../src/internal/algorithms'
+import * as D from '../../src/internal/decoder'
 import { interpret } from '../../src/Schema'
 import * as CC from '../../src/schemata/string/CreditCard'
 import * as CheckDigit from '../../test-utils/schemable-exports/WithCheckDigit'

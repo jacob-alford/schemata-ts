@@ -1,4 +1,3 @@
-import { pipe } from 'fp-ts/function'
 import * as RA from 'fp-ts/ReadonlyArray'
 import * as Arb from 'schemata-ts/internal/arbitrary'
 import { match, matchOn } from 'schemata-ts/internal/match'

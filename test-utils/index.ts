@@ -5,11 +5,10 @@ import * as N from 'fp-ts/number'
 import * as RA from 'fp-ts/ReadonlyArray'
 
 import * as Arb from '../src/Arbitrary'
-import * as D from '../src/internal/decoder'
 import * as E from '../src/Encoder'
 import * as Eq from '../src/Eq'
 import * as G from '../src/Guard'
-import * as JS from '../src/JsonSchema'
+import * as D from '../src/internal/decoder'
 import * as P from '../src/Printer'
 import { Schema } from '../src/Schema'
 

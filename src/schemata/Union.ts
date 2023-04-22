@@ -6,7 +6,7 @@
 import { pipe } from 'fp-ts/function'
 import * as RNEA from 'fp-ts/ReadonlyNonEmptyArray'
 import { getGuard } from 'schemata-ts/derivations/GuardSchemable'
-import { getInformation } from 'schemata-ts/derivations/InformationSchemable'
+import { getInformation } from 'schemata-ts/derivations/information-schemable'
 import { InputOf, make, OutputOf, Schema } from 'schemata-ts/Schema'
 
 type Unique_<

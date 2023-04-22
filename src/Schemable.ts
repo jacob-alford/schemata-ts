@@ -6,20 +6,20 @@
  * @since 1.0.0
  */
 import { SchemableLambda } from 'schemata-ts/HKT'
-import { WithAnnotate } from 'schemata-ts/schemables/WithAnnotate/definition'
-import { WithArray } from 'schemata-ts/schemables/WithArray/definition'
-import { WithCheckDigit } from 'schemata-ts/schemables/WithCheckDigit/definition'
-import { WithDate } from 'schemata-ts/schemables/WithDate/definition'
-import { WithInvariant } from 'schemata-ts/schemables/WithInvariant/definition'
-import { WithJson } from 'schemata-ts/schemables/WithJson/definition'
-import { WithMap } from 'schemata-ts/schemables/WithMap/definition'
-import { WithOption } from 'schemata-ts/schemables/WithOption/definition'
-import { WithOptional } from 'schemata-ts/schemables/WithOptional/definition'
-import { WithPadding } from 'schemata-ts/schemables/WithPadding/definition'
-import { WithPattern } from 'schemata-ts/schemables/WithPattern/definition'
-import { WithPrimitives } from 'schemata-ts/schemables/WithPrimitives/definition'
-import { WithRefine } from 'schemata-ts/schemables/WithRefine/definition'
-import { WithStructM } from 'schemata-ts/schemables/WithStructM/definition'
+import { WithAnnotate } from 'schemata-ts/schemables/annotate/definition'
+import { WithArray } from 'schemata-ts/schemables/array/definition'
+import { WithCheckDigit } from 'schemata-ts/schemables/check-digit/definition'
+import { WithDate } from 'schemata-ts/schemables/date/definition'
+import { WithGuardedUnion } from 'schemata-ts/schemables/guarded-union/definition'
+import { WithInvariant } from 'schemata-ts/schemables/invariant/definition'
+import { WithMap } from 'schemata-ts/schemables/map/definition'
+import { WithOption } from 'schemata-ts/schemables/option/definition'
+import { WithOptional } from 'schemata-ts/schemables/optional/definition'
+import { WithPadding } from 'schemata-ts/schemables/padding/definition'
+import { WithPattern } from 'schemata-ts/schemables/pattern/definition'
+import { WithPrimitives } from 'schemata-ts/schemables/primitives/definition'
+import { WithRefine } from 'schemata-ts/schemables/refine/definition'
+import { WithStructM } from 'schemata-ts/schemables/struct-m/definition'
 
 /**
  * @since 2.0.0
@@ -30,8 +30,8 @@ export interface Schemable<S extends SchemableLambda>
     WithArray<S>,
     WithCheckDigit<S>,
     WithDate<S>,
+    WithGuardedUnion<S>,
     WithInvariant<S>,
-    WithJson<S>,
     WithMap<S>,
     WithOption<S>,
     WithOptional<S>,

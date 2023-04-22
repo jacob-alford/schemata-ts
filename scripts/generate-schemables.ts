@@ -1,9 +1,8 @@
+import { camelCase, paramCase, pascalCase } from 'change-case'
 import * as Cons from 'fp-ts/Console'
-import { flow, pipe, tuple } from 'fp-ts/function'
-import * as O from 'fp-ts/Option'
+import { pipe, tuple } from 'fp-ts/function'
 import * as RTE from 'fp-ts/ReaderTaskEither'
 import * as RA from 'fp-ts/ReadonlyArray'
-import * as RNEA from 'fp-ts/ReadonlyNonEmptyArray'
 import * as Str from 'fp-ts/string'
 import * as TE from 'fp-ts/TaskEither'
 import * as ts from 'typescript'
@@ -44,9 +43,10 @@ export const makeSchemableTypeclass: (
         ...pipe(
           schemables,
           RA.map(([schemable]) =>
-            _.createExpressionWithTypeArguments(_.createIdentifier(schemable), [
-              _.createTypeReferenceNode(_.createIdentifier('S'), undefined),
-            ]),
+            _.createExpressionWithTypeArguments(
+              _.createIdentifier(`With${pascalCase(schemable)}`),
+              [_.createTypeReferenceNode(_.createIdentifier('S'), undefined)],
+            ),
           ),
         ),
       ]),
@@ -74,7 +74,7 @@ const makeSchemableContents: (
       ...pipe(
         schemables,
         RA.map(([schemable, path]) =>
-          makeDestructureImport([schemable], `${path}/definition`),
+          makeDestructureImport([`With${pascalCase(schemable)}`], `${path}/definition`),
         ),
       ),
 
@@ -97,13 +97,12 @@ type SchemableTypeclass<
 
 /** Different typeclasses which express a Schemable instance */
 export type SchemableTypeclasses =
-  | SchemableTypeclass<'Decoder', 'D', '2.0.0'>
+  | SchemableTypeclass<'Arbitrary', 'Arb', '2.0.0'>
   | SchemableTypeclass<'Eq', 'Eq', '2.0.0'>
   | SchemableTypeclass<'Guard', 'G', '2.0.0'>
-  | SchemableTypeclass<'Encoder', 'Enc', '2.0.0'>
-  | SchemableTypeclass<'Arbitrary', 'Arb', '2.0.0'>
-  | SchemableTypeclass<'Printer', 'P', '2.0.0'>
   | SchemableTypeclass<'JsonSchema', 'JS', '2.0.0'>
+  | SchemableTypeclass<'TranscoderPar', 'TCP', '2.0.0'>
+  | SchemableTypeclass<'Transcoder', 'TC', '2.0.0'>
   | SchemableTypeclass<'Schemable', '_', '2.0.0'>
 
 // #region Typeclass modules
@@ -151,8 +150,8 @@ const makeSchemableInstance: (
                 RA.map(([schemable]) =>
                   _.createSpreadAssignment(
                     _.createPropertyAccessExpression(
-                      _.createIdentifier(schemable),
-                      _.createIdentifier(instanceName),
+                      _.createIdentifier(camelCase(schemable)),
+                      _.createIdentifier(`${pascalCase(schemable)}${instanceName}`),
                     ),
                   ),
                 ),
@@ -212,14 +211,14 @@ const makeSchemableInstanceModuleContents: (
   return pipe(
     [
       moduleHeaderComment(module, sinceVersion),
-      makeModuleStarImport(accessor, `schemata-ts/${module}`),
+      makeModuleStarImport(accessor, `schemata-ts/internal/${paramCase(module)}`),
       makeDestructureImport(['Schemable'], 'schemata-ts/Schemable'),
       makeDestructureImport(['interpret'], 'schemata-ts/Schema'),
       ...pipe(
         schemables,
         RA.map(([schemable]) =>
           makeModuleStarImport(
-            schemable,
+            camelCase(schemable),
             `schemata-ts/schemables/${schemable}/instances/${lowercaseModule}`,
           ),
         ),
@@ -240,42 +239,19 @@ const writeToDisk: (path: string) => (contents: string) => Build<void> =
 
 // #endregion
 
-/** Strips JSDoc comment's leading ** and trailing * */
-export const extractJSDocHeaderTextFromFileContents: (
-  fileContents: string,
-) => string = fileContents =>
-  pipe(
-    fileContents,
-    Str.split('*/'),
-    RNEA.head,
-    Str.split('/**'),
-    RNEA.tail,
-    RA.head,
-    O.getOrElse(() => ''),
-  )
-
-/** Extracts module name, e.g. ASCII.ts -> ASCII */
-const getModuleName: (file: string) => string = flow(Str.split('.'), RNEA.head)
-
 const getSchemables: Build<ReadonlyArray<Schemable>> = C =>
   pipe(
-    C.readFiles('./src/schemables'),
-    TE.map(
-      RA.map(fileName => {
-        const schemable = getModuleName(fileName)
-        return tuple(schemable, `schemata-ts/schemables/${schemable}`)
-      }),
-    ),
+    C.readDirs('./src/schemables'),
+    TE.map(RA.map(dirname => tuple(dirname, `schemata-ts/schemables/${dirname}`))),
   )
 
 const schemableTypeclasses: ReadonlyArray<SchemableTypeclasses> = [
-  ['Decoder', 'D', '2.0.0', 'decoder'],
+  ['Arbitrary', 'Arb', '2.0.0', 'arbitrary'],
   ['Eq', 'Eq', '2.0.0', 'eq'],
   ['Guard', 'G', '2.0.0', 'guard'],
-  ['Encoder', 'Enc', '2.0.0', 'encoder'],
-  ['Arbitrary', 'Arb', '2.0.0', 'arbitrary'],
-  ['Printer', 'P', '2.0.0', 'printer'],
   ['JsonSchema', 'JS', '2.0.0', 'json-schema'],
+  ['TranscoderPar', 'TCP', '2.0.0', 'transcoder-par'],
+  ['Transcoder', 'TC', '2.0.0', 'transcoder'],
 ]
 
 const format: Build<void> = C => C.exec('yarn format')
@@ -290,7 +266,7 @@ const main: Build<void> = pipe(
       RTE.traverseArray(typeclass =>
         pipe(
           makeSchemableInstanceModuleContents(typeclass, schemables),
-          writeToDisk(`./src/derivations/${typeclass[0]}Schemable.ts`),
+          writeToDisk(`./src/derivations/${typeclass[3]}-schemable.ts`),
           RTE.chainFirstIOK(() => Cons.log(`  - Writing src/${typeclass[0]}.ts...`)),
         ),
       ),
