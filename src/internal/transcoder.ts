@@ -2,6 +2,7 @@ import * as E from 'fp-ts/Either'
 import { flow, pipe } from 'fp-ts/function'
 import { Invariant2 } from 'fp-ts/Invariant'
 import * as RNEA from 'fp-ts/ReadonlyNonEmptyArray'
+import * as Sgd from 'fp-ts/Semigroupoid'
 import * as G from 'schemata-ts/Guard'
 import * as hkt from 'schemata-ts/HKT'
 import * as TE from 'schemata-ts/TranscodeError'
@@ -115,3 +116,17 @@ export const alt: <I, A>(
       E.alt(() => that().encode(out)),
     ),
 })
+
+/** @internal */
+export const compose: <B, C>(
+  tBC: Transcoder<B, C>,
+) => <A>(tAB: Transcoder<A, B>) => Transcoder<A, C> = tBC => tAB => ({
+  decode: flow(tAB.decode, E.chain(tBC.decode)),
+  encode: flow(tBC.encode, E.chain(tAB.encode)),
+})
+
+/** @internal */
+export const Semigroupoid: Sgd.Semigroupoid2<URI> = {
+  URI,
+  compose: (tBC, tAB) => compose(tBC)(tAB),
+}

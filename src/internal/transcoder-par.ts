@@ -1,10 +1,11 @@
 import { flow, pipe } from 'fp-ts/function'
 import { Invariant2 } from 'fp-ts/Invariant'
 import * as RNEA from 'fp-ts/ReadonlyNonEmptyArray'
+import * as Sgd from 'fp-ts/Semigroupoid'
 import * as TE from 'fp-ts/TaskEither'
 import * as G from 'schemata-ts/Guard'
 import * as hkt from 'schemata-ts/HKT'
-import { Transcoder } from 'schemata-ts/internal/Transcoder'
+import { Transcoder } from 'schemata-ts/internal/transcoder'
 import * as TCE from 'schemata-ts/TranscodeError'
 
 /** @internal */
@@ -125,3 +126,17 @@ export const alt: <I, A>(
       TE.alt(() => that().encode(out)),
     ),
 })
+
+/** @internal */
+export const compose: <B, C>(
+  tBC: TranscoderPar<B, C>,
+) => <A>(tAB: TranscoderPar<A, B>) => TranscoderPar<A, C> = tBC => tAB => ({
+  decode: flow(tAB.decode, TE.chain(tBC.decode)),
+  encode: flow(tBC.encode, TE.chain(tAB.encode)),
+})
+
+/** @internal */
+export const Semigroupoid: Sgd.Semigroupoid2<URI> = {
+  URI,
+  compose: (tBC, tAB) => compose(tBC)(tAB),
+}
