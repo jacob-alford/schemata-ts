@@ -6,6 +6,7 @@
  */
 import { Invariant2 } from 'fp-ts/Invariant'
 import * as RNEA from 'fp-ts/ReadonlyNonEmptyArray'
+import { Semigroupoid2 } from 'fp-ts/Semigroupoid'
 import * as TE from 'fp-ts/TaskEither'
 import * as I from 'schemata-ts/internal/transcoder-par'
 import * as TCE from 'schemata-ts/TranscodeError'
@@ -152,3 +153,17 @@ export const Invariant: Invariant2<URI> = I.Invariant
 export const alt: <I, A>(
   that: () => TranscoderPar<I, A>,
 ) => (fa: TranscoderPar<I, A>) => TranscoderPar<I, A> = I.alt
+
+/**
+ * @since 2.0.0
+ * @category Instance Methods
+ */
+export const compose: <B, C>(
+  tAB: TranscoderPar<B, C>,
+) => <A>(tAC: TranscoderPar<A, B>) => TranscoderPar<A, C> = I.compose
+
+/**
+ * @since 2.0.0
+ * @category Instances
+ */
+export const Semigroupoid: Semigroupoid2<URI> = I.Semigroupoid
