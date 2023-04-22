@@ -1,7 +1,7 @@
 import * as Arb from 'schemata-ts/internal/arbitrary'
 import { WithOption } from 'schemata-ts/schemables/option/definition'
 
-export const WithOptionArbitrary: WithOption<Arb.SchemableLambda> = {
+export const OptionArbitrary: WithOption<Arb.SchemableLambda> = {
   optionFromExclude: (_, arbA) => ({
     arbitrary: fc =>
       fc.oneof(

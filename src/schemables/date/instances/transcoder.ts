@@ -1,10 +1,10 @@
 import { identity, pipe } from 'fp-ts/function'
 import * as TC from 'schemata-ts/internal/transcoder'
 import { WithDate } from 'schemata-ts/schemables/date/definition'
-import { WithDateGuard as Guard } from 'schemata-ts/schemables/date/instances/guard'
+import { DateGuard as Guard } from 'schemata-ts/schemables/date/instances/guard'
 import { isValidDateString } from 'schemata-ts/schemables/date/utils'
 
-export const WithDateTranscoder: WithDate<TC.SchemableLambda> = {
+export const DateTranscoder: WithDate<TC.SchemableLambda> = {
   date: pipe(
     Guard.date,
     TC.fromGuard(identity, u => TC.transcodeErrors(TC.typeMismatch('Date', u))),

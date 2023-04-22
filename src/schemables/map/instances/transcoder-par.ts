@@ -7,7 +7,7 @@ import * as TCP from 'schemata-ts/internal/transcoder-par'
 import { ParallelDecoder as WithArray } from 'schemata-ts/schemables/array/instances/parallel-decoder'
 import { WithMap } from 'schemata-ts/schemables/map/definition'
 
-export const WithMapDecoder: WithMap<PD.SchemableLambda> = {
+export const MapDecoder: WithMap<PD.SchemableLambda> = {
   mapFromEntries: (ordK, sk, sa) => ({
     decode: flow(
       WithArray.array(WithArray.tuple(sk, sa)).decode,

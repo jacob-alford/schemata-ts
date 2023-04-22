@@ -4,7 +4,7 @@ import { forIn, hasOwn } from 'schemata-ts/internal/util'
 import { WithStructM } from 'schemata-ts/schemables/structm/definition'
 import { hasImplicitOptional, keyIsNotMapped } from 'schemata-ts/struct'
 
-export const WithStructMArbitrary: WithStructM<Arb.SchemableLambda> = {
+export const StructMArbitrary: WithStructM<Arb.SchemableLambda> = {
   structM: (properties, params = { extraProps: 'strip' }) => {
     const remappedProps: Record<string, Arb.Arbitrary<unknown>> = {}
     for (const key in properties) {

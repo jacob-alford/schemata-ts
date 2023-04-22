@@ -4,7 +4,7 @@ import { flow } from 'fp-ts/function'
 import * as TC from 'schemata-ts/internal/Transcoder'
 import { WithRefine } from 'schemata-ts/schemables/refine/definition'
 
-export const WithRefineTranscoder: WithRefine<TC.SchemableLambda> = {
+export const RefineTranscoder: WithRefine<TC.SchemableLambda> = {
   refine: (refinement, refinedName) => from => ({
     decode: flow(
       from.decode,

@@ -4,7 +4,7 @@ import * as Eq from 'schemata-ts/Eq'
 import * as P from 'schemata-ts/Printer'
 import { WithOption } from 'schemata-ts/schemables/option/definition'
 
-export const WithOptionPrinter: WithOption<P.SchemableLambda> = {
+export const OptionPrinter: WithOption<P.SchemableLambda> = {
   optionFromExclude: (exclude, sa, eq = Eq.eqStrict) => ({
     domainToJson: flow(
       O.getOrElseW(() => exclude),

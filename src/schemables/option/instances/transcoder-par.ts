@@ -5,7 +5,7 @@ import * as Eq_ from 'schemata-ts/Eq'
 import * as TCP from 'schemata-ts/internal/transcoder-par'
 import { WithOption } from 'schemata-ts/schemables/option/definition'
 
-export const WithOptionTranscoderPar: WithOption<TCP.SchemableLambda> = {
+export const OptionTranscoderPar: WithOption<TCP.SchemableLambda> = {
   optionFromExclude: (exclude, sa, eqA = Eq_.eqStrict) => ({
     decode: flow(sa.decode, TE.map(O.fromPredicate(a => !eqA.equals(a, exclude)))),
   }),

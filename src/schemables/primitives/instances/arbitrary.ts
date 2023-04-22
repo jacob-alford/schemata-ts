@@ -3,7 +3,7 @@ import { WithPrimitives } from 'schemata-ts/schemables/primitives/definition'
 import { isFloat, isInt } from 'schemata-ts/schemables/primitives/utils'
 
 /** @since 2.0.0 */
-export const WithPrimitivesArbitrary: WithPrimitives<Arb.SchemableLambda> = {
+export const PrimitivesArbitrary: WithPrimitives<Arb.SchemableLambda> = {
   string: (params = {}) => ({
     arbitrary: fc =>
       fc.oneof(

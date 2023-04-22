@@ -4,7 +4,7 @@ import { WithPrimitives } from 'schemata-ts/schemables/primitives/definition'
 import { Decoder } from 'schemata-ts/schemables/primitives/instances/decoder'
 
 /** @since 2.0.0 */
-export const WithPrimitivesTranscoderPar: WithPrimitives<TCP.SchemableLambda> = {
+export const PrimitivesTranscoderPar: WithPrimitives<TCP.SchemableLambda> = {
   string: flow(Decoder.string, PD.fromDecoder),
   int: flow(Decoder.int, PD.fromDecoder),
   float: flow(Decoder.float, PD.fromDecoder),

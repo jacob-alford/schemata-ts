@@ -4,7 +4,7 @@ import * as Sg from 'fp-ts/Semigroup'
 import * as Arb from 'schemata-ts/internal/arbitrary'
 import { WithMap } from 'schemata-ts/schemables/map/definition'
 
-export const WithMapArbitrary: WithMap<Arb.SchemableLambda> = {
+export const MapArbitrary: WithMap<Arb.SchemableLambda> = {
   mapFromEntries: (ordK, arbK, arbA) => ({
     arbitrary: fc =>
       fc

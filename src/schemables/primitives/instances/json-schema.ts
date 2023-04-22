@@ -2,7 +2,7 @@ import * as JS from 'schemata-ts/internal/json-schema'
 import { WithPrimitives } from 'schemata-ts/schemables/primitives/definition'
 
 /** @since 2.0.0 */
-export const WithPrimitivesJsonSchema: WithPrimitives<JS.SchemableLambda> = {
+export const PrimitivesJsonSchema: WithPrimitives<JS.SchemableLambda> = {
   string: (params = {}) => JS.make(new JS.JsonString(params.minLength, params.maxLength)),
   int: (params = {}) => JS.make(new JS.JsonInteger(params.min, params.max)),
   float: (params = {}) => JS.make(new JS.JsonNumber(params.min, params.max)),

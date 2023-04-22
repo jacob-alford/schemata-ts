@@ -9,7 +9,7 @@ import { WithMap } from 'schemata-ts/schemables/map/definition'
 
 const apSV = apS(P.printerValidation)
 
-export const WithMapPrinter: WithMap<P.SchemableLambda> = {
+export const MapPrinter: WithMap<P.SchemableLambda> = {
   mapFromEntries: (ordK, sk, sa) => ({
     domainToJson: flow(
       RM.toReadonlyArray(ordK),

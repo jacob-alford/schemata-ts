@@ -2,7 +2,7 @@ import * as TC from 'schemata-ts/internal/Transcoder'
 import { WithOptional } from 'schemata-ts/schemables/optional/definition'
 import { makeImplicitOptional } from 'schemata-ts/struct'
 
-export const WithOptionalTranscoder: WithOptional<TC.SchemableLambda> = {
+export const OptionalTranscoder: WithOptional<TC.SchemableLambda> = {
   optional: da =>
     makeImplicitOptional(
       {

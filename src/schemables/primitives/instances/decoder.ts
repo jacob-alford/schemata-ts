@@ -5,7 +5,7 @@ import { WithPrimitives } from 'schemata-ts/schemables/primitives/definition'
 import { Guard } from 'schemata-ts/schemables/primitives/instances/guard'
 
 /** @since 2.0.0 */
-export const WithPrimitivesTranscoder: WithPrimitives<TC.SchemableLambda> = {
+export const PrimitivesTranscoder: WithPrimitives<TC.SchemableLambda> = {
   string: flow(
     Guard.string,
     D.fromGuard(u => TC.transcodeErrors(TC.typeMismatch('string', u))),

@@ -8,7 +8,7 @@ import { hasOwn } from 'schemata-ts/internal/util'
 import { WithStructM } from 'schemata-ts/schemables/structm/definition'
 import { keyIsNotMapped } from 'schemata-ts/struct'
 
-export const WithStructMGuard: WithStructM<G.SchemableLambda> = {
+export const StructMGuard: WithStructM<G.SchemableLambda> = {
   structM: (properties, params = { extraProps: 'strip' }) => {
     const remappedProps: Record<string, G.Guard<unknown>> = {}
     for (const key in properties) {

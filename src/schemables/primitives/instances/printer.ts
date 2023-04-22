@@ -3,7 +3,7 @@ import * as P from 'schemata-ts/Printer'
 import { WithPrimitives } from 'schemata-ts/schemables/primitives/definition'
 
 /** @since 2.0.0 */
-export const WithPrimitivesPrinter: WithPrimitives<P.SchemableLambda> = {
+export const PrimitivesPrinter: WithPrimitives<P.SchemableLambda> = {
   string: constant({
     domainToJson: P.toJson,
     codomainToJson: P.toJson,

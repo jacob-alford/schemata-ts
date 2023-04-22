@@ -4,7 +4,7 @@ import { compose } from 'fp-ts/Refinement'
 import * as G from 'schemata-ts/internal/guard'
 import { WithRefine } from 'schemata-ts/schemables/refine/definition'
 
-export const WithRefineGuard: WithRefine<G.SchemableLambda> = {
+export const RefineGuard: WithRefine<G.SchemableLambda> = {
   refine: refinement => from => ({
     is: pipe(from.is, compose(refinement)),
   }),

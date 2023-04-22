@@ -7,7 +7,7 @@ import * as PE from 'schemata-ts/PrintError'
 import { WithStructM } from 'schemata-ts/schemables/structm/definition'
 import { keyIsNotMapped } from 'schemata-ts/struct'
 
-export const WithStructMPrinter: WithStructM<P.SchemableLambda> = {
+export const StructMPrinter: WithStructM<P.SchemableLambda> = {
   structM: (properties, params = { extraProps: 'strip' }) => {
     const printersByKey: Record<string, P.Printer<unknown, unknown>['codomainToJson']> =
       {}

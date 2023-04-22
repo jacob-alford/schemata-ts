@@ -6,7 +6,7 @@ import * as Eq_ from 'schemata-ts/Eq'
 import { hasOwn } from 'schemata-ts/internal/util'
 import { WithStructM } from 'schemata-ts/schemables/structm/definition'
 
-export const WithStructMEq: WithStructM<Eq_.SchemableLambda> = {
+export const StructMEq: WithStructM<Eq_.SchemableLambda> = {
   structM: (properties, params = { extraProps: 'strip' }) => {
     const eqs: Record<string, Eq_.Eq<unknown>> = pipe(
       properties,

@@ -2,7 +2,7 @@ import * as RA from 'fp-ts/ReadonlyArray'
 import * as Arb from 'schemata-ts/internal/arbitrary'
 import { WithArray } from 'schemata-ts/schemables/array/definition'
 
-export const WithArrayArbitrary: WithArray<Arb.SchemableLambda> = {
+export const ArrayArbitrary: WithArray<Arb.SchemableLambda> = {
   array: item => ({
     arbitrary: fc => fc.array(item.arbitrary(fc)),
   }),

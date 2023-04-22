@@ -7,7 +7,7 @@ import * as TC from 'schemata-ts/internal/Transcoder'
 import { Decoder as WithArray } from 'schemata-ts/schemables/array/instances/decoder'
 import { WithMap } from 'schemata-ts/schemables/map/definition'
 
-export const WithMapTranscoder: WithMap<TC.SchemableLambda> = {
+export const MapTranscoder: WithMap<TC.SchemableLambda> = {
   mapFromEntries: (ordK, sk, sa) => ({
     decode: flow(
       WithArray.array(WithArray.tuple(sk, sa)).decode,

@@ -2,7 +2,7 @@ import * as O from 'fp-ts/Option'
 import * as G from 'schemata-ts/internal/guard'
 import { WithOption } from 'schemata-ts/schemables/option/definition'
 
-export const WithOptionGuard: WithOption<G.SchemableLambda> = {
+export const OptionGuard: WithOption<G.SchemableLambda> = {
   optionFromExclude: (_, guardA) => ({
     is: (u): u is O.Option<typeof _> =>
       typeof u === 'object' &&

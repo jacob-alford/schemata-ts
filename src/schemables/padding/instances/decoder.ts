@@ -3,7 +3,7 @@ import { WithPadding } from 'schemata-ts/schemables/padding/definition'
 import { foldUnion, match } from 'schemata-ts/schemables/padding/utils'
 import { Decoder as WithRefine } from 'schemata-ts/schemables/refine/instances/decoder'
 
-export const WithPaddingTranscoder: WithPadding<TC.SchemableLambda> = {
+export const PaddingTranscoder: WithPadding<TC.SchemableLambda> = {
   padLeft: match({
     MaxLength: ({ maxLength }) =>
       WithRefine.refine(

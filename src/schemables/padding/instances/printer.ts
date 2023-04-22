@@ -3,7 +3,7 @@ import { WithPadding } from 'schemata-ts/schemables/padding/definition'
 import { foldUnion, match } from 'schemata-ts/schemables/padding/utils'
 import { Printer as WithRefine } from 'schemata-ts/schemables/refine/instances/printer'
 
-export const WithPaddingPrinter: WithPadding<P.SchemableLambda> = {
+export const PaddingPrinter: WithPadding<P.SchemableLambda> = {
   padLeft: match({
     MaxLength: ({ maxLength }) =>
       WithRefine.refine(
