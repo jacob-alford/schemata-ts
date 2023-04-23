@@ -1,17 +1,7 @@
-/**
- * Floating point branded newtype. Parameters: min, max are inclusive.
- *
- * Represents floating point numbers:
- *
- * ```math
- *  { f | f ∈ ℝ, f >= -Number.MAX_VALUE, f <= Number.MAX_VALUE }
- * ```
- *
- * @since 1.0.0
- */
+/** @since 1.0.0 */
 import { Float as Floating, MaxNegativeFloat, MaxPositiveFloat } from 'schemata-ts/float'
 import { make, Schema } from 'schemata-ts/Schema'
-import { BoundedParams } from 'schemata-ts/schemables/WithPrimitives/definition'
+import { BoundedParams } from 'schemata-ts/schemables/primitives/definition'
 
 /**
  * Floating point branded newtype. Parameters: min, max are inclusive.

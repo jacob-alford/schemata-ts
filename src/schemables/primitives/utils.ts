@@ -1,12 +1,6 @@
-import {
-  BoundedParams,
-  Float,
-  Integer,
-  MaxNegativeFloat,
-  MaxPositiveFloat,
-  MaxSafeInt,
-  MinSafeInt,
-} from 'schemata-ts/schemables/primitives/definition'
+import { Float, MaxNegativeFloat, MaxPositiveFloat } from 'schemata-ts/float'
+import { Integer, MaxSafeInt, MinSafeInt } from 'schemata-ts/integer'
+import { BoundedParams } from 'schemata-ts/schemables/primitives/definition'
 
 /** @since 1.0.0 */
 export const isInt =
