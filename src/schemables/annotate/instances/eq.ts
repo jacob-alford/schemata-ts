@@ -1,7 +1,7 @@
 import { constant, identity } from 'fp-ts/function'
-import * as Eq_ from 'schemata-ts/Eq'
+import * as Eq from 'schemata-ts/internal/eq'
 import { WithAnnotate } from 'schemata-ts/schemables/annotate/definition'
 
-export const AnnotateEq: WithAnnotate<Eq_.SchemableLambda> = {
+export const AnnotateEq: WithAnnotate<Eq.SchemableLambda> = {
   annotate: constant(identity),
 }
