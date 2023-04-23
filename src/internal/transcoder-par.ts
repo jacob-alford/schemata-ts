@@ -2,6 +2,7 @@ import { flow, pipe } from 'fp-ts/function'
 import { Invariant2 } from 'fp-ts/Invariant'
 import * as RNEA from 'fp-ts/ReadonlyNonEmptyArray'
 import * as Sgd from 'fp-ts/Semigroupoid'
+import * as T from 'fp-ts/Task'
 import * as TE from 'fp-ts/TaskEither'
 import * as G from 'schemata-ts/Guard'
 import * as hkt from 'schemata-ts/HKT'
@@ -51,6 +52,12 @@ export const errorAtKey = (
 export const errorAtUnionMember = (
   ...args: ConstructorParameters<typeof TCE.ErrorAtUnionMember>
 ): TCE.TranscodeError => new TCE.ErrorAtUnionMember(...args)
+
+/** @internal */
+export const applicativeValidationPar = TE.getApplicativeTaskValidation(
+  T.ApplicativePar,
+  TCE.Semigroup,
+)
 
 /** @internal */
 export const fromGuard: <I, O>(

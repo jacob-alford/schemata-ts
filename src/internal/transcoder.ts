@@ -51,6 +51,9 @@ export const errorAtUnionMember = (
 ): TE.TranscodeError => new TE.ErrorAtUnionMember(...args)
 
 /** @internal */
+export const applicativeValidation = E.getApplicativeValidation(TE.Semigroup)
+
+/** @internal */
 export const fromGuard: <I, O>(
   encoder: (out: O) => I,
   onError: (u: unknown) => TE.TranscodeErrors,

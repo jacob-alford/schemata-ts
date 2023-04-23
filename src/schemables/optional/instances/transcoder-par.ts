@@ -6,7 +6,8 @@ export const OptionalTranscoderPar: WithOptional<TCP.SchemableLambda> = {
   optional: da =>
     makeImplicitOptional(
       {
-        decode: u => (u === undefined ? PD.success<any>(u) : da.decode(u)),
+        decode: u => (u === undefined ? TCP.success<any>(u) : da.decode(u)),
+        encode: a => (a === undefined ? TCP.success(undefined) : da.encode(a)),
       },
       decoder => Object.assign({}, decoder),
     ),

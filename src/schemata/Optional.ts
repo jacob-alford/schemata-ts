@@ -1,12 +1,11 @@
-/**
- * Schemable for widening a type to include undefined. Similar to nullable but for undefined.
- *
- * @since 1.0.0
- */
+/** @since 1.0.0 */
 import * as SC from 'schemata-ts/Schema'
 import { ImplicitOptional, makeImplicitOptional } from 'schemata-ts/struct'
 
 /**
+ * A schema for widening the type of a schema to include `undefined`. Also marks the input
+ * property of a struct as optional.
+ *
  * @since 1.0.0
  * @category Instances
  */
