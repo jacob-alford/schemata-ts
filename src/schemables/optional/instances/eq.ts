@@ -1,8 +1,8 @@
-import * as Eq_ from 'schemata-ts/Eq'
+import * as Eq from 'schemata-ts/internal/eq'
 import { WithOptional } from 'schemata-ts/schemables/optional/definition'
 import { makeImplicitOptional } from 'schemata-ts/struct'
 
-export const OptionalEq: WithOptional<Eq_.SchemableLambda> = {
+export const OptionalEq: WithOptional<Eq.SchemableLambda> = {
   optional: eqA =>
     makeImplicitOptional(
       {

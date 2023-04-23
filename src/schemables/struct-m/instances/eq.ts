@@ -2,13 +2,13 @@ import * as B from 'fp-ts/boolean'
 import { pipe } from 'fp-ts/function'
 import * as RR from 'fp-ts/ReadonlyRecord'
 import * as Str from 'fp-ts/string'
-import * as Eq_ from 'schemata-ts/Eq'
+import * as Eq from 'schemata-ts/internal/eq'
 import { hasOwn } from 'schemata-ts/internal/util'
 import { WithStructM } from 'schemata-ts/schemables/structm/definition'
 
-export const StructMEq: WithStructM<Eq_.SchemableLambda> = {
+export const StructMEq: WithStructM<Eq.SchemableLambda> = {
   structM: (properties, params = { extraProps: 'strip' }) => {
-    const eqs: Record<string, Eq_.Eq<unknown>> = pipe(
+    const eqs: Record<string, Eq.Eq<unknown>> = pipe(
       properties,
       RR.map(({ _val }) => _val),
     )
