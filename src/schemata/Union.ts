@@ -5,7 +5,7 @@
  */
 import { pipe } from 'fp-ts/function'
 import * as RNEA from 'fp-ts/ReadonlyNonEmptyArray'
-import { getGuard } from 'schemata-ts/derivations/GuardSchemable'
+import { getGuard } from 'schemata-ts/derivations/guard-schemable'
 import { getInformation } from 'schemata-ts/derivations/information-schemable'
 import { InputOf, make, OutputOf, Schema } from 'schemata-ts/Schema'
 
@@ -38,6 +38,6 @@ export const Union = <T extends RNEA.ReadonlyNonEmptyArray<Schema<any, any>>>(
         precedence: getInformation(schema),
         member: schema(s),
       })),
-      guardedUnionMembers => s.guardedUnion(name, ...guardedUnionMembers),
+      guardedUnionMembers => s.guardedUnion(name, ...(guardedUnionMembers as any)),
     ),
   )
