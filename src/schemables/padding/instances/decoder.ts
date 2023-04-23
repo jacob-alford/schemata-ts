@@ -1,7 +1,7 @@
-import * as TC from 'schemata-ts/internal/Transcoder'
+import * as TC from 'schemata-ts/internal/transcoder'
 import { WithPadding } from 'schemata-ts/schemables/padding/definition'
 import { foldUnion, match } from 'schemata-ts/schemables/padding/utils'
-import { Decoder as WithRefine } from 'schemata-ts/schemables/refine/instances/decoder'
+import { Decoder as WithRefine } from 'schemata-ts/schemables/refine/instances/transcoder'
 
 export const PaddingTranscoder: WithPadding<TC.SchemableLambda> = {
   padLeft: match({
