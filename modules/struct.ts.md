@@ -74,9 +74,11 @@ export declare const camelCaseKeys: <S, Props>(
   props: Props
 ) => {
   [K in keyof Props]: Props[K] extends Prop2<infer Flag, any, infer Val, infer Remap>
-    ? Remap extends typeof KeyNotMapped
-      ? Prop2<Flag, S, Val, CamelCase<string & K, { preserveConsecutiveUppercase: true }>>
-      : Prop2<Flag, S, Val, CamelCase<string & Remap, { preserveConsecutiveUppercase: true }>>
+    ? Val extends Kind2<S, any, any>
+      ? Remap extends typeof KeyNotMapped
+        ? Prop2<Flag, S, Val, CamelCase<string & K, { preserveConsecutiveUppercase: true }>>
+        : Prop2<Flag, S, Val, CamelCase<string & Remap, { preserveConsecutiveUppercase: true }>>
+      : never
     : never
 }
 ```
