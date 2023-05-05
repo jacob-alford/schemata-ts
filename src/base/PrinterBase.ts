@@ -282,13 +282,11 @@ export const nullable = <E, A>(or: Printer<E, A>): Printer<null | E, null | A> =
   codomainToJson: e => (e === null ? E.right(null) : or.codomainToJson(e)),
 })
 
-/** @internal */
-export type InnerLeft<E extends Printer<any, any>> = [E] extends [Printer<infer L, any>]
+type InnerLeft<E extends Printer<any, any>> = [E] extends [Printer<infer L, any>]
   ? L
   : never
 
-/** @internal */
-export type InnerRight<A extends Printer<any, any>> = [A] extends [Printer<any, infer R>]
+type InnerRight<A extends Printer<any, any>> = [A] extends [Printer<any, infer R>]
   ? R
   : never
 
