@@ -323,9 +323,11 @@ interface MapKeysWith {
     props: Props,
   ) => {
     [K in keyof Props]: Props[K] extends Prop2<infer Flag, any, infer Val, infer Remap>
-      ? Remap extends KeyNotMapped
-        ? Prop2<Flag, S, Val, ApplyKeyRemap<R, K & string>>
-        : Prop2<Flag, S, Val, ApplyKeyRemap<R, Remap & string>>
+      ? Val extends Kind2<S, any, any>
+        ? Remap extends KeyNotMapped
+          ? Prop2<Flag, S, Val, ApplyKeyRemap<R, K & string>>
+          : Prop2<Flag, S, Val, ApplyKeyRemap<R, Remap & string>>
+        : never
       : never
   }
   /**
@@ -342,9 +344,11 @@ interface MapKeysWith {
     props: Props,
   ) => {
     [K in keyof Props]: Props[K] extends Prop1<infer Flag, any, infer Val, infer Remap>
-      ? Remap extends KeyNotMapped
-        ? Prop1<Flag, S, Val, ApplyKeyRemap<R, K & string>>
-        : Prop1<Flag, S, Val, ApplyKeyRemap<R, Remap & string>>
+      ? Val extends Kind<S, any>
+        ? Remap extends KeyNotMapped
+          ? Prop1<Flag, S, Val, ApplyKeyRemap<R, K & string>>
+          : Prop1<Flag, S, Val, ApplyKeyRemap<R, Remap & string>>
+        : never
       : never
   }
   /**
@@ -364,9 +368,11 @@ interface MapKeysWith {
     props: Props,
   ) => {
     [K in keyof Props]: Props[K] extends Prop<infer Flag, any, infer Val, infer Remap>
-      ? Remap extends KeyNotMapped
-        ? Prop<Flag, S, Val, ApplyKeyRemap<R, K & string>>
-        : Prop<Flag, S, Val, ApplyKeyRemap<R, Remap & string>>
+      ? Val extends HKT2<S, any, any>
+        ? Remap extends KeyNotMapped
+          ? Prop<Flag, S, Val, ApplyKeyRemap<R, K & string>>
+          : Prop<Flag, S, Val, ApplyKeyRemap<R, Remap & string>>
+        : never
       : never
   }
 }

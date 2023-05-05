@@ -31,7 +31,7 @@ export const Arbitrary: WithPadding1<Arb.URI> = {
             flow(
               stripLeftWhile(c => c === char),
               s =>
-                s.length > length
+                s.length > foldUnion(length)(s)
                   ? s.slice(0, foldUnion(length)(s))
                   : s.padStart(foldUnion(length)(s), char),
             ),
@@ -51,7 +51,7 @@ export const Arbitrary: WithPadding1<Arb.URI> = {
             flow(
               stripRightWhile(c => c === char),
               s =>
-                s.length > length
+                s.length > foldUnion(length)(s)
                   ? s.slice(0, foldUnion(length)(s))
                   : s.padEnd(foldUnion(length)(s), char),
             ),
