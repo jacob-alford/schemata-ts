@@ -41,32 +41,18 @@ export const hasOwn = (o: object, v: PropertyKey): boolean =>
 export const typeOf = (x: unknown): string => (x === null ? 'null' : typeof x)
 
 /**
- * Performs a validative traversal over a struct's own enumerable properties.
- *
- * @internal
- */
-export const witherS =
-  <E>(sgErrors: Sg.Semigroup<E>) =>
-  <In extends Record<string, any>, A>(
-    f: <K extends keyof In>(key: K, value: In[K]) => E.Either<E, O.Option<A>>,
-  ): ((s: In) => E.Either<E, { [K in keyof In]: A }>) =>
-    witherSM<E>(sgErrors)<In, A>((key, value) =>
-      pipe(f(key, value), E.map(O.map(a => tuple(a, key)))),
-    )
-
-/**
  * Performs a validative traversal over a struct's own enumerable properties while mapping
  * output types.
  *
  * @internal
  */
 export const witherSM =
-  <E>(sgErrors: Sg.Semigroup<E>) =>
-  <In extends Record<string, any>, A>(
+  <E, A>(sgErrors: Sg.Semigroup<E>, concatKeys: Sg.Semigroup<A>) =>
+  <In extends Record<string, any>>(
     f: <K extends keyof In>(
       key: K,
       value: In[K],
-    ) => E.Either<E, O.Option<readonly [A, keyof In]>>,
+    ) => E.Either<E, O.Option<readonly [output: A, key: keyof In]>>,
   ) =>
   (s: In): E.Either<E, { [K in keyof In]: A }> => {
     const errors: E[] = []
@@ -89,6 +75,11 @@ export const witherSM =
       if (O.isNone(result.right)) continue
       else {
         const [value, newKey] = result.right.value
+        // merge two keys if the new key already exists
+        if (hasOwn(out, newKey)) {
+          out[newKey] = concatKeys.concat(out[newKey], value)
+          continue
+        }
         out[newKey] = value
       }
     }

@@ -1,13 +1,19 @@
+import { Const } from 'fp-ts/Const'
 import { SchemableKind, SchemableLambda } from 'schemata-ts/HKT'
+import * as G from 'schemata-ts/internal/guard'
 import * as s from 'schemata-ts/struct'
 /* eslint-disable @typescript-eslint/ban-types */
 
-/** @since 1.3.0 */
+export type StructProp<S extends SchemableLambda> = {
+  readonly schemable: SchemableKind<S, any, any>
+  readonly guard: G.Guard<any>
+  readonly information: Const<number, any>
+}
+
 export type RemapKey<KeyIn, Prop> = Prop extends s.RemappedKey<infer KeyOut>
   ? KeyOut
   : KeyIn
 
-/** @since 2.0.0 */
 export type InnerInput<S extends SchemableLambda, Prop> = Prop extends SchemableKind<
   S,
   infer I,
@@ -16,7 +22,6 @@ export type InnerInput<S extends SchemableLambda, Prop> = Prop extends Schemable
   ? I
   : never
 
-/** @since 2.0.0 */
 export type InnerOutput<
   S extends SchemableLambda,
   Prop,
@@ -26,39 +31,39 @@ export type InnerOutput<
   ? O
   : never
 
-/** @since 2.0.0 */
 export type OptionalInputProps<
   S extends SchemableLambda,
-  T extends Record<string, SchemableKind<S, any, any>>,
+  T extends Record<string, StructProp<S>>,
 > = {
-  [K in keyof T as T[K] extends s.ImplicitOptional ? K : never]?: InnerInput<S, T[K]>
-}
-
-/** @since 2.0.0 */
-export type RequiredInputProps<
-  S extends SchemableLambda,
-  T extends Record<string, SchemableKind<S, any, any>>,
-> = {
-  [K in keyof T as T[K] extends s.ImplicitOptional ? never : K]: InnerInput<S, T[K]>
-}
-
-/** @since 2.0.0 */
-export type OutputProps<
-  S extends SchemableLambda,
-  T extends Record<string, SchemableKind<S, any, any>>,
-> = {
-  [K in keyof T as T[K] extends s.RemappedKey<infer Remap> ? Remap : K]: InnerOutput<
+  [K in keyof T as T[K]['schemable'] extends s.ImplicitOptional ? K : never]?: InnerInput<
     S,
     T[K]
   >
 }
 
-/** @since 2.0.0 */
+export type RequiredInputProps<
+  S extends SchemableLambda,
+  T extends Record<string, StructProp<S>>,
+> = {
+  [K in keyof T as T[K]['schemable'] extends s.ImplicitOptional ? never : K]: InnerInput<
+    S,
+    T[K]
+  >
+}
+
+export type OutputProps<
+  S extends SchemableLambda,
+  T extends Record<string, StructProp<S>>,
+> = {
+  [K in keyof T as T[K]['schemable'] extends s.RemappedKey<infer Remap>
+    ? Remap
+    : K]: InnerOutput<S, T[K]>
+}
+
 export type RestInput<S extends SchemableLambda, RestKind> = RestKind extends undefined
   ? unknown
   : { [key: string]: RestKind extends SchemableKind<S, infer I, any> ? I : never } | {}
 
-/** @since 2.0.0 */
 export type RestOutput<S extends SchemableLambda, RestKind> = RestKind extends undefined
   ? unknown
   : { [key: string]: RestKind extends SchemableKind<S, any, infer O> ? O : never } | {}

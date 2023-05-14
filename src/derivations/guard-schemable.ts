@@ -21,7 +21,7 @@ import * as padding from 'schemata-ts/schemables/padding/instances/guard'
 import * as pattern from 'schemata-ts/schemables/pattern/instances/guard'
 import * as primitives from 'schemata-ts/schemables/primitives/instances/guard'
 import * as refine from 'schemata-ts/schemables/refine/instances/guard'
-import * as structM from 'schemata-ts/schemables/struct-m/instances/guard'
+import * as structM from 'schemata-ts/schemables/struct/instances/guard'
 
 /**
  * @since 2.0.0

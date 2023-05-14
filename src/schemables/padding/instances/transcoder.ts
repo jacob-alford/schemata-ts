@@ -1,29 +1,29 @@
-import * as P from 'schemata-ts/Printer'
+import * as TC from 'schemata-ts/internal/transcoder'
 import { WithPadding } from 'schemata-ts/schemables/padding/definition'
 import { foldUnion, match } from 'schemata-ts/schemables/padding/utils'
-import { Printer as WithRefine } from 'schemata-ts/schemables/refine/instances/printer'
+import { RefineTranscoder } from 'schemata-ts/schemables/refine/instances/transcoder'
 
-export const PaddingPrinter: WithPadding<P.SchemableLambda> = {
+export const PaddingTranscoder: WithPadding<TC.SchemableLambda> = {
   padLeft: match({
     MaxLength: ({ maxLength }) =>
-      WithRefine.refine(
+      RefineTranscoder.refine(
         (s: string): s is string => s.length <= foldUnion(maxLength)(s),
         `LeftPadding`,
       ),
     ExactLength: ({ exactLength }) =>
-      WithRefine.refine(
+      RefineTranscoder.refine(
         (s: string): s is string => s.length === foldUnion(exactLength)(s),
         `LeftPadding`,
       ),
   }),
   padRight: match({
     MaxLength: ({ maxLength }) =>
-      WithRefine.refine(
+      RefineTranscoder.refine(
         (s: string): s is string => s.length <= foldUnion(maxLength)(s),
         `RightPadding`,
       ),
     ExactLength: ({ exactLength }) =>
-      WithRefine.refine(
+      RefineTranscoder.refine(
         (s: string): s is string => s.length === foldUnion(exactLength)(s),
         `RightPadding`,
       ),

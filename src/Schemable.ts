@@ -19,7 +19,7 @@ import { WithPadding } from 'schemata-ts/schemables/padding/definition'
 import { WithPattern } from 'schemata-ts/schemables/pattern/definition'
 import { WithPrimitives } from 'schemata-ts/schemables/primitives/definition'
 import { WithRefine } from 'schemata-ts/schemables/refine/definition'
-import { WithStructM } from 'schemata-ts/schemables/struct-m/definition'
+import { WithStruct } from 'schemata-ts/schemables/struct/definition'
 
 /**
  * @since 2.0.0
@@ -39,4 +39,4 @@ export interface Schemable<S extends SchemableLambda>
     WithPattern<S>,
     WithPrimitives<S>,
     WithRefine<S>,
-    WithStructM<S> {}
+    WithStruct<S> {}
