@@ -22,7 +22,7 @@ export const PaddingArbitrary: WithPadding<Arb.SchemableLambda> = {
             flow(
               stripLeftWhile(c => c === char),
               s =>
-                s.length > length
+                s.length > foldUnion(length)(s)
                   ? s.slice(0, foldUnion(length)(s))
                   : s.padStart(foldUnion(length)(s), char),
             ),
@@ -42,7 +42,7 @@ export const PaddingArbitrary: WithPadding<Arb.SchemableLambda> = {
             flow(
               stripRightWhile(c => c === char),
               s =>
-                s.length > length
+                s.length > foldUnion(length)(s)
                   ? s.slice(0, foldUnion(length)(s))
                   : s.padEnd(foldUnion(length)(s), char),
             ),

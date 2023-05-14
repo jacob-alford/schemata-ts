@@ -10,8 +10,7 @@ import { camelCase } from 'schemata-ts/internal/camelcase'
 import { hasOwn } from 'schemata-ts/internal/util'
 import type { CamelCase } from 'type-fest'
 
-/** @internal */
-export type ImplicitOptionalFlag = typeof ImplicitOptionalFlag
+type ImplicitOptionalFlag = typeof ImplicitOptionalFlag
 const ImplicitOptionalFlag = Symbol.for('schemata-ts/struct/ImplicitOptionalFlag')
 
 /**
@@ -38,8 +37,7 @@ export const makeImplicitOptional: <T>(
 export const hasImplicitOptional = (u: unknown): u is ImplicitOptional =>
   hasOwn(u as any, ImplicitOptionalFlag)
 
-/** @internal */
-export type KeyRemap = typeof KeyRemap
+type KeyRemap = typeof KeyRemap
 const KeyRemap = Symbol.for('schemata-ts/struct/KeyRemap')
 
 /**

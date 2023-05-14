@@ -21,7 +21,7 @@ import * as padding from 'schemata-ts/schemables/padding/instances/eq'
 import * as pattern from 'schemata-ts/schemables/pattern/instances/eq'
 import * as primitives from 'schemata-ts/schemables/primitives/instances/eq'
 import * as refine from 'schemata-ts/schemables/refine/instances/eq'
-import * as structM from 'schemata-ts/schemables/struct-m/instances/eq'
+import * as structM from 'schemata-ts/schemables/struct/instances/eq'
 
 /**
  * @since 2.0.0

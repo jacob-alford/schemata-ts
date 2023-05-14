@@ -21,7 +21,7 @@ import * as padding from 'schemata-ts/schemables/padding/instances/arbitrary'
 import * as pattern from 'schemata-ts/schemables/pattern/instances/arbitrary'
 import * as primitives from 'schemata-ts/schemables/primitives/instances/arbitrary'
 import * as refine from 'schemata-ts/schemables/refine/instances/arbitrary'
-import * as structM from 'schemata-ts/schemables/struct-m/instances/arbitrary'
+import * as structM from 'schemata-ts/schemables/struct/instances/arbitrary'
 
 /**
  * @since 2.0.0

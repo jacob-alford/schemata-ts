@@ -1,11 +1,11 @@
 import { pipe } from 'fp-ts/function'
 import * as Arb from 'schemata-ts/internal/arbitrary'
 import { forIn, hasOwn } from 'schemata-ts/internal/util'
-import { WithStructM } from 'schemata-ts/schemables/structm/definition'
+import { WithStruct } from 'schemata-ts/schemables/struct/definition'
 import { hasImplicitOptional, keyIsNotMapped } from 'schemata-ts/struct'
 
-export const StructMArbitrary: WithStructM<Arb.SchemableLambda> = {
-  structM: (properties, params = { extraProps: 'strip' }) => {
+export const StructMArbitrary: WithStruct<Arb.SchemableLambda> = {
+  struct: (properties, params = { extraProps: 'strip' }) => {
     const remappedProps: Record<string, Arb.Arbitrary<unknown>> = {}
     for (const key in properties) {
       const prop = properties[key]

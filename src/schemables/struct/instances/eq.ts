@@ -4,10 +4,10 @@ import * as RR from 'fp-ts/ReadonlyRecord'
 import * as Str from 'fp-ts/string'
 import * as Eq from 'schemata-ts/internal/eq'
 import { hasOwn } from 'schemata-ts/internal/util'
-import { WithStructM } from 'schemata-ts/schemables/structm/definition'
+import { WithStruct } from 'schemata-ts/schemables/struct/definition'
 
-export const StructMEq: WithStructM<Eq.SchemableLambda> = {
-  structM: (properties, params = { extraProps: 'strip' }) => {
+export const StructMEq: WithStruct<Eq.SchemableLambda> = {
+  struct: (properties, params = { extraProps: 'strip' }) => {
     const eqs: Record<string, Eq.Eq<unknown>> = pipe(
       properties,
       RR.map(({ _val }) => _val),
