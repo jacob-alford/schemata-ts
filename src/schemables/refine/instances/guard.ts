@@ -1,4 +1,3 @@
-/** @since 1.0.0 */
 import { pipe } from 'fp-ts/function'
 import { compose } from 'fp-ts/Refinement'
 import * as G from 'schemata-ts/internal/guard'

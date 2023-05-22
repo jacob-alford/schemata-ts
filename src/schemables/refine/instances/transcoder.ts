@@ -1,4 +1,3 @@
-/** @since 1.0.0 */
 import * as E from 'fp-ts/Either'
 import { flow } from 'fp-ts/function'
 import * as TC from 'schemata-ts/internal/transcoder'
