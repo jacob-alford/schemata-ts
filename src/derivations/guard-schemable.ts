@@ -15,13 +15,13 @@ import * as date from 'schemata-ts/schemables/date/instances/guard'
 import * as guardedUnion from 'schemata-ts/schemables/guarded-union/instances/guard'
 import * as invariant from 'schemata-ts/schemables/invariant/instances/guard'
 import * as map from 'schemata-ts/schemables/map/instances/guard'
-import * as option from 'schemata-ts/schemables/option/instances/guard'
 import * as optional from 'schemata-ts/schemables/optional/instances/guard'
 import * as padding from 'schemata-ts/schemables/padding/instances/guard'
+import * as parser from 'schemata-ts/schemables/parser/instances/guard'
 import * as pattern from 'schemata-ts/schemables/pattern/instances/guard'
 import * as primitives from 'schemata-ts/schemables/primitives/instances/guard'
 import * as refine from 'schemata-ts/schemables/refine/instances/guard'
-import * as structM from 'schemata-ts/schemables/struct/instances/guard'
+import * as struct from 'schemata-ts/schemables/struct/instances/guard'
 
 /**
  * @since 2.0.0
@@ -35,13 +35,13 @@ const GuardSchemable: Schemable<G.SchemableLambda> = {
   ...guardedUnion.GuardedUnionGuard,
   ...invariant.InvariantGuard,
   ...map.MapGuard,
-  ...option.OptionGuard,
   ...optional.OptionalGuard,
   ...padding.PaddingGuard,
+  ...parser.ParserGuard,
   ...pattern.PatternGuard,
   ...primitives.PrimitivesGuard,
   ...refine.RefineGuard,
-  ...structM.StructMGuard,
+  ...struct.StructGuard,
 }
 
 /**

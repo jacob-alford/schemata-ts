@@ -18,6 +18,7 @@ import * as Str from 'fp-ts/string'
 export type TranscodeError =
   | TypeMismatch
   | UnexpectedValue
+  | SerializationError
   | ErrorAtIndex
   | ErrorAtKey
   | ErrorAtUnionMember
@@ -42,6 +43,21 @@ export class TranscodeErrors {
 export class TypeMismatch {
   readonly _tag = 'TypeMismatch'
   constructor(readonly expected: string, readonly actual: unknown) {}
+}
+
+/**
+ * Represents an error serializing or deserializing a value
+ *
+ * @since 2.0.0
+ * @category Model
+ */
+export class SerializationError {
+  readonly _tag = 'SerializationError'
+  constructor(
+    readonly expected: string,
+    readonly error: unknown,
+    readonly actual: unknown,
+  ) {}
 }
 
 /**

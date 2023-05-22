@@ -1,7 +1,8 @@
 import * as E from 'fp-ts/Either'
-import { flow, pipe } from 'fp-ts/function'
+import { flow, identity, pipe } from 'fp-ts/function'
 import * as TC from 'schemata-ts/internal/transcoder'
 import { WithParser } from 'schemata-ts/schemables/parser/definition'
+import { ParserGuard } from 'schemata-ts/schemables/parser/instances/guard'
 import { PrimitivesTranscoder } from 'schemata-ts/schemables/primitives/instances/transcode'
 
 export const ParserTranscoder: WithParser<TC.SchemableLambda> = {
@@ -11,7 +12,7 @@ export const ParserTranscoder: WithParser<TC.SchemableLambda> = {
       E.chain(encoded =>
         pipe(
           print(encoded),
-          E.fromOption(() => TC.transcodeErrors(TC.typeMismatch(name, encoded))),
+          E.mapLeft(err => TC.transcodeErrors(TC.serializationError(name, err, encoded))),
         ),
       ),
     ),
@@ -20,10 +21,16 @@ export const ParserTranscoder: WithParser<TC.SchemableLambda> = {
       E.chain(preparsed =>
         pipe(
           parse(preparsed),
-          E.fromOption(() => TC.transcodeErrors(TC.typeMismatch(name, preparsed))),
+          E.mapLeft(err =>
+            TC.transcodeErrors(TC.serializationError(name, err, preparsed)),
+          ),
         ),
       ),
       E.chain(inner.decode),
     ),
   }),
+  jsonString: pipe(
+    ParserGuard.jsonString,
+    TC.fromGuard(identity, u => TC.transcodeErrors(TC.typeMismatch('JsonString', u))),
+  ),
 }

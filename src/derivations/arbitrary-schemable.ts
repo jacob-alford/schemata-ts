@@ -15,13 +15,13 @@ import * as date from 'schemata-ts/schemables/date/instances/arbitrary'
 import * as guardedUnion from 'schemata-ts/schemables/guarded-union/instances/arbitrary'
 import * as invariant from 'schemata-ts/schemables/invariant/instances/arbitrary'
 import * as map from 'schemata-ts/schemables/map/instances/arbitrary'
-import * as option from 'schemata-ts/schemables/option/instances/arbitrary'
 import * as optional from 'schemata-ts/schemables/optional/instances/arbitrary'
 import * as padding from 'schemata-ts/schemables/padding/instances/arbitrary'
+import * as parser from 'schemata-ts/schemables/parser/instances/arbitrary'
 import * as pattern from 'schemata-ts/schemables/pattern/instances/arbitrary'
 import * as primitives from 'schemata-ts/schemables/primitives/instances/arbitrary'
 import * as refine from 'schemata-ts/schemables/refine/instances/arbitrary'
-import * as structM from 'schemata-ts/schemables/struct/instances/arbitrary'
+import * as struct from 'schemata-ts/schemables/struct/instances/arbitrary'
 
 /**
  * @since 2.0.0
@@ -35,13 +35,13 @@ const ArbitrarySchemable: Schemable<Arb.SchemableLambda> = {
   ...guardedUnion.GuardedUnionArbitrary,
   ...invariant.InvariantArbitrary,
   ...map.MapArbitrary,
-  ...option.OptionArbitrary,
   ...optional.OptionalArbitrary,
   ...padding.PaddingArbitrary,
+  ...parser.ParserArbitrary,
   ...pattern.PatternArbitrary,
   ...primitives.PrimitivesArbitrary,
   ...refine.RefineArbitrary,
-  ...structM.StructMArbitrary,
+  ...struct.StructArbitrary,
 }
 
 /**

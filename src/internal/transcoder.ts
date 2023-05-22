@@ -36,6 +36,11 @@ export const unexpectedValue = (
 ): TE.TranscodeError => new TE.UnexpectedValue(...args)
 
 /** @internal */
+export const serializationError = (
+  ...args: ConstructorParameters<typeof TE.SerializationError>
+): TE.TranscodeError => new TE.SerializationError(...args)
+
+/** @internal */
 export const errorAtIndex = (
   ...args: ConstructorParameters<typeof TE.ErrorAtIndex>
 ): TE.TranscodeError => new TE.ErrorAtIndex(...args)
