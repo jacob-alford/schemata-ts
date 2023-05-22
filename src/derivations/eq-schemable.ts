@@ -15,13 +15,13 @@ import * as date from 'schemata-ts/schemables/date/instances/eq'
 import * as guardedUnion from 'schemata-ts/schemables/guarded-union/instances/eq'
 import * as invariant from 'schemata-ts/schemables/invariant/instances/eq'
 import * as map from 'schemata-ts/schemables/map/instances/eq'
-import * as option from 'schemata-ts/schemables/option/instances/eq'
 import * as optional from 'schemata-ts/schemables/optional/instances/eq'
 import * as padding from 'schemata-ts/schemables/padding/instances/eq'
+import * as parser from 'schemata-ts/schemables/parser/instances/eq'
 import * as pattern from 'schemata-ts/schemables/pattern/instances/eq'
 import * as primitives from 'schemata-ts/schemables/primitives/instances/eq'
 import * as refine from 'schemata-ts/schemables/refine/instances/eq'
-import * as structM from 'schemata-ts/schemables/struct/instances/eq'
+import * as struct from 'schemata-ts/schemables/struct/instances/eq'
 
 /**
  * @since 2.0.0
@@ -35,13 +35,13 @@ const EqSchemable: Schemable<Eq.SchemableLambda> = {
   ...guardedUnion.GuardedUnionEq,
   ...invariant.InvariantEq,
   ...map.MapEq,
-  ...option.OptionEq,
   ...optional.OptionalEq,
   ...padding.PaddingEq,
+  ...parser.ParserEq,
   ...pattern.PatternEq,
   ...primitives.PrimitivesEq,
   ...refine.RefineEq,
-  ...structM.StructMEq,
+  ...struct.StructEq,
 }
 
 /**

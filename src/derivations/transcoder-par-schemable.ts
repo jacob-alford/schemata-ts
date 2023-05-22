@@ -15,13 +15,13 @@ import * as date from 'schemata-ts/schemables/date/instances/transcoder-par'
 import * as guardedUnion from 'schemata-ts/schemables/guarded-union/instances/transcoder-par'
 import * as invariant from 'schemata-ts/schemables/invariant/instances/transcoder-par'
 import * as map from 'schemata-ts/schemables/map/instances/transcoder-par'
-import * as option from 'schemata-ts/schemables/option/instances/transcoder-par'
 import * as optional from 'schemata-ts/schemables/optional/instances/transcoder-par'
 import * as padding from 'schemata-ts/schemables/padding/instances/transcoder-par'
+import * as parser from 'schemata-ts/schemables/parser/instances/transcoder-par'
 import * as pattern from 'schemata-ts/schemables/pattern/instances/transcoder-par'
 import * as primitives from 'schemata-ts/schemables/primitives/instances/transcoder-par'
 import * as refine from 'schemata-ts/schemables/refine/instances/transcoder-par'
-import * as structM from 'schemata-ts/schemables/struct-m/instances/transcoder-par'
+import * as struct from 'schemata-ts/schemables/struct/instances/transcoder-par'
 
 /**
  * @since 2.0.0
@@ -35,13 +35,13 @@ const TranscoderParSchemable: Schemable<TCP.SchemableLambda> = {
   ...guardedUnion.GuardedUnionTranscoderPar,
   ...invariant.InvariantTranscoderPar,
   ...map.MapTranscoderPar,
-  ...option.OptionTranscoderPar,
   ...optional.OptionalTranscoderPar,
   ...padding.PaddingTranscoderPar,
+  ...parser.ParserTranscoderPar,
   ...pattern.PatternTranscoderPar,
   ...primitives.PrimitivesTranscoderPar,
   ...refine.RefineTranscoderPar,
-  ...structM.StructMTranscoderPar,
+  ...struct.StructTranscoderPar,
 }
 
 /**

@@ -1,5 +1,5 @@
 import * as E from 'fp-ts/Either'
-import { identity, pipe, tuple } from 'fp-ts/function'
+import { identity, pipe } from 'fp-ts/function'
 import * as IO from 'fp-ts/IO'
 import * as O from 'fp-ts/Option'
 import * as RA from 'fp-ts/ReadonlyArray'
@@ -17,8 +17,22 @@ export const getRight = <A>(either: E.Either<never, A>): A => (either as E.Right
 
 /* istanbul ignore next */
 /** @internal */
-export const base64Encode = (s: string): string =>
-  Buffer ? Buffer.from(s).toString('base64') : btoa(s)
+export const base64Encode = (s: string): string => {
+  try {
+    return Buffer ? Buffer.from(s).toString('base64') : btoa(s)
+  } catch (_) {
+    return btoa(s)
+  }
+}
+
+/** @internal */
+export const base64Decode = (s: string): string => {
+  try {
+    return Buffer ? Buffer.from(s, 'base64').toString() : atob(s)
+  } catch (_) {
+    return atob(s)
+  }
+}
 
 /** @internal */
 export const urlifyBase64 = (s: string): string =>

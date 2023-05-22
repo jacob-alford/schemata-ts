@@ -13,9 +13,9 @@ import { WithDate } from 'schemata-ts/schemables/date/definition'
 import { WithGuardedUnion } from 'schemata-ts/schemables/guarded-union/definition'
 import { WithInvariant } from 'schemata-ts/schemables/invariant/definition'
 import { WithMap } from 'schemata-ts/schemables/map/definition'
-import { WithOption } from 'schemata-ts/schemables/option/definition'
 import { WithOptional } from 'schemata-ts/schemables/optional/definition'
 import { WithPadding } from 'schemata-ts/schemables/padding/definition'
+import { WithParser } from 'schemata-ts/schemables/parser/definition'
 import { WithPattern } from 'schemata-ts/schemables/pattern/definition'
 import { WithPrimitives } from 'schemata-ts/schemables/primitives/definition'
 import { WithRefine } from 'schemata-ts/schemables/refine/definition'
@@ -33,9 +33,9 @@ export interface Schemable<S extends SchemableLambda>
     WithGuardedUnion<S>,
     WithInvariant<S>,
     WithMap<S>,
-    WithOption<S>,
     WithOptional<S>,
     WithPadding<S>,
+    WithParser<S>,
     WithPattern<S>,
     WithPrimitives<S>,
     WithRefine<S>,

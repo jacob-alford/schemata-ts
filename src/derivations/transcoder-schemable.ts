@@ -15,13 +15,13 @@ import * as date from 'schemata-ts/schemables/date/instances/transcoder'
 import * as guardedUnion from 'schemata-ts/schemables/guarded-union/instances/transcoder'
 import * as invariant from 'schemata-ts/schemables/invariant/instances/transcoder'
 import * as map from 'schemata-ts/schemables/map/instances/transcoder'
-import * as option from 'schemata-ts/schemables/option/instances/transcoder'
 import * as optional from 'schemata-ts/schemables/optional/instances/transcoder'
 import * as padding from 'schemata-ts/schemables/padding/instances/transcoder'
+import * as parser from 'schemata-ts/schemables/parser/instances/transcoder'
 import * as pattern from 'schemata-ts/schemables/pattern/instances/transcoder'
 import * as primitives from 'schemata-ts/schemables/primitives/instances/transcoder'
 import * as refine from 'schemata-ts/schemables/refine/instances/transcoder'
-import * as structM from 'schemata-ts/schemables/struct-m/instances/transcoder'
+import * as struct from 'schemata-ts/schemables/struct/instances/transcoder'
 
 /**
  * @since 2.0.0
@@ -35,13 +35,13 @@ const TranscoderSchemable: Schemable<TC.SchemableLambda> = {
   ...guardedUnion.GuardedUnionTranscoder,
   ...invariant.InvariantTranscoder,
   ...map.MapTranscoder,
-  ...option.OptionTranscoder,
   ...optional.OptionalTranscoder,
   ...padding.PaddingTranscoder,
+  ...parser.ParserTranscoder,
   ...pattern.PatternTranscoder,
   ...primitives.PrimitivesTranscoder,
   ...refine.RefineTranscoder,
-  ...structM.StructMTranscoder,
+  ...struct.StructTranscoder,
 }
 
 /**

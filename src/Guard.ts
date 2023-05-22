@@ -46,7 +46,7 @@ export {
    * @category Interpreters
    */
   getGuard,
-} from 'schemata-ts/derivations/GuardSchemable'
+} from 'schemata-ts/derivations/guard-schemable'
 
 // ------------------
 // instances

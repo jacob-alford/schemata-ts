@@ -15,13 +15,13 @@ import * as date from 'schemata-ts/schemables/date/instances/json-schema'
 import * as guardedUnion from 'schemata-ts/schemables/guarded-union/instances/json-schema'
 import * as invariant from 'schemata-ts/schemables/invariant/instances/json-schema'
 import * as map from 'schemata-ts/schemables/map/instances/json-schema'
-import * as option from 'schemata-ts/schemables/option/instances/json-schema'
 import * as optional from 'schemata-ts/schemables/optional/instances/json-schema'
 import * as padding from 'schemata-ts/schemables/padding/instances/json-schema'
+import * as parser from 'schemata-ts/schemables/parser/instances/json-schema'
 import * as pattern from 'schemata-ts/schemables/pattern/instances/json-schema'
 import * as primitives from 'schemata-ts/schemables/primitives/instances/json-schema'
 import * as refine from 'schemata-ts/schemables/refine/instances/json-schema'
-import * as structM from 'schemata-ts/schemables/struct/instances/json-schema'
+import * as struct from 'schemata-ts/schemables/struct/instances/json-schema'
 
 /**
  * @since 2.0.0
@@ -35,13 +35,13 @@ const JsonSchemaSchemable: Schemable<JS.SchemableLambda> = {
   ...guardedUnion.GuardedUnionJsonSchema,
   ...invariant.InvariantJsonSchema,
   ...map.MapJsonSchema,
-  ...option.OptionJsonSchema,
   ...optional.OptionalJsonSchema,
   ...padding.PaddingJsonSchema,
+  ...parser.ParserJsonSchema,
   ...pattern.PatternJsonSchema,
   ...primitives.PrimitivesJsonSchema,
   ...refine.RefineJsonSchema,
-  ...structM.StructMJsonSchema,
+  ...struct.StructJsonSchema,
 }
 
 /**

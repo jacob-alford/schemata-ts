@@ -4,4 +4,7 @@ import { WithParser } from 'schemata-ts/schemables/parser/definition'
 
 export const ParserArbitrary: WithParser<Arb.SchemableLambda> = {
   parse: () => identity,
+  jsonString: {
+    arbitrary: fc => fc.json() as any,
+  },
 }

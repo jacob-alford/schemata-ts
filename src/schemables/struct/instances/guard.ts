@@ -5,7 +5,6 @@ import * as RR from 'fp-ts/ReadonlyRecord'
 import * as Str from 'fp-ts/string'
 import * as G from 'schemata-ts/internal/guard'
 import { hasOwn } from 'schemata-ts/internal/util'
-import { WithStruct } from 'schemata-ts/schemables/struct/definition'
 import { keyIsNotMapped } from 'schemata-ts/struct'
 
 export const StructMGuard: WithStructM<G.SchemableLambda> = {

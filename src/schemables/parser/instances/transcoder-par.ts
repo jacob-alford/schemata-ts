@@ -1,8 +1,9 @@
-import { flow, pipe } from 'fp-ts/function'
+import { flow, identity, pipe } from 'fp-ts/function'
 import * as TE from 'fp-ts/TaskEither'
 import * as TC from 'schemata-ts/internal/transcoder'
 import * as TCP from 'schemata-ts/internal/transcoder-par'
 import { WithParser } from 'schemata-ts/schemables/parser/definition'
+import { ParserGuard } from 'schemata-ts/schemables/parser/instances/guard'
 import { PrimitivesTranscoderPar } from 'schemata-ts/schemables/primitives/instances/transcoder-par'
 
 export const ParserTranscoderPar: WithParser<TCP.SchemableLambda> = {
@@ -12,7 +13,10 @@ export const ParserTranscoderPar: WithParser<TCP.SchemableLambda> = {
       TE.chain(encoded =>
         pipe(
           print(encoded),
-          TE.fromOption(() => TC.transcodeErrors(TC.typeMismatch(name, encoded))),
+          TE.fromEither,
+          TE.mapLeft(err =>
+            TC.transcodeErrors(TC.serializationError(name, err, encoded)),
+          ),
         ),
       ),
     ),
@@ -21,10 +25,17 @@ export const ParserTranscoderPar: WithParser<TCP.SchemableLambda> = {
       TE.chain(preparsed =>
         pipe(
           parse(preparsed),
-          TE.fromOption(() => TC.transcodeErrors(TC.typeMismatch(name, preparsed))),
+          TE.fromEither,
+          TE.mapLeft(err =>
+            TC.transcodeErrors(TC.serializationError(name, err, preparsed)),
+          ),
         ),
       ),
       TE.chain(inner.decode),
     ),
   }),
+  jsonString: pipe(
+    ParserGuard.jsonString,
+    TCP.fromGuard(identity, u => TC.transcodeErrors(TC.typeMismatch('JsonString', u))),
+  ),
 }
