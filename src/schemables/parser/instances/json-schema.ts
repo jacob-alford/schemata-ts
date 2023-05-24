@@ -16,15 +16,4 @@ export const ParserJsonSchema: WithParser<JS.SchemableLambda> = {
           )
         : new JS.JsonString(),
     ),
-  jsonString: JS.make(
-    new JS.JsonString(
-      undefined,
-      undefined,
-      undefined,
-      undefined,
-      'application/json',
-      undefined,
-      undefined,
-    ),
-  ),
 }

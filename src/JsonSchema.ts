@@ -78,7 +78,7 @@ export {
    * @category Interpreters
    */
   getJsonSchema,
-} from 'schemata-ts/derivations/JsonSchemaSchemable'
+} from 'schemata-ts/derivations/json-schema-schemable'
 
 /**
  * @since 1.2.0

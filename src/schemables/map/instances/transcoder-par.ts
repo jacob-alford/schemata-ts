@@ -12,7 +12,7 @@ import { WithMap } from 'schemata-ts/schemables/map/definition'
 export const MapDecoder: WithMap<TCP.SchemableLambda> = {
   mapFromEntries: (ordK, sk, sa) => ({
     decode: flow(
-      ArrayTranscoderPar.array(ArrayTranscoderPar.tuple(sk, sa)).decode,
+      ArrayTranscoderPar.array()(ArrayTranscoderPar.tuple(sk, sa)).decode,
       TE.map(RM.fromFoldable(ordK, Sg.last(), RA.Foldable)),
     ),
     encode: flow(

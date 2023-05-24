@@ -2,9 +2,16 @@ import * as G from 'schemata-ts/internal/guard'
 import { WithArray } from 'schemata-ts/schemables/array/definition'
 
 export const ArrayGuard: WithArray<G.SchemableLambda> = {
-  array: <A>(item: G.Guard<A>) => ({
-    is: (u): u is ReadonlyArray<A> => Array.isArray(u) && u.every(item.is),
-  }),
+  array: (params = {}) => {
+    const { minLength = 0, maxLength = 2 ** 32 - 2 } = params
+    return <A>(item: G.Guard<A>) => ({
+      is: (u): u is ReadonlyArray<A> =>
+        Array.isArray(u) &&
+        u.length >= minLength &&
+        u.length <= maxLength &&
+        u.every(item.is),
+    })
+  },
   tuple: <T extends ReadonlyArray<G.Guard<any>>>(...items: T) => ({
     is: (
       u,

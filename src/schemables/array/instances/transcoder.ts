@@ -13,20 +13,28 @@ const validateArray = E.fromPredicate(
 const applicativeValidation = E.getApplicativeValidation(TCE.Semigroup)
 
 export const ArrayTranscoder: WithArray<TC.SchemableLambda> = {
-  array: item => ({
-    encode: flow(E.traverseArray(item.encode)),
-    decode: flow(
-      validateArray,
-      E.chain(
-        RA.traverseWithIndex(applicativeValidation)((i, u) =>
-          pipe(
-            item.decode(u),
-            E.mapLeft(errs => TC.transcodeErrors(TC.errorAtIndex(i, errs))),
+  array: (params = {}) => {
+    const { minLength = 0, maxLength = 2 ** 32 - 2 } = params
+    return item => ({
+      encode: flow(E.traverseArray(item.encode)),
+      decode: flow(
+        validateArray,
+        E.filterOrElse(
+          u => u.length >= minLength && u.length <= maxLength,
+          u =>
+            TC.transcodeErrors(TC.typeMismatch(`Array<${minLength}, ${maxLength}>`, u)),
+        ),
+        E.chain(
+          RA.traverseWithIndex(applicativeValidation)((i, u) =>
+            pipe(
+              item.decode(u),
+              E.mapLeft(errs => TC.transcodeErrors(TC.errorAtIndex(i, errs))),
+            ),
           ),
         ),
       ),
-    ),
-  }),
+    })
+  },
   tuple: (...components) => ({
     encode: out =>
       unsafeCoerce(

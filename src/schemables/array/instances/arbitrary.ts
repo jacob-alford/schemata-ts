@@ -3,9 +3,16 @@ import * as Arb from 'schemata-ts/internal/arbitrary'
 import { WithArray } from 'schemata-ts/schemables/array/definition'
 
 export const ArrayArbitrary: WithArray<Arb.SchemableLambda> = {
-  array: item => ({
-    arbitrary: fc => fc.array(item.arbitrary(fc)),
-  }),
+  array: (params = {}) => {
+    const { minLength = 0, maxLength = 2 ** 32 - 2 } = params
+    return item => ({
+      arbitrary: fc =>
+        fc.array(item.arbitrary(fc), {
+          minLength: Math.floor(Math.max(minLength, 0)),
+          maxLength: Math.floor(Math.min(maxLength, 2 ** 32 - 2)),
+        }),
+    })
+  },
   tuple: (...components) => ({
     arbitrary: fc => {
       if (components.length === 0) {
