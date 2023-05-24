@@ -1,9 +1,12 @@
 /**
- * A port of `io-ts` branded types to schemata-ts
+ * Schemata-ts branded types
  *
  * @since 1.4.0
  */
-import { Brand as Brand_ } from 'io-ts'
+
+/** @since 2.0.0 */
+export const BrandSymbol = Symbol.for('schemata-ts/brand')
+export type BrandSymbol = typeof BrandSymbol
 
 /**
  * Represents a unique identifier to prevent non-branded types from being assigned to branded types.
@@ -11,7 +14,9 @@ import { Brand as Brand_ } from 'io-ts'
  * @since 1.4.0
  * @category Model
  */
-export interface Brand<B> extends Brand_<B> {}
+export interface Brand<B> {
+  readonly [BrandSymbol]: B
+}
 
 /**
  * A newtype that's assignable to its underlying type.

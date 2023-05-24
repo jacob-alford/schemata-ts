@@ -18,25 +18,34 @@ const applicativeValidation = TE.getApplicativeTaskValidation(
 )
 
 export const ArrayTranscoderPar: WithArray<TCP.SchemableLambda> = {
-  array: item => ({
-    encode: RA.traverseWithIndex(applicativeValidation)((i, u) =>
-      pipe(
-        item.encode(u),
-        TE.mapLeft(errs => TC.transcodeErrors(TC.errorAtIndex(i, errs))),
+  array: (params = {}) => {
+    const { minLength = 0, maxLength = 2 ** 32 - 2 } = params
+
+    return item => ({
+      encode: RA.traverseWithIndex(applicativeValidation)((i, u) =>
+        pipe(
+          item.encode(u),
+          TE.mapLeft(errs => TC.transcodeErrors(TC.errorAtIndex(i, errs))),
+        ),
       ),
-    ),
-    decode: flow(
-      validateArray,
-      TE.chain(
-        RA.traverseWithIndex(applicativeValidation)((i, u) =>
-          pipe(
-            item.decode(u),
-            TE.mapLeft(errs => TC.transcodeErrors(TC.errorAtIndex(i, errs))),
+      decode: flow(
+        validateArray,
+        TE.filterOrElse(
+          u => u.length >= minLength && u.length <= maxLength,
+          u =>
+            TC.transcodeErrors(TC.typeMismatch(`Array<${minLength}, ${maxLength}>`, u)),
+        ),
+        TE.chain(
+          RA.traverseWithIndex(applicativeValidation)((i, u) =>
+            pipe(
+              item.decode(u),
+              TE.mapLeft(errs => TC.transcodeErrors(TC.errorAtIndex(i, errs))),
+            ),
           ),
         ),
       ),
-    ),
-  }),
+    })
+  },
   tuple: (...components) => ({
     encode: out =>
       unsafeCoerce(

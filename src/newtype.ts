@@ -18,6 +18,12 @@ export interface Newtype<URI, A> {
   readonly _A: A
 }
 
+/** @since 2.0.0 */
+export interface NewtypeIso<A, B> extends Iso<A, B> {
+  readonly wrap: (A: A) => B
+  readonly unwrap: (B: B) => A
+}
+
 /**
  * @since 1.4.0
  * @category Type Helpers
@@ -43,8 +49,14 @@ export type CombineURIs<
  * @since 1.4.0
  * @category Constructors
  */
-export const iso: <Nt extends Newtype<any, any>>() => Iso<Nt, CarrierOf<Nt>> = () =>
-  make(unsafeCoerce, unsafeCoerce)
+export const iso: <Nt extends Newtype<any, any>>() => NewtypeIso<
+  Nt,
+  CarrierOf<Nt>
+> = () => ({
+  ...make(unsafeCoerce, unsafeCoerce),
+  wrap: unsafeCoerce,
+  unwrap: unsafeCoerce,
+})
 
 /**
  * @since 1.4.0

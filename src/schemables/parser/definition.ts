@@ -17,5 +17,4 @@ export interface WithParser<S extends SchemableLambda> {
     contentMediaType?: string,
     format?: string,
   ) => <A>(inner: SchemableKind<S, I, A>) => SchemableKind<S, string, A>
-  readonly jsonString: SchemableKind<S, JsonString, JsonString>
 }

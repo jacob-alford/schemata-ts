@@ -31,7 +31,7 @@ export {
    * @category Interpreters
    */
   getArbitrary,
-} from 'schemata-ts/derivations/ArbitrarySchemable'
+} from 'schemata-ts/derivations/arbitrary-schemable'
 
 /**
  * @since 1.0.0
