@@ -6,8 +6,10 @@ import * as RA from 'fp-ts/ReadonlyArray'
 import * as RNEA from 'fp-ts/ReadonlyNonEmptyArray'
 import * as RR from 'fp-ts/ReadonlyRecord'
 import * as Sg from 'fp-ts/Semigroup'
-import * as TC from 'schemata-ts/internal/transcoder'
-import { hasOwn, witherSM } from 'schemata-ts/internal/util'
+import * as T from 'fp-ts/Task'
+import * as TE from 'fp-ts/TaskEither'
+import * as TCP from 'schemata-ts/internal/transcoder-par'
+import { hasOwn, witherTaskParSM } from 'schemata-ts/internal/util'
 import {
   GuardedPrecedentedUnionMember,
   ordGuardedPrecedentedUnionMember,
@@ -16,12 +18,12 @@ import { WithStruct } from 'schemata-ts/schemables/struct/definition'
 import { getKeyRemap } from 'schemata-ts/struct'
 import * as TCE from 'schemata-ts/TranscodeError'
 
-const decodeErrorValidation = E.getApplicativeValidation(TCE.Semigroup)
+const decodeErrorValidation = TE.getApplicativeTaskValidation(T.ApplyPar, TCE.Semigroup)
 const apSecond = Ap.apSecond(decodeErrorValidation)
 
-export const StructTranscoder: WithStruct<TC.SchemableLambda> = {
+export const StructTranscoderPar: WithStruct<TCP.SchemableLambda> = {
   struct: (properties, params = { extraProps: 'strip' }) => {
-    type UnionItem = GuardedPrecedentedUnionMember<TC.SchemableLambda> & {
+    type UnionItem = GuardedPrecedentedUnionMember<TCP.SchemableLambda> & {
       readonly inputKey: string
     }
 
@@ -63,16 +65,16 @@ export const StructTranscoder: WithStruct<TC.SchemableLambda> = {
     )
 
     return {
-      decode: (u): E.Either<TCE.TranscodeErrors, any> => {
+      decode: (u): TE.TaskEither<TCE.TranscodeErrors, any> => {
         // --- typeof returns 'object' for null and arrays
         if (u === null || typeof u !== 'object' || Array.isArray(u)) {
-          return TC.failure(TC.transcodeErrors(TC.typeMismatch('object', u)))
+          return TCP.failure(TCP.transcodeErrors(TCP.typeMismatch('object', u)))
         }
 
         // --- decode all known properties of an object's own non-inherited properties
         const outKnown = pipe(
           properties,
-          witherSM(
+          witherTaskParSM(
             TCE.Semigroup,
             Sg.last(),
           )((k, prop) => {
@@ -89,9 +91,9 @@ export const StructTranscoder: WithStruct<TC.SchemableLambda> = {
 
             return pipe(
               schemable.decode(inputVal),
-              E.bimap(
+              TE.bimap(
                 keyErrors =>
-                  TC.transcodeErrors(TC.errorAtKey(inputKey as string, keyErrors)),
+                  TCP.transcodeErrors(TCP.errorAtKey(inputKey as string, keyErrors)),
                 result => O.some([result, outputKey]) as any,
               ),
             )
@@ -104,16 +106,16 @@ export const StructTranscoder: WithStruct<TC.SchemableLambda> = {
         if (params.extraProps === 'error') {
           return pipe(
             u,
-            witherSM(
+            witherTaskParSM(
               TCE.Semigroup,
               Sg.last(),
             )((key, value) => {
               if (properties[key] === undefined) {
-                return TC.failure(
-                  TC.transcodeErrors(
-                    TC.errorAtKey(
+                return TCP.failure(
+                  TCP.transcodeErrors(
+                    TCP.errorAtKey(
                       key as string,
-                      TC.transcodeErrors(TC.unexpectedValue(value)),
+                      TCP.transcodeErrors(TCP.unexpectedValue(value)),
                     ),
                   ),
                 )
@@ -130,10 +132,10 @@ export const StructTranscoder: WithStruct<TC.SchemableLambda> = {
         // --- Decode rest parameters
         return pipe(
           outKnown,
-          E.chain(knownResult =>
+          TE.chain(knownResult =>
             pipe(
               u,
-              witherSM(
+              witherTaskParSM(
                 TCE.Semigroup,
                 Sg.last(),
               )((inputKey, inputValue) => {
@@ -143,8 +145,8 @@ export const StructTranscoder: WithStruct<TC.SchemableLambda> = {
                 if (knownPropAtKey === undefined)
                   return pipe(
                     rest.decode(inputValue),
-                    E.bimap(
-                      errs => TC.transcodeErrors(TC.errorAtKey(inputKey, errs)),
+                    TE.bimap(
+                      errs => TCP.transcodeErrors(TCP.errorAtKey(inputKey, errs)),
                       result => O.some(tuple(result, inputKey)) as any,
                     ),
                   )
@@ -159,7 +161,7 @@ export const StructTranscoder: WithStruct<TC.SchemableLambda> = {
                     _keyRemap => tuple(knownResult[_keyRemap], _keyRemap),
                   ),
                   O.some,
-                  E.right,
+                  TE.right,
                 )
               }),
             ),
@@ -169,12 +171,11 @@ export const StructTranscoder: WithStruct<TC.SchemableLambda> = {
       encode: output => {
         return pipe(
           output as Record<string, unknown>,
-          witherSM(
+          witherTaskParSM(
             TCE.Semigroup,
             Sg.last(),
           )((key, outputAtKey) => {
             const unionMembers = lookupByOutputKey[key]
-
             if (
               // -- Param is extra (i.e. possible rest param)
               (!hasOwn(lookupByOutputKey, key) || unionMembers === undefined) &&
@@ -183,26 +184,23 @@ export const StructTranscoder: WithStruct<TC.SchemableLambda> = {
             ) {
               return pipe(
                 params.restParam.encode(outputAtKey),
-                E.map(result => O.some(tuple(result, key))),
+                TE.map(result => O.some(tuple(result, key))),
               )
             }
 
             // -- Param is extra (and additional properties are stripped)
-            if (unionMembers === undefined) return E.right(O.zero())
+            if (unionMembers === undefined) return TE.right(O.zero())
 
             for (const { member, guard, inputKey } of unionMembers) {
               if (guard.is(outputAtKey)) {
                 return pipe(
                   member.encode(outputAtKey),
-                  E.map(result => O.some(tuple(result, inputKey))),
+                  TE.map(result => O.some(tuple(result, inputKey))),
                 )
               }
             }
 
-            // this shouldn't ever happen,
-            // if there's a key which does not match a guard in the union of guards
-            // we have no idea of knowing how to encode it
-            return E.right(O.zero()) as any
+            return TE.right(O.zero()) as any
           }),
           _ => _ as any,
         )
