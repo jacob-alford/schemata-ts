@@ -107,8 +107,8 @@ const getApplicativeValidationPar = <E>(sgErrors: Sg.Semigroup<E>) =>
 
 /** Performs a task-validative traversal over a struct's own enumerable properties. */
 export const witherTaskParSM =
-  <E>(sgErrors: Sg.Semigroup<E>) =>
-  <In extends Record<string, any>, A>(
+  <E, A>(sgErrors: Sg.Semigroup<E>, concatKeys: Sg.Semigroup<A>) =>
+  <In extends Record<string, any>>(
     f: <K extends keyof In>(
       key: K,
       value: In[K],
@@ -134,6 +134,10 @@ export const witherTaskParSM =
         for (const key in s) {
           // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
           const [value, newKey] = s[key]!
+          if (hasOwn(out, newKey)) {
+            out[newKey] = concatKeys.concat(out[newKey], value)
+            continue
+          }
           out[newKey] = value
         }
         return out

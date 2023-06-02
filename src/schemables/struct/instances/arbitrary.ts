@@ -58,9 +58,9 @@ export const StructArbitrary: WithStruct<Arb.SchemableLambda> = {
                 ),
             }
     }
-    const out = {} as any
     return {
       arbitrary: fc => {
+        const out = {} as any
         pipe(
           collapsedArbs,
           forIn((key, arb) => () => {
