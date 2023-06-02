@@ -24,7 +24,7 @@ export const failure: <A>(
 ) => TE.TaskEither<TCE.TranscodeErrors, A> = TE.throwError
 
 /** @internal */
-export const decodeErrors = (
+export const transcodeErrors = (
   ...errors: RNEA.ReadonlyNonEmptyArray<TCE.TranscodeError>
 ): TCE.TranscodeErrors => new TCE.TranscodeErrors(errors)
 
