@@ -6,11 +6,15 @@
  *
  * @since 2.0.0
  */
+import { Const } from 'fp-ts/Const'
 import * as E from 'fp-ts/Either'
+import { unsafeCoerce } from 'fp-ts/function'
 import { Invariant2 } from 'fp-ts/Invariant'
 import * as RNEA from 'fp-ts/ReadonlyNonEmptyArray'
 import { Semigroupoid2 } from 'fp-ts/Semigroupoid'
+import { getTranscoder as getTranscoder_ } from 'schemata-ts/derivations/transcoder-schemable'
 import * as I from 'schemata-ts/internal/transcoder'
+import { Schema } from 'schemata-ts/Schema'
 import * as TE from 'schemata-ts/TranscodeError'
 
 // ------------------
@@ -22,8 +26,8 @@ import * as TE from 'schemata-ts/TranscodeError'
  * @category Model
  */
 export interface Transcoder<I, O> {
-  readonly decode: (u: unknown) => E.Either<TE.TranscodeErrors, O>
-  readonly encode: (o: O) => E.Either<TE.TranscodeErrors, I>
+  readonly decode: (u: unknown) => E.Either<Const<TE.TranscodeErrors, I>, O>
+  readonly encode: (o: O) => E.Either<Const<TE.TranscodeErrors, O>, I>
 }
 
 // ------------------
@@ -106,15 +110,14 @@ export const errorAtUnionMember: (
 // combinators
 // ------------------
 
-export {
-  /**
-   * Interprets a schema as a decoder
-   *
-   * @since 2.0.0
-   * @category Interpreters
-   */
-  getTranscoder,
-} from 'schemata-ts/derivations/TranscoderSchemable'
+/**
+ * Interprets a schema as a decoder
+ *
+ * @since 2.0.0
+ * @category Interpreters
+ */
+export const getTranscoder: <I, O>(schema: Schema<I, O>) => Transcoder<I, O> =
+  unsafeCoerce(getTranscoder_)
 
 // ------------------
 // instances
@@ -139,7 +142,7 @@ export type URI = typeof URI
 export const imap: <A, B>(
   f: (a: A) => B,
   g: (b: B) => A,
-) => <I>(fa: Transcoder<I, A>) => Transcoder<I, B> = I.imap
+) => <I>(fa: Transcoder<I, A>) => Transcoder<I, B> = unsafeCoerce(I.imap)
 
 /**
  * @since 2.0.0
@@ -153,7 +156,7 @@ export const Invariant: Invariant2<URI> = I.Invariant
  */
 export const alt: <I, A>(
   that: () => Transcoder<I, A>,
-) => (fa: Transcoder<I, A>) => Transcoder<I, A> = I.alt
+) => (fa: Transcoder<I, A>) => Transcoder<I, A> = unsafeCoerce(I.alt)
 
 /**
  * @since 2.0.0
@@ -161,7 +164,7 @@ export const alt: <I, A>(
  */
 export const compose: <B, C>(
   tAB: Transcoder<B, C>,
-) => <A>(tAC: Transcoder<A, B>) => Transcoder<A, C> = I.compose
+) => <A>(tAC: Transcoder<A, B>) => Transcoder<A, C> = unsafeCoerce(I.compose)
 
 /**
  * @since 2.0.0

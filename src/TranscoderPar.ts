@@ -4,11 +4,15 @@
  *
  * @since 2.0.0
  */
+import { Const } from 'fp-ts/Const'
+import { unsafeCoerce } from 'fp-ts/function'
 import { Invariant2 } from 'fp-ts/Invariant'
 import * as RNEA from 'fp-ts/ReadonlyNonEmptyArray'
 import { Semigroupoid2 } from 'fp-ts/Semigroupoid'
 import * as TE from 'fp-ts/TaskEither'
+import { getTranscoderPar as getTranscoderPar_ } from 'schemata-ts/derivations/transcoder-par-schemable'
 import * as I from 'schemata-ts/internal/transcoder-par'
+import { Schema } from 'schemata-ts/Schema'
 import * as TCE from 'schemata-ts/TranscodeError'
 
 // ------------------
@@ -20,8 +24,8 @@ import * as TCE from 'schemata-ts/TranscodeError'
  * @category Model
  */
 export interface TranscoderPar<I, O> {
-  readonly decode: (u: unknown) => TE.TaskEither<TCE.TranscodeErrors, O>
-  readonly encode: (o: O) => TE.TaskEither<TCE.TranscodeErrors, I>
+  readonly decode: (u: unknown) => TE.TaskEither<Const<TCE.TranscodeErrors, I>, O>
+  readonly encode: (o: O) => TE.TaskEither<Const<TCE.TranscodeErrors, O>, I>
 }
 
 // ------------------
@@ -50,7 +54,7 @@ export const failure: <A>(
  */
 export const decodeErrors: (
   ...errors: RNEA.ReadonlyNonEmptyArray<TCE.TranscodeError>
-) => TCE.TranscodeErrors = I.decodeErrors
+) => TCE.TranscodeErrors = I.transcodeErrors
 /**
  * A failure case for a value that does not match the expected type
  *
@@ -105,15 +109,14 @@ export const errorAtUnionMember: (
 // combinators
 // ------------------
 
-export {
-  /**
-   * Interprets a schema as a decoder
-   *
-   * @since 2.0.0
-   * @category Interpreters
-   */
-  getTranscoderPar,
-} from 'schemata-ts/derivations/TranscoderParSchemable'
+/**
+ * Interprets a schema as a decoder
+ *
+ * @since 2.0.0
+ * @category Interpreters
+ */
+export const getTranscoderPar: <I, O>(schema: Schema<I, O>) => TranscoderPar<I, O> =
+  unsafeCoerce(getTranscoderPar_)
 
 // ------------------
 // instances
@@ -138,7 +141,7 @@ export type URI = typeof URI
 export const imap: <A, B>(
   f: (a: A) => B,
   g: (b: B) => A,
-) => <I>(fa: TranscoderPar<I, A>) => TranscoderPar<I, B> = I.imap
+) => <I>(fa: TranscoderPar<I, A>) => TranscoderPar<I, B> = unsafeCoerce(I.imap)
 
 /**
  * @since 2.0.0
@@ -152,7 +155,7 @@ export const Invariant: Invariant2<URI> = I.Invariant
  */
 export const alt: <I, A>(
   that: () => TranscoderPar<I, A>,
-) => (fa: TranscoderPar<I, A>) => TranscoderPar<I, A> = I.alt
+) => (fa: TranscoderPar<I, A>) => TranscoderPar<I, A> = unsafeCoerce(I.alt)
 
 /**
  * @since 2.0.0
@@ -160,7 +163,7 @@ export const alt: <I, A>(
  */
 export const compose: <B, C>(
   tAB: TranscoderPar<B, C>,
-) => <A>(tAC: TranscoderPar<A, B>) => TranscoderPar<A, C> = I.compose
+) => <A>(tAC: TranscoderPar<A, B>) => TranscoderPar<A, C> = unsafeCoerce(I.compose)
 
 /**
  * @since 2.0.0
