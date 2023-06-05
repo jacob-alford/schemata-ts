@@ -5,29 +5,34 @@ import * as RR from 'fp-ts/ReadonlyRecord'
 import * as Str from 'fp-ts/string'
 import * as G from 'schemata-ts/internal/guard'
 import { hasOwn } from 'schemata-ts/internal/util'
-import { keyIsNotMapped } from 'schemata-ts/struct'
+import { WithStruct } from 'schemata-ts/schemables/struct/definition'
+import { remapPropertyKeys } from 'schemata-ts/schemables/struct/utils'
 
-export const StructMGuard: WithStructM<G.SchemableLambda> = {
+export const StructGuard: WithStruct<G.SchemableLambda> = {
   struct: (properties, params = { extraProps: 'strip' }) => {
-    const remappedProps: Record<string, G.Guard<unknown>> = {}
-    for (const key in properties) {
-      // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-      const prop = properties[key]!
-      if (keyIsNotMapped(prop._keyRemap)) {
-        remappedProps[key] = prop._val
-        continue
-      }
-      remappedProps[prop._keyRemap] = prop._val
-    }
+    const lookupByOutputKey = remapPropertyKeys(properties)
+
     return {
       is: pipe(
         (u: unknown) => typeof u === 'object' && u !== null && !Array.isArray(u),
         Pred.and(u => {
+          const keysU = Object.keys(u as any)
+          const keysProps = Object.keys(lookupByOutputKey)
+          if (
+            (params.extraProps !== 'restParam' || params.restParam === undefined) &&
+            keysU.length !== keysProps.length
+          ) {
+            return false
+          }
+
           const knownKeysAreValid = pipe(
-            remappedProps,
-            RR.foldMapWithIndex(Str.Ord)(B.MonoidAll)((key, _val) => {
+            lookupByOutputKey,
+            RR.foldMapWithIndex(Str.Ord)(B.MonoidAll)((key, members) => {
               const inputAtKey: unknown = (u as any)[key]
-              return _val.is(inputAtKey)
+              for (const { member } of members) {
+                if (member.is(inputAtKey)) return true
+              }
+              return false
             }),
           )
 
@@ -37,7 +42,7 @@ export const StructMGuard: WithStructM<G.SchemableLambda> = {
           // -- if extra props are not allowed, return a failure on keys not specified in properties
           if (params.extraProps === 'error') {
             for (const key in u as any) {
-              if (!hasOwn(remappedProps, key) || remappedProps[key] === undefined)
+              if (!hasOwn(lookupByOutputKey, key) || lookupByOutputKey[key] === undefined)
                 return false
             }
             return knownKeysAreValid
@@ -47,7 +52,8 @@ export const StructMGuard: WithStructM<G.SchemableLambda> = {
 
           for (const key in u as any) {
             const inputAtKey: unknown = (u as any)[key]
-            if (hasOwn(remappedProps, key) || remappedProps[key] !== undefined) continue
+            if (hasOwn(lookupByOutputKey, key) || lookupByOutputKey[key] !== undefined)
+              continue
             if (!params.restParam.is(inputAtKey)) return false
           }
           return knownKeysAreValid

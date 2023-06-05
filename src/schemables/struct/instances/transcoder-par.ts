@@ -2,19 +2,13 @@ import * as Ap from 'fp-ts/Apply'
 import * as E from 'fp-ts/Either'
 import { pipe, tuple } from 'fp-ts/function'
 import * as O from 'fp-ts/Option'
-import * as RA from 'fp-ts/ReadonlyArray'
-import * as RNEA from 'fp-ts/ReadonlyNonEmptyArray'
-import * as RR from 'fp-ts/ReadonlyRecord'
 import * as Sg from 'fp-ts/Semigroup'
 import * as T from 'fp-ts/Task'
 import * as TE from 'fp-ts/TaskEither'
 import * as TCP from 'schemata-ts/internal/transcoder-par'
 import { hasOwn, witherTaskParSM } from 'schemata-ts/internal/util'
-import {
-  GuardedPrecedentedUnionMember,
-  ordGuardedPrecedentedUnionMember,
-} from 'schemata-ts/schemables/guarded-union/definition'
 import { WithStruct } from 'schemata-ts/schemables/struct/definition'
+import { remapPropertyKeys } from 'schemata-ts/schemables/struct/utils'
 import { getKeyRemap } from 'schemata-ts/struct'
 import * as TCE from 'schemata-ts/TranscodeError'
 
@@ -23,46 +17,7 @@ const apSecond = Ap.apSecond(decodeErrorValidation)
 
 export const StructTranscoderPar: WithStruct<TCP.SchemableLambda> = {
   struct: (properties, params = { extraProps: 'strip' }) => {
-    type UnionItem = GuardedPrecedentedUnionMember<TCP.SchemableLambda> & {
-      readonly inputKey: string
-    }
-
-    // --- a lookup table of output keys to union items
-    const lookupByOutputKey_: Record<string, RNEA.ReadonlyNonEmptyArray<UnionItem>> = {}
-
-    for (const key in properties) {
-      // -- ignore inherited properties
-      if (!hasOwn(properties, key)) continue
-
-      // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-      const { schemable, guard, information } = properties[key]!
-
-      const inputKey: string = key
-      const outputKey = pipe(
-        getKeyRemap(schemable),
-        O.getOrElse(() => inputKey),
-      )
-
-      const nextUnionItem: UnionItem = {
-        member: schemable,
-        guard,
-        precedence: information,
-        inputKey,
-      }
-
-      const outputKeyUnion = pipe(
-        lookupByOutputKey_,
-        RR.lookup(outputKey),
-        O.fold(() => RNEA.of(nextUnionItem), RA.append(nextUnionItem)),
-      )
-
-      lookupByOutputKey_[outputKey] = outputKeyUnion
-    }
-
-    const lookupByOutputKey = pipe(
-      lookupByOutputKey_,
-      RR.map(RNEA.sort(ordGuardedPrecedentedUnionMember)),
-    )
+    const lookupByOutputKey = remapPropertyKeys(properties)
 
     return {
       decode: (u): TE.TaskEither<TCE.TranscodeErrors, any> => {
