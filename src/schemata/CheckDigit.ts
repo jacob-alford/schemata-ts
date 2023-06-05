@@ -1,6 +1,6 @@
 import { Branded } from 'schemata-ts/brand'
 import * as SC from 'schemata-ts/Schema'
-import { CheckDigitVerified } from 'schemata-ts/schemables/WithCheckDigit/definition'
+import { CheckDigitVerified } from 'schemata-ts/schemables/check-digit/definition'
 
 /**
  * Verifies a character of a string against a check digit algorithm, useful for ISBNs,

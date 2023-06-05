@@ -20,7 +20,10 @@ export const Int = <
 >(
   params?: BoundedParams<Min, Max>,
 ): Schema<
-  number,
+  Integer<
+    Min extends undefined ? MinSafeInt : Min,
+    Max extends undefined ? MaxSafeInt : Max
+  >,
   Integer<
     Min extends undefined ? MinSafeInt : Min,
     Max extends undefined ? MaxSafeInt : Max

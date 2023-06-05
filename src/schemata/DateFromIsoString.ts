@@ -18,10 +18,15 @@
  * @since 1.0.0
  */
 import { pipe } from 'fp-ts/function'
+import { getGuard } from 'schemata-ts/derivations/guard-schemable'
 import { matchW } from 'schemata-ts/internal/match'
 import * as PB from 'schemata-ts/PatternBuilder'
-import { make, Schema } from 'schemata-ts/Schema'
-import { Guard } from 'schemata-ts/schemables/WithDate/instances/guard'
+import { Schema } from 'schemata-ts/Schema'
+import { SafeDateString } from 'schemata-ts/schemables/date/definition'
+import { Date as DateS } from 'schemata-ts/schemata/Date'
+import { Imap } from 'schemata-ts/schemata/Imap'
+import { Pattern } from 'schemata-ts/schemata/Pattern'
+import { Refine } from 'schemata-ts/schemata/Refine'
 
 /**
  * E.g. `2022`
@@ -277,14 +282,6 @@ export type DateFromIsoStringParams = {
 }
 
 /**
- * @since 1.0.0
- * @category Model
- */
-export type DateFromIsoStringS = (
-  params?: DateFromIsoStringParams,
-) => Schema<string, Date>
-
-/**
  * The Date parser (used in DateFromString) accepts different strings depending on
  * runtime, and also accepts other formats like `February 29, 2022`.
  *
@@ -304,26 +301,27 @@ export type DateFromIsoStringS = (
  * @since 1.0.0
  * @category Schema
  */
-export const DateFromIsoString: DateFromIsoStringS = (params = {}) => {
+export const DateFromIsoString: (
+  params?: DateFromIsoStringParams,
+) => Schema<SafeDateString, Date> = (params = {}) => {
   const { requireTime = 'TimeAndOffset' } = params
-  return make(S =>
-    pipe(
-      S.pattern(
-        pipe(
-          { tag: requireTime },
-          matchW({
-            None: () => isoDateStringOptTzOptT,
-            Time: () => isoDateStringOptTzReqT,
-            TimeAndOffset: () => isoDateStringReqTzReqT,
-          }),
-        ),
-        'IsoDateString',
+  return pipe(
+    Pattern(
+      pipe(
+        { tag: requireTime },
+        matchW({
+          None: () => isoDateStringOptTzOptT,
+          Time: () => isoDateStringOptTzReqT,
+          TimeAndOffset: () => isoDateStringReqTzReqT,
+        }),
       ),
-      S.refine((s): s is string => Guard.date.is(new Date(s)), 'SafeDateString'),
-      S.imap(Guard.date, 'DateFromIsoString')(
-        s => new Date(s),
-        d => d.toISOString(),
-      ),
+      'IsoDateString',
+    ),
+    Refine((s): s is string => !Number.isNaN(new Date(s)), 'ParseableDate'),
+    Imap(
+      getGuard(DateS()),
+      s => new Date(s),
+      d => d.toISOString(),
     ),
   )
 }
