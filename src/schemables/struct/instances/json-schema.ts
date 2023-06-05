@@ -1,4 +1,3 @@
-import { Const, make } from 'fp-ts/Const'
 import { pipe, tuple } from 'fp-ts/function'
 import * as Mn from 'fp-ts/Monoid'
 import * as RA from 'fp-ts/ReadonlyArray'
@@ -14,14 +13,12 @@ export const StructMJsonSchema: WithStruct<JS.SchemableLambda> = {
     const [requiredKeys, jsonSchema] = pipe(
       properties,
       RR.foldMapWithIndex(Str.Ord)(
-        Mn.tuple(
-          RA.getMonoid<string>(),
-          RR.getUnionMonoid(Sg.first<Const<JS.JsonSchema, unknown>>()),
-        ),
-      )((key, { _val }) =>
-        tuple(hasImplicitOptional(_val) ? [] : [key], make({ [key]: _val })),
+        Mn.tuple(RA.getMonoid<string>(), RR.getUnionMonoid(Sg.first<JS.JsonSchema>())),
+      )((key, { schemable }) =>
+        tuple(hasImplicitOptional(schemable) ? [] : [key], { [key]: schemable }),
       ),
     )
+
     return new JS.JsonStruct(
       jsonSchema,
       requiredKeys,

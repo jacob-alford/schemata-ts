@@ -1,43 +1,14 @@
 import { pipe } from 'fp-ts/function'
-import * as O from 'fp-ts/Option'
-import * as RA from 'fp-ts/ReadonlyArray'
-import * as RNEA from 'fp-ts/ReadonlyNonEmptyArray'
-import * as RR from 'fp-ts/ReadonlyRecord'
 import * as Arb from 'schemata-ts/internal/arbitrary'
 import { forIn, hasOwn } from 'schemata-ts/internal/util'
 import { PrimitivesArbitrary } from 'schemata-ts/schemables/primitives/instances/arbitrary'
 import { WithStruct } from 'schemata-ts/schemables/struct/definition'
-import { getKeyRemap, hasImplicitOptional } from 'schemata-ts/struct'
+import { remapPropertyKeys } from 'schemata-ts/schemables/struct/utils'
+import { hasImplicitOptional } from 'schemata-ts/struct'
 
 export const StructArbitrary: WithStruct<Arb.SchemableLambda> = {
   struct: (properties, params = { extraProps: 'strip' }) => {
-    const lookupByOutputKey: Record<
-      string,
-      RNEA.ReadonlyNonEmptyArray<{ arbitrary: Arb.Arbitrary<unknown>; weight: number }>
-    > = {} as any
-    for (const key in properties) {
-      const prop = properties[key]
-
-      if (!hasOwn(properties, key) || prop === undefined) continue
-
-      const { schemable, information } = prop
-
-      const outputKey: string = pipe(
-        getKeyRemap(schemable),
-        O.getOrElseW(() => key),
-      )
-
-      const outputKeyUnion = pipe(
-        lookupByOutputKey,
-        RR.lookup(outputKey),
-        O.fold(
-          () => RNEA.of({ arbitrary: schemable, weight: 1 / information }),
-          RA.append({ arbitrary: schemable, weight: 1 / information }),
-        ),
-      )
-
-      lookupByOutputKey[outputKey] = outputKeyUnion
-    }
+    const lookupByOutputKey = remapPropertyKeys(properties, i => 1 / i)
 
     const collapsedArbs: Record<string, Arb.Arbitrary<unknown>> = {}
 
@@ -47,17 +18,18 @@ export const StructArbitrary: WithStruct<Arb.SchemableLambda> = {
 
       collapsedArbs[key] =
         arbs.length === 1
-          ? { arbitrary: fc => arbs[0].arbitrary.arbitrary(fc) }
+          ? { arbitrary: fc => arbs[0].member.arbitrary(fc) }
           : {
               arbitrary: fc =>
                 fc.oneof(
-                  ...arbs.map(({ arbitrary, weight }) => ({
-                    arbitrary: arbitrary.arbitrary(fc),
-                    weight,
+                  ...arbs.map(({ member, precedence }) => ({
+                    arbitrary: member.arbitrary(fc),
+                    weight: precedence,
                   })),
                 ),
             }
     }
+
     return {
       arbitrary: fc => {
         const out = {} as any
