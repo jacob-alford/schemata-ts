@@ -1,7 +1,7 @@
 import { Branded } from 'schemata-ts/brand'
 import { SchemableKind, SchemableLambda } from 'schemata-ts/HKT'
 
-type DateParams = {
+export type DateParams = {
   readonly afterDate?: Date
   readonly beforeDate?: Date
 }

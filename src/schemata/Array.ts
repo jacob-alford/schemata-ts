@@ -5,6 +5,7 @@
  * @category Model
  */
 import { make, Schema } from 'schemata-ts/Schema'
+import { ArrayParams } from 'schemata-ts/schemables/array/definition'
 
 /**
  * A Typescript Record type with unknown keys and known values.
@@ -12,5 +13,7 @@ import { make, Schema } from 'schemata-ts/Schema'
  * @since 1.0.0
  * @category Combinators
  */
-export const Array = <E, A>(codomain: Schema<E, A>): Schema<Array<E>, ReadonlyArray<A>> =>
-  make(S => S.array(codomain(S)))
+export const Array =
+  (params?: ArrayParams) =>
+  <E, A>(codomain: Schema<E, A>): Schema<Array<E>, ReadonlyArray<A>> =>
+    make(_ => _.array(params)(codomain(_)))

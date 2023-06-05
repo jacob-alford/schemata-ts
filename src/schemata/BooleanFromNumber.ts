@@ -6,8 +6,11 @@
  *
  * @since 1.0.0
  */
-import { boolean } from 'schemata-ts/Guard'
-import { make, Schema } from 'schemata-ts/Schema'
+import { getGuard } from 'schemata-ts/derivations/guard-schemable'
+import { Schema } from 'schemata-ts/Schema'
+import { Boolean } from 'schemata-ts/schemata/Boolean'
+import { Float } from 'schemata-ts/schemata/Float'
+import { Imap } from 'schemata-ts/schemata/Imap'
 
 /**
  * A boolean value whose encoded representation is a number, where 0 is false and 1 is true.
@@ -18,9 +21,8 @@ import { make, Schema } from 'schemata-ts/Schema'
  * @since 1.0.0
  * @category Schema
  */
-export const BooleanFromNumber: Schema<number, boolean> = make(s =>
-  s.imap(boolean, 'BooleanFromNumber')(
-    n => n !== 0,
-    b => (b ? 1 : 0),
-  )(s.float()),
-)
+export const BooleanFromNumber: Schema<number, boolean> = Imap(
+  getGuard(Boolean),
+  n => n !== 0,
+  b => (b ? 1 : 0),
+)(Float())

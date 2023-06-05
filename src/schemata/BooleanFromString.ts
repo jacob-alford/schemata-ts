@@ -3,10 +3,12 @@
  *
  * @since 1.0.0
  */
-import { pipe } from 'fp-ts/function'
-import { boolean } from 'schemata-ts/Guard'
+import { getGuard } from 'schemata-ts/Guard'
 import * as PB from 'schemata-ts/PatternBuilder'
-import { make, Schema } from 'schemata-ts/Schema'
+import { Schema } from 'schemata-ts/Schema'
+import { Boolean } from 'schemata-ts/schemata/Boolean'
+import { Imap } from 'schemata-ts/schemata/Imap'
+import { Pattern } from 'schemata-ts/schemata/Pattern'
 
 /**
  * @since 1.0.0
@@ -29,12 +31,8 @@ export const booleanFromStringPattern: PB.Pattern = PB.oneOf(
  * @since 1.0.0
  * @category Schema
  */
-export const BooleanFromString: BooleanS = make(s =>
-  pipe(
-    s.pattern(booleanFromStringPattern, 'BooleanFromString'),
-    s.imap(boolean, 'BooleanFromString')(
-      s => s === 'true',
-      b => (b ? 'true' : 'false'),
-    ),
-  ),
-)
+export const BooleanFromString: BooleanS = Imap(
+  getGuard(Boolean),
+  s => s === 'true',
+  b => (b ? 'true' : 'false'),
+)(Pattern(booleanFromStringPattern, 'BooleanFromString'))

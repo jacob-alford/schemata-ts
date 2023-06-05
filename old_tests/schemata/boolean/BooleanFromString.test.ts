@@ -1,7 +1,7 @@
 import * as E from 'fp-ts/Either'
 import { pipe } from 'fp-ts/function'
 
-import * as BooleanString_ from '../../../src/schemata/boolean/BooleanFromString'
+import * as BooleanString_ from '../../../src/schemata/BooleanFromString'
 import { getAllInstances, validateArbitrary } from '../../../test-utils'
 
 const valid: ReadonlyArray<string> = ['true', 'false']
