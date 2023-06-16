@@ -6,7 +6,9 @@
 import { pipe } from 'fp-ts/function'
 import { Branded } from 'schemata-ts/brand'
 import * as PB from 'schemata-ts/PatternBuilder'
-import { make, Schema } from 'schemata-ts/Schema'
+import { Schema } from 'schemata-ts/Schema'
+import { Brand } from 'schemata-ts/schemata/Brand'
+import { Pattern } from 'schemata-ts/schemata/Pattern'
 
 interface BitcoinAddressBrand {
   readonly BitcoinAddress: unique symbol
@@ -19,12 +21,6 @@ interface BitcoinAddressBrand {
  * @category Model
  */
 export type BitcoinAddress = Branded<string, BitcoinAddressBrand>
-
-/**
- * @since 1.0.0
- * @category Pattern
- */
-export type BitcoinAddressS = Schema<string, BitcoinAddress>
 
 /**
  * /^(bc1)[a-z0-9]{25,39}$/
@@ -71,6 +67,5 @@ export const bitcoinAddress: PB.Pattern = pipe(bech32, PB.or(base58))
  * @since 1.0.0
  * @category Schema
  */
-export const BitcoinAddress: BitcoinAddressS = make(s =>
-  s.brand<BitcoinAddressBrand>()(s.pattern(bitcoinAddress, 'BitcoinAddress')),
-)
+export const BitcoinAddress: Schema<BitcoinAddress, BitcoinAddress> =
+  Brand<BitcoinAddressBrand>()(Pattern(bitcoinAddress, 'BitcoinAddress'))

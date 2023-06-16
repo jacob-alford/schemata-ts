@@ -6,7 +6,9 @@
 import { pipe } from 'fp-ts/function'
 import { Branded } from 'schemata-ts/brand'
 import * as PB from 'schemata-ts/PatternBuilder'
-import { make, Schema } from 'schemata-ts/Schema'
+import { Schema } from 'schemata-ts/Schema'
+import { Brand } from 'schemata-ts/schemata/Brand'
+import { Pattern } from 'schemata-ts/schemata/Pattern'
 
 interface LatLongBrand {
   readonly LatLong: unique symbol
@@ -19,12 +21,6 @@ interface LatLongBrand {
  * @category Model
  */
 export type LatLong = Branded<string, LatLongBrand>
-
-/**
- * @since 1.0.0
- * @category Model
- */
-export type LatLongS = Schema<string, LatLong>
 
 const latPattern = pipe(
   PB.maybe(PB.characterClass(false, '+', '-')),
@@ -91,7 +87,7 @@ const longPattern = pipe(
  * @since 1.0.0
  * @category Pattern
  */
-export const LatLongPattern = PB.oneOf(
+export const latLongPattern = PB.oneOf(
   pipe(
     latPattern,
     PB.then(PB.char(',')),
@@ -114,6 +110,6 @@ export const LatLongPattern = PB.oneOf(
  * @since 1.0.0
  * @category Schema
  */
-export const LatLong: LatLongS = make(s =>
-  s.brand<LatLongBrand>()(s.pattern(LatLongPattern, 'LatLong')),
+export const LatLong: Schema<LatLong, LatLong> = Brand<LatLongBrand>()(
+  Pattern(latLongPattern, 'LatLong'),
 )

@@ -10,7 +10,10 @@ import { pipe } from 'fp-ts/function'
 import { Branded } from 'schemata-ts/brand'
 import { luhn } from 'schemata-ts/internal/algorithms'
 import * as PB from 'schemata-ts/PatternBuilder'
-import { make } from 'schemata-ts/Schema'
+import { Schema } from 'schemata-ts/Schema'
+import { Brand } from 'schemata-ts/schemata/Brand'
+import { CheckDigit } from 'schemata-ts/schemata/CheckDigit'
+import { Pattern } from 'schemata-ts/schemata/Pattern'
 
 interface CreditCardBrand {
   readonly CreditCard: unique symbol
@@ -292,13 +295,11 @@ export const creditCard = PB.oneOf(
  * @since 1.0.0
  * @category Schema
  */
-export const CreditCard = make(s =>
-  pipe(
-    s.pattern(creditCard, 'CreditCard'),
-    s.checkDigit(
-      ccn => luhn(ccn.substring(0, ccn.length - 1)).toString(10),
-      ccn => ccn.length - 1,
-    ),
-    s.brand<CreditCardBrand>(),
+export const CreditCard: Schema<CreditCard, CreditCard> = pipe(
+  Pattern(creditCard, 'CreditCard'),
+  CheckDigit(
+    ccn => luhn(ccn.substring(0, ccn.length - 1)).toString(10),
+    ccn => ccn.length - 1,
   ),
+  Brand<CreditCardBrand>(),
 )

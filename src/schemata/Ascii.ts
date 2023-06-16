@@ -6,7 +6,9 @@
 import { pipe } from 'fp-ts/function'
 import { Branded } from 'schemata-ts/brand'
 import * as PB from 'schemata-ts/PatternBuilder'
-import { make, Schema } from 'schemata-ts/Schema'
+import { Schema } from 'schemata-ts/Schema'
+import { Brand } from 'schemata-ts/schemata/Brand'
+import { Pattern } from 'schemata-ts/schemata/Pattern'
 
 interface AsciiBrand {
   readonly Ascii: unique symbol
@@ -41,4 +43,4 @@ export const ascii: PB.Pattern = pipe(
  * @since 1.0.0
  * @category Schema
  */
-export const Ascii: AsciiS = make(s => s.brand<AsciiBrand>()(s.pattern(ascii, 'Ascii')))
+export const Ascii: Schema<Ascii, Ascii> = Brand<AsciiBrand>()(Pattern(ascii, 'Ascii'))

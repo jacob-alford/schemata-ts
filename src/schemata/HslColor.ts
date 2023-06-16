@@ -19,7 +19,9 @@
 import { pipe } from 'fp-ts/function'
 import { Branded } from 'schemata-ts/brand'
 import * as PB from 'schemata-ts/PatternBuilder'
-import { make, Schema } from 'schemata-ts/Schema'
+import { Schema } from 'schemata-ts/Schema'
+import { Brand } from 'schemata-ts/schemata/Brand'
+import { Pattern } from 'schemata-ts/schemata/Pattern'
 
 interface HslColorBrand {
   readonly HslColor: unique symbol
@@ -44,12 +46,6 @@ interface HslColorBrand {
  *   assert.equal(Guard.is(hslString), true)
  */
 export type HslColor = Branded<string, HslColorBrand>
-
-/**
- * @since 1.0.0
- * @category Model
- */
-export type HslColorS = Schema<string, HslColor>
 
 const anyDecimal = PB.subgroup(
   PB.sequence(PB.char('.'), PB.atLeastOne({ greedy: true })(PB.digit)),
@@ -125,7 +121,7 @@ const slashDelimiter = PB.subgroup(PB.sequence(anySpace, PB.char('/'), anySpace)
  * @since 1.0.0
  * @category Pattern
  */
-export const HslPattern = PB.sequence(
+export const hslPattern = PB.sequence(
   PB.exactString('hsl'),
   PB.maybe(PB.char('a')),
   PB.char('('),
@@ -157,6 +153,6 @@ export const HslPattern = PB.sequence(
  * @since 1.0.0
  * @category Schema
  */
-export const HslColor: HslColorS = make(s =>
-  s.brand<HslColorBrand>()(s.pattern(HslPattern, 'HslColor', true)),
+export const HslColor: Schema<HslColor, HslColor> = Brand<HslColorBrand>()(
+  Pattern(hslPattern, 'HslColor'),
 )

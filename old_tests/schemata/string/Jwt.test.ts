@@ -1,4 +1,4 @@
-import * as Jwt from '../../../src/schemata/string/Jwt'
+import * as Jwt from '../../../src/schemata/Jwt'
 import { getAllInstances, validateArbitrary } from '../../../test-utils'
 
 const { Arbitrary, Decoder, Eq, Guard, TaskDecoder, Type } = getAllInstances(Jwt.Jwt)

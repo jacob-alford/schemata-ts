@@ -2,7 +2,7 @@ import * as E from 'fp-ts/Either'
 import { pipe, tuple } from 'fp-ts/function'
 import * as RA from 'fp-ts/ReadonlyArray'
 
-import { LatLong } from '../../../src/schemata/string/LatLong'
+import { LatLong } from '../../../src/schemata/LatLong'
 import {
   cat,
   combineExpected,
