@@ -8,9 +8,8 @@ import * as O from 'fp-ts/Option'
 import { getGuard } from 'schemata-ts/Guard'
 import { Schema } from 'schemata-ts/Schema'
 import { Imap } from 'schemata-ts/schemata/Imap'
-import { Literal } from 'schemata-ts/schemata/Literal'
+import { Nullable } from 'schemata-ts/schemata/Nullable'
 import { Option } from 'schemata-ts/schemata/Option'
-import { Union } from 'schemata-ts/schemata/Union'
 import { ImplicitOptional, makeImplicitOptional } from 'schemata-ts/struct'
 
 /**
@@ -23,10 +22,6 @@ export const OptionFromNullable = <A, O>(
   inner: Schema<O, A>,
 ): ImplicitOptional & Schema<O | null | undefined, O.Option<NonNullable<A>>> =>
   makeImplicitOptional(
-    pipe(
-      // @ts-expect-error -- Mutually exclusivity not relevant here
-      Union('Nullable', Literal(null), inner),
-      Imap(getGuard(Option(inner)), O.fromNullable, O.toNullable),
-    ),
+    pipe(Nullable(inner), Imap(getGuard(Option(inner)), O.fromNullable, O.toNullable)),
     _ => _.bind({}),
   )
