@@ -1,8 +1,8 @@
 import { integer } from '../src/JsonSchema'
 import { getJsonSchema } from '../src/JsonSchema'
 import { Annotate } from '../src/schemata/Annotate'
-import { BigIntFromString } from '../src/schemata/number/BigIntFromString'
-import { Natural } from '../src/schemata/number/Natural'
+import { BigIntFromString } from '../src/schemata/BigIntFromString'
+import { Natural } from '../src/schemata/Natural'
 
 describe('annotation', () => {
   it('annotates', () => {

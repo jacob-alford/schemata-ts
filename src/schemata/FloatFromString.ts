@@ -13,16 +13,31 @@
  * @since 1.0.0
  */
 import { pipe } from 'fp-ts/function'
+import { Branded } from 'schemata-ts/brand'
+import { Float, MaxNegativeFloat, MaxPositiveFloat } from 'schemata-ts/float'
 import * as PB from 'schemata-ts/PatternBuilder'
-import { make, Schema } from 'schemata-ts/Schema'
-import * as Float from 'schemata-ts/schemables/WithFloat/definition'
-import { Guard } from 'schemata-ts/schemables/WithFloat/instances/guard'
+import { Schema } from 'schemata-ts/Schema'
+import { BoundedParams } from 'schemata-ts/schemables/primitives/definition'
+import { PrimitivesGuard } from 'schemata-ts/schemables/primitives/instances/guard'
+import { Imap } from 'schemata-ts/schemata/Imap'
+import { Pattern } from 'schemata-ts/schemata/Pattern'
+import { Refine } from 'schemata-ts/schemata/Refine'
+
+type FloatStringBrand<Min extends number, Max extends number> = {
+  readonly FloatString: unique symbol
+  readonly Min: Min
+  readonly Max: Max
+}
 
 /**
- * @since 1.0.0
- * @category Model
+ * A string that can safely be parsed to a floating point number.
+ *
+ * @since 2.0.0
  */
-export type FloatFromStringS = (params?: Float.FloatParams) => Schema<string, Float.Float>
+export type FloatString<
+  Min extends number = MaxNegativeFloat,
+  Max extends number = MaxPositiveFloat,
+> = Branded<string, FloatStringBrand<Min, Max>>
 
 /**
  * Negative floats with at least one digit before the decimal point.
@@ -147,17 +162,34 @@ const floatFromString: PB.Pattern = pipe(
  * @since 1.0.0
  * @category Schema
  */
-export const FloatFromString: FloatFromStringS = params =>
-  make(S =>
-    pipe(
-      S.pattern(floatFromString, 'FloatFromString'),
-      S.refine(
-        (s): s is string => Guard.float(params).is(Number(s)) && s.trim() !== '',
-        'SafeFloatString',
-      ),
-      S.imap(Guard.float(params), 'FloatFromString')(
-        (s: string) => Number(s) as Float.Float,
-        (n: Float.Float) => n.toString(),
-      ),
+export const FloatFromString = <
+  Min extends number | undefined = undefined,
+  Max extends number | undefined = undefined,
+>(
+  params?: BoundedParams<Min, Max>,
+): Schema<
+  FloatString<
+    Min extends undefined ? MaxNegativeFloat : Min,
+    Max extends undefined ? MaxPositiveFloat : Max
+  >,
+  Float<
+    Min extends undefined ? MaxNegativeFloat : Min,
+    Max extends undefined ? MaxPositiveFloat : Max
+  >
+> =>
+  pipe(
+    Pattern(floatFromString, 'FloatFromString'),
+    Refine(
+      (s): s is string => PrimitivesGuard.float(params).is(Number(s)) && s.trim() !== '',
+      'FloatString',
+    ),
+    Imap(
+      PrimitivesGuard.float(params),
+      s =>
+        Number(s) as Float<
+          Min extends undefined ? MaxNegativeFloat : Min,
+          Max extends undefined ? MaxPositiveFloat : Max
+        >,
+      n => n.toString(),
     ),
   )

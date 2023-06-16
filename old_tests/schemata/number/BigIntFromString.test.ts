@@ -1,7 +1,7 @@
 import * as E from 'fp-ts/Either'
 import { pipe, tuple } from 'fp-ts/function'
 
-import * as BigIntString_ from '../../../src/schemata/number/BigIntFromString'
+import * as BigIntString_ from '../../../src/schemata/BigIntFromString'
 import { getAllInstances, validateArbitrary } from '../../../test-utils'
 
 const valid: ReadonlyArray<string> = ['0', '10', '-1', '11']

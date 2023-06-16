@@ -1,7 +1,7 @@
 import * as E from 'fp-ts/Either'
 import { unsafeCoerce } from 'fp-ts/function'
 
-import { Natural } from '../../../src/schemata/number/Natural'
+import { Natural } from '../../../src/schemata/Natural'
 import { getAllInstances, validateArbitrary } from '../../../test-utils'
 
 const _: (n: number) => Natural = unsafeCoerce

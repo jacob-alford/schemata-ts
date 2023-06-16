@@ -16,10 +16,31 @@
  * @since 1.0.0
  */
 import { pipe } from 'fp-ts/function'
+import { Branded } from 'schemata-ts/brand'
+import { Integer, MaxSafeInt, MinSafeInt } from 'schemata-ts/integer'
 import * as PB from 'schemata-ts/PatternBuilder'
-import { make, Schema } from 'schemata-ts/Schema'
-import * as Int from 'schemata-ts/schemables/WithInt/definition'
-import { Guard } from 'schemata-ts/schemables/WithInt/instances/guard'
+import { Schema } from 'schemata-ts/Schema'
+import { BoundedParams } from 'schemata-ts/schemables/primitives/definition'
+import { PrimitivesGuard } from 'schemata-ts/schemables/primitives/instances/guard'
+import { Imap } from 'schemata-ts/schemata/Imap'
+import { Pattern } from 'schemata-ts/schemata/Pattern'
+import { Simplify } from 'type-fest'
+
+type IntStringBrand<Min extends number, Max extends number> = {
+  readonly IntString: unique symbol
+  readonly Min: Min
+  readonly Max: Max
+}
+
+/**
+ * A string that can safely be parsed to a floating point number.
+ *
+ * @since 2.0.0
+ */
+export type IntString<
+  Min extends number = MinSafeInt,
+  Max extends number = MaxSafeInt,
+> = Branded<string, IntStringBrand<Min, Max>>
 
 /**
  * Controls the output base of the encoded string. Currently only accepts 2, 8, 10, and 16
@@ -28,17 +49,14 @@ import { Guard } from 'schemata-ts/schemables/WithInt/instances/guard'
  *
  * @since 1.0.0
  */
-export type IntFromStringParams = {
-  readonly encodeToBase?: 2 | 8 | 10 | 16
-}
-
-/**
- * @since 1.0.0
- * @category Model
- */
-export type IntFromStringS = (
-  params?: Int.IntParams & IntFromStringParams,
-) => Schema<string, Int.Int>
+export type IntFromStringParams<
+  Min extends number | undefined,
+  Max extends number | undefined,
+> = Simplify<
+  {
+    readonly encodeToBase?: 2 | 8 | 10 | 16
+  } & BoundedParams<Min, Max>
+>
 
 /**
  * @since 1.0.0
@@ -89,7 +107,7 @@ export const intFromString: PB.Pattern = PB.oneOf(
 )
 
 /** @internal */
-const baseToPrefix = (base: IntFromStringParams['encodeToBase']): string => {
+const baseToPrefix = (base: IntFromStringParams<any, any>['encodeToBase']): string => {
   switch (base) {
     case 2:
       return `0b`
@@ -120,14 +138,30 @@ const baseToPrefix = (base: IntFromStringParams['encodeToBase']): string => {
  * @since 1.0.0
  * @category Schema
  */
-export const IntFromString: IntFromStringS = (params = {}) =>
-  make(S =>
-    pipe(
-      S.pattern(intFromString, 'IntFromString'),
-      S.imap(Guard.int(params), 'IntFromString')(
-        (s: string) => Number(s) as Int.Int,
-        (n: Int.Int) =>
-          `${baseToPrefix(params.encodeToBase)}${n.toString(params.encodeToBase ?? 10)}`,
-      ),
+export const IntFromString = <
+  Min extends number | undefined,
+  Max extends number | undefined,
+>(
+  params: IntFromStringParams<Min, Max> = {},
+): Schema<
+  IntString<
+    Min extends undefined ? MinSafeInt : Min,
+    Max extends undefined ? MaxSafeInt : Max
+  >,
+  Integer<
+    Min extends undefined ? MinSafeInt : Min,
+    Max extends undefined ? MaxSafeInt : Max
+  >
+> =>
+  pipe(
+    Pattern(intFromString, 'IntFromString'),
+    Imap(
+      PrimitivesGuard.int(params),
+      s =>
+        Number(s) as Integer<
+          Min extends undefined ? MinSafeInt : Min,
+          Max extends undefined ? MaxSafeInt : Max
+        >,
+      n => `${baseToPrefix(params.encodeToBase)}${n.toString(params.encodeToBase ?? 10)}`,
     ),
   )
