@@ -19,7 +19,11 @@ type Unique_<
     : Unique_<Tail, SampleCopy, AlreadyFound | Head>
   : SampleCopy
 
-export type Unique<Xs extends ReadonlyArray<any>> = Unique_<Xs>
+type Unique<Xs extends ReadonlyArray<any>> = Unique_<Xs>
+
+type Inputs<Xs extends ReadonlyArray<Schema<any, any>>> = {
+  [K in keyof Xs]: InputOf<Xs[K]>
+}
 
 /**
  * Represents a union of mutually exclusive schemas. Union elements must be unique to
@@ -29,10 +33,10 @@ export type Unique<Xs extends ReadonlyArray<any>> = Unique_<Xs>
  */
 export const Union = <
   T extends RNEA.ReadonlyNonEmptyArray<Schema<any, any>>,
-  Schemas extends Unique<T>,
+  UniquenessCheck extends Unique<Inputs<T>>,
 >(
   name: string,
-  ...members: Schemas
+  ...members: UniquenessCheck extends { error: string } ? UniquenessCheck : T
 ): Schema<InputOf<T[number]>, OutputOf<T[number]>> =>
   make(s =>
     pipe(
