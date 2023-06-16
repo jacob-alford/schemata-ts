@@ -24,6 +24,7 @@ export const OptionFromNullable = <A, O>(
 ): ImplicitOptional & Schema<O | null | undefined, O.Option<NonNullable<A>>> =>
   makeImplicitOptional(
     pipe(
+      // @ts-expect-error -- Mutually exclusivity not relevant here
       Union('Nullable', Literal(null), inner),
       Imap(getGuard(Option(inner)), O.fromNullable, O.toNullable),
     ),
