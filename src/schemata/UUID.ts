@@ -8,7 +8,9 @@
  */
 import { Branded } from 'schemata-ts/brand'
 import * as PB from 'schemata-ts/PatternBuilder'
-import { make, Schema } from 'schemata-ts/Schema'
+import { Schema } from 'schemata-ts/Schema'
+import { Brand } from 'schemata-ts/schemata/Brand'
+import { Pattern } from 'schemata-ts/schemata/Pattern'
 
 const nHexDigits = (n: number) => PB.exactly(n)(PB.hexDigit)
 
@@ -127,17 +129,9 @@ export type UUID<Version extends UUIDVersion> = Branded<string, UUIDBrand<Versio
 
 /**
  * @since 1.0.0
- * @category Model
- */
-export type UUIDS<Version extends UUIDVersion> = Schema<string, UUID<Version>>
-
-/**
- * @since 1.0.0
  * @category Schema
  */
-export const UUID = <Version extends UUIDVersion>(version: Version): UUIDS<Version> =>
-  make(s =>
-    s.brand<UUIDBrand<Version>>()(
-      s.pattern(uuidPattern[version], `UUID version ${version}`, true),
-    ),
-  )
+export const UUID = <Version extends UUIDVersion>(
+  version: Version,
+): Schema<string, UUID<Version>> =>
+  Brand<UUIDBrand<Version>>()(Pattern(uuidPattern[version], `UUID version ${version}`))

@@ -3,7 +3,7 @@ import { pipe, tuple } from 'fp-ts/function'
 import * as RA from 'fp-ts/ReadonlyArray'
 
 import * as PE from '../../../src/PrintError'
-import { EmailAddress } from '../../../src/schemata/string/EmailAddress'
+import { EmailAddress } from '../../../src/schemata/EmailAddress'
 import {
   cat,
   combineExpected,

@@ -3,9 +3,10 @@
  *
  * @since 1.0.0
  */
-import { pipe } from 'fp-ts/function'
 import { Branded } from 'schemata-ts/brand'
-import { make, Schema } from 'schemata-ts/Schema'
+import { Schema } from 'schemata-ts/Schema'
+import { Brand } from 'schemata-ts/schemata/Brand'
+import { String } from 'schemata-ts/schemata/String'
 
 interface NonEmptyStringBrand {
   readonly NonEmptyString: unique symbol
@@ -20,21 +21,10 @@ interface NonEmptyStringBrand {
 export type NonEmptyString = Branded<string, NonEmptyStringBrand>
 
 /**
- * @since 1.0.0
- * @category Model
- */
-export type NonEmptyStringS = Schema<string, NonEmptyString>
-
-/**
  * A string with length greater than one
  *
  * @since 1.0.0
  * @category Schema
  */
-export const NonEmptyString: NonEmptyStringS = make(S =>
-  pipe(
-    S.string,
-    S.refine((s): s is NonEmptyString => s.length > 0, 'NonEmptyString'),
-    S.brand<NonEmptyStringBrand>(),
-  ),
-)
+export const NonEmptyString: Schema<NonEmptyString, NonEmptyString> =
+  Brand<NonEmptyStringBrand>()(String({ minLength: 1 }))

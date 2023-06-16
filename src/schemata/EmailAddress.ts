@@ -10,7 +10,9 @@
 import { pipe } from 'fp-ts/function'
 import { Branded } from 'schemata-ts/brand'
 import * as PB from 'schemata-ts/PatternBuilder'
-import { make, Schema } from 'schemata-ts/Schema'
+import { Schema } from 'schemata-ts/Schema'
+import { Brand } from 'schemata-ts/schemata/Brand'
+import { Pattern } from 'schemata-ts/schemata/Pattern'
 
 interface EmailAddressBrand {
   readonly EmailAddress: unique symbol
@@ -23,12 +25,6 @@ interface EmailAddressBrand {
  * @category Model
  */
 export type EmailAddress = Branded<string, EmailAddressBrand>
-
-/**
- * @since 1.0.0
- * @category Model
- */
-export type EmailAddressS = Schema<string, EmailAddress>
 
 // (".+")
 const localPartQuoted = pipe(
@@ -116,6 +112,5 @@ export const emailAddress: PB.Pattern = pipe(
  * @since 1.0.0
  * @category Schema
  */
-export const EmailAddress: EmailAddressS = make(s =>
-  s.brand<EmailAddressBrand>()(s.pattern(emailAddress, 'EmailAddress')),
-)
+export const EmailAddress: Schema<EmailAddress, EmailAddress> =
+  Brand<EmailAddressBrand>()(Pattern(emailAddress, 'EmailAddress'))

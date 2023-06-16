@@ -8,7 +8,10 @@
 import { pipe } from 'fp-ts/function'
 import { Branded } from 'schemata-ts/brand'
 import * as PB from 'schemata-ts/PatternBuilder'
-import { make, Schema } from 'schemata-ts/Schema'
+import { Schema } from 'schemata-ts/Schema'
+import { Brand } from 'schemata-ts/schemata/Brand'
+import { Pattern } from 'schemata-ts/schemata/Pattern'
+import { StringPadRight } from 'schemata-ts/schemata/StringPadRight'
 
 interface Base64Brand {
   readonly Base64: unique symbol
@@ -23,12 +26,6 @@ interface Base64Brand {
  * @category Model
  */
 export type Base64 = Branded<string, Base64Brand>
-
-/**
- * @since 1.0.0
- * @category Model
- */
-export type Base64S = Schema<string, Base64>
 
 /** @internal */
 const base64Characters = pipe(PB.alnum, PB.and(PB.characterClass(false, '+', '/')))
@@ -58,16 +55,14 @@ export const base64: PB.Pattern = pipe(
  * @since 1.0.0
  * @category Schema
  */
-export const Base64: Base64S = make(S =>
-  pipe(
-    S.pattern(base64, 'Base64'),
-    S.padRight(
-      {
-        by: 'ExactLength',
-        exactLength: s => s.length + ((4 - (s.length % 4)) % 4),
-      },
-      '=',
-    ),
-    S.brand<Base64Brand>(),
+export const Base64: Schema<Base64, Base64> = pipe(
+  Pattern(base64, 'Base64'),
+  StringPadRight(
+    {
+      by: 'ExactLength',
+      exactLength: s => s.length + ((4 - (s.length % 4)) % 4),
+    },
+    '=',
   ),
+  Brand<Base64Brand>(),
 )

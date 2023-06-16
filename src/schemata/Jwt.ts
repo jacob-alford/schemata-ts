@@ -6,8 +6,10 @@
 import { pipe } from 'fp-ts/function'
 import { Branded } from 'schemata-ts/brand'
 import * as PB from 'schemata-ts/PatternBuilder'
-import { make, Schema } from 'schemata-ts/Schema'
-import { base64Url } from 'schemata-ts/schemata/string/Base64Url'
+import { Schema } from 'schemata-ts/Schema'
+import { base64Url } from 'schemata-ts/schemata/Base64Url'
+import { Brand } from 'schemata-ts/schemata/Brand'
+import { Pattern } from 'schemata-ts/schemata/Pattern'
 
 interface JwtBrand {
   readonly Jwt: unique symbol
@@ -20,12 +22,6 @@ interface JwtBrand {
  * @category Model
  */
 export type Jwt = Branded<string, JwtBrand>
-
-/**
- * @since 1.0.0
- * @category Model
- */
-export type JwtS = Schema<string, Jwt>
 
 /**
  * /^(base64).(base64)(.(base64)){0,1}$/
@@ -48,4 +44,4 @@ export const jwt: PB.Pattern = pipe(
  * @since 1.0.0
  * @category Schema
  */
-export const Jwt: JwtS = make(s => s.brand<JwtBrand>()(s.pattern(jwt, 'Jwt')))
+export const Jwt: Schema<Jwt, Jwt> = Brand<JwtBrand>()(Pattern(jwt, 'Jwt'))

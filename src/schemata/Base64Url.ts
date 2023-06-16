@@ -8,7 +8,9 @@
 import { pipe } from 'fp-ts/function'
 import { Branded } from 'schemata-ts/brand'
 import * as PB from 'schemata-ts/PatternBuilder'
-import { make, Schema } from 'schemata-ts/Schema'
+import { Schema } from 'schemata-ts/Schema'
+import { Brand } from 'schemata-ts/schemata/Brand'
+import { Pattern } from 'schemata-ts/schemata/Pattern'
 
 interface Base64UrlBrand {
   readonly Base64Url: unique symbol
@@ -23,12 +25,6 @@ interface Base64UrlBrand {
  * @category Model
  */
 export type Base64Url = Branded<string, Base64UrlBrand>
-
-/**
- * @since 1.0.0
- * @category Model
- */
-export type Base64UrlS = Schema<string, Base64Url>
 
 /**
  * /^[A-Za-z0-9_-]*$/
@@ -50,6 +46,6 @@ export const base64Url: PB.Pattern = pipe(
  * @since 1.0.0
  * @category Schema
  */
-export const Base64Url: Base64UrlS = make(s =>
-  s.brand<Base64UrlBrand>()(s.pattern(base64Url, 'Base64Url')),
+export const Base64Url: Schema<Base64Url, Base64Url> = Brand<Base64UrlBrand>()(
+  Pattern(base64Url, 'Base64Url'),
 )

@@ -2,7 +2,7 @@ import * as E from 'fp-ts/Either'
 import { pipe, tuple } from 'fp-ts/function'
 import * as RA from 'fp-ts/ReadonlyArray'
 
-import { Hexadecimal } from '../../../src/schemata/string/Hexadecimal'
+import { Hexadecimal } from '../../../src/schemata/Hexadecimal'
 import {
   cat,
   combineExpected,
