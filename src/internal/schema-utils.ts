@@ -20,6 +20,13 @@ export type OutputProps<T extends Record<string, Schema<any, any>>> = {
 }
 
 /** @since 2.0.0 */
+export type PartialOutputProps<T extends Record<string, Schema<any, any>>> = {
+  [K in keyof T]: T[K] extends s.ImplicitOptional & infer A
+    ? OutputOf<A> | undefined
+    : OutputOf<T[K]> | undefined
+}
+
+/** @since 2.0.0 */
 export type RestInput<RestKind> = RestKind extends undefined
   ? unknown
   : { [key: string]: RestKind extends Schema<infer I, any> ? I : never } | {}

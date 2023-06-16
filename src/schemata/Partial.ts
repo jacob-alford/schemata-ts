@@ -1,43 +1,47 @@
 /**
- * Used to construct a struct schema with optional enumerated keys.
+ * Used to construct a struct schema with enumerated keys.
  *
  * @since 1.4.0
  * @category Model
  */
+import { getGuard } from 'schemata-ts/derivations/guard-schemable'
+import { getInformation } from 'schemata-ts/derivations/information-schemable'
 import { SchemableKind, SchemableLambda } from 'schemata-ts/HKT'
-import { InputOf, make, OutputOf, Schema } from 'schemata-ts/Schema'
-import * as s from 'schemata-ts/struct'
+import {
+  OptionalInputProps,
+  OutputProps,
+  RequiredInputProps,
+} from 'schemata-ts/internal/schema-utils'
+import { Combine } from 'schemata-ts/internal/type-utils'
+import { make, Schema } from 'schemata-ts/Schema'
+import * as s from 'schemata-ts/schemables/struct/type-utils'
 
 /**
- * Used to construct a struct schema with optional enumerated keys.
+ * Used to construct a struct schema with enumerated keys where any number of known keys
+ * are permitted.
  *
  * @since 1.0.0
- * @category Combinators
  */
 export const Partial = <T extends Record<string, Schema<unknown, unknown>>>(
   props: T,
+  extraProps: 'strip' | 'error' = 'strip',
 ): Schema<
-  {
-    [K in keyof T]?: InputOf<T[K]>
-  },
-  {
-    [K in keyof T]?: OutputOf<T[K]>
-  }
+  Combine<Partial<RequiredInputProps<T> & OptionalInputProps<T>>>,
+  Combine<OutputProps<T>>
 > =>
-  make(S => {
-    const hktStruct: Record<
-      string,
-      s.Prop<
-        s.OptionalKeyFlag,
-        SchemableLambda,
-        SchemableKind<SchemableLambda, unknown, unknown>,
-        s.KeyNotMapped
-      >
-    > = {}
+  make(_ => {
+    const struct: Record<string, s.StructProp<SchemableLambda>> = {}
     for (const key in props) {
       // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-      const prop = props[key]!
-      hktStruct[key] = s.optional(prop(S))
+      const schema = props[key]!
+      const schemable: SchemableKind<SchemableLambda, unknown, unknown> = _.optional(
+        schema(_),
+      )
+      struct[key] = {
+        schemable,
+        guard: getGuard(schema),
+        information: getInformation(schema),
+      }
     }
-    return S.structM(hktStruct as any)
+    return _.struct(struct as any, { extraProps })
   })
