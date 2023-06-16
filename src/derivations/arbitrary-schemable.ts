@@ -11,6 +11,7 @@ import { Schemable } from 'schemata-ts/Schemable'
 import * as annotate from 'schemata-ts/schemables/annotate/instances/arbitrary'
 import * as array from 'schemata-ts/schemables/array/instances/arbitrary'
 import * as checkDigit from 'schemata-ts/schemables/check-digit/instances/arbitrary'
+import * as clone from 'schemata-ts/schemables/clone/instances/arbitrary'
 import * as date from 'schemata-ts/schemables/date/instances/arbitrary'
 import * as guardedUnion from 'schemata-ts/schemables/guarded-union/instances/arbitrary'
 import * as invariant from 'schemata-ts/schemables/invariant/instances/arbitrary'
@@ -31,6 +32,7 @@ const ArbitrarySchemable: Schemable<Arb.SchemableLambda> = {
   ...annotate.AnnotateArbitrary,
   ...array.ArrayArbitrary,
   ...checkDigit.CheckDigitArbitrary,
+  ...clone.CloneArbitrary,
   ...date.DateArbitrary,
   ...guardedUnion.GuardedUnionArbitrary,
   ...invariant.InvariantArbitrary,

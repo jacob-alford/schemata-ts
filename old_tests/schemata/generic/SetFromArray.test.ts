@@ -4,7 +4,7 @@ import { flow } from 'fp-ts/function'
 import * as Str from 'fp-ts/string'
 
 import * as SC from '../../../src/base/SchemaBase'
-import * as _ from '../../../src/schemata/generic/SetFromArray'
+import * as _ from '../../../src/schemata/SetFromArray'
 import { getAllInstances, validateArbitrary } from '../../../test-utils'
 
 const SetFromArray = getAllInstances(_.SetFromArray(Str.Ord)(SC.String))

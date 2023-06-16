@@ -11,6 +11,7 @@ import { Schemable } from 'schemata-ts/Schemable'
 import * as annotate from 'schemata-ts/schemables/annotate/instances/eq'
 import * as array from 'schemata-ts/schemables/array/instances/eq'
 import * as checkDigit from 'schemata-ts/schemables/check-digit/instances/eq'
+import * as clone from 'schemata-ts/schemables/clone/instances/eq'
 import * as date from 'schemata-ts/schemables/date/instances/eq'
 import * as guardedUnion from 'schemata-ts/schemables/guarded-union/instances/eq'
 import * as invariant from 'schemata-ts/schemables/invariant/instances/eq'
@@ -31,6 +32,7 @@ const EqSchemable: Schemable<Eq.SchemableLambda> = {
   ...annotate.AnnotateEq,
   ...array.ArrayEq,
   ...checkDigit.CheckDigitEq,
+  ...clone.CloneEq,
   ...date.DateEq,
   ...guardedUnion.GuardedUnionEq,
   ...invariant.InvariantEq,

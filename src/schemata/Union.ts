@@ -22,13 +22,17 @@ type Unique_<
 export type Unique<Xs extends ReadonlyArray<any>> = Unique_<Xs>
 
 /**
- * Represents a union of mutually exclusive schemas
+ * Represents a union of mutually exclusive schemas. Union elements must be unique to
+ * prevent lossly operations on similar types.
  *
  * @since 2.0.0
  */
-export const Union = <T extends RNEA.ReadonlyNonEmptyArray<Schema<any, any>>>(
+export const Union = <
+  T extends RNEA.ReadonlyNonEmptyArray<Schema<any, any>>,
+  Schemas extends Unique<T>,
+>(
   name: string,
-  ...members: Unique<T>
+  ...members: Schemas
 ): Schema<InputOf<T[number]>, OutputOf<T[number]>> =>
   make(s =>
     pipe(

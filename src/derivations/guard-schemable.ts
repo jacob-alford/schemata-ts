@@ -11,6 +11,7 @@ import { Schemable } from 'schemata-ts/Schemable'
 import * as annotate from 'schemata-ts/schemables/annotate/instances/guard'
 import * as array from 'schemata-ts/schemables/array/instances/guard'
 import * as checkDigit from 'schemata-ts/schemables/check-digit/instances/guard'
+import * as clone from 'schemata-ts/schemables/clone/instances/guard'
 import * as date from 'schemata-ts/schemables/date/instances/guard'
 import * as guardedUnion from 'schemata-ts/schemables/guarded-union/instances/guard'
 import * as invariant from 'schemata-ts/schemables/invariant/instances/guard'
@@ -31,6 +32,7 @@ const GuardSchemable: Schemable<G.SchemableLambda> = {
   ...annotate.AnnotateGuard,
   ...array.ArrayGuard,
   ...checkDigit.CheckDigitGuard,
+  ...clone.CloneGuard,
   ...date.DateGuard,
   ...guardedUnion.GuardedUnionGuard,
   ...invariant.InvariantGuard,

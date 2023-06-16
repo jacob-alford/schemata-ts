@@ -4,7 +4,7 @@ import { flow } from 'fp-ts/function'
 import * as O from 'fp-ts/Option'
 
 import * as SC from '../../../src/base/SchemaBase'
-import * as OptionFromNullable_ from '../../../src/schemata/generic/OptionFromNullable'
+import * as OptionFromNullable_ from '../../../src/schemata/OptionFromNullable'
 import { getAllInstances, validateArbitrary } from '../../../test-utils'
 
 const OptionFromNullable = getAllInstances(

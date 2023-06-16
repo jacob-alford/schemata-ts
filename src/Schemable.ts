@@ -9,6 +9,7 @@ import { SchemableLambda } from 'schemata-ts/HKT'
 import { WithAnnotate } from 'schemata-ts/schemables/annotate/definition'
 import { WithArray } from 'schemata-ts/schemables/array/definition'
 import { WithCheckDigit } from 'schemata-ts/schemables/check-digit/definition'
+import { WithClone } from 'schemata-ts/schemables/clone/definition'
 import { WithDate } from 'schemata-ts/schemables/date/definition'
 import { WithGuardedUnion } from 'schemata-ts/schemables/guarded-union/definition'
 import { WithInvariant } from 'schemata-ts/schemables/invariant/definition'
@@ -29,6 +30,7 @@ export interface Schemable<S extends SchemableLambda>
   extends WithAnnotate<S>,
     WithArray<S>,
     WithCheckDigit<S>,
+    WithClone<S>,
     WithDate<S>,
     WithGuardedUnion<S>,
     WithInvariant<S>,

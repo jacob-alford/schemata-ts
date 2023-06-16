@@ -11,6 +11,7 @@ import { Schemable } from 'schemata-ts/Schemable'
 import * as annotate from 'schemata-ts/schemables/annotate/instances/json-schema'
 import * as array from 'schemata-ts/schemables/array/instances/json-schema'
 import * as checkDigit from 'schemata-ts/schemables/check-digit/instances/json-schema'
+import * as clone from 'schemata-ts/schemables/clone/instances/json-schema'
 import * as date from 'schemata-ts/schemables/date/instances/json-schema'
 import * as guardedUnion from 'schemata-ts/schemables/guarded-union/instances/json-schema'
 import * as invariant from 'schemata-ts/schemables/invariant/instances/json-schema'
@@ -31,6 +32,7 @@ const JsonSchemaSchemable: Schemable<JS.SchemableLambda> = {
   ...annotate.AnnotateJsonSchema,
   ...array.ArrayJsonSchema,
   ...checkDigit.CheckDigitJsonSchema,
+  ...clone.CloneJsonSchema,
   ...date.DateJsonSchema,
   ...guardedUnion.GuardedUnionJsonSchema,
   ...invariant.InvariantJsonSchema,
