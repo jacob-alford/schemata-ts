@@ -8,7 +8,7 @@ import { make, Schema } from 'schemata-ts/Schema'
 import { ArrayParams } from 'schemata-ts/schemables/array/definition'
 
 /**
- * A Typescript Record type with unknown keys and known values.
+ * An array type of known values.
  *
  * @since 1.0.0
  * @category Combinators

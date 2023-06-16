@@ -11,6 +11,7 @@ import { Schemable } from 'schemata-ts/Schemable'
 import * as annotate from 'schemata-ts/schemables/annotate/instances/information'
 import * as array from 'schemata-ts/schemables/array/instances/information'
 import * as checkDigit from 'schemata-ts/schemables/check-digit/instances/information'
+import * as clone from 'schemata-ts/schemables/clone/instances/information'
 import * as date from 'schemata-ts/schemables/date/instances/information'
 import * as guardedUnion from 'schemata-ts/schemables/guarded-union/instances/information'
 import * as invariant from 'schemata-ts/schemables/invariant/instances/information'
@@ -31,6 +32,7 @@ const InformationSchemable: Schemable<Inf.SchemableLambda> = {
   ...annotate.AnnotateInformation,
   ...array.ArrayInformation,
   ...checkDigit.CheckDigitInformation,
+  ...clone.CloneInformation,
   ...date.DateInformation,
   ...guardedUnion.GuardedUnionInformation,
   ...invariant.InvariantInformation,

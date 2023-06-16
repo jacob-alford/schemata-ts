@@ -11,6 +11,7 @@ import { Schemable } from 'schemata-ts/Schemable'
 import * as annotate from 'schemata-ts/schemables/annotate/instances/transcoder'
 import * as array from 'schemata-ts/schemables/array/instances/transcoder'
 import * as checkDigit from 'schemata-ts/schemables/check-digit/instances/transcoder'
+import * as clone from 'schemata-ts/schemables/clone/instances/transcoder'
 import * as date from 'schemata-ts/schemables/date/instances/transcoder'
 import * as guardedUnion from 'schemata-ts/schemables/guarded-union/instances/transcoder'
 import * as invariant from 'schemata-ts/schemables/invariant/instances/transcoder'
@@ -31,6 +32,7 @@ const TranscoderSchemable: Schemable<TC.SchemableLambda> = {
   ...annotate.AnnotateTranscoder,
   ...array.ArrayTranscoder,
   ...checkDigit.CheckDigitTranscoder,
+  ...clone.CloneTranscoder,
   ...date.DateTranscoder,
   ...guardedUnion.GuardedUnionTranscoder,
   ...invariant.InvariantTranscoder,

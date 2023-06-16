@@ -5,24 +5,14 @@
  * @since 1.4.0
  * @category Model
  */
+import { getGuard } from 'schemata-ts/derivations/guard-schemable'
+import { getInformation } from 'schemata-ts/derivations/information-schemable'
+import { SchemableKind, SchemableLambda } from 'schemata-ts/HKT'
+import { camelCase } from 'schemata-ts/internal/camelcase'
 import { InputOf, make, OutputOf, Schema } from 'schemata-ts/Schema'
-import * as s from 'schemata-ts/struct'
+import * as s from 'schemata-ts/schemables/struct/type-utils'
+import { remapKey } from 'schemata-ts/struct'
 import type { CamelCase } from 'type-fest'
-
-/**
- * @since 1.4.0
- * @category Model
- */
-export type CamelCaseFromMixedS = <T extends Record<string, Schema<unknown, unknown>>>(
-  props: T,
-) => Schema<
-  {
-    [K in keyof T]: InputOf<T[K]>
-  },
-  {
-    [K in keyof T as CamelCase<K, { preserveConsecutiveUppercase: true }>]: OutputOf<T[K]>
-  }
->
 
 /**
  * The same as the `Struct` schema combinator, but keys are transformed to camel case in
@@ -65,12 +55,31 @@ export type CamelCaseFromMixedS = <T extends Record<string, Schema<unknown, unkn
  *     }),
  *   )
  */
-export const CamelCaseFromMixed: CamelCaseFromMixedS = props =>
-  make(S => {
-    const props_ = {} as Record<string, unknown>
-    for (const k in props) {
+export const CamelCaseFromMixed: <T extends Record<string, Schema<unknown, unknown>>>(
+  props: T,
+) => Schema<
+  {
+    [K in keyof T]: InputOf<T[K]>
+  },
+  {
+    [K in keyof T as CamelCase<K, { preserveConsecutiveUppercase: true }>]: OutputOf<T[K]>
+  }
+> = props =>
+  make(_ => {
+    const struct: Record<string, s.StructProp<any>> = {}
+    for (const key in props) {
       // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-      props_[k] = s.required(props[k]!(S))
+      const schema = props[key]!
+      const schemable: SchemableKind<SchemableLambda, unknown, unknown> = remapKey(
+        schema(_),
+        _.clone,
+        camelCase(key),
+      )
+      struct[key] = {
+        schemable,
+        guard: getGuard(schema),
+        information: getInformation(schema),
+      }
     }
-    return S.structM(s.camelCaseKeys(props_ as any)) as any
+    return _.struct(struct as any)
   })
