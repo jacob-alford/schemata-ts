@@ -2,7 +2,7 @@ import * as E from 'fp-ts/Either'
 import { pipe, tuple, unsafeCoerce } from 'fp-ts/function'
 
 import { Int } from '../../../src/schemables/WithInt/definition'
-import * as IntFromString from '../../../src/schemata/number/IntFromString'
+import * as IntFromString from '../../../src/schemata/IntFromString'
 import { getAllInstances, validateArbitrary } from '../../../test-utils'
 
 const _: (n: number) => Int = unsafeCoerce

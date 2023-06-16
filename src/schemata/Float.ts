@@ -20,7 +20,10 @@ export const Float = <
 >(
   params?: BoundedParams<Min, Max>,
 ): Schema<
-  number,
+  Floating<
+    Min extends undefined ? MaxNegativeFloat : Min,
+    Max extends undefined ? MaxPositiveFloat : Max
+  >,
   Floating<
     Min extends undefined ? MaxNegativeFloat : Min,
     Max extends undefined ? MaxPositiveFloat : Max

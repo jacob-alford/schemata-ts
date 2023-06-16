@@ -12,4 +12,4 @@ import { Float as Floating } from 'schemata-ts/schemata/Float'
  *
  * @since 1.0.0
  */
-export const Number: Schema<number, Float> = Floating()
+export const Number: Schema<Float, Float> = Floating()

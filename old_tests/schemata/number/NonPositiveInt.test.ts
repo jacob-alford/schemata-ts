@@ -2,7 +2,7 @@ import * as E from 'fp-ts/Either'
 import { pipe, tuple } from 'fp-ts/function'
 import * as RA from 'fp-ts/ReadonlyArray'
 
-import { NonPositiveInt } from '../../../src/schemata/number/NonPositiveInt'
+import { NonPositiveInt } from '../../../src/schemata/NonPositiveInt'
 import {
   cat,
   combineExpected,

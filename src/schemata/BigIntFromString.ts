@@ -6,8 +6,21 @@
 import { flow, pipe } from 'fp-ts/function'
 import * as O from 'fp-ts/Option'
 import * as Str from 'fp-ts/string'
+import { Branded } from 'schemata-ts/brand'
 import * as PB from 'schemata-ts/PatternBuilder'
-import { make, Schema } from 'schemata-ts/Schema'
+import { Schema } from 'schemata-ts/Schema'
+import { Imap } from 'schemata-ts/schemata/Imap'
+import { Pattern } from 'schemata-ts/schemata/Pattern'
+import { Refine } from 'schemata-ts/schemata/Refine'
+
+type BigIntStringBrand = { readonly BigIntString: unique symbol }
+
+/**
+ * Represents strings that can be parsed properly by `BigInt()`
+ *
+ * @since 2.0.0
+ */
+export type BigIntString = Branded<string, BigIntStringBrand>
 
 /**
  * Controls the output base of the encoded string. Currently only accepts 2, 8, 10, and
@@ -18,14 +31,6 @@ import { make, Schema } from 'schemata-ts/Schema'
 export type BigIntFromStringParams = {
   readonly encodeToBase?: 2 | 8 | 10 | 16
 }
-
-/**
- * @since 1.0.0
- * @category Model
- */
-export type BigIntFromStringS = (
-  params?: BigIntFromStringParams,
-) => Schema<string, bigint>
 
 /**
  * @since 1.0.0
@@ -95,27 +100,27 @@ const baseToPrefix = (base: BigIntFromStringParams['encodeToBase']): string => {
  * @since 1.0.0
  * @category Schema
  */
-export const BigIntFromString: BigIntFromStringS = (params = {}) =>
-  make<string, bigint>(S =>
-    pipe(
-      S.pattern(bigIntString, 'BigIntFromString'),
-      S.refine(
-        (s): s is string =>
-          pipe(
-            s,
-            O.fromPredicate(flow(Str.trim, s => s.length > 0)),
-            O.chain(O.tryCatchK(s => BigInt(s))),
-            O.isSome,
-          ),
-        'SafeBigIntString',
-      ),
-      S.imap(
-        { is: (b: unknown): b is bigint => typeof b === 'bigint' },
-        'BigIntFromString',
-      )(
-        (s: string) => BigInt(s),
-        (n: bigint) =>
-          `${baseToPrefix(params.encodeToBase)}${n.toString(params.encodeToBase ?? 10)}`,
-      ),
+export const BigIntFromString: (
+  params?: BigIntFromStringParams,
+) => Schema<BigIntString, bigint> = (params = {}) =>
+  pipe(
+    Pattern(bigIntString, 'BigIntString'),
+    Refine(
+      (s): s is BigIntString =>
+        pipe(
+          s,
+          O.fromPredicate(flow(Str.trim, s => s.length > 0)),
+          O.chain(O.tryCatchK(s => BigInt(s))),
+          O.isSome,
+        ),
+      'BigIntString',
+    ),
+    Imap(
+      { is: (u): u is bigint => typeof u === 'bigint' },
+      b => BigInt(b),
+      n =>
+        `${baseToPrefix(params.encodeToBase)}${n.toString(
+          params.encodeToBase ?? 10,
+        )}` as BigIntString,
     ),
   )

@@ -9,12 +9,26 @@ import { Branded } from 'schemata-ts/brand'
 export type MinPositiveFloat = 5e-324
 
 /**
+ * The smallest positive float in JavaScript.
+ *
+ * @since 2.0.0
+ */
+export const minPositiveFloat: MinPositiveFloat = Number.MIN_VALUE as MinPositiveFloat
+
+/**
  * The smallest negative float in JavaScript.
  *
  * @since 2.0.0
  * @category Model
  */
 export type MinNegativeFloat = -5e-324
+
+/**
+ * The smallest negative float in JavaScript.
+ *
+ * @since 2.0.0
+ */
+export const minNegativeFloat: MinNegativeFloat = -Number.MIN_VALUE as MinNegativeFloat
 
 /**
  * The largest positive float in JavaScript.
@@ -25,12 +39,26 @@ export type MinNegativeFloat = -5e-324
 export type MaxPositiveFloat = 1.7976931348623157e308
 
 /**
+ * The largest positive float in JavaScript.
+ *
+ * @since 2.0.0
+ */
+export const maxPositiveFloat: MaxPositiveFloat = Number.MAX_VALUE as MaxPositiveFloat
+
+/**
  * The largest negative float in JavaScript.
  *
  * @since 2.0.0
  * @category Model
  */
 export type MaxNegativeFloat = -1.7976931348623157e308
+
+/**
+ * The largest negative float in JavaScript.
+ *
+ * @since 2.0.0
+ */
+export const maxNegativeFloat: MaxNegativeFloat = -Number.MAX_VALUE as MaxNegativeFloat
 
 interface FloatBrand<Min extends number, Max extends number> {
   readonly Float: unique symbol

@@ -1,7 +1,7 @@
 import { tuple } from 'fp-ts/function'
 import * as RA from 'fp-ts/ReadonlyArray'
 
-import { PositiveFloat } from '../../../src/schemata/number/PositiveFloat'
+import { PositiveFloat } from '../../../src/schemata/PositiveFloat'
 import {
   cat,
   combineExpected,

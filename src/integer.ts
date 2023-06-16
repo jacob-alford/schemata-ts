@@ -21,12 +21,26 @@ import { Branded } from 'schemata-ts/brand'
 export type MinSafeInt = -9007199254740991
 
 /**
+ * The smallest safe integer in JavaScript.
+ *
+ * @since 2.0.0
+ */
+export const minSafeInt: MinSafeInt = Number.MIN_SAFE_INTEGER as MinSafeInt
+
+/**
  * The largest safe integer in JavaScript.
  *
  * @since 2.0.0
  * @category Model
  */
 export type MaxSafeInt = 9007199254740991
+
+/**
+ * The largest safe integer in JavaScript.
+ *
+ * @since 2.0.0
+ */
+export const maxSafeInt: MaxSafeInt = Number.MAX_SAFE_INTEGER as MaxSafeInt
 
 interface IntBrand<Min extends number, Max extends number> {
   readonly Int: unique symbol
