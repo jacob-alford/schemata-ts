@@ -1,3 +1,4 @@
+import * as O from 'fp-ts/Option'
 import { Schema } from 'schemata-ts/Schema'
 import { Literal } from 'schemata-ts/schemata/Literal'
 import { Struct } from 'schemata-ts/schemata/Struct'

@@ -9,7 +9,7 @@ import * as TCP from 'schemata-ts/internal/transcoder-par'
 import { ArrayTranscoderPar } from 'schemata-ts/schemables/array/instances/transcoder-par'
 import { WithMap } from 'schemata-ts/schemables/map/definition'
 
-export const MapDecoder: WithMap<TCP.SchemableLambda> = {
+export const MapTranscoderPar: WithMap<TCP.SchemableLambda> = {
   mapFromEntries: (ordK, sk, sa) => ({
     decode: flow(
       ArrayTranscoderPar.array()(ArrayTranscoderPar.tuple(sk, sa)).decode,

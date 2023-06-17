@@ -116,6 +116,6 @@ export const arbitraryFromPattern: (pattern: PB.Pattern) => Arb.Arbitrary<string
  * @since 1.0.0
  * @category Instances
  */
-export const Arbitrary: WithPattern<Arb.SchemableLambda> = {
+export const PatternArbitrary: WithPattern<Arb.SchemableLambda> = {
   pattern: arbitraryFromPattern,
 }

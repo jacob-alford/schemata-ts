@@ -22,6 +22,13 @@ export const OptionFromNullable = <A, O>(
   inner: Schema<O, A>,
 ): ImplicitOptional & Schema<O | null | undefined, O.Option<NonNullable<A>>> =>
   makeImplicitOptional(
-    pipe(Nullable(inner), Imap(getGuard(Option(inner)), O.fromNullable, O.toNullable)),
+    pipe(
+      Nullable(inner),
+      Imap(
+        getGuard<O.Option<O>, O.Option<NonNullable<A>>>(Option(inner)),
+        O.fromNullable,
+        O.toNullable,
+      ),
+    ),
     _ => _.bind({}),
   )
