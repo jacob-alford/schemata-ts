@@ -55,20 +55,38 @@ export interface TestSuite<I, O> {
   readonly testArbitraryGuard: IO.IO<void>
 }
 
-const foldTestSuite = <I, T>(
-  suite: SchemableTest<I, T>,
-): ReadonlyArray<readonly [name: string, test: TestItem<I, T>]> =>
-  Array.isArray(suite)
-    ? pipe(
-        suite as ReadonlyArray<TestItem<I, T>>,
-        RA.mapWithIndex(
-          flow(
-            tuple,
-            RTup.mapFst(k => `test ${k}`),
+const foldTestSuite =
+  <T>(prepend: (result: T) => string = () => '') =>
+  <I>(
+    suite: SchemableTest<I, T>,
+  ): ReadonlyArray<readonly [name: string, test: TestItem<I, T>]> =>
+    Array.isArray(suite)
+      ? pipe(
+          suite as ReadonlyArray<TestItem<I, T>>,
+          RA.mapWithIndex((i, [testValue, result]) =>
+            tuple(
+              `${prepend(result)} ${
+                typeof testValue === 'string' ||
+                typeof testValue === 'number' ||
+                testValue === null
+                  ? String(testValue)
+                  : typeof testValue === 'object'
+                  ? JSON.stringify(testValue)
+                  : String(i)
+              }`,
+              tuple(testValue, result),
+            ),
           ),
-        ),
-      )
-    : pipe(suite as RR.ReadonlyRecord<string, TestItem<I, T>>, RR.collect(Str.Ord)(tuple))
+        )
+      : pipe(
+          suite as RR.ReadonlyRecord<string, TestItem<I, T>>,
+          RR.collect(Str.Ord)(tuple),
+        )
+
+const getPassFailString: (e: E.Either<any, any>) => string = E.fold(
+  () => 'fails',
+  () => 'passes',
+)
 
 export const getTestSuite = <I, O>(schema: Schema<I, O>): TestSuite<I, O> => {
   const transcoder = getTranscoder(schema)
@@ -78,46 +96,50 @@ export const getTestSuite = <I, O>(schema: Schema<I, O>): TestSuite<I, O> => {
   const arbitrary = getArbitrary(schema).arbitrary(fc)
   const jsonSchema = getJsonSchema(schema)
   return {
-    testDecoder: flow(foldTestSuite, testSuite => () => {
-      describe.each(testSuite)('%s', (name, [input, expected]) => {
+    testDecoder: flow(foldTestSuite(getPassFailString), testSuite => () => {
+      describe.each(testSuite)('%s', (_, [input, expected]) => {
         const actual = transcoder.decode(input)
         const actualPar = transcodePar.decode(input)
-        test(`${name} > sequential`, () => {
+        test(`sequential`, () => {
           expect(actual).toStrictEqual(expected)
         })
-        test(`${name} > parallel`, async () => {
+        test(`parallel`, async () => {
           expect(await actualPar()).toStrictEqual(expected)
         })
       })
     }),
-    testEncoder: flow(foldTestSuite, testSuite => () => {
-      describe.each(testSuite)('%s', (name, [input, expected]) => {
+    testEncoder: flow(foldTestSuite(getPassFailString), testSuite => () => {
+      describe.each(testSuite)('%s', (_, [input, expected]) => {
         const actual = transcoder.encode(input)
         const actualPar = transcodePar.encode(input)
-        test(`${name} > sequential`, () => {
+        test(`sequential`, () => {
           expect(actual).toStrictEqual(expected)
         })
-        test(`${name} > parallel`, async () => {
+        test(`parallel`, async () => {
           expect(await actualPar()).toStrictEqual(expected)
         })
       })
     }),
-    testGuard: flow(foldTestSuite, testSuite => () => {
-      describe.each(testSuite)('%s', (name, [input, expected]) => {
-        const actual = guard.is(input)
-        test(name, () => {
+    testGuard: flow(
+      foldTestSuite(b => (b ? 'validates' : 'invalidates')),
+      testSuite => () => {
+        describe.each(testSuite)('%s', (name, [input, expected]) => {
+          const actual = guard.is(input)
+          test(name, () => {
+            expect(actual).toStrictEqual(expected)
+          })
+        })
+      },
+    ),
+    testEq: flow(
+      foldTestSuite(b => (b ? 'equates' : 'disequates')),
+      testSuite => () => {
+        test.each(testSuite)('%s', (_, [[a, b], expected]) => {
+          const actual = eq.equals(a, b)
           expect(actual).toStrictEqual(expected)
         })
-      })
-    }),
-    testEq: flow(foldTestSuite, testSuite => () => {
-      describe.each(testSuite)('%s', (name, [[a, b], expected]) => {
-        const actual = eq.equals(a, b)
-        test(name, () => {
-          expect(actual).toStrictEqual(expected)
-        })
-      })
-    }),
+      },
+    ),
     assertJsonSchema: expected => () => {
       test('matches expected', () => {
         expect(jsonSchema).toStrictEqual(expected)
@@ -164,18 +186,22 @@ export const getTestSuite = <I, O>(schema: Schema<I, O>): TestSuite<I, O> => {
       })
     },
     testEqIdentityLaw: () => {
-      fc.assert(
-        fc.property(arbitrary, output => {
-          expect(eq.equals(output, output)).toStrictEqual(true)
-        }),
-      )
+      test('arbitraries', () => {
+        fc.assert(
+          fc.property(arbitrary, output => {
+            expect(eq.equals(output, output)).toStrictEqual(true)
+          }),
+        )
+      })
     },
     testArbitraryGuard: () => {
-      fc.assert(
-        fc.property(arbitrary, output => {
-          expect(guard.is(output)).toStrictEqual(true)
-        }),
-      )
+      test('arbitraries', () => {
+        fc.assert(
+          fc.property(arbitrary, output => {
+            expect(guard.is(output)).toStrictEqual(true)
+          }),
+        )
+      })
     },
   }
 }
@@ -234,7 +260,7 @@ export type MakeTestValues<I, O> = {
     ) => readonly [unknown, E.Either<TCE.TranscodeErrors, O>]
     readonly fail: (
       preDecode: unknown,
-      error?: TCE.TranscodeErrors,
+      getError?: (input: unknown) => TCE.TranscodeErrors,
     ) => readonly [unknown, E.Either<TCE.TranscodeErrors, O>]
   }
   readonly encoder: {
@@ -244,7 +270,7 @@ export type MakeTestValues<I, O> = {
     ) => readonly [O, E.Either<TCE.TranscodeErrors, I>]
     readonly fail: (
       preEncode: O,
-      error?: TCE.TranscodeErrors,
+      getError?: (input: O) => TCE.TranscodeErrors,
     ) => readonly [O, E.Either<TCE.TranscodeErrors, I>]
   }
 }
@@ -269,14 +295,14 @@ export const runStandardTestSuite =
       decoder: {
         pass: (preDecode, postDecode) =>
           tuple(preDecode, E.right(postDecode ?? (preDecode as any))),
-        fail: (preDecode, error = standardErrors.makeDecodeError(preDecode)) =>
-          tuple(preDecode, E.left(error)),
+        fail: (preDecode, getError = () => standardErrors.makeDecodeError(preDecode)) =>
+          tuple(preDecode, E.left(getError(preDecode))),
       },
       encoder: {
         pass: (preEncode, postEncode) =>
           tuple(preEncode, E.right(postEncode ?? (preEncode as any))),
-        fail: (preEncode, error = standardErrors.makeDecodeError(preEncode)) =>
-          tuple(preEncode, E.left(error)),
+        fail: (preEncode, getError = () => standardErrors.makeDecodeError(preEncode)) =>
+          tuple(preEncode, E.left(getError(preEncode))),
       },
     })
     describe(`${name} Standard Test Suite`, () => {
@@ -301,6 +327,6 @@ export const runStandardTestSuite =
       describe('jsonSchema', _.assertJsonSchema(testValues.jsonSchema))
       describe('transcoder laws', _.testTranscoderLaws)
       describe('eq identity law', _.testEqIdentityLaw)
-      describe('arbitrary guard', _.testArbitraryGuard)
+      describe('arbitrary <-> guard', _.testArbitraryGuard)
     })
   }
