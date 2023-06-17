@@ -8,24 +8,24 @@ export const PaddingTranscoder: WithPadding<TC.SchemableLambda> = {
     MaxLength: ({ maxLength }) =>
       RefineTranscoder.refine(
         (s: string): s is string => s.length <= foldUnion(maxLength)(s),
-        `LeftPadding`,
+        `ValidLeftPadding`,
       ),
     ExactLength: ({ exactLength }) =>
       RefineTranscoder.refine(
         (s: string): s is string => s.length === foldUnion(exactLength)(s),
-        `LeftPadding`,
+        `ValidLeftPadding`,
       ),
   }),
   padRight: match({
     MaxLength: ({ maxLength }) =>
       RefineTranscoder.refine(
         (s: string): s is string => s.length <= foldUnion(maxLength)(s),
-        `RightPadding`,
+        `ValidRightPadding`,
       ),
     ExactLength: ({ exactLength }) =>
       RefineTranscoder.refine(
         (s: string): s is string => s.length === foldUnion(exactLength)(s),
-        `RightPadding`,
+        `ValidRightPadding`,
       ),
   }),
 }
