@@ -9,5 +9,11 @@ export const PrimitivesJsonSchema: WithPrimitives<JS.SchemableLambda> = {
   boolean: JS.make(new JS.JsonBoolean()),
   unknown: JS.make(new JS.JsonEmpty()),
   literal: (...literals) =>
-    JS.make(new JS.JsonUnion(literals.map(literal => ({ const: literal })))),
+    JS.make(
+      new JS.JsonUnion(
+        literals.map(literal =>
+          literal === null ? new JS.JsonNull() : { type: typeof literal, const: literal },
+        ),
+      ),
+    ),
 }
