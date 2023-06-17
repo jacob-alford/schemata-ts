@@ -1,4 +1,5 @@
 import * as fc from 'fast-check'
+import * as B_ from 'fp-ts/boolean'
 import * as E from 'fp-ts/Either'
 import { flow, pipe, tuple } from 'fp-ts/function'
 import * as IO from 'fp-ts/IO'
@@ -17,6 +18,8 @@ import * as JS from 'schemata-ts/internal/json-schema'
 import { Schema } from 'schemata-ts/Schema'
 import * as TCE from 'schemata-ts/TranscodeError'
 
+const { BooleanAlgebra: B } = B_
+
 type TestItem<I, T> = readonly [I, T]
 type SchemableTest<I, T> =
   | RR.ReadonlyRecord<string, TestItem<I, T>>
@@ -25,19 +28,23 @@ type SchemableTest<I, T> =
 export interface TestSuite<I, O> {
   /** Tests transcoder and transcoderPar > decoder against a set of expected values */
   readonly testDecoder: (
-    suite: SchemableTest<unknown, E.Either<TCE.TranscodeErrors, O>>,
+    ...suites: ReadonlyArray<SchemableTest<unknown, E.Either<TCE.TranscodeErrors, O>>>
   ) => IO.IO<void>
 
   /** Tests transcoder and transcoderPar > encoder against a set of expected values */
   readonly testEncoder: (
-    suite: SchemableTest<O, E.Either<TCE.TranscodeErrors, I>>,
+    ...suites: ReadonlyArray<SchemableTest<O, E.Either<TCE.TranscodeErrors, I>>>
   ) => IO.IO<void>
 
   /** Tests guard against a set of expected values */
-  readonly testGuard: (suite: SchemableTest<unknown, boolean>) => IO.IO<void>
+  readonly testGuard: (
+    ...suites: ReadonlyArray<SchemableTest<unknown, boolean>>
+  ) => IO.IO<void>
 
   /** Tests Eq against a set of expected values */
-  readonly testEq: (suite: SchemableTest<readonly [O, O], boolean>) => IO.IO<void>
+  readonly testEq: (
+    ...suites: ReadonlyArray<SchemableTest<readonly [O, O], boolean>>
+  ) => IO.IO<void>
 
   /** Tests JsonSchema against a set of expected values */
   readonly assertJsonSchema: (jsonSchema: JS.JsonSchema) => IO.IO<void>
@@ -49,39 +56,44 @@ export interface TestSuite<I, O> {
   readonly testTranscoderLaws: IO.IO<void>
 
   /** Uses arbitrary to generate random domain values and tests the eq identity law */
-  readonly testEqIdentityLaw: IO.IO<void>
+  readonly testEqLaws: IO.IO<void>
 
   /** Uses arbitrary to generate random domain values and validates them using the guard */
   readonly testArbitraryGuard: IO.IO<void>
 }
 
-const foldTestSuite =
+const foldTestSuites =
   <T>(prepend: (result: T) => string = () => '') =>
   <I>(
-    suite: SchemableTest<I, T>,
-  ): ReadonlyArray<readonly [name: string, test: TestItem<I, T>]> =>
-    Array.isArray(suite)
-      ? pipe(
-          suite as ReadonlyArray<TestItem<I, T>>,
-          RA.mapWithIndex((i, [testValue, result]) =>
-            tuple(
-              `${prepend(result)} ${
-                typeof testValue === 'string' ||
-                typeof testValue === 'number' ||
-                testValue === null
-                  ? String(testValue)
-                  : typeof testValue === 'object'
-                  ? JSON.stringify(testValue)
-                  : String(i)
-              }`,
-              tuple(testValue, result),
+    ...suites: ReadonlyArray<SchemableTest<I, T>>
+  ): ReadonlyArray<ReadonlyArray<readonly [name: string, test: TestItem<I, T>]>> =>
+    pipe(
+      suites,
+      RA.map(suite =>
+        Array.isArray(suite)
+          ? pipe(
+              suite as ReadonlyArray<TestItem<I, T>>,
+              RA.mapWithIndex((i, [testValue, result]) =>
+                tuple(
+                  `${prepend(result)} ${
+                    typeof testValue === 'string' ||
+                    typeof testValue === 'number' ||
+                    testValue === null
+                      ? String(testValue)
+                      : typeof testValue === 'object'
+                      ? JSON.stringify(testValue)
+                      : String(i)
+                  }`,
+                  tuple(testValue, result),
+                ),
+              ),
+            )
+          : pipe(
+              suite as RR.ReadonlyRecord<string, TestItem<I, T>>,
+              RR.collect(Str.Ord)(tuple),
             ),
-          ),
-        )
-      : pipe(
-          suite as RR.ReadonlyRecord<string, TestItem<I, T>>,
-          RR.collect(Str.Ord)(tuple),
-        )
+      ),
+    )
 
 const getPassFailString: (e: E.Either<any, any>) => string = E.fold(
   () => 'fails',
@@ -96,48 +108,58 @@ export const getTestSuite = <I, O>(schema: Schema<I, O>): TestSuite<I, O> => {
   const arbitrary = getArbitrary(schema).arbitrary(fc)
   const jsonSchema = getJsonSchema(schema)
   return {
-    testDecoder: flow(foldTestSuite(getPassFailString), testSuite => () => {
-      describe.each(testSuite)('%s', (_, [input, expected]) => {
-        const actual = transcoder.decode(input)
-        const actualPar = transcodePar.decode(input)
-        test(`sequential`, () => {
-          expect(actual).toStrictEqual(expected)
-        })
-        test(`parallel`, async () => {
-          expect(await actualPar()).toStrictEqual(expected)
-        })
-      })
-    }),
-    testEncoder: flow(foldTestSuite(getPassFailString), testSuite => () => {
-      describe.each(testSuite)('%s', (_, [input, expected]) => {
-        const actual = transcoder.encode(input)
-        const actualPar = transcodePar.encode(input)
-        test(`sequential`, () => {
-          expect(actual).toStrictEqual(expected)
-        })
-        test(`parallel`, async () => {
-          expect(await actualPar()).toStrictEqual(expected)
-        })
-      })
-    }),
-    testGuard: flow(
-      foldTestSuite(b => (b ? 'validates' : 'invalidates')),
-      testSuite => () => {
-        describe.each(testSuite)('%s', (name, [input, expected]) => {
-          const actual = guard.is(input)
-          test(name, () => {
+    testDecoder: flow(foldTestSuites(getPassFailString), testSuites => () => {
+      for (const testSuite of testSuites) {
+        describe.each(testSuite)('%s', (_, [input, expected]) => {
+          const actual = transcoder.decode(input)
+          const actualPar = transcodePar.decode(input)
+          test(`sequential`, () => {
             expect(actual).toStrictEqual(expected)
           })
+          test(`parallel`, async () => {
+            expect(await actualPar()).toStrictEqual(expected)
+          })
         })
+      }
+    }),
+    testEncoder: flow(foldTestSuites(getPassFailString), testSuites => () => {
+      for (const testSuite of testSuites) {
+        describe.each(testSuite)('%s', (_, [input, expected]) => {
+          const actual = transcoder.encode(input)
+          const actualPar = transcodePar.encode(input)
+          test(`sequential`, () => {
+            expect(actual).toStrictEqual(expected)
+          })
+          test(`parallel`, async () => {
+            expect(await actualPar()).toStrictEqual(expected)
+          })
+        })
+      }
+    }),
+    testGuard: flow(
+      foldTestSuites(b => (b ? 'validates' : 'invalidates')),
+      testSuites => () => {
+        for (const testSuite of testSuites) {
+          if (testSuite.length > 0)
+            describe.each(testSuite)('%s', (name, [input, expected]) => {
+              const actual = guard.is(input)
+              test(name, () => {
+                expect(actual).toStrictEqual(expected)
+              })
+            })
+        }
       },
     ),
     testEq: flow(
-      foldTestSuite(b => (b ? 'equates' : 'disequates')),
-      testSuite => () => {
-        test.each(testSuite)('%s', (_, [[a, b], expected]) => {
-          const actual = eq.equals(a, b)
-          expect(actual).toStrictEqual(expected)
-        })
+      foldTestSuites(b => (b ? 'equates' : 'disequates')),
+      testSuites => () => {
+        for (const testSuite of testSuites) {
+          if (testSuite.length > 0)
+            test.each(testSuite)('%s', (_, [[a, b], expected]) => {
+              const actual = eq.equals(a, b)
+              expect(actual).toStrictEqual(expected)
+            })
+        }
       },
     ),
     assertJsonSchema: expected => () => {
@@ -185,11 +207,27 @@ export const getTestSuite = <I, O>(schema: Schema<I, O>): TestSuite<I, O> => {
         )
       })
     },
-    testEqIdentityLaw: () => {
-      test('arbitraries', () => {
+    testEqLaws: () => {
+      test('reflexivity', () => {
         fc.assert(
           fc.property(arbitrary, output => {
             expect(eq.equals(output, output)).toStrictEqual(true)
+          }),
+        )
+      })
+      test('symmetry', () => {
+        fc.assert(
+          fc.property(arbitrary, arbitrary, (a, b) => {
+            expect(B.implies(eq.equals(a, b), eq.equals(b, a))).toStrictEqual(true)
+          }),
+        )
+      })
+      test('transitivity', () => {
+        fc.assert(
+          fc.property(arbitrary, arbitrary, arbitrary, (a, b, c) => {
+            expect(
+              B.implies(eq.equals(a, b) && eq.equals(b, c), eq.equals(a, c)),
+            ).toStrictEqual(true)
           }),
         )
       })
@@ -215,8 +253,8 @@ type GetFirstArg<T extends (...args: ReadonlyArray<any>) => any> = T extends (
 type StandardTestInputs<I, T> = {
   readonly decoderTests: GetFirstArg<TestSuite<I, T>['testDecoder']>
   readonly encoderTests: GetFirstArg<TestSuite<I, T>['testEncoder']>
-  readonly guardTests: 'derive' | GetFirstArg<TestSuite<I, T>['testGuard']>
-  readonly eqTests: 'derive' | GetFirstArg<TestSuite<I, T>['testEq']>
+  readonly guardTests: GetFirstArg<TestSuite<I, T>['testGuard']>
+  readonly eqTests: GetFirstArg<TestSuite<I, T>['testEq']>
   readonly jsonSchema: GetFirstArg<TestSuite<I, T>['assertJsonSchema']>
 }
 
@@ -310,23 +348,12 @@ export const runStandardTestSuite =
       describe('encoder', _.testEncoder(testValues.encoderTests))
       describe(
         'guard',
-        _.testGuard(
-          testValues.guardTests === 'derive'
-            ? deriveGuardTests(testValues.encoderTests)
-            : testValues.guardTests,
-        ),
+        _.testGuard(testValues.guardTests, deriveGuardTests(testValues.encoderTests)),
       )
-      describe(
-        'eq',
-        _.testEq(
-          testValues.eqTests === 'derive'
-            ? deriveEqTests(testValues.encoderTests)
-            : testValues.eqTests,
-        ),
-      )
+      describe('eq', _.testEq(testValues.eqTests, deriveEqTests(testValues.encoderTests)))
       describe('jsonSchema', _.assertJsonSchema(testValues.jsonSchema))
       describe('transcoder laws', _.testTranscoderLaws)
-      describe('eq identity law', _.testEqIdentityLaw)
+      describe('eq laws', _.testEqLaws)
       describe('arbitrary <-> guard', _.testArbitraryGuard)
     })
   }

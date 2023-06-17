@@ -38,8 +38,8 @@ runStandardTestSuite('Base64', S.Base64, _ => ({
     ),
   ],
   encoderTests: validStrings.map(s => _.encoder.pass(s as any)),
-  guardTests: 'derive',
-  eqTests: 'derive',
+  guardTests: [],
+  eqTests: [],
   jsonSchema: JS.intersection(JS.string({}))(
     JS.string({
       pattern: '^((([A-Za-z0-9+/]{4})*?[A-Za-z0-9+/]{2,4}={0,2})?)$',
