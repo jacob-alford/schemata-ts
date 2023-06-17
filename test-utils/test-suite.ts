@@ -3,7 +3,6 @@ import * as E from 'fp-ts/Either'
 import { flow, pipe, tuple } from 'fp-ts/function'
 import * as IO from 'fp-ts/IO'
 import * as RA from 'fp-ts/ReadonlyArray'
-import * as RNEA from 'fp-ts/ReadonlyNonEmptyArray'
 import * as RR from 'fp-ts/ReadonlyRecord'
 import * as RTup from 'fp-ts/ReadonlyTuple'
 import * as Str from 'fp-ts/string'
@@ -21,7 +20,7 @@ import * as TCE from 'schemata-ts/TranscodeError'
 type TestItem<I, T> = readonly [I, T]
 type SchemableTest<I, T> =
   | RR.ReadonlyRecord<string, TestItem<I, T>>
-  | RNEA.ReadonlyNonEmptyArray<TestItem<I, T>>
+  | ReadonlyArray<TestItem<I, T>>
 
 export interface TestSuite<I, O> {
   /** Tests transcoder and transcoderPar > decoder against a set of expected values */
@@ -80,7 +79,7 @@ export const getTestSuite = <I, O>(schema: Schema<I, O>): TestSuite<I, O> => {
   const jsonSchema = getJsonSchema(schema)
   return {
     testDecoder: flow(foldTestSuite, testSuite => () => {
-      test.each(testSuite)('%s', (name, [input, expected]) => {
+      describe.each(testSuite)('%s', (name, [input, expected]) => {
         const actual = transcoder.decode(input)
         const actualPar = transcodePar.decode(input)
         test(`${name} > sequential`, () => {
@@ -92,7 +91,7 @@ export const getTestSuite = <I, O>(schema: Schema<I, O>): TestSuite<I, O> => {
       })
     }),
     testEncoder: flow(foldTestSuite, testSuite => () => {
-      test.each(testSuite)('%s', (name, [input, expected]) => {
+      describe.each(testSuite)('%s', (name, [input, expected]) => {
         const actual = transcoder.encode(input)
         const actualPar = transcodePar.encode(input)
         test(`${name} > sequential`, () => {
@@ -104,7 +103,7 @@ export const getTestSuite = <I, O>(schema: Schema<I, O>): TestSuite<I, O> => {
       })
     }),
     testGuard: flow(foldTestSuite, testSuite => () => {
-      test.each(testSuite)('%s', (name, [input, expected]) => {
+      describe.each(testSuite)('%s', (name, [input, expected]) => {
         const actual = guard.is(input)
         test(name, () => {
           expect(actual).toStrictEqual(expected)
@@ -112,7 +111,7 @@ export const getTestSuite = <I, O>(schema: Schema<I, O>): TestSuite<I, O> => {
       })
     }),
     testEq: flow(foldTestSuite, testSuite => () => {
-      test.each(testSuite)('%s', (name, [[a, b], expected]) => {
+      describe.each(testSuite)('%s', (name, [[a, b], expected]) => {
         const actual = eq.equals(a, b)
         test(name, () => {
           expect(actual).toStrictEqual(expected)
@@ -190,20 +189,115 @@ type GetFirstArg<T extends (...args: ReadonlyArray<any>) => any> = T extends (
 type StandardTestInputs<I, T> = {
   readonly decoderTests: GetFirstArg<TestSuite<I, T>['testDecoder']>
   readonly encoderTests: GetFirstArg<TestSuite<I, T>['testEncoder']>
-  readonly guardTests: GetFirstArg<TestSuite<I, T>['testGuard']>
-  readonly eqTests: GetFirstArg<TestSuite<I, T>['testEq']>
+  readonly guardTests: 'derive' | GetFirstArg<TestSuite<I, T>['testGuard']>
+  readonly eqTests: 'derive' | GetFirstArg<TestSuite<I, T>['testEq']>
   readonly jsonSchema: GetFirstArg<TestSuite<I, T>['assertJsonSchema']>
 }
 
+export const deriveGuardTests = <I, T>(
+  encoderTests: StandardTestInputs<I, T>['encoderTests'],
+): Exclude<StandardTestInputs<I, T>['guardTests'], 'derive'> =>
+  Array.isArray(encoderTests)
+    ? pipe(
+        encoderTests as ReadonlyArray<TestItem<T, E.Either<TCE.TranscodeErrors, I>>>,
+        RA.map(RTup.mapSnd(E.isRight)),
+      )
+    : pipe(
+        encoderTests as Exclude<
+          SchemableTest<T, E.Either<TCE.TranscodeErrors, I>>,
+          { length: number }
+        >,
+        RR.map(RTup.mapSnd(E.isRight)),
+      )
+
+export const deriveEqTests = <I, T>(
+  encoderTests: StandardTestInputs<I, T>['encoderTests'],
+): Exclude<StandardTestInputs<I, T>['eqTests'], 'derive'> =>
+  Array.isArray(encoderTests)
+    ? pipe(
+        encoderTests as ReadonlyArray<TestItem<T, E.Either<TCE.TranscodeErrors, I>>>,
+        RA.map(([_]) => tuple(tuple(_, _), true)),
+      )
+    : pipe(
+        encoderTests as Exclude<
+          SchemableTest<T, E.Either<TCE.TranscodeErrors, I>>,
+          { length: number }
+        >,
+        RR.map(([_]) => tuple(tuple(_, _), true)),
+      )
+
+export type MakeTestValues<I, O> = {
+  readonly decoder: {
+    readonly pass: (
+      preDecode: unknown,
+      postDecode?: unknown,
+    ) => readonly [unknown, E.Either<TCE.TranscodeErrors, O>]
+    readonly fail: (
+      preDecode: unknown,
+      error?: TCE.TranscodeErrors,
+    ) => readonly [unknown, E.Either<TCE.TranscodeErrors, O>]
+  }
+  readonly encoder: {
+    readonly pass: (
+      preEncode: O,
+      postEncode?: I,
+    ) => readonly [O, E.Either<TCE.TranscodeErrors, I>]
+    readonly fail: (
+      preEncode: O,
+      error?: TCE.TranscodeErrors,
+    ) => readonly [O, E.Either<TCE.TranscodeErrors, I>]
+  }
+}
+
+export type StandardErrors = {
+  readonly makeDecodeError: (value: unknown) => TCE.TranscodeErrors
+}
+
 export const runStandardTestSuite =
-  <I, O>(schema: Schema<I, O>, testValues: StandardTestInputs<I, O>): IO.IO<void> =>
+  <I, O>(
+    name: string,
+    schema: Schema<I, O>,
+    makeTestValues: (helpers: MakeTestValues<I, O>) => StandardTestInputs<I, O>,
+    standardErrors: StandardErrors = {
+      makeDecodeError: value =>
+        new TCE.TranscodeErrors([new TCE.TypeMismatch(name, value)]),
+    },
+  ): IO.IO<void> =>
   () => {
     const _ = getTestSuite(schema)
-    describe('Standard Test Suite', () => {
+    const testValues = makeTestValues({
+      decoder: {
+        pass: (preDecode, postDecode) =>
+          tuple(preDecode, E.right(postDecode ?? (preDecode as any))),
+        fail: (preDecode, error = standardErrors.makeDecodeError(preDecode)) =>
+          tuple(preDecode, E.left(error)),
+      },
+      encoder: {
+        pass: (preEncode, postEncode) =>
+          tuple(preEncode, E.right(postEncode ?? (preEncode as any))),
+        fail: (preEncode, error = standardErrors.makeDecodeError(preEncode)) =>
+          tuple(preEncode, E.left(error)),
+      },
+    })
+    describe(`${name} Standard Test Suite`, () => {
       describe('decoder', _.testDecoder(testValues.decoderTests))
       describe('encoder', _.testEncoder(testValues.encoderTests))
-      describe('guard', _.testGuard(testValues.guardTests))
-      describe('eq', _.testEq(testValues.eqTests))
+      describe(
+        'guard',
+        _.testGuard(
+          testValues.guardTests === 'derive'
+            ? deriveGuardTests(testValues.encoderTests)
+            : testValues.guardTests,
+        ),
+      )
+      describe(
+        'eq',
+        _.testEq(
+          testValues.eqTests === 'derive'
+            ? deriveEqTests(testValues.encoderTests)
+            : testValues.eqTests,
+        ),
+      )
       describe('jsonSchema', _.assertJsonSchema(testValues.jsonSchema))
       describe('transcoder laws', _.testTranscoderLaws)
       describe('eq identity law', _.testEqIdentityLaw)

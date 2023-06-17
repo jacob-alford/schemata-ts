@@ -128,6 +128,7 @@ export const fold =
   (matchers: {
     readonly TypeMismatch: (e: TypeMismatch) => S
     readonly UnexpectedValue: (e: UnexpectedValue) => S
+    readonly SerializationError: (e: SerializationError) => S
     readonly ErrorAtIndex: (e: ErrorAtIndex) => S
     readonly ErrorAtKey: (e: ErrorAtKey) => S
     readonly ErrorAtUnionMember: (e: ErrorAtUnionMember) => S
@@ -141,6 +142,8 @@ export const fold =
             return matchers.TypeMismatch(err)
           case 'UnexpectedValue':
             return matchers.UnexpectedValue(err)
+          case 'SerializationError':
+            return matchers.SerializationError(err)
           case 'ErrorAtIndex':
             return matchers.ErrorAtIndex(err)
           case 'ErrorAtKey':
@@ -162,6 +165,7 @@ export const foldMap =
   (matchers: {
     readonly TypeMismatch: (expected: string, actual: unknown) => S
     readonly UnexpectedValue: (actual: unknown) => S
+    readonly SerializationError: (expected: string, error: unknown, actual: unknown) => S
     readonly ErrorAtIndex: (index: number, errors: S) => S
     readonly ErrorAtKey: (key: string, errors: S) => S
     readonly ErrorAtUnionMember: (member: number | string, errors: S) => S
@@ -169,6 +173,8 @@ export const foldMap =
     fold(S)({
       TypeMismatch: ({ expected, actual }) => matchers.TypeMismatch(expected, actual),
       UnexpectedValue: actual => matchers.UnexpectedValue(actual),
+      SerializationError: ({ expected, error, actual }) =>
+        matchers.SerializationError(expected, error, actual),
       ErrorAtIndex: ({ index, errors }) =>
         matchers.ErrorAtIndex(index, foldMap(S)(matchers)(errors)),
       ErrorAtKey: ({ key, errors }) =>
@@ -189,6 +195,12 @@ export const foldMapWithDepth =
   (matchers: {
     readonly TypeMismatch: (expected: string, actual: unknown, depth: number) => S
     readonly UnexpectedValue: (actual: unknown, depth: number) => S
+    readonly SerializationError: (
+      expected: string,
+      error: unknown,
+      actual: unknown,
+      depth: number,
+    ) => S
     readonly ErrorAtIndex: (index: number, errors: S, depth: number) => S
     readonly ErrorAtKey: (key: string, errors: S, depth: number) => S
     readonly ErrorAtUnionMember: (member: number | string, errors: S, depth: number) => S
@@ -205,6 +217,13 @@ export const foldMapWithDepth =
                 return matchers.TypeMismatch(err.expected, err.actual, depth)
               case 'UnexpectedValue':
                 return matchers.UnexpectedValue(err.actual, depth)
+              case 'SerializationError':
+                return matchers.SerializationError(
+                  err.expected,
+                  err.error,
+                  err.actual,
+                  depth,
+                )
               case 'ErrorAtIndex':
                 return matchers.ErrorAtIndex(err.index, go(depth + 1)(err.errors), depth)
               case 'ErrorAtKey':
@@ -235,6 +254,11 @@ export const drawLinesWithMarkings = (params: {
       `Expected ${expected} but got ${String(actual)}`,
     ],
     UnexpectedValue: actual => [`Unexpected value: ${String(actual)}`],
+    SerializationError: (expected, error, actual) => [
+      `Expected ${expected}, but ran into Serialization error: ${String(
+        error,
+      )}; got ${actual}`,
+    ],
     ErrorAtIndex: (index, errors, depth) =>
       pipe(
         [`Error at index ${index}`],
