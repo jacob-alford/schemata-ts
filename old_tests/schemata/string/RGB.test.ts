@@ -3,7 +3,7 @@ import { pipe, tuple } from 'fp-ts/function'
 import * as RA from 'fp-ts/ReadonlyArray'
 
 import { RGB } from '../../../src/schemata/RGB'
-import { getAllInstances, validateArbitrary } from '../../../test-utils'
+import { getAllInstances, validateArbitrary } from '../../../test-utils-old'
 
 const instances = getAllInstances(RGB)
 

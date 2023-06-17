@@ -1,5 +1,5 @@
 import { EthereumAddress } from '../../../src/schemata/EthereumAddress'
-import { getAllInstances, validateArbitrary } from '../../../test-utils'
+import { getAllInstances, validateArbitrary } from '../../../test-utils-old'
 
 const EthAddress = getAllInstances(EthereumAddress)
 

@@ -9,7 +9,7 @@ import {
   combineExpected,
   getAllInstances,
   validateArbitrary,
-} from '../../../test-utils'
+} from '../../../test-utils-old'
 
 const repeat: (s: string, times: number) => string = (s, times) => s.repeat(times)
 

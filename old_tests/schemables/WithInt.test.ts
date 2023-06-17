@@ -4,8 +4,8 @@ import { unsafeCoerce } from 'fp-ts/function'
 import { getDecoder } from '../../src/internal/decoder'
 import { Int } from '../../src/schemables/WithInt/definition'
 import { isInt } from '../../src/schemables/WithInt/utils'
-import { validateArbitrary } from '../../test-utils'
-import * as Int_ from '../../test-utils/schemable-exports/WithInt'
+import { validateArbitrary } from '../../test-utils-old'
+import * as Int_ from '../../test-utils-old/schemable-exports/WithInt'
 
 const _: (n: number) => Int = unsafeCoerce
 

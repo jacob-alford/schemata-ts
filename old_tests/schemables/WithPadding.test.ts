@@ -15,9 +15,9 @@ import * as PB from '../../src/PatternBuilder'
 import * as PE from '../../src/PrintError'
 import { interpret } from '../../src/Schema'
 import { PaddingLength } from '../../src/schemables/WithPadding/definition'
-import { validateArbitrary } from '../../test-utils'
-import * as WithPadding from '../../test-utils/schemable-exports/WithPadding'
-import { Arbitrary as arbPattern } from '../../test-utils/schemable-exports/WithPattern'
+import { validateArbitrary } from '../../test-utils-old'
+import * as WithPadding from '../../test-utils-old/schemable-exports/WithPadding'
+import { Arbitrary as arbPattern } from '../../test-utils-old/schemable-exports/WithPattern'
 
 const exact: PaddingLength = { by: 'ExactLength', exactLength: 4 }
 const max: PaddingLength = { by: 'MaxLength', maxLength: 4 }

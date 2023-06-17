@@ -4,7 +4,7 @@ import { flow } from 'fp-ts/function'
 
 import * as SC from '../../../src/base/SchemaBase'
 import * as _ from '../../../src/schemata/NonEmptyArray'
-import { getAllInstances, validateArbitrary } from '../../../test-utils'
+import { getAllInstances, validateArbitrary } from '../../../test-utils-old'
 
 const NonEmptyArray = getAllInstances(_.NonEmptyArray(SC.String))
 

@@ -6,7 +6,7 @@ import * as G from '../src/Guard'
 import { typeOf } from '../src/internal/util'
 import * as SC from '../src/Schema'
 import { PositiveFloat } from '../src/schemata/PositiveFloat'
-import { Arbitrary as WithInvariant } from '../test-utils/schemable-exports/WithInvariant'
+import { Arbitrary as WithInvariant } from '../test-utils-old/schemable-exports/WithInvariant'
 
 const isPositiveFloat = SC.interpret(G.Schemable)(PositiveFloat).is
 

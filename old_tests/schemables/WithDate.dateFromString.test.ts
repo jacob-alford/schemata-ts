@@ -3,8 +3,8 @@ import { pipe } from 'fp-ts/function'
 
 import { getDecoder } from '../../src/internal/decoder'
 import * as PE from '../../src/PrintError'
-import { validateArbitrary } from '../../test-utils'
-import * as ISODateString from '../../test-utils/schemable-exports/WithDate'
+import { validateArbitrary } from '../../test-utils-old'
+import * as ISODateString from '../../test-utils-old/schemable-exports/WithDate'
 
 const valid: ReadonlyArray<string> = [
   '2009-12T12:34',

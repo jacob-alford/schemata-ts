@@ -14,7 +14,7 @@ import {
   witherS,
   witherTaskParSM,
 } from '../src/internal/util'
-import { zipN } from '../test-utils'
+import { zipN } from '../test-utils-old'
 
 type CamelCaseFst<T extends ReadonlyArray<readonly [string, string]>> = {
   [K in keyof T]: CamelCase<T[K][0], { preserveConsecutiveUppercase: false }>

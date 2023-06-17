@@ -7,7 +7,7 @@ import {
   combineExpected,
   getAllInstances,
   validateArbitrary,
-} from '../../../test-utils'
+} from '../../../test-utils-old'
 
 const { Decoder, Eq, Guard, Arbitrary, Type, TaskDecoder } =
   getAllInstances(PositiveFloat)

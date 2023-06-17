@@ -3,7 +3,7 @@ import { pipe, tuple } from 'fp-ts/function'
 import * as RA from 'fp-ts/ReadonlyArray'
 
 import { Ascii } from '../../../src/schemata/Ascii'
-import { getAllInstances, validateArbitrary } from '../../../test-utils'
+import { getAllInstances, validateArbitrary } from '../../../test-utils-old'
 
 const valid: ReadonlyArray<string> = [
   'foobar',

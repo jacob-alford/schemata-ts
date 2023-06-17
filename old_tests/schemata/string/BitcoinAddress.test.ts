@@ -1,5 +1,5 @@
 import { BitcoinAddress } from '../../../src/schemata/BitcoinAddress'
-import { getAllInstances, validateArbitrary } from '../../../test-utils'
+import { getAllInstances, validateArbitrary } from '../../../test-utils-old'
 
 const BtcAddress = getAllInstances(BitcoinAddress)
 

@@ -5,7 +5,7 @@ import * as O from 'fp-ts/Option'
 
 import * as SC from '../../../src/base/SchemaBase'
 import * as OptionFromNullable_ from '../../../src/schemata/OptionFromNullable'
-import { getAllInstances, validateArbitrary } from '../../../test-utils'
+import { getAllInstances, validateArbitrary } from '../../../test-utils-old'
 
 const OptionFromNullable = getAllInstances(
   OptionFromNullable_.OptionFromNullable(SC.String),

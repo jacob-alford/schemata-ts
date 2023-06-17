@@ -2,8 +2,8 @@ import * as E from 'fp-ts/Either'
 import { pipe } from 'fp-ts/function'
 
 import { getDecoder } from '../../src/internal/decoder'
-import { validateArbitrary } from '../../test-utils'
-import * as Json from '../../test-utils/schemable-exports/WithJson'
+import { validateArbitrary } from '../../test-utils-old'
+import * as Json from '../../test-utils-old/schemable-exports/WithJson'
 
 // Valid Json strings
 const valid: ReadonlyArray<string> = [

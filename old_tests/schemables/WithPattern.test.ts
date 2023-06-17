@@ -4,7 +4,7 @@ import { pipe } from 'fp-ts/function'
 import * as D from '../../src/internal/decoder'
 import * as PB from '../../src/PatternBuilder'
 import { interpret } from '../../src/Schema'
-import * as P from '../../test-utils/schemable-exports/WithPattern'
+import * as P from '../../test-utils-old/schemable-exports/WithPattern'
 
 describe('WithPattern', () => {
   test('Pattern', () => {

@@ -7,7 +7,7 @@ import {
   combineExpected,
   getAllInstances,
   validateArbitrary,
-} from '../../../test-utils'
+} from '../../../test-utils-old'
 
 const validNumbers = [0, 1, 1.1, Math.random() + 1, Number.MAX_SAFE_INTEGER]
 

@@ -1,5 +1,5 @@
 import * as Base64Url from '../../../src/schemata/Base64Url'
-import { getAllInstances, validateArbitrary } from '../../../test-utils'
+import { getAllInstances, validateArbitrary } from '../../../test-utils-old'
 
 const { Arbitrary, Decoder, Eq, Guard, TaskDecoder, Type } = getAllInstances(
   Base64Url.Base64Url,
