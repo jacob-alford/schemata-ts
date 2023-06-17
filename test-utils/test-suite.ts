@@ -110,30 +110,32 @@ export const getTestSuite = <I, O>(schema: Schema<I, O>): TestSuite<I, O> => {
   return {
     testDecoder: flow(foldTestSuites(getPassFailString), testSuites => () => {
       for (const testSuite of testSuites) {
-        describe.each(testSuite)('%s', (_, [input, expected]) => {
-          const actual = transcoder.decode(input)
-          const actualPar = transcodePar.decode(input)
-          test(`sequential`, () => {
-            expect(actual).toStrictEqual(expected)
+        if (testSuite.length > 0)
+          describe.each(testSuite)('%s', (_, [input, expected]) => {
+            const actual = transcoder.decode(input)
+            const actualPar = transcodePar.decode(input)
+            test(`sequential`, () => {
+              expect(actual).toStrictEqual(expected)
+            })
+            test(`parallel`, async () => {
+              expect(await actualPar()).toStrictEqual(expected)
+            })
           })
-          test(`parallel`, async () => {
-            expect(await actualPar()).toStrictEqual(expected)
-          })
-        })
       }
     }),
     testEncoder: flow(foldTestSuites(getPassFailString), testSuites => () => {
       for (const testSuite of testSuites) {
-        describe.each(testSuite)('%s', (_, [input, expected]) => {
-          const actual = transcoder.encode(input)
-          const actualPar = transcodePar.encode(input)
-          test(`sequential`, () => {
-            expect(actual).toStrictEqual(expected)
+        if (testSuite.length > 0)
+          describe.each(testSuite)('%s', (_, [input, expected]) => {
+            const actual = transcoder.encode(input)
+            const actualPar = transcodePar.encode(input)
+            test(`sequential`, () => {
+              expect(actual).toStrictEqual(expected)
+            })
+            test(`parallel`, async () => {
+              expect(await actualPar()).toStrictEqual(expected)
+            })
           })
-          test(`parallel`, async () => {
-            expect(await actualPar()).toStrictEqual(expected)
-          })
-        })
       }
     }),
     testGuard: flow(
