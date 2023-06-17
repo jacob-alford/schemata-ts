@@ -1,0 +1,46 @@
+import * as S from 'schemata-ts'
+import * as TC from 'schemata-ts/Transcoder'
+import * as JS from 'schemata-ts/JsonSchema'
+
+import { runStandardTestSuite } from '../test-utils/test-suite'
+
+runStandardTestSuite(
+  'Literal',
+  S.Literal('hi', 'hey', 'lmao', null),
+  _ => ({
+    decoderTests: [
+      _.decoder.pass('hi'),
+      _.decoder.pass('hey'),
+      _.decoder.pass('lmao'),
+      _.decoder.pass(null),
+      _.decoder.fail(''),
+      _.decoder.fail('h'),
+      _.decoder.fail('hii'),
+      _.decoder.fail('hiiii'),
+      _.decoder.fail('hiiiiii'),
+      _.decoder.fail('lameo'),
+      _.decoder.fail({}),
+      _.decoder.fail([]),
+      _.decoder.fail(undefined),
+      _.decoder.fail(NaN),
+    ],
+    encoderTests: [],
+    guardTests: [],
+    eqTests: [],
+    jsonSchema: JS.union(
+      JS.literal('hi'),
+      JS.literal('hey'),
+      JS.literal('lmao'),
+      JS.literal(null),
+    ),
+  }),
+  {
+    makeDecodeError: expected =>
+      TC.transcodeErrors(
+        TC.errorAtUnionMember(0, TC.transcodeErrors(TC.typeMismatch('hi', expected))),
+        TC.errorAtUnionMember(1, TC.transcodeErrors(TC.typeMismatch('hey', expected))),
+        TC.errorAtUnionMember(2, TC.transcodeErrors(TC.typeMismatch('lmao', expected))),
+        TC.errorAtUnionMember(3, TC.transcodeErrors(TC.typeMismatch('null', expected))),
+      ),
+  },
+)()
