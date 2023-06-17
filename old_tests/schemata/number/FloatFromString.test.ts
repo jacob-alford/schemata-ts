@@ -2,7 +2,7 @@ import * as E from 'fp-ts/Either'
 import { pipe } from 'fp-ts/function'
 
 import * as FloatFromString from '../../../src/schemata/FloatFromString'
-import { getAllInstances, validateArbitrary } from '../../../test-utils'
+import { getAllInstances, validateArbitrary } from '../../../test-utils-old'
 
 const { Arbitrary, Decoder, Encoder, Eq, Guard, TaskDecoder, Type, Printer } =
   getAllInstances(FloatFromString.FloatFromString())

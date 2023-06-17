@@ -15,7 +15,7 @@ import {
   Schema,
   TaskDecoder,
   Type,
-} from '../../test-utils/schemable-exports/WithInvariant'
+} from '../../test-utils-old/schemable-exports/WithInvariant'
 
 describe('WithInvariant', () => {
   test('Decoder', () => {

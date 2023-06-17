@@ -3,8 +3,8 @@ import * as E from 'fp-ts/Either'
 import { getDecoder } from '../../src/internal/decoder'
 import * as PE from '../../src/PrintError'
 import { isSafeDate } from '../../src/schemables/WithDate/utils'
-import { validateArbitrary } from '../../test-utils'
-import * as SafeDate from '../../test-utils/schemable-exports/WithDate'
+import { validateArbitrary } from '../../test-utils-old'
+import * as SafeDate from '../../test-utils-old/schemable-exports/WithDate'
 
 describe('SafeDate', () => {
   describe('Decoder', () => {

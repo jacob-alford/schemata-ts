@@ -6,7 +6,7 @@ import * as O from 'fp-ts/Option'
 import * as SC from '../../../src/base/SchemaBase'
 import * as PE from '../../../src/PrintError'
 import * as OptionFromUndefined_ from '../../../src/schemata/generic/OptionFromUndefined'
-import { getAllInstances, validateArbitrary } from '../../../test-utils'
+import { getAllInstances, validateArbitrary } from '../../../test-utils-old'
 
 const OptionFromUndefined = getAllInstances(
   OptionFromUndefined_.OptionFromUndefined(SC.String),

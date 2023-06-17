@@ -1,8 +1,8 @@
 import * as J from 'fp-ts/Json'
 
 import { SafeJson } from '../../src/base/PrinterBase'
-import { validateArbitrary } from '../../test-utils'
-import * as Json from '../../test-utils/schemable-exports/WithJson'
+import { validateArbitrary } from '../../test-utils-old'
+import * as Json from '../../test-utils-old/schemable-exports/WithJson'
 
 const _ = (arg: J.Json): SafeJson => arg as any
 

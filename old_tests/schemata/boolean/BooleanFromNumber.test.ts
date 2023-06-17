@@ -2,7 +2,7 @@ import * as E from 'fp-ts/Either'
 import { pipe } from 'fp-ts/function'
 
 import * as BooleanNumber_ from '../../../src/schemata/BooleanFromNumber'
-import { getAllInstances, validateArbitrary } from '../../../test-utils'
+import { getAllInstances, validateArbitrary } from '../../../test-utils-old'
 
 const valid: ReadonlyArray<number> = [1, 0]
 

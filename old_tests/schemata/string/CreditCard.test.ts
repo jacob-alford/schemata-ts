@@ -1,7 +1,7 @@
 import * as E from 'fp-ts/Either'
 
 import { CreditCard } from '../../../src/schemata/CreditCard'
-import { getAllInstances, validateArbitrary } from '../../../test-utils'
+import { getAllInstances, validateArbitrary } from '../../../test-utils-old'
 
 const instances = getAllInstances(CreditCard)
 

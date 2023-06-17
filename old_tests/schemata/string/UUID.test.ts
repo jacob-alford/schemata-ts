@@ -9,7 +9,7 @@ import {
   combineExpected,
   getAllInstances,
   validateArbitrary,
-} from '../../../test-utils'
+} from '../../../test-utils-old'
 
 const valid_: Readonly<Record<UUIDVersion, ReadonlyArray<string>>> = {
   1: ['E034B584-7D89-11E9-9669-1AECF481A97B'],

@@ -1,7 +1,7 @@
 import { unsafeCoerce } from 'fp-ts/function'
 
 import { NegativeInt } from '../../../src/schemata/NegativeInt'
-import { getAllInstances, validateArbitrary } from '../../../test-utils'
+import { getAllInstances, validateArbitrary } from '../../../test-utils-old'
 
 const _: (n: number) => NegativeInt = unsafeCoerce
 

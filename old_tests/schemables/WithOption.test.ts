@@ -15,8 +15,8 @@ import * as SC from '../../src/base/SchemaBase'
 import { getDecoder } from '../../src/internal/decoder'
 import { getPrinter } from '../../src/Printer'
 import { IntFromString } from '../../src/schemata'
-import { validateArbitrary } from '../../test-utils'
-import * as OptionFromExclude from '../../test-utils/schemable-exports/WithOption'
+import { validateArbitrary } from '../../test-utils-old'
+import * as OptionFromExclude from '../../test-utils-old/schemable-exports/WithOption'
 
 describe('OptionFromExclude', () => {
   describe('Decoder', () => {

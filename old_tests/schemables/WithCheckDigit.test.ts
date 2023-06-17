@@ -5,8 +5,8 @@ import { luhn } from '../../src/internal/algorithms'
 import * as D from '../../src/internal/decoder'
 import { interpret } from '../../src/Schema'
 import * as CC from '../../src/schemata/CreditCard'
-import * as CheckDigit from '../../test-utils/schemable-exports/WithCheckDigit'
-import { Schema as Pattern } from '../../test-utils/schemable-exports/WithPattern'
+import * as CheckDigit from '../../test-utils-old/schemable-exports/WithCheckDigit'
+import { Schema as Pattern } from '../../test-utils-old/schemable-exports/WithPattern'
 
 describe('WithCheckDigit', () => {
   test('Schema', () => {

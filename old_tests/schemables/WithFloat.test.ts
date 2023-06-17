@@ -3,8 +3,8 @@ import { tuple } from 'fp-ts/function'
 import * as RA from 'fp-ts/ReadonlyArray'
 
 import { getDecoder } from '../../src/internal/decoder'
-import { cat, combineExpected, validateArbitrary } from '../../test-utils'
-import * as WithFloat from '../../test-utils/schemable-exports/WithFloat'
+import { cat, combineExpected, validateArbitrary } from '../../test-utils-old'
+import * as WithFloat from '../../test-utils-old/schemable-exports/WithFloat'
 
 const validNumbers = [
   -1,

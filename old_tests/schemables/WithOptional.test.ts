@@ -1,6 +1,6 @@
 import * as SC from '../../src/base/SchemaBase'
 import { getGuard } from '../../src/Guard'
-import * as WithOptional from '../../test-utils/schemable-exports/WithOptional'
+import * as WithOptional from '../../test-utils-old/schemable-exports/WithOptional'
 
 describe('WithOptional', () => {
   test('Guard and Schema', () => {

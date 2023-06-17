@@ -14,8 +14,8 @@ import * as P from '../../src/base/PrinterBase'
 import * as SC from '../../src/base/SchemaBase'
 import { getDecoder } from '../../src/internal/decoder'
 import * as PE from '../../src/PrintError'
-import { validateArbitrary } from '../../test-utils'
-import * as MapFromEntries from '../../test-utils/schemable-exports/WithMap'
+import { validateArbitrary } from '../../test-utils-old'
+import * as MapFromEntries from '../../test-utils-old/schemable-exports/WithMap'
 
 describe('MapFromEntries', () => {
   describe('Decoder', () => {
