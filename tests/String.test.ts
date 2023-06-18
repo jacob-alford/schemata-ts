@@ -3,7 +3,7 @@ import * as JS from 'schemata-ts/JsonSchema'
 
 import { runStandardTestSuite } from '../test-utils/test-suite'
 
-runStandardTestSuite('string', S.String(), _ => ({
+runStandardTestSuite('String', S.String(), _ => ({
   decoderTests: [
     _.decoder.pass(''),
     _.decoder.pass('a'),
@@ -19,4 +19,45 @@ runStandardTestSuite('string', S.String(), _ => ({
   guardTests: [],
   eqTests: [],
   jsonSchema: JS.string(),
+}))()
+
+runStandardTestSuite('String<10,>', S.String({ minLength: 10 }), _ => ({
+  decoderTests: [
+    _.decoder.pass('abcdefghij'),
+    _.decoder.pass('abcdefghijk'),
+    _.decoder.fail('abc'),
+    _.decoder.fail(''),
+  ],
+  encoderTests: [],
+  guardTests: [],
+  eqTests: [],
+  jsonSchema: JS.string({ minLength: 10 }),
+}))()
+
+runStandardTestSuite('String<,10>', S.String({ maxLength: 10 }), _ => ({
+  decoderTests: [
+    _.decoder.fail('abcdefghijk'),
+    _.decoder.pass('abcdefghij'),
+    _.decoder.pass('abc'),
+    _.decoder.pass(''),
+  ],
+  encoderTests: [],
+  guardTests: [],
+  eqTests: [],
+  jsonSchema: JS.string({ maxLength: 10 }),
+}))()
+
+runStandardTestSuite('String<10,20>', S.String({ minLength: 10, maxLength: 20 }), _ => ({
+  decoderTests: [
+    _.decoder.pass('abcdefghij'),
+    _.decoder.pass('abcdefghijk'),
+    _.decoder.pass('abcdefghijklmnopqrst'),
+    _.decoder.fail('abc'),
+    _.decoder.fail(''),
+    _.decoder.fail('abcdefghijklmnopqrstu'),
+  ],
+  encoderTests: [],
+  guardTests: [],
+  eqTests: [],
+  jsonSchema: JS.string({ minLength: 10, maxLength: 20 }),
 }))()

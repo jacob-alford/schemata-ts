@@ -1,6 +1,6 @@
 import { Float, MaxNegativeFloat, MaxPositiveFloat } from 'schemata-ts/float'
 import { Integer, MaxSafeInt, MinSafeInt } from 'schemata-ts/integer'
-import { BoundedParams } from 'schemata-ts/schemables/primitives/definition'
+import { BoundedParams, StringParams } from 'schemata-ts/schemables/primitives/definition'
 
 /** @since 1.0.0 */
 export const isInt =
@@ -43,3 +43,17 @@ export const isFloat =
     const { min = -Number.MAX_VALUE, max = Number.MAX_VALUE } = params
     return typeof n === 'number' && !Number.isNaN(n) && n >= min && n <= max
   }
+
+export const getLengthBoundsString: (params?: StringParams) => string = (params = {}) => {
+  const { minLength, maxLength } = params
+  if (minLength === undefined && maxLength === undefined) return ''
+  return `<${minLength ?? ''},${maxLength ?? ''}>`
+}
+
+export const getNumberBoundsInt: (params?: BoundedParams<any, any>) => string = (
+  params = {},
+) => {
+  const { min, max } = params
+  if (min === undefined && max === undefined) return ''
+  return `<${min ?? ''},${max ?? ''}>`
+}

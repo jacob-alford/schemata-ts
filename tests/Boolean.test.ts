@@ -3,7 +3,7 @@ import * as JS from 'schemata-ts/JsonSchema'
 
 import { runStandardTestSuite } from '../test-utils/test-suite'
 
-runStandardTestSuite('boolean', S.Boolean, _ => ({
+runStandardTestSuite('Boolean', S.Boolean, _ => ({
   decoderTests: [
     _.decoder.pass(true),
     _.decoder.pass(false),

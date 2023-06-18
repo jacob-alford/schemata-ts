@@ -3,7 +3,7 @@ import * as JS from 'schemata-ts/JsonSchema'
 
 import { runStandardTestSuite } from '../test-utils/test-suite'
 
-runStandardTestSuite('int', S.Int(), _ => ({
+runStandardTestSuite('Int', S.Int(), _ => ({
   decoderTests: [
     _.decoder.pass(1),
     _.decoder.pass(0),
@@ -36,4 +36,50 @@ runStandardTestSuite('int', S.Int(), _ => ({
   guardTests: [],
   eqTests: [],
   jsonSchema: JS.integer(),
+}))()
+
+runStandardTestSuite('Int<10,>', S.Int({ min: 10 }), _ => ({
+  decoderTests: [
+    _.decoder.pass(10),
+    _.decoder.pass(11),
+    _.decoder.pass(156e10),
+    _.decoder.fail(9),
+    _.decoder.fail(0),
+    _.decoder.fail(-1),
+  ],
+  encoderTests: [],
+  guardTests: [],
+  eqTests: [],
+  jsonSchema: JS.integer({ minimum: 10 }),
+}))()
+
+runStandardTestSuite('Int<,10>', S.Int({ max: 10 }), _ => ({
+  decoderTests: [
+    _.decoder.fail(11),
+    _.decoder.fail(156e10),
+    _.decoder.pass(10),
+    _.decoder.pass(9),
+    _.decoder.pass(0),
+    _.decoder.pass(-1),
+  ],
+  encoderTests: [],
+  guardTests: [],
+  eqTests: [],
+  jsonSchema: JS.integer({ maximum: 10 }),
+}))()
+
+runStandardTestSuite('Int<10,20>', S.Int({ min: 10, max: 20 }), _ => ({
+  decoderTests: [
+    _.decoder.pass(10),
+    _.decoder.pass(11),
+    _.decoder.pass(20),
+    _.decoder.fail(9),
+    _.decoder.fail(0),
+    _.decoder.fail(-1),
+    _.decoder.fail(21),
+  ],
+  encoderTests: [],
+  guardTests: [],
+  eqTests: [],
+  jsonSchema: JS.integer({ minimum: 10, maximum: 20 }),
 }))()
