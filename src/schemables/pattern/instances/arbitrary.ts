@@ -14,10 +14,10 @@ const matchK = matchOn('kind')
 
 /** @internal */
 export const arbitraryFromAtom: (atom: PB.Atom) => Arb.Arbitrary<string> = matchK({
-  anything: () => ({ arbitrary: fc => fc.char() }),
-  character: ({ char }) => ({ arbitrary: fc => fc.constant(char) }),
-  characterClass: ({ exclude, ranges }) => ({
-    arbitrary: fc =>
+  anything: () => Arb.makeArbitrary(fc => fc.char()),
+  character: ({ char }) => Arb.makeArbitrary(fc => fc.constant(char)),
+  characterClass: ({ exclude, ranges }) =>
+    Arb.makeArbitrary(fc =>
       (exclude
         ? fc
             .integer({ min: 1, max: 0xffff })
@@ -26,7 +26,7 @@ export const arbitraryFromAtom: (atom: PB.Atom) => Arb.Arbitrary<string> = match
             ...ranges.map(({ lower, upper }) => fc.integer({ min: lower, max: upper })),
           )
       ).map(charCode => String.fromCharCode(charCode)),
-  }),
+    ),
   subgroup: ({ subpattern }) => arbitraryFromPattern(subpattern),
 })
 
@@ -34,43 +34,43 @@ export const arbitraryFromAtom: (atom: PB.Atom) => Arb.Arbitrary<string> = match
 export const arbitraryFromQuantifiedAtom: (
   quantifiedAtom: PB.QuantifiedAtom,
 ) => Arb.Arbitrary<string> = matchK({
-  star: ({ atom }) => ({
-    arbitrary: fc =>
+  star: ({ atom }) =>
+    Arb.makeArbitrary(fc =>
       fc.array(arbitraryFromAtom(atom).arbitrary(fc)).map(strs => strs.join('')),
-  }),
-  plus: ({ atom }) => ({
-    arbitrary: fc =>
+    ),
+  plus: ({ atom }) =>
+    Arb.makeArbitrary(fc =>
       fc
         .array(arbitraryFromAtom(atom).arbitrary(fc), { minLength: 1 })
         .map(strs => strs.join('')),
-  }),
-  question: ({ atom }) => ({
-    arbitrary: fc =>
+    ),
+  question: ({ atom }) =>
+    Arb.makeArbitrary(fc =>
       fc
         .array(arbitraryFromAtom(atom).arbitrary(fc), { minLength: 0, maxLength: 1 })
         .map(strs => strs.join('')),
-  }),
-  exactly: ({ atom, count }) => ({
-    arbitrary: fc =>
+    ),
+  exactly: ({ atom, count }) =>
+    Arb.makeArbitrary(fc =>
       fc
         .array(arbitraryFromAtom(atom).arbitrary(fc), {
           minLength: count,
           maxLength: count,
         })
         .map(strs => strs.join('')),
-  }),
-  between: ({ atom, min, max }) => ({
-    arbitrary: fc =>
+    ),
+  between: ({ atom, min, max }) =>
+    Arb.makeArbitrary(fc =>
       fc
         .array(arbitraryFromAtom(atom).arbitrary(fc), { minLength: min, maxLength: max })
         .map(strs => strs.join('')),
-  }),
-  minimum: ({ atom, min }) => ({
-    arbitrary: fc =>
+    ),
+  minimum: ({ atom, min }) =>
+    Arb.makeArbitrary(fc =>
       fc
         .array(arbitraryFromAtom(atom).arbitrary(fc), { minLength: min })
         .map(strs => strs.join('')),
-  }),
+    ),
 })
 
 const arbitraryFromTerm: (term: PB.Term) => Arb.Arbitrary<string> = match({
@@ -81,15 +81,15 @@ const arbitraryFromTerm: (term: PB.Term) => Arb.Arbitrary<string> = match({
 const chainConcatAll: (
   fcs: ReadonlyArray<Arb.Arbitrary<string>>,
 ) => Arb.Arbitrary<string> = RA.foldLeft(
-  () => ({ arbitrary: fc => fc.constant('') }),
-  (head, tail) => ({
-    arbitrary: fc =>
+  () => Arb.makeArbitrary(fc => fc.constant('')),
+  (head, tail) =>
+    Arb.makeArbitrary(fc =>
       head.arbitrary(fc).chain(headStr =>
         chainConcatAll(tail)
           .arbitrary(fc)
           .map(tailStr => headStr + tailStr),
       ),
-  }),
+    ),
 )
 
 /**
@@ -100,13 +100,13 @@ const chainConcatAll: (
 export const arbitraryFromPattern: (pattern: PB.Pattern) => Arb.Arbitrary<string> = match(
   {
     atom: arbitraryFromAtom,
-    disjunction: ({ left, right }) => ({
-      arbitrary: fc =>
+    disjunction: ({ left, right }) =>
+      Arb.makeArbitrary(fc =>
         fc.oneof(
           arbitraryFromPattern(left).arbitrary(fc),
           arbitraryFromPattern(right).arbitrary(fc),
         ),
-    }),
+      ),
     quantifiedAtom: arbitraryFromQuantifiedAtom,
     termSequence: ({ terms }) => pipe(terms.map(arbitraryFromTerm), chainConcatAll),
   },

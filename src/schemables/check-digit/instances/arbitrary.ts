@@ -7,8 +7,8 @@ import {
 import { locationToIndex, replaceCharAt } from 'schemata-ts/schemables/check-digit/utils'
 
 export const CheckDigitArbitrary: WithCheckDigit<Arb.SchemableLambda> = {
-  checkDigit: (algorithm, location) => arb => ({
-    arbitrary: fc =>
+  checkDigit: (algorithm, location) => arb =>
+    Arb.makeArbitrary(fc =>
       arb
         .arbitrary(fc)
         .map(
@@ -18,5 +18,5 @@ export const CheckDigitArbitrary: WithCheckDigit<Arb.SchemableLambda> = {
               CheckDigitVerified
             >,
         ),
-  }),
+    ),
 }

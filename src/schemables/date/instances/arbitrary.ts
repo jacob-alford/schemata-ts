@@ -9,14 +9,14 @@ import {
 export const DateArbitrary: WithDate<Arb.SchemableLambda> = {
   date: (params = {}) => {
     const { beforeDate = latestSafeDate, afterDate = earliestSafeDate } = params
-    return {
-      arbitrary: fc => fc.date({ min: afterDate, max: beforeDate }).filter(isSafeDate),
-    }
+    return Arb.makeArbitrary(fc =>
+      fc.date({ min: afterDate, max: beforeDate }).filter(isSafeDate),
+    )
   },
   dateFromString: (params = {}) => {
     const { beforeDate = latestSafeDate, afterDate = earliestSafeDate } = params
-    return {
-      arbitrary: fc => fc.date({ min: afterDate, max: beforeDate }).filter(isSafeDate),
-    }
+    return Arb.makeArbitrary(fc =>
+      fc.date({ min: afterDate, max: beforeDate }).filter(isSafeDate),
+    )
   },
 }
