@@ -22,6 +22,8 @@ import * as TCE from 'schemata-ts/TranscodeError'
 
 const { BooleanAlgebra: B } = B_
 
+const isValidNumber = PrimitivesGuard.float().is
+
 type TestItem<I, T> = readonly [I, T]
 type SchemableTest<I, T> =
   | RR.ReadonlyRecord<string, TestItem<I, T>>
@@ -177,7 +179,7 @@ export const getTestSuite = <I, O>(schema: Schema<I, O>): TestSuite<I, O> => {
     },
     assertValidInformation: () => {
       it('constructs valid information', () => {
-        expect(PrimitivesGuard.float().is(information)).toBe(true)
+        expect(isValidNumber(information)).toBe(true)
       })
     },
     testTranscoderLaws: () => {
@@ -274,6 +276,7 @@ type StandardTestInputs<I, T> = {
   readonly guardTests: GetFirstArg<TestSuite<I, T>['testGuard']>
   readonly eqTests: GetFirstArg<TestSuite<I, T>['testEq']>
   readonly jsonSchema: GetFirstArg<TestSuite<I, T>['assertJsonSchema']>
+  readonly additionalTests?: (testSuite: TestSuite<I, T>) => IO.IO<void>
 }
 
 export const deriveGuardTests = <I, T>(
@@ -374,5 +377,8 @@ export const runStandardTestSuite =
       describe('transcoder laws', _.testTranscoderLaws)
       describe('eq laws', _.testEqLaws)
       describe('arbitrary <-> guard', _.testArbitraryGuard)
+      if (testValues.additionalTests) {
+        describe('additional tests', testValues.additionalTests(_))
+      }
     })
   }
