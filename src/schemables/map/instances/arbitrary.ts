@@ -5,10 +5,10 @@ import * as Arb from 'schemata-ts/internal/arbitrary'
 import { WithMap } from 'schemata-ts/schemables/map/definition'
 
 export const MapArbitrary: WithMap<Arb.SchemableLambda> = {
-  mapFromEntries: (ordK, arbK, arbA) => ({
-    arbitrary: fc =>
+  mapFromEntries: (ordK, arbK, arbA) =>
+    Arb.makeArbitrary(fc =>
       fc
         .array(fc.tuple(arbK.arbitrary(fc), arbA.arbitrary(fc)))
         .map(RM.fromFoldable(ordK, Sg.last(), RA.Foldable)),
-  }),
+    ),
 }

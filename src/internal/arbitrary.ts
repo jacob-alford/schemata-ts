@@ -1,9 +1,17 @@
 import type * as FastCheck from 'fast-check'
 import * as hkt from 'schemata-ts/HKT'
+import { memoize } from 'schemata-ts/Schema'
 
 export interface Arbitrary<A> {
   readonly arbitrary: (fc: typeof FastCheck) => FastCheck.Arbitrary<A>
 }
+
+/** @internal */
+export const makeArbitrary = <A>(
+  arbitrary: (fc: typeof FastCheck) => FastCheck.Arbitrary<A>,
+): Arbitrary<A> => ({
+  arbitrary: memoize(arbitrary),
+})
 
 /** @since 1.0.0 */
 export const URI = 'Arbitrary'

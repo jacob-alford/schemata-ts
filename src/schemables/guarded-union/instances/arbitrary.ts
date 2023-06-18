@@ -9,8 +9,8 @@ import {
 export const GuardedUnionArbitrary: WithGuardedUnion<Arb.SchemableLambda> = {
   guardedUnion: (_name, ...members) => {
     const sortedMembers = pipe(members, RNEA.sort(ordGuardedPrecedentedUnionMember))
-    return {
-      arbitrary: fc => fc.oneof(...sortedMembers.map(m => m.member.arbitrary(fc))),
-    }
+    return Arb.makeArbitrary(fc =>
+      fc.oneof(...sortedMembers.map(m => m.member.arbitrary(fc))),
+    )
   },
 }

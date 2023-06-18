@@ -9,8 +9,8 @@ import {
 } from 'schemata-ts/schemables/padding/utils'
 
 export const PaddingArbitrary: WithPadding<Arb.SchemableLambda> = {
-  padLeft: (length, char) => aS => ({
-    arbitrary: fc =>
+  padLeft: (length, char) => aS =>
+    Arb.makeArbitrary(fc =>
       pipe(
         length,
         match({
@@ -28,9 +28,9 @@ export const PaddingArbitrary: WithPadding<Arb.SchemableLambda> = {
             ),
           ),
       ),
-  }),
-  padRight: (length, char) => aS => ({
-    arbitrary: fc =>
+    ),
+  padRight: (length, char) => aS =>
+    Arb.makeArbitrary(fc =>
       pipe(
         length,
         match({
@@ -48,5 +48,5 @@ export const PaddingArbitrary: WithPadding<Arb.SchemableLambda> = {
             ),
           ),
       ),
-  }),
+    ),
 }
