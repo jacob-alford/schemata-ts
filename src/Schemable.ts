@@ -13,6 +13,7 @@ import { WithClone } from 'schemata-ts/schemables/clone/definition'
 import { WithDate } from 'schemata-ts/schemables/date/definition'
 import { WithGuardedUnion } from 'schemata-ts/schemables/guarded-union/definition'
 import { WithInvariant } from 'schemata-ts/schemables/invariant/definition'
+import { WithLazy } from 'schemata-ts/schemables/lazy/definition'
 import { WithMap } from 'schemata-ts/schemables/map/definition'
 import { WithOptional } from 'schemata-ts/schemables/optional/definition'
 import { WithPadding } from 'schemata-ts/schemables/padding/definition'
@@ -34,6 +35,7 @@ export interface Schemable<S extends SchemableLambda>
     WithDate<S>,
     WithGuardedUnion<S>,
     WithInvariant<S>,
+    WithLazy<S>,
     WithMap<S>,
     WithOptional<S>,
     WithPadding<S>,

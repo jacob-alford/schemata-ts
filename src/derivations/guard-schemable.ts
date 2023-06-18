@@ -15,6 +15,7 @@ import * as clone from 'schemata-ts/schemables/clone/instances/guard'
 import * as date from 'schemata-ts/schemables/date/instances/guard'
 import * as guardedUnion from 'schemata-ts/schemables/guarded-union/instances/guard'
 import * as invariant from 'schemata-ts/schemables/invariant/instances/guard'
+import * as lazy from 'schemata-ts/schemables/lazy/instances/guard'
 import * as map from 'schemata-ts/schemables/map/instances/guard'
 import * as optional from 'schemata-ts/schemables/optional/instances/guard'
 import * as padding from 'schemata-ts/schemables/padding/instances/guard'
@@ -36,6 +37,7 @@ const GuardSchemable: Schemable<G.SchemableLambda> = {
   ...date.DateGuard,
   ...guardedUnion.GuardedUnionGuard,
   ...invariant.InvariantGuard,
+  ...lazy.LazyGuard,
   ...map.MapGuard,
   ...optional.OptionalGuard,
   ...padding.PaddingGuard,

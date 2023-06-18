@@ -15,6 +15,7 @@ import * as clone from 'schemata-ts/schemables/clone/instances/arbitrary'
 import * as date from 'schemata-ts/schemables/date/instances/arbitrary'
 import * as guardedUnion from 'schemata-ts/schemables/guarded-union/instances/arbitrary'
 import * as invariant from 'schemata-ts/schemables/invariant/instances/arbitrary'
+import * as lazy from 'schemata-ts/schemables/lazy/instances/arbitrary'
 import * as map from 'schemata-ts/schemables/map/instances/arbitrary'
 import * as optional from 'schemata-ts/schemables/optional/instances/arbitrary'
 import * as padding from 'schemata-ts/schemables/padding/instances/arbitrary'
@@ -36,6 +37,7 @@ const ArbitrarySchemable: Schemable<Arb.SchemableLambda> = {
   ...date.DateArbitrary,
   ...guardedUnion.GuardedUnionArbitrary,
   ...invariant.InvariantArbitrary,
+  ...lazy.LazyArbitrary,
   ...map.MapArbitrary,
   ...optional.OptionalArbitrary,
   ...padding.PaddingArbitrary,
