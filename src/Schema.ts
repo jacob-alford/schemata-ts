@@ -93,7 +93,8 @@ export interface SchemableLambda extends hkt.SchemableLambda {
   readonly type: Schema<this['Input'], this['Output']>
 }
 
-const memoize = <A, B>(f: (a: A) => B): ((a: A) => B) => {
+/** @internal */
+export const memoize = <A, B>(f: (a: A) => B): ((a: A) => B) => {
   const cache = new Map()
   return a => {
     if (!cache.has(a)) {

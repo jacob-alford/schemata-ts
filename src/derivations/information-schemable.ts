@@ -15,6 +15,7 @@ import * as clone from 'schemata-ts/schemables/clone/instances/information'
 import * as date from 'schemata-ts/schemables/date/instances/information'
 import * as guardedUnion from 'schemata-ts/schemables/guarded-union/instances/information'
 import * as invariant from 'schemata-ts/schemables/invariant/instances/information'
+import * as lazy from 'schemata-ts/schemables/lazy/instances/information'
 import * as map from 'schemata-ts/schemables/map/instances/information'
 import * as optional from 'schemata-ts/schemables/optional/instances/information'
 import * as padding from 'schemata-ts/schemables/padding/instances/information'
@@ -36,6 +37,7 @@ const InformationSchemable: Schemable<Inf.SchemableLambda> = {
   ...date.DateInformation,
   ...guardedUnion.GuardedUnionInformation,
   ...invariant.InvariantInformation,
+  ...lazy.LazyInformation,
   ...map.MapInformation,
   ...optional.OptionalInformation,
   ...padding.PaddingInformation,

@@ -15,6 +15,7 @@ import * as clone from 'schemata-ts/schemables/clone/instances/eq'
 import * as date from 'schemata-ts/schemables/date/instances/eq'
 import * as guardedUnion from 'schemata-ts/schemables/guarded-union/instances/eq'
 import * as invariant from 'schemata-ts/schemables/invariant/instances/eq'
+import * as lazy from 'schemata-ts/schemables/lazy/instances/eq'
 import * as map from 'schemata-ts/schemables/map/instances/eq'
 import * as optional from 'schemata-ts/schemables/optional/instances/eq'
 import * as padding from 'schemata-ts/schemables/padding/instances/eq'
@@ -36,6 +37,7 @@ const EqSchemable: Schemable<Eq.SchemableLambda> = {
   ...date.DateEq,
   ...guardedUnion.GuardedUnionEq,
   ...invariant.InvariantEq,
+  ...lazy.LazyEq,
   ...map.MapEq,
   ...optional.OptionalEq,
   ...padding.PaddingEq,

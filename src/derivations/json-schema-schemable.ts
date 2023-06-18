@@ -15,6 +15,7 @@ import * as clone from 'schemata-ts/schemables/clone/instances/json-schema'
 import * as date from 'schemata-ts/schemables/date/instances/json-schema'
 import * as guardedUnion from 'schemata-ts/schemables/guarded-union/instances/json-schema'
 import * as invariant from 'schemata-ts/schemables/invariant/instances/json-schema'
+import * as lazy from 'schemata-ts/schemables/lazy/instances/json-schema'
 import * as map from 'schemata-ts/schemables/map/instances/json-schema'
 import * as optional from 'schemata-ts/schemables/optional/instances/json-schema'
 import * as padding from 'schemata-ts/schemables/padding/instances/json-schema'
@@ -36,6 +37,7 @@ const JsonSchemaSchemable: Schemable<JS.SchemableLambda> = {
   ...date.DateJsonSchema,
   ...guardedUnion.GuardedUnionJsonSchema,
   ...invariant.InvariantJsonSchema,
+  ...lazy.LazyJsonSchema,
   ...map.MapJsonSchema,
   ...optional.OptionalJsonSchema,
   ...padding.PaddingJsonSchema,

@@ -15,6 +15,7 @@ import * as clone from 'schemata-ts/schemables/clone/instances/transcoder'
 import * as date from 'schemata-ts/schemables/date/instances/transcoder'
 import * as guardedUnion from 'schemata-ts/schemables/guarded-union/instances/transcoder'
 import * as invariant from 'schemata-ts/schemables/invariant/instances/transcoder'
+import * as lazy from 'schemata-ts/schemables/lazy/instances/transcoder'
 import * as map from 'schemata-ts/schemables/map/instances/transcoder'
 import * as optional from 'schemata-ts/schemables/optional/instances/transcoder'
 import * as padding from 'schemata-ts/schemables/padding/instances/transcoder'
@@ -36,6 +37,7 @@ const TranscoderSchemable: Schemable<TC.SchemableLambda> = {
   ...date.DateTranscoder,
   ...guardedUnion.GuardedUnionTranscoder,
   ...invariant.InvariantTranscoder,
+  ...lazy.LazyTranscoder,
   ...map.MapTranscoder,
   ...optional.OptionalTranscoder,
   ...padding.PaddingTranscoder,
