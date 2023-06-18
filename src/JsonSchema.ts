@@ -33,6 +33,7 @@
  * @see https://json-schema.org/draft/2020-12/json-schema-validation.html
  */
 import { Const, make } from 'fp-ts/Const'
+import * as RR from 'fp-ts/ReadonlyRecord'
 import { Float, MaxNegativeFloat, MaxPositiveFloat } from 'schemata-ts/float'
 import { Integer, MaxSafeInt, MinSafeInt } from 'schemata-ts/integer'
 import * as I from 'schemata-ts/internal/json-schema'
@@ -257,18 +258,27 @@ export const exclusion = <A, Z extends A>(
  * @category Combintators
  */
 export const annotate: (params?: {
-  title?: string
-  description?: string
+  readonly title?: string
+  readonly description?: string
+  readonly references?: RR.ReadonlyRecord<string, JsonSchema>
 }) => (schema: JsonSchema) => Const<JsonSchema, never> =
-  ({ title, description } = {}) =>
+  ({ title, description, references } = {}) =>
   schema =>
-    title === undefined && description === undefined
+    title === undefined && description === undefined && references === undefined
       ? make(schema)
       : make({
           ...schema,
           ...(title === undefined ? {} : { title }),
           ...(description === undefined ? {} : { description }),
+          ...(references === undefined ? {} : { $defs: references }),
         })
+
+/**
+ * A reference to a schema definition
+ *
+ * @since 2.0.0
+ */
+export const ref = <A>(ref: string): Const<JsonSchema, A> => make(new I.JsonRef(ref))
 
 // -------------------------------------------------------------------------------------
 // Destructors
