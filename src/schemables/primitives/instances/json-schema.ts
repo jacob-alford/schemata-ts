@@ -10,10 +10,16 @@ export const PrimitivesJsonSchema: WithPrimitives<JS.SchemableLambda> = {
   unknown: JS.make(new JS.JsonEmpty()),
   literal: (...literals) =>
     JS.make(
-      new JS.JsonUnion(
-        literals.map(literal =>
-          literal === null ? new JS.JsonNull() : { type: typeof literal, const: literal },
-        ),
-      ),
+      literals.length === 1
+        ? literals[0] === null
+          ? new JS.JsonNull()
+          : { type: typeof literals[0], const: literals[0] }
+        : new JS.JsonUnion(
+            literals.map(literal =>
+              literal === null
+                ? new JS.JsonNull()
+                : { type: typeof literal, const: literal },
+            ),
+          ),
     ),
 }

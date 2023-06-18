@@ -112,7 +112,6 @@ export const getTestSuite = <I, O>(schema: Schema<I, O>): TestSuite<I, O> => {
   const transcodePar = getTranscoderPar(schema)
   const guard = getGuard(schema)
   const eq = getEq(schema)
-  const arbitrary = getArbitrary(schema).arbitrary(fc)
   const information = getInformation(schema)
   const jsonSchema = getJsonSchema(schema)
   return {
@@ -183,6 +182,7 @@ export const getTestSuite = <I, O>(schema: Schema<I, O>): TestSuite<I, O> => {
       })
     },
     testTranscoderLaws: () => {
+      const arbitrary = getArbitrary(schema).arbitrary(fc)
       test('idempotence > sequential', () => {
         fc.assert(
           fc.property(arbitrary, output => {
@@ -203,6 +203,7 @@ export const getTestSuite = <I, O>(schema: Schema<I, O>): TestSuite<I, O> => {
         )
       })
       test('idempotence > parallel', () => {
+        const arbitrary = getArbitrary(schema).arbitrary(fc)
         fc.assert(
           fc.asyncProperty(arbitrary, async output => {
             const initial = pipe(
@@ -228,6 +229,7 @@ export const getTestSuite = <I, O>(schema: Schema<I, O>): TestSuite<I, O> => {
       })
     },
     testEqLaws: () => {
+      const arbitrary = getArbitrary(schema).arbitrary(fc)
       test('reflexivity', () => {
         fc.assert(
           fc.property(arbitrary, output => {
@@ -253,6 +255,7 @@ export const getTestSuite = <I, O>(schema: Schema<I, O>): TestSuite<I, O> => {
       })
     },
     testArbitraryGuard: () => {
+      const arbitrary = getArbitrary(schema).arbitrary(fc)
       test('arbitraries', () => {
         fc.assert(
           fc.property(arbitrary, output => {
@@ -334,8 +337,9 @@ export type MakeTestValues<I, O> = {
   }
 }
 
-export type StandardErrors = {
-  readonly makeDecodeError: (value: unknown) => TCE.TranscodeErrors
+export type StandardTestSuiteOptions = {
+  readonly makeDecodeError?: (value: unknown) => TCE.TranscodeErrors
+  readonly skipArbitraryChecks?: boolean
 }
 
 export const runStandardTestSuite =
@@ -343,24 +347,26 @@ export const runStandardTestSuite =
     name: string,
     schema: Schema<I, O>,
     makeTestValues: (helpers: MakeTestValues<I, O>) => StandardTestInputs<I, O>,
-    standardErrors: StandardErrors = {
-      makeDecodeError: value =>
-        new TCE.TranscodeErrors([new TCE.TypeMismatch(name, value)]),
-    },
+    options: StandardTestSuiteOptions = {},
   ): IO.IO<void> =>
   () => {
+    const {
+      makeDecodeError = (value: unknown) =>
+        new TCE.TranscodeErrors([new TCE.TypeMismatch(name, value)]),
+      skipArbitraryChecks = false,
+    } = options
     const _ = getTestSuite(schema)
     const testValues = makeTestValues({
       decoder: {
         pass: (preDecode, postDecode) =>
           tuple(preDecode, E.right(postDecode ?? (preDecode as any))),
-        fail: (preDecode, getError = () => standardErrors.makeDecodeError(preDecode)) =>
+        fail: (preDecode, getError = () => makeDecodeError(preDecode)) =>
           tuple(preDecode, E.left(getError(preDecode))),
       },
       encoder: {
         pass: (preEncode, postEncode) =>
           tuple(preEncode, E.right(postEncode ?? (preEncode as any))),
-        fail: (preEncode, getError = () => standardErrors.makeDecodeError(preEncode)) =>
+        fail: (preEncode, getError = () => makeDecodeError(preEncode)) =>
           tuple(preEncode, E.left(getError(preEncode))),
       },
     })
@@ -374,9 +380,11 @@ export const runStandardTestSuite =
       describe('eq', _.testEq(testValues.eqTests, deriveEqTests(testValues.encoderTests)))
       describe('jsonSchema', _.assertJsonSchema(testValues.jsonSchema))
       describe('information', _.assertValidInformation)
-      describe('transcoder laws', _.testTranscoderLaws)
-      describe('eq laws', _.testEqLaws)
-      describe('arbitrary <-> guard', _.testArbitraryGuard)
+      if (!skipArbitraryChecks) {
+        describe('transcoder laws', _.testTranscoderLaws)
+        describe('eq laws', _.testEqLaws)
+        describe('arbitrary <-> guard', _.testArbitraryGuard)
+      }
       if (testValues.additionalTests) {
         describe('additional tests', testValues.additionalTests(_))
       }
