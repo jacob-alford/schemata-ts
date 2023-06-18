@@ -4,15 +4,13 @@ import { isFloat, isInt } from 'schemata-ts/schemables/primitives/utils'
 
 /** @since 2.0.0 */
 export const PrimitivesArbitrary: WithPrimitives<Arb.SchemableLambda> = {
-  string: (params = {}) => ({
+  string: params => ({
     arbitrary: fc =>
       fc.oneof(
         fc.string(params),
         fc.asciiString(params),
-        fc.fullUnicodeString(params),
         fc.hexaString(params),
         fc.base64String(params),
-        fc.fullUnicodeString(params),
       ),
   }),
   int: (params = {}) => {

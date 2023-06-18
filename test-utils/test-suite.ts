@@ -11,11 +11,13 @@ import * as TE from 'fp-ts/TaskEither'
 import { getArbitrary } from 'schemata-ts/derivations/arbitrary-schemable'
 import { getEq } from 'schemata-ts/derivations/eq-schemable'
 import { getGuard } from 'schemata-ts/derivations/guard-schemable'
+import { getInformation } from 'schemata-ts/derivations/information-schemable'
 import { getJsonSchema } from 'schemata-ts/derivations/json-schema-schemable'
 import { getTranscoderPar } from 'schemata-ts/derivations/transcoder-par-schemable'
 import { getTranscoder } from 'schemata-ts/derivations/transcoder-schemable'
 import * as JS from 'schemata-ts/internal/json-schema'
 import { Schema } from 'schemata-ts/Schema'
+import { PrimitivesGuard } from 'schemata-ts/schemables/primitives/instances/guard'
 import * as TCE from 'schemata-ts/TranscodeError'
 
 const { BooleanAlgebra: B } = B_
@@ -48,6 +50,9 @@ export interface TestSuite<I, O> {
 
   /** Tests JsonSchema against a set of expected values */
   readonly assertJsonSchema: (jsonSchema: JS.JsonSchema) => IO.IO<void>
+
+  /** Ensures information is a number */
+  readonly assertValidInformation: IO.IO<void>
 
   /**
    * Uses arbitrary to generate random domain values and tests transcoder and
@@ -106,6 +111,7 @@ export const getTestSuite = <I, O>(schema: Schema<I, O>): TestSuite<I, O> => {
   const guard = getGuard(schema)
   const eq = getEq(schema)
   const arbitrary = getArbitrary(schema).arbitrary(fc)
+  const information = getInformation(schema)
   const jsonSchema = getJsonSchema(schema)
   return {
     testDecoder: flow(foldTestSuites(getPassFailString), testSuites => () => {
@@ -169,6 +175,11 @@ export const getTestSuite = <I, O>(schema: Schema<I, O>): TestSuite<I, O> => {
         expect(jsonSchema).toStrictEqual(expected)
       })
     },
+    assertValidInformation: () => {
+      it('constructs valid information', () => {
+        expect(PrimitivesGuard.float().is(information)).toBe(true)
+      })
+    },
     testTranscoderLaws: () => {
       test('idempotence > sequential', () => {
         fc.assert(
@@ -192,17 +203,22 @@ export const getTestSuite = <I, O>(schema: Schema<I, O>): TestSuite<I, O> => {
       test('idempotence > parallel', () => {
         fc.assert(
           fc.asyncProperty(arbitrary, async output => {
-            const result = pipe(
+            const initial = pipe(
               output,
               transcodePar.encode,
               TE.chain(transcodePar.decode),
+            )
+            const result = pipe(
+              initial,
               TE.chain(transcodePar.encode),
               TE.chain(transcodePar.decode),
             )
             expect(
               pipe(
                 result,
-                TE.map(result => eq.equals(result, output)),
+                TE.bindTo('result'),
+                TE.apS('initial', initial),
+                TE.map(({ result, initial }) => eq.equals(result, initial)),
               )(),
             ).resolves.toStrictEqual(E.right(true))
           }),
@@ -354,6 +370,7 @@ export const runStandardTestSuite =
       )
       describe('eq', _.testEq(testValues.eqTests, deriveEqTests(testValues.encoderTests)))
       describe('jsonSchema', _.assertJsonSchema(testValues.jsonSchema))
+      describe('information', _.assertValidInformation)
       describe('transcoder laws', _.testTranscoderLaws)
       describe('eq laws', _.testEqLaws)
       describe('arbitrary <-> guard', _.testArbitraryGuard)

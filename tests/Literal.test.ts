@@ -1,6 +1,6 @@
 import * as S from 'schemata-ts'
-import * as TC from 'schemata-ts/Transcoder'
 import * as JS from 'schemata-ts/JsonSchema'
+import * as TC from 'schemata-ts/Transcoder'
 
 import { runStandardTestSuite } from '../test-utils/test-suite'
 
