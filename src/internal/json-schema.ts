@@ -1,5 +1,6 @@
 import { Const, make as make_ } from 'fp-ts/Const'
 import * as RNEA from 'fp-ts/ReadonlyNonEmptyArray'
+import * as RR from 'fp-ts/ReadonlyRecord'
 import * as hkt from 'schemata-ts/HKT'
 
 export type JsonSchemaValue =
@@ -16,12 +17,17 @@ export type JsonSchemaValue =
   | JsonArray
   | JsonUnion
   | JsonIntersection
+  | JsonRef
 
-export type JsonSchema = JsonSchemaValue & Description
+export type JsonSchema = JsonSchemaValue & Description & References
 
 export interface Description {
   readonly title?: string
   readonly description?: string
+}
+
+export interface References {
+  readonly $defs?: RR.ReadonlyRecord<string, JsonSchema>
 }
 
 export const make: <A>(value: JsonSchemaValue) => Const<JsonSchema, A> = make_
@@ -31,6 +37,12 @@ export const addDescription =
   (description?: Description) =>
   <A>(schema: Const<JsonSchema, A>): Const<JsonSchema, A> =>
     make_(Object.assign({}, schema, description ?? {}))
+
+/** @internal */
+export const addReferences =
+  (references?: References) =>
+  <A>(schema: Const<JsonSchema, A>): Const<JsonSchema, A> =>
+    make_(Object.assign({}, schema, references ?? {}))
 
 /** Matches anything */
 export class JsonEmpty {}
@@ -113,6 +125,15 @@ export class JsonUnion {
 /** Matches all of the supplied schemas */
 export class JsonIntersection {
   constructor(readonly allOf: RNEA.ReadonlyNonEmptyArray<JsonSchema>) {}
+}
+
+/**
+ * A reference to a named schema definition
+ *
+ * @since 2.0.0
+ */
+export class JsonRef {
+  constructor(readonly $ref: string) {}
 }
 
 /** @since 1.2.0 */
