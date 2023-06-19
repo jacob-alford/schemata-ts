@@ -32,6 +32,38 @@ const One = pipe(
   }),
 )
 
+const expectedJsonSchema = JS.annotate({
+  references: {
+    one: JS.struct(
+      {
+        two: JS.ref('two'),
+      },
+      ['two'],
+    ),
+    two: JS.struct(
+      {
+        one: makeImplicitOptional(
+          JS.union(
+            JS.nullSchema,
+            makeImplicitOptional(JS.ref('one'), _ => Object.assign({}, _)),
+          ),
+          _ => Object.assign({}, _),
+        ),
+      },
+      [],
+    ),
+  },
+})(
+  JS.struct(
+    {
+      two: JS.ref('two'),
+    },
+    ['two'],
+  ),
+)
+
+console.log(JSON.stringify(expectedJsonSchema, null, 2))
+
 runStandardTestSuite(
   'Lazy Recursive',
   One,
@@ -55,32 +87,7 @@ runStandardTestSuite(
     encoderTests: [],
     guardTests: [],
     eqTests: [],
-    jsonSchema: JS.annotate({
-      references: {
-        one: JS.struct(
-          {
-            two: JS.ref('two'),
-          },
-          ['two'],
-        ),
-        two: JS.struct(
-          {
-            one: JS.union(
-              JS.nullSchema,
-              makeImplicitOptional(JS.ref('one'), _ => Object.assign({}, _)),
-            ),
-          },
-          ['one'],
-        ),
-      },
-    })(
-      JS.struct(
-        {
-          two: JS.ref('two'),
-        },
-        ['two'],
-      ),
-    ),
+    jsonSchema: expectedJsonSchema,
   }),
   {
     skipArbitraryChecks: true,

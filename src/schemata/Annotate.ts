@@ -11,6 +11,8 @@ import * as JS from 'schemata-ts/internal/json-schema'
 import * as SC from 'schemata-ts/Schema'
 
 /**
+ * Annotate a Json Schema with title, description, and references.
+ *
  * Note: references must be specified for all "Lazy" schemas, and must occur after the
  * declaration of the primary schema. This is because Lazy for json-schema is implemented
  * as a ref, and that ref must be specified in the parent using `Annotate`
@@ -36,7 +38,7 @@ import * as SC from 'schemata-ts/Schema'
  *   })
  *
  *   const Two_ = S.Struct({
- *     one: S.Lazy('one', () => One_),
+ *     one: S.Nullable(S.Lazy('one', () => One_)),
  *   })
  *
  *   const One = pipe(
@@ -62,7 +64,7 @@ import * as SC from 'schemata-ts/Schema'
  *   const jsonSchemaOne = JS.getJsonSchema(One)
  *   const jsonSchemaTwo = JS.getJsonSchema(Two)
  *
- *   assert.deepStrictEqual(jsonSchemaOne, {
+ *   assert.deepStrictEqual(JS.stripIdentity(jsonSchemaOne), {
  *     properties: {
  *       two: {
  *         $ref: 'two',
@@ -83,40 +85,18 @@ import * as SC from 'schemata-ts/Schema'
  *       two: {
  *         properties: {
  *           one: {
- *             $ref: 'one',
+ *             oneOf: [
+ *               {
+ *                 type: 'null',
+ *                 const: null,
+ *               },
+ *               {
+ *                 $ref: 'one',
+ *               },
+ *             ],
  *           },
  *         },
- *         required: ['one'],
- *         type: 'object',
- *       },
- *     },
- *   })
- *
- *   assert.deepStrictEqual(jsonSchemaTwo, {
- *     properties: {
- *       one: {
- *         $ref: 'one',
- *       },
- *     },
- *     required: ['one'],
- *     type: 'object',
- *     $defs: {
- *       one: {
- *         properties: {
- *           two: {
- *             $ref: 'two',
- *           },
- *         },
- *         required: ['two'],
- *         type: 'object',
- *       },
- *       two: {
- *         properties: {
- *           one: {
- *             $ref: 'one',
- *           },
- *         },
- *         required: ['one'],
+ *         required: [],
  *         type: 'object',
  *       },
  *     },

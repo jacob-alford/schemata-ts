@@ -3,7 +3,7 @@
  *
  * @since 1.3.0
  */
-import { identity, pipe } from 'fp-ts/function'
+import { identity, pipe, unsafeCoerce } from 'fp-ts/function'
 import * as O from 'fp-ts/Option'
 import { SchemableKind, SchemableLambda } from 'schemata-ts/HKT'
 import { camelCase } from 'schemata-ts/internal/camelcase'
@@ -32,6 +32,9 @@ export const makeImplicitOptional: <T>(
   clone: (val: T) => T,
 ) => ImplicitOptional & T = (val, clone) =>
   Object.assign(clone(val) as any, implicitOptional)
+
+/** @internal */
+export const makeImplicitOptionalType: <T>(val: T) => ImplicitOptional & T = unsafeCoerce
 
 /** @internal */
 export const hasImplicitOptional = (u: unknown): u is ImplicitOptional =>
