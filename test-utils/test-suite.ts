@@ -340,20 +340,33 @@ export type MakeTestValues<I, O> = {
 export type StandardTestSuiteOptions = {
   readonly makeDecodeError?: (value: unknown) => TCE.TranscodeErrors
   readonly skipArbitraryChecks?: boolean
+  readonly skipAll?: boolean
 }
 
-export const runStandardTestSuite =
-  <I, O>(
-    name: string,
-    schema: Schema<I, O>,
-    makeTestValues: (helpers: MakeTestValues<I, O>) => StandardTestInputs<I, O>,
-    options: StandardTestSuiteOptions = {},
-  ): IO.IO<void> =>
+type StandardTestSuiteFn = <I, O>(
+  name: string,
+  schema: Schema<I, O>,
+  makeTestValues: (helpers: MakeTestValues<I, O>) => StandardTestInputs<I, O>,
+  options?: StandardTestSuiteOptions,
+) => IO.IO<void>
+
+type RunStandardTestSuite = {
+  (...args: Parameters<StandardTestSuiteFn>): ReturnType<StandardTestSuiteFn>
+  readonly skip: (
+    ...args: Parameters<StandardTestSuiteFn>
+  ) => ReturnType<StandardTestSuiteFn>
+}
+
+const runStandardTestSuite_: (
+  ...args: Parameters<StandardTestSuiteFn>
+) => ReturnType<StandardTestSuiteFn> =
+  (name, schema, makeTestValues, options = {}) =>
   () => {
     const {
       makeDecodeError = (value: unknown) =>
         new TCE.TranscodeErrors([new TCE.TypeMismatch(name, value)]),
       skipArbitraryChecks = false,
+      skipAll = false,
     } = options
     const _ = getTestSuite(schema)
     const testValues = makeTestValues({
@@ -370,7 +383,8 @@ export const runStandardTestSuite =
           tuple(preEncode, E.left(getError(preEncode))),
       },
     })
-    describe(`${name} Standard Test Suite`, () => {
+
+    ;(skipAll ? describe.skip : describe)(`${name} Standard Test Suite`, () => {
       describe('decoder', _.testDecoder(testValues.decoderTests))
       describe('encoder', _.testEncoder(testValues.encoderTests))
       describe(
@@ -390,3 +404,16 @@ export const runStandardTestSuite =
       }
     })
   }
+
+const skip: RunStandardTestSuite['skip'] = (name, schema, makeTestValues, options = {}) =>
+  runStandardTestSuite_(name, schema, makeTestValues, { ...options, skipAll: true })
+
+const makeStandardTestSuite: (
+  fn: (...args: Parameters<StandardTestSuiteFn>) => ReturnType<StandardTestSuiteFn>,
+) => RunStandardTestSuite = fn =>
+  Object.assign(fn, {
+    skip,
+  })
+
+export const runStandardTestSuite: RunStandardTestSuite =
+  makeStandardTestSuite(runStandardTestSuite_)
