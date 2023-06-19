@@ -9,4 +9,4 @@ import { make, Schema } from 'schemata-ts/Schema'
  * @since 1.0.0
  */
 export const Lazy = <I, O>(name: string, f: LazyArg<Schema<I, O>>): Schema<I, O> =>
-  make(_ => _.lazy(name, () => f()(_)))
+  make(_ => _.lazy(name, () => f().runSchema(_)))

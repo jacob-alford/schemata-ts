@@ -36,5 +36,6 @@ export const ethereumAddress: PB.Pattern = PB.sequence(
  * @since 1.0.0
  * @category Schema
  */
-export const EthereumAddress: Schema<EthereumAddress, EthereumAddress> =
-  Brand<EthereumAddressBrand>()(Pattern(ethereumAddress, 'EthereumAddress'))
+export const EthereumAddress: Schema<EthereumAddress> = Brand<EthereumAddressBrand>()(
+  Pattern(ethereumAddress, 'EthereumAddress'),
+)

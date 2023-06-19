@@ -70,7 +70,7 @@ export const CamelCaseFromMixed: <T extends Record<string, Schema<unknown, unkno
       // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
       const schema = props[key]!
       const schemable: SchemableKind<SchemableLambda, unknown, unknown> = remapKey(
-        schema(_),
+        schema.runSchema(_),
         _.clone,
         camelCase(key),
       )
@@ -81,4 +81,4 @@ export const CamelCaseFromMixed: <T extends Record<string, Schema<unknown, unkno
       }
     }
     return _.struct(struct as any)
-  })
+  }) as any

@@ -25,9 +25,7 @@ import { Int } from 'schemata-ts/schemata/Int'
  * @since 1.0.0
  * @category Schema
  */
-export const NonPositiveInt: Schema<Integer<MinSafeInt, 0>, Integer<MinSafeInt, 0>> = Int(
-  {
-    min: minSafeInt,
-    max: 0,
-  },
-)
+export const NonPositiveInt: Schema<Integer<MinSafeInt, 0>> = Int({
+  min: minSafeInt,
+  max: 0,
+})

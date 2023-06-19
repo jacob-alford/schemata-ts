@@ -46,6 +46,6 @@ export const base64Url: PB.Pattern = pipe(
  * @since 1.0.0
  * @category Schema
  */
-export const Base64Url: Schema<Base64Url, Base64Url> = Brand<Base64UrlBrand>()(
+export const Base64Url: Schema<Base64Url> = Brand<Base64UrlBrand>()(
   Pattern(base64Url, 'Base64Url'),
 )

@@ -25,7 +25,7 @@ const getSetGuard = <A>(guard: G.Guard<A>): G.Guard<ReadonlySet<A>> => ({
  */
 export const SetFromArray: <A>(
   ordA: Ord<A>,
-) => <O>(sA: Schema<O, A>) => Schema<Array<O>, ReadonlySet<A>> = ordA => _ =>
+) => <O>(sA: Schema<O, A>) => Schema<ReadonlyArray<O>, ReadonlySet<A>> = ordA => _ =>
   pipe(
     _,
     Array_(),

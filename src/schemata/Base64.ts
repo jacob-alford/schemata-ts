@@ -55,7 +55,7 @@ export const base64: PB.Pattern = pipe(
  * @since 1.0.0
  * @category Schema
  */
-export const Base64: Schema<Base64, Base64> = pipe(
+export const Base64: Schema<Base64> = pipe(
   Pattern(base64, 'Base64'),
   StringPadRight(
     {

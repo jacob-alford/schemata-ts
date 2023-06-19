@@ -25,7 +25,7 @@ import { Int } from 'schemata-ts/schemata/Int'
  * @since 1.0.0
  * @category Schema
  */
-export const PositiveInt: Schema<Integer<1, MaxSafeInt>, Integer<1, MaxSafeInt>> = Int({
+export const PositiveInt: Schema<Integer<1, MaxSafeInt>> = Int({
   min: 1,
   max: maxSafeInt,
 })

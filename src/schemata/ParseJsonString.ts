@@ -1,6 +1,6 @@
 /** @since 2.0.0 */
 import * as E from 'fp-ts/Either'
-import * as SC from 'schemata-ts/Schema'
+import { Schema } from 'schemata-ts/Schema'
 import { JsonString } from 'schemata-ts/schemables/parser/definition'
 import { ParseEncodedJsonString } from 'schemata-ts/schemata/ParseEncodedJson'
 
@@ -9,7 +9,7 @@ import { ParseEncodedJsonString } from 'schemata-ts/schemata/ParseEncodedJson'
  *
  * @since 2.0.0
  */
-export const ParseJsonString: <I, O>(inner: SC.Schema<I, O>) => SC.Schema<JsonString, O> =
+export const ParseJsonString: <I, O>(inner: Schema<I, O>) => Schema<JsonString, O> =
   ParseEncodedJsonString('JsonString', E.right, E.right, {
     contentMediaType: 'application/json',
   })

@@ -23,7 +23,7 @@ import { Imap } from 'schemata-ts/schemata/Imap'
  * @since 1.0.0
  * @category Schema
  */
-export const BooleanFromNumber: Schema<number, boolean> = pipe(
+export const BooleanFromNumber: Schema<Floating, boolean> = pipe(
   Float(),
   Imap(
     getGuard(Boolean),

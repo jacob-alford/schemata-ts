@@ -110,6 +110,6 @@ export const latLongPattern = PB.oneOf(
  * @since 1.0.0
  * @category Schema
  */
-export const LatLong: Schema<LatLong, LatLong> = Brand<LatLongBrand>()(
+export const LatLong: Schema<LatLong> = Brand<LatLongBrand>()(
   Pattern(latLongPattern, 'LatLong'),
 )

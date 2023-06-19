@@ -17,4 +17,4 @@ export const NonEmptyArray: <A, O>(
   sA: Schema<O, A>,
 ) => Schema<RNEA.ReadonlyNonEmptyArray<O>, RNEA.ReadonlyNonEmptyArray<A>> = Array({
   minLength: 1,
-})
+}) as any

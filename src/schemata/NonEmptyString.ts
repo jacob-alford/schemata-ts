@@ -26,5 +26,6 @@ export type NonEmptyString = Branded<string, NonEmptyStringBrand>
  * @since 1.0.0
  * @category Schema
  */
-export const NonEmptyString: Schema<NonEmptyString, NonEmptyString> =
-  Brand<NonEmptyStringBrand>()(String({ minLength: 1 }))
+export const NonEmptyString: Schema<NonEmptyString> = Brand<NonEmptyStringBrand>()(
+  String({ minLength: 1 }),
+)

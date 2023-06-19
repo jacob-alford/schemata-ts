@@ -350,16 +350,11 @@ type StandardTestSuiteFn = <I, O>(
   options?: StandardTestSuiteOptions,
 ) => IO.IO<void>
 
-type RunStandardTestSuite = {
-  (...args: Parameters<StandardTestSuiteFn>): ReturnType<StandardTestSuiteFn>
-  readonly skip: (
-    ...args: Parameters<StandardTestSuiteFn>
-  ) => ReturnType<StandardTestSuiteFn>
+type RunStandardTestSuite = StandardTestSuiteFn & {
+  readonly skip: StandardTestSuiteFn
 }
 
-const runStandardTestSuite_: (
-  ...args: Parameters<StandardTestSuiteFn>
-) => ReturnType<StandardTestSuiteFn> =
+const runStandardTestSuite_: StandardTestSuiteFn =
   (name, schema, makeTestValues, options = {}) =>
   () => {
     const {
@@ -408,9 +403,7 @@ const runStandardTestSuite_: (
 const skip: RunStandardTestSuite['skip'] = (name, schema, makeTestValues, options = {}) =>
   runStandardTestSuite_(name, schema, makeTestValues, { ...options, skipAll: true })
 
-const makeStandardTestSuite: (
-  fn: (...args: Parameters<StandardTestSuiteFn>) => ReturnType<StandardTestSuiteFn>,
-) => RunStandardTestSuite = fn =>
+const makeStandardTestSuite: (fn: StandardTestSuiteFn) => RunStandardTestSuite = fn =>
   Object.assign(fn, {
     skip,
   })

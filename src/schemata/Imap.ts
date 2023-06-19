@@ -1,6 +1,6 @@
 /** @since 1.0.0 */
 import * as G from 'schemata-ts/internal/guard'
-import * as SC from 'schemata-ts/Schema'
+import { make, Schema } from 'schemata-ts/Schema'
 
 /**
  * A Schema that maps the output type of another Schema. Guard is not invariant, and
@@ -11,5 +11,5 @@ import * as SC from 'schemata-ts/Schema'
  */
 export const Imap =
   <A, B>(targetGuard: G.Guard<B>, f: (a: A) => B, g: (b: B) => A) =>
-  <I>(target: SC.Schema<I, A>): SC.Schema<I, B> =>
-    SC.make(S => S.imap(targetGuard)(f, g)(target(S)))
+  <I>(target: Schema<I, A>): Schema<I, B> =>
+    make(S => S.imap(targetGuard)(f, g)(target.runSchema(S)))

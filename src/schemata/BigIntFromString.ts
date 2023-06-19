@@ -9,6 +9,7 @@ import * as Str from 'fp-ts/string'
 import { Branded } from 'schemata-ts/brand'
 import * as PB from 'schemata-ts/PatternBuilder'
 import { Schema } from 'schemata-ts/Schema'
+import { Brand } from 'schemata-ts/schemata/Brand'
 import { Imap } from 'schemata-ts/schemata/Imap'
 import { Pattern } from 'schemata-ts/schemata/Pattern'
 import { Refine } from 'schemata-ts/schemata/Refine'
@@ -115,6 +116,7 @@ export const BigIntFromString: (
         ),
       'BigIntString',
     ),
+    Brand<BigIntStringBrand>(),
     Imap(
       { is: (u): u is bigint => typeof u === 'bigint' },
       b => BigInt(b),

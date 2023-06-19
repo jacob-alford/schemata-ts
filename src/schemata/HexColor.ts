@@ -47,6 +47,6 @@ export const hexColor: PB.Pattern = pipe(
  * @since 1.0.0
  * @category Schema
  */
-export const HexColor: Schema<HexColor, HexColor> = Brand<HexColorBrand>()(
+export const HexColor: Schema<HexColor> = Brand<HexColorBrand>()(
   Pattern(hexColor, 'HexColor'),
 )

@@ -22,6 +22,7 @@ import * as PB from 'schemata-ts/PatternBuilder'
 import { Schema } from 'schemata-ts/Schema'
 import { BoundedParams } from 'schemata-ts/schemables/primitives/definition'
 import { PrimitivesGuard } from 'schemata-ts/schemables/primitives/instances/guard'
+import { Brand } from 'schemata-ts/schemata/Brand'
 import { Imap } from 'schemata-ts/schemata/Imap'
 import { Pattern } from 'schemata-ts/schemata/Pattern'
 import { Simplify } from 'type-fest'
@@ -155,6 +156,12 @@ export const IntFromString = <
 > =>
   pipe(
     Pattern(intFromString, 'IntFromString'),
+    Brand<
+      IntStringBrand<
+        Min extends undefined ? MinSafeInt : Min,
+        Max extends undefined ? MaxSafeInt : Max
+      >
+    >(),
     Imap(
       PrimitivesGuard.int(params),
       s =>
@@ -162,6 +169,12 @@ export const IntFromString = <
           Min extends undefined ? MinSafeInt : Min,
           Max extends undefined ? MaxSafeInt : Max
         >,
-      n => `${baseToPrefix(params.encodeToBase)}${n.toString(params.encodeToBase ?? 10)}`,
+      n =>
+        `${baseToPrefix(params.encodeToBase)}${n.toString(
+          params.encodeToBase ?? 10,
+        )}` as IntString<
+          Min extends undefined ? MinSafeInt : Min,
+          Max extends undefined ? MaxSafeInt : Max
+        >,
     ),
   )

@@ -23,9 +23,5 @@ export const Float = <
   Floating<
     Min extends undefined ? MaxNegativeFloat : Min,
     Max extends undefined ? MaxPositiveFloat : Max
-  >,
-  Floating<
-    Min extends undefined ? MaxNegativeFloat : Min,
-    Max extends undefined ? MaxPositiveFloat : Max
   >
 > => make(s => s.float(params))

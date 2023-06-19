@@ -12,7 +12,7 @@ type SafeDateBrand = { readonly SafeDate: SafeDateSymbol }
 
 declare const SafeDateStringSymbol: unique symbol
 type SafeDateStringSymbol = typeof SafeDateStringSymbol
-type SafeDateStringBrand = { readonly SafeDateString: SafeDateStringSymbol }
+export type SafeDateStringBrand = { readonly SafeDateString: SafeDateStringSymbol }
 
 /**
  * A valid date object

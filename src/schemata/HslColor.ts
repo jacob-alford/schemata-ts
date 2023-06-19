@@ -153,6 +153,6 @@ export const hslPattern = PB.sequence(
  * @since 1.0.0
  * @category Schema
  */
-export const HslColor: Schema<HslColor, HslColor> = Brand<HslColorBrand>()(
+export const HslColor: Schema<HslColor> = Brand<HslColorBrand>()(
   Pattern(hslPattern, 'HslColor'),
 )

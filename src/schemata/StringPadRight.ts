@@ -12,4 +12,4 @@ export const StringPadRight: (
   char: string,
 ) => (inner: Schema<string, string>) => Schema<string, string> =
   (params, char) => inner =>
-    make(_ => _.padRight(params, char)(inner(_)))
+    make(_ => _.padRight(params, char)(inner.runSchema(_)))

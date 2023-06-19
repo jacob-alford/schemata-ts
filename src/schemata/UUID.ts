@@ -133,5 +133,5 @@ export type UUID<Version extends UUIDVersion> = Branded<string, UUIDBrand<Versio
  */
 export const UUID = <Version extends UUIDVersion>(
   version: Version,
-): Schema<string, UUID<Version>> =>
+): Schema<UUID<Version>, UUID<Version>> =>
   Brand<UUIDBrand<Version>>()(Pattern(uuidPattern[version], `UUID version ${version}`))

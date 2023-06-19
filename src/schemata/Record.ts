@@ -15,4 +15,4 @@ import { make, Schema } from 'schemata-ts/Schema'
 export const Record = <E, A>(
   codomain: Schema<E, A>,
 ): Schema<Record<string, E>, Record<string, A>> =>
-  make(_ => _.struct({}, { extraProps: 'restParam', restParam: codomain(_) }))
+  make(_ => _.struct({}, { extraProps: 'restParam', restParam: codomain.runSchema(_) }))

@@ -104,4 +104,4 @@ export const RGBPattern = PB.oneOf(
  * @since 1.0.0
  * @category Schema
  */
-export const RGB: Schema<RGB, RGB> = Brand<RGBBrand>()(Pattern(RGBPattern, 'RGB'))
+export const RGB: Schema<RGB> = Brand<RGBBrand>()(Pattern(RGBPattern, 'RGB'))

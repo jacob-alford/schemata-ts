@@ -67,5 +67,6 @@ export const bitcoinAddress: PB.Pattern = pipe(bech32, PB.or(base58))
  * @since 1.0.0
  * @category Schema
  */
-export const BitcoinAddress: Schema<BitcoinAddress, BitcoinAddress> =
-  Brand<BitcoinAddressBrand>()(Pattern(bitcoinAddress, 'BitcoinAddress'))
+export const BitcoinAddress: Schema<BitcoinAddress> = Brand<BitcoinAddressBrand>()(
+  Pattern(bitcoinAddress, 'BitcoinAddress'),
+)

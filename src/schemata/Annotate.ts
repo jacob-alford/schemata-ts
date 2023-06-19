@@ -8,7 +8,7 @@ import { pipe } from 'fp-ts/function'
 import * as RR from 'fp-ts/ReadonlyRecord'
 import { getJsonSchema } from 'schemata-ts/derivations/json-schema-schemable'
 import * as JS from 'schemata-ts/internal/json-schema'
-import * as SC from 'schemata-ts/Schema'
+import { make, Schema } from 'schemata-ts/Schema'
 
 /**
  * Annotate a Json Schema with title, description, and references.
@@ -103,17 +103,18 @@ import * as SC from 'schemata-ts/Schema'
  *   })
  */
 export const Annotate =
-  (params: {
+  <Refs extends RR.ReadonlyRecord<string, Schema<any, any>>>(params: {
     title?: string
     description?: string
-    references?: RR.ReadonlyRecord<string, SC.Schema<unknown, unknown>>
+    references?: Refs
   }) =>
-  <O, A>(schema: SC.Schema<O, A>): SC.Schema<O, A> => {
+  <O, A>(schema: Schema<O, A>): Schema<O, A> => {
+    const { references = {} } = params
     const mappedRefs: RR.ReadonlyRecord<string, JS.JsonSchema> = pipe(
-      params.references ?? {},
+      references as Refs,
       RR.map(getJsonSchema),
     )
-    return SC.make(s =>
+    return make(s =>
       s.annotate(
         params === undefined
           ? undefined
@@ -124,6 +125,6 @@ export const Annotate =
                 : { description: params.description }),
               ...(params.references === undefined ? {} : { references: mappedRefs }),
             },
-      )(schema(s)),
+      )(schema.runSchema(s)),
     )
   }
