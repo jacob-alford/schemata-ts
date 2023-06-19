@@ -1,5 +1,4 @@
-import { Branded } from 'schemata-ts/brand'
-import * as SC from 'schemata-ts/Schema'
+import { make, Schema } from 'schemata-ts/Schema'
 import { CheckDigitVerified } from 'schemata-ts/schemables/check-digit/definition'
 
 /**
@@ -11,5 +10,5 @@ import { CheckDigitVerified } from 'schemata-ts/schemables/check-digit/definitio
  */
 export const CheckDigit =
   (algorithm: (s: string) => string, location: number | ((s: string) => number)) =>
-  <O>(schema: SC.Schema<O, string>): SC.Schema<O, Branded<string, CheckDigitVerified>> =>
-    SC.make(s => s.checkDigit(algorithm, location)<O>(schema(s)))
+  (schema: Schema<string, string>): Schema<CheckDigitVerified> =>
+    make(s => s.checkDigit(algorithm, location)(schema.runSchema(s)))

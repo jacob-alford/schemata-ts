@@ -44,6 +44,6 @@ export const hexadecimal: PB.Pattern = pipe(
  * @since 1.0.0
  * @category Schema
  */
-export const Hexadecimal: Schema<Hexadecimal, Hexadecimal> = Brand<HexadecimalBrand>()(
+export const Hexadecimal: Schema<Hexadecimal> = Brand<HexadecimalBrand>()(
   Pattern(hexadecimal, 'Hexadecimal'),
 )

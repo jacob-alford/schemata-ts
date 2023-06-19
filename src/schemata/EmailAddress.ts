@@ -112,5 +112,6 @@ export const emailAddress: PB.Pattern = pipe(
  * @since 1.0.0
  * @category Schema
  */
-export const EmailAddress: Schema<EmailAddress, EmailAddress> =
-  Brand<EmailAddressBrand>()(Pattern(emailAddress, 'EmailAddress'))
+export const EmailAddress: Schema<EmailAddress> = Brand<EmailAddressBrand>()(
+  Pattern(emailAddress, 'EmailAddress'),
+)

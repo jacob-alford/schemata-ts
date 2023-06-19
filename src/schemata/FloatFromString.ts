@@ -19,6 +19,7 @@ import * as PB from 'schemata-ts/PatternBuilder'
 import { Schema } from 'schemata-ts/Schema'
 import { BoundedParams } from 'schemata-ts/schemables/primitives/definition'
 import { PrimitivesGuard } from 'schemata-ts/schemables/primitives/instances/guard'
+import { Brand } from 'schemata-ts/schemata/Brand'
 import { Imap } from 'schemata-ts/schemata/Imap'
 import { Pattern } from 'schemata-ts/schemata/Pattern'
 import { Refine } from 'schemata-ts/schemata/Refine'
@@ -183,6 +184,12 @@ export const FloatFromString = <
       (s): s is string => PrimitivesGuard.float(params).is(Number(s)) && s.trim() !== '',
       'FloatString',
     ),
+    Brand<
+      FloatStringBrand<
+        Min extends undefined ? MaxNegativeFloat : Min,
+        Max extends undefined ? MaxPositiveFloat : Max
+      >
+    >(),
     Imap(
       PrimitivesGuard.float(params),
       s =>
@@ -190,6 +197,10 @@ export const FloatFromString = <
           Min extends undefined ? MaxNegativeFloat : Min,
           Max extends undefined ? MaxPositiveFloat : Max
         >,
-      n => n.toString(),
+      n =>
+        n.toString() as FloatString<
+          Min extends undefined ? MaxNegativeFloat : Min,
+          Max extends undefined ? MaxPositiveFloat : Max
+        >,
     ),
   )

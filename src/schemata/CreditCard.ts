@@ -11,6 +11,7 @@ import { Branded } from 'schemata-ts/brand'
 import { luhn } from 'schemata-ts/internal/algorithms'
 import * as PB from 'schemata-ts/PatternBuilder'
 import { Schema } from 'schemata-ts/Schema'
+import { CheckDigitVerified } from 'schemata-ts/schemables/check-digit/definition'
 import { Brand } from 'schemata-ts/schemata/Brand'
 import { CheckDigit } from 'schemata-ts/schemata/CheckDigit'
 import { Pattern } from 'schemata-ts/schemata/Pattern'
@@ -23,7 +24,7 @@ interface CreditCardBrand {
  * @since 1.0.0
  * @category Model
  */
-export type CreditCard = Branded<string, CreditCardBrand>
+export type CreditCard = Branded<CheckDigitVerified, CreditCardBrand>
 
 // source: https://en.wikipedia.org/w/index.php?title=Payment_card_number&oldid=1110892430
 // afaict the 13-digit variant has not been a thing for years, but maybe there
@@ -295,7 +296,7 @@ export const creditCard = PB.oneOf(
  * @since 1.0.0
  * @category Schema
  */
-export const CreditCard: Schema<CreditCard, CreditCard> = pipe(
+export const CreditCard: Schema<CreditCard> = pipe(
   Pattern(creditCard, 'CreditCard'),
   CheckDigit(
     ccn => luhn(ccn.substring(0, ccn.length - 1)).toString(10),

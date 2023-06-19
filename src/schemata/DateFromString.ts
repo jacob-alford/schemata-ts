@@ -1,4 +1,4 @@
-import * as SC from 'schemata-ts/Schema'
+import { make, Schema } from 'schemata-ts/Schema'
 import {
   DateParams,
   SafeDate,
@@ -11,6 +11,5 @@ import {
  * @since 1.0.0
  * @category Schema
  */
-export const DateFromString = (
-  params?: DateParams,
-): SC.Schema<SafeDateString, SafeDate> => SC.make(S => S.dateFromString(params))
+export const DateFromString = (params?: DateParams): Schema<SafeDateString, SafeDate> =>
+  make(S => S.dateFromString(params))

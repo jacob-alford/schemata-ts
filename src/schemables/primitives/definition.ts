@@ -27,7 +27,10 @@ export interface WithPrimitives<S extends SchemableLambda> {
     params?: BoundedParams<Min, Max>,
   ) => SchemableKind<
     S,
-    number,
+    Integer<
+      Min extends undefined ? MinSafeInt : Min,
+      Max extends undefined ? MaxSafeInt : Max
+    >,
     Integer<
       Min extends undefined ? MinSafeInt : Min,
       Max extends undefined ? MaxSafeInt : Max
@@ -40,7 +43,10 @@ export interface WithPrimitives<S extends SchemableLambda> {
     params?: BoundedParams<Min, Max>,
   ) => SchemableKind<
     S,
-    number,
+    Float<
+      Min extends undefined ? MaxNegativeFloat : Min,
+      Max extends undefined ? MaxPositiveFloat : Max
+    >,
     Float<
       Min extends undefined ? MaxNegativeFloat : Min,
       Max extends undefined ? MaxPositiveFloat : Max

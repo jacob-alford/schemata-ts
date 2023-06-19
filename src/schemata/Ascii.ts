@@ -43,4 +43,4 @@ export const ascii: PB.Pattern = pipe(
  * @since 1.0.0
  * @category Schema
  */
-export const Ascii: Schema<Ascii, Ascii> = Brand<AsciiBrand>()(Pattern(ascii, 'Ascii'))
+export const Ascii: Schema<Ascii> = Brand<AsciiBrand>()(Pattern(ascii, 'Ascii'))

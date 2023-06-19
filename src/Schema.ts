@@ -81,8 +81,13 @@ import { Schemable } from 'schemata-ts/Schemable'
  * @since 1.0.0
  * @category Model
  */
-export interface Schema<E, A> {
-  <S extends hkt.SchemableLambda>(S: Schemable<S>): hkt.SchemableKind<S, E, A>
+export interface Schema<I, O = I> {
+  readonly _Input: (_: I) => I
+  readonly _Output: (_: O) => O
+  /** @internal */
+  readonly runSchema: <S extends hkt.SchemableLambda>(
+    S: Schemable<S>,
+  ) => hkt.SchemableKind<S, I, O>
 }
 
 /**
@@ -107,16 +112,14 @@ export const memoize = <A, B>(f: (a: A) => B): ((a: A) => B) => {
 }
 
 /** @internal */
-export const make = <S extends Schema<any, any>>(
+export const make = <S extends Schema<any, any>['runSchema']>(
   f: S,
 ): S extends (...args: ReadonlyArray<any>) => {
   Input: (...args: ReadonlyArray<any>) => infer E
   Output: (...args: ReadonlyArray<any>) => infer A
 }
   ? Schema<E, A>
-  : never => {
-  return memoize(f) as any
-}
+  : never => ({ runSchema: memoize(f) } as any)
 
 /**
  * Extract the output of a schema
@@ -141,7 +144,7 @@ export const make = <S extends Schema<any, any>>(
  *   assert.deepStrictEqual(encoder.encode(O.some('a')), 'a')
  *   assert.deepStrictEqual(encoder.encode(O.none), null)
  */
-export type TypeOf<S> = S extends Schema<unknown, infer A> ? A : never
+export type TypeOf<S> = S extends Schema<any, infer A> ? A : never
 
 /**
  * Extract the output of a schema.
@@ -159,7 +162,7 @@ export type OutputOf<S> = TypeOf<S>
  * @since 1.0.0
  * @category Utilities
  */
-export type InputOf<S> = S extends Schema<infer I, unknown> ? I : never
+export type InputOf<S> = S extends Schema<infer I, any> ? I : never
 
 /**
  * Derives a typeclass instance from a Schema by supplying Schemable. i.e. `schemata-ts/Decoder`
@@ -169,4 +172,5 @@ export type InputOf<S> = S extends Schema<infer I, unknown> ? I : never
  */
 export const interpret: <S extends hkt.SchemableLambda>(
   S: Schemable<S>,
-) => <E, A>(schema: Schema<E, A>) => hkt.SchemableKind<S, E, A> = S => schema => schema(S)
+) => <E, A>(schema: Schema<E, A>) => hkt.SchemableKind<S, E, A> = S => schema =>
+  schema.runSchema(S)

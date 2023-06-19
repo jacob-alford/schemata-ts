@@ -31,10 +31,7 @@ import { Float as Floating } from 'schemata-ts/schemata/Float'
  * @since 1.0.0
  * @category Schema
  */
-export const PositiveFloat: Schema<
-  Float<MinPositiveFloat, MaxPositiveFloat>,
-  Float<MinPositiveFloat, MaxPositiveFloat>
-> = Floating({
+export const PositiveFloat: Schema<Float<MinPositiveFloat, MaxPositiveFloat>> = Floating({
   min: minPositiveFloat,
   max: maxPositiveFloat,
 })

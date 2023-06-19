@@ -10,11 +10,19 @@ type One = {
   two: Two
 }
 
+type OneOut = {
+  two: TwoOut
+}
+
 type Two = {
   one?: One | null
 }
 
-const One_: Schema<One, One> = S.Struct({
+type TwoOut = {
+  one: OneOut | null | undefined
+}
+
+const One_: Schema<One, OneOut> = S.Struct({
   two: S.Lazy('two', () => Two_),
 })
 
@@ -61,8 +69,6 @@ const expectedJsonSchema = JS.annotate({
     ['two'],
   ),
 )
-
-console.log(JSON.stringify(expectedJsonSchema, null, 2))
 
 runStandardTestSuite(
   'Lazy Recursive',

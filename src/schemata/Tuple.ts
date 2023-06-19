@@ -4,7 +4,7 @@
  * @since 1.4.0
  * @category Model
  */
-import { pipe } from 'fp-ts/function'
+import { pipe, unsafeCoerce } from 'fp-ts/function'
 import * as RA from 'fp-ts/ReadonlyArray'
 import { InputOf, make, OutputOf, Schema } from 'schemata-ts/Schema'
 
@@ -24,10 +24,12 @@ export const Tuple = <T extends ReadonlyArray<Schema<any, any>>>(
     [K in keyof T]: OutputOf<T[K]>
   }
 > =>
-  make(S =>
-    pipe(
-      items,
-      RA.map(schema => schema(S)),
-      schemable => S.tuple(...schemable),
+  unsafeCoerce(
+    make(S =>
+      pipe(
+        items,
+        RA.map(schema => schema.runSchema(S)),
+        schemable => S.tuple(...schemable),
+      ),
     ),
   )

@@ -44,4 +44,4 @@ export const jwt: PB.Pattern = pipe(
  * @since 1.0.0
  * @category Schema
  */
-export const Jwt: Schema<Jwt, Jwt> = Brand<JwtBrand>()(Pattern(jwt, 'Jwt'))
+export const Jwt: Schema<Jwt> = Brand<JwtBrand>()(Pattern(jwt, 'Jwt'))

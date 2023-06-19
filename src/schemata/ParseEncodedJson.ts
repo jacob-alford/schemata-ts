@@ -1,8 +1,8 @@
 /** @since 2.0.0 */
 import * as E from 'fp-ts/Either'
-import { flow, pipe } from 'fp-ts/function'
+import { flow, pipe, unsafeCoerce } from 'fp-ts/function'
 import * as J from 'fp-ts/Json'
-import * as SC from 'schemata-ts/Schema'
+import { make, Schema } from 'schemata-ts/Schema'
 import { JsonString } from 'schemata-ts/schemables/parser/definition'
 
 /**
@@ -20,20 +20,22 @@ export const ParseEncodedJsonString: (
     contentMediaType?: string
     format?: string
   },
-) => <I, O>(inner: SC.Schema<I, O>) => SC.Schema<JsonString, O> =
+) => <I, O>(inner: Schema<I, O>) => Schema<JsonString, O> =
   (name, decode, encode, options = {}) =>
   inner => {
     const { contentEncoding, contentMediaType, format } = options
-    return SC.make(_ =>
-      pipe(
-        inner(_),
-        _.parse(
-          name,
-          flow(decode, E.chain(J.parse)),
-          flow(J.stringify, E.chain(encode)),
-          contentEncoding,
-          contentMediaType,
-          format,
+    return unsafeCoerce(
+      make(_ =>
+        pipe(
+          inner.runSchema(_),
+          _.parse(
+            name,
+            flow(decode, E.chain(J.parse)),
+            flow(J.stringify, E.chain(encode)),
+            contentEncoding,
+            contentMediaType,
+            format,
+          ),
         ),
       ),
     )

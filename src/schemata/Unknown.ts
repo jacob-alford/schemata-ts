@@ -3,11 +3,11 @@
  *
  * @since 1.0.0
  */
-import { make } from 'schemata-ts/Schema'
+import { make, Schema } from 'schemata-ts/Schema'
 
 /**
  * Represents any input / output
  *
  * @since 1.0.0
  */
-export const Unknown = make(s => s.unknown)
+export const Unknown: Schema<unknown> = make(s => s.unknown)

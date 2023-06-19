@@ -22,7 +22,11 @@ import { getGuard } from 'schemata-ts/derivations/guard-schemable'
 import { matchW } from 'schemata-ts/internal/match'
 import * as PB from 'schemata-ts/PatternBuilder'
 import { Schema } from 'schemata-ts/Schema'
-import { SafeDateString } from 'schemata-ts/schemables/date/definition'
+import {
+  SafeDateString,
+  SafeDateStringBrand,
+} from 'schemata-ts/schemables/date/definition'
+import { Brand } from 'schemata-ts/schemata/Brand'
 import { Date as DateS } from 'schemata-ts/schemata/Date'
 import { Imap } from 'schemata-ts/schemata/Imap'
 import { Pattern } from 'schemata-ts/schemata/Pattern'
@@ -318,10 +322,11 @@ export const DateFromIsoString: (
       'IsoDateString',
     ),
     Refine((s): s is string => !Number.isNaN(new Date(s)), 'ParseableDate'),
+    Brand<SafeDateStringBrand>(),
     Imap(
       getGuard(DateS()),
       s => new Date(s),
-      d => d.toISOString(),
+      d => d.toISOString() as SafeDateString,
     ),
   )
 }

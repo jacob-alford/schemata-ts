@@ -4,6 +4,7 @@
  * @since 1.4.0
  * @category Model
  */
+import { unsafeCoerce } from 'fp-ts/function'
 import { getGuard } from 'schemata-ts/derivations/guard-schemable'
 import { getInformation } from 'schemata-ts/derivations/information-schemable'
 import { SchemableKind, SchemableLambda } from 'schemata-ts/HKT'
@@ -29,19 +30,21 @@ export const Partial = <T extends Record<string, Schema<unknown, unknown>>>(
   Combine<Partial<RequiredInputProps<T> & OptionalInputProps<T>>>,
   Combine<OutputProps<T>>
 > =>
-  make(_ => {
-    const struct: Record<string, s.StructProp<SchemableLambda>> = {}
-    for (const key in props) {
-      // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-      const schema = props[key]!
-      const schemable: SchemableKind<SchemableLambda, unknown, unknown> = _.optional(
-        schema(_),
-      )
-      struct[key] = {
-        schemable,
-        guard: getGuard(schema),
-        information: getInformation(schema),
+  unsafeCoerce(
+    make(_ => {
+      const struct: Record<string, s.StructProp<SchemableLambda>> = {}
+      for (const key in props) {
+        // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+        const schema = props[key]!
+        const schemable: SchemableKind<SchemableLambda, unknown, unknown> = _.optional(
+          schema.runSchema(_),
+        )
+        struct[key] = {
+          schemable,
+          guard: getGuard(schema),
+          information: getInformation(schema),
+        }
       }
-    }
-    return _.struct(struct as any, { extraProps })
-  })
+      return _.struct(struct as any, { extraProps })
+    }),
+  )

@@ -15,5 +15,5 @@ import { ArrayParams } from 'schemata-ts/schemables/array/definition'
  */
 export const Array =
   (params?: ArrayParams) =>
-  <E, A>(codomain: Schema<E, A>): Schema<Array<E>, ReadonlyArray<A>> =>
-    make(_ => _.array(params)(codomain(_)))
+  <E, A>(codomain: Schema<E, A>): Schema<ReadonlyArray<E>, ReadonlyArray<A>> =>
+    make(_ => _.array(params)(codomain.runSchema(_)))
