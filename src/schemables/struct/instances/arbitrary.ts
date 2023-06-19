@@ -3,7 +3,6 @@ import { hasOwn } from 'schemata-ts/internal/util'
 import { PrimitivesArbitrary } from 'schemata-ts/schemables/primitives/instances/arbitrary'
 import { WithStruct } from 'schemata-ts/schemables/struct/definition'
 import { remapPropertyKeys } from 'schemata-ts/schemables/struct/utils'
-import { hasImplicitOptional } from 'schemata-ts/struct'
 
 export const StructArbitrary: WithStruct<Arb.SchemableLambda> = {
   struct: (properties, params = { extraProps: 'strip' }) => {
@@ -33,9 +32,7 @@ export const StructArbitrary: WithStruct<Arb.SchemableLambda> = {
       for (const key in collapsedArbs) {
         // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
         const arb = collapsedArbs[key]!
-        out[key] = hasImplicitOptional(arb)
-          ? fc.option(arb.arbitrary(fc), { nil: undefined })
-          : arb.arbitrary(fc)
+        out[key] = arb.arbitrary(fc)
       }
 
       if (params.extraProps === 'restParam') {

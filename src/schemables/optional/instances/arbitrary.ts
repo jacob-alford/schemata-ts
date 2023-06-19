@@ -1,11 +1,10 @@
 import * as Arb from 'schemata-ts/internal/arbitrary'
 import { WithOptional } from 'schemata-ts/schemables/optional/definition'
-import { makeImplicitOptional } from 'schemata-ts/struct'
+import { makeImplicitOptionalType } from 'schemata-ts/struct'
 
 export const OptionalArbitrary: WithOptional<Arb.SchemableLambda> = {
   optional: arbA =>
-    makeImplicitOptional(
+    makeImplicitOptionalType(
       Arb.makeArbitrary(fc => fc.oneof(arbA.arbitrary(fc), fc.constant(undefined))),
-      arb => Object.assign({}, arb),
     ),
 }
