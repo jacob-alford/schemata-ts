@@ -1,7 +1,7 @@
 /** @since 1.0.0 */
-import { Integer, MaxSafeInt, MinSafeInt } from 'schemata-ts/integer'
-import { make, Schema } from 'schemata-ts/Schema'
-import { BoundedParams } from 'schemata-ts/schemables/primitives/definition'
+import { type Integer, type MaxSafeInt, type MinSafeInt } from 'schemata-ts/integer'
+import { type Schema, make } from 'schemata-ts/Schema'
+import { type BoundedParams } from 'schemata-ts/schemables/primitives/definition'
 
 /**
  * Integer branded newtype. Parameters: min, max are inclusive.

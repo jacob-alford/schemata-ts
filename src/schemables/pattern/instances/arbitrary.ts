@@ -7,8 +7,8 @@ import { pipe } from 'fp-ts/function'
 import * as RA from 'fp-ts/ReadonlyArray'
 import * as Arb from 'schemata-ts/internal/arbitrary'
 import { match, matchOn } from 'schemata-ts/internal/match'
-import * as PB from 'schemata-ts/PatternBuilder'
-import { WithPattern } from 'schemata-ts/schemables/pattern/definition'
+import type * as PB from 'schemata-ts/PatternBuilder'
+import { type WithPattern } from 'schemata-ts/schemables/pattern/definition'
 
 const matchK = matchOn('kind')
 

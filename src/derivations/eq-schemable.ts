@@ -5,9 +5,9 @@
  *
  * @since 2.0.0
  */
-import * as Eq from 'schemata-ts/internal/eq'
+import type * as Eq from 'schemata-ts/internal/eq'
 import { interpret } from 'schemata-ts/Schema'
-import { Schemable } from 'schemata-ts/Schemable'
+import { type Schemable } from 'schemata-ts/Schemable'
 import * as annotate from 'schemata-ts/schemables/annotate/instances/eq'
 import * as array from 'schemata-ts/schemables/array/instances/eq'
 import * as checkDigit from 'schemata-ts/schemables/check-digit/instances/eq'

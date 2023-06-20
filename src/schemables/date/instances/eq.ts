@@ -1,5 +1,5 @@
-import * as Eq from 'schemata-ts/internal/eq'
-import { WithDate } from 'schemata-ts/schemables/date/definition'
+import type * as Eq from 'schemata-ts/internal/eq'
+import { type WithDate } from 'schemata-ts/schemables/date/definition'
 
 export const DateEq: WithDate<Eq.SchemableLambda> = {
   date: () => ({

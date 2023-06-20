@@ -6,7 +6,7 @@
 import { flow, pipe } from 'fp-ts/function'
 import * as RA from 'fp-ts/ReadonlyArray'
 import * as RNEA from 'fp-ts/ReadonlyNonEmptyArray'
-import * as Sg from 'fp-ts/Semigroup'
+import type * as Sg from 'fp-ts/Semigroup'
 import * as Str from 'fp-ts/string'
 
 /**

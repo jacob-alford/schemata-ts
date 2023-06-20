@@ -2,7 +2,7 @@ import { pipe } from 'fp-ts/function'
 import { concatAll } from 'fp-ts/Monoid'
 import * as N from 'fp-ts/number'
 import * as Inf from 'schemata-ts/internal/information'
-import { WithArray } from 'schemata-ts/schemables/array/definition'
+import { type WithArray } from 'schemata-ts/schemables/array/definition'
 
 export const ArrayInformation: WithArray<Inf.SchemableLambda> = {
   array: (params = {}) => {

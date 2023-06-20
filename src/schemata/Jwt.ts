@@ -4,9 +4,9 @@
  * @since 1.0.0
  */
 import { pipe } from 'fp-ts/function'
-import { Branded } from 'schemata-ts/brand'
+import { type Branded } from 'schemata-ts/brand'
 import * as PB from 'schemata-ts/PatternBuilder'
-import { Schema } from 'schemata-ts/Schema'
+import { type Schema } from 'schemata-ts/Schema'
 import { base64Url } from 'schemata-ts/schemata/Base64Url'
 import { Brand } from 'schemata-ts/schemata/Brand'
 import { Pattern } from 'schemata-ts/schemata/Pattern'

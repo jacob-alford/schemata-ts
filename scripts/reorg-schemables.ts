@@ -16,7 +16,7 @@ import * as Str from 'fp-ts/string'
 import * as TE from 'fp-ts/TaskEither'
 import * as ts from 'typescript'
 
-import { Build } from './build'
+import { type Build } from './build'
 import { cli } from './CLI'
 import { fileSystem } from './FS'
 import { run } from './run'

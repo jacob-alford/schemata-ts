@@ -2,7 +2,7 @@
 import * as E from 'fp-ts/Either'
 import { identity, unsafeCoerce } from 'fp-ts/function'
 import { base64Decode, base64Encode } from 'schemata-ts/internal/util'
-import { Schema } from 'schemata-ts/Schema'
+import { type Schema } from 'schemata-ts/Schema'
 import { type Base64 } from 'schemata-ts/schemata/Base64'
 import { ParseEncodedJsonString } from 'schemata-ts/schemata/ParseEncodedJson'
 

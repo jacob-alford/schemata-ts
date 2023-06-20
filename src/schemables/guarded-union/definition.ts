@@ -1,9 +1,14 @@
 import { pipe } from 'fp-ts/function'
 import * as N from 'fp-ts/number'
 import * as Ord from 'fp-ts/Ord'
-import * as RNEA from 'fp-ts/ReadonlyNonEmptyArray'
-import { Guard } from 'schemata-ts/Guard'
-import { InputOf, OutputOf, SchemableKind, SchemableLambda } from 'schemata-ts/HKT'
+import type * as RNEA from 'fp-ts/ReadonlyNonEmptyArray'
+import { type Guard } from 'schemata-ts/Guard'
+import {
+  type InputOf,
+  type OutputOf,
+  type SchemableKind,
+  type SchemableLambda,
+} from 'schemata-ts/HKT'
 
 export type GuardedPrecedentedUnionMember<S extends SchemableLambda> = {
   readonly guard: Guard<any>

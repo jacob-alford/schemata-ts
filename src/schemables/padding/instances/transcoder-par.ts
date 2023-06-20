@@ -1,5 +1,5 @@
-import * as TCP from 'schemata-ts/internal/transcoder-par'
-import { WithPadding } from 'schemata-ts/schemables/padding/definition'
+import type * as TCP from 'schemata-ts/internal/transcoder-par'
+import { type WithPadding } from 'schemata-ts/schemables/padding/definition'
 import { foldUnion, match } from 'schemata-ts/schemables/padding/utils'
 import { RefineTranscoderPar } from 'schemata-ts/schemables/refine/instances/transcoder-par'
 

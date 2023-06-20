@@ -1,6 +1,6 @@
-import * as RR from 'fp-ts/ReadonlyRecord'
-import { SchemableKind, SchemableLambda } from 'schemata-ts/HKT'
-import { JsonSchema } from 'schemata-ts/internal/json-schema'
+import type * as RR from 'fp-ts/ReadonlyRecord'
+import { type SchemableKind, type SchemableLambda } from 'schemata-ts/HKT'
+import { type JsonSchema } from 'schemata-ts/internal/json-schema'
 
 export interface WithAnnotate<S extends SchemableLambda> {
   readonly annotate: (params?: {

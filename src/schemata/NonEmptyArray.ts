@@ -3,8 +3,8 @@
  *
  * @since 1.1.0
  */
-import * as RNEA from 'fp-ts/ReadonlyNonEmptyArray'
-import { Schema } from 'schemata-ts/Schema'
+import type * as RNEA from 'fp-ts/ReadonlyNonEmptyArray'
+import { type Schema } from 'schemata-ts/Schema'
 import { Array } from 'schemata-ts/schemata/Array'
 
 /**

@@ -13,11 +13,15 @@
  * @since 1.0.0
  */
 import { pipe } from 'fp-ts/function'
-import { Branded } from 'schemata-ts/brand'
-import { Float, MaxNegativeFloat, MaxPositiveFloat } from 'schemata-ts/float'
+import { type Branded } from 'schemata-ts/brand'
+import {
+  type Float,
+  type MaxNegativeFloat,
+  type MaxPositiveFloat,
+} from 'schemata-ts/float'
 import * as PB from 'schemata-ts/PatternBuilder'
-import { Schema } from 'schemata-ts/Schema'
-import { BoundedParams } from 'schemata-ts/schemables/primitives/definition'
+import { type Schema } from 'schemata-ts/Schema'
+import { type BoundedParams } from 'schemata-ts/schemables/primitives/definition'
 import { PrimitivesGuard } from 'schemata-ts/schemables/primitives/instances/guard'
 import { Brand } from 'schemata-ts/schemata/Brand'
 import { Imap } from 'schemata-ts/schemata/Imap'

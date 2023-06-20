@@ -1,4 +1,4 @@
-import { Branded } from 'schemata-ts/brand'
+import { type Branded } from 'schemata-ts/brand'
 
 /**
  * The smallest positive float in JavaScript.

@@ -6,7 +6,7 @@
 import { pipe } from 'fp-ts/function'
 import { getGuard } from 'schemata-ts/Guard'
 import * as PB from 'schemata-ts/PatternBuilder'
-import { Schema } from 'schemata-ts/Schema'
+import { type Schema } from 'schemata-ts/Schema'
 import { Boolean } from 'schemata-ts/schemata/Boolean'
 import { Imap } from 'schemata-ts/schemata/Imap'
 import { Pattern } from 'schemata-ts/schemata/Pattern'

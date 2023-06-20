@@ -4,7 +4,7 @@
  * @since 1.4.0
  * @category Model
  */
-import { make, Schema } from 'schemata-ts/Schema'
+import { type Schema, make } from 'schemata-ts/Schema'
 
 /**
  * A Typescript Record type with unknown keys and known values.

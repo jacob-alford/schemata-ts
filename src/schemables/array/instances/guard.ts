@@ -1,5 +1,5 @@
-import * as G from 'schemata-ts/internal/guard'
-import { WithArray } from 'schemata-ts/schemables/array/definition'
+import type * as G from 'schemata-ts/internal/guard'
+import { type WithArray } from 'schemata-ts/schemables/array/definition'
 
 export const ArrayGuard: WithArray<G.SchemableLambda> = {
   array: (params = {}) => {

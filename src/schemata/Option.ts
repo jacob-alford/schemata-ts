@@ -1,5 +1,5 @@
 import { type Option as Option_ } from 'fp-ts/Option'
-import { Schema } from 'schemata-ts/Schema'
+import { type Schema } from 'schemata-ts/Schema'
 import { Literal } from 'schemata-ts/schemata/Literal'
 import { Struct } from 'schemata-ts/schemata/Struct'
 import { Union } from 'schemata-ts/schemata/Union'

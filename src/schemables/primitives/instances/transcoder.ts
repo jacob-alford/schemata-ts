@@ -1,7 +1,7 @@
 import { identity, pipe } from 'fp-ts/function'
 import * as RNEA from 'fp-ts/ReadonlyNonEmptyArray'
 import * as TC from 'schemata-ts/internal/transcoder'
-import { WithPrimitives } from 'schemata-ts/schemables/primitives/definition'
+import { type WithPrimitives } from 'schemata-ts/schemables/primitives/definition'
 import { PrimitivesGuard as Guard } from 'schemata-ts/schemables/primitives/instances/guard'
 import {
   getLengthBoundsString,

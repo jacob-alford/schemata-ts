@@ -4,8 +4,8 @@
  * @since 1.4.0
  * @category Model
  */
-import { make, Schema } from 'schemata-ts/Schema'
-import { ArrayParams } from 'schemata-ts/schemables/array/definition'
+import { type Schema, make } from 'schemata-ts/Schema'
+import { type ArrayParams } from 'schemata-ts/schemables/array/definition'
 
 /**
  * An array type of known values.

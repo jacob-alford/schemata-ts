@@ -1,5 +1,5 @@
-import { SchemableKind, SchemableLambda } from 'schemata-ts/HKT'
-import { Pattern } from 'schemata-ts/PatternBuilder'
+import { type SchemableKind, type SchemableLambda } from 'schemata-ts/HKT'
+import { type Pattern } from 'schemata-ts/PatternBuilder'
 
 export interface WithPattern<S extends SchemableLambda> {
   readonly pattern: (

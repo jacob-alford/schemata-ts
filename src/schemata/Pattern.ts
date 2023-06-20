@@ -1,6 +1,6 @@
 /** @since 1.0.0 */
-import * as PB from 'schemata-ts/PatternBuilder'
-import { make, Schema } from 'schemata-ts/Schema'
+import type * as PB from 'schemata-ts/PatternBuilder'
+import { type Schema, make } from 'schemata-ts/Schema'
 
 /**
  * A schema for describing the structure of a string using patterns

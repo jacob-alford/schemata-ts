@@ -1,5 +1,5 @@
 import * as TC from 'schemata-ts/internal/transcoder'
-import { WithOptional } from 'schemata-ts/schemables/optional/definition'
+import { type WithOptional } from 'schemata-ts/schemables/optional/definition'
 import { makeImplicitOptionalType } from 'schemata-ts/struct'
 
 export const OptionalTranscoder: WithOptional<TC.SchemableLambda> = {

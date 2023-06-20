@@ -1,5 +1,5 @@
-import { make, Schema } from 'schemata-ts/Schema'
-import { DateParams, SafeDate } from 'schemata-ts/schemables/date/definition'
+import { type Schema, make } from 'schemata-ts/Schema'
+import { type DateParams, type SafeDate } from 'schemata-ts/schemables/date/definition'
 
 /**
  * Represents Javascript Date objects

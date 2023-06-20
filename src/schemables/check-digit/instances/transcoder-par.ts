@@ -1,23 +1,23 @@
-import { pipe } from 'fp-ts/function'
+import { pipe, unsafeCoerce } from 'fp-ts/function'
 import * as TE from 'fp-ts/TaskEither'
-import { Branded } from 'schemata-ts/brand'
+import { type Branded } from 'schemata-ts/brand'
 import * as TC from 'schemata-ts/internal/transcoder'
-import * as TCP from 'schemata-ts/internal/transcoder-par'
+import type * as TCP from 'schemata-ts/internal/transcoder-par'
 import {
-  CheckDigitVerified,
-  WithCheckDigit,
+  type CheckDigitVerified,
+  type WithCheckDigit,
 } from 'schemata-ts/schemables/check-digit/definition'
 import { locationToIndex, replaceCharAt } from 'schemata-ts/schemables/check-digit/utils'
 
 export const CheckDigitTranscoderPar: WithCheckDigit<TCP.SchemableLambda> = {
   checkDigit: (algorithm, location) => tc => ({
-    encode: tc.encode,
+    encode: unsafeCoerce(tc.encode),
     decode: s =>
       pipe(
         tc.decode(s),
         TE.chain(
           TE.fromPredicate(
-            (s): s is Branded<string, CheckDigitVerified> =>
+            (s): s is Branded<CheckDigitVerified, CheckDigitVerified> =>
               s[locationToIndex(s, location)] === algorithm(s),
             s =>
               TC.transcodeErrors(

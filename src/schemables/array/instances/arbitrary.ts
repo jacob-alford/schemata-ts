@@ -1,6 +1,6 @@
 import * as RA from 'fp-ts/ReadonlyArray'
 import * as Arb from 'schemata-ts/internal/arbitrary'
-import { WithArray } from 'schemata-ts/schemables/array/definition'
+import { type WithArray } from 'schemata-ts/schemables/array/definition'
 
 export const ArrayArbitrary: WithArray<Arb.SchemableLambda> = {
   array: (params = {}) => {

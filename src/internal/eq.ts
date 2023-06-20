@@ -1,7 +1,7 @@
-import { Contravariant1 } from 'fp-ts/Contravariant'
-import { Invariant1 } from 'fp-ts/Invariant'
-import { Monoid } from 'fp-ts/Monoid'
-import * as hkt from 'schemata-ts/HKT'
+import { type Contravariant1 } from 'fp-ts/Contravariant'
+import { type Invariant1 } from 'fp-ts/Invariant'
+import { type Monoid } from 'fp-ts/Monoid'
+import type * as hkt from 'schemata-ts/HKT'
 
 /** @internal */
 export interface Eq<A> {

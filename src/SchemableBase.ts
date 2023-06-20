@@ -3,7 +3,7 @@
  *
  * @since 1.0.0
  */
-import { HKT2, Kind2, URIS2 } from 'fp-ts/HKT'
+import { type HKT2, type Kind2, type URIS2 } from 'fp-ts/HKT'
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 type Any = any

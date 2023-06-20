@@ -1,7 +1,7 @@
 import { flow } from 'fp-ts/function'
-import { ReadonlyNonEmptyArray } from 'fp-ts/ReadonlyNonEmptyArray'
+import { type ReadonlyNonEmptyArray } from 'fp-ts/ReadonlyNonEmptyArray'
 import * as G from 'schemata-ts/internal/guard'
-import { WithPrimitives } from 'schemata-ts/schemables/primitives/definition'
+import { type WithPrimitives } from 'schemata-ts/schemables/primitives/definition'
 import { isFloat, isInt } from 'schemata-ts/schemables/primitives/utils'
 
 const isString = (s: unknown): s is string => typeof s === 'string'

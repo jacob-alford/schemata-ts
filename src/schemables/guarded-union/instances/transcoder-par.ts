@@ -3,10 +3,10 @@ import * as RNEA from 'fp-ts/ReadonlyNonEmptyArray'
 import * as TC from 'schemata-ts/internal/transcoder'
 import * as TCP from 'schemata-ts/internal/transcoder-par'
 import {
+  type WithGuardedUnion,
   ordGuardedPrecedentedUnionMember,
-  WithGuardedUnion,
 } from 'schemata-ts/schemables/guarded-union/definition'
-import * as TCE from 'schemata-ts/TranscodeError'
+import type * as TCE from 'schemata-ts/TranscodeError'
 
 export const GuardedUnionTranscoderPar: WithGuardedUnion<TCP.SchemableLambda> = {
   guardedUnion: (name, ...members) => {

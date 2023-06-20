@@ -16,16 +16,16 @@
  * @since 1.0.0
  */
 import { pipe } from 'fp-ts/function'
-import { Branded } from 'schemata-ts/brand'
-import { Integer, MaxSafeInt, MinSafeInt } from 'schemata-ts/integer'
+import { type Branded } from 'schemata-ts/brand'
+import { type Integer, type MaxSafeInt, type MinSafeInt } from 'schemata-ts/integer'
 import * as PB from 'schemata-ts/PatternBuilder'
-import { Schema } from 'schemata-ts/Schema'
-import { BoundedParams } from 'schemata-ts/schemables/primitives/definition'
+import { type Schema } from 'schemata-ts/Schema'
+import { type BoundedParams } from 'schemata-ts/schemables/primitives/definition'
 import { PrimitivesGuard } from 'schemata-ts/schemables/primitives/instances/guard'
 import { Brand } from 'schemata-ts/schemata/Brand'
 import { Imap } from 'schemata-ts/schemata/Imap'
 import { Pattern } from 'schemata-ts/schemata/Pattern'
-import { Simplify } from 'type-fest'
+import { type Simplify } from 'type-fest'
 
 type IntStringBrand<Min extends number, Max extends number> = {
   readonly IntString: unique symbol

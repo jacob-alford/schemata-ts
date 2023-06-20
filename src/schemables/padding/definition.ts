@@ -1,4 +1,4 @@
-import { SchemableKind, SchemableLambda } from 'schemata-ts/HKT'
+import { type SchemableKind, type SchemableLambda } from 'schemata-ts/HKT'
 
 /** @since 1.0.0 */
 export type PaddingLength =

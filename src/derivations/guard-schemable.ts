@@ -5,9 +5,9 @@
  *
  * @since 2.0.0
  */
-import * as G from 'schemata-ts/internal/guard'
+import type * as G from 'schemata-ts/internal/guard'
 import { interpret } from 'schemata-ts/Schema'
-import { Schemable } from 'schemata-ts/Schemable'
+import { type Schemable } from 'schemata-ts/Schemable'
 import * as annotate from 'schemata-ts/schemables/annotate/instances/guard'
 import * as array from 'schemata-ts/schemables/array/instances/guard'
 import * as checkDigit from 'schemata-ts/schemables/check-digit/instances/guard'

@@ -1,4 +1,4 @@
-import { SafeDate } from 'schemata-ts/schemables/date/definition'
+import { type SafeDate } from 'schemata-ts/schemables/date/definition'
 
 /** @internal */
 export function isSafeDate(d: unknown): d is SafeDate {

@@ -5,9 +5,9 @@
  */
 import { pipe } from 'fp-ts/function'
 import { getGuard } from 'schemata-ts/Guard'
-import { Iso } from 'schemata-ts/iso'
-import * as Nt from 'schemata-ts/newtype'
-import { Schema } from 'schemata-ts/Schema'
+import { type Iso } from 'schemata-ts/iso'
+import type * as Nt from 'schemata-ts/newtype'
+import { type Schema } from 'schemata-ts/Schema'
 import { Imap } from 'schemata-ts/schemata/Imap'
 
 /**

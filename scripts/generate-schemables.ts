@@ -7,8 +7,8 @@ import * as Str from 'fp-ts/string'
 import * as TE from 'fp-ts/TaskEither'
 import * as ts from 'typescript'
 
-import { CLI, cli } from './CLI'
-import { FileSystem, fileSystem } from './FS'
+import { type CLI, cli } from './CLI'
+import { type FileSystem, fileSystem } from './FS'
 import { run } from './run'
 import { makeDestructureImport, makeModuleStarImport } from './ts-helpers'
 

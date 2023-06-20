@@ -1,6 +1,6 @@
 import * as RA from 'fp-ts/ReadonlyArray'
 import * as Eq from 'schemata-ts/internal/eq'
-import { WithArray } from 'schemata-ts/schemables/array/definition'
+import { type WithArray } from 'schemata-ts/schemables/array/definition'
 
 export const ArrayEq: WithArray<Eq.SchemableLambda> = {
   array: () => RA.getEq,

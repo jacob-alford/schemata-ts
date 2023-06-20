@@ -5,9 +5,9 @@
  *
  * @since 2.0.0
  */
-import * as JS from 'schemata-ts/internal/json-schema'
+import type * as JS from 'schemata-ts/internal/json-schema'
 import { interpret } from 'schemata-ts/Schema'
-import { Schemable } from 'schemata-ts/Schemable'
+import { type Schemable } from 'schemata-ts/Schemable'
 import * as annotate from 'schemata-ts/schemables/annotate/instances/json-schema'
 import * as array from 'schemata-ts/schemables/array/instances/json-schema'
 import * as checkDigit from 'schemata-ts/schemables/check-digit/instances/json-schema'

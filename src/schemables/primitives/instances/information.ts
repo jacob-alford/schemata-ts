@@ -2,7 +2,7 @@ import * as Eq from 'fp-ts/Eq'
 import { pipe } from 'fp-ts/function'
 import * as RA from 'fp-ts/ReadonlyArray'
 import * as Inf from 'schemata-ts/internal/information'
-import { WithPrimitives } from 'schemata-ts/schemables/primitives/definition'
+import { type WithPrimitives } from 'schemata-ts/schemables/primitives/definition'
 
 export const PrimitivesInformation: WithPrimitives<Inf.SchemableLambda> = {
   string: (params = {}) => {

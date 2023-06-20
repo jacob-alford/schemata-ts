@@ -1,7 +1,7 @@
-import { Const } from 'fp-ts/Const'
-import { SchemableKind, SchemableLambda } from 'schemata-ts/HKT'
-import * as G from 'schemata-ts/internal/guard'
-import * as s from 'schemata-ts/struct'
+import { type Const } from 'fp-ts/Const'
+import { type SchemableKind, type SchemableLambda } from 'schemata-ts/HKT'
+import type * as G from 'schemata-ts/internal/guard'
+import type * as s from 'schemata-ts/struct'
 /* eslint-disable @typescript-eslint/ban-types */
 
 export type StructProp<S extends SchemableLambda> = {

@@ -1,5 +1,5 @@
 import * as Arb from 'schemata-ts/internal/arbitrary'
-import { WithDate } from 'schemata-ts/schemables/date/definition'
+import { type WithDate } from 'schemata-ts/schemables/date/definition'
 import {
   earliestSafeDate,
   isSafeDate,

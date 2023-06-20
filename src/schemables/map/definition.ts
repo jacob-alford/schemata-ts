@@ -1,5 +1,5 @@
-import * as Ord from 'fp-ts/Ord'
-import { SchemableKind, SchemableLambda } from 'schemata-ts/HKT'
+import type * as Ord from 'fp-ts/Ord'
+import { type SchemableKind, type SchemableLambda } from 'schemata-ts/HKT'
 
 export interface WithMap<S extends SchemableLambda> {
   readonly mapFromEntries: <EK, EA, K extends EK, A extends EA>(

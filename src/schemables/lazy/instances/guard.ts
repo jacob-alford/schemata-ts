@@ -1,7 +1,7 @@
-import { Lazy } from 'fp-ts/function'
-import * as G from 'schemata-ts/internal/guard'
+import { type Lazy } from 'fp-ts/function'
+import type * as G from 'schemata-ts/internal/guard'
 import { memoize } from 'schemata-ts/Schema'
-import { WithLazy } from 'schemata-ts/schemables/lazy/definition'
+import { type WithLazy } from 'schemata-ts/schemables/lazy/definition'
 
 export const LazyGuard: WithLazy<G.SchemableLambda> = {
   lazy: <O>(_: string, f: Lazy<G.Guard<O>>): G.Guard<O> => {

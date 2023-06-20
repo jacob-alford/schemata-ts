@@ -1,5 +1,5 @@
 import * as JS from 'schemata-ts/internal/json-schema'
-import { WithArray } from 'schemata-ts/schemables/array/definition'
+import { type WithArray } from 'schemata-ts/schemables/array/definition'
 
 export const ArrayJsonSchema: WithArray<JS.SchemableLambda> = {
   array:

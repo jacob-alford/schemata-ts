@@ -5,9 +5,9 @@
  *
  * @since 2.0.0
  */
-import * as TCP from 'schemata-ts/internal/transcoder-par'
+import type * as TCP from 'schemata-ts/internal/transcoder-par'
 import { interpret } from 'schemata-ts/Schema'
-import { Schemable } from 'schemata-ts/Schemable'
+import { type Schemable } from 'schemata-ts/Schemable'
 import * as annotate from 'schemata-ts/schemables/annotate/instances/transcoder-par'
 import * as array from 'schemata-ts/schemables/array/instances/transcoder-par'
 import * as checkDigit from 'schemata-ts/schemables/check-digit/instances/transcoder-par'

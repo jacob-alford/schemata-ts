@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/ban-types */
-import { InputOf, OutputOf, Schema } from 'schemata-ts/Schema'
-import * as s from 'schemata-ts/struct'
+import { type InputOf, type OutputOf, type Schema } from 'schemata-ts/Schema'
+import type * as s from 'schemata-ts/struct'
 
 /** @since 2.0.0 */
 export type OptionalInputProps<T extends Record<string, Schema<any, any>>> = {

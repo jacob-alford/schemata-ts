@@ -1,9 +1,9 @@
 import { pipe } from 'fp-ts/function'
 import * as RNEA from 'fp-ts/ReadonlyNonEmptyArray'
-import * as Eq from 'schemata-ts/internal/eq'
+import type * as Eq from 'schemata-ts/internal/eq'
 import {
+  type WithGuardedUnion,
   ordGuardedPrecedentedUnionMember,
-  WithGuardedUnion,
 } from 'schemata-ts/schemables/guarded-union/definition'
 
 export const GuardedUnionEq: WithGuardedUnion<Eq.SchemableLambda> = {

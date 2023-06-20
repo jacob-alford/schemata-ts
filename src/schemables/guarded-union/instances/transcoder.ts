@@ -2,10 +2,10 @@ import { pipe } from 'fp-ts/function'
 import * as RNEA from 'fp-ts/ReadonlyNonEmptyArray'
 import * as TC from 'schemata-ts/internal/transcoder'
 import {
+  type WithGuardedUnion,
   ordGuardedPrecedentedUnionMember,
-  WithGuardedUnion,
 } from 'schemata-ts/schemables/guarded-union/definition'
-import * as TCE from 'schemata-ts/TranscodeError'
+import type * as TCE from 'schemata-ts/TranscodeError'
 
 export const GuardedUnionTranscoder: WithGuardedUnion<TC.SchemableLambda> = {
   guardedUnion: (name, ...members) => {

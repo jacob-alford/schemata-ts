@@ -1,5 +1,5 @@
 import * as Arb from 'schemata-ts/internal/arbitrary'
-import { WithPrimitives } from 'schemata-ts/schemables/primitives/definition'
+import { type WithPrimitives } from 'schemata-ts/schemables/primitives/definition'
 import { isFloat, isInt } from 'schemata-ts/schemables/primitives/utils'
 
 /** @since 2.0.0 */

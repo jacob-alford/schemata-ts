@@ -1,5 +1,5 @@
 import * as Inf from 'schemata-ts/internal/information'
-import { SafeDate, WithDate } from 'schemata-ts/schemables/date/definition'
+import { type SafeDate, type WithDate } from 'schemata-ts/schemables/date/definition'
 import { earliestSafeDate, latestSafeDate } from 'schemata-ts/schemables/date/utils'
 
 const informationFromDateRange = (

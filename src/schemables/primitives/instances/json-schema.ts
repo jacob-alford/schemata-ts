@@ -1,5 +1,5 @@
 import * as JS from 'schemata-ts/internal/json-schema'
-import { WithPrimitives } from 'schemata-ts/schemables/primitives/definition'
+import { type WithPrimitives } from 'schemata-ts/schemables/primitives/definition'
 
 /** @since 2.0.0 */
 export const PrimitivesJsonSchema: WithPrimitives<JS.SchemableLambda> = {

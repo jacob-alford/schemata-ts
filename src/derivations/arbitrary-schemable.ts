@@ -5,9 +5,9 @@
  *
  * @since 2.0.0
  */
-import * as Arb from 'schemata-ts/internal/arbitrary'
+import type * as Arb from 'schemata-ts/internal/arbitrary'
 import { interpret } from 'schemata-ts/Schema'
-import { Schemable } from 'schemata-ts/Schemable'
+import { type Schemable } from 'schemata-ts/Schemable'
 import * as annotate from 'schemata-ts/schemables/annotate/instances/arbitrary'
 import * as array from 'schemata-ts/schemables/array/instances/arbitrary'
 import * as checkDigit from 'schemata-ts/schemables/check-digit/instances/arbitrary'

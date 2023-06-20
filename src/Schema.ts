@@ -74,8 +74,8 @@
  *
  *   assert.equal(invalidInput._tag, 'Left')
  */
-import * as hkt from 'schemata-ts/HKT'
-import { Schemable } from 'schemata-ts/Schemable'
+import type * as hkt from 'schemata-ts/HKT'
+import { type Schemable } from 'schemata-ts/Schemable'
 
 /**
  * @since 1.0.0

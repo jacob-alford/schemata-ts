@@ -2,7 +2,7 @@ import * as E from 'fp-ts/Either'
 import { flow, identity, pipe, unsafeCoerce } from 'fp-ts/function'
 import * as Pred from 'fp-ts/Predicate'
 import * as TC from 'schemata-ts/internal/transcoder'
-import { WithDate } from 'schemata-ts/schemables/date/definition'
+import { type WithDate } from 'schemata-ts/schemables/date/definition'
 import { DateGuard as Guard } from 'schemata-ts/schemables/date/instances/guard'
 import {
   earliestSafeDate,

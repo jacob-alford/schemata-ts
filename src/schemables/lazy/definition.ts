@@ -1,5 +1,5 @@
-import { Lazy } from 'fp-ts/function'
-import { SchemableKind, SchemableLambda } from 'schemata-ts/HKT'
+import { type Lazy } from 'fp-ts/function'
+import { type SchemableKind, type SchemableLambda } from 'schemata-ts/HKT'
 
 export interface WithLazy<S extends SchemableLambda> {
   readonly lazy: <I, O>(

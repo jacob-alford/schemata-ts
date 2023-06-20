@@ -1,7 +1,7 @@
 /** @since 2.0.0 */
 import * as E from 'fp-ts/Either'
-import { Schema } from 'schemata-ts/Schema'
-import { JsonString } from 'schemata-ts/schemables/parser/definition'
+import { type Schema } from 'schemata-ts/Schema'
+import { type JsonString } from 'schemata-ts/schemables/parser/definition'
 import { ParseEncodedJsonString } from 'schemata-ts/schemata/ParseEncodedJson'
 
 /**

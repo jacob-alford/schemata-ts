@@ -1,6 +1,6 @@
 import { constant, identity, unsafeCoerce } from 'fp-ts/function'
-import { Branded } from 'schemata-ts/brand'
-import { Schema } from 'schemata-ts/Schema'
+import { type Branded } from 'schemata-ts/brand'
+import { type Schema } from 'schemata-ts/Schema'
 
 /**
  * A schema for branding an inner schema

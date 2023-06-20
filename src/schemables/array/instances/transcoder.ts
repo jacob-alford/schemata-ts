@@ -2,7 +2,7 @@ import * as E from 'fp-ts/Either'
 import { flow, pipe, unsafeCoerce } from 'fp-ts/function'
 import * as RA from 'fp-ts/ReadonlyArray'
 import * as TC from 'schemata-ts/internal/transcoder'
-import { WithArray } from 'schemata-ts/schemables/array/definition'
+import { type WithArray } from 'schemata-ts/schemables/array/definition'
 import * as TCE from 'schemata-ts/TranscodeError'
 
 const validateArray = E.fromPredicate(

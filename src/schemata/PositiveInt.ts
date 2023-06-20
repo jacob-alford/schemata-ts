@@ -9,8 +9,8 @@
  *
  * @since 1.0.0
  */
-import { Integer, MaxSafeInt, maxSafeInt } from 'schemata-ts/integer'
-import { Schema } from 'schemata-ts/Schema'
+import { type Integer, type MaxSafeInt, maxSafeInt } from 'schemata-ts/integer'
+import { type Schema } from 'schemata-ts/Schema'
 import { Int } from 'schemata-ts/schemata/Int'
 
 /**

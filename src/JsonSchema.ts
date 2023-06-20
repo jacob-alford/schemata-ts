@@ -32,10 +32,14 @@
  *
  * @see https://json-schema.org/draft/2020-12/json-schema-validation.html
  */
-import { Const, make } from 'fp-ts/Const'
-import * as RR from 'fp-ts/ReadonlyRecord'
-import { Float, MaxNegativeFloat, MaxPositiveFloat } from 'schemata-ts/float'
-import { Integer, MaxSafeInt, MinSafeInt } from 'schemata-ts/integer'
+import { type Const, make } from 'fp-ts/Const'
+import type * as RR from 'fp-ts/ReadonlyRecord'
+import {
+  type Float,
+  type MaxNegativeFloat,
+  type MaxPositiveFloat,
+} from 'schemata-ts/float'
+import { type Integer, type MaxSafeInt, type MinSafeInt } from 'schemata-ts/integer'
 import * as I from 'schemata-ts/internal/json-schema'
 
 // -------------------------------------------------------------------------------------

@@ -1,7 +1,7 @@
 import * as Arb from 'schemata-ts/internal/arbitrary'
 import { hasOwn } from 'schemata-ts/internal/util'
 import { PrimitivesArbitrary } from 'schemata-ts/schemables/primitives/instances/arbitrary'
-import { WithStruct } from 'schemata-ts/schemables/struct/definition'
+import { type WithStruct } from 'schemata-ts/schemables/struct/definition'
 import { remapPropertyKeys } from 'schemata-ts/schemables/struct/utils'
 
 export const StructArbitrary: WithStruct<Arb.SchemableLambda> = {

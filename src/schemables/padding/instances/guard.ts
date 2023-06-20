@@ -1,5 +1,5 @@
-import * as G from 'schemata-ts/internal/guard'
-import { WithPadding } from 'schemata-ts/schemables/padding/definition'
+import type * as G from 'schemata-ts/internal/guard'
+import { type WithPadding } from 'schemata-ts/schemables/padding/definition'
 import { foldUnion, match } from 'schemata-ts/schemables/padding/utils'
 import { RefineGuard } from 'schemata-ts/schemables/refine/instances/guard'
 

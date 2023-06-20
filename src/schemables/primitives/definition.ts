@@ -1,7 +1,11 @@
-import { ReadonlyNonEmptyArray } from 'fp-ts/ReadonlyNonEmptyArray'
-import { Float, MaxNegativeFloat, MaxPositiveFloat } from 'schemata-ts/float'
-import { SchemableKind, SchemableLambda } from 'schemata-ts/HKT'
-import { Integer, MaxSafeInt, MinSafeInt } from 'schemata-ts/integer'
+import { type ReadonlyNonEmptyArray } from 'fp-ts/ReadonlyNonEmptyArray'
+import {
+  type Float,
+  type MaxNegativeFloat,
+  type MaxPositiveFloat,
+} from 'schemata-ts/float'
+import { type SchemableKind, type SchemableLambda } from 'schemata-ts/HKT'
+import { type Integer, type MaxSafeInt, type MinSafeInt } from 'schemata-ts/integer'
 
 /** @since 2.0.0 */
 export type BoundedParams<

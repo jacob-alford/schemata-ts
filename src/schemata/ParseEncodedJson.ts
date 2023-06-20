@@ -2,8 +2,8 @@
 import * as E from 'fp-ts/Either'
 import { flow, pipe, unsafeCoerce } from 'fp-ts/function'
 import * as J from 'fp-ts/Json'
-import { make, Schema } from 'schemata-ts/Schema'
-import { JsonString } from 'schemata-ts/schemables/parser/definition'
+import { type Schema, make } from 'schemata-ts/Schema'
+import { type JsonString } from 'schemata-ts/schemables/parser/definition'
 
 /**
  * Applies a fallible string mapping function to a schema which parses a Json string.

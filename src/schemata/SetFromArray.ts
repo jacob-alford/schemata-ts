@@ -5,11 +5,11 @@
  * @since 1.3.0
  */
 import { pipe } from 'fp-ts/function'
-import { Ord } from 'fp-ts/Ord'
+import { type Ord } from 'fp-ts/Ord'
 import * as RS from 'fp-ts/ReadonlySet'
 import { getGuard } from 'schemata-ts/Guard'
-import * as G from 'schemata-ts/internal/guard'
-import { Schema } from 'schemata-ts/Schema'
+import type * as G from 'schemata-ts/internal/guard'
+import { type Schema } from 'schemata-ts/Schema'
 import { Array as Array_ } from 'schemata-ts/schemata/Array'
 import { Imap } from 'schemata-ts/schemata/Imap'
 

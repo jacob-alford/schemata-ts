@@ -10,7 +10,7 @@
  * @since 1.0.0
  * @category Model
  */
-import { Branded } from 'schemata-ts/brand'
+import { type Branded } from 'schemata-ts/brand'
 
 /**
  * The smallest safe integer in JavaScript.
