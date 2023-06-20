@@ -1,5 +1,5 @@
 import * as TCP from 'schemata-ts/internal/transcoder-par'
-import { WithOptional } from 'schemata-ts/schemables/optional/definition'
+import { type WithOptional } from 'schemata-ts/schemables/optional/definition'
 import { makeImplicitOptionalType } from 'schemata-ts/struct'
 
 export const OptionalTranscoderPar: WithOptional<TCP.SchemableLambda> = {

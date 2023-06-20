@@ -1,5 +1,5 @@
-import * as G from 'schemata-ts/internal/guard'
-import { SafeDate, WithDate } from 'schemata-ts/schemables/date/definition'
+import type * as G from 'schemata-ts/internal/guard'
+import { type SafeDate, type WithDate } from 'schemata-ts/schemables/date/definition'
 import {
   earliestSafeDate,
   isAfterInc,

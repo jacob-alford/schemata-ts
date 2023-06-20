@@ -1,6 +1,6 @@
-import { SchemableKind, SchemableLambda } from 'schemata-ts/HKT'
-import { Combine } from 'schemata-ts/internal/type-utils'
-import * as _ from 'schemata-ts/schemables/struct/type-utils'
+import { type SchemableKind, type SchemableLambda } from 'schemata-ts/HKT'
+import { type Combine } from 'schemata-ts/internal/type-utils'
+import type * as _ from 'schemata-ts/schemables/struct/type-utils'
 
 export type StructOptions<RestKind> =
   | StructWithRestParam<RestKind>

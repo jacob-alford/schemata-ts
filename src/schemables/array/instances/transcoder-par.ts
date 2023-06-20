@@ -3,8 +3,8 @@ import * as RA from 'fp-ts/ReadonlyArray'
 import * as T from 'fp-ts/Task'
 import * as TE from 'fp-ts/TaskEither'
 import * as TC from 'schemata-ts/internal/transcoder'
-import * as TCP from 'schemata-ts/internal/transcoder-par'
-import { WithArray } from 'schemata-ts/schemables/array/definition'
+import type * as TCP from 'schemata-ts/internal/transcoder-par'
+import { type WithArray } from 'schemata-ts/schemables/array/definition'
 import * as TCE from 'schemata-ts/TranscodeError'
 
 const validateArray = TE.fromPredicate(

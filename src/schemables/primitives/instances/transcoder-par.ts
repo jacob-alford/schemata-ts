@@ -1,6 +1,6 @@
 import { flow, pipe } from 'fp-ts/function'
 import * as TCP from 'schemata-ts/internal/transcoder-par'
-import { WithPrimitives } from 'schemata-ts/schemables/primitives/definition'
+import { type WithPrimitives } from 'schemata-ts/schemables/primitives/definition'
 import { PrimitivesTranscoder } from 'schemata-ts/schemables/primitives/instances/transcoder'
 
 /** @since 2.0.0 */

@@ -1,6 +1,6 @@
 /** @since 1.0.0 */
-import { make, Schema } from 'schemata-ts/Schema'
-import { StringParams } from 'schemata-ts/schemables/primitives/definition'
+import { type Schema, make } from 'schemata-ts/Schema'
+import { type StringParams } from 'schemata-ts/schemables/primitives/definition'
 
 /**
  * Represents string inputs / outputs

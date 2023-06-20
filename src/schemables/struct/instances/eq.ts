@@ -4,7 +4,7 @@ import * as RR from 'fp-ts/ReadonlyRecord'
 import * as Str from 'fp-ts/string'
 import * as Eq from 'schemata-ts/internal/eq'
 import { hasOwn } from 'schemata-ts/internal/util'
-import { WithStruct } from 'schemata-ts/schemables/struct/definition'
+import { type WithStruct } from 'schemata-ts/schemables/struct/definition'
 import { remapPropertyKeys } from 'schemata-ts/schemables/struct/utils'
 
 export const StructEq: WithStruct<Eq.SchemableLambda> = {

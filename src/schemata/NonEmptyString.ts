@@ -3,8 +3,8 @@
  *
  * @since 1.0.0
  */
-import { Branded } from 'schemata-ts/brand'
-import { Schema } from 'schemata-ts/Schema'
+import { type Branded } from 'schemata-ts/brand'
+import { type Schema } from 'schemata-ts/Schema'
 import { Brand } from 'schemata-ts/schemata/Brand'
 import { String } from 'schemata-ts/schemata/String'
 

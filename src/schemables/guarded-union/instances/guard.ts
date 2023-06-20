@@ -1,11 +1,11 @@
 import { pipe } from 'fp-ts/function'
 import * as RNEA from 'fp-ts/ReadonlyNonEmptyArray'
-import { OutputOf } from 'schemata-ts/HKT'
-import * as G from 'schemata-ts/internal/guard'
+import { type OutputOf } from 'schemata-ts/HKT'
+import type * as G from 'schemata-ts/internal/guard'
 import {
-  GuardedPrecedentedUnionMember,
+  type GuardedPrecedentedUnionMember,
+  type WithGuardedUnion,
   ordGuardedPrecedentedUnionMember,
-  WithGuardedUnion,
 } from 'schemata-ts/schemables/guarded-union/definition'
 
 export const GuardedUnionGuard: WithGuardedUnion<G.SchemableLambda> = {

@@ -2,8 +2,8 @@ import { pipe } from 'fp-ts/function'
 import * as RNEA from 'fp-ts/ReadonlyNonEmptyArray'
 import * as Arb from 'schemata-ts/internal/arbitrary'
 import {
+  type WithGuardedUnion,
   ordGuardedPrecedentedUnionMember,
-  WithGuardedUnion,
 } from 'schemata-ts/schemables/guarded-union/definition'
 
 export const GuardedUnionArbitrary: WithGuardedUnion<Arb.SchemableLambda> = {

@@ -21,10 +21,10 @@ import { pipe } from 'fp-ts/function'
 import { getGuard } from 'schemata-ts/derivations/guard-schemable'
 import { matchW } from 'schemata-ts/internal/match'
 import * as PB from 'schemata-ts/PatternBuilder'
-import { Schema } from 'schemata-ts/Schema'
+import { type Schema } from 'schemata-ts/Schema'
 import {
-  SafeDateString,
-  SafeDateStringBrand,
+  type SafeDateString,
+  type SafeDateStringBrand,
 } from 'schemata-ts/schemables/date/definition'
 import { Brand } from 'schemata-ts/schemata/Brand'
 import { Date as DateS } from 'schemata-ts/schemata/Date'

@@ -3,9 +3,9 @@ import { pipe } from 'fp-ts/function'
 import * as Pred from 'fp-ts/Predicate'
 import * as RR from 'fp-ts/ReadonlyRecord'
 import * as Str from 'fp-ts/string'
-import * as G from 'schemata-ts/internal/guard'
+import type * as G from 'schemata-ts/internal/guard'
 import { hasOwn } from 'schemata-ts/internal/util'
-import { WithStruct } from 'schemata-ts/schemables/struct/definition'
+import { type WithStruct } from 'schemata-ts/schemables/struct/definition'
 import { remapPropertyKeys } from 'schemata-ts/schemables/struct/utils'
 
 export const StructGuard: WithStruct<G.SchemableLambda> = {

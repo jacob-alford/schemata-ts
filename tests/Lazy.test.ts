@@ -1,7 +1,7 @@
 import { pipe } from 'fp-ts/function'
 import * as S from 'schemata-ts'
 import * as JS from 'schemata-ts/JsonSchema'
-import { Schema } from 'schemata-ts/Schema'
+import { type Schema } from 'schemata-ts/Schema'
 import { makeImplicitOptional } from 'schemata-ts/struct'
 
 import { runStandardTestSuite } from '../test-utils/test-suite'

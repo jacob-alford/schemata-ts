@@ -1,7 +1,7 @@
 import * as E from 'fp-ts/Either'
 import { flow, pipe } from 'fp-ts/function'
 import * as TC from 'schemata-ts/internal/transcoder'
-import { WithParser } from 'schemata-ts/schemables/parser/definition'
+import { type WithParser } from 'schemata-ts/schemables/parser/definition'
 import { PrimitivesTranscoder } from 'schemata-ts/schemables/primitives/instances/transcoder'
 
 export const ParserTranscoder: WithParser<TC.SchemableLambda> = {

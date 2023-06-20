@@ -1,7 +1,7 @@
-import { Lazy } from 'fp-ts/function'
-import * as Eq from 'schemata-ts/internal/eq'
+import { type Lazy } from 'fp-ts/function'
+import type * as Eq from 'schemata-ts/internal/eq'
 import { memoize } from 'schemata-ts/Schema'
-import { WithLazy } from 'schemata-ts/schemables/lazy/definition'
+import { type WithLazy } from 'schemata-ts/schemables/lazy/definition'
 
 export const LazyEq: WithLazy<Eq.SchemableLambda> = {
   lazy: <O>(_: string, f: Lazy<Eq.Eq<O>>): Eq.Eq<O> => {

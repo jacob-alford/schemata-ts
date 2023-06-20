@@ -7,7 +7,7 @@ import * as RTup from 'fp-ts/ReadonlyTuple'
 import * as Sg from 'fp-ts/Semigroup'
 import * as TC from 'schemata-ts/internal/transcoder'
 import { ArrayTranscoder } from 'schemata-ts/schemables/array/instances/transcoder'
-import { WithMap } from 'schemata-ts/schemables/map/definition'
+import { type WithMap } from 'schemata-ts/schemables/map/definition'
 
 export const MapTranscoder: WithMap<TC.SchemableLambda> = {
   mapFromEntries: (ordK, sk, sa) => ({

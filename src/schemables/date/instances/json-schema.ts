@@ -1,5 +1,5 @@
 import * as JS from 'schemata-ts/internal/json-schema'
-import { WithDate } from 'schemata-ts/schemables/date/definition'
+import { type WithDate } from 'schemata-ts/schemables/date/definition'
 
 export const DateJsonSchema: WithDate<JS.SchemableLambda> = {
   date: () => JS.make(new JS.JsonEmpty()),

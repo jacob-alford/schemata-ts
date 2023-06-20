@@ -1,5 +1,5 @@
-import * as G from 'schemata-ts/internal/guard'
-import { Pattern, regexFromPattern } from 'schemata-ts/PatternBuilder'
+import type * as G from 'schemata-ts/internal/guard'
+import { type Pattern, regexFromPattern } from 'schemata-ts/PatternBuilder'
 
 /** @internal */
 export const pattern: (pattern: Pattern, caseInsensitive?: boolean) => G.Guard<string> = (

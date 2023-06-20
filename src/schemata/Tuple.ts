@@ -6,7 +6,7 @@
  */
 import { pipe, unsafeCoerce } from 'fp-ts/function'
 import * as RA from 'fp-ts/ReadonlyArray'
-import { InputOf, make, OutputOf, Schema } from 'schemata-ts/Schema'
+import { type InputOf, type OutputOf, type Schema, make } from 'schemata-ts/Schema'
 
 /**
  * A schema for n-tuples

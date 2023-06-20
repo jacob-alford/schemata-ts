@@ -1,4 +1,4 @@
-import { SchemableKind, SchemableLambda } from 'schemata-ts/HKT'
+import { type SchemableKind, type SchemableLambda } from 'schemata-ts/HKT'
 
 export type ArrayParams = {
   readonly minLength?: number

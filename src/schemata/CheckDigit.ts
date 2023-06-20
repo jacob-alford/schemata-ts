@@ -1,5 +1,5 @@
-import { make, Schema } from 'schemata-ts/Schema'
-import { CheckDigitVerified } from 'schemata-ts/schemables/check-digit/definition'
+import { type Schema, make } from 'schemata-ts/Schema'
+import { type CheckDigitVerified } from 'schemata-ts/schemables/check-digit/definition'
 
 /**
  * Verifies a character of a string against a check digit algorithm, useful for ISBNs,

@@ -7,7 +7,7 @@ import * as Sg from 'fp-ts/Semigroup'
 import * as TE from 'fp-ts/TaskEither'
 import * as TCP from 'schemata-ts/internal/transcoder-par'
 import { ArrayTranscoderPar } from 'schemata-ts/schemables/array/instances/transcoder-par'
-import { WithMap } from 'schemata-ts/schemables/map/definition'
+import { type WithMap } from 'schemata-ts/schemables/map/definition'
 
 export const MapTranscoderPar: WithMap<TCP.SchemableLambda> = {
   mapFromEntries: (ordK, sk, sa) => ({

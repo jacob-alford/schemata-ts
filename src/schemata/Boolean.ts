@@ -1,5 +1,5 @@
 /** @since 1.0.0 */
-import { make, Schema } from 'schemata-ts/Schema'
+import { type Schema, make } from 'schemata-ts/Schema'
 
 /**
  * Represents boolean inputs / outputs

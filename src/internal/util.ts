@@ -1,11 +1,11 @@
 import * as E from 'fp-ts/Either'
 import { identity, pipe } from 'fp-ts/function'
-import * as IO from 'fp-ts/IO'
+import type * as IO from 'fp-ts/IO'
 import * as O from 'fp-ts/Option'
 import * as RA from 'fp-ts/ReadonlyArray'
 import * as RNEA from 'fp-ts/ReadonlyNonEmptyArray'
 import * as RR from 'fp-ts/ReadonlyRecord'
-import * as Sg from 'fp-ts/Semigroup'
+import type * as Sg from 'fp-ts/Semigroup'
 import * as T from 'fp-ts/Task'
 import * as TE from 'fp-ts/TaskEither'
 

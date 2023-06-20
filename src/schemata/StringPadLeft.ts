@@ -1,5 +1,5 @@
-import { make, Schema } from 'schemata-ts/Schema'
-import { PaddingLength } from 'schemata-ts/schemables/padding/definition'
+import { type Schema, make } from 'schemata-ts/Schema'
+import { type PaddingLength } from 'schemata-ts/schemables/padding/definition'
 
 /**
  * A Schema combinator to narrow a string type to a string with a maximum length or exact

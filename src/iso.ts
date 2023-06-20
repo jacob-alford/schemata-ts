@@ -3,10 +3,10 @@
  *
  * @since 1.4.0
  */
-import { Category2 } from 'fp-ts/Category'
+import { type Category2 } from 'fp-ts/Category'
 import { flow, identity } from 'fp-ts/function'
-import { Invariant2 } from 'fp-ts/Invariant'
-import { Semigroupoid2 } from 'fp-ts/Semigroupoid'
+import { type Invariant2 } from 'fp-ts/Invariant'
+import { type Semigroupoid2 } from 'fp-ts/Semigroupoid'
 
 /**
  * Represents an isomorphism between two types.

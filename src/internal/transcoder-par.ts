@@ -1,12 +1,12 @@
 import { flow, pipe } from 'fp-ts/function'
-import { Invariant2 } from 'fp-ts/Invariant'
-import * as RNEA from 'fp-ts/ReadonlyNonEmptyArray'
-import * as Sgd from 'fp-ts/Semigroupoid'
+import { type Invariant2 } from 'fp-ts/Invariant'
+import type * as RNEA from 'fp-ts/ReadonlyNonEmptyArray'
+import type * as Sgd from 'fp-ts/Semigroupoid'
 import * as T from 'fp-ts/Task'
 import * as TE from 'fp-ts/TaskEither'
-import * as G from 'schemata-ts/Guard'
-import * as hkt from 'schemata-ts/HKT'
-import { Transcoder } from 'schemata-ts/internal/transcoder'
+import type * as G from 'schemata-ts/Guard'
+import type * as hkt from 'schemata-ts/HKT'
+import { type Transcoder } from 'schemata-ts/internal/transcoder'
 import * as TCE from 'schemata-ts/TranscodeError'
 
 /** @internal */

@@ -1,5 +1,5 @@
 import * as Arb from 'schemata-ts/internal/arbitrary'
-import { WithRefine } from 'schemata-ts/schemables/refine/definition'
+import { type WithRefine } from 'schemata-ts/schemables/refine/definition'
 
 export const RefineArbitrary: WithRefine<Arb.SchemableLambda> = {
   refine: refinement => from =>

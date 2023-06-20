@@ -1,8 +1,8 @@
-import { make, Schema } from 'schemata-ts/Schema'
+import { type Schema, make } from 'schemata-ts/Schema'
 import {
-  DateParams,
-  SafeDate,
-  SafeDateString,
+  type DateParams,
+  type SafeDate,
+  type SafeDateString,
 } from 'schemata-ts/schemables/date/definition'
 
 /**

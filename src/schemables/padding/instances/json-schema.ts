@@ -1,6 +1,6 @@
 import { pipe } from 'fp-ts/function'
 import * as JS from 'schemata-ts/internal/json-schema'
-import { WithPadding } from 'schemata-ts/schemables/padding/definition'
+import { type WithPadding } from 'schemata-ts/schemables/padding/definition'
 import { match } from 'schemata-ts/schemables/padding/utils'
 
 export const PaddingJsonSchema: WithPadding<JS.SchemableLambda> = {

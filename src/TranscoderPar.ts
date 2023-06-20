@@ -4,16 +4,16 @@
  *
  * @since 2.0.0
  */
-import { Const } from 'fp-ts/Const'
+import { type Const } from 'fp-ts/Const'
 import { unsafeCoerce } from 'fp-ts/function'
-import { Invariant2 } from 'fp-ts/Invariant'
-import * as RNEA from 'fp-ts/ReadonlyNonEmptyArray'
-import { Semigroupoid2 } from 'fp-ts/Semigroupoid'
-import * as TE from 'fp-ts/TaskEither'
+import { type Invariant2 } from 'fp-ts/Invariant'
+import type * as RNEA from 'fp-ts/ReadonlyNonEmptyArray'
+import { type Semigroupoid2 } from 'fp-ts/Semigroupoid'
+import type * as TE from 'fp-ts/TaskEither'
 import { getTranscoderPar as getTranscoderPar_ } from 'schemata-ts/derivations/transcoder-par-schemable'
 import * as I from 'schemata-ts/internal/transcoder-par'
-import { Schema } from 'schemata-ts/Schema'
-import * as TCE from 'schemata-ts/TranscodeError'
+import { type Schema } from 'schemata-ts/Schema'
+import type * as TCE from 'schemata-ts/TranscodeError'
 
 // ------------------
 // models

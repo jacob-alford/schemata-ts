@@ -5,7 +5,7 @@ import * as O from 'fp-ts/Option'
 import * as RA from 'fp-ts/ReadonlyArray'
 import * as TE from 'fp-ts/TaskEither'
 import { camelCase } from 'schemata-ts/internal/camelcase'
-import { CamelCase } from 'type-fest'
+import { type CamelCase } from 'type-fest'
 
 import {
   base64Encode,

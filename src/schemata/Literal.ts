@@ -3,8 +3,8 @@
  *
  * @since 1.0.0
  */
-import { ReadonlyNonEmptyArray } from 'fp-ts/ReadonlyNonEmptyArray'
-import { make, Schema } from 'schemata-ts/Schema'
+import { type ReadonlyNonEmptyArray } from 'fp-ts/ReadonlyNonEmptyArray'
+import { type Schema, make } from 'schemata-ts/Schema'
 
 /**
  * Represents a union of string, number, boolean, and null literal values

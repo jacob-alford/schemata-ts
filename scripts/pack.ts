@@ -9,8 +9,8 @@ import * as T from 'fp-ts/Task'
 import * as TE from 'fp-ts/TaskEither'
 import * as path from 'path'
 
-import { CLI, cli } from './CLI'
-import { FileSystem, fileSystem } from './FS'
+import { type CLI, cli } from './CLI'
+import { type FileSystem, fileSystem } from './FS'
 import { run } from './run'
 
 interface Build<A> extends RTE.ReaderTaskEither<FileSystem & CLI, Error, A> {}

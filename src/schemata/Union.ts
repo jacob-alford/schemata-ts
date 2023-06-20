@@ -7,9 +7,9 @@ import { pipe, unsafeCoerce } from 'fp-ts/function'
 import * as RNEA from 'fp-ts/ReadonlyNonEmptyArray'
 import { getGuard } from 'schemata-ts/derivations/guard-schemable'
 import { getInformation } from 'schemata-ts/derivations/information-schemable'
-import { make, Schema } from 'schemata-ts/Schema'
-import { ImplicitOptional } from 'schemata-ts/struct'
-import { TupleToUnion } from 'type-fest'
+import { type Schema, make } from 'schemata-ts/Schema'
+import { type ImplicitOptional } from 'schemata-ts/struct'
+import { type TupleToUnion } from 'type-fest'
 
 type Unique_<Sample, SampleCopy = Sample, AlreadyFound = never> = Sample extends [
   infer Head,

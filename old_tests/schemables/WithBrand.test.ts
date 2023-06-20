@@ -1,6 +1,6 @@
 import * as E from 'fp-ts/Either'
 import { pipe } from 'fp-ts/function'
-import { Brand } from 'schemata-ts/brand'
+import { type Brand } from 'schemata-ts/brand'
 
 import * as P from '../../src/base/PrinterBase'
 import * as SC from '../../src/base/SchemaBase'

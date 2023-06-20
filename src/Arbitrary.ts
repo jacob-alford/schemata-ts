@@ -8,7 +8,7 @@ import { identity, pipe } from 'fp-ts/function'
 import * as RA from 'fp-ts/ReadonlyArray'
 import * as RR from 'fp-ts/ReadonlyRecord'
 import * as S from 'io-ts/Schemable'
-import * as hkt from 'schemata-ts/HKT'
+import type * as hkt from 'schemata-ts/HKT'
 import { typeOf } from 'schemata-ts/internal/util'
 
 /**

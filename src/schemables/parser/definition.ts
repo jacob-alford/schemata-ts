@@ -1,6 +1,6 @@
-import * as E from 'fp-ts/Either'
-import { Brand, Branded } from 'schemata-ts/brand'
-import { SchemableKind, SchemableLambda } from 'schemata-ts/HKT'
+import type * as E from 'fp-ts/Either'
+import { type Brand, type Branded } from 'schemata-ts/brand'
+import { type SchemableKind, type SchemableLambda } from 'schemata-ts/HKT'
 
 declare const jsonString: unique symbol
 

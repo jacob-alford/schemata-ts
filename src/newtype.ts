@@ -5,7 +5,7 @@
  */
 
 import { unsafeCoerce } from 'fp-ts/function'
-import { Iso, make } from 'schemata-ts/iso'
+import { type Iso, make } from 'schemata-ts/iso'
 
 /**
  * Represents a wrapped type that's not assignable to its underlying type.

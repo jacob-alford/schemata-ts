@@ -1,6 +1,6 @@
 /** @since 1.0.0 */
-import * as Ord from 'fp-ts/Ord'
-import { make, Schema } from 'schemata-ts/Schema'
+import type * as Ord from 'fp-ts/Ord'
+import { type Schema, make } from 'schemata-ts/Schema'
 
 /**
  * A Schema for converting an array of key/value pairs to a map

@@ -6,7 +6,7 @@ import * as RTE from 'fp-ts/ReaderTaskEither'
 import * as RA from 'fp-ts/ReadonlyArray'
 import * as TE from 'fp-ts/TaskEither'
 
-import { Build } from './build'
+import { type Build } from './build'
 import { cli } from './CLI'
 import { fileSystem } from './FS'
 import { run } from './run'

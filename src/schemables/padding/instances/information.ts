@@ -1,5 +1,5 @@
 import * as Inf from 'schemata-ts/internal/information'
-import { WithPadding } from 'schemata-ts/schemables/padding/definition'
+import { type WithPadding } from 'schemata-ts/schemables/padding/definition'
 
 export const PaddingInformation: WithPadding<Inf.SchemableLambda> = {
   padLeft: () => inner => Inf.makeInformation(inner / 2),

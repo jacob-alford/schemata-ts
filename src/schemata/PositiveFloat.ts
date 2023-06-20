@@ -10,13 +10,13 @@
  * @since 1.0.0
  */
 import {
-  Float,
-  MaxPositiveFloat,
+  type Float,
+  type MaxPositiveFloat,
+  type MinPositiveFloat,
   maxPositiveFloat,
-  MinPositiveFloat,
   minPositiveFloat,
 } from 'schemata-ts/float'
-import { Schema } from 'schemata-ts/Schema'
+import { type Schema } from 'schemata-ts/Schema'
 import { Float as Floating } from 'schemata-ts/schemata/Float'
 
 /**

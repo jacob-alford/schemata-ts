@@ -1,7 +1,7 @@
-import { Const } from 'fp-ts/Const'
+import { type Const } from 'fp-ts/Const'
 import { identity, pipe } from 'fp-ts/function'
 import * as JS from 'schemata-ts/internal/json-schema'
-import { WithAnnotate } from 'schemata-ts/schemables/annotate/definition'
+import { type WithAnnotate } from 'schemata-ts/schemables/annotate/definition'
 
 export const AnnotateJsonSchema: WithAnnotate<JS.SchemableLambda> = {
   annotate:

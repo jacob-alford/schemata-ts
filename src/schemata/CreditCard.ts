@@ -7,11 +7,11 @@
  * @since 1.0.0
  */
 import { pipe } from 'fp-ts/function'
-import { Branded } from 'schemata-ts/brand'
+import { type Branded } from 'schemata-ts/brand'
 import { luhn } from 'schemata-ts/internal/algorithms'
 import * as PB from 'schemata-ts/PatternBuilder'
-import { Schema } from 'schemata-ts/Schema'
-import { CheckDigitVerified } from 'schemata-ts/schemables/check-digit/definition'
+import { type Schema } from 'schemata-ts/Schema'
+import { type CheckDigitVerified } from 'schemata-ts/schemables/check-digit/definition'
 import { Brand } from 'schemata-ts/schemata/Brand'
 import { CheckDigit } from 'schemata-ts/schemata/CheckDigit'
 import { Pattern } from 'schemata-ts/schemata/Pattern'

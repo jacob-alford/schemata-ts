@@ -1,6 +1,6 @@
 import { identity, pipe } from 'fp-ts/function'
 import * as TC from 'schemata-ts/internal/transcoder'
-import { WithPattern } from 'schemata-ts/schemables/pattern/definition'
+import { type WithPattern } from 'schemata-ts/schemables/pattern/definition'
 import { pattern } from 'schemata-ts/schemables/pattern/utils'
 
 export const PatternTranscoder: WithPattern<TC.SchemableLambda> = {

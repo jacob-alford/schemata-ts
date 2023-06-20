@@ -1,6 +1,6 @@
-import * as J from 'fp-ts/Json'
+import type * as J from 'fp-ts/Json'
 
-import { SafeJson } from '../../src/base/PrinterBase'
+import { type SafeJson } from '../../src/base/PrinterBase'
 import { validateArbitrary } from '../../test-utils-old'
 import * as Json from '../../test-utils-old/schemable-exports/WithJson'
 

@@ -1,6 +1,6 @@
 import { flow } from 'fp-ts/function'
 import * as TCP from 'schemata-ts/internal/transcoder-par'
-import { WithDate } from 'schemata-ts/schemables/date/definition'
+import { type WithDate } from 'schemata-ts/schemables/date/definition'
 import { DateTranscoder as Transcoder } from 'schemata-ts/schemables/date/instances/transcoder'
 
 export const DateTranscoderPar: WithDate<TCP.SchemableLambda> = {

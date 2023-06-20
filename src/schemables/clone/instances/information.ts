@@ -1,6 +1,6 @@
 import { identity } from 'fp-ts/function'
-import * as Inf from 'schemata-ts/internal/information'
-import { WithClone } from 'schemata-ts/schemables/clone/definition'
+import type * as Inf from 'schemata-ts/internal/information'
+import { type WithClone } from 'schemata-ts/schemables/clone/definition'
 
 export const CloneInformation: WithClone<Inf.SchemableLambda> = {
   clone: identity,
