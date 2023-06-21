@@ -69,6 +69,37 @@ export interface TestSuite<I, O> {
   readonly testArbitraryGuard: IO.IO<void>
 }
 
+const replaceBigInts_: (u: unknown) => unknown = u =>
+  typeof u === 'bigint'
+    ? `${String(u)}n`
+    : typeof u !== 'object' || u === null
+    ? u
+    : replaceBigInts(u as Record<string, unknown> | Array<unknown>)
+
+const replaceBigInts: (
+  input: Record<string, unknown> | Array<unknown>,
+) => Readonly<Record<string, unknown>> | ReadonlyArray<unknown> = _ =>
+  Array.isArray(_) ? pipe(_, RA.map(replaceBigInts_)) : pipe(_, RR.map(replaceBigInts_))
+
+const safeStringify = (input: unknown, fallback: number): string => {
+  if (
+    typeof input === 'string' ||
+    typeof input === 'number' ||
+    typeof input === 'bigint' ||
+    input === null
+  ) {
+    return String(input)
+  }
+
+  if (typeof input === 'object') {
+    return JSON.stringify(
+      replaceBigInts(input as Record<string, unknown> | Array<unknown>),
+    )
+  }
+
+  return String(fallback)
+}
+
 const foldTestSuites =
   <T>(prepend: (result: T) => string = () => '') =>
   <I>(
@@ -82,15 +113,7 @@ const foldTestSuites =
               suite as ReadonlyArray<TestItem<I, T>>,
               RA.mapWithIndex((i, [testValue, result]) =>
                 tuple(
-                  `${prepend(result)} ${
-                    typeof testValue === 'string' ||
-                    typeof testValue === 'number' ||
-                    testValue === null
-                      ? String(testValue)
-                      : typeof testValue === 'object'
-                      ? JSON.stringify(testValue)
-                      : String(i)
-                  }`,
+                  `${prepend(result)} ${safeStringify(testValue, i)}`,
                   tuple(testValue, result),
                 ),
               ),

@@ -37,10 +37,10 @@ runStandardTestSuite(
   {
     makeDecodeError: expected =>
       TC.transcodeErrors(
-        TC.errorAtUnionMember(0, TC.transcodeErrors(TC.typeMismatch('hi', expected))),
-        TC.errorAtUnionMember(1, TC.transcodeErrors(TC.typeMismatch('hey', expected))),
-        TC.errorAtUnionMember(2, TC.transcodeErrors(TC.typeMismatch('lmao', expected))),
-        TC.errorAtUnionMember(3, TC.transcodeErrors(TC.typeMismatch('null', expected))),
+        TC.errorAtUnionMember(0, TC.typeMismatch('hi', expected)),
+        TC.errorAtUnionMember(1, TC.typeMismatch('hey', expected)),
+        TC.errorAtUnionMember(2, TC.typeMismatch('lmao', expected)),
+        TC.errorAtUnionMember(3, TC.typeMismatch('null', expected)),
       ),
   },
 )()

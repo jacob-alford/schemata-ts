@@ -1,5 +1,6 @@
 import { expectTypeOf } from 'expect-type'
-import type * as O from 'fp-ts/Option'
+import { type Const } from 'fp-ts/Const'
+import * as O from 'fp-ts/Option'
 import * as S from 'schemata-ts'
 import { type Float } from 'schemata-ts/float'
 import { type Integer } from 'schemata-ts/integer'
@@ -8,6 +9,7 @@ import {
   type SafeDate,
   type SafeDateString,
 } from 'schemata-ts/schemables/date/definition'
+import * as TC from 'schemata-ts/Transcoder'
 
 import { runStandardTestSuite } from '../test-utils/test-suite'
 
@@ -23,6 +25,22 @@ const Schema = S.Struct({
     S.OptionFromNullable(S.DateFromString()),
   ),
 })
+
+const expectectJsonSchema: Const<JS.JsonSchema, S.InputOf<typeof Schema>> = JS.struct(
+  {
+    a: JS.union(JS.nullSchema, JS.string()),
+    b: JS.number(),
+    c: JS.booleanSchema,
+    d: JS.number({ minimum: S.minUnixTime, maximum: S.maxUnixTime }),
+    e: JS.integer({ minimum: 0, maximum: 2 }),
+    f: JS.union(
+      JS.string(),
+      JS.number(),
+      JS.union(JS.nullSchema, JS.string({ format: 'date' })),
+    ),
+  },
+  ['b', 'c', 'd'],
+)
 
 test('Struct types', () => {
   expectTypeOf(Schema).toEqualTypeOf<
@@ -53,23 +71,82 @@ runStandardTestSuite('Struct', Schema, _ => ({
       { a: 'a', b: 1, c: true, d: 1, e: 1, f: 'a' },
       { a: 'a', b: 1, c: true, d: new Date(1000), e: 1, f: 'a' },
     ),
+    _.decoder.pass(
+      { b: Number.MAX_VALUE, c: false, d: S.maxUnixTime },
+      {
+        a: undefined,
+        b: Number.MAX_VALUE,
+        c: false,
+        d: new Date(S.maxUnixTime * 1000),
+        e: undefined,
+        f: O.none,
+      },
+    ),
+    _.decoder.pass(
+      {
+        a: undefined,
+        b: Number.MIN_VALUE,
+        c: false,
+        d: S.minUnixTime,
+        e: 0,
+        f: 'September 13, 1995',
+      },
+      {
+        a: undefined,
+        b: Number.MIN_VALUE,
+        c: false,
+        d: new Date(S.minUnixTime * 1000),
+        e: 0,
+        f: O.some(new Date('September 13, 1995')),
+      },
+    ),
+    _.decoder.fail(
+      {
+        a: null,
+        b: NaN,
+        c: 0,
+        d: Number.MAX_VALUE,
+        e: undefined,
+        f: 'September 13, 1995',
+      },
+      () =>
+        TC.transcodeErrors(
+          TC.errorAtKey('b', TC.typeMismatch('Float', NaN)),
+          TC.errorAtKey('c', TC.typeMismatch('Boolean', 0)),
+          TC.errorAtKey(
+            'd',
+            TC.typeMismatch('Float<-8640000000000,8640000000000>', Number.MAX_VALUE),
+          ),
+        ),
+    ),
+    _.decoder.fail(
+      {
+        a: 0n,
+        b: 0x1fffffffffffff,
+        c: null,
+        d: 0,
+        e: 0b01,
+        f: NaN,
+      },
+      () =>
+        TC.transcodeErrors(
+          TC.errorAtKey(
+            'a',
+            TC.errorAtUnionMember(0, TC.typeMismatch('Nullable', 0n)),
+            TC.errorAtUnionMember(1, TC.typeMismatch('Nullable', 0n)),
+          ),
+          TC.errorAtKey('c', TC.typeMismatch('Boolean', null)),
+          TC.errorAtKey(
+            'f',
+            TC.errorAtUnionMember(0, TC.typeMismatch('Optional Transitivity', NaN)),
+            TC.errorAtUnionMember(1, TC.typeMismatch('Optional Transitivity', NaN)),
+            TC.errorAtUnionMember(2, TC.typeMismatch('Optional Transitivity', NaN)),
+          ),
+        ),
+    ),
   ],
   encoderTests: [],
   guardTests: [],
   eqTests: [],
-  jsonSchema: JS.struct(
-    {
-      a: JS.union(JS.nullSchema, JS.string()),
-      b: JS.number(),
-      c: JS.booleanSchema,
-      d: JS.number({ minimum: S.minUnixTime, maximum: S.maxUnixTime }),
-      e: JS.integer({ minimum: 0, maximum: 2 }),
-      f: JS.union(
-        JS.string(),
-        JS.number(),
-        JS.union(JS.nullSchema, JS.string({ format: 'date' })),
-      ),
-    },
-    ['b', 'c', 'd'],
-  ),
+  jsonSchema: expectectJsonSchema,
 }))()

@@ -13,7 +13,7 @@ const informationFromDateRange = (
   const dmi = beforeDate.getMinutes() - afterDate.getMinutes()
   const ds = beforeDate.getSeconds() - afterDate.getSeconds()
   const dms = beforeDate.getMilliseconds() - afterDate.getMilliseconds()
-  return Inf.informationFromSampleSize(dyr * dmo * dd * dhr * dmi * ds * dms)
+  return Inf.informationFromSampleSize(Math.abs(dyr * dmo * dd * dhr * dmi * ds * dms))
 }
 
 export const DateInformation: WithDate<Inf.SchemableLambda> = {
