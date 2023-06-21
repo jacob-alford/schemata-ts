@@ -60,7 +60,7 @@ export const typeOf = (x: unknown): string => (x === null ? 'null' : typeof x)
  *
  * @internal
  */
-export const witherSM =
+export const witherRemap =
   <E, A>(sgErrors: Sg.Semigroup<E>, concatKeys: Sg.Semigroup<A>) =>
   <In extends Record<string, any>>(
     f: <K extends keyof In>(
@@ -106,7 +106,7 @@ const getApplicativeValidationPar = <E>(sgErrors: Sg.Semigroup<E>) =>
   TE.getApplicativeTaskValidation(T.ApplicativePar, sgErrors)
 
 /** Performs a task-validative traversal over a struct's own enumerable properties. */
-export const witherTaskParSM =
+export const witherRemapPar =
   <E, A>(sgErrors: Sg.Semigroup<E>, concatKeys: Sg.Semigroup<A>) =>
   <In extends Record<string, any>>(
     f: <K extends keyof In>(

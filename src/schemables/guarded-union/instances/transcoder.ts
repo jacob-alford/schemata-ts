@@ -1,3 +1,4 @@
+import * as E from 'fp-ts/Either'
 import { pipe } from 'fp-ts/function'
 import * as RNEA from 'fp-ts/ReadonlyNonEmptyArray'
 import * as TC from 'schemata-ts/internal/transcoder'
@@ -32,11 +33,13 @@ export const GuardedUnionTranscoder: WithGuardedUnion<TC.SchemableLambda> = {
       },
       decode: u => {
         for (const m of sortedMembers) {
-          const { guard, member } = m
-          if (guard.is(u)) {
-            return member.decode(u)
+          const { member } = m
+          const result = member.decode(u)
+          if (E.isRight(result)) {
+            return result
           }
         }
+
         return pipe(
           sortedMembers,
           RNEA.mapWithIndex(i =>

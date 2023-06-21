@@ -10,7 +10,8 @@ import type * as hkt from 'schemata-ts/HKT'
 export type Information<A> = Const<number, A>
 
 /** @internal */
-export const makeInformation: <A>(e: unknown) => Information<A> = make as any
+export const makeInformation: <A>(e: number) => Information<A> = e =>
+  make(Math.min(e, Number.MAX_VALUE)) as any
 
 /** @internal */
 export interface SchemableLambda extends hkt.SchemableLambda {
@@ -20,4 +21,5 @@ export interface SchemableLambda extends hkt.SchemableLambda {
 /** @internal */
 export const informationFromSampleSize: <A>(
   sampleSize: number,
-) => Information<A> = sampleSize => makeInformation(Math.log2(sampleSize))
+) => Information<A> = sampleSize =>
+  sampleSize <= 0 ? makeInformation(0) : makeInformation(Math.log2(sampleSize))

@@ -14,7 +14,7 @@ export const DateArbitrary: WithDate<Arb.SchemableLambda> = {
     )
   },
   dateFromString: (params = {}) => {
-    const { beforeDate = latestSafeDate, afterDate = earliestSafeDate } = params
+    const { beforeDate, afterDate } = params
     return Arb.makeArbitrary(fc =>
       fc.date({ min: afterDate, max: beforeDate }).filter(isSafeDate),
     )

@@ -12,7 +12,7 @@ import {
   forIn,
   urlifyBase64,
   witherS,
-  witherTaskParSM,
+  witherRemapPar,
 } from '../src/internal/util'
 import { zipN } from '../test-utils-old'
 
@@ -138,7 +138,7 @@ describe('witherTaskParSM', () => {
     })
     const result = pipe(
       obj,
-      witherTaskParSM(RA.getMonoid())((k, value) => {
+      witherRemapPar(RA.getMonoid())((k, value) => {
         tester(value)
         return TE.right(O.some(tuple(value, k)))
       }),
@@ -156,7 +156,7 @@ describe('witherTaskParSM', () => {
     }
     const result = pipe(
       obj,
-      witherTaskParSM(RA.getMonoid())((k, value) => {
+      witherRemapPar(RA.getMonoid())((k, value) => {
         tester(value)
         return TE.right(O.some([value, k]))
       }),
@@ -172,7 +172,7 @@ describe('witherTaskParSM', () => {
     }
     const result = pipe(
       obj,
-      witherTaskParSM(RA.getMonoid())((k, value) => {
+      witherRemapPar(RA.getMonoid())((k, value) => {
         return value === 2 ? TE.right(O.none) : TE.right(O.some([value, k]))
       }),
     )
@@ -187,7 +187,7 @@ describe('witherTaskParSM', () => {
     }
     const result = pipe(
       obj,
-      witherTaskParSM(RA.getMonoid<string>())((k, value) => {
+      witherRemapPar(RA.getMonoid<string>())((k, value) => {
         tester(value)
         return value >= 2 ? TE.left(['fail']) : TE.right(O.some([value, k]))
       }),

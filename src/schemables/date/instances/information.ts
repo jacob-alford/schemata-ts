@@ -6,13 +6,13 @@ const informationFromDateRange = (
   beforeDate: Date,
   afterDate: Date,
 ): Inf.Information<SafeDate> => {
-  const dyr = afterDate.getFullYear() - beforeDate.getFullYear()
-  const dmo = afterDate.getMonth() - beforeDate.getMonth()
-  const dd = afterDate.getDate() - beforeDate.getDate()
-  const dhr = afterDate.getHours() - beforeDate.getHours()
-  const dmi = afterDate.getMinutes() - beforeDate.getMinutes()
-  const ds = afterDate.getSeconds() - beforeDate.getSeconds()
-  const dms = afterDate.getMilliseconds() - beforeDate.getMilliseconds()
+  const dyr = beforeDate.getFullYear() - afterDate.getFullYear()
+  const dmo = beforeDate.getMonth() - afterDate.getMonth()
+  const dd = beforeDate.getDate() - afterDate.getDate()
+  const dhr = beforeDate.getHours() - afterDate.getHours()
+  const dmi = beforeDate.getMinutes() - afterDate.getMinutes()
+  const ds = beforeDate.getSeconds() - afterDate.getSeconds()
+  const dms = beforeDate.getMilliseconds() - afterDate.getMilliseconds()
   return Inf.informationFromSampleSize(dyr * dmo * dd * dhr * dmi * ds * dms)
 }
 
