@@ -153,6 +153,57 @@ Anything that successfully stringifies using `JsonSerializer` will successfully 
 
 Schemata-ts comes with its own implementation of [JSON-Schema](https://json-schema.org/) and is a validation standard that can be used to validate artifacts in many other languages and frameworks. Schemata-ts's implementation is compatible with JSON Schema Draft 4, Draft 6, Draft 7, Draft 2019-09, and has partial support for 2020-12. _Note_: string `format` (like regex, contentType, or mediaType) is only available starting with Draft 6, and tuples are not compatible with Draft 2020-12.
 
+### Annotating JSON schema
+
+JSON schema can have description and titles fields. To specify these values, you should use `S.Annotate`:
+
+```typescript
+import * as S from 'schemata-ts/schemata'
+
+const Name = pipe(
+	S.String,
+	S.Annotate({
+		title: 'Name',
+		description: 'The name of the person'
+	})
+)
+
+const Email = pipe(
+	S.EmailAddress,
+	S.Annotate({
+		title: 'Email',
+		description: 'The email address of the person'
+	})
+)
+
+const Street = pipe(
+	S.String,
+	S.Annotate({
+		title: 'Street',
+		description: 'The street address of the person'
+	})
+)
+
+const City = pipe(
+	S.String,
+	S.Annotate({
+		title: 'City',
+		description: 'The city of the person'
+	})
+)
+
+const Address = S.Struct({
+	street: Street,
+	city: City
+})
+
+const Person = S.Struct({
+	name: Name,
+	email: Email,
+	address: Address
+})
+```
+
 ### Customer JSON Schema Example
 
 This is a live example generating a JSON Schema in `src/base/JsonSchemaBase.ts`
