@@ -73,7 +73,7 @@ export const typeMismatch: (
  * @category Constructors
  */
 export const unexpectedValue: (
-  ...args: ConstructorParameters<typeof TE.TranscodeErrors>
+  ...errors: ConstructorParameters<typeof TE.UnexpectedValue>
 ) => TE.TranscodeError = I.unexpectedValue
 
 /**
@@ -83,8 +83,10 @@ export const unexpectedValue: (
  * @category Constructors
  */
 export const errorAtIndex: (
-  ...args: ConstructorParameters<typeof TE.ErrorAtIndex>
-) => TE.TranscodeError = I.errorAtIndex
+  index: number,
+  ...errors: RNEA.ReadonlyNonEmptyArray<TE.TranscodeError>
+) => TE.TranscodeError = (i, ...errs) =>
+  I.errorAtIndex(i, transcodeErrors(...(errs as any)))
 
 /**
  * A failure case at a specific key
@@ -93,8 +95,10 @@ export const errorAtIndex: (
  * @category Constructors
  */
 export const errorAtKey: (
-  ...args: ConstructorParameters<typeof TE.ErrorAtKey>
-) => TE.TranscodeError = I.errorAtKey
+  key: string,
+  ...errors: RNEA.ReadonlyNonEmptyArray<TE.TranscodeError>
+) => TE.TranscodeError = (key, ...errs) =>
+  I.errorAtKey(key, transcodeErrors(...(errs as any)))
 
 /**
  * A failure case for a union member
@@ -103,8 +107,10 @@ export const errorAtKey: (
  * @category Constructors
  */
 export const errorAtUnionMember: (
-  ...args: ConstructorParameters<typeof TE.ErrorAtUnionMember>
-) => TE.TranscodeError = I.errorAtUnionMember
+  member: string | number,
+  ...errors: RNEA.ReadonlyNonEmptyArray<TE.TranscodeError>
+) => TE.TranscodeError = (member, ...errs) =>
+  I.errorAtUnionMember(member, transcodeErrors(...(errs as any)))
 
 // ------------------
 // combinators
