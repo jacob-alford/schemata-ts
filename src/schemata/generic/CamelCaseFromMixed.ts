@@ -3,7 +3,6 @@
  * the output type.
  *
  * @since 1.4.0
- * @category Model
  */
 import { InputOf, make, OutputOf, SchemaExt } from 'schemata-ts/SchemaExt'
 import * as s from 'schemata-ts/struct'
