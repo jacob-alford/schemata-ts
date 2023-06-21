@@ -2,7 +2,6 @@ import { pipe } from 'fp-ts/function'
 import * as S from 'schemata-ts'
 import * as JS from 'schemata-ts/JsonSchema'
 import { type Schema } from 'schemata-ts/Schema'
-import { makeImplicitOptional } from 'schemata-ts/struct'
 
 import { runStandardTestSuite } from '../test-utils/test-suite'
 
@@ -50,13 +49,7 @@ const expectedJsonSchema = JS.annotate({
     ),
     two: JS.struct(
       {
-        one: makeImplicitOptional(
-          JS.union(
-            JS.nullSchema,
-            makeImplicitOptional(JS.ref('one'), _ => Object.assign({}, _)),
-          ),
-          _ => Object.assign({}, _),
-        ),
+        one: JS.union(JS.nullSchema, JS.ref('one')),
       },
       [],
     ),

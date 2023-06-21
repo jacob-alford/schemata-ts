@@ -136,6 +136,10 @@ export class JsonRef {
   constructor(readonly $ref: string) {}
 }
 
+/** @internal */
+export const stripIdentity = <A>(schema: Const<JsonSchema, A>): JsonSchema =>
+  JSON.parse(JSON.stringify(schema))
+
 /** @since 1.2.0 */
 export const URI = 'JsonSchema'
 

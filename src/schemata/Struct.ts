@@ -69,6 +69,6 @@ export const Struct = <T extends Record<string, Schema<any, any>>>(
           information: getInformation(schema),
         }
       }
-      return _.struct(struct as any, { extraProps })
+      return _.struct(struct as any, extraProps)
     }),
   )

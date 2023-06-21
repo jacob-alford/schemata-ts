@@ -4,7 +4,7 @@ import { pipe, tuple } from 'fp-ts/function'
 import * as O from 'fp-ts/Option'
 import * as Sg from 'fp-ts/Semigroup'
 import * as TC from 'schemata-ts/internal/transcoder'
-import { hasOwn, witherSM } from 'schemata-ts/internal/util'
+import { witherRemap } from 'schemata-ts/internal/util'
 import { type WithStruct } from 'schemata-ts/schemables/struct/definition'
 import { remapPropertyKeys } from 'schemata-ts/schemables/struct/utils'
 import { getKeyRemap } from 'schemata-ts/struct'
@@ -14,7 +14,7 @@ const decodeErrorValidation = E.getApplicativeValidation(TCE.Semigroup)
 const apSecond = Ap.apSecond(decodeErrorValidation)
 
 export const StructTranscoder: WithStruct<TC.SchemableLambda> = {
-  struct: (properties, params = { extraProps: 'strip' }) => {
+  struct: (properties, extraProps = 'strip') => {
     const lookupByOutputKey = remapPropertyKeys(properties)
 
     return {
@@ -27,7 +27,7 @@ export const StructTranscoder: WithStruct<TC.SchemableLambda> = {
         // --- decode all known properties of an object's own non-inherited properties
         const outKnown = pipe(
           properties,
-          witherSM(
+          witherRemap(
             TCE.Semigroup,
             Sg.last(),
           )((k, prop) => {
@@ -53,94 +53,38 @@ export const StructTranscoder: WithStruct<TC.SchemableLambda> = {
           }),
         )
 
-        if (params.extraProps === 'strip') return outKnown
+        if (extraProps === 'strip') return outKnown
 
         // -- if extra props are not allowed, return a failure on keys not specified in properties
-        if (params.extraProps === 'error') {
-          return pipe(
-            u,
-            witherSM(
-              TCE.Semigroup,
-              Sg.last(),
-            )((key, value) => {
-              if (properties[key] === undefined) {
-                return TC.failure(
-                  TC.transcodeErrors(
-                    TC.errorAtKey(
-                      key as string,
-                      TC.transcodeErrors(TC.unexpectedValue(value)),
-                    ),
-                  ),
-                )
-              }
-              return E.right(O.zero()) as any
-            }),
-            apSecond(outKnown),
-          )
-        }
-
-        const rest = params.restParam
-        if (rest === undefined) return outKnown
-
-        // --- Decode rest parameters
         return pipe(
-          outKnown,
-          E.chain(knownResult =>
-            pipe(
-              u,
-              witherSM(
-                TCE.Semigroup,
-                Sg.last(),
-              )((inputKey, inputValue) => {
-                const knownPropAtKey = properties[inputKey]
-
-                // -- If the input key is not a known property key (i.e. it was not specified in the struct) decode it with the rest parameter
-                if (knownPropAtKey === undefined)
-                  return pipe(
-                    rest.decode(inputValue),
-                    E.bimap(
-                      errs => TC.transcodeErrors(TC.errorAtKey(inputKey, errs)),
-                      result => O.some(tuple(result, inputKey)) as any,
-                    ),
-                  )
-
-                const { schemable } = knownPropAtKey
-
-                // -- If the input key is a known property key (i.e. it was specified in the struct) keep its more precise value
-                return pipe(
-                  getKeyRemap(schemable),
-                  O.fold(
-                    () => tuple(knownResult[inputKey], inputKey),
-                    _keyRemap => tuple(knownResult[_keyRemap], _keyRemap),
+          u,
+          witherRemap(
+            TCE.Semigroup,
+            Sg.last(),
+          )((key, value) => {
+            if (properties[key] === undefined) {
+              return TC.failure(
+                TC.transcodeErrors(
+                  TC.errorAtKey(
+                    key as string,
+                    TC.transcodeErrors(TC.unexpectedValue(value)),
                   ),
-                  O.some,
-                  E.right,
-                )
-              }),
-            ),
-          ),
+                ),
+              )
+            }
+            return E.right(O.zero()) as any
+          }),
+          apSecond(outKnown),
         )
       },
       encode: output => {
         return pipe(
           output as Record<string, unknown>,
-          witherSM(
+          witherRemap(
             TCE.Semigroup,
             Sg.last(),
           )((key, outputAtKey) => {
             const unionMembers = lookupByOutputKey[key]
-
-            if (
-              // -- Param is extra (i.e. possible rest param)
-              (!hasOwn(lookupByOutputKey, key) || unionMembers === undefined) &&
-              params.extraProps === 'restParam' &&
-              params.restParam !== undefined
-            ) {
-              return pipe(
-                params.restParam.encode(outputAtKey),
-                E.map(result => O.some(tuple(result, key))),
-              )
-            }
 
             // -- Param is extra (and additional properties are stripped)
             if (unionMembers === undefined) return E.right(O.zero())

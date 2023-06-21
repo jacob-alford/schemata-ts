@@ -6,6 +6,12 @@ export function isSafeDate(d: unknown): d is SafeDate {
 }
 
 /** @internal */
+export const largestSafeMs = 8640000000000000
+
+/** @internal */
+export const smallestSafeMs = -8640000000000000
+
+/** @internal */
 export const isValidDateString = (s: unknown): s is string =>
   typeof s === 'string' && !Number.isNaN(new Date(s).getTime())
 
@@ -18,7 +24,7 @@ export const isAfterInc: (d: Date) => (d2: Date) => boolean = d => d2 =>
   d.getTime() >= d2.getTime()
 
 /** @internal */
-export const earliestSafeDate = new Date(-8640000000000000)
+export const earliestSafeDate = new Date(smallestSafeMs)
 
 /** @internal */
-export const latestSafeDate = new Date(8640000000000000)
+export const latestSafeDate = new Date(largestSafeMs)

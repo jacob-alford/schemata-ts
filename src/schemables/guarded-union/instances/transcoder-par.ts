@@ -1,5 +1,8 @@
-import { pipe } from 'fp-ts/function'
+import { flow, pipe } from 'fp-ts/function'
+import * as O from 'fp-ts/Option'
+import * as RA from 'fp-ts/ReadonlyArray'
 import * as RNEA from 'fp-ts/ReadonlyNonEmptyArray'
+import * as TE from 'fp-ts/TaskEither'
 import * as TC from 'schemata-ts/internal/transcoder'
 import * as TCP from 'schemata-ts/internal/transcoder-par'
 import {
@@ -31,25 +34,43 @@ export const GuardedUnionTranscoderPar: WithGuardedUnion<TCP.SchemableLambda> = 
           TCP.failure,
         )
       },
-      decode: u => {
-        for (const m of sortedMembers) {
-          const { guard, member } = m
-          if (guard.is(u)) {
-            return member.decode(u)
-          }
-        }
-        return pipe(
+      decode: u =>
+        pipe(
           sortedMembers,
-          RNEA.mapWithIndex(i =>
-            TC.errorAtUnionMember(i, TC.transcodeErrors(TC.typeMismatch(name, u))),
-          ),
-          errs =>
-            TC.transcodeErrors(
-              ...(errs as [TCE.TranscodeError, ...ReadonlyArray<TCE.TranscodeError>]),
+          RA.wither(TE.ApplicativePar)(({ member }) =>
+            pipe(
+              member.decode(u),
+              TE.map(O.some),
+              TE.orElseW(() => TE.right(O.none)),
             ),
-          TCP.failure,
-        )
-      },
+          ),
+          TE.chain(
+            flow(
+              RNEA.fromReadonlyArray,
+              O.fold(
+                () =>
+                  pipe(
+                    sortedMembers,
+                    RNEA.mapWithIndex(i =>
+                      TC.errorAtUnionMember(
+                        i,
+                        TC.transcodeErrors(TC.typeMismatch(name, u)),
+                      ),
+                    ),
+                    errs =>
+                      TC.transcodeErrors(
+                        ...(errs as [
+                          TCE.TranscodeError,
+                          ...ReadonlyArray<TCE.TranscodeError>,
+                        ]),
+                      ),
+                    TCP.failure,
+                  ),
+                flow(RNEA.head, TCP.success),
+              ),
+            ),
+          ),
+        ),
     }
   },
 }

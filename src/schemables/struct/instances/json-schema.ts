@@ -9,7 +9,7 @@ import { type WithStruct } from 'schemata-ts/schemables/struct/definition'
 import { hasImplicitOptional } from 'schemata-ts/struct'
 
 export const StructJsonSchema: WithStruct<JS.SchemableLambda> = {
-  struct: (properties, params = { extraProps: 'strip' }) => {
+  struct: (properties, extraProps = 'strip') => {
     const [requiredKeys, jsonSchema] = pipe(
       properties,
       RR.foldMapWithIndex(Str.Ord)(
@@ -22,11 +22,7 @@ export const StructJsonSchema: WithStruct<JS.SchemableLambda> = {
     return new JS.JsonStruct(
       jsonSchema,
       requiredKeys,
-      params.extraProps === 'restParam'
-        ? params.restParam
-        : params.extraProps === 'error'
-        ? false
-        : undefined,
+      extraProps === 'error' ? false : undefined,
     ) as any
   },
 }

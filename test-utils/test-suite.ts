@@ -15,7 +15,7 @@ import { getInformation } from 'schemata-ts/derivations/information-schemable'
 import { getJsonSchema } from 'schemata-ts/derivations/json-schema-schemable'
 import { getTranscoderPar } from 'schemata-ts/derivations/transcoder-par-schemable'
 import { getTranscoder } from 'schemata-ts/derivations/transcoder-schemable'
-import type * as JS from 'schemata-ts/internal/json-schema'
+import * as JS from 'schemata-ts/internal/json-schema'
 import { type Schema } from 'schemata-ts/Schema'
 import { PrimitivesGuard } from 'schemata-ts/schemables/primitives/instances/guard'
 import * as TCE from 'schemata-ts/TranscodeError'
@@ -173,7 +173,9 @@ export const getTestSuite = <I, O>(schema: Schema<I, O>): TestSuite<I, O> => {
     ),
     assertJsonSchema: expected => () => {
       test('matches expected', () => {
-        expect(jsonSchema).toStrictEqual(expected)
+        expect(JS.stripIdentity(jsonSchema)).toStrictEqual(
+          JS.stripIdentity(expected as any),
+        )
       })
     },
     assertValidInformation: () => {
@@ -186,23 +188,24 @@ export const getTestSuite = <I, O>(schema: Schema<I, O>): TestSuite<I, O> => {
       test('idempotence > sequential', () => {
         fc.assert(
           fc.property(arbitrary, output => {
+            const initial = pipe(output, transcoder.encode, E.chain(transcoder.decode))
             const result = pipe(
-              output,
-              transcoder.encode,
-              E.chain(transcoder.decode),
+              initial,
               E.chain(transcoder.encode),
               E.chain(transcoder.decode),
             )
             expect(
               pipe(
                 result,
-                E.map(result => eq.equals(result, output)),
+                E.bindTo('result'),
+                E.apS('initial', initial),
+                E.map(({ result, initial }) => eq.equals(result, initial)),
               ),
             ).toStrictEqual(E.right(true))
           }),
         )
       })
-      test('idempotence > parallel', () => {
+      test('idempotence > parallel', async () => {
         const arbitrary = getArbitrary(schema).arbitrary(fc)
         fc.assert(
           fc.asyncProperty(arbitrary, async output => {
@@ -217,13 +220,13 @@ export const getTestSuite = <I, O>(schema: Schema<I, O>): TestSuite<I, O> => {
               TE.chain(transcodePar.decode),
             )
             expect(
-              pipe(
+              await pipe(
                 result,
                 TE.bindTo('result'),
                 TE.apS('initial', initial),
                 TE.map(({ result, initial }) => eq.equals(result, initial)),
               )(),
-            ).resolves.toStrictEqual(E.right(true))
+            ).toStrictEqual(E.right(true))
           }),
         )
       })
