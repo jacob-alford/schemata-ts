@@ -446,6 +446,40 @@ Furthermore, `schemata-ts` has several utilities for working with structs:
 | omit      | Remove specified keys                        |
 | mapKeysTo | Apply a mapping function to an object's keys |
 
+## Annotating schema
+
+JSON schema can have description and titles fields. To specify these values, you should use `S.Annotate`:
+
+```typescript
+import * as S from 'schemata-ts/schemata'
+
+const person = S.Struct({
+	name: S.Annotate({
+		title: 'Name',
+		description: 'The name of the person'
+	})(S.String),
+	email: S.Annotate({
+		title: 'Email',
+		description: 'The email address of the person'
+	})(S.EmailAddress),
+	address: S.Annotate({
+		title: 'Address',
+		description: 'The address of the person'
+	})(
+		S.Struct({
+			street: S.Annotate({
+				title: 'Street',
+				description: 'The street address of the person'
+			})(S.String),
+			city: S.Annotate({
+				title: 'City',
+				description: 'The city of the person'
+			})(S.String)
+		})
+	)
+})
+```
+
 ## Exported Schemata
 
 | Schema                | Type           |
