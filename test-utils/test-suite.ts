@@ -125,11 +125,6 @@ const foldTestSuites =
       ),
     )
 
-const getPassFailString: (e: E.Either<any, any>) => string = E.fold(
-  () => 'fails',
-  () => 'passes',
-)
-
 export const getTestSuite = <I, O>(schema: Schema<I, O>): TestSuite<I, O> => {
   const transcoder = getTranscoder(schema)
   const transcodePar = getTranscoderPar(schema)
@@ -138,36 +133,52 @@ export const getTestSuite = <I, O>(schema: Schema<I, O>): TestSuite<I, O> => {
   const information = getInformation(schema)
   const jsonSchema = getJsonSchema(schema)
   return {
-    testDecoder: flow(foldTestSuites(getPassFailString), testSuites => () => {
-      for (const testSuite of testSuites) {
-        if (testSuite.length > 0)
-          describe.each(testSuite)('%s', (_, [input, expected]) => {
-            const actual = transcoder.decode(input)
-            const actualPar = transcodePar.decode(input)
-            test(`sequential`, () => {
-              expect(actual).toStrictEqual(expected)
+    testDecoder: flow(
+      foldTestSuites(
+        E.fold(
+          () => 'fails',
+          () => 'passes',
+        ),
+      ),
+      testSuites => () => {
+        for (const testSuite of testSuites) {
+          if (testSuite.length > 0)
+            describe.each(testSuite)('%s', (_, [input, expected]) => {
+              const actual = transcoder.decode(input)
+              const actualPar = transcodePar.decode(input)
+              test(`sequential`, () => {
+                expect(actual).toStrictEqual(expected)
+              })
+              test(`parallel`, async () => {
+                expect(await actualPar()).toStrictEqual(expected)
+              })
             })
-            test(`parallel`, async () => {
-              expect(await actualPar()).toStrictEqual(expected)
+        }
+      },
+    ),
+    testEncoder: flow(
+      foldTestSuites(
+        E.fold(
+          () => 'fails',
+          () => 'encodes',
+        ),
+      ),
+      testSuites => () => {
+        for (const testSuite of testSuites) {
+          if (testSuite.length > 0)
+            describe.each(testSuite)('%s', (_, [input, expected]) => {
+              const actual = transcoder.encode(input)
+              const actualPar = transcodePar.encode(input)
+              test(`sequential`, () => {
+                expect(actual).toStrictEqual(expected)
+              })
+              test(`parallel`, async () => {
+                expect(await actualPar()).toStrictEqual(expected)
+              })
             })
-          })
-      }
-    }),
-    testEncoder: flow(foldTestSuites(getPassFailString), testSuites => () => {
-      for (const testSuite of testSuites) {
-        if (testSuite.length > 0)
-          describe.each(testSuite)('%s', (_, [input, expected]) => {
-            const actual = transcoder.encode(input)
-            const actualPar = transcodePar.encode(input)
-            test(`sequential`, () => {
-              expect(actual).toStrictEqual(expected)
-            })
-            test(`parallel`, async () => {
-              expect(await actualPar()).toStrictEqual(expected)
-            })
-          })
-      }
-    }),
+        }
+      },
+    ),
     testGuard: flow(
       foldTestSuites(b => (b ? 'validates' : 'invalidates')),
       testSuites => () => {
@@ -361,6 +372,10 @@ export type MakeTestValues<I, O> = {
       getError?: (input: O) => TCE.TranscodeErrors,
     ) => readonly [O, E.Either<TCE.TranscodeErrors, I>]
   }
+  readonly eq: {
+    readonly equate: (a: O, b: O) => readonly [readonly [O, O], boolean]
+    readonly disequate: (a: O, b: O) => readonly [readonly [O, O], boolean]
+  }
 }
 
 export type StandardTestSuiteOptions = {
@@ -402,6 +417,10 @@ const runStandardTestSuite_: StandardTestSuiteFn =
           tuple(preEncode, E.right(postEncode ?? (preEncode as any))),
         fail: (preEncode, getError = () => makeDecodeError(preEncode)) =>
           tuple(preEncode, E.left(getError(preEncode))),
+      },
+      eq: {
+        equate: (a, b) => tuple(tuple(a, b), true),
+        disequate: (a, b) => tuple(tuple(a, b), false),
       },
     })
 

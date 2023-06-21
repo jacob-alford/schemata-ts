@@ -65,6 +65,8 @@ test('Struct types', () => {
   >()
 })
 
+const testDate = new Date()
+
 runStandardTestSuite('Struct', Schema, _ => ({
   decoderTests: [
     _.decoder.pass(
@@ -145,8 +147,136 @@ runStandardTestSuite('Struct', Schema, _ => ({
         ),
     ),
   ],
-  encoderTests: [],
+  encoderTests: [
+    _.encoder.pass(
+      {
+        a: null,
+        b: Number.MAX_VALUE as Float,
+        c: true,
+        d: testDate,
+        e: undefined,
+        f: O.none,
+      },
+      {
+        a: null,
+        b: Number.MAX_VALUE as Float,
+        c: true,
+        d: (testDate.getTime() / 1000) as Float<S.MinUnixTime, S.MaxUnixTime>,
+        e: undefined,
+        f: null,
+      },
+    ),
+    _.encoder.pass(
+      {
+        a: 'a',
+        b: Number.MIN_VALUE as Float,
+        c: false,
+        d: testDate,
+        e: 2 as Integer<0, 2>,
+        f: O.some(testDate as SafeDate),
+      },
+      {
+        a: 'a',
+        b: Number.MIN_VALUE as Float,
+        c: false,
+        d: (testDate.getTime() / 1000) as Float<S.MinUnixTime, S.MaxUnixTime>,
+        e: 2 as Integer<0, 2>,
+        f: testDate.toISOString(),
+      },
+    ),
+    _.encoder.pass(
+      {
+        a: undefined,
+        b: 0 as Float,
+        c: false,
+        d: testDate,
+        e: undefined,
+        f: Math.PI as Float,
+      },
+      {
+        a: undefined,
+        b: 0 as Float,
+        c: false,
+        d: (testDate.getTime() / 1000) as Float<S.MinUnixTime, S.MaxUnixTime>,
+        e: undefined,
+        f: Math.PI as Float,
+      },
+    ),
+    _.encoder.pass(
+      {
+        a: null,
+        b: Math.E as Float,
+        c: true,
+        d: testDate,
+        e: 1 as Integer<0, 2>,
+        f: 'Hello!',
+      },
+      {
+        a: null,
+        b: Math.E as Float,
+        c: true,
+        d: (testDate.getTime() / 1000) as Float<S.MinUnixTime, S.MaxUnixTime>,
+        e: 1 as Integer<0, 2>,
+        f: 'Hello!',
+      },
+    ),
+  ],
   guardTests: [],
-  eqTests: [],
+  eqTests: [
+    _.eq.disequate(
+      {
+        a: 'a',
+        b: Number.MAX_VALUE as Float,
+        c: true,
+        d: testDate,
+        e: undefined,
+        f: 'a',
+      },
+      {
+        a: 'a',
+        b: Number.MAX_VALUE as Float,
+        c: true,
+        d: testDate,
+        e: undefined,
+        f: O.none,
+      },
+    ),
+    _.eq.disequate(
+      {
+        a: null,
+        b: Number.MAX_VALUE as Float,
+        c: true,
+        d: testDate,
+        e: undefined,
+        f: O.some(testDate as SafeDate),
+      },
+      {
+        a: null,
+        b: Number.MAX_VALUE as Float,
+        c: true,
+        d: testDate,
+        e: undefined,
+        f: Math.PI as Float,
+      },
+    ),
+    _.eq.disequate(
+      {
+        a: 'a',
+        b: Number.MAX_VALUE as Float,
+        c: true,
+        d: testDate,
+        e: undefined,
+        f: 'Hello!!',
+      },
+      {
+        a: 'a',
+        b: Number.MAX_VALUE as Float,
+        c: true,
+        d: testDate,
+        e: undefined,
+        f: Math.E as Float,
+      },
+    ),
+  ],
   jsonSchema: expectectJsonSchema,
 }))()
