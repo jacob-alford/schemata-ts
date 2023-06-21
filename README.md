@@ -160,30 +160,47 @@ JSON schema can have description and titles fields. To specify these values, you
 ```typescript
 import * as S from 'schemata-ts/schemata'
 
-const person = S.Struct({
-	name: S.Annotate({
+const Name = pipe(
+	S.String,
+	S.Annotate({
 		title: 'Name',
 		description: 'The name of the person'
-	})(S.String),
-	email: S.Annotate({
+	})
+)
+
+const Email = pipe(
+	S.EmailAddress,
+	S.Annotate({
 		title: 'Email',
 		description: 'The email address of the person'
-	})(S.EmailAddress),
-	address: S.Annotate({
-		title: 'Address',
-		description: 'The address of the person'
-	})(
-		S.Struct({
-			street: S.Annotate({
-				title: 'Street',
-				description: 'The street address of the person'
-			})(S.String),
-			city: S.Annotate({
-				title: 'City',
-				description: 'The city of the person'
-			})(S.String)
-		})
-	)
+	})
+)
+
+const Street = pipe(
+	S.String,
+	S.Annotate({
+		title: 'Street',
+		description: 'The street address of the person'
+	})
+)
+
+const City = pipe(
+	S.String,
+	S.Annotate({
+		title: 'City',
+		description: 'The city of the person'
+	})
+)
+
+const Address = S.Struct({
+	street: Street,
+	city: City
+})
+
+const Person = S.Struct({
+	name: Name,
+	email: Email,
+	address: Address
 })
 ```
 
