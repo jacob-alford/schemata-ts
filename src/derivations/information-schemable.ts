@@ -18,7 +18,6 @@ import * as invariant from 'schemata-ts/schemables/invariant/instances/informati
 import * as lazy from 'schemata-ts/schemables/lazy/instances/information'
 import * as map from 'schemata-ts/schemables/map/instances/information'
 import * as optional from 'schemata-ts/schemables/optional/instances/information'
-import * as padding from 'schemata-ts/schemables/padding/instances/information'
 import * as parser from 'schemata-ts/schemables/parser/instances/information'
 import * as pattern from 'schemata-ts/schemables/pattern/instances/information'
 import * as primitives from 'schemata-ts/schemables/primitives/instances/information'
@@ -40,7 +39,6 @@ const InformationSchemable: Schemable<Inf.SchemableLambda> = {
   ...lazy.LazyInformation,
   ...map.MapInformation,
   ...optional.OptionalInformation,
-  ...padding.PaddingInformation,
   ...parser.ParserInformation,
   ...pattern.PatternInformation,
   ...primitives.PrimitivesInformation,

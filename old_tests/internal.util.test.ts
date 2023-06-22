@@ -11,8 +11,8 @@ import {
   base64Encode,
   forIn,
   urlifyBase64,
-  witherS,
   witherRemapPar,
+  witherS,
 } from '../src/internal/util'
 import { zipN } from '../test-utils-old'
 

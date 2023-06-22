@@ -18,7 +18,6 @@ import * as invariant from 'schemata-ts/schemables/invariant/instances/transcode
 import * as lazy from 'schemata-ts/schemables/lazy/instances/transcoder-par'
 import * as map from 'schemata-ts/schemables/map/instances/transcoder-par'
 import * as optional from 'schemata-ts/schemables/optional/instances/transcoder-par'
-import * as padding from 'schemata-ts/schemables/padding/instances/transcoder-par'
 import * as parser from 'schemata-ts/schemables/parser/instances/transcoder-par'
 import * as pattern from 'schemata-ts/schemables/pattern/instances/transcoder-par'
 import * as primitives from 'schemata-ts/schemables/primitives/instances/transcoder-par'
@@ -40,7 +39,6 @@ const TranscoderParSchemable: Schemable<TCP.SchemableLambda> = {
   ...lazy.LazyTranscoderPar,
   ...map.MapTranscoderPar,
   ...optional.OptionalTranscoderPar,
-  ...padding.PaddingTranscoderPar,
   ...parser.ParserTranscoderPar,
   ...pattern.PatternTranscoderPar,
   ...primitives.PrimitivesTranscoderPar,

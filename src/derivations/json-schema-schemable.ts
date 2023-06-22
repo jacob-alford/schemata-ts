@@ -18,7 +18,6 @@ import * as invariant from 'schemata-ts/schemables/invariant/instances/json-sche
 import * as lazy from 'schemata-ts/schemables/lazy/instances/json-schema'
 import * as map from 'schemata-ts/schemables/map/instances/json-schema'
 import * as optional from 'schemata-ts/schemables/optional/instances/json-schema'
-import * as padding from 'schemata-ts/schemables/padding/instances/json-schema'
 import * as parser from 'schemata-ts/schemables/parser/instances/json-schema'
 import * as pattern from 'schemata-ts/schemables/pattern/instances/json-schema'
 import * as primitives from 'schemata-ts/schemables/primitives/instances/json-schema'
@@ -40,7 +39,6 @@ const JsonSchemaSchemable: Schemable<JS.SchemableLambda> = {
   ...lazy.LazyJsonSchema,
   ...map.MapJsonSchema,
   ...optional.OptionalJsonSchema,
-  ...padding.PaddingJsonSchema,
   ...parser.ParserJsonSchema,
   ...pattern.PatternJsonSchema,
   ...primitives.PrimitivesJsonSchema,

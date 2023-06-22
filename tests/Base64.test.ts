@@ -31,18 +31,14 @@ runStandardTestSuite('Base64', S.Base64, _ => ({
     ...validStrings.map(s => _.decoder.pass(s)),
     ...invalidStrings.map(s => _.decoder.fail(s)),
     _.decoder.fail('Vml2YW11cyBmZXJtZtesting123', s =>
-      TC.transcodeErrors(TC.typeMismatch('ValidRightPadding', s)),
+      TC.transcodeErrors(TC.typeMismatch('Base64', s)),
     ),
-    _.decoder.fail('Zg=', s =>
-      TC.transcodeErrors(TC.typeMismatch('ValidRightPadding', s)),
-    ),
+    _.decoder.fail('Zg=', s => TC.transcodeErrors(TC.typeMismatch('Base64', s))),
   ],
   encoderTests: validStrings.map(s => _.encoder.pass(s as any)),
   guardTests: [],
   eqTests: [],
-  jsonSchema: JS.intersection(JS.string({}))(
-    JS.string({
-      pattern: '^((([A-Za-z0-9+/]{4})*?[A-Za-z0-9+/]{2,4}={0,2})?)$',
-    }),
-  ),
+  jsonSchema: JS.string({
+    pattern: '^(([A-Za-z0-9+/]{4})*?([A-Za-z0-9+/]{2}={2}|[A-Za-z0-9+/]{3}=)?)$',
+  }),
 }))()

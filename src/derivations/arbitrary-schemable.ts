@@ -18,7 +18,6 @@ import * as invariant from 'schemata-ts/schemables/invariant/instances/arbitrary
 import * as lazy from 'schemata-ts/schemables/lazy/instances/arbitrary'
 import * as map from 'schemata-ts/schemables/map/instances/arbitrary'
 import * as optional from 'schemata-ts/schemables/optional/instances/arbitrary'
-import * as padding from 'schemata-ts/schemables/padding/instances/arbitrary'
 import * as parser from 'schemata-ts/schemables/parser/instances/arbitrary'
 import * as pattern from 'schemata-ts/schemables/pattern/instances/arbitrary'
 import * as primitives from 'schemata-ts/schemables/primitives/instances/arbitrary'
@@ -40,7 +39,6 @@ const ArbitrarySchemable: Schemable<Arb.SchemableLambda> = {
   ...lazy.LazyArbitrary,
   ...map.MapArbitrary,
   ...optional.OptionalArbitrary,
-  ...padding.PaddingArbitrary,
   ...parser.ParserArbitrary,
   ...pattern.PatternArbitrary,
   ...primitives.PrimitivesArbitrary,

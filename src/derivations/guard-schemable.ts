@@ -18,7 +18,6 @@ import * as invariant from 'schemata-ts/schemables/invariant/instances/guard'
 import * as lazy from 'schemata-ts/schemables/lazy/instances/guard'
 import * as map from 'schemata-ts/schemables/map/instances/guard'
 import * as optional from 'schemata-ts/schemables/optional/instances/guard'
-import * as padding from 'schemata-ts/schemables/padding/instances/guard'
 import * as parser from 'schemata-ts/schemables/parser/instances/guard'
 import * as pattern from 'schemata-ts/schemables/pattern/instances/guard'
 import * as primitives from 'schemata-ts/schemables/primitives/instances/guard'
@@ -40,7 +39,6 @@ const GuardSchemable: Schemable<G.SchemableLambda> = {
   ...lazy.LazyGuard,
   ...map.MapGuard,
   ...optional.OptionalGuard,
-  ...padding.PaddingGuard,
   ...parser.ParserGuard,
   ...pattern.PatternGuard,
   ...primitives.PrimitivesGuard,
