@@ -16,7 +16,6 @@ import { type WithInvariant } from 'schemata-ts/schemables/invariant/definition'
 import { type WithLazy } from 'schemata-ts/schemables/lazy/definition'
 import { type WithMap } from 'schemata-ts/schemables/map/definition'
 import { type WithOptional } from 'schemata-ts/schemables/optional/definition'
-import { type WithPadding } from 'schemata-ts/schemables/padding/definition'
 import { type WithParser } from 'schemata-ts/schemables/parser/definition'
 import { type WithPattern } from 'schemata-ts/schemables/pattern/definition'
 import { type WithPrimitives } from 'schemata-ts/schemables/primitives/definition'
@@ -38,7 +37,6 @@ export interface Schemable<S extends SchemableLambda>
     WithLazy<S>,
     WithMap<S>,
     WithOptional<S>,
-    WithPadding<S>,
     WithParser<S>,
     WithPattern<S>,
     WithPrimitives<S>,

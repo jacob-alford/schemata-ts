@@ -18,7 +18,6 @@ import * as invariant from 'schemata-ts/schemables/invariant/instances/eq'
 import * as lazy from 'schemata-ts/schemables/lazy/instances/eq'
 import * as map from 'schemata-ts/schemables/map/instances/eq'
 import * as optional from 'schemata-ts/schemables/optional/instances/eq'
-import * as padding from 'schemata-ts/schemables/padding/instances/eq'
 import * as parser from 'schemata-ts/schemables/parser/instances/eq'
 import * as pattern from 'schemata-ts/schemables/pattern/instances/eq'
 import * as primitives from 'schemata-ts/schemables/primitives/instances/eq'
@@ -40,7 +39,6 @@ const EqSchemable: Schemable<Eq.SchemableLambda> = {
   ...lazy.LazyEq,
   ...map.MapEq,
   ...optional.OptionalEq,
-  ...padding.PaddingEq,
   ...parser.ParserEq,
   ...pattern.PatternEq,
   ...primitives.PrimitivesEq,
