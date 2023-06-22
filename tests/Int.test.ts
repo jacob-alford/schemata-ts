@@ -36,6 +36,7 @@ runStandardTestSuite('Int', S.Int(), _ => ({
   guardTests: [],
   eqTests: [],
   jsonSchema: JS.integer(),
+  typeString: 'Integer',
 }))()
 
 runStandardTestSuite('Int<10,>', S.Int({ min: 10 }), _ => ({
@@ -51,6 +52,7 @@ runStandardTestSuite('Int<10,>', S.Int({ min: 10 }), _ => ({
   guardTests: [],
   eqTests: [],
   jsonSchema: JS.integer({ minimum: 10 }),
+  typeString: 'Integer<10,>',
 }))()
 
 runStandardTestSuite('Int<,10>', S.Int({ max: 10 }), _ => ({
@@ -66,6 +68,7 @@ runStandardTestSuite('Int<,10>', S.Int({ max: 10 }), _ => ({
   guardTests: [],
   eqTests: [],
   jsonSchema: JS.integer({ maximum: 10 }),
+  typeString: 'Integer<,10>',
 }))()
 
 runStandardTestSuite('Int<10,20>', S.Int({ min: 10, max: 20 }), _ => ({
@@ -82,4 +85,5 @@ runStandardTestSuite('Int<10,20>', S.Int({ min: 10, max: 20 }), _ => ({
   guardTests: [],
   eqTests: [],
   jsonSchema: JS.integer({ minimum: 10, maximum: 20 }),
+  typeString: 'Integer<10,20>',
 }))()

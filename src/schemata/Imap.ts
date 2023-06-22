@@ -10,6 +10,6 @@ import { type Schema, make } from 'schemata-ts/Schema'
  * @category Schema
  */
 export const Imap =
-  <A, B>(targetGuard: G.Guard<B>, f: (a: A) => B, g: (b: B) => A) =>
+  <A, B>(targetGuard: G.Guard<B>, f: (a: A) => B, g: (b: B) => A, newName?: string) =>
   <I>(target: Schema<I, A>): Schema<I, B> =>
-    make(S => S.imap(targetGuard)(f, g)(target.runSchema(S)))
+    make(S => S.imap(targetGuard, newName)(f, g)(target.runSchema(S)))

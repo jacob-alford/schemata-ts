@@ -104,9 +104,10 @@ import { type Schema, make } from 'schemata-ts/Schema'
  */
 export const Annotate =
   <Refs extends RR.ReadonlyRecord<string, Schema<any, any>>>(params: {
-    title?: string
-    description?: string
-    references?: Refs
+    readonly title?: string
+    readonly description?: string
+    readonly references?: Refs
+    readonly typeString?: string
   }) =>
   <O, A>(schema: Schema<O, A>): Schema<O, A> => {
     const { references = {} } = params
@@ -124,6 +125,9 @@ export const Annotate =
                 ? {}
                 : { description: params.description }),
               ...(params.references === undefined ? {} : { references: mappedRefs }),
+              ...(params.typeString === undefined
+                ? {}
+                : { typeString: params.typeString }),
             },
       )(schema.runSchema(s)),
     )

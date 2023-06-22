@@ -33,6 +33,7 @@ runStandardTestSuite(
       JS.literal('lmao'),
       JS.literal(null),
     ),
+    typeString: 'hi | hey | lmao | null',
   }),
   {
     makeDecodeError: expected =>

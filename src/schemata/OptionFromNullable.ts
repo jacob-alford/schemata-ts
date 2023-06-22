@@ -5,6 +5,7 @@
  */
 import { pipe } from 'fp-ts/function'
 import * as O from 'fp-ts/Option'
+import { getTypeString } from 'schemata-ts/derivations/type-string-schemable'
 import { getGuard } from 'schemata-ts/Guard'
 import { type Schema } from 'schemata-ts/Schema'
 import { Imap } from 'schemata-ts/schemata/Imap'
@@ -39,6 +40,7 @@ export const OptionFromNullable = <A, O>(
         },
         O.fromNullable,
         O.toNullable,
+        `Option<${getTypeString(inner)[1]}>`,
       ),
     ),
   )

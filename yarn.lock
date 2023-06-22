@@ -1586,6 +1586,14 @@
     "@sagold/json-pointer" "^5.0.0"
     ebnf "^1.9.0"
 
+"@simspace/matchers@^0.0.2":
+  version "0.0.2"
+  resolved "https://registry.yarnpkg.com/@simspace/matchers/-/matchers-0.0.2.tgz#c99772e070275e9c683d0e5bab4d63fe946682a4"
+  integrity sha512-aTxHrw3xdaYNsK925/AwDFMfayswfv0YT8SB+CFG/SWxtXQK9K27FgDXGEw1taM2hutjfUibO/jDhPAz7tO4ww==
+  dependencies:
+    fp-ts "^2.11"
+    typelevel-ts "^0.4.0"
+
 "@sinonjs/commons@^1.7.0":
   version "1.8.3"
   resolved "https://registry.yarnpkg.com/@sinonjs/commons/-/commons-1.8.3.tgz#3802ddd21a50a949b6721ddd72da36e67e7f1b2d"
@@ -3763,6 +3771,11 @@ fp-ts-laws@^0.3.0:
   resolved "https://registry.yarnpkg.com/fp-ts-laws/-/fp-ts-laws-0.3.0.tgz#428639e087081317cdbf96fc7958449fb8c42602"
   integrity sha512-uCLBnZq429UDYIx7TDsKmIOXQvgVfEFJMDBbJ2OljpW19cCEF+UgwoGnTfq6AYkHofFlkd6t0p3a9HB1OXTiaA==
 
+fp-ts@^2.11, fp-ts@^2.13.1:
+  version "2.16.0"
+  resolved "https://registry.yarnpkg.com/fp-ts/-/fp-ts-2.16.0.tgz#64e03314dfc1c7ce5e975d3496ac14bc3eb7f92e"
+  integrity sha512-bLq+KgbiXdTEoT1zcARrWEpa5z6A/8b7PcDW7Gef3NSisQ+VS7ll2Xbf1E+xsgik0rWub/8u0qP/iTTjj+PhxQ==
+
 fp-ts@^2.9.3, fp-ts@^2.9.5:
   version "2.12.3"
   resolved "https://registry.yarnpkg.com/fp-ts/-/fp-ts-2.12.3.tgz#d991b1e8467d325dadbb6b0ab9524f773e9c3c49"
@@ -5219,6 +5232,14 @@ kleur@^4.0.3:
   version "4.1.5"
   resolved "https://registry.yarnpkg.com/kleur/-/kleur-4.1.5.tgz#95106101795f7050c6c650f350c683febddb1780"
   integrity sha512-o+NO+8WrRiQEE4/7nwRJhN1HWpVmJm511pBHUxPLtp0BUISzlBplORYSmTclCnJvQq2tKu/sgl3xVpkc7ZWuQQ==
+
+kuvio@^1.1.0:
+  version "1.1.0"
+  resolved "https://registry.yarnpkg.com/kuvio/-/kuvio-1.1.0.tgz#1bcecf19a7bdacf2c0d4fe8fb30fc820b0e8b76d"
+  integrity sha512-RZvES4majI0cLH0k8ZkdVD6pUd18GRiwtxyzjJ7HWtYYzZr6rCQSgAwz8k9neq+VpVRch/+Adky/U+py5lz0CA==
+  dependencies:
+    "@simspace/matchers" "^0.0.2"
+    fp-ts "^2.13.1"
 
 lazy-cache@^2.0.2:
   version "2.0.2"
@@ -7544,6 +7565,11 @@ typedarray@^0.0.6:
   version "0.0.6"
   resolved "https://registry.yarnpkg.com/typedarray/-/typedarray-0.0.6.tgz#867ac74e3864187b1d3d47d996a78ec5c8830777"
   integrity sha512-/aCDEGatGvZ2BIk+HmLf4ifCJFwvKFNb9/JeZPMulfgFracn9QFcAf5GO8B/mweUjSoblS5In0cWhqpfs/5PQA==
+
+typelevel-ts@^0.4.0:
+  version "0.4.0"
+  resolved "https://registry.yarnpkg.com/typelevel-ts/-/typelevel-ts-0.4.0.tgz#5a757bd74a3484b42b6992a27c038e7a34330b5d"
+  integrity sha512-Qn4EgOuc7lrzjgJYc7arwteuZutO18zFyhVj4/6+BEhPr07BMsqaM02LuuRCVFP1ud5tbDYGn/Vr/BAYnGOSqw==
 
 typescript@^4.2.3:
   version "4.8.3"

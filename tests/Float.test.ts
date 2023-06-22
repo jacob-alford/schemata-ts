@@ -35,6 +35,7 @@ runStandardTestSuite('Float', S.Float(), _ => ({
   guardTests: [],
   eqTests: [],
   jsonSchema: JS.number(),
+  typeString: 'Float',
 }))()
 
 runStandardTestSuite('Float<10,>', S.Float({ min: 10 }), _ => ({
@@ -50,6 +51,7 @@ runStandardTestSuite('Float<10,>', S.Float({ min: 10 }), _ => ({
   guardTests: [],
   eqTests: [],
   jsonSchema: JS.number({ minimum: 10 }),
+  typeString: 'Float<10,>',
 }))()
 
 runStandardTestSuite('Float<,10>', S.Float({ max: 10 }), _ => ({
@@ -65,6 +67,7 @@ runStandardTestSuite('Float<,10>', S.Float({ max: 10 }), _ => ({
   guardTests: [],
   eqTests: [],
   jsonSchema: JS.number({ maximum: 10 }),
+  typeString: 'Float<,10>',
 }))()
 
 runStandardTestSuite('Float<10,20>', S.Float({ min: 10, max: 20 }), _ => ({
@@ -85,4 +88,5 @@ runStandardTestSuite('Float<10,20>', S.Float({ min: 10, max: 20 }), _ => ({
   guardTests: [],
   eqTests: [],
   jsonSchema: JS.number({ minimum: 10, maximum: 20 }),
+  typeString: 'Float<10,20>',
 }))()

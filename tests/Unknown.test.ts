@@ -19,4 +19,5 @@ runStandardTestSuite('Unknown', S.Unknown, _ => ({
   guardTests: [],
   eqTests: [],
   jsonSchema: JS.emptySchema,
+  typeString: 'unknown',
 }))()

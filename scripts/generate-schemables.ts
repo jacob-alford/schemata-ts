@@ -105,6 +105,7 @@ export type SchemableTypeclasses =
   | SchemableTypeclass<'TranscoderPar', 'TCP', '2.0.0'>
   | SchemableTypeclass<'Transcoder', 'TC', '2.0.0'>
   | SchemableTypeclass<'Schemable', '_', '2.0.0'>
+  | SchemableTypeclass<'TypeString', 'TS', '2.0.0'>
 
 // #region Typeclass modules
 
@@ -254,6 +255,7 @@ const schemableTypeclasses: ReadonlyArray<SchemableTypeclasses> = [
   ['JsonSchema', 'JS', '2.0.0', 'json-schema'],
   ['TranscoderPar', 'TCP', '2.0.0', 'transcoder-par'],
   ['Transcoder', 'TC', '2.0.0', 'transcoder'],
+  ['TypeString', 'TS', '2.0.0', 'type-string'],
 ]
 
 const format: Build<void> = C => C.exec('yarn format')
