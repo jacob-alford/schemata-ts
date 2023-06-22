@@ -87,6 +87,7 @@ runStandardTestSuite(
     guardTests: [],
     eqTests: [],
     jsonSchema: expectedJsonSchema,
+    typeString: '{\n    two: Lazy<two>\n}',
   }),
   {
     skipArbitraryChecks: true,
@@ -123,4 +124,5 @@ runStandardTestSuite('Lazy', S.Annotate({})(S.Lazy('Float', () => S.Float())), _
   guardTests: [],
   eqTests: [],
   jsonSchema: JS.ref('Float'),
+  typeString: 'Lazy<Float>',
 }))()

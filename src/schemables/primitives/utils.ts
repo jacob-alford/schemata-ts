@@ -51,16 +51,22 @@ export const isFloat =
     return typeof n === 'number' && !Number.isNaN(n) && n >= min && n <= max
   }
 
-export const getLengthBoundsString: (params?: StringParams) => string = (params = {}) => {
+export const getLengthBoundsString: (
+  params?: StringParams,
+  lchar?: string,
+  rchar?: string,
+) => string = (params = {}, lchar = '<', rchar = '>') => {
   const { minLength, maxLength } = params
   if (minLength === undefined && maxLength === undefined) return ''
-  return `<${minLength ?? ''},${maxLength ?? ''}>`
+  return `${lchar}${minLength ?? ''},${maxLength ?? ''}${rchar}`
 }
 
-export const getNumberBoundsInt: (params?: BoundedParams<any, any>) => string = (
-  params = {},
-) => {
+export const getNumberBoundsInt: (
+  params?: BoundedParams<any, any>,
+  lchar?: string,
+  rchar?: string,
+) => string = (params = {}, lchar = '<', rchar = '>') => {
   const { min, max } = params
   if (min === undefined && max === undefined) return ''
-  return `<${min ?? ''},${max ?? ''}>`
+  return `${lchar}${min ?? ''},${max ?? ''}${rchar}`
 }

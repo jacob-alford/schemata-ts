@@ -7,5 +7,6 @@ export interface WithAnnotate<S extends SchemableLambda> {
     readonly title?: string
     readonly description?: string
     readonly references?: RR.ReadonlyRecord<string, JsonSchema>
+    readonly typeString?: string | readonly [string, string]
   }) => <E, A>(schema: SchemableKind<S, E, A>) => SchemableKind<S, E, A>
 }

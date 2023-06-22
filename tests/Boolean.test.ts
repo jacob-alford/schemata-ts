@@ -20,4 +20,5 @@ runStandardTestSuite('Boolean', S.Boolean, _ => ({
   guardTests: [],
   eqTests: [],
   jsonSchema: JS.booleanSchema,
+  typeString: 'boolean',
 }))()

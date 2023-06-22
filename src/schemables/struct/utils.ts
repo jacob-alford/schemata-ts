@@ -12,7 +12,7 @@ import {
 import { type StructProp } from 'schemata-ts/schemables/struct/type-utils'
 import { getKeyRemap } from 'schemata-ts/struct'
 
-type UnionItem<S extends SchemableLambda> = GuardedPrecedentedUnionMember<S> & {
+export type UnionItem<S extends SchemableLambda> = GuardedPrecedentedUnionMember<S> & {
   readonly inputKey: string
 }
 

@@ -15,7 +15,9 @@ import { getInformation } from 'schemata-ts/derivations/information-schemable'
 import { getJsonSchema } from 'schemata-ts/derivations/json-schema-schemable'
 import { getTranscoderPar } from 'schemata-ts/derivations/transcoder-par-schemable'
 import { getTranscoder } from 'schemata-ts/derivations/transcoder-schemable'
+import { getTypeString } from 'schemata-ts/derivations/type-string-schemable'
 import * as JS from 'schemata-ts/internal/json-schema'
+import * as TS from 'schemata-ts/internal/type-string'
 import { type Schema } from 'schemata-ts/Schema'
 import { PrimitivesGuard } from 'schemata-ts/schemables/primitives/instances/guard'
 import * as TCE from 'schemata-ts/TranscodeError'
@@ -52,6 +54,9 @@ export interface TestSuite<I, O> {
 
   /** Tests JsonSchema against a set of expected values */
   readonly assertJsonSchema: (jsonSchema: JS.JsonSchema) => IO.IO<void>
+
+  /** Tests type string against an expected value */
+  readonly assertTypeString: (typeString: string) => IO.IO<void>
 
   /** Ensures information is a number */
   readonly assertValidInformation: IO.IO<void>
@@ -132,6 +137,7 @@ export const getTestSuite = <I, O>(schema: Schema<I, O>): TestSuite<I, O> => {
   const eq = getEq(schema)
   const information = getInformation(schema)
   const jsonSchema = getJsonSchema(schema)
+  const typeString = getTypeString(schema)
   return {
     testDecoder: flow(
       foldTestSuites(
@@ -210,6 +216,11 @@ export const getTestSuite = <I, O>(schema: Schema<I, O>): TestSuite<I, O> => {
         expect(JS.stripIdentity(jsonSchema)).toStrictEqual(
           JS.stripIdentity(expected as any),
         )
+      })
+    },
+    assertTypeString: expected => () => {
+      test('matches expected', () => {
+        expect(TS.fold(typeString)).toStrictEqual(expected)
       })
     },
     assertValidInformation: () => {
@@ -316,6 +327,7 @@ type StandardTestInputs<I, T> = {
   readonly guardTests: GetFirstArg<TestSuite<I, T>['testGuard']>
   readonly eqTests: GetFirstArg<TestSuite<I, T>['testEq']>
   readonly jsonSchema: GetFirstArg<TestSuite<I, T>['assertJsonSchema']>
+  readonly typeString: GetFirstArg<TestSuite<I, T>['assertTypeString']>
   readonly additionalTests?: (testSuite: TestSuite<I, T>) => IO.IO<void>
 }
 
@@ -433,6 +445,7 @@ const runStandardTestSuite_: StandardTestSuiteFn =
       )
       describe('eq', _.testEq(testValues.eqTests, deriveEqTests(testValues.encoderTests)))
       describe('jsonSchema', _.assertJsonSchema(testValues.jsonSchema))
+      describe('typeString', _.assertTypeString(testValues.typeString))
       describe('information', _.assertValidInformation)
       if (!skipArbitraryChecks) {
         describe('transcoder laws', _.testTranscoderLaws)

@@ -19,6 +19,7 @@ runStandardTestSuite('String', S.String(), _ => ({
   guardTests: [],
   eqTests: [],
   jsonSchema: JS.string(),
+  typeString: 'string',
 }))()
 
 runStandardTestSuite('String<10,>', S.String({ minLength: 10 }), _ => ({
@@ -32,6 +33,7 @@ runStandardTestSuite('String<10,>', S.String({ minLength: 10 }), _ => ({
   guardTests: [],
   eqTests: [],
   jsonSchema: JS.string({ minLength: 10 }),
+  typeString: 'string<10,>',
 }))()
 
 runStandardTestSuite('String<,10>', S.String({ maxLength: 10 }), _ => ({
@@ -45,6 +47,7 @@ runStandardTestSuite('String<,10>', S.String({ maxLength: 10 }), _ => ({
   guardTests: [],
   eqTests: [],
   jsonSchema: JS.string({ maxLength: 10 }),
+  typeString: 'string<,10>',
 }))()
 
 runStandardTestSuite('String<10,20>', S.String({ minLength: 10, maxLength: 20 }), _ => ({
@@ -60,4 +63,5 @@ runStandardTestSuite('String<10,20>', S.String({ minLength: 10, maxLength: 20 })
   guardTests: [],
   eqTests: [],
   jsonSchema: JS.string({ minLength: 10, maxLength: 20 }),
+  typeString: 'string<10,20>',
 }))()
