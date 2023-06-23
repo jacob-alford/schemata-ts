@@ -7,7 +7,7 @@ import { type ImplicitOptional, makeImplicitOptionalType } from 'schemata-ts/str
  * property of a struct as optional.
  *
  * @since 1.0.0
- * @category Instances
+ * @category Combinators
  */
 export const Optional = <O, A>(
   target: Schema<O, A>,

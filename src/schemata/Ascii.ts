@@ -1,8 +1,4 @@
-/**
- * A string of ASCII characters.
- *
- * @since 1.0.0
- */
+/** @since 1.0.0 */
 import { pipe } from 'fp-ts/function'
 import { type Branded } from 'schemata-ts/brand'
 import * as PB from 'schemata-ts/PatternBuilder'
@@ -21,12 +17,6 @@ interface AsciiBrand {
  * @category Model
  */
 export type Ascii = Branded<string, AsciiBrand>
-
-/**
- * @since 1.0.0
- * @category Model
- */
-export type AsciiS = Schema<string, Ascii>
 
 /**
  * @since 1.0.0

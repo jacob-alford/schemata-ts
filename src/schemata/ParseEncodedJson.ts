@@ -10,6 +10,7 @@ import { type JsonString } from 'schemata-ts/schemables/parser/definition'
  * Useful for things like conversion between character encodings.
  *
  * @since 2.0.0
+ * @category Printer Parsers
  */
 export const ParseEncodedJsonString: (
   name: string,

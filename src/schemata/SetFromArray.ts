@@ -1,9 +1,4 @@
-/**
- * An array input that's converted to a ReadonlySet. Note: does not abide the encoder <->
- * decoder law, but follows a less strict idempotence law.
- *
- * @since 1.3.0
- */
+/** @since 1.3.0 */
 import { pipe } from 'fp-ts/function'
 import { type Ord } from 'fp-ts/Ord'
 import * as RS from 'fp-ts/ReadonlySet'
@@ -18,10 +13,10 @@ const getSetGuard = <A>(guard: G.Guard<A>): G.Guard<ReadonlySet<A>> => ({
 })
 
 /**
- * An array input that's converted to a ReadonlySet. Note: does not abide the encoder <->
- * decoder law, but follows a less strict idempotence law.
+ * An array input that's converted to a ReadonlySet.
  *
  * @since 1.3.0
+ * @category Combinators
  */
 export const SetFromArray: <A>(
   ordA: Ord<A>,

@@ -1,8 +1,4 @@
-/**
- * A string of hexadecimal characters.
- *
- * @since 1.0.0
- */
+/** @since 1.0.0 */
 import { pipe } from 'fp-ts/function'
 import { type Branded } from 'schemata-ts/brand'
 import * as PB from 'schemata-ts/PatternBuilder'
@@ -42,7 +38,7 @@ export const hexadecimal: PB.Pattern = pipe(
  * A string of hexadecimal characters.
  *
  * @since 1.0.0
- * @category Schema
+ * @category String
  */
 export const Hexadecimal: Schema<Hexadecimal> = Brand<HexadecimalBrand>()(
   Pattern(hexadecimal, 'Hexadecimal'),

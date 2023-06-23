@@ -19,11 +19,7 @@ const Schema = S.Struct({
   c: S.Boolean,
   d: S.DateFromUnixTime,
   e: S.Optional(S.Int({ min: 0, max: 2 })),
-  f: S.Union('Optional Transitivity')(
-    S.String(),
-    S.Number,
-    S.OptionFromNullable(S.DateFromString()),
-  ),
+  f: S.Union(S.String(), S.Number, S.OptionFromNullable(S.DateFromString())),
 })
 
 const expectedJsonSchema: Const<JS.JsonSchema, S.InputOf<typeof Schema>> = JS.struct(
@@ -44,21 +40,21 @@ const expectedJsonSchema: Const<JS.JsonSchema, S.InputOf<typeof Schema>> = JS.st
 
 const expectedTypeString =
   //
-  `Schema<{
+  `{
     a?: null | string?,
     b: Float,
     c: boolean,
     d: Float<-8640000000000,8640000000000>,
     e?: Integer<0,2>?,
     f?: string | Float | null | DateString?
-}, {
+} → {
     a: null | string?,
     b: Float,
     c: boolean,
     d: Date,
     e: Integer<0,2>?,
     f: string | Float | Option<Date>
-}>`
+}`
 
 test('Struct types', () => {
   expectTypeOf(Schema).toEqualTypeOf<
@@ -141,7 +137,7 @@ runStandardTestSuite('Struct', Schema, _ => ({
     ),
     _.decoder.fail(
       {
-        a: 0n,
+        a: 0o777,
         b: 0x1fffffffffffff,
         c: null,
         d: 0,
@@ -152,15 +148,24 @@ runStandardTestSuite('Struct', Schema, _ => ({
         TC.transcodeErrors(
           TC.errorAtKey(
             'a',
-            TC.errorAtUnionMember(0, TC.typeMismatch('Nullable', 0n)),
-            TC.errorAtUnionMember(1, TC.typeMismatch('Nullable', 0n)),
+            TC.errorAtUnionMember(0, TC.typeMismatch('null | string?', 511)),
+            TC.errorAtUnionMember(1, TC.typeMismatch('null | string?', 511)),
           ),
           TC.errorAtKey('c', TC.typeMismatch('Boolean', null)),
           TC.errorAtKey(
             'f',
-            TC.errorAtUnionMember(0, TC.typeMismatch('Optional Transitivity', NaN)),
-            TC.errorAtUnionMember(1, TC.typeMismatch('Optional Transitivity', NaN)),
-            TC.errorAtUnionMember(2, TC.typeMismatch('Optional Transitivity', NaN)),
+            TC.errorAtUnionMember(
+              0,
+              TC.typeMismatch('string | Float | null | DateString?', NaN),
+            ),
+            TC.errorAtUnionMember(
+              1,
+              TC.typeMismatch('string | Float | null | DateString?', NaN),
+            ),
+            TC.errorAtUnionMember(
+              2,
+              TC.typeMismatch('string | Float | null | DateString?', NaN),
+            ),
           ),
         ),
     ),

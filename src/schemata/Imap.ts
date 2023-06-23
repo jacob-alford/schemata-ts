@@ -7,7 +7,7 @@ import { type Schema, make } from 'schemata-ts/Schema'
  * `Imap` requires an explicit guard for the output type.
  *
  * @since 1.0.0
- * @category Schema
+ * @category Mapping
  */
 export const Imap =
   <A, B>(targetGuard: G.Guard<B>, f: (a: A) => B, g: (b: B) => A, newName?: string) =>

@@ -1,9 +1,4 @@
-/**
- * A schema for n-tuples
- *
- * @since 1.4.0
- * @category Model
- */
+/** @since 1.4.0 */
 import { pipe, unsafeCoerce } from 'fp-ts/function'
 import * as RA from 'fp-ts/ReadonlyArray'
 import { type InputOf, type OutputOf, type Schema, make } from 'schemata-ts/Schema'

@@ -6,7 +6,7 @@ import { type Schema, make } from 'schemata-ts/Schema'
  * A schema for describing the structure of a string using patterns
  *
  * @since 1.0.0
- * @category Schema
+ * @category Combinators
  */
 export const Pattern = (
   pattern: PB.Pattern,

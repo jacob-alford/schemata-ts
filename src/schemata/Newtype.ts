@@ -1,8 +1,4 @@
-/**
- * A schema for wrapping an inner schema's output value in a newtype.
- *
- * @since 1.4.0
- */
+/** @since 1.4.0 */
 import { pipe } from 'fp-ts/function'
 import { getGuard } from 'schemata-ts/Guard'
 import { type Iso } from 'schemata-ts/iso'
@@ -14,7 +10,7 @@ import { Imap } from 'schemata-ts/schemata/Imap'
  * A schema for wrapping an inner schema's output value in a newtype.
  *
  * @since 1.4.0
- * @category Schema
+ * @category Combinators
  */
 export const Newtype: <N extends Nt.Newtype<any, any>>(
   iso: Iso<N, Nt.CarrierOf<N>>,

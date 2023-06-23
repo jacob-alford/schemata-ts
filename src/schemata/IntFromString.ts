@@ -1,20 +1,4 @@
-/**
- * Integer branded newtype from string. Parameters: min, max are inclusive.
- *
- * Note: has an optional `encodeToBase` parameter that controls the output base of the
- * encoded string. Currently only decodes binary, octal, decimal, and hexadecimal input
- * bases. It decodes in any base, and encodes to supplied parameter defaulting to decimal.
- *
- * _Note_: Does not currently allow exponential notation (e.g. `0x123e4`).
- *
- * Represents string-integers:
- *
- * ```math
- *  { z | z ∈ ℤ, z >= -2 ** 53 + 1, z <= 2 ** 53 - 1 }
- * ```
- *
- * @since 1.0.0
- */
+/** @since 1.0.0 */
 import { pipe } from 'fp-ts/function'
 import { type Branded } from 'schemata-ts/brand'
 import { type Integer, type MaxSafeInt, type MinSafeInt } from 'schemata-ts/integer'
@@ -137,7 +121,7 @@ const baseToPrefix = (base: IntFromStringParams<any, any>['encodeToBase']): stri
  * ```
  *
  * @since 1.0.0
- * @category Schema
+ * @category Conversion
  */
 export const IntFromString = <
   Min extends number | undefined,

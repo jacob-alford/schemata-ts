@@ -1,8 +1,4 @@
-/**
- * Represents bigints converted from strings
- *
- * @since 1.0.0
- */
+/** @since 1.0.0 */
 import { flow, pipe } from 'fp-ts/function'
 import * as O from 'fp-ts/Option'
 import * as Str from 'fp-ts/string'
@@ -99,7 +95,7 @@ const baseToPrefix = (base: BigIntFromStringParams['encodeToBase']): string => {
  * Represents bigints converted from strings
  *
  * @since 1.0.0
- * @category Schema
+ * @category Conversion
  */
 export const BigIntFromString: (
   params?: BigIntFromStringParams,

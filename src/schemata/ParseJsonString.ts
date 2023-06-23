@@ -8,6 +8,7 @@ import { ParseEncodedJsonString } from 'schemata-ts/schemata/ParseEncodedJson'
  * Parses a Json string using supplied schema
  *
  * @since 2.0.0
+ * @category Printer Parsers
  */
 export const ParseJsonString: <I, O>(inner: Schema<I, O>) => Schema<JsonString, O> =
   ParseEncodedJsonString('JsonString', E.right, E.right, {

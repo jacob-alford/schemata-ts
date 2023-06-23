@@ -1,14 +1,4 @@
-/**
- * Positive Float branded newtype.
- *
- * Represents floating point numbers:
- *
- * ```math
- *  { f | f ∈ R, f > 0, f <= Number.MAX_VALUE }
- * ```
- *
- * @since 1.0.0
- */
+/** @since 1.0.0 */
 import {
   type Float,
   type MaxPositiveFloat,
@@ -29,7 +19,7 @@ import { Float as Floating } from 'schemata-ts/schemata/Float'
  * ```
  *
  * @since 1.0.0
- * @category Schema
+ * @category Number
  */
 export const PositiveFloat: Schema<Float<MinPositiveFloat, MaxPositiveFloat>> = Floating({
   min: minPositiveFloat,

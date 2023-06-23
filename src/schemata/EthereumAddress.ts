@@ -1,8 +1,4 @@
-/**
- * Represents strings which are valid Ethereum addresses.
- *
- * @since 1.0.0
- */
+/** @since 1.0.0 */
 import { type Branded } from 'schemata-ts/brand'
 import * as PB from 'schemata-ts/PatternBuilder'
 import { type Schema } from 'schemata-ts/Schema'
@@ -34,7 +30,7 @@ export const ethereumAddress: PB.Pattern = PB.sequence(
  * Represents strings which are valid Ethereum addresses.
  *
  * @since 1.0.0
- * @category Schema
+ * @category String
  */
 export const EthereumAddress: Schema<EthereumAddress> = Brand<EthereumAddressBrand>()(
   Pattern(ethereumAddress, 'EthereumAddress'),

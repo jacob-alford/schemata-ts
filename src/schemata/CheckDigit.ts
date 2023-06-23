@@ -1,3 +1,4 @@
+/** @since 1.0.0 */
 import { type Schema, make } from 'schemata-ts/Schema'
 import { type CheckDigitVerified } from 'schemata-ts/schemables/check-digit/definition'
 
@@ -6,7 +7,7 @@ import { type CheckDigitVerified } from 'schemata-ts/schemables/check-digit/defi
  * credit cards, and others
  *
  * @since 1.0.0
- * @category Schema
+ * @category Combinators
  */
 export const CheckDigit =
   (algorithm: (s: string) => string, location: number | ((s: string) => number)) =>

@@ -1,8 +1,4 @@
-/**
- * Represents Date objects derived from time in milliseconds.
- *
- * @since 1.0.0
- */
+/** @since 1.0.0 */
 import { pipe } from 'fp-ts/function'
 import { getGuard } from 'schemata-ts/derivations/guard-schemable'
 import { type Integer } from 'schemata-ts/integer'
@@ -15,7 +11,7 @@ import { Int } from 'schemata-ts/schemata/Int'
  * Represents Date objects derived from time in milliseconds.
  *
  * @since 1.0.0
- * @category Schema
+ * @category Conversion
  */
 export const DateFromInt: Schema<
   Integer<-8_640_000_000_000_000, 8_640_000_000_000_000>,

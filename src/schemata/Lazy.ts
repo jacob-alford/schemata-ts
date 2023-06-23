@@ -1,3 +1,4 @@
+/** @since 1.0.0 */
 import { type Lazy as LazyArg } from 'fp-ts/function'
 import { type Schema, make } from 'schemata-ts/Schema'
 
@@ -7,6 +8,7 @@ import { type Schema, make } from 'schemata-ts/Schema'
  * **Note: deriving mutually recursive arbitraries is not currently supported**
  *
  * @since 1.0.0
+ * @category Combinators
  */
 export const Lazy = <I, O>(name: string, f: LazyArg<Schema<I, O>>): Schema<I, O> =>
   make(_ => _.lazy(name, () => f().runSchema(_)))

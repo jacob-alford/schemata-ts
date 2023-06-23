@@ -1,11 +1,4 @@
-/**
- * A boolean value whose encoded representation is a number, where 0 is false and 1 is true.
- *
- * Strictly speaking, this will _decode_ any number (0 becomes false, and non-zero becomes
- * true), but will only _encode_ 0 and 1.
- *
- * @since 1.0.0
- */
+/** @since 1.0.0 */
 import { pipe } from 'fp-ts/function'
 import { getGuard } from 'schemata-ts/derivations/guard-schemable'
 import { type Float as Floating } from 'schemata-ts/float'
@@ -21,7 +14,7 @@ import { Imap } from 'schemata-ts/schemata/Imap'
  * true), but will only _encode_ 0 and 1.
  *
  * @since 1.0.0
- * @category Schema
+ * @category Conversion
  */
 export const BooleanFromNumber: Schema<Floating, boolean> = pipe(
   Float(),

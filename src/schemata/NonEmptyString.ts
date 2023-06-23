@@ -1,8 +1,4 @@
-/**
- * A string with length greater than one
- *
- * @since 1.0.0
- */
+/** @since 1.0.0 */
 import { type Branded } from 'schemata-ts/brand'
 import { type Schema } from 'schemata-ts/Schema'
 import { Brand } from 'schemata-ts/schemata/Brand'
@@ -24,7 +20,7 @@ export type NonEmptyString = Branded<string, NonEmptyStringBrand>
  * A string with length greater than one
  *
  * @since 1.0.0
- * @category Schema
+ * @category String
  */
 export const NonEmptyString: Schema<NonEmptyString> = Brand<NonEmptyStringBrand>()(
   String({ minLength: 1 }),

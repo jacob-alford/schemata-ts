@@ -1,8 +1,4 @@
-/**
- * Represents strings which are valid RGB colors. Permits both absolute and percentage based values.
- *
- * @since 1.0.0
- */
+/** @since 1.0.0 */
 import { type Branded } from 'schemata-ts/brand'
 import * as PB from 'schemata-ts/PatternBuilder'
 import { type Schema } from 'schemata-ts/Schema'
@@ -91,7 +87,7 @@ const rgbColorWithAlphaPercent = PB.sequence(
  * @since 1.0.0
  * @category Pattern
  */
-export const RGBPattern = PB.oneOf(
+export const rgbPattern = PB.oneOf(
   rgbColor,
   rgbColorWithAlpha,
   rgbColorPercent,
@@ -102,6 +98,6 @@ export const RGBPattern = PB.oneOf(
  * Represents strings which are valid RGB colors. Permits both absolute and percentage based values.
  *
  * @since 1.0.0
- * @category Schema
+ * @category String
  */
-export const RGB: Schema<RGB> = Brand<RGBBrand>()(Pattern(RGBPattern, 'RGB'))
+export const RGB: Schema<RGB> = Brand<RGBBrand>()(Pattern(rgbPattern, 'RGB'))

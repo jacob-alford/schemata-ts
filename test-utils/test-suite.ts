@@ -74,19 +74,20 @@ export interface TestSuite<I, O> {
   readonly testArbitraryGuard: IO.IO<void>
 }
 
-const replaceBigInts_: (u: unknown) => unknown = u =>
-  typeof u === 'bigint'
-    ? `${String(u)}n`
-    : typeof u !== 'object' || u === null
-    ? u
-    : replaceBigInts(u as Record<string, unknown> | Array<unknown>)
-
 const replaceBigInts: (
   input: Record<string, unknown> | Array<unknown>,
 ) => Readonly<Record<string, unknown>> | ReadonlyArray<unknown> = _ =>
-  Array.isArray(_) ? pipe(_, RA.map(replaceBigInts_)) : pipe(_, RR.map(replaceBigInts_))
+  Array.isArray(_)
+    ? pipe(
+        _,
+        RA.mapWithIndex((i, _) => safeStringify(_, i)),
+      )
+    : pipe(
+        _,
+        RR.mapWithIndex((i, _) => safeStringify(_, i)),
+      )
 
-const safeStringify = (input: unknown, fallback: number): string => {
+const safeStringify = (input: unknown, fallback: number | string): string => {
   if (
     typeof input === 'string' ||
     typeof input === 'number' ||

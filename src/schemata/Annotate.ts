@@ -1,9 +1,4 @@
-/**
- * Schemable for annotating a JSON Schema. Interpretation using interpreters other than
- * JsonSchema will not change the derivation.
- *
- * @since 1.2.0
- */
+/** @since 1.2.0 */
 import { pipe } from 'fp-ts/function'
 import * as RR from 'fp-ts/ReadonlyRecord'
 import { getJsonSchema } from 'schemata-ts/derivations/json-schema-schemable'

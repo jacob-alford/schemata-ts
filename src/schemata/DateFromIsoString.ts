@@ -1,22 +1,4 @@
-/**
- * The Date parser (used in DateFromString) accepts different strings depending on
- * runtime, and also accepts other formats like `February 29, 2022`.
- *
- * `DateFromIsoString` follows a subset of the [ECMAScript 2023 Language Date Time String
- * Specification](https://tc39.es/ecma262/#sec-date-time-string-format).
- *
- * Notable features:
- *
- * - Requires padded months, days, hours, minutes, and seconds
- * - Can be configured to require a time, time and timezone offset (e.g. `Z` or `±05:00`) or
- *   neither (default is require both).
- * - Dates may contain years, months, and days; years and months; or years
- * - Times may contain hours, minutes, seconds, and milliseconds; hours, minutes, and
- *   seconds; or hours and minutes.
- * - Expanded years are permitted (e.g. `+002022` instead of `2022`)
- *
- * @since 1.0.0
- */
+/** @since 1.0.0 */
 import { pipe } from 'fp-ts/function'
 import { getGuard } from 'schemata-ts/derivations/guard-schemable'
 import { matchW } from 'schemata-ts/internal/match'
@@ -303,7 +285,7 @@ export type DateFromIsoStringParams = {
  * - Expanded years are permitted (e.g. `+002022` instead of `2022`)
  *
  * @since 1.0.0
- * @category Schema
+ * @category Conversion
  */
 export const DateFromIsoString: (
   params?: DateFromIsoStringParams,

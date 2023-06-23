@@ -1,8 +1,4 @@
-/**
- * Represents strings which are valid Bitcoin addresses.
- *
- * @since 1.0.0
- */
+/** @since 1.0.0 */
 import { pipe } from 'fp-ts/function'
 import { type Branded } from 'schemata-ts/brand'
 import * as PB from 'schemata-ts/PatternBuilder'
@@ -65,7 +61,7 @@ export const bitcoinAddress: PB.Pattern = pipe(bech32, PB.or(base58))
  * Represents strings which are valid Bitcoin addresses.
  *
  * @since 1.0.0
- * @category Schema
+ * @category String
  */
 export const BitcoinAddress: Schema<BitcoinAddress> = Brand<BitcoinAddressBrand>()(
   Pattern(bitcoinAddress, 'BitcoinAddress'),

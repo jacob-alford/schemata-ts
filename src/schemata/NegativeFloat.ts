@@ -1,14 +1,4 @@
-/**
- * Negative floating point branded newtype.
- *
- * Represents negative floating point numbers:
- *
- * ```math
- *  { f | f ∈ ℝ, f < 0, f >= -Number.MAX_VALUE }
- * ```
- *
- * @since 1.0.0
- */
+/** @since 1.0.0 */
 import {
   type Float,
   type MaxNegativeFloat,
@@ -29,7 +19,7 @@ import { Float as Floating } from 'schemata-ts/schemata/Float'
  * ```
  *
  * @since 1.0.0
- * @category Schema
+ * @category Number
  */
 export const NegativeFloat: Schema<Float<MaxNegativeFloat, MinNegativeFloat>> = Floating({
   min: maxNegativeFloat,
