@@ -15,7 +15,7 @@ export const PrimitivesTranscoder: WithPrimitives<TC.SchemableLambda> = {
       _,
       Guard.string,
       TC.fromGuard(identity, u =>
-        TC.transcodeErrors(TC.typeMismatch(`String${getLengthBoundsString(_)}`, u)),
+        TC.transcodeErrors(TC.typeMismatch(`string${getLengthBoundsString(_)}`, u)),
       ),
     ),
   int: _ =>
@@ -23,7 +23,7 @@ export const PrimitivesTranscoder: WithPrimitives<TC.SchemableLambda> = {
       _,
       Guard.int,
       TC.fromGuard(identity, u =>
-        TC.transcodeErrors(TC.typeMismatch(`Int${getNumberBoundsInt(_)}`, u)),
+        TC.transcodeErrors(TC.typeMismatch(`Integer${getNumberBoundsInt(_)}`, u)),
       ),
     ),
   float: _ =>
@@ -36,7 +36,7 @@ export const PrimitivesTranscoder: WithPrimitives<TC.SchemableLambda> = {
     ),
   boolean: pipe(
     Guard.boolean,
-    TC.fromGuard(identity, u => TC.transcodeErrors(TC.typeMismatch('Boolean', u))),
+    TC.fromGuard(identity, u => TC.transcodeErrors(TC.typeMismatch('boolean', u))),
   ),
   unknown: { decode: TC.success, encode: TC.success },
   literal: (...literals) =>

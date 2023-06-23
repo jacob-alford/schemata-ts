@@ -81,7 +81,7 @@ test('Struct types', () => {
 
 const testDate = new Date()
 
-runStandardTestSuite('Struct', Schema, _ => ({
+runStandardTestSuite(Schema, _ => ({
   decoderTests: [
     _.decoder.pass(
       { a: 'a', b: 1, c: true, d: 1, e: 1, f: 'a' },
@@ -128,7 +128,7 @@ runStandardTestSuite('Struct', Schema, _ => ({
       () =>
         TC.transcodeErrors(
           TC.errorAtKey('b', TC.typeMismatch('Float', NaN)),
-          TC.errorAtKey('c', TC.typeMismatch('Boolean', 0)),
+          TC.errorAtKey('c', TC.typeMismatch('boolean', 0)),
           TC.errorAtKey(
             'd',
             TC.typeMismatch('Float<-8640000000000,8640000000000>', Number.MAX_VALUE),
@@ -151,7 +151,7 @@ runStandardTestSuite('Struct', Schema, _ => ({
             TC.errorAtUnionMember(0, TC.typeMismatch('null | string?', 511)),
             TC.errorAtUnionMember(1, TC.typeMismatch('null | string?', 511)),
           ),
-          TC.errorAtKey('c', TC.typeMismatch('Boolean', null)),
+          TC.errorAtKey('c', TC.typeMismatch('boolean', null)),
           TC.errorAtKey(
             'f',
             TC.errorAtUnionMember(

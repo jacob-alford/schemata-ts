@@ -3,7 +3,7 @@ import * as JS from 'schemata-ts/JsonSchema'
 
 import { runStandardTestSuite } from '../test-utils/test-suite'
 
-runStandardTestSuite('String', S.String(), _ => ({
+runStandardTestSuite(S.String(), _ => ({
   decoderTests: [
     _.decoder.pass(''),
     _.decoder.pass('a'),
@@ -22,7 +22,7 @@ runStandardTestSuite('String', S.String(), _ => ({
   typeString: 'string',
 }))()
 
-runStandardTestSuite('String<10,>', S.String({ minLength: 10 }), _ => ({
+runStandardTestSuite(S.String({ minLength: 10 }), _ => ({
   decoderTests: [
     _.decoder.pass('abcdefghij'),
     _.decoder.pass('abcdefghijk'),
@@ -36,7 +36,7 @@ runStandardTestSuite('String<10,>', S.String({ minLength: 10 }), _ => ({
   typeString: 'string<10,>',
 }))()
 
-runStandardTestSuite('String<,10>', S.String({ maxLength: 10 }), _ => ({
+runStandardTestSuite(S.String({ maxLength: 10 }), _ => ({
   decoderTests: [
     _.decoder.fail('abcdefghijk'),
     _.decoder.pass('abcdefghij'),
@@ -50,7 +50,7 @@ runStandardTestSuite('String<,10>', S.String({ maxLength: 10 }), _ => ({
   typeString: 'string<,10>',
 }))()
 
-runStandardTestSuite('String<10,20>', S.String({ minLength: 10, maxLength: 20 }), _ => ({
+runStandardTestSuite(S.String({ minLength: 10, maxLength: 20 }), _ => ({
   decoderTests: [
     _.decoder.pass('abcdefghij'),
     _.decoder.pass('abcdefghijk'),

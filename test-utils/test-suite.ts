@@ -18,6 +18,7 @@ import { getTranscoder } from 'schemata-ts/derivations/transcoder-schemable'
 import { getTypeString } from 'schemata-ts/derivations/type-string-schemable'
 import * as JS from 'schemata-ts/internal/json-schema'
 import * as TS from 'schemata-ts/internal/type-string'
+import { fold } from 'schemata-ts/internal/type-string'
 import { type Schema } from 'schemata-ts/Schema'
 import { PrimitivesGuard } from 'schemata-ts/schemables/primitives/instances/guard'
 import * as TCE from 'schemata-ts/TranscodeError'
@@ -398,7 +399,6 @@ export type StandardTestSuiteOptions = {
 }
 
 type StandardTestSuiteFn = <I, O>(
-  name: string,
   schema: Schema<I, O>,
   makeTestValues: (helpers: MakeTestValues<I, O>) => StandardTestInputs<I, O>,
   options?: StandardTestSuiteOptions,
@@ -409,11 +409,12 @@ type RunStandardTestSuite = StandardTestSuiteFn & {
 }
 
 const runStandardTestSuite_: StandardTestSuiteFn =
-  (name, schema, makeTestValues, options = {}) =>
+  (schema, makeTestValues, options = {}) =>
   () => {
+    const name = getTypeString(schema)
     const {
       makeDecodeError = (value: unknown) =>
-        new TCE.TranscodeErrors([new TCE.TypeMismatch(name, value)]),
+        new TCE.TranscodeErrors([new TCE.TypeMismatch(fold(name), value)]),
       skipArbitraryChecks = false,
       skipAll = false,
     } = options
@@ -437,7 +438,7 @@ const runStandardTestSuite_: StandardTestSuiteFn =
       },
     })
 
-    ;(skipAll ? describe.skip : describe)(`${name} Standard Test Suite`, () => {
+    ;(skipAll ? describe.skip : describe)(`${fold(name)} Standard Test Suite`, () => {
       describe('decoder', _.testDecoder(testValues.decoderTests))
       describe('encoder', _.testEncoder(testValues.encoderTests))
       describe(
@@ -459,8 +460,8 @@ const runStandardTestSuite_: StandardTestSuiteFn =
     })
   }
 
-const skip: RunStandardTestSuite['skip'] = (name, schema, makeTestValues, options = {}) =>
-  runStandardTestSuite_(name, schema, makeTestValues, { ...options, skipAll: true })
+const skip: RunStandardTestSuite['skip'] = (schema, makeTestValues, options = {}) =>
+  runStandardTestSuite_(schema, makeTestValues, { ...options, skipAll: true })
 
 const makeStandardTestSuite: (fn: StandardTestSuiteFn) => RunStandardTestSuite = fn =>
   Object.assign(fn, {

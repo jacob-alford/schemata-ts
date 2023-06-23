@@ -5,7 +5,6 @@ import * as TC from 'schemata-ts/Transcoder'
 import { runStandardTestSuite } from '../test-utils/test-suite'
 
 runStandardTestSuite(
-  'Literal',
   S.Literal('hi', 'hey', 'lmao', null),
   _ => ({
     decoderTests: [
