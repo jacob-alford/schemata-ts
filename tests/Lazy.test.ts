@@ -64,7 +64,6 @@ const expectedJsonSchema = JS.annotate({
 )
 
 runStandardTestSuite(
-  'Lazy Recursive',
   One,
   _ => ({
     decoderTests: [
@@ -94,7 +93,7 @@ runStandardTestSuite(
   },
 )()
 
-runStandardTestSuite('Lazy', S.Annotate({})(S.Lazy('Float', () => S.Float())), _ => ({
+runStandardTestSuite(S.Annotate({})(S.Lazy('Float', () => S.Float())), _ => ({
   decoderTests: [
     _.decoder.pass(0),
     _.decoder.pass(1),

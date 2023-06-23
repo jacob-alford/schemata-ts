@@ -3,7 +3,7 @@ import * as JS from 'schemata-ts/JsonSchema'
 
 import { runStandardTestSuite } from '../test-utils/test-suite'
 
-runStandardTestSuite('Int', S.Int(), _ => ({
+runStandardTestSuite(S.Int(), _ => ({
   decoderTests: [
     _.decoder.pass(1),
     _.decoder.pass(0),
@@ -39,7 +39,7 @@ runStandardTestSuite('Int', S.Int(), _ => ({
   typeString: 'Integer',
 }))()
 
-runStandardTestSuite('Int<10,>', S.Int({ min: 10 }), _ => ({
+runStandardTestSuite(S.Int({ min: 10 }), _ => ({
   decoderTests: [
     _.decoder.pass(10),
     _.decoder.pass(11),
@@ -55,7 +55,7 @@ runStandardTestSuite('Int<10,>', S.Int({ min: 10 }), _ => ({
   typeString: 'Integer<10,>',
 }))()
 
-runStandardTestSuite('Int<,10>', S.Int({ max: 10 }), _ => ({
+runStandardTestSuite(S.Int({ max: 10 }), _ => ({
   decoderTests: [
     _.decoder.fail(11),
     _.decoder.fail(156e10),
@@ -71,7 +71,7 @@ runStandardTestSuite('Int<,10>', S.Int({ max: 10 }), _ => ({
   typeString: 'Integer<,10>',
 }))()
 
-runStandardTestSuite('Int<10,20>', S.Int({ min: 10, max: 20 }), _ => ({
+runStandardTestSuite(S.Int({ min: 10, max: 20 }), _ => ({
   decoderTests: [
     _.decoder.pass(10),
     _.decoder.pass(11),

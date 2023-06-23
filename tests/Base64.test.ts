@@ -1,6 +1,5 @@
 import * as S from 'schemata-ts'
 import * as JS from 'schemata-ts/JsonSchema'
-import * as TC from 'schemata-ts/Transcoder'
 
 import { runStandardTestSuite } from '../test-utils/test-suite'
 
@@ -24,16 +23,20 @@ const validStrings = [
     'HQIDAQAB',
 ]
 
-const invalidStrings = ['12345', 'Z===', 'Zm=8', '=m9vYg==', 'Zm9vYmFy====']
+const invalidStrings = [
+  '12345',
+  'Z===',
+  'Zm=8',
+  '=m9vYg==',
+  'Zm9vYmFy====',
+  'Vml2YW11cyBmZXJtZtesting123',
+  'Zg=',
+]
 
-runStandardTestSuite('Base64', S.Base64, _ => ({
+runStandardTestSuite(S.Base64, _ => ({
   decoderTests: [
     ...validStrings.map(s => _.decoder.pass(s)),
     ...invalidStrings.map(s => _.decoder.fail(s)),
-    _.decoder.fail('Vml2YW11cyBmZXJtZtesting123', s =>
-      TC.transcodeErrors(TC.typeMismatch('Base64', s)),
-    ),
-    _.decoder.fail('Zg=', s => TC.transcodeErrors(TC.typeMismatch('Base64', s))),
   ],
   encoderTests: validStrings.map(s => _.encoder.pass(s as any)),
   guardTests: [],

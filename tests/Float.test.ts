@@ -3,7 +3,7 @@ import * as JS from 'schemata-ts/JsonSchema'
 
 import { runStandardTestSuite } from '../test-utils/test-suite'
 
-runStandardTestSuite('Float', S.Float(), _ => ({
+runStandardTestSuite(S.Float(), _ => ({
   decoderTests: [
     _.decoder.pass(1),
     _.decoder.pass(0),
@@ -38,7 +38,7 @@ runStandardTestSuite('Float', S.Float(), _ => ({
   typeString: 'Float',
 }))()
 
-runStandardTestSuite('Float<10,>', S.Float({ min: 10 }), _ => ({
+runStandardTestSuite(S.Float({ min: 10 }), _ => ({
   decoderTests: [
     _.decoder.pass(10),
     _.decoder.pass(11),
@@ -54,7 +54,7 @@ runStandardTestSuite('Float<10,>', S.Float({ min: 10 }), _ => ({
   typeString: 'Float<10,>',
 }))()
 
-runStandardTestSuite('Float<,10>', S.Float({ max: 10 }), _ => ({
+runStandardTestSuite(S.Float({ max: 10 }), _ => ({
   decoderTests: [
     _.decoder.fail(11),
     _.decoder.fail(156e10),
@@ -70,7 +70,7 @@ runStandardTestSuite('Float<,10>', S.Float({ max: 10 }), _ => ({
   typeString: 'Float<,10>',
 }))()
 
-runStandardTestSuite('Float<10,20>', S.Float({ min: 10, max: 20 }), _ => ({
+runStandardTestSuite(S.Float({ min: 10, max: 20 }), _ => ({
   decoderTests: [
     _.decoder.pass(10),
     _.decoder.pass(11),
