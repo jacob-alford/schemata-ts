@@ -1,18 +1,14 @@
-/**
- * A Typescript Record type with unknown keys and known values.
- *
- * @since 1.4.0
- * @category Model
- */
+/** @since 1.4.0 */
 import { type Schema, make } from 'schemata-ts/Schema'
 
 /**
- * A Typescript Record type with unknown keys and known values.
+ * A Typescript Record type with string-keys and known values.
  *
  * @since 1.0.0
  * @category Combinators
  */
-export const Record = <E, A>(
+export const Record = <K extends string, E, A>(
+  keys: Schema<K, K>,
   codomain: Schema<E, A>,
-): Schema<Record<string, E>, Record<string, A>> =>
-  make(_ => _.struct({}, { extraProps: 'restParam', restParam: codomain.runSchema(_) }))
+): Schema<Readonly<Record<K, E>>, Readonly<Record<K, A>>> =>
+  make(_ => _.record(keys.runSchema(_), codomain.runSchema(_)))

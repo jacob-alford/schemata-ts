@@ -1,5 +1,5 @@
 import * as B from 'fp-ts/boolean'
-import { pipe } from 'fp-ts/function'
+import { flow, pipe, SK } from 'fp-ts/function'
 import * as RR from 'fp-ts/ReadonlyRecord'
 import * as Str from 'fp-ts/string'
 import * as Eq from 'schemata-ts/internal/eq'
@@ -29,4 +29,6 @@ export const StructEq: WithStruct<Eq.SchemableLambda> = {
       )
     })
   },
+  record: flow(SK, RR.getEq),
+  intersection: (x, y) => Eq.fromEquals((a, b) => x.equals(a, b) && y.equals(a, b)),
 }

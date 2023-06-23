@@ -25,4 +25,6 @@ export const StructJsonSchema: WithStruct<JS.SchemableLambda> = {
       extraProps === 'error' ? false : undefined,
     ) as any
   },
+  record: (_, so) => JS.make(new JS.JsonStruct({}, [], so)),
+  intersection: (x, y) => JS.make(new JS.JsonIntersection([x, y])),
 }

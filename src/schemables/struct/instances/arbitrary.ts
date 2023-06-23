@@ -1,6 +1,9 @@
+import { identity } from 'fp-ts/function'
 import * as Arb from 'schemata-ts/internal/arbitrary'
 import { type WithStruct } from 'schemata-ts/schemables/struct/definition'
-import { remapPropertyKeys } from 'schemata-ts/schemables/struct/utils'
+import { remapPropertyKeys, safeIntersect } from 'schemata-ts/schemables/struct/utils'
+
+const readonly: <A>(a: A) => Readonly<A> = identity
 
 export const StructArbitrary: WithStruct<Arb.SchemableLambda> = {
   struct: properties => {
@@ -36,4 +39,12 @@ export const StructArbitrary: WithStruct<Arb.SchemableLambda> = {
       return fc.record(out) as any
     })
   },
+  record: (key, codomain) =>
+    Arb.makeArbitrary(fc =>
+      fc.dictionary(key.arbitrary(fc), codomain.arbitrary(fc)).map(readonly),
+    ),
+  intersection: (xs, ys) =>
+    Arb.makeArbitrary(fc =>
+      fc.tuple(xs.arbitrary(fc), ys.arbitrary(fc)).map(([x, y]) => safeIntersect(x, y)),
+    ),
 }

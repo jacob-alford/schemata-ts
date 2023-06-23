@@ -1,4 +1,4 @@
-import { pipe } from 'fp-ts/function'
+import { flow, pipe } from 'fp-ts/function'
 import * as N from 'fp-ts/number'
 import * as RNEA from 'fp-ts/ReadonlyNonEmptyArray'
 import * as RR from 'fp-ts/ReadonlyRecord'
@@ -16,4 +16,6 @@ export const StructInformation: WithStruct<Inf.SchemableLambda> = {
       ),
       _ => Inf.makeInformation(_),
     ),
+  record: flow(Math.max, _ => Inf.makeInformation(_)),
+  intersection: (x, y) => Inf.makeInformation(x * y - Math.min(x, y)),
 }

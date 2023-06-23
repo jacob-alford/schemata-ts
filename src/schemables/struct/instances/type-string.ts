@@ -68,4 +68,8 @@ export const StructTypeString: WithStruct<SchemableLambda> = {
     )
     return makeTypeString([inputStruct, outputStruct])
   },
+  record: ([ki, ko], [ai, ao]) =>
+    makeTypeString([`Record<${ki}, ${ai}>`, `Record<${ko}, ${ao}>`]),
+  intersection: ([ai, ao], [bi, bo]) =>
+    makeTypeString([`${ai} & ${bi}`, `${ao} & ${bo}`]),
 }

@@ -58,3 +58,10 @@ export const remapPropertyKeys = <S extends SchemableLambda>(
 
   return pipe(lookupByOutputKey_, RR.map(RNEA.sort(ordGuardedPrecedentedUnionMember)))
 }
+
+export const safeIntersect = <A, B>(a: A, b: B): A & B => {
+  const isObjectA = typeof a === 'object' && a !== null
+  const isObjectB = typeof b === 'object' && b !== null
+  if (isObjectA || isObjectB) return Object.assign({}, a, b)
+  return void 0 as A & B
+}
