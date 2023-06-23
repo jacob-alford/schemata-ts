@@ -70,7 +70,7 @@ const makeSchemableContents: (
   return pipe(
     [
       schemableHeaderComment,
-      makeDestructureImport(['SchemableLambda'], 'schemata-ts/HKT'),
+      makeDestructureImport(['SchemableLambda'], 'schemata-ts/internal/schemable'),
       ...pipe(
         schemables,
         RA.map(([schemable, path]) =>

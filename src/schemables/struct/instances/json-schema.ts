@@ -5,8 +5,8 @@ import * as RR from 'fp-ts/ReadonlyRecord'
 import * as Sg from 'fp-ts/Semigroup'
 import * as Str from 'fp-ts/string'
 import * as JS from 'schemata-ts/internal/json-schema'
+import { hasImplicitOptional } from 'schemata-ts/internal/struct'
 import { type WithStruct } from 'schemata-ts/schemables/struct/definition'
-import { hasImplicitOptional } from 'schemata-ts/struct'
 
 export const StructJsonSchema: WithStruct<JS.SchemableLambda> = {
   struct: (properties, extraProps = 'strip') => {

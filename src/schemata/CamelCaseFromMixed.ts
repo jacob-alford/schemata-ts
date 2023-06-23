@@ -1,11 +1,11 @@
 /** @since 1.4.0 */
 import { getGuard } from 'schemata-ts/derivations/guard-schemable'
 import { getInformation } from 'schemata-ts/derivations/information-schemable'
-import { type SchemableKind, type SchemableLambda } from 'schemata-ts/HKT'
 import { camelCase } from 'schemata-ts/internal/camelcase'
+import { type SchemableKind, type SchemableLambda } from 'schemata-ts/internal/schemable'
+import { remapKey } from 'schemata-ts/internal/struct'
 import { type InputOf, type OutputOf, type Schema, make } from 'schemata-ts/Schema'
 import type * as s from 'schemata-ts/schemables/struct/type-utils'
-import { remapKey } from 'schemata-ts/struct'
 import type { CamelCase } from 'type-fest'
 
 /**

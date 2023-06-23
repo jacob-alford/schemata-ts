@@ -11,8 +11,8 @@
 import { type Contravariant1 } from 'fp-ts/Contravariant'
 import { type Invariant1 } from 'fp-ts/Invariant'
 import { type Monoid } from 'fp-ts/Monoid'
-import type * as hkt from 'schemata-ts/HKT'
 import * as I from 'schemata-ts/internal/eq'
+import type * as hkt from 'schemata-ts/internal/schemable'
 
 /**
  * Represents a typeclass and data type that determines if two values of the same type are

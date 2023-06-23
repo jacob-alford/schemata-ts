@@ -1,7 +1,7 @@
 import { type Const, make as make_ } from 'fp-ts/Const'
 import type * as RNEA from 'fp-ts/ReadonlyNonEmptyArray'
 import type * as RR from 'fp-ts/ReadonlyRecord'
-import type * as hkt from 'schemata-ts/HKT'
+import type * as hkt from 'schemata-ts/internal/schemable'
 
 export type JsonSchemaValue =
   | JsonEmpty

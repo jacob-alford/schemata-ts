@@ -1,5 +1,5 @@
 import { type Const, make } from 'fp-ts/Const'
-import type * as hkt from 'schemata-ts/HKT'
+import type * as hkt from 'schemata-ts/internal/schemable'
 
 /** @internal */
 export type TypeString<I, O> = Const<readonly [string, string], readonly [I, O]>

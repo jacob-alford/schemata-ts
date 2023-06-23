@@ -296,13 +296,3 @@ export const ref = <A>(ref: string): Const<JsonSchema, A> => make(new I.JsonRef(
  */
 export const stripIdentity: <A>(schema: Const<JsonSchema, A>) => JsonSchema = schema =>
   JSON.parse(JSON.stringify(schema))
-
-// -------------------------------------------------------------------------------------
-// instances
-// -------------------------------------------------------------------------------------
-
-/** @since 1.2.0 */
-export const URI = 'JsonSchema'
-
-/** @since 1.2.0 */
-export type URI = typeof URI

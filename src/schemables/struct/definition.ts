@@ -1,4 +1,4 @@
-import { type SchemableKind, type SchemableLambda } from 'schemata-ts/HKT'
+import { type SchemableKind, type SchemableLambda } from 'schemata-ts/internal/schemable'
 import { type Combine } from 'schemata-ts/internal/type-utils'
 import type * as _ from 'schemata-ts/schemables/struct/type-utils'
 

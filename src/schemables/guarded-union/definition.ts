@@ -4,11 +4,11 @@ import * as Ord from 'fp-ts/Ord'
 import type * as RNEA from 'fp-ts/ReadonlyNonEmptyArray'
 import { type Guard } from 'schemata-ts/Guard'
 import {
-  type InputOf,
-  type OutputOf,
+  type InputOfSchemable,
+  type OutputOfSchemable,
   type SchemableKind,
   type SchemableLambda,
-} from 'schemata-ts/HKT'
+} from 'schemata-ts/internal/schemable'
 
 export type GuardedPrecedentedUnionMember<S extends SchemableLambda> = {
   readonly guard: Guard<any>
@@ -30,5 +30,9 @@ export interface WithGuardedUnion<S extends SchemableLambda> {
   >(
     name: string,
     ...members: T
-  ) => SchemableKind<S, InputOf<S, T[number]['member']>, OutputOf<S, T[number]['member']>>
+  ) => SchemableKind<
+    S,
+    InputOfSchemable<S, T[number]['member']>,
+    OutputOfSchemable<S, T[number]['member']>
+  >
 }

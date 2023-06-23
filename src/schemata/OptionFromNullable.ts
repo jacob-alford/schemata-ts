@@ -3,11 +3,14 @@ import { pipe } from 'fp-ts/function'
 import * as O from 'fp-ts/Option'
 import { getTypeString } from 'schemata-ts/derivations/type-string-schemable'
 import { getGuard } from 'schemata-ts/Guard'
+import {
+  type ImplicitOptional,
+  makeImplicitOptionalType,
+} from 'schemata-ts/internal/struct'
 import { type Schema } from 'schemata-ts/Schema'
 import { Imap } from 'schemata-ts/schemata/Imap'
 import { Nullable } from 'schemata-ts/schemata/Nullable'
 import { Option } from 'schemata-ts/schemata/Option'
-import { type ImplicitOptional, makeImplicitOptionalType } from 'schemata-ts/struct'
 
 /**
  * Represents an optional type which decodes from null and undefined and encodes to null

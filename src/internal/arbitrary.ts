@@ -1,5 +1,5 @@
 import type * as FastCheck from 'fast-check'
-import type * as hkt from 'schemata-ts/HKT'
+import type * as hkt from 'schemata-ts/internal/schemable'
 import { memoize } from 'schemata-ts/Schema'
 
 export interface Arbitrary<A> {

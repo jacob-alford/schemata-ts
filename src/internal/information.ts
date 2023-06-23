@@ -4,7 +4,7 @@
  * @since 2.0.0
  */
 import { type Const, make } from 'fp-ts/Const'
-import type * as hkt from 'schemata-ts/HKT'
+import type * as hkt from 'schemata-ts/internal/schemable'
 
 /** @internal */
 export type Information<A> = Const<number, A>

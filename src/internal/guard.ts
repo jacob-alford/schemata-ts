@@ -1,4 +1,4 @@
-import type * as hkt from 'schemata-ts/HKT'
+import type * as hkt from 'schemata-ts/internal/schemable'
 
 export interface Guard<A> {
   readonly is: (u: unknown) => u is A
