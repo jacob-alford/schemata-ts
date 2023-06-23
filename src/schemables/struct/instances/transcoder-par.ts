@@ -1,5 +1,5 @@
 import * as Ap from 'fp-ts/Apply'
-import { pipe, tuple } from 'fp-ts/function'
+import { flow, pipe, tuple } from 'fp-ts/function'
 import * as O from 'fp-ts/Option'
 import * as Sg from 'fp-ts/Semigroup'
 import * as T from 'fp-ts/Task'
@@ -7,12 +7,24 @@ import * as TE from 'fp-ts/TaskEither'
 import * as TCP from 'schemata-ts/internal/transcoder-par'
 import { witherRemapPar } from 'schemata-ts/internal/util'
 import { type WithStruct } from 'schemata-ts/schemables/struct/definition'
-import { remapPropertyKeys } from 'schemata-ts/schemables/struct/utils'
+import { remapPropertyKeys, safeIntersect } from 'schemata-ts/schemables/struct/utils'
 import { getKeyRemap } from 'schemata-ts/struct'
 import * as TCE from 'schemata-ts/TranscodeError'
 
 const decodeErrorValidation = TE.getApplicativeTaskValidation(T.ApplyPar, TCE.Semigroup)
 const apSecond = Ap.apSecond(decodeErrorValidation)
+
+const validateObject: (
+  u: unknown,
+) => TE.TaskEither<
+  TCE.TranscodeErrors,
+  Record<string | number | symbol, unknown>
+> = u => {
+  if (u === null || typeof u !== 'object' || Array.isArray(u)) {
+    return TCP.failure(TCP.transcodeErrors(TCP.typeMismatch('object', u)))
+  }
+  return TCP.success(u as Record<string | number | symbol, unknown>)
+}
 
 export const StructTranscoderPar: WithStruct<TCP.SchemableLambda> = {
   struct: (properties, extraProps = 'strip') => {
@@ -106,4 +118,49 @@ export const StructTranscoderPar: WithStruct<TCP.SchemableLambda> = {
       },
     }
   },
+  record: (key, codomain) => ({
+    decode: flow(
+      validateObject,
+      TE.chain(
+        witherRemapPar(
+          TCE.Semigroup,
+          Sg.last<unknown>(),
+        )((k, u) =>
+          pipe(
+            Ap.sequenceT(decodeErrorValidation)(codomain.decode(u), key.decode(k)),
+            TE.map(O.some),
+          ),
+        ),
+      ),
+      _ => _ as TE.TaskEither<TCE.TranscodeErrors, Readonly<Record<string, any>>>,
+    ),
+    encode: flow(
+      witherRemapPar(
+        TCE.Semigroup,
+        Sg.last<unknown>(),
+      )((k, u) =>
+        pipe(
+          Ap.sequenceT(decodeErrorValidation)(codomain.encode(u), key.encode(k)),
+          TE.map(O.some),
+        ),
+      ),
+      _ => _ as TE.TaskEither<TCE.TranscodeErrors, Readonly<Record<string, any>>>,
+    ),
+  }),
+  intersection: (x, y) => ({
+    decode: flow(
+      validateObject,
+      TE.chain(u =>
+        pipe(
+          Ap.sequenceT(decodeErrorValidation)(x.decode(u), y.decode(u)),
+          TE.map(([x, y]) => safeIntersect(x, y)),
+        ),
+      ),
+    ),
+    encode: u =>
+      pipe(
+        Ap.sequenceT(decodeErrorValidation)(x.encode(u), y.encode(u)),
+        TE.map(([x, y]) => safeIntersect(x, y)),
+      ),
+  }),
 }

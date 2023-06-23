@@ -7,13 +7,16 @@ import type * as G from 'schemata-ts/internal/guard'
 import { type WithStruct } from 'schemata-ts/schemables/struct/definition'
 import { remapPropertyKeys } from 'schemata-ts/schemables/struct/utils'
 
+const isObject = (u: unknown): u is Record<string, unknown> =>
+  typeof u === 'object' && u !== null && !Array.isArray(u)
+
 export const StructGuard: WithStruct<G.SchemableLambda> = {
   struct: (properties, extraProps = 'strip') => {
     const lookupByOutputKey = remapPropertyKeys(properties)
 
     return {
       is: pipe(
-        (u: unknown) => typeof u === 'object' && u !== null && !Array.isArray(u),
+        isObject,
         Pred.and(u => {
           // -- if extra props are not allowed, return a failure on keys not specified in properties
           if (extraProps === 'error') {
@@ -38,4 +41,18 @@ export const StructGuard: WithStruct<G.SchemableLambda> = {
       ),
     }
   },
+  record: (sk, so) => ({
+    is: pipe(
+      isObject,
+      Pred.and<Record<string, unknown>>(
+        RR.foldMapWithIndex(Str.Ord)(B.MonoidAll)(
+          (key, value) => sk.is(key) && so.is(value),
+        ),
+      ),
+      _ => _ as any,
+    ),
+  }),
+  intersection: (x, y) => ({
+    is: pipe(x.is, Pred.and(y.is), _ => _ as any),
+  }),
 }

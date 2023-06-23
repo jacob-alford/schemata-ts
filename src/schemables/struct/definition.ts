@@ -18,4 +18,17 @@ export interface WithStruct<S extends SchemableLambda> {
     >,
     Combine<_.RestOutput<S, RestKind> & _.OutputProps<S, Props>>
   >
+  readonly record: <I, O, K extends string>(
+    key: SchemableKind<S, K, K>,
+    codomain: SchemableKind<S, I, O>,
+  ) => SchemableKind<S, Readonly<Record<K, I>>, Readonly<Record<K, O>>>
+  readonly intersection: <
+    I1 extends Record<string, any>,
+    I2 extends Record<string, any>,
+    O1 extends Record<string, any>,
+    O2 extends Record<string, any>,
+  >(
+    x: SchemableKind<S, I1, O1>,
+    y: SchemableKind<S, I2, O2>,
+  ) => SchemableKind<S, I1 & I2, O1 & O2>
 }
