@@ -1,6 +1,6 @@
 import type * as Eq from 'schemata-ts/internal/eq'
+import { makeImplicitOptionalType } from 'schemata-ts/internal/struct'
 import { type WithOptional } from 'schemata-ts/schemables/optional/definition'
-import { makeImplicitOptionalType } from 'schemata-ts/struct'
 
 export const OptionalEq: WithOptional<Eq.SchemableLambda> = {
   optional: eqA =>

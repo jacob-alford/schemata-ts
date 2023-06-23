@@ -17,6 +17,7 @@ import * as P from '../../src/base/PrinterBase'
 import * as TD from '../../src/base/TaskDecoderBase'
 import * as t from '../../src/base/TypeBase'
 import { getDecoder } from '../../src/internal/decoder'
+import * as s from '../../src/internal/struct'
 import { Arbitrary } from '../../src/schemables/WithStructM/instances/arbitrary'
 import { Decoder } from '../../src/schemables/WithStructM/instances/decoder'
 import { Encoder } from '../../src/schemables/WithStructM/instances/encoder'
@@ -27,7 +28,6 @@ import { Printer } from '../../src/schemables/WithStructM/instances/printer'
 import { TaskDecoder } from '../../src/schemables/WithStructM/instances/task-decoder'
 import { Type } from '../../src/schemables/WithStructM/instances/type'
 import * as S from '../../src/schemata'
-import * as s from '../../src/struct'
 
 const decodeOptionFromNullableDateFromUnix = getDecoder(
   S.OptionFromNullable(S.DateFromUnixTime),

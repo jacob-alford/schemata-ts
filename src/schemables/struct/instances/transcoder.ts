@@ -3,11 +3,11 @@ import * as E from 'fp-ts/Either'
 import { flow, pipe, tuple } from 'fp-ts/function'
 import * as O from 'fp-ts/Option'
 import * as Sg from 'fp-ts/Semigroup'
+import { getKeyRemap } from 'schemata-ts/internal/struct'
 import * as TC from 'schemata-ts/internal/transcoder'
 import { witherRemap } from 'schemata-ts/internal/util'
 import { type WithStruct } from 'schemata-ts/schemables/struct/definition'
 import { remapPropertyKeys, safeIntersect } from 'schemata-ts/schemables/struct/utils'
-import { getKeyRemap } from 'schemata-ts/struct'
 import * as TCE from 'schemata-ts/TranscodeError'
 
 const decodeErrorValidation = E.getApplicativeValidation(TCE.Semigroup)

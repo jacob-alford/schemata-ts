@@ -2,8 +2,8 @@ import * as B from 'fp-ts/boolean'
 import { pipe } from 'fp-ts/function'
 import * as RA from 'fp-ts/ReadonlyArray'
 import * as JS from 'schemata-ts/internal/json-schema'
+import { hasImplicitOptional, makeImplicitOptional } from 'schemata-ts/internal/struct'
 import { type WithGuardedUnion } from 'schemata-ts/schemables/guarded-union/definition'
-import { hasImplicitOptional, makeImplicitOptional } from 'schemata-ts/struct'
 
 export const GuardedUnionJsonSchema: WithGuardedUnion<JS.SchemableLambda> = {
   guardedUnion: (_, ...members) => {

@@ -4,11 +4,11 @@ import * as O from 'fp-ts/Option'
 import * as Sg from 'fp-ts/Semigroup'
 import * as T from 'fp-ts/Task'
 import * as TE from 'fp-ts/TaskEither'
+import { getKeyRemap } from 'schemata-ts/internal/struct'
 import * as TCP from 'schemata-ts/internal/transcoder-par'
 import { witherRemapPar } from 'schemata-ts/internal/util'
 import { type WithStruct } from 'schemata-ts/schemables/struct/definition'
 import { remapPropertyKeys, safeIntersect } from 'schemata-ts/schemables/struct/utils'
-import { getKeyRemap } from 'schemata-ts/struct'
 import * as TCE from 'schemata-ts/TranscodeError'
 
 const decodeErrorValidation = TE.getApplicativeTaskValidation(T.ApplyPar, TCE.Semigroup)

@@ -1,11 +1,9 @@
 import { flow, pipe } from 'fp-ts/function'
-import { type Invariant2 } from 'fp-ts/Invariant'
 import type * as RNEA from 'fp-ts/ReadonlyNonEmptyArray'
-import type * as Sgd from 'fp-ts/Semigroupoid'
 import * as T from 'fp-ts/Task'
 import * as TE from 'fp-ts/TaskEither'
 import type * as G from 'schemata-ts/Guard'
-import type * as hkt from 'schemata-ts/HKT'
+import type * as hkt from 'schemata-ts/internal/schemable'
 import { type Transcoder } from 'schemata-ts/internal/transcoder'
 import * as TCE from 'schemata-ts/TranscodeError'
 
@@ -87,18 +85,6 @@ export const fromTranscoder: <I, O>(
 })
 
 /** @since 2.0.0 */
-export const URI = 'schemata-ts/TranscoderPar'
-
-/** @since 2.0.0 */
-export type URI = typeof URI
-
-declare module 'fp-ts/lib/HKT' {
-  interface URItoKind2<E, A> {
-    readonly [URI]: TranscoderPar<E, A>
-  }
-}
-
-/** @since 2.0.0 */
 export interface SchemableLambda extends hkt.SchemableLambda {
   readonly type: TranscoderPar<this['Input'], this['Output']>
 }
@@ -111,12 +97,6 @@ export const imap: <A, B>(
   decode: u => TE.Functor.map(fa.decode(u), f),
   encode: out => fa.encode(g(out)),
 })
-
-/** @internal */
-export const Invariant: Invariant2<URI> = {
-  URI,
-  imap: (fa, f, g) => pipe(fa, imap(f, g)),
-}
 
 /** @internal */
 export const alt: <I, A>(
@@ -141,9 +121,3 @@ export const compose: <B, C>(
   decode: flow(tAB.decode, TE.chain(tBC.decode)),
   encode: flow(tBC.encode, TE.chain(tAB.encode)),
 })
-
-/** @internal */
-export const Semigroupoid: Sgd.Semigroupoid2<URI> = {
-  URI,
-  compose: (tBC, tAB) => compose(tBC)(tAB),
-}

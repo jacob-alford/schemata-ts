@@ -7,8 +7,8 @@ import * as Str from 'fp-ts/string'
 import { getGuard } from 'schemata-ts/derivations/guard-schemable'
 import { getInformation } from 'schemata-ts/derivations/information-schemable'
 import { getTypeString } from 'schemata-ts/derivations/type-string-schemable'
+import { type ImplicitOptional } from 'schemata-ts/internal/struct'
 import { type Schema, make } from 'schemata-ts/Schema'
-import { type ImplicitOptional } from 'schemata-ts/struct'
 import { type TupleToUnion } from 'type-fest'
 
 type Inputs<Xs extends ReadonlyArray<Schema<any, any>>> = {

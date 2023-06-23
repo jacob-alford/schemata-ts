@@ -74,28 +74,24 @@
  *
  *   assert.equal(invalidInput._tag, 'Left')
  */
-import type * as hkt from 'schemata-ts/HKT'
+import { identity } from 'fp-ts/function'
+import type * as hkt from 'schemata-ts/internal/schemable'
 import { type Schemable } from 'schemata-ts/Schemable'
+
+const SchemaSymbol = Symbol('schemata-ts/Schema')
+type SchemaSymbol = typeof SchemaSymbol
 
 /**
  * @since 1.0.0
  * @category Model
  */
 export interface Schema<I, O = I> {
-  readonly _Input: (_: I) => I
-  readonly _Output: (_: O) => O
-  /** @internal */
+  readonly [SchemaSymbol]: SchemaSymbol
+  readonly input: (_: I) => I
+  readonly output: (_: O) => O
   readonly runSchema: <S extends hkt.SchemableLambda>(
     S: Schemable<S>,
   ) => hkt.SchemableKind<S, I, O>
-}
-
-/**
- * @since 2.0.0
- * @category Type Lambdas
- */
-export interface SchemableLambda extends hkt.SchemableLambda {
-  readonly type: Schema<this['Input'], this['Output']>
 }
 
 /** @internal */
@@ -119,7 +115,13 @@ export const make = <S extends Schema<any, any>['runSchema']>(
   Output: (...args: ReadonlyArray<any>) => infer A
 }
   ? Schema<E, A>
-  : never => ({ runSchema: memoize(f) } as any)
+  : never =>
+  ({
+    [SchemaSymbol]: SchemaSymbol,
+    runSchema: memoize(f),
+    input: identity,
+    output: identity,
+  } as any)
 
 /**
  * Extract the output of a schema
@@ -165,7 +167,7 @@ export type OutputOf<S> = TypeOf<S>
 export type InputOf<S> = S extends Schema<infer I, any> ? I : never
 
 /**
- * Derives a typeclass instance from a Schema by supplying Schemable. i.e. `schemata-ts/Decoder`
+ * Derives a typeclass instance from a Schema by supplying Schemable
  *
  * @since 1.0.0
  * @category Destructors

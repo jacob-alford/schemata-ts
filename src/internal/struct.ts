@@ -5,8 +5,8 @@
  */
 import { identity, pipe, unsafeCoerce } from 'fp-ts/function'
 import * as O from 'fp-ts/Option'
-import { type SchemableKind, type SchemableLambda } from 'schemata-ts/HKT'
 import { camelCase } from 'schemata-ts/internal/camelcase'
+import { type SchemableKind, type SchemableLambda } from 'schemata-ts/internal/schemable'
 import { hasOwn } from 'schemata-ts/internal/util'
 import type { CamelCase } from 'type-fest'
 

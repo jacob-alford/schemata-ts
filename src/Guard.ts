@@ -4,7 +4,7 @@
  *
  * @since 2.0.0
  */
-import type * as hkt from 'schemata-ts/HKT'
+import type * as hkt from 'schemata-ts/internal/schemable'
 
 // ------------------
 // models

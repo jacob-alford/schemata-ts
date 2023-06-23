@@ -9,8 +9,8 @@ import { getEncoder } from 'schemata-ts/Encoder'
 import type * as G from 'schemata-ts/Guard'
 import { getGuard } from 'schemata-ts/Guard'
 
+import * as s from '../src/internal/struct'
 import * as S from '../src/schemata'
-import * as s from '../src/struct'
 
 const testStruct = s.defineStruct({
   a: s.required(S.String),

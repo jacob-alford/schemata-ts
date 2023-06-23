@@ -155,42 +155,13 @@ export const fold =
     )
 
 /**
- * Flattens a `DecodeError` tree into a common Monoid with access to the current accumulation
- *
- * @since 2.0.0
- * @category Destructors
- */
-export const foldMap =
-  <S>(S: Sg.Semigroup<S>) =>
-  (matchers: {
-    readonly TypeMismatch: (expected: string, actual: unknown) => S
-    readonly UnexpectedValue: (actual: unknown) => S
-    readonly SerializationError: (expected: string, error: unknown, actual: unknown) => S
-    readonly ErrorAtIndex: (index: number, errors: S) => S
-    readonly ErrorAtKey: (key: string, errors: S) => S
-    readonly ErrorAtUnionMember: (member: number | string, errors: S) => S
-  }): ((e: TranscodeErrors) => S) =>
-    fold(S)({
-      TypeMismatch: ({ expected, actual }) => matchers.TypeMismatch(expected, actual),
-      UnexpectedValue: actual => matchers.UnexpectedValue(actual),
-      SerializationError: ({ expected, error, actual }) =>
-        matchers.SerializationError(expected, error, actual),
-      ErrorAtIndex: ({ index, errors }) =>
-        matchers.ErrorAtIndex(index, foldMap(S)(matchers)(errors)),
-      ErrorAtKey: ({ key, errors }) =>
-        matchers.ErrorAtKey(key, foldMap(S)(matchers)(errors)),
-      ErrorAtUnionMember: ({ member, errors }) =>
-        matchers.ErrorAtUnionMember(member, foldMap(S)(matchers)(errors)),
-    })
-
-/**
  * Flattens a `DecodeError` tree into a common Monoid with access to the current
  * accumulation and current level of depth
  *
  * @since 2.0.0
  * @category Destructors
  */
-export const foldMapWithDepth =
+export const foldMap =
   <S>(S: Sg.Semigroup<S>) =>
   (matchers: {
     readonly TypeMismatch: (expected: string, actual: unknown, depth: number) => S
@@ -247,9 +218,13 @@ export const foldMapWithDepth =
  * @category Destructors
  */
 export const drawLinesWithMarkings = (params: {
-  readonly indentationString: (depth: number, isLastChild: boolean) => string
+  readonly getIndentationString: (
+    err: string,
+    depth: number,
+    isLastChild: boolean,
+  ) => string
 }): ((err: TranscodeErrors) => ReadonlyArray<string>) =>
-  foldMapWithDepth(RA.getMonoid<string>())({
+  foldMap(RA.getMonoid<string>())({
     TypeMismatch: (expected, actual) => [
       `Expected ${expected} but got ${String(actual)}`,
     ],
@@ -265,11 +240,8 @@ export const drawLinesWithMarkings = (params: {
         RA.concat(
           pipe(
             errors,
-            RA.mapWithIndex(
-              (i, e) =>
-                `${params.indentationString(depth, i === errors.length - 1)}${
-                  e.includes('─') ? '─' : ' '
-                }${e}`,
+            RA.mapWithIndex((i, e) =>
+              params.getIndentationString(e, depth, i === errors.length - 1),
             ),
           ),
         ),
@@ -280,11 +252,8 @@ export const drawLinesWithMarkings = (params: {
         RA.concat(
           pipe(
             errors,
-            RA.mapWithIndex(
-              (i, e) =>
-                `${params.indentationString(depth, i === errors.length - 1)}${
-                  e.includes('─') ? '─' : ' '
-                }${e}`,
+            RA.mapWithIndex((i, e) =>
+              params.getIndentationString(e, depth, i === errors.length - 1),
             ),
           ),
         ),
@@ -297,7 +266,7 @@ export const drawLinesWithMarkings = (params: {
             errors,
             RA.mapWithIndex(
               (i, e) =>
-                `${params.indentationString(depth, i === errors.length - 1)}${
+                `${params.getIndentationString(e, depth, i === errors.length - 1)}${
                   e.includes('─') ? '─' : ' '
                 }${e}`,
             ),
@@ -314,8 +283,10 @@ export const drawLinesWithMarkings = (params: {
  */
 export const drawTree = flow(
   drawLinesWithMarkings({
-    indentationString: (depth, isLastChild) =>
-      `${depth === 0 ? (isLastChild ? '└─' : '├─') : '─'}${'─'.repeat(depth * 2)}`,
+    getIndentationString: (e, depth, isLastChild) =>
+      `${depth === 0 ? (isLastChild ? '└─' : '├─') : '─'}${'─'.repeat(depth * 2)}${
+        e.includes('─') ? '─' : ' '
+      }${e}`,
   }),
   as =>
     pipe(

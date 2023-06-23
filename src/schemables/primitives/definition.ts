@@ -4,8 +4,8 @@ import {
   type MaxNegativeFloat,
   type MaxPositiveFloat,
 } from 'schemata-ts/float'
-import { type SchemableKind, type SchemableLambda } from 'schemata-ts/HKT'
 import { type Integer, type MaxSafeInt, type MinSafeInt } from 'schemata-ts/integer'
+import { type SchemableKind, type SchemableLambda } from 'schemata-ts/internal/schemable'
 
 /** @since 2.0.0 */
 export type BoundedParams<

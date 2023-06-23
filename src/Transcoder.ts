@@ -8,7 +8,7 @@
  */
 import { type Const } from 'fp-ts/Const'
 import type * as E from 'fp-ts/Either'
-import { unsafeCoerce } from 'fp-ts/function'
+import { pipe, unsafeCoerce } from 'fp-ts/function'
 import { type Invariant2 } from 'fp-ts/Invariant'
 import type * as RNEA from 'fp-ts/ReadonlyNonEmptyArray'
 import { type Semigroupoid2 } from 'fp-ts/Semigroupoid'
@@ -129,17 +129,17 @@ export const getTranscoder: <I, O>(schema: Schema<I, O>) => Transcoder<I, O> =
 // instances
 // ------------------
 
-/**
- * @since 2.0.0
- * @category Instances
- */
-export const URI = I.URI
+/** @since 2.0.0 */
+export const URI = 'schemata-ts/Transcoder'
 
-/**
- * @since 2.0.0
- * @category Instances
- */
+/** @since 2.0.0 */
 export type URI = typeof URI
+
+declare module 'fp-ts/lib/HKT' {
+  interface URItoKind2<E, A> {
+    readonly [URI]: Transcoder<E, A>
+  }
+}
 
 /**
  * @since 2.0.0
@@ -154,7 +154,10 @@ export const imap: <A, B>(
  * @since 2.0.0
  * @category Instances
  */
-export const Invariant: Invariant2<URI> = I.Invariant
+export const Invariant: Invariant2<URI> = {
+  URI,
+  imap: (fa, f, g) => pipe(fa, imap(f, g)),
+}
 
 /**
  * @since 2.0.0
@@ -176,4 +179,7 @@ export const compose: <B, C>(
  * @since 2.0.0
  * @category Instances
  */
-export const Semigroupoid: Semigroupoid2<URI> = I.Semigroupoid
+export const Semigroupoid: Semigroupoid2<URI> = {
+  URI,
+  compose: (tBC, tAB) => compose(tBC)(tAB),
+}

@@ -5,7 +5,7 @@
  *
  * @since 1.0.0
  */
-import { type SchemableLambda } from 'schemata-ts/HKT'
+import { type SchemableLambda } from 'schemata-ts/internal/schemable'
 import { type WithAnnotate } from 'schemata-ts/schemables/annotate/definition'
 import { type WithArray } from 'schemata-ts/schemables/array/definition'
 import { type WithCheckDigit } from 'schemata-ts/schemables/check-digit/definition'

@@ -26,14 +26,14 @@ export type SchemableKind<F extends SchemableLambda, Input, Output> = F extends 
       readonly Output: (_: Output) => Output
     }
 
-/** @internal */
-export type InputOf<
+/** @since 2.0.0 */
+export type InputOfSchemable<
   F extends SchemableLambda,
   K extends SchemableKind<F, any, any>,
 > = K extends SchemableKind<F, infer Input, any> ? Input : never
 
-/** @internal */
-export type OutputOf<
+/** @since 2.0.0 */
+export type OutputOfSchemable<
   F extends SchemableLambda,
   K extends SchemableKind<F, any, any>,
 > = K extends SchemableKind<F, any, infer Output> ? Output : never

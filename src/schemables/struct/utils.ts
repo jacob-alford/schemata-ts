@@ -3,14 +3,14 @@ import * as O from 'fp-ts/Option'
 import * as RA from 'fp-ts/ReadonlyArray'
 import * as RNEA from 'fp-ts/ReadonlyNonEmptyArray'
 import * as RR from 'fp-ts/ReadonlyRecord'
-import { type SchemableLambda } from 'schemata-ts/HKT'
+import { type SchemableLambda } from 'schemata-ts/internal/schemable'
+import { getKeyRemap } from 'schemata-ts/internal/struct'
 import { hasOwn } from 'schemata-ts/internal/util'
 import {
   type GuardedPrecedentedUnionMember,
   ordGuardedPrecedentedUnionMember,
 } from 'schemata-ts/schemables/guarded-union/definition'
 import { type StructProp } from 'schemata-ts/schemables/struct/type-utils'
-import { getKeyRemap } from 'schemata-ts/struct'
 
 export type UnionItem<S extends SchemableLambda> = GuardedPrecedentedUnionMember<S> & {
   readonly inputKey: string

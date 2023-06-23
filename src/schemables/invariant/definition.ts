@@ -1,5 +1,5 @@
-import { type SchemableKind, type SchemableLambda } from 'schemata-ts/HKT'
 import type * as G from 'schemata-ts/internal/guard'
+import { type SchemableKind, type SchemableLambda } from 'schemata-ts/internal/schemable'
 
 export interface WithInvariant<S extends SchemableLambda> {
   /**

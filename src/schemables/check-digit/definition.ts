@@ -1,5 +1,5 @@
 import { type Branded } from 'schemata-ts/brand'
-import { type SchemableKind, type SchemableLambda } from 'schemata-ts/HKT'
+import { type SchemableKind, type SchemableLambda } from 'schemata-ts/internal/schemable'
 
 /** @since 1.0.0 */
 export type CheckDigitVerified = Branded<

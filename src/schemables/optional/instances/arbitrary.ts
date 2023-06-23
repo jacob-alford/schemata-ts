@@ -1,6 +1,6 @@
 import * as Arb from 'schemata-ts/internal/arbitrary'
+import { makeImplicitOptionalType } from 'schemata-ts/internal/struct'
 import { type WithOptional } from 'schemata-ts/schemables/optional/definition'
-import { makeImplicitOptionalType } from 'schemata-ts/struct'
 
 export const OptionalArbitrary: WithOptional<Arb.SchemableLambda> = {
   optional: arbA =>
