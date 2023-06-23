@@ -1,10 +1,4 @@
-/**
- * The same as the `Struct` schema combinator, but keys are transformed to camel case in
- * the output type.
- *
- * @since 1.4.0
- * @category Model
- */
+/** @since 1.4.0 */
 import { getGuard } from 'schemata-ts/derivations/guard-schemable'
 import { getInformation } from 'schemata-ts/derivations/information-schemable'
 import { type SchemableKind, type SchemableLambda } from 'schemata-ts/HKT'
@@ -19,7 +13,7 @@ import type { CamelCase } from 'type-fest'
  * the output type.
  *
  * @since 1.4.0
- * @category Schema
+ * @category Combinators
  * @example
  *   import * as E from 'fp-ts/Either'
  *   import * as S from 'schemata-ts/schemata'

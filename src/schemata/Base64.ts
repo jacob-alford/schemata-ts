@@ -1,10 +1,4 @@
-/**
- * Representing a Base64-encoded string.
- *
- * For a URL-safe version, @see Base64UrlSafe module
- *
- * @since 1.0.0
- */
+/** @since 1.0.0 */
 import { pipe } from 'fp-ts/function'
 import { type Branded } from 'schemata-ts/brand'
 import * as PB from 'schemata-ts/PatternBuilder'
@@ -17,7 +11,7 @@ interface Base64Brand {
 }
 
 /**
- * Representing a Base64-encoded string.
+ * Represents a Base64-encoded string.
  *
  * For a URL-safe version, @see Base64UrlSafe module
  *
@@ -53,12 +47,12 @@ export const base64: PB.Pattern = pipe(
 )
 
 /**
- * Representing a Base64-encoded string.
+ * Represents a Base64-encoded string.
  *
  * For a URL-safe version, @see Base64UrlSafe module
  *
  * @since 1.0.0
- * @category Schema
+ * @category String
  */
 export const Base64: Schema<Base64> = pipe(
   Pattern(base64, 'Base64'),

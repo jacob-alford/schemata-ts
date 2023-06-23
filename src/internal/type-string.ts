@@ -16,4 +16,4 @@ export interface SchemableLambda extends hkt.SchemableLambda {
 
 /** @internal */
 export const fold: (ts: readonly [string, string]) => string = ([i, o]) =>
-  i !== o ? `Schema<${i}, ${o}>` : i
+  i !== o ? `${i} → ${o}` : i

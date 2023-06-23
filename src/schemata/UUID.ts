@@ -1,11 +1,4 @@
-/**
- * Represents strings that are UUIDs.
- *
- * This is heavily inspired by the `validator.js` module
- * [`isUUID`](https://github.com/validatorjs/validator.js/blob/master/src/lib/isUUID.js).
- *
- * @since 1.0.0
- */
+/** @since 1.0.0 */
 import { type Branded } from 'schemata-ts/brand'
 import * as PB from 'schemata-ts/PatternBuilder'
 import { type Schema } from 'schemata-ts/Schema'
@@ -129,7 +122,7 @@ export type UUID<Version extends UUIDVersion> = Branded<string, UUIDBrand<Versio
 
 /**
  * @since 1.0.0
- * @category Schema
+ * @category String
  */
 export const UUID = <Version extends UUIDVersion>(
   version: Version,

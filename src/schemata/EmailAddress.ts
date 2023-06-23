@@ -1,12 +1,4 @@
-/**
- * Represents strings (email addresses) that conform to the RFC 5322 standard.
- *
- * See: https://emailregex.com/
- *
- * **Note: Does not validate international addresses**
- *
- * @since 1.0.0
- */
+/** @since 1.0.0 */
 import { pipe } from 'fp-ts/function'
 import { type Branded } from 'schemata-ts/brand'
 import * as PB from 'schemata-ts/PatternBuilder'
@@ -110,7 +102,7 @@ export const emailAddress: PB.Pattern = pipe(
  * Represents strings (email addresses) that conform to the RFC 5322 standard.
  *
  * @since 1.0.0
- * @category Schema
+ * @category String
  */
 export const EmailAddress: Schema<EmailAddress> = Brand<EmailAddressBrand>()(
   Pattern(emailAddress, 'EmailAddress'),

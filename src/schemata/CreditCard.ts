@@ -1,11 +1,4 @@
-/**
- * Represents (some) valid credit card numbers.
- *
- * At the moment, this mostly handles Visa, Mastercard, American Express, Diners Club,
- * Discover, and JCB.
- *
- * @since 1.0.0
- */
+/** @since 1.0.0 */
 import { pipe } from 'fp-ts/function'
 import { type Branded } from 'schemata-ts/brand'
 import { luhn } from 'schemata-ts/internal/algorithms'
@@ -294,7 +287,7 @@ export const creditCard = PB.oneOf(
  * American Express, Diners Club, Discover, JCB, Rupay, and UnionPay.
  *
  * @since 1.0.0
- * @category Schema
+ * @category String
  */
 export const CreditCard: Schema<CreditCard> = pipe(
   Pattern(creditCard, 'CreditCard'),

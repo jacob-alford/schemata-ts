@@ -1,9 +1,4 @@
-/**
- * Used to construct a struct schema with enumerated keys.
- *
- * @since 1.4.0
- * @category Model
- */
+/** @since 1.4.0 */
 import { unsafeCoerce } from 'fp-ts/function'
 import { getGuard } from 'schemata-ts/derivations/guard-schemable'
 import { getInformation } from 'schemata-ts/derivations/information-schemable'

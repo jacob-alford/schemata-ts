@@ -1,8 +1,4 @@
-/**
- * Represents Date objects derived from unix time.
- *
- * @since 1.0.0
- */
+/** @since 1.0.0 */
 import { pipe } from 'fp-ts/function'
 import { getGuard } from 'schemata-ts/derivations/guard-schemable'
 import { getTypeString } from 'schemata-ts/derivations/type-string-schemable'
@@ -36,7 +32,7 @@ const DateSchema = DateS()
  * Represents Date objects derived from unix time.
  *
  * @since 1.0.0
- * @category Schema
+ * @category Conversion
  */
 export const DateFromUnixTime: Schema<Float<MinUnixTime, MaxUnixTime>, Date> = pipe(
   UnixTimeFloat,

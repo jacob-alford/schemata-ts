@@ -1,3 +1,4 @@
+/** @since 1.0.0 */
 import { type Schema, make } from 'schemata-ts/Schema'
 import {
   type DateParams,
@@ -9,7 +10,7 @@ import {
  * Parses any string parseable with `Date.parse` to a `Date` object.
  *
  * @since 1.0.0
- * @category Schema
+ * @category Conversion
  */
 export const DateFromString = (params?: DateParams): Schema<SafeDateString, SafeDate> =>
   make(S => S.dateFromString(params))

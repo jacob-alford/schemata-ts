@@ -1,8 +1,4 @@
-/**
- * Represents an optional type which encodes to / decodes from null
- *
- * @since 1.0.0
- */
+/** @since 1.0.0 */
 import { pipe } from 'fp-ts/function'
 import * as O from 'fp-ts/Option'
 import { getTypeString } from 'schemata-ts/derivations/type-string-schemable'
@@ -17,7 +13,7 @@ import { type ImplicitOptional, makeImplicitOptionalType } from 'schemata-ts/str
  * Represents an optional type which decodes from null and undefined and encodes to null
  *
  * @since 1.0.0
- * @category Schema
+ * @category Conversion
  */
 export const OptionFromNullable = <A, O>(
   inner: Schema<O, A>,

@@ -1,9 +1,4 @@
-/**
- * Used to construct a struct schema with enumerated keys.
- *
- * @since 1.4.0
- * @category Model
- */
+/** @since 1.0.0 */
 import { unsafeCoerce } from 'fp-ts/function'
 import { getGuard } from 'schemata-ts/derivations/guard-schemable'
 import { getInformation } from 'schemata-ts/derivations/information-schemable'
@@ -22,6 +17,7 @@ import type * as s from 'schemata-ts/schemables/struct/type-utils'
  * are permitted.
  *
  * @since 1.0.0
+ * @category Combinators
  */
 export const Partial = <T extends Record<string, Schema<unknown, unknown>>>(
   props: T,
@@ -45,6 +41,6 @@ export const Partial = <T extends Record<string, Schema<unknown, unknown>>>(
           information: getInformation(schema),
         }
       }
-      return _.struct(struct as any, { extraProps })
+      return _.struct(struct as any, extraProps)
     }),
   )

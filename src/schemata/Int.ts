@@ -13,6 +13,7 @@ import { type BoundedParams } from 'schemata-ts/schemables/primitives/definition
  * ```
  *
  * @since 1.0.0
+ * @category Number
  */
 export const Int = <
   Min extends number | undefined = undefined,

@@ -1,3 +1,4 @@
+/** @since 1.0.0 */
 import { type Schema, make } from 'schemata-ts/Schema'
 import { type DateParams, type SafeDate } from 'schemata-ts/schemables/date/definition'
 
@@ -5,7 +6,7 @@ import { type DateParams, type SafeDate } from 'schemata-ts/schemables/date/defi
  * Represents Javascript Date objects
  *
  * @since 1.0.0
- * @category Schema
+ * @category Date
  */
 export const Date: (options?: DateParams) => Schema<SafeDate> = params =>
   make(S => S.date(params))

@@ -10,6 +10,7 @@ import { ParseEncodedJsonString } from 'schemata-ts/schemata/ParseEncodedJson'
  * Parses a base64-encoded and (URIComponent) escaped JSON string.
  *
  * @since 2.0.0
+ * @category Printer Parsers
  */
 export const ParseBase64Json: <I, O>(inner: Schema<I, O>) => Schema<Base64, O> =
   unsafeCoerce(

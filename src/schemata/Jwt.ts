@@ -1,8 +1,4 @@
-/**
- * A valid, Base64-encoded JWT.
- *
- * @since 1.0.0
- */
+/** @since 1.0.0 */
 import { pipe } from 'fp-ts/function'
 import { type Branded } from 'schemata-ts/brand'
 import * as PB from 'schemata-ts/PatternBuilder'
@@ -42,6 +38,6 @@ export const jwt: PB.Pattern = pipe(
  * A valid, Base64-encoded JWT.
  *
  * @since 1.0.0
- * @category Schema
+ * @category String
  */
 export const Jwt: Schema<Jwt> = Brand<JwtBrand>()(Pattern(jwt, 'Jwt'))

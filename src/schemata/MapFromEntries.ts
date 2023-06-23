@@ -6,7 +6,7 @@ import { type Schema, make } from 'schemata-ts/Schema'
  * A Schema for converting an array of key/value pairs to a map
  *
  * @since 1.0.0
- * @category Schema
+ * @category Combinators
  */
 export const MapFromEntries = <EK, EA, K extends EK, A extends EA>(
   ordK: Ord.Ord<K>,

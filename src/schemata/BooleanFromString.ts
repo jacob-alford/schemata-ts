@@ -1,8 +1,4 @@
-/**
- * A boolean value whose encoded representation is either "true" or "false".
- *
- * @since 1.0.0
- */
+/** @since 1.0.0 */
 import { pipe } from 'fp-ts/function'
 import { getGuard } from 'schemata-ts/Guard'
 import * as PB from 'schemata-ts/PatternBuilder'
@@ -24,7 +20,7 @@ export const booleanFromStringPattern: PB.Pattern = PB.oneOf(
  * A boolean value whose encoded representation is either "true" or "false".
  *
  * @since 1.0.0
- * @category Schema
+ * @category Conversion
  */
 export const BooleanFromString: Schema<string, boolean> = pipe(
   Pattern(booleanFromStringPattern, 'BooleanFromString'),

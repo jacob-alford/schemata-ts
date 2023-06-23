@@ -1,8 +1,4 @@
-/**
- * A valid hexadecimal color value.
- *
- * @since 1.0.0
- */
+/** @since 1.0.0 */
 import { pipe } from 'fp-ts/function'
 import { type Branded } from 'schemata-ts/brand'
 import * as PB from 'schemata-ts/PatternBuilder'
@@ -45,7 +41,7 @@ export const hexColor: PB.Pattern = pipe(
  * A valid hexadecimal color value.
  *
  * @since 1.0.0
- * @category Schema
+ * @category String
  */
 export const HexColor: Schema<HexColor> = Brand<HexColorBrand>()(
   Pattern(hexColor, 'HexColor'),

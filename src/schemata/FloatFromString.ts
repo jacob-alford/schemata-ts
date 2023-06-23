@@ -1,17 +1,4 @@
-/**
- * Floating point branded newtype from strings. Parameters: min, max are inclusive.
- *
- * Note: doesn't technically product lawful encoder / decoders because `toString` is not
- * symmetric with `Number`.
- *
- * Represents string floating point numbers:
- *
- * ```math
- *  { f | f ∈ ℝ, f >= -Number.MAX_VALUE, f <= Number.MAX_VALUE }
- * ```
- *
- * @since 1.0.0
- */
+/** @since 1.0.0 */
 import { pipe } from 'fp-ts/function'
 import { type Branded } from 'schemata-ts/brand'
 import {
@@ -165,7 +152,7 @@ const floatFromString: PB.Pattern = pipe(
  * ```
  *
  * @since 1.0.0
- * @category Schema
+ * @category Conversion
  */
 export const FloatFromString = <
   Min extends number | undefined = undefined,

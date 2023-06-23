@@ -1,21 +1,4 @@
-/**
- * An HSL string. Commonly in CSS.
- *
- * @since 1.0.0
- * @example
- *   import { HslColor } from 'schemata-ts/schemata/string/HslColor'
- *   import { getGuard } from 'schemata-ts/Guard'
- *
- *   const hue = 270
- *   const saturation = 60
- *   const lightness = 70
- *   const alpha = 0.7
- *
- *   const hslString = `hsl(${hue} ${saturation}% ${lightness}% / ${alpha})`
- *   const Guard = getGuard(HslColor)
- *
- *   assert.equal(Guard.is(hslString), true)
- */
+/** @since 1.0.0 */
 import { pipe } from 'fp-ts/function'
 import { type Branded } from 'schemata-ts/brand'
 import * as PB from 'schemata-ts/PatternBuilder'
@@ -31,19 +14,7 @@ interface HslColorBrand {
  * An HSL string. Commonly in CSS.
  *
  * @since 1.0.0
- * @example
- *   import { HslColor } from 'schemata-ts/schemata/string/HslColor'
- *   import { getGuard } from 'schemata-ts/Guard'
- *
- *   const hue = 270
- *   const saturation = 60
- *   const lightness = 70
- *   const alpha = 0.7
- *
- *   const hslString = `hsl(${hue} ${saturation}% ${lightness}% / ${alpha})`
- *   const Guard = getGuard(HslColor)
- *
- *   assert.equal(Guard.is(hslString), true)
+ * @category Model
  */
 export type HslColor = Branded<string, HslColorBrand>
 
@@ -151,7 +122,20 @@ export const hslPattern = PB.sequence(
 
 /**
  * @since 1.0.0
- * @category Schema
+ * @category String
+ * @example
+ *   import { HslColor } from 'schemata-ts/schemata/string/HslColor'
+ *   import { getGuard } from 'schemata-ts/Guard'
+ *
+ *   const hue = 270
+ *   const saturation = 60
+ *   const lightness = 70
+ *   const alpha = 0.7
+ *
+ *   const hslString = `hsl(${hue} ${saturation}% ${lightness}% / ${alpha})`
+ *   const Guard = getGuard(HslColor)
+ *
+ *   assert.equal(Guard.is(hslString), true)
  */
 export const HslColor: Schema<HslColor> = Brand<HslColorBrand>()(
   Pattern(hslPattern, 'HslColor'),
