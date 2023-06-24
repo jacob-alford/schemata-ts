@@ -215,7 +215,11 @@ describe('JsonSchema', () => {
               { type: 'null', const: null },
             ],
           },
-          optUndefined: {},
+          optUndefined: {
+            maximum: 1,
+            minimum: 0,
+            type: 'number',
+          },
         },
         required: [],
       })

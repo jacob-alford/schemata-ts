@@ -40,6 +40,7 @@ import * as Str from 'fp-ts/string'
 import { memoize } from 'io-ts/Schemable'
 import { Schemable2 } from 'schemata-ts/base/SchemableBase'
 import { Int } from 'schemata-ts/schemables/WithInt/definition'
+import { hasImplicitOptional } from 'schemata-ts/schemables/WithOptional/utils'
 
 // -------------------------------------------------------------------------------------
 // Model
@@ -506,8 +507,13 @@ export const Schemable: Schemable2<URI> = {
   number: makeNumberSchema(),
   boolean: booleanSchema,
   nullable: schema => make(new JsonUnion([schema, nullSchema])),
-  // @ts-expect-error -- typelevel difference
-  struct: s => makeStructSchema(s, Object.keys(s)),
+  struct: s =>
+    // @ts-expect-error -- typelevel difference
+    makeStructSchema(
+      s,
+      // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+      Object.keys(s).filter(k => !hasImplicitOptional(s[k]!)),
+    ),
   // @ts-expect-error -- typelevel difference
   partial: makeStructSchema,
   record: makeRecordSchema,
