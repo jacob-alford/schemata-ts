@@ -71,9 +71,9 @@ export type JsonSchemaValue =
  */
 export type JsonSchema = JsonSchemaValue & I.Description
 
-// ------------------
+// -------------------------------------------------------------------------------------
 // Constructors
-// ------------------
+// -------------------------------------------------------------------------------------
 
 export {
   /**
@@ -164,14 +164,7 @@ export const integer = <
  */
 export const booleanSchema: Const<JsonSchema, boolean> = make(new I.JsonBoolean())
 
-/**
- * This is internal because it's not technically accurate to say: `forall value. const:
- * value` is a valid json schema. However, internally, the only usage is with
- * OptionFromExclude which is likely to stick with valid JSON types
- *
- * @internal
- */
-export const _const = <A>(value: A): Const<JsonSchema, A> => make({ const: value })
+const _const = <A>(value: A): Const<JsonSchema, A> => make({ const: value })
 
 /**
  * @since 1.2.0
@@ -256,6 +249,27 @@ export const exclusion = <A, Z extends A>(
   schema: Const<JsonSchema, A>,
 ): Const<JsonSchema, Exclude<A, Z>> =>
   make(new I.JsonIntersection([new I.JsonExclude(_const(exclude)), schema]))
+
+// -------------------------------------------------------------------------------------
+// Instances
+// -------------------------------------------------------------------------------------
+
+/** @since 1.2.0 */
+export const URI = 'schemata-ts/JsonSchema'
+
+/** @since 1.2.0 */
+export type URI = typeof URI
+
+declare module 'fp-ts/lib/HKT' {
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  interface URItoKind2<E, A> {
+    readonly JsonSchema: Const<JsonSchema, E>
+  }
+}
+
+// -------------------------------------------------------------------------------------
+// Combintators
+// -------------------------------------------------------------------------------------
 
 /**
  * @since 1.2.0

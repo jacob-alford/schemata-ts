@@ -140,19 +140,6 @@ export class JsonRef {
 export const stripIdentity = <A>(schema: Const<JsonSchema, A>): JsonSchema =>
   JSON.parse(JSON.stringify(schema))
 
-/** @since 1.2.0 */
-export const URI = 'JsonSchema'
-
-/** @since 1.2.0 */
-export type URI = typeof URI
-
-declare module 'fp-ts/lib/HKT' {
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  interface URItoKind2<E, A> {
-    readonly JsonSchema: Const<JsonSchema, E>
-  }
-}
-
 export interface SchemableLambda extends hkt.SchemableLambda {
   readonly type: Const<JsonSchema, this['Input']>
 }

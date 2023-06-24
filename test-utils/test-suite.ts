@@ -324,10 +324,10 @@ type GetFirstArg<T extends (...args: ReadonlyArray<any>) => any> = T extends (
   : never
 
 type StandardTestInputs<I, T> = {
-  readonly decoderTests: GetFirstArg<TestSuite<I, T>['testDecoder']>
-  readonly encoderTests: GetFirstArg<TestSuite<I, T>['testEncoder']>
-  readonly guardTests: GetFirstArg<TestSuite<I, T>['testGuard']>
-  readonly eqTests: GetFirstArg<TestSuite<I, T>['testEq']>
+  readonly decoderTests?: GetFirstArg<TestSuite<I, T>['testDecoder']>
+  readonly encoderTests?: GetFirstArg<TestSuite<I, T>['testEncoder']>
+  readonly guardTests?: GetFirstArg<TestSuite<I, T>['testGuard']>
+  readonly eqTests?: GetFirstArg<TestSuite<I, T>['testEq']>
   readonly jsonSchema: GetFirstArg<TestSuite<I, T>['assertJsonSchema']>
   readonly typeString: GetFirstArg<TestSuite<I, T>['assertTypeString']>
   readonly additionalTests?: (testSuite: TestSuite<I, T>) => IO.IO<void>
@@ -335,7 +335,7 @@ type StandardTestInputs<I, T> = {
 
 export const deriveGuardTests = <I, T>(
   encoderTests: StandardTestInputs<I, T>['encoderTests'],
-): Exclude<StandardTestInputs<I, T>['guardTests'], 'derive'> =>
+): NonNullable<Exclude<StandardTestInputs<I, T>['guardTests'], 'derive'>> =>
   Array.isArray(encoderTests)
     ? pipe(
         encoderTests as ReadonlyArray<TestItem<T, E.Either<TCE.TranscodeErrors, I>>>,
@@ -351,7 +351,7 @@ export const deriveGuardTests = <I, T>(
 
 export const deriveEqTests = <I, T>(
   encoderTests: StandardTestInputs<I, T>['encoderTests'],
-): Exclude<StandardTestInputs<I, T>['eqTests'], 'derive'> =>
+): NonNullable<Exclude<StandardTestInputs<I, T>['eqTests'], 'derive'>> =>
   Array.isArray(encoderTests)
     ? pipe(
         encoderTests as ReadonlyArray<TestItem<T, E.Either<TCE.TranscodeErrors, I>>>,
@@ -419,7 +419,15 @@ const runStandardTestSuite_: StandardTestSuiteFn =
       skipAll = false,
     } = options
     const _ = getTestSuite(schema)
-    const testValues = makeTestValues({
+    const {
+      decoderTests = [],
+      encoderTests = [],
+      guardTests = [],
+      eqTests = [],
+      additionalTests,
+      jsonSchema,
+      typeString,
+    } = makeTestValues({
       decoder: {
         pass: (preDecode, postDecode) =>
           tuple(preDecode, E.right(postDecode ?? (preDecode as any))),
@@ -439,23 +447,20 @@ const runStandardTestSuite_: StandardTestSuiteFn =
     })
 
     ;(skipAll ? describe.skip : describe)(`${fold(name)} Standard Test Suite`, () => {
-      describe('decoder', _.testDecoder(testValues.decoderTests))
-      describe('encoder', _.testEncoder(testValues.encoderTests))
-      describe(
-        'guard',
-        _.testGuard(testValues.guardTests, deriveGuardTests(testValues.encoderTests)),
-      )
-      describe('eq', _.testEq(testValues.eqTests, deriveEqTests(testValues.encoderTests)))
-      describe('jsonSchema', _.assertJsonSchema(testValues.jsonSchema))
-      describe('typeString', _.assertTypeString(testValues.typeString))
+      describe('decoder', _.testDecoder(decoderTests))
+      describe('encoder', _.testEncoder(encoderTests))
+      describe('guard', _.testGuard(guardTests, deriveGuardTests(encoderTests)))
+      describe('eq', _.testEq(eqTests, deriveEqTests(encoderTests)))
+      describe('jsonSchema', _.assertJsonSchema(jsonSchema))
+      describe('typeString', _.assertTypeString(typeString))
       describe('information', _.assertValidInformation)
       if (!skipArbitraryChecks) {
         describe('transcoder laws', _.testTranscoderLaws)
         describe('eq laws', _.testEqLaws)
         describe('arbitrary <-> guard', _.testArbitraryGuard)
       }
-      if (testValues.additionalTests) {
-        describe('additional tests', testValues.additionalTests(_))
+      if (additionalTests) {
+        describe('additional tests', additionalTests(_))
       }
     })
   }

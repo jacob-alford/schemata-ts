@@ -4,7 +4,6 @@
  *
  * @since 2.0.0
  */
-import type * as hkt from 'schemata-ts/internal/schemable'
 
 // ------------------
 // models
@@ -68,12 +67,4 @@ declare module 'fp-ts/lib/HKT' {
   interface URItoKind<A> {
     readonly [URI]: Guard<A>
   }
-}
-
-/**
- * @since 2.0.0
- * @category Type Lambdas
- */
-export interface SchemableLambda extends hkt.SchemableLambda {
-  readonly type: Guard<this['Output']>
 }

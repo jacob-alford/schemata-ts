@@ -15,9 +15,9 @@ import * as I from 'schemata-ts/internal/transcoder-par'
 import { type Schema } from 'schemata-ts/Schema'
 import type * as TCE from 'schemata-ts/TranscodeError'
 
-// ------------------
+// -------------------------------------------------------------------------------------
 // models
-// ------------------
+// -------------------------------------------------------------------------------------
 
 /**
  * @since 2.0.0
@@ -28,9 +28,9 @@ export interface TranscoderPar<I, O> {
   readonly encode: (o: O) => TE.TaskEither<Const<TCE.TranscodeErrors, O>, I>
 }
 
-// ------------------
+// -------------------------------------------------------------------------------------
 // constructors
-// ------------------
+// -------------------------------------------------------------------------------------
 
 /**
  * @since 2.0.0
@@ -105,9 +105,9 @@ export const errorAtUnionMember: (
   ...args: ConstructorParameters<typeof TCE.ErrorAtUnionMember>
 ) => TCE.TranscodeError = I.errorAtUnionMember
 
-// ------------------
+// -------------------------------------------------------------------------------------
 // combinators
-// ------------------
+// -------------------------------------------------------------------------------------
 
 /**
  * Interprets a schema as a decoder
@@ -118,9 +118,9 @@ export const errorAtUnionMember: (
 export const getTranscoderPar: <I, O>(schema: Schema<I, O>) => TranscoderPar<I, O> =
   unsafeCoerce(getTranscoderPar_)
 
-// ------------------
+// -------------------------------------------------------------------------------------
 // instances
-// ------------------
+// -------------------------------------------------------------------------------------
 
 /** @since 2.0.0 */
 export const URI = 'schemata-ts/TranscoderPar'

@@ -30,9 +30,9 @@ export interface Transcoder<I, O> {
   readonly encode: (o: O) => E.Either<Const<TE.TranscodeErrors, O>, I>
 }
 
-// ------------------
+// -------------------------------------------------------------------------------------
 // constructors
-// ------------------
+// -------------------------------------------------------------------------------------
 
 /**
  * @since 2.0.0
@@ -112,9 +112,9 @@ export const errorAtUnionMember: (
 ) => TE.TranscodeError = (member, ...errs) =>
   I.errorAtUnionMember(member, transcodeErrors(...(errs as any)))
 
-// ------------------
+// -------------------------------------------------------------------------------------
 // combinators
-// ------------------
+// -------------------------------------------------------------------------------------
 
 /**
  * Interprets a schema as a decoder
@@ -125,9 +125,9 @@ export const errorAtUnionMember: (
 export const getTranscoder: <I, O>(schema: Schema<I, O>) => Transcoder<I, O> =
   unsafeCoerce(getTranscoder_)
 
-// ------------------
+// -------------------------------------------------------------------------------------
 // instances
-// ------------------
+// -------------------------------------------------------------------------------------
 
 /** @since 2.0.0 */
 export const URI = 'schemata-ts/Transcoder'

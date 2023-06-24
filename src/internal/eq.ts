@@ -1,5 +1,3 @@
-import { type Contravariant1 } from 'fp-ts/Contravariant'
-import { type Invariant1 } from 'fp-ts/Invariant'
 import { type Monoid } from 'fp-ts/Monoid'
 import type * as hkt from 'schemata-ts/internal/schemable'
 
@@ -14,47 +12,18 @@ export const fromEquals = (equals: Eq<any>['equals']): Eq<any> => ({
 })
 
 /** @since 2.0.0 */
-export const URI = 'schemata-ts/Eq'
-
-/** @since 2.0.0 */
-export type URI = typeof URI
-
-declare module 'fp-ts/lib/HKT' {
-  interface URItoKind<A> {
-    readonly [URI]: Eq<A>
-  }
-}
-
-/** @since 2.0.0 */
 export interface SchemableLambda extends hkt.SchemableLambda {
   readonly type: Eq<this['Output']>
 }
 
-// non-pipeables
-const contramap_: Contravariant1<URI>['contramap'] = (fa, f) =>
+/** @internal */
+export const contramap: <A, B>(f: (b: B) => A) => (fa: Eq<A>) => Eq<B> = f => fa =>
   fromEquals((x, y) => fa.equals(f(x), f(y)))
-const imap_: Invariant1<URI>['imap'] = (fa, _, g) => contramap_(fa, g)
 
 /** @internal */
 export const imap: <A, B>(f: (a: A) => B, g: (b: B) => A) => (fa: Eq<A>) => Eq<B> =
-  (f, g) => fa =>
-    imap_(fa, f, g)
-
-/** @internal */
-export const Invariant: Invariant1<URI> = {
-  URI,
-  imap: imap_,
-}
-
-/** @internal */
-export const contramap: <A, B>(f: (b: B) => A) => (fa: Eq<A>) => Eq<B> = f => fa =>
-  contramap_(fa, f)
-
-/** @internal */
-export const Contravariant: Contravariant1<URI> = {
-  URI,
-  contramap: contramap_,
-}
+  (_, g) => fa =>
+    contramap(g)(fa)
 
 /** @internal */
 export const and: <A>(that: Eq<A>) => (self: Eq<A>) => Eq<A> = that => self =>
