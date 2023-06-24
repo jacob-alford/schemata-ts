@@ -43,6 +43,12 @@ yarn add schemata-ts
 npm install schemata-ts
 ```
 
+### PNPM
+
+```bash
+pnpm add schemata-ts
+```
+
 ## Documentation
 
 - [schemata-ts](https://jacob-alford.github.io/schemata-ts/modules/schemata.ts.html)
