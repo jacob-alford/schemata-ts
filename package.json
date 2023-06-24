@@ -1,7 +1,7 @@
 {
   "name": "schemata-ts",
-  "version": "1.4.2",
-  "description": "A collection of Schemata inspired by io-ts-types and validators.js",
+  "version": "1.4.3",
+  "description": "Write domain types once. A schema engine based on io-ts v2 with a collection of schemata inspired by io-ts-types and validators.js",
   "homepage": "https://jacob-alford.github.io/schemata-ts/",
   "repository": {
     "type": "git",

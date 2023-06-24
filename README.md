@@ -43,6 +43,12 @@ yarn add schemata-ts
 npm install schemata-ts
 ```
 
+### PNPM
+
+```bash
+pnpm add schemata-ts
+```
+
 ## Documentation
 
 - [schemata-ts](https://jacob-alford.github.io/schemata-ts/modules/schemata.ts.html)
@@ -155,7 +161,7 @@ Schemata-ts comes with its own implementation of [JSON-Schema](https://json-sche
 
 ### Annotating JSON schema
 
-JSON schema can have description and titles fields. To specify these values, you should use `S.Annotate`:
+JSON schema can have description and title fields. To specify these values, you should use `S.Annotate`:
 
 ```typescript
 import * as S from 'schemata-ts/schemata'
