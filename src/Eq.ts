@@ -12,7 +12,6 @@ import { type Contravariant1 } from 'fp-ts/Contravariant'
 import { type Invariant1 } from 'fp-ts/Invariant'
 import { type Monoid } from 'fp-ts/Monoid'
 import * as I from 'schemata-ts/internal/eq'
-import type * as hkt from 'schemata-ts/internal/schemable'
 
 /**
  * Represents a typeclass and data type that determines if two values of the same type are
@@ -56,30 +55,16 @@ export {
 // instances
 // ------------------
 
-/**
- * @since 2.0.0
- * @category Instances
- */
-export const URI = I.URI
+/** @since 2.0.0 */
+export const URI = 'schemata-ts/Eq'
 
-/**
- * @since 2.0.0
- * @category Instances
- */
+/** @since 2.0.0 */
 export type URI = typeof URI
 
 declare module 'fp-ts/lib/HKT' {
   interface URItoKind<A> {
     readonly [URI]: Eq<A>
   }
-}
-
-/**
- * @since 2.0.0
- * @category Type Lambdas
- */
-export interface SchemableLambda extends hkt.SchemableLambda {
-  readonly type: Eq<this['Output']>
 }
 
 /**
@@ -92,7 +77,10 @@ export const imap: <A, B>(f: (a: A) => B, g: (b: B) => A) => (fa: Eq<A>) => Eq<B
  * @since 2.0.0
  * @category Instances
  */
-export const Invariant: Invariant1<URI> = I.Invariant
+export const Invariant: Invariant1<URI> = {
+  URI,
+  imap: (fa, f, g) => I.imap(f, g)(fa),
+}
 
 /**
  * @since 2.0.0
@@ -104,7 +92,10 @@ export const contramap: <A, B>(f: (b: B) => A) => (fa: Eq<A>) => Eq<B> = I.contr
  * @since 2.0.0
  * @category Instance Methods
  */
-export const Contravariant: Contravariant1<URI> = I.Contravariant
+export const Contravariant: Contravariant1<URI> = {
+  URI,
+  contramap: (fa, f) => I.contramap(f)(fa),
+}
 
 /**
  * @since 2.0.0

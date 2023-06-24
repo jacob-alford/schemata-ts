@@ -15,4 +15,5 @@ module.exports = {
     '^schemata-ts$': '<rootDir>/src/index.ts',
     '^schemata-ts/(.*)$': '<rootDir>/src/$1',
   },
+  modulePathIgnorePatterns: ['<rootDir>/dist/'],
 }

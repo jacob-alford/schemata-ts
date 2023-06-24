@@ -102,6 +102,7 @@ export type SchemableTypeclasses =
   | SchemableTypeclass<'Guard', 'G', '2.0.0'>
   | SchemableTypeclass<'Information', 'Inf', '2.0.0'>
   | SchemableTypeclass<'JsonSchema', 'JS', '2.0.0'>
+  | SchemableTypeclass<'MergeSemigroup', 'MSg', '2.0.0'>
   | SchemableTypeclass<'TranscoderPar', 'TCP', '2.0.0'>
   | SchemableTypeclass<'Transcoder', 'TC', '2.0.0'>
   | SchemableTypeclass<'Schemable', '_', '2.0.0'>
@@ -253,6 +254,7 @@ const schemableTypeclasses: ReadonlyArray<SchemableTypeclasses> = [
   ['Guard', 'G', '2.0.0', 'guard'],
   ['Information', 'Inf', '2.0.0', 'information'],
   ['JsonSchema', 'JS', '2.0.0', 'json-schema'],
+  ['MergeSemigroup', 'MSg', '2.0.0', 'merge-semigroup'],
   ['TranscoderPar', 'TCP', '2.0.0', 'transcoder-par'],
   ['Transcoder', 'TC', '2.0.0', 'transcoder'],
   ['TypeString', 'TS', '2.0.0', 'type-string'],
