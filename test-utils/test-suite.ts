@@ -6,6 +6,7 @@ import type * as IO from 'fp-ts/IO'
 import * as RA from 'fp-ts/ReadonlyArray'
 import * as RR from 'fp-ts/ReadonlyRecord'
 import * as RTup from 'fp-ts/ReadonlyTuple'
+import * as Sg from 'fp-ts/Semigroup'
 import * as Str from 'fp-ts/string'
 import * as TE from 'fp-ts/TaskEither'
 import { getArbitrary } from 'schemata-ts/derivations/arbitrary-schemable'
@@ -19,6 +20,7 @@ import { getTypeString } from 'schemata-ts/derivations/type-string-schemable'
 import * as JS from 'schemata-ts/internal/json-schema'
 import * as TS from 'schemata-ts/internal/type-string'
 import { fold } from 'schemata-ts/internal/type-string'
+import { getMergeSemigroup } from 'schemata-ts/MergeSemigroup'
 import { type Schema } from 'schemata-ts/Schema'
 import { PrimitivesGuard } from 'schemata-ts/schemables/primitives/instances/guard'
 import * as TCE from 'schemata-ts/TranscodeError'
@@ -53,6 +55,11 @@ export interface TestSuite<I, O> {
     ...suites: ReadonlyArray<SchemableTest<readonly [O, O], boolean>>
   ) => IO.IO<void>
 
+  /** Tests MergeSemigroup against a set of expected combinations */
+  readonly testSemigroup: (
+    ...suites: ReadonlyArray<SchemableTest<readonly [O, O], O>>
+  ) => IO.IO<void>
+
   /** Tests JsonSchema against a set of expected values */
   readonly assertJsonSchema: (jsonSchema: JS.JsonSchema) => IO.IO<void>
 
@@ -67,6 +74,9 @@ export interface TestSuite<I, O> {
    * transcoderPar's idempotence
    */
   readonly testTranscoderLaws: IO.IO<void>
+
+  /** Uses arbitrary to test semigroup associativity */
+  readonly testSemigroupLaws: IO.IO<void>
 
   /** Uses arbitrary to generate random domain values and tests the eq identity law */
   readonly testEqLaws: IO.IO<void>
@@ -140,6 +150,9 @@ export const getTestSuite = <I, O>(schema: Schema<I, O>): TestSuite<I, O> => {
   const information = getInformation(schema)
   const jsonSchema = getJsonSchema(schema)
   const typeString = getTypeString(schema)
+  const semigroup_ = getMergeSemigroup(schema)
+  const firstSemigroup = semigroup_.semigroup(Sg.first())
+  const lastSemigroup = semigroup_.semigroup(Sg.last())
   return {
     testDecoder: flow(
       foldTestSuites(
@@ -213,6 +226,22 @@ export const getTestSuite = <I, O>(schema: Schema<I, O>): TestSuite<I, O> => {
         }
       },
     ),
+    testSemigroup: flow(
+      foldTestSuites(() => 'combines'),
+      testSuites => () => {
+        for (const testSuite of testSuites) {
+          if (testSuite.length > 0)
+            test.each(testSuite)('%s', (_, [[a, b], expected]) => {
+              const actual = firstSemigroup.concat(a, b)
+              expect(actual).toStrictEqual(expected)
+            })
+          test.each(testSuite)('%s', (_, [[a, b], expected]) => {
+            const actual = lastSemigroup.concat(a, b)
+            expect(actual).toStrictEqual(expected)
+          })
+        }
+      },
+    ),
     assertJsonSchema: expected => () => {
       test('matches expected', () => {
         expect(JS.stripIdentity(jsonSchema)).toStrictEqual(
@@ -232,50 +261,75 @@ export const getTestSuite = <I, O>(schema: Schema<I, O>): TestSuite<I, O> => {
     },
     testTranscoderLaws: () => {
       const arbitrary = getArbitrary(schema).arbitrary(fc)
-      test('idempotence > sequential', () => {
-        fc.assert(
-          fc.property(arbitrary, output => {
-            const initial = pipe(output, transcoder.encode, E.chain(transcoder.decode))
-            const result = pipe(
-              initial,
-              E.chain(transcoder.encode),
-              E.chain(transcoder.decode),
-            )
-            expect(
-              pipe(
-                result,
-                E.bindTo('result'),
-                E.apS('initial', initial),
-                E.map(({ result, initial }) => eq.equals(result, initial)),
-              ),
-            ).toStrictEqual(E.right(true))
-          }),
-        )
+      describe('idempotence', () => {
+        test('sequential', () => {
+          fc.assert(
+            fc.property(arbitrary, output => {
+              const initial = pipe(output, transcoder.encode, E.chain(transcoder.decode))
+              const result = pipe(
+                initial,
+                E.chain(transcoder.encode),
+                E.chain(transcoder.decode),
+              )
+              expect(
+                pipe(
+                  result,
+                  E.bindTo('result'),
+                  E.apS('initial', initial),
+                  E.map(({ result, initial }) => eq.equals(result, initial)),
+                ),
+              ).toStrictEqual(E.right(true))
+            }),
+          )
+        })
+        test('parallel', async () => {
+          const arbitrary = getArbitrary(schema).arbitrary(fc)
+          fc.assert(
+            fc.asyncProperty(arbitrary, async output => {
+              const initial = pipe(
+                output,
+                transcodePar.encode,
+                TE.chain(transcodePar.decode),
+              )
+              const result = pipe(
+                initial,
+                TE.chain(transcodePar.encode),
+                TE.chain(transcodePar.decode),
+              )
+              expect(
+                await pipe(
+                  result,
+                  TE.bindTo('result'),
+                  TE.apS('initial', initial),
+                  TE.map(({ result, initial }) => eq.equals(result, initial)),
+                )(),
+              ).toStrictEqual(E.right(true))
+            }),
+          )
+        })
       })
-      test('idempotence > parallel', async () => {
-        const arbitrary = getArbitrary(schema).arbitrary(fc)
-        fc.assert(
-          fc.asyncProperty(arbitrary, async output => {
-            const initial = pipe(
-              output,
-              transcodePar.encode,
-              TE.chain(transcodePar.decode),
-            )
-            const result = pipe(
-              initial,
-              TE.chain(transcodePar.encode),
-              TE.chain(transcodePar.decode),
-            )
-            expect(
-              await pipe(
-                result,
-                TE.bindTo('result'),
-                TE.apS('initial', initial),
-                TE.map(({ result, initial }) => eq.equals(result, initial)),
-              )(),
-            ).toStrictEqual(E.right(true))
-          }),
-        )
+    },
+    testSemigroupLaws: () => {
+      const arbitrary = getArbitrary(schema).arbitrary(fc)
+      describe('associativity', () => {
+        test('firstSemigroup', () => {
+          fc.assert(
+            fc.property(arbitrary, arbitrary, arbitrary, (a, b, c) => {
+              const left = firstSemigroup.concat(firstSemigroup.concat(a, b), c)
+              const right = firstSemigroup.concat(a, firstSemigroup.concat(b, c))
+              expect(eq.equals(left, right)).toBe(true)
+            }),
+          )
+        })
+        test('lastSemigroup', () => {
+          fc.assert(
+            fc.property(arbitrary, arbitrary, arbitrary, (a, b, c) => {
+              const left = lastSemigroup.concat(lastSemigroup.concat(a, b), c)
+              const right = lastSemigroup.concat(a, lastSemigroup.concat(b, c))
+              expect(eq.equals(left, right)).toBe(true)
+            }),
+          )
+        })
       })
     },
     testEqLaws: () => {
@@ -456,6 +510,7 @@ const runStandardTestSuite_: StandardTestSuiteFn =
       describe('information', _.assertValidInformation)
       if (!skipArbitraryChecks) {
         describe('transcoder laws', _.testTranscoderLaws)
+        describe('semigroup laws', _.testSemigroupLaws)
         describe('eq laws', _.testEqLaws)
         describe('arbitrary <-> guard', _.testArbitraryGuard)
       }
