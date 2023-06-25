@@ -3,6 +3,7 @@ import * as B_ from 'fp-ts/boolean'
 import * as E from 'fp-ts/Either'
 import { flow, pipe, tuple } from 'fp-ts/function'
 import type * as IO from 'fp-ts/IO'
+import * as N from 'fp-ts/number'
 import * as RA from 'fp-ts/ReadonlyArray'
 import * as RR from 'fp-ts/ReadonlyRecord'
 import * as RTup from 'fp-ts/ReadonlyTuple'
@@ -151,8 +152,15 @@ export const getTestSuite = <I, O>(schema: Schema<I, O>): TestSuite<I, O> => {
   const jsonSchema = getJsonSchema(schema)
   const typeString = getTypeString(schema)
   const semigroup_ = getMergeSemigroup(schema)
-  const firstSemigroup = semigroup_.semigroup(Sg.first())
-  const lastSemigroup = semigroup_.semigroup(Sg.last())
+  const firstSemigroup = semigroup_.semigroup('first')
+  const lastSemigroup = semigroup_.semigroup('last')
+  const manySemigroup = semigroup_.semigroup({
+    string: Str.Semigroup,
+    number: N.SemigroupSum,
+    boolean: B_.SemigroupAll,
+    unknown: Sg.last(),
+    fallback: 'last',
+  })
   return {
     testDecoder: flow(
       foldTestSuites(
@@ -237,6 +245,10 @@ export const getTestSuite = <I, O>(schema: Schema<I, O>): TestSuite<I, O> => {
             })
           test.each(testSuite)('%s', (_, [[a, b], expected]) => {
             const actual = lastSemigroup.concat(a, b)
+            expect(actual).toStrictEqual(expected)
+          })
+          test.each(testSuite)('%s', (_, [[a, b], expected]) => {
+            const actual = manySemigroup.concat(a, b)
             expect(actual).toStrictEqual(expected)
           })
         }
@@ -326,6 +338,15 @@ export const getTestSuite = <I, O>(schema: Schema<I, O>): TestSuite<I, O> => {
             fc.property(arbitrary, arbitrary, arbitrary, (a, b, c) => {
               const left = lastSemigroup.concat(lastSemigroup.concat(a, b), c)
               const right = lastSemigroup.concat(a, lastSemigroup.concat(b, c))
+              expect(eq.equals(left, right)).toBe(true)
+            }),
+          )
+        })
+        test('manySemigroup', () => {
+          fc.assert(
+            fc.property(arbitrary, arbitrary, arbitrary, (a, b, c) => {
+              const left = manySemigroup.concat(manySemigroup.concat(a, b), c)
+              const right = manySemigroup.concat(a, manySemigroup.concat(b, c))
               expect(eq.equals(left, right)).toBe(true)
             }),
           )
