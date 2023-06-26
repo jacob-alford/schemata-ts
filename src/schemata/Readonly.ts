@@ -1,6 +1,6 @@
 /** @since 1.4.0 */
-import { identity } from 'fp-ts/function'
 import { type Schema } from 'schemata-ts/Schema'
+import { Annotate } from 'schemata-ts/schemata/Annotate'
 
 /**
  * Marks a schema as readonly.
@@ -9,4 +9,6 @@ import { type Schema } from 'schemata-ts/Schema'
  * @category Combinators
  */
 export const Readonly: <I, O>(inner: Schema<I, O>) => Schema<Readonly<I>, Readonly<O>> =
-  identity
+  Annotate({
+    readOnly: true,
+  })

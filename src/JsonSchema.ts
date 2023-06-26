@@ -33,7 +33,9 @@
  * @see https://json-schema.org/draft/2020-12/json-schema-validation.html
  */
 import { type Const, make } from 'fp-ts/Const'
+import { identity } from 'fp-ts/function'
 import type * as RR from 'fp-ts/ReadonlyRecord'
+import { getJsonSchema as getJsonSchema_ } from 'schemata-ts/derivations/json-schema-schemable'
 import {
   type Float,
   type MaxNegativeFloat,
@@ -41,6 +43,7 @@ import {
 } from 'schemata-ts/float'
 import { type Integer, type MaxSafeInt, type MinSafeInt } from 'schemata-ts/integer'
 import * as I from 'schemata-ts/internal/json-schema'
+import { type Schema } from 'schemata-ts/Schema'
 
 // -------------------------------------------------------------------------------------
 // Model
@@ -64,26 +67,39 @@ export type JsonSchemaValue =
   | I.JsonArray
   | I.JsonUnion
   | I.JsonIntersection
+  | I.JsonRef
 
 /**
  * @since 1.2.0
  * @category Model
  */
-export type JsonSchema = JsonSchemaValue & I.Description
+export type JsonSchema = JsonSchemaValue & I.Description & I.References
 
 // -------------------------------------------------------------------------------------
 // Constructors
 // -------------------------------------------------------------------------------------
 
-export {
-  /**
-   * Interprets a schema as a json-schema.
-   *
-   * @since 1.2.0
-   * @category Interpreters
-   */
-  getJsonSchema,
-} from 'schemata-ts/derivations/json-schema-schemable'
+/**
+ * Interprets a schema as a JsonSchema projecting into either Draft-07 or 2020-12
+ *
+ * @since 1.2.0
+ */
+export const getJsonSchema = <I, O>(
+  schema: Schema<I, O>,
+  version: 'Draft-07' | '2019-09' | '2020-12' = '2019-09',
+  maintainIdentity = false,
+): JsonSchema => {
+  switch (version) {
+    case 'Draft-07':
+      return (maintainIdentity ? identity : I.stripIdentity)(
+        I.as2007(getJsonSchema_(schema)),
+      )
+    case '2019-09':
+      return (maintainIdentity ? identity : I.stripIdentity)(getJsonSchema_(schema))
+    case '2020-12':
+      return (maintainIdentity ? identity : I.stripIdentity)(getJsonSchema_(schema))
+  }
+}
 
 /**
  * @since 1.2.0
@@ -308,5 +324,4 @@ export const ref = <A>(ref: string): Const<JsonSchema, A> => make(new I.JsonRef(
  * @since 1.2.0
  * @category Destructors
  */
-export const stripIdentity: <A>(schema: Const<JsonSchema, A>) => JsonSchema = schema =>
-  JSON.parse(JSON.stringify(schema))
+export const stripIdentity: (schema: JsonSchema) => JsonSchema = I.stripIdentity

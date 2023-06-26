@@ -24,6 +24,7 @@ export type JsonSchema = JsonSchemaValue & Description & References
 export interface Description {
   readonly title?: string
   readonly description?: string
+  readonly readOnly?: boolean
 }
 
 export interface References {
@@ -137,9 +138,77 @@ export class JsonRef {
 }
 
 /** @internal */
-export const stripIdentity = <A>(schema: Const<JsonSchema, A>): JsonSchema =>
+export const stripIdentity = (schema: JsonSchema): JsonSchema =>
   JSON.parse(JSON.stringify(schema))
 
 export interface SchemableLambda extends hkt.SchemableLambda {
   readonly type: Const<JsonSchema, this['Input']>
+}
+
+const remapRecurse: (
+  method: (schema: JsonSchema) => JsonSchema,
+) => (schema: JsonSchema) => JsonSchema = method => schema => {
+  if (schema instanceof JsonStruct || 'properties' in schema) {
+    const mapped: Record<string, JsonSchema> = {}
+    const properties = schema.properties as Record<string, JsonSchema>
+    for (const key in properties) {
+      // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+      const inner = properties[key]!
+      mapped[key] = method(inner)
+    }
+    return { ...schema, properties: mapped }
+  }
+  if (schema instanceof JsonArray || 'items' in schema) {
+    const items = schema.items as JsonSchema | ReadonlyArray<JsonSchema>
+    if (Array.isArray(items)) {
+      const mapped: Array<JsonSchema> = []
+      for (const item of items as ReadonlyArray<JsonSchema>) {
+        mapped.push(method(item))
+      }
+      return { ...schema, items: mapped }
+    }
+    return { ...schema, items: method(items) }
+  }
+  if (schema instanceof JsonExclude || 'not' in schema) {
+    return { ...schema, not: method(schema.not as JsonSchema) }
+  }
+  if (schema instanceof JsonUnion || 'oneOf' in schema) {
+    const mapped: Array<JsonSchema> = []
+    for (const item of schema.oneOf as ReadonlyArray<JsonSchema>) {
+      mapped.push(method(item))
+    }
+    return { ...schema, oneOf: mapped }
+  }
+  if (schema instanceof JsonIntersection || 'allOf' in schema) {
+    const mapped: Array<JsonSchema> = []
+    for (const item of schema.allOf as ReadonlyArray<JsonSchema>) {
+      mapped.push(method(item))
+    }
+    return { ...schema, allOf: mapped }
+  }
+  return schema
+}
+
+/** @internal */
+export const as2007: (schema: JsonSchema) => JsonSchema = schema => {
+  if (schema instanceof JsonRef || '$defs' in schema) {
+    return { ...schema, $defs: undefined, definitions: schema.$defs }
+  }
+  return remapRecurse(as2007)(schema)
+}
+
+/** @internal */
+export const as2020: (schema: JsonSchema) => JsonSchema = schema => {
+  if (schema instanceof JsonArray || 'items' in schema) {
+    const items = schema.items as JsonSchema | ReadonlyArray<JsonSchema>
+    if (Array.isArray(items)) {
+      const mapped: Array<JsonSchema> = []
+      for (const item of items as ReadonlyArray<JsonSchema>) {
+        mapped.push(as2020(item))
+      }
+      return { ...schema, prefixItems: mapped, items: false }
+    }
+    return schema
+  }
+  return remapRecurse(as2020)(schema)
 }
