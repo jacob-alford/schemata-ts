@@ -10,21 +10,22 @@ import * as RTup from 'fp-ts/ReadonlyTuple'
 import * as Sg from 'fp-ts/Semigroup'
 import * as Str from 'fp-ts/string'
 import * as TE from 'fp-ts/TaskEither'
+import { Draft07 } from 'json-schema-library'
 import { getArbitrary } from 'schemata-ts/derivations/arbitrary-schemable'
-import { getEq } from 'schemata-ts/derivations/eq-schemable'
-import { getGuard } from 'schemata-ts/derivations/guard-schemable'
 import { getInformation } from 'schemata-ts/derivations/information-schemable'
-import { getJsonSchema } from 'schemata-ts/derivations/json-schema-schemable'
-import { getTranscoderPar } from 'schemata-ts/derivations/transcoder-par-schemable'
-import { getTranscoder } from 'schemata-ts/derivations/transcoder-schemable'
-import { getTypeString } from 'schemata-ts/derivations/type-string-schemable'
-import * as JS from 'schemata-ts/internal/json-schema'
+import { getEq } from 'schemata-ts/Eq'
+import { getGuard } from 'schemata-ts/Guard'
 import * as TS from 'schemata-ts/internal/type-string'
 import { fold } from 'schemata-ts/internal/type-string'
+import { getJsonSchema } from 'schemata-ts/JsonSchema'
+import * as JS from 'schemata-ts/JsonSchema'
 import { getMergeSemigroup } from 'schemata-ts/MergeSemigroup'
 import { type Schema } from 'schemata-ts/Schema'
 import { PrimitivesGuard } from 'schemata-ts/schemables/primitives/instances/guard'
 import * as TCE from 'schemata-ts/TranscodeError'
+import { getTranscoder } from 'schemata-ts/Transcoder'
+import { getTranscoderPar } from 'schemata-ts/TranscoderPar'
+import { getTypeString } from 'schemata-ts/TypeString'
 
 const { BooleanAlgebra: B } = B_
 
@@ -62,13 +63,20 @@ export interface TestSuite<I, O> {
   ) => IO.IO<void>
 
   /** Tests JsonSchema against a set of expected values */
-  readonly assertJsonSchema: (jsonSchema: JS.JsonSchema) => IO.IO<void>
+  readonly assertJsonSchema: (
+    jsonSchema2019: JS.JsonSchema,
+    jsonSchema2007?: JS.JsonSchema,
+    jsonSchema2020?: JS.JsonSchema,
+  ) => IO.IO<void>
 
   /** Tests type string against an expected value */
   readonly assertTypeString: (typeString: string) => IO.IO<void>
 
   /** Ensures information is a number */
   readonly assertValidInformation: IO.IO<void>
+
+  /** Ensures generated json-schema are compliant */
+  readonly validateJsonSchemas: IO.IO<void>
 
   /**
    * Uses arbitrary to generate random domain values and tests transcoder and
@@ -100,19 +108,13 @@ const replaceBigInts: (
       )
 
 const safeStringify = (input: unknown, fallback: number | string): string => {
-  if (
-    typeof input === 'string' ||
-    typeof input === 'number' ||
-    typeof input === 'bigint' ||
-    input === null
-  ) {
+  if (typeof input === 'string') return input
+  if (typeof input === 'number' || typeof input === 'bigint' || input === null) {
     return String(input)
   }
 
   if (typeof input === 'object') {
-    return JSON.stringify(
-      replaceBigInts(input as Record<string, unknown> | Array<unknown>),
-    )
+    return replaceBigInts(input as Record<string, unknown> | Array<unknown>) as any
   }
 
   return String(fallback)
@@ -150,6 +152,8 @@ export const getTestSuite = <I, O>(schema: Schema<I, O>): TestSuite<I, O> => {
   const eq = getEq(schema)
   const information = getInformation(schema)
   const jsonSchema = getJsonSchema(schema)
+  const jsonSchema2007 = getJsonSchema(schema, 'Draft-07')
+  const jsonSchema2020 = getJsonSchema(schema, '2020-12')
   const typeString = getTypeString(schema)
   const semigroup_ = getMergeSemigroup(schema)
   const firstSemigroup = semigroup_.semigroup('first')
@@ -254,12 +258,20 @@ export const getTestSuite = <I, O>(schema: Schema<I, O>): TestSuite<I, O> => {
         }
       },
     ),
-    assertJsonSchema: expected => () => {
-      test('matches expected', () => {
-        expect(JS.stripIdentity(jsonSchema)).toStrictEqual(
-          JS.stripIdentity(expected as any),
-        )
+    assertJsonSchema: (expected, expected2007, expected2020) => () => {
+      test('2019-09 matches expected', () => {
+        expect(jsonSchema).toStrictEqual(JS.stripIdentity(expected))
       })
+      if (expected2007 !== undefined) {
+        test('Draft-07 matches expected', () => {
+          expect(jsonSchema2007).toStrictEqual(JS.stripIdentity(expected2007))
+        })
+      }
+      if (expected2020 !== undefined) {
+        test('2020-12 matches expected', () => {
+          expect(jsonSchema2020).toStrictEqual(JS.stripIdentity(expected2020))
+        })
+      }
     },
     assertTypeString: expected => () => {
       test('matches expected', () => {
@@ -271,17 +283,35 @@ export const getTestSuite = <I, O>(schema: Schema<I, O>): TestSuite<I, O> => {
         expect(isValidNumber(information)).toBe(true)
       })
     },
+    validateJsonSchemas: () => {
+      const arbitrary = getArbitrary(schema).arbitrary(fc)
+      const draft2007 = new Draft07(jsonSchema2007)
+      test('Draft-2007', () => {
+        fc.assert(
+          fc.property(
+            arbitrary.filter(u => u !== undefined),
+            input => {
+              const encoded = pipe(
+                transcoder.encode(input),
+                E.map(_ => draft2007.validate(_)),
+              )
+              expect(encoded).toStrictEqual(E.right([]))
+            },
+          ),
+        )
+      })
+    },
     testTranscoderLaws: () => {
       const arbitrary = getArbitrary(schema).arbitrary(fc)
       describe('idempotence', () => {
         test('sequential', () => {
           fc.assert(
             fc.property(arbitrary, output => {
-              const initial = pipe(output, transcoder.encode, E.chain(transcoder.decode))
+              const initial = pipe(output, transcoder.encode, E.chainW(transcoder.decode))
               const result = pipe(
                 initial,
-                E.chain(transcoder.encode),
-                E.chain(transcoder.decode),
+                E.chainW(transcoder.encode),
+                E.chainW(transcoder.decode),
               )
               expect(
                 pipe(
@@ -301,12 +331,12 @@ export const getTestSuite = <I, O>(schema: Schema<I, O>): TestSuite<I, O> => {
               const initial = pipe(
                 output,
                 transcodePar.encode,
-                TE.chain(transcodePar.decode),
+                TE.chainW(transcodePar.decode),
               )
               const result = pipe(
                 initial,
-                TE.chain(transcodePar.encode),
-                TE.chain(transcodePar.decode),
+                TE.chainW(transcodePar.encode),
+                TE.chainW(transcodePar.decode),
               )
               expect(
                 await pipe(
@@ -470,6 +500,7 @@ export type MakeTestValues<I, O> = {
 export type StandardTestSuiteOptions = {
   readonly makeDecodeError?: (value: unknown) => TCE.TranscodeErrors
   readonly skipArbitraryChecks?: boolean
+  readonly skipJsonSchemaArbitraryChecks?: boolean
   readonly skipAll?: boolean
 }
 
@@ -492,6 +523,7 @@ const runStandardTestSuite_: StandardTestSuiteFn =
         new TCE.TranscodeErrors([new TCE.TypeMismatch(fold(name), value)]),
       skipArbitraryChecks = false,
       skipAll = false,
+      skipJsonSchemaArbitraryChecks = false,
     } = options
     const _ = getTestSuite(schema)
     const {
@@ -530,6 +562,9 @@ const runStandardTestSuite_: StandardTestSuiteFn =
       describe('typeString', _.assertTypeString(typeString))
       describe('information', _.assertValidInformation)
       if (!skipArbitraryChecks) {
+        if (!skipJsonSchemaArbitraryChecks) {
+          describe('json-schema validation', _.validateJsonSchemas)
+        }
         describe('transcoder laws', _.testTranscoderLaws)
         describe('semigroup laws', _.testSemigroupLaws)
         describe('eq laws', _.testEqLaws)

@@ -103,6 +103,7 @@ export const Annotate =
     readonly description?: string
     readonly references?: Refs
     readonly typeString?: string
+    readonly readOnly?: boolean
   }) =>
   <O, A>(schema: Schema<O, A>): Schema<O, A> => {
     const { references = {} } = params
@@ -123,6 +124,7 @@ export const Annotate =
               ...(params.typeString === undefined
                 ? {}
                 : { typeString: params.typeString }),
+              ...(params.readOnly === undefined ? {} : { readOnly: params.readOnly }),
             },
       )(schema.runSchema(s)),
     )

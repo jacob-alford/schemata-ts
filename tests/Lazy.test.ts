@@ -93,35 +93,66 @@ runStandardTestSuite(
   },
 )()
 
-runStandardTestSuite(S.Annotate({})(S.Lazy('Float', () => S.Float())), _ => ({
-  decoderTests: [
-    _.decoder.pass(0),
-    _.decoder.pass(1),
-    _.decoder.pass(1.1),
-    _.decoder.pass(1.1e1),
-    _.decoder.pass(1.1e-1),
-    _.decoder.pass(1.1e1),
-    _.decoder.pass(-1),
-    _.decoder.pass(-1.1),
-    _.decoder.pass(-1.1e1),
-    _.decoder.pass(-1.1e-1),
-    _.decoder.pass(-1.1e1),
-  ],
-  encoderTests: [
-    _.decoder.pass(0),
-    _.decoder.pass(1),
-    _.decoder.pass(1.1),
-    _.decoder.pass(1.1e1),
-    _.decoder.pass(1.1e-1),
-    _.decoder.pass(1.1e1),
-    _.decoder.pass(-1),
-    _.decoder.pass(-1.1),
-    _.decoder.pass(-1.1e1),
-    _.decoder.pass(-1.1e-1),
-    _.decoder.pass(-1.1e1),
-  ] as any,
-  guardTests: [],
-  eqTests: [],
-  jsonSchema: JS.ref('Float'),
-  typeString: 'Lazy<Float>',
-}))()
+const Simple = S.Struct({
+  float: S.Float(),
+})
+
+const wrap: (i: number) => { float: number } = i => ({
+  float: i,
+})
+
+runStandardTestSuite(
+  S.Annotate({
+    references: {
+      Simple: Simple,
+    },
+  })(S.Lazy('Simple', () => Simple)),
+  _ => ({
+    decoderTests: [
+      _.decoder.pass(wrap(0)),
+      _.decoder.pass(wrap(1)),
+      _.decoder.pass(wrap(1.1)),
+      _.decoder.pass(wrap(1.1e1)),
+      _.decoder.pass(wrap(1.1e-1)),
+      _.decoder.pass(wrap(1.1e1)),
+      _.decoder.pass(wrap(-1)),
+      _.decoder.pass(wrap(-1.1)),
+      _.decoder.pass(wrap(-1.1e1)),
+      _.decoder.pass(wrap(-1.1e-1)),
+      _.decoder.pass(wrap(-1.1e1)),
+    ],
+    encoderTests: [
+      _.decoder.pass(wrap(0)),
+      _.decoder.pass(wrap(1)),
+      _.decoder.pass(wrap(1.1)),
+      _.decoder.pass(wrap(1.1e1)),
+      _.decoder.pass(wrap(1.1e-1)),
+      _.decoder.pass(wrap(1.1e1)),
+      _.decoder.pass(wrap(-1)),
+      _.decoder.pass(wrap(-1.1)),
+      _.decoder.pass(wrap(-1.1e1)),
+      _.decoder.pass(wrap(-1.1e-1)),
+      _.decoder.pass(wrap(-1.1e1)),
+    ] as any,
+    guardTests: [],
+    eqTests: [],
+    jsonSchema: {
+      $ref: 'Simple',
+      $defs: {
+        Simple: {
+          properties: {
+            float: {
+              type: 'number',
+            },
+          },
+          required: ['float'],
+          type: 'object',
+        },
+      },
+    },
+    typeString: 'Lazy<Simple>',
+  }),
+  {
+    skipJsonSchemaArbitraryChecks: true,
+  },
+)()
