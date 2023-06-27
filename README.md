@@ -1,22 +1,41 @@
 <br>
 <div align="center">
-  <img src="./assets/the-school-of-athens-crop-2.jpg" style="margin-top: 48px; width: 100%; max-width: 846px; border: 5px solid rgba(205,127,50,0.5); filter: drop-shadow(0 0 0.5rem rgba(0,0,0,0.5));"/>
+  <picture>
+    <source media="(prefers-color-scheme: light)" srcset="https://raw.githubusercontent.com/jacob-alford/schemata-ts/v2-reorg/assets/schemata-purple.png">
+    <source media="(prefers-color-scheme: dark)" srcset="https://raw.githubusercontent.com/jacob-alford/schemata-ts/v2-reorg/assets/schemata-white.png">
+    <img alt="schemata-ts" src="https://raw.githubusercontent.com/jacob-alford/schemata-ts/v2-reorg/assets/schemata-blue.png">
+  </picture>
 </div>
-<br><br>
-<h1 align="center" style="margin: 12px 0px 12px 0px; padding-bottom: 12px;">
-schemata-ts
+<br>
+<h1 align="center">
+🔭&nbsp;&nbsp;&nbsp;schemata-ts
 </h1>
 
-<p align="center" style="margin-bottom: 12px;">
-Write domain types once. A schema engine based on io-ts v2 with a collection of schemata inspired by io-ts-types and validators.js 
+<p align="center">
+Write domain types once.  A collection of Schemata inspired by io-ts-types and validators.js.
 </p>
-
+<br><br>
 <div align="center">
 
-[![NPM Version](https://badge.fury.io/js/schemata-ts.svg)](https://badge.fury.io/js/schemata-ts)
-[![Coverage Status](https://coveralls.io/repos/github/jacob-alford/schemata-ts/badge.svg?branch=main)](https://coveralls.io/github/jacob-alford/schemata-ts?branch=main)
-![Vulnerabilities](https://img.shields.io/snyk/vulnerabilities/npm/schemata-ts)
+![npm](https://img.shields.io/npm/v/schemata-ts?style=for-the-badge)
+&nbsp;
+![npm](https://img.shields.io/npm/dm/schemata-ts?style=for-the-badge)&nbsp;
+![Coveralls branch](https://img.shields.io/coverallsCoverage/github/jacob-alford/schemata-ts?style=for-the-badge)
+&nbsp;
+![Snyk Vulnerabilities for npm scoped package](https://img.shields.io/snyk/vulnerabilities/npm/schemata-ts?style=for-the-badge)&nbsp;
+![GitHub](https://img.shields.io/github/license/jacob-alford/schemata-ts?style=for-the-badge)
 
+</div>
+
+<br><br>
+
+<div align="center">
+  <a href="https://jacob-alford.github.io/schemata-ts/">Documentation</a>
+  <span>&nbsp;&nbsp;•&nbsp;&nbsp;</span>
+  <a href="https://www.npmjs.com/package/schemata-ts">npm</a>
+  <span>&nbsp;&nbsp;•&nbsp;&nbsp;</span>
+  <a href="https://github.com/jacob-alford/schemata-ts/issues/new">Issues</a>
+  <br />
 </div>
 
 <br><br>
