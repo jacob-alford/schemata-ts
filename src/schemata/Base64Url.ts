@@ -1,7 +1,6 @@
 /** @since 1.0.0 */
-import { pipe } from 'fp-ts/function'
+import * as k from 'kuvio'
 import { type Branded } from 'schemata-ts/brand'
-import * as PB from 'schemata-ts/PatternBuilder'
 import { type Schema } from 'schemata-ts/Schema'
 import { Brand } from 'schemata-ts/schemata/Brand'
 import { Pattern } from 'schemata-ts/schemata/Pattern'
@@ -21,18 +20,6 @@ interface Base64UrlBrand {
 export type Base64Url = Branded<string, Base64UrlBrand>
 
 /**
- * /^[A-Za-z0-9_-]*$/
- *
- * @since 1.0.0
- * @category Pattern
- */
-export const base64Url: PB.Pattern = pipe(
-  PB.word,
-  PB.and('-'),
-  PB.anyNumber({ greedy: true }),
-)
-
-/**
  * Represents a URL-safe, Base64 encoded string.
  *
  * For a non-URL-safe alternative, @see Base64
@@ -41,5 +28,5 @@ export const base64Url: PB.Pattern = pipe(
  * @category String
  */
 export const Base64Url: Schema<Base64Url> = Brand<Base64UrlBrand>()(
-  Pattern(base64Url, 'Base64Url'),
+  Pattern(k.patterns.base64Url, 'Base64Url'),
 )

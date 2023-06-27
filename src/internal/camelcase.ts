@@ -10,14 +10,14 @@ import * as O from 'fp-ts/Option'
 import * as Pred from 'fp-ts/Predicate'
 import * as RA from 'fp-ts/ReadonlyArray'
 import * as Str from 'fp-ts/string'
-import * as PB from 'schemata-ts/PatternBuilder'
+import * as k from 'kuvio'
 import type { CamelCase } from 'type-fest'
 
 /** Convert a character code to character */
 const cc: (code: number) => string = String.fromCharCode
 
 /** A list of whitespace + "-" + "_" patterns to match type-fest's type-level camelcase */
-const delimiters = PB.characterClass(
+const delimiters = k.characterClass(
   false,
   cc(9), // tab
   cc(10), // line feed
@@ -49,7 +49,7 @@ const delimiters = PB.characterClass(
   '_', // low line
 )
 
-const delimiterRegex = PB.regexFromPattern(delimiters)
+const delimiterRegex = k.regexFromPattern(delimiters)
 
 const dropRightWhile: (
   predicate: (a: string) => boolean,

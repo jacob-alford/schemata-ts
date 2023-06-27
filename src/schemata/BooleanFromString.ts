@@ -1,7 +1,7 @@
 /** @since 1.0.0 */
 import { pipe } from 'fp-ts/function'
+import * as k from 'kuvio'
 import { getGuard } from 'schemata-ts/Guard'
-import * as PB from 'schemata-ts/PatternBuilder'
 import { type Schema } from 'schemata-ts/Schema'
 import { Boolean } from 'schemata-ts/schemata/Boolean'
 import { Imap } from 'schemata-ts/schemata/Imap'
@@ -11,9 +11,9 @@ import { Pattern } from 'schemata-ts/schemata/Pattern'
  * @since 1.0.0
  * @category Pattern
  */
-export const booleanFromStringPattern: PB.Pattern = PB.oneOf(
-  PB.exactString('true'),
-  PB.exactString('false'),
+export const booleanFromStringPattern: k.Pattern = k.oneOf(
+  k.exactString('true'),
+  k.exactString('false'),
 )
 
 /**

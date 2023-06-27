@@ -1,8 +1,8 @@
 /** @since 1.0.0 */
 import { pipe } from 'fp-ts/function'
+import * as k from 'kuvio'
 import { type Branded } from 'schemata-ts/brand'
 import { type Integer, type MaxSafeInt, type MinSafeInt } from 'schemata-ts/integer'
-import * as PB from 'schemata-ts/PatternBuilder'
 import { type Schema } from 'schemata-ts/Schema'
 import { type BoundedParams } from 'schemata-ts/schemables/primitives/definition'
 import { PrimitivesGuard } from 'schemata-ts/schemables/primitives/instances/guard'
@@ -47,44 +47,44 @@ export type IntFromStringParams<
  * @since 1.0.0
  * @category Pattern
  */
-const binaryIntString: PB.Pattern = pipe(
-  PB.exactString('0b'),
-  PB.then(pipe(PB.characterClass(false, ['0', '1']), PB.between(1, 53))),
+const binaryIntString: k.Pattern = pipe(
+  k.exactString('0b'),
+  k.then(pipe(k.characterClass(false, ['0', '1']), k.between(1, 53))),
 )
 
 /**
  * @since 1.0.0
  * @category Pattern
  */
-const octalIntString: PB.Pattern = pipe(
-  PB.exactString('0o'),
-  PB.then(pipe(PB.characterClass(false, ['0', '7']), PB.between(1, 18))),
+const octalIntString: k.Pattern = pipe(
+  k.exactString('0o'),
+  k.then(pipe(k.characterClass(false, ['0', '7']), k.between(1, 18))),
 )
 
 /**
  * @since 1.0.0
  * @category Pattern
  */
-const decimalIntString: PB.Pattern = pipe(
-  PB.char('-'),
-  PB.maybe,
-  PB.then(pipe(PB.digit, PB.between(1, 16))),
+const decimalIntString: k.Pattern = pipe(
+  k.char('-'),
+  k.maybe,
+  k.then(pipe(k.digit, k.between(1, 16))),
 )
 
 /**
  * @since 1.0.0
  * @category Pattern
  */
-const hexIntString: PB.Pattern = pipe(
-  PB.exactString('0x'),
-  PB.then(pipe(PB.hexDigit, PB.between(1, 14))),
+const hexIntString: k.Pattern = pipe(
+  k.exactString('0x'),
+  k.then(pipe(k.hexDigit, k.between(1, 14))),
 )
 
 /**
  * @since 1.0.0
  * @category Pattern
  */
-export const intFromString: PB.Pattern = PB.oneOf(
+export const intFromString: k.Pattern = k.oneOf(
   binaryIntString,
   octalIntString,
   decimalIntString,

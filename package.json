@@ -114,7 +114,7 @@
     "typescript": "^5.1.0"
   },
   "dependencies": {
-    "kuvio": "^1.1.0",
+    "kuvio": "^1.2.1",
     "type-fest": "^3.5.7"
   }
 }
