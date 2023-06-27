@@ -284,7 +284,7 @@ export const getTestSuite = <I, O>(schema: Schema<I, O>): TestSuite<I, O> => {
       })
     },
     validateJsonSchemas: () => {
-      const arbitrary = getArbitrary(schema).arbitrary(fc)
+      const arbitrary = getArbitrary(schema)
       const draft2007 = new Draft07(jsonSchema2007)
       test('Draft-2007', () => {
         fc.assert(
@@ -302,7 +302,7 @@ export const getTestSuite = <I, O>(schema: Schema<I, O>): TestSuite<I, O> => {
       })
     },
     testTranscoderLaws: () => {
-      const arbitrary = getArbitrary(schema).arbitrary(fc)
+      const arbitrary = getArbitrary(schema)
       describe('idempotence', () => {
         test('sequential', () => {
           fc.assert(
@@ -325,7 +325,7 @@ export const getTestSuite = <I, O>(schema: Schema<I, O>): TestSuite<I, O> => {
           )
         })
         test('parallel', async () => {
-          const arbitrary = getArbitrary(schema).arbitrary(fc)
+          const arbitrary = getArbitrary(schema)
           fc.assert(
             fc.asyncProperty(arbitrary, async output => {
               const initial = pipe(
@@ -352,7 +352,7 @@ export const getTestSuite = <I, O>(schema: Schema<I, O>): TestSuite<I, O> => {
       })
     },
     testSemigroupLaws: () => {
-      const arbitrary = getArbitrary(schema).arbitrary(fc)
+      const arbitrary = getArbitrary(schema)
       describe('associativity', () => {
         test('firstSemigroup', () => {
           fc.assert(
@@ -384,7 +384,7 @@ export const getTestSuite = <I, O>(schema: Schema<I, O>): TestSuite<I, O> => {
       })
     },
     testEqLaws: () => {
-      const arbitrary = getArbitrary(schema).arbitrary(fc)
+      const arbitrary = getArbitrary(schema)
       test('reflexivity', () => {
         fc.assert(
           fc.property(arbitrary, output => {
@@ -410,7 +410,7 @@ export const getTestSuite = <I, O>(schema: Schema<I, O>): TestSuite<I, O> => {
       })
     },
     testArbitraryGuard: () => {
-      const arbitrary = getArbitrary(schema).arbitrary(fc)
+      const arbitrary = getArbitrary(schema)
       test('arbitraries', () => {
         fc.assert(
           fc.property(arbitrary, output => {

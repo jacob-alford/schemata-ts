@@ -1,4 +1,5 @@
-import * as Arb from 'schemata-ts/internal/arbitrary'
+import * as fc from 'fast-check'
+import type * as Arb from 'schemata-ts/internal/arbitrary'
 import { type WithDate } from 'schemata-ts/schemables/date/definition'
 import {
   earliestSafeDate,
@@ -9,14 +10,10 @@ import {
 export const DateArbitrary: WithDate<Arb.SchemableLambda> = {
   date: (params = {}) => {
     const { beforeDate = latestSafeDate, afterDate = earliestSafeDate } = params
-    return Arb.makeArbitrary(fc =>
-      fc.date({ min: afterDate, max: beforeDate }).filter(isSafeDate),
-    )
+    return fc.date({ min: afterDate, max: beforeDate }).filter(isSafeDate)
   },
   dateFromString: (params = {}) => {
     const { beforeDate, afterDate } = params
-    return Arb.makeArbitrary(fc =>
-      fc.date({ min: afterDate, max: beforeDate }).filter(isSafeDate),
-    )
+    return fc.date({ min: afterDate, max: beforeDate }).filter(isSafeDate)
   },
 }

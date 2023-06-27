@@ -3,15 +3,7 @@
  *
  * @since 1.0.0
  */
-import type * as FastCheck from 'fast-check'
-
-/**
- * @since 1.0.0
- * @category Model
- */
-export interface Arbitrary<A> {
-  readonly arbitrary: (fc: typeof FastCheck) => FastCheck.Arbitrary<A>
-}
+import type * as fc from 'fast-check'
 
 // ------------------
 // combinators
@@ -45,6 +37,6 @@ export type URI = typeof URI
 
 declare module 'fp-ts/lib/HKT' {
   interface URItoKind<A> {
-    readonly Arbitrary: Arbitrary<A>
+    readonly Arbitrary: fc.Arbitrary<A>
   }
 }

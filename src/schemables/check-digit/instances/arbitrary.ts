@@ -1,5 +1,5 @@
 import { type Branded } from 'schemata-ts/brand'
-import * as Arb from 'schemata-ts/internal/arbitrary'
+import type * as Arb from 'schemata-ts/internal/arbitrary'
 import {
   type CheckDigitVerified,
   type WithCheckDigit,
@@ -8,15 +8,11 @@ import { locationToIndex, replaceCharAt } from 'schemata-ts/schemables/check-dig
 
 export const CheckDigitArbitrary: WithCheckDigit<Arb.SchemableLambda> = {
   checkDigit: (algorithm, location) => arb =>
-    Arb.makeArbitrary(fc =>
-      arb
-        .arbitrary(fc)
-        .map(
-          s =>
-            replaceCharAt(s, locationToIndex(s, location), algorithm(s)) as Branded<
-              CheckDigitVerified,
-              CheckDigitVerified
-            >,
-        ),
+    arb.map(
+      s =>
+        replaceCharAt(s, locationToIndex(s, location), algorithm(s)) as Branded<
+          CheckDigitVerified,
+          CheckDigitVerified
+        >,
     ),
 }
