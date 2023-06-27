@@ -67,7 +67,7 @@ export const User = S.Struct({
 export type User = S.TypeOf<typeof User>
 export type UserInput = S.InputOf<typeof User>
 
-export const userArbitrary = getArbitrary(User).arbitrary(fc)
+export const userArbitrary = getArbitrary(User)
 export const userCodec = getCodec(User)
 
 const validInput = {
@@ -306,7 +306,7 @@ const SomeDomainTypeSchema = S.StructM(someDomainType)
 // SomeDomainType will have the type:
 // Schema<{ a: string, b: number }, { a: string, b: boolean }>
 
-const arbitrary = getArbitrary(SomeDomainTypeSchema).arbitrary(fc)
+const arbitrary = getArbitrary(SomeDomainTypeSchema)
 const guard = getGuard(SomeDomainTypeSchema)
 
 fc.assert(fc.property(arbitrary, guard.is))
@@ -416,7 +416,7 @@ const DatabasePerson = S.StructM(databasePerson)
 //   { firstName: string, lastName: string, age: number, isMarried: boolean }
 // >
 
-const arbitrary = getArbitrary(DatabasePerson).arbitrary(fc)
+const arbitrary = getArbitrary(DatabasePerson)
 const guard = getGuard(DatabasePerson)
 
 fc.assert(fc.property(arbitrary, guard.is))

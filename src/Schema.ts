@@ -26,7 +26,7 @@
  *   export type User = S.TypeOf<typeof User>
  *   export type UserInput = S.InputOf<typeof User>
  *
- *   export const arbitrary = getArbitrary(User).arbitrary(fc)
+ *   export const arbitrary = getArbitrary(User)
  *   export const codec = getCodec(User)
  *   export const eq = getEq(User)
  *
