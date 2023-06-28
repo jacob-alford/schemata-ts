@@ -1,5 +1,5 @@
+import { regexFromPattern } from 'kuvio'
 import * as JS from 'schemata-ts/internal/json-schema'
-import * as PB from 'schemata-ts/PatternBuilder'
 import { type WithPattern } from 'schemata-ts/schemables/pattern/definition'
 
 export const PatternJsonSchema: WithPattern<JS.SchemableLambda> = {
@@ -8,7 +8,7 @@ export const PatternJsonSchema: WithPattern<JS.SchemableLambda> = {
       new JS.JsonString(
         undefined,
         undefined,
-        PB.regexFromPattern(pattern, caseInsensitive).source,
+        regexFromPattern(pattern, caseInsensitive).source,
       ),
     ),
 }

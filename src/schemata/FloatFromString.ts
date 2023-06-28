@@ -1,12 +1,12 @@
 /** @since 1.0.0 */
 import { pipe } from 'fp-ts/function'
+import * as k from 'kuvio'
 import { type Branded } from 'schemata-ts/brand'
 import {
   type Float,
   type MaxNegativeFloat,
   type MaxPositiveFloat,
 } from 'schemata-ts/float'
-import * as PB from 'schemata-ts/PatternBuilder'
 import { type Schema } from 'schemata-ts/Schema'
 import { type NumberParams } from 'schemata-ts/schemables/primitives/definition'
 import { PrimitivesGuard } from 'schemata-ts/schemables/primitives/instances/guard'
@@ -39,12 +39,10 @@ export type FloatString<
  * @since 1.0.0
  * @category Pattern
  */
-const negativeFloatLeft: PB.Pattern = pipe(
-  PB.char('-'),
-  PB.then(pipe(PB.digit, PB.between(1, 308))),
-  PB.then(
-    pipe(PB.char('.'), PB.then(pipe(PB.digit, PB.anyNumber())), PB.subgroup, PB.maybe),
-  ),
+const negativeFloatLeft: k.Pattern = pipe(
+  k.char('-'),
+  k.then(pipe(k.digit, k.between(1, 308))),
+  k.then(pipe(k.char('.'), k.then(pipe(k.digit, k.anyNumber())), k.subgroup, k.maybe)),
 )
 
 /**
@@ -55,12 +53,10 @@ const negativeFloatLeft: PB.Pattern = pipe(
  * @since 1.0.0
  * @category Pattern
  */
-const negativeFloatRight: PB.Pattern = pipe(
-  PB.char('-'),
-  PB.then(pipe(PB.digit, PB.between(0, 308))),
-  PB.then(
-    pipe(PB.char('.'), PB.then(pipe(PB.digit, PB.atLeastOne())), PB.subgroup, PB.maybe),
-  ),
+const negativeFloatRight: k.Pattern = pipe(
+  k.char('-'),
+  k.then(pipe(k.digit, k.between(0, 308))),
+  k.then(pipe(k.char('.'), k.then(pipe(k.digit, k.atLeastOne())), k.subgroup, k.maybe)),
 )
 
 /**
@@ -71,12 +67,10 @@ const negativeFloatRight: PB.Pattern = pipe(
  * @since 1.0.0
  * @category Pattern
  */
-const positiveFloatLeft: PB.Pattern = pipe(
-  PB.digit,
-  PB.between(1, 308),
-  PB.then(
-    pipe(PB.char('.'), PB.then(pipe(PB.digit, PB.anyNumber())), PB.subgroup, PB.maybe),
-  ),
+const positiveFloatLeft: k.Pattern = pipe(
+  k.digit,
+  k.between(1, 308),
+  k.then(pipe(k.char('.'), k.then(pipe(k.digit, k.anyNumber())), k.subgroup, k.maybe)),
 )
 
 /**
@@ -87,19 +81,17 @@ const positiveFloatLeft: PB.Pattern = pipe(
  * @since 1.0.0
  * @category Pattern
  */
-const positiveFloatRight: PB.Pattern = pipe(
-  PB.digit,
-  PB.between(0, 308),
-  PB.then(
-    pipe(PB.char('.'), PB.then(pipe(PB.digit, PB.atLeastOne())), PB.subgroup, PB.maybe),
-  ),
+const positiveFloatRight: k.Pattern = pipe(
+  k.digit,
+  k.between(0, 308),
+  k.then(pipe(k.char('.'), k.then(pipe(k.digit, k.atLeastOne())), k.subgroup, k.maybe)),
 )
 
 /**
  * @since 1.0.0
  * @category Pattern
  */
-const decimalFloat: PB.Pattern = PB.oneOf(
+const decimalFloat: k.Pattern = k.oneOf(
   negativeFloatLeft,
   negativeFloatRight,
   positiveFloatLeft,
@@ -110,34 +102,34 @@ const decimalFloat: PB.Pattern = PB.oneOf(
  * @since 1.0.0
  * @category Pattern
  */
-const positiveExponential: PB.Pattern = pipe(
-  PB.char('+'),
-  PB.maybe,
-  PB.then(pipe(PB.integerRange(0, 308), PB.subgroup)),
+const positiveExponential: k.Pattern = pipe(
+  k.char('+'),
+  k.maybe,
+  k.then(pipe(k.integerRange(0, 308), k.subgroup)),
 )
 
 /**
  * @since 1.0.0
  * @category Pattern
  */
-const negativeExponential: PB.Pattern = pipe(
-  PB.char('-'),
-  PB.then(pipe(PB.digit, PB.atLeastOne(), PB.subgroup)),
+const negativeExponential: k.Pattern = pipe(
+  k.char('-'),
+  k.then(pipe(k.digit, k.atLeastOne(), k.subgroup)),
 )
 
 /**
  * @since 1.0.0
  * @category Pattern
  */
-const floatFromString: PB.Pattern = pipe(
+const floatFromString: k.Pattern = pipe(
   decimalFloat,
-  PB.subgroup,
-  PB.then(
+  k.subgroup,
+  k.then(
     pipe(
-      PB.char('e'),
-      PB.then(pipe(PB.oneOf(positiveExponential, negativeExponential), PB.subgroup)),
-      PB.subgroup,
-      PB.maybe,
+      k.char('e'),
+      k.then(pipe(k.oneOf(positiveExponential, negativeExponential), k.subgroup)),
+      k.subgroup,
+      k.maybe,
     ),
   ),
 )

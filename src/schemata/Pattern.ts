@@ -1,5 +1,5 @@
 /** @since 1.0.0 */
-import type * as PB from 'schemata-ts/PatternBuilder'
+import type * as k from 'kuvio'
 import { type Schema, make } from 'schemata-ts/Schema'
 
 /**
@@ -9,7 +9,7 @@ import { type Schema, make } from 'schemata-ts/Schema'
  * @category Combinators
  */
 export const Pattern = (
-  pattern: PB.Pattern,
+  pattern: k.Pattern,
   name: string,
   caseSensitive?: boolean,
 ): Schema<string, string> => make(S => S.pattern(pattern, name, caseSensitive))

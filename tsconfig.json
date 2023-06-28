@@ -3,7 +3,7 @@
     "strict": true,
     "allowJs": false,
     "esModuleInterop": true,
-    "moduleResolution": "node",
+    "moduleResolution": "nodenext",
     "lib": ["DOM", "ESNext"],
     "module": "CommonJS",
     "target": "ESNext",

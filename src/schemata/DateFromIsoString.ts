@@ -1,8 +1,8 @@
 /** @since 1.0.0 */
 import { pipe } from 'fp-ts/function'
+import * as k from 'kuvio'
 import { getGuard } from 'schemata-ts/derivations/guard-schemable'
 import { matchW } from 'schemata-ts/internal/match'
-import * as PB from 'schemata-ts/PatternBuilder'
 import { type Schema } from 'schemata-ts/Schema'
 import {
   type SafeDateString,
@@ -20,7 +20,7 @@ import { Refine } from 'schemata-ts/schemata/Refine'
  * @since 1.0.0
  * @category Pattern
  */
-const year: PB.Pattern = pipe(PB.digit, PB.exactly(4))
+const year: k.Pattern = pipe(k.digit, k.exactly(4))
 
 /**
  * E.g. `+-002022`
@@ -28,10 +28,10 @@ const year: PB.Pattern = pipe(PB.digit, PB.exactly(4))
  * @since 1.0.0
  * @category Pattern
  */
-const expandedYear: PB.Pattern = pipe(
-  PB.characterClass(false, '+', '-'),
-  PB.subgroup,
-  PB.then(pipe(PB.digit, PB.exactly(6))),
+const expandedYear: k.Pattern = pipe(
+  k.characterClass(false, '+', '-'),
+  k.subgroup,
+  k.then(pipe(k.digit, k.exactly(6))),
 )
 
 /**
@@ -40,12 +40,12 @@ const expandedYear: PB.Pattern = pipe(
  * @since 1.0.0
  * @category Pattern
  */
-const month: PB.Pattern = pipe(
-  PB.char('0'),
-  PB.then(pipe(PB.integerRange(1, 9), PB.subgroup)),
-  PB.subgroup,
-  PB.or(pipe(PB.integerRange(10, 12), PB.subgroup)),
-  PB.subgroup,
+const month: k.Pattern = pipe(
+  k.char('0'),
+  k.then(pipe(k.integerRange(1, 9), k.subgroup)),
+  k.subgroup,
+  k.or(pipe(k.integerRange(10, 12), k.subgroup)),
+  k.subgroup,
 )
 
 /**
@@ -54,12 +54,12 @@ const month: PB.Pattern = pipe(
  * @since 1.0.0
  * @category Pattern
  */
-const day: PB.Pattern = pipe(
-  PB.char('0'),
-  PB.then(pipe(PB.integerRange(1, 9), PB.subgroup)),
-  PB.subgroup,
-  PB.or(pipe(PB.integerRange(10, 31), PB.subgroup)),
-  PB.subgroup,
+const day: k.Pattern = pipe(
+  k.char('0'),
+  k.then(pipe(k.integerRange(1, 9), k.subgroup)),
+  k.subgroup,
+  k.or(pipe(k.integerRange(10, 31), k.subgroup)),
+  k.subgroup,
 )
 
 /**
@@ -68,11 +68,11 @@ const day: PB.Pattern = pipe(
  * @since 1.0.0
  * @category Pattern
  */
-const yearMonthDay: PB.Pattern = PB.sequence(
-  PB.subgroup(PB.oneOf(year, expandedYear)),
-  PB.char('-'),
+const yearMonthDay: k.Pattern = k.sequence(
+  k.subgroup(k.oneOf(year, expandedYear)),
+  k.char('-'),
   month,
-  PB.char('-'),
+  k.char('-'),
   day,
 )
 
@@ -82,8 +82,8 @@ const yearMonthDay: PB.Pattern = PB.sequence(
  * @since 1.0.0
  * @category Pattern
  */
-const yearMonth: PB.Pattern = PB.subgroup(
-  PB.sequence(PB.subgroup(PB.oneOf(year, expandedYear)), PB.char('-'), month),
+const yearMonth: k.Pattern = k.subgroup(
+  k.sequence(k.subgroup(k.oneOf(year, expandedYear)), k.char('-'), month),
 )
 
 /**
@@ -92,9 +92,7 @@ const yearMonth: PB.Pattern = PB.subgroup(
  * @since 1.0.0
  * @category Pattern
  */
-const date: PB.Pattern = PB.subgroup(
-  PB.oneOf(yearMonthDay, yearMonth, year, expandedYear),
-)
+const date: k.Pattern = k.subgroup(k.oneOf(yearMonthDay, yearMonth, year, expandedYear))
 
 /**
  * E.g. 00, 01, 02, 03, 04, 05, 06, 07, ..., 22, 23
@@ -102,12 +100,12 @@ const date: PB.Pattern = PB.subgroup(
  * @since 1.0.0
  * @category Pattern
  */
-const hour: PB.Pattern = pipe(
-  PB.char('0'),
-  PB.then(pipe(PB.integerRange(0, 9), PB.subgroup)),
-  PB.subgroup,
-  PB.or(pipe(PB.integerRange(10, 23), PB.subgroup)),
-  PB.subgroup,
+const hour: k.Pattern = pipe(
+  k.char('0'),
+  k.then(pipe(k.integerRange(0, 9), k.subgroup)),
+  k.subgroup,
+  k.or(pipe(k.integerRange(10, 23), k.subgroup)),
+  k.subgroup,
 )
 
 /**
@@ -116,19 +114,19 @@ const hour: PB.Pattern = pipe(
  * @since 1.0.0
  * @category Pattern
  */
-export const minutesSeconds: PB.Pattern = pipe(
-  PB.char('0'),
-  PB.then(pipe(PB.integerRange(0, 9), PB.subgroup)),
-  PB.subgroup,
-  PB.or(pipe(PB.integerRange(10, 59), PB.subgroup)),
-  PB.subgroup,
+export const minutesSeconds: k.Pattern = pipe(
+  k.char('0'),
+  k.then(pipe(k.integerRange(0, 9), k.subgroup)),
+  k.subgroup,
+  k.or(pipe(k.integerRange(10, 59), k.subgroup)),
+  k.subgroup,
 )
 
 /**
  * @since 1.0.0
  * @category Pattern
  */
-const milliseconds: PB.Pattern = pipe(PB.digit, PB.atLeastOne(), PB.subgroup)
+const milliseconds: k.Pattern = pipe(k.digit, k.atLeastOne(), k.subgroup)
 
 /**
  * E.g. `Z` or `±05:00`
@@ -136,17 +134,17 @@ const milliseconds: PB.Pattern = pipe(PB.digit, PB.atLeastOne(), PB.subgroup)
  * @since 1.0.0
  * @category Pattern
  */
-const timezoneOffset: PB.Pattern = pipe(
-  PB.char('Z'),
-  PB.or(
+const timezoneOffset: k.Pattern = pipe(
+  k.char('Z'),
+  k.or(
     pipe(
-      PB.characterClass(false, '+', '-'),
-      PB.then(hour),
-      PB.then(PB.char(':')),
-      PB.then(minutesSeconds),
+      k.characterClass(false, '+', '-'),
+      k.then(hour),
+      k.then(k.char(':')),
+      k.then(minutesSeconds),
     ),
   ),
-  PB.subgroup,
+  k.subgroup,
 )
 
 /**
@@ -155,14 +153,14 @@ const timezoneOffset: PB.Pattern = pipe(
  * @since 1.0.0
  * @category Pattern
  */
-const hrMinSecMs: PB.Pattern = pipe(
+const hrMinSecMs: k.Pattern = pipe(
   hour,
-  PB.then(PB.char(':')),
-  PB.then(minutesSeconds),
-  PB.then(PB.char(':')),
-  PB.then(minutesSeconds),
-  PB.then(PB.char('.')),
-  PB.then(milliseconds),
+  k.then(k.char(':')),
+  k.then(minutesSeconds),
+  k.then(k.char(':')),
+  k.then(minutesSeconds),
+  k.then(k.char('.')),
+  k.then(milliseconds),
 )
 
 /**
@@ -171,12 +169,12 @@ const hrMinSecMs: PB.Pattern = pipe(
  * @since 1.0.0
  * @category Pattern
  */
-const hrMinSec: PB.Pattern = pipe(
+const hrMinSec: k.Pattern = pipe(
   hour,
-  PB.then(PB.char(':')),
-  PB.then(minutesSeconds),
-  PB.then(PB.char(':')),
-  PB.then(minutesSeconds),
+  k.then(k.char(':')),
+  k.then(minutesSeconds),
+  k.then(k.char(':')),
+  k.then(minutesSeconds),
 )
 
 /**
@@ -185,7 +183,7 @@ const hrMinSec: PB.Pattern = pipe(
  * @since 1.0.0
  * @category Pattern
  */
-const hrMin: PB.Pattern = pipe(hour, PB.then(PB.char(':')), PB.then(minutesSeconds))
+const hrMin: k.Pattern = pipe(hour, k.then(k.char(':')), k.then(minutesSeconds))
 
 /**
  * Iso time string
@@ -193,23 +191,16 @@ const hrMin: PB.Pattern = pipe(hour, PB.then(PB.char(':')), PB.then(minutesSecon
  * @since 1.0.0
  * @category Pattern
  */
-const time: PB.Pattern = pipe(hrMinSecMs, PB.or(hrMinSec), PB.or(hrMin), PB.subgroup)
+const time: k.Pattern = pipe(hrMinSecMs, k.or(hrMinSec), k.or(hrMin), k.subgroup)
 
 /**
  * @since 1.0.0
  * @category Pattern
  */
-const dateTimeStringOptT: PB.Pattern = pipe(
+const dateTimeStringOptT: k.Pattern = pipe(
   date,
-  PB.then(
-    pipe(
-      PB.char('T'),
-      PB.or(PB.char(' ')),
-      PB.subgroup,
-      PB.then(time),
-      PB.subgroup,
-      PB.maybe,
-    ),
+  k.then(
+    pipe(k.char('T'), k.or(k.char(' ')), k.subgroup, k.then(time), k.subgroup, k.maybe),
   ),
 )
 
@@ -217,38 +208,35 @@ const dateTimeStringOptT: PB.Pattern = pipe(
  * @since 1.0.0
  * @category Pattern
  */
-const dateTimeStringReqT: PB.Pattern = pipe(
+const dateTimeStringReqT: k.Pattern = pipe(
   date,
-  PB.then(pipe(PB.char('T'), PB.or(PB.char(' ')), PB.subgroup)),
-  PB.then(time),
+  k.then(pipe(k.char('T'), k.or(k.char(' ')), k.subgroup)),
+  k.then(time),
 )
 
 /**
  * @since 1.0.0
  * @category Pattern
  */
-const isoDateStringOptTzOptT: PB.Pattern = pipe(
+const isoDateStringOptTzOptT: k.Pattern = pipe(
   dateTimeStringOptT,
-  PB.then(pipe(timezoneOffset, PB.maybe)),
+  k.then(pipe(timezoneOffset, k.maybe)),
 )
 
 /**
  * @since 1.0.0
  * @category Pattern
  */
-const isoDateStringOptTzReqT: PB.Pattern = pipe(
+const isoDateStringOptTzReqT: k.Pattern = pipe(
   dateTimeStringReqT,
-  PB.then(pipe(timezoneOffset, PB.maybe)),
+  k.then(pipe(timezoneOffset, k.maybe)),
 )
 
 /**
  * @since 1.0.0
  * @category Pattern
  */
-const isoDateStringReqTzReqT: PB.Pattern = pipe(
-  dateTimeStringReqT,
-  PB.then(timezoneOffset),
-)
+const isoDateStringReqTzReqT: k.Pattern = pipe(dateTimeStringReqT, k.then(timezoneOffset))
 
 /**
  * @since 1.0.0
