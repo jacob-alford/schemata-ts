@@ -2,7 +2,6 @@ import * as Arb from 'schemata-ts/internal/arbitrary'
 import { type WithPrimitives } from 'schemata-ts/schemables/primitives/definition'
 import { isFloat, isInt } from 'schemata-ts/schemables/primitives/utils'
 
-/** @since 2.0.0 */
 export const PrimitivesArbitrary: WithPrimitives<Arb.SchemableLambda> = {
   string: params =>
     Arb.makeArbitrary(fc =>

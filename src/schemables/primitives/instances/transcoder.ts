@@ -3,19 +3,17 @@ import * as RNEA from 'fp-ts/ReadonlyNonEmptyArray'
 import * as TC from 'schemata-ts/internal/transcoder'
 import { type WithPrimitives } from 'schemata-ts/schemables/primitives/definition'
 import { PrimitivesGuard as Guard } from 'schemata-ts/schemables/primitives/instances/guard'
-import {
-  getLengthBoundsString,
-  getNumberBoundsInt,
-} from 'schemata-ts/schemables/primitives/utils'
+import { PrimitivesTypeString } from 'schemata-ts/schemables/primitives/instances/type-string'
 
-/** @since 2.0.0 */
 export const PrimitivesTranscoder: WithPrimitives<TC.SchemableLambda> = {
   string: _ =>
     pipe(
       _,
       Guard.string,
       TC.fromGuard(identity, u =>
-        TC.transcodeErrors(TC.typeMismatch(`string${getLengthBoundsString(_)}`, u)),
+        TC.transcodeErrors(
+          TC.typeMismatch(_?.errorName ?? PrimitivesTypeString.string(_)[0], u),
+        ),
       ),
     ),
   int: _ =>
@@ -23,7 +21,9 @@ export const PrimitivesTranscoder: WithPrimitives<TC.SchemableLambda> = {
       _,
       Guard.int,
       TC.fromGuard(identity, u =>
-        TC.transcodeErrors(TC.typeMismatch(`Integer${getNumberBoundsInt(_)}`, u)),
+        TC.transcodeErrors(
+          TC.typeMismatch(_?.errorName ?? PrimitivesTypeString.int(_)[0], u),
+        ),
       ),
     ),
   float: _ =>
@@ -31,7 +31,9 @@ export const PrimitivesTranscoder: WithPrimitives<TC.SchemableLambda> = {
       _,
       Guard.float,
       TC.fromGuard(identity, u =>
-        TC.transcodeErrors(TC.typeMismatch(`Float${getNumberBoundsInt(_)}`, u)),
+        TC.transcodeErrors(
+          TC.typeMismatch(_?.errorName ?? PrimitivesTypeString.float(_)[0], u),
+        ),
       ),
     ),
   boolean: pipe(

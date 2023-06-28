@@ -1,7 +1,7 @@
 import * as fc from 'fast-check'
 import * as B_ from 'fp-ts/boolean'
 import * as E from 'fp-ts/Either'
-import { flow, pipe, tuple } from 'fp-ts/function'
+import { flow, pipe, tuple, unsafeCoerce } from 'fp-ts/function'
 import type * as IO from 'fp-ts/IO'
 import * as N from 'fp-ts/number'
 import * as RA from 'fp-ts/ReadonlyArray'
@@ -242,19 +242,20 @@ export const getTestSuite = <I, O>(schema: Schema<I, O>): TestSuite<I, O> => {
       foldTestSuites(() => 'combines'),
       testSuites => () => {
         for (const testSuite of testSuites) {
-          if (testSuite.length > 0)
+          if (testSuite.length > 0) {
             test.each(testSuite)('%s', (_, [[a, b], expected]) => {
               const actual = firstSemigroup.concat(a, b)
               expect(actual).toStrictEqual(expected)
             })
-          test.each(testSuite)('%s', (_, [[a, b], expected]) => {
-            const actual = lastSemigroup.concat(a, b)
-            expect(actual).toStrictEqual(expected)
-          })
-          test.each(testSuite)('%s', (_, [[a, b], expected]) => {
-            const actual = manySemigroup.concat(a, b)
-            expect(actual).toStrictEqual(expected)
-          })
+            test.each(testSuite)('%s', (_, [[a, b], expected]) => {
+              const actual = lastSemigroup.concat(a, b)
+              expect(actual).toStrictEqual(expected)
+            })
+            test.each(testSuite)('%s', (_, [[a, b], expected]) => {
+              const actual = manySemigroup.concat(a, b)
+              expect(actual).toStrictEqual(expected)
+            })
+          }
         }
       },
     ),
@@ -435,6 +436,7 @@ type StandardTestInputs<I, T> = {
   readonly eqTests?: GetFirstArg<TestSuite<I, T>['testEq']>
   readonly jsonSchema: GetFirstArg<TestSuite<I, T>['assertJsonSchema']>
   readonly typeString: GetFirstArg<TestSuite<I, T>['assertTypeString']>
+  readonly semigroupTests?: GetFirstArg<TestSuite<I, T>['testSemigroup']>
   readonly additionalTests?: (testSuite: TestSuite<I, T>) => IO.IO<void>
 }
 
@@ -471,6 +473,7 @@ export const deriveEqTests = <I, T>(
       )
 
 export type MakeTestValues<I, O> = {
+  readonly c: <A>(_: unknown) => A
   readonly decoder: {
     readonly pass: (
       preDecode: unknown,
@@ -494,6 +497,9 @@ export type MakeTestValues<I, O> = {
   readonly eq: {
     readonly equate: (a: O, b: O) => readonly [readonly [O, O], boolean]
     readonly disequate: (a: O, b: O) => readonly [readonly [O, O], boolean]
+  }
+  readonly semigroup: {
+    readonly combines: (a: O, b: O, result: O) => readonly [readonly [O, O], O]
   }
 }
 
@@ -531,10 +537,12 @@ const runStandardTestSuite_: StandardTestSuiteFn =
       encoderTests = [],
       guardTests = [],
       eqTests = [],
+      semigroupTests = [],
       additionalTests,
       jsonSchema,
       typeString,
     } = makeTestValues({
+      c: unsafeCoerce,
       decoder: {
         pass: (preDecode, postDecode) =>
           tuple(preDecode, E.right(postDecode ?? (preDecode as any))),
@@ -551,6 +559,9 @@ const runStandardTestSuite_: StandardTestSuiteFn =
         equate: (a, b) => tuple(tuple(a, b), true),
         disequate: (a, b) => tuple(tuple(a, b), false),
       },
+      semigroup: {
+        combines: (a, b, result) => tuple(tuple(a, b), result),
+      },
     })
 
     ;(skipAll ? describe.skip : describe)(`${fold(name)} Standard Test Suite`, () => {
@@ -561,6 +572,7 @@ const runStandardTestSuite_: StandardTestSuiteFn =
       describe('jsonSchema', _.assertJsonSchema(jsonSchema))
       describe('typeString', _.assertTypeString(typeString))
       describe('information', _.assertValidInformation)
+      describe('semigroup', _.testSemigroup(semigroupTests))
       if (!skipArbitraryChecks) {
         if (!skipJsonSchemaArbitraryChecks) {
           describe('json-schema validation', _.validateJsonSchemas)

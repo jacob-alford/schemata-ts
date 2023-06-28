@@ -7,19 +7,19 @@ import {
 import { type Integer, type MaxSafeInt, type MinSafeInt } from 'schemata-ts/integer'
 import { type SchemableKind, type SchemableLambda } from 'schemata-ts/internal/schemable'
 
-/** @since 2.0.0 */
-export type BoundedParams<
+export type NumberParams<
   Min extends number | undefined,
   Max extends number | undefined,
 > = {
   readonly min?: Min
   readonly max?: Max
+  readonly errorName?: string
 }
 
-/** @since 2.0.0 */
 export type StringParams = {
   readonly minLength?: number
   readonly maxLength?: number
+  readonly errorName?: string
 }
 
 export interface WithPrimitives<S extends SchemableLambda> {
@@ -28,7 +28,7 @@ export interface WithPrimitives<S extends SchemableLambda> {
     Min extends number | undefined = undefined,
     Max extends number | undefined = undefined,
   >(
-    params?: BoundedParams<Min, Max>,
+    params?: NumberParams<Min, Max>,
   ) => SchemableKind<
     S,
     Integer<
@@ -44,7 +44,7 @@ export interface WithPrimitives<S extends SchemableLambda> {
     Min extends number | undefined = undefined,
     Max extends number | undefined = undefined,
   >(
-    params?: BoundedParams<Min, Max>,
+    params?: NumberParams<Min, Max>,
   ) => SchemableKind<
     S,
     Float<

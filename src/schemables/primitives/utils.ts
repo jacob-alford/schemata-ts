@@ -5,17 +5,16 @@ import {
 } from 'schemata-ts/float'
 import { type Integer, type MaxSafeInt, type MinSafeInt } from 'schemata-ts/integer'
 import {
-  type BoundedParams,
+  type NumberParams,
   type StringParams,
 } from 'schemata-ts/schemables/primitives/definition'
 
-/** @since 1.0.0 */
 export const isInt =
   <
     Min extends number | undefined = undefined,
     Max extends number | undefined = undefined,
   >(
-    params: BoundedParams<Min, Max> = {},
+    params: NumberParams<Min, Max> = {},
   ) =>
   (
     n: unknown,
@@ -33,13 +32,12 @@ export const isInt =
     )
   }
 
-/** @since 1.0.0 */
 export const isFloat =
   <
     Min extends number | undefined = undefined,
     Max extends number | undefined = undefined,
   >(
-    params: BoundedParams<Min, Max> = {},
+    params: NumberParams<Min, Max> = {},
   ) =>
   (
     n: unknown,
@@ -62,7 +60,7 @@ export const getLengthBoundsString: (
 }
 
 export const getNumberBoundsInt: (
-  params?: BoundedParams<any, any>,
+  params?: NumberParams<any, any>,
   lchar?: string,
   rchar?: string,
 ) => string = (params = {}, lchar = '<', rchar = '>') => {

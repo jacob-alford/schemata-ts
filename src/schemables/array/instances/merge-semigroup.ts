@@ -5,7 +5,7 @@ import { type WithArray } from 'schemata-ts/schemables/array/definition'
 
 export const ArrayMergeSemigroup: WithArray<MSg.SchemableLambda> = {
   array: () => () => MSg.makeMergeSemigroup(() => (x, y) => x.concat(y)),
-  tuple: (...items) =>
+  tuple: (_, ...items) =>
     MSg.makeMergeSemigroup(
       concrete => (x, y) =>
         pipe(

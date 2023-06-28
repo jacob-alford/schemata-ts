@@ -5,24 +5,24 @@ import * as TC from 'schemata-ts/internal/transcoder'
 import { type WithArray } from 'schemata-ts/schemables/array/definition'
 import * as TCE from 'schemata-ts/TranscodeError'
 
-const validateArray = E.fromPredicate(
-  (u): u is Array<unknown> => Array.isArray(u),
-  u => TC.transcodeErrors(TC.typeMismatch('array', u)),
-)
+const validateArray = (name: string) =>
+  E.fromPredicate(
+    (u): u is Array<unknown> => Array.isArray(u),
+    u => TC.transcodeErrors(TC.typeMismatch(name, u)),
+  )
 
 const applicativeValidation = E.getApplicativeValidation(TCE.Semigroup)
 
 export const ArrayTranscoder: WithArray<TC.SchemableLambda> = {
-  array: (params = {}) => {
-    const { minLength = 0, maxLength = 2 ** 32 - 2 } = params
+  array: params => {
+    const { minLength = 0, maxLength = 2 ** 32 - 2, errorName } = params
     return item => ({
       encode: flow(E.traverseArray(item.encode)),
       decode: flow(
-        validateArray,
+        validateArray(errorName),
         E.filterOrElse(
           u => u.length >= minLength && u.length <= maxLength,
-          u =>
-            TC.transcodeErrors(TC.typeMismatch(`Array<${minLength}, ${maxLength}>`, u)),
+          u => TC.transcodeErrors(TC.typeMismatch(errorName, u)),
         ),
         E.chain(
           RA.traverseWithIndex(applicativeValidation)((i, u) =>
@@ -35,7 +35,7 @@ export const ArrayTranscoder: WithArray<TC.SchemableLambda> = {
       ),
     })
   },
-  tuple: (...components) => ({
+  tuple: (name, ...components) => ({
     encode: out =>
       unsafeCoerce(
         RA.sequence(applicativeValidation)(
@@ -43,11 +43,10 @@ export const ArrayTranscoder: WithArray<TC.SchemableLambda> = {
         ),
       ),
     decode: flow(
-      validateArray,
+      validateArray(name),
       E.filterOrElse(
         u => u.length === components.length,
-        u =>
-          TC.transcodeErrors(TC.typeMismatch(`tuple of length ${components.length}`, u)),
+        u => TC.transcodeErrors(TC.typeMismatch(name, u)),
       ),
       E.chain(
         RA.traverseWithIndex(applicativeValidation)((i, u) =>

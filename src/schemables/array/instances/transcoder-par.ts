@@ -7,10 +7,11 @@ import type * as TCP from 'schemata-ts/internal/transcoder-par'
 import { type WithArray } from 'schemata-ts/schemables/array/definition'
 import * as TCE from 'schemata-ts/TranscodeError'
 
-const validateArray = TE.fromPredicate(
-  (u): u is Array<unknown> => Array.isArray(u),
-  u => TC.transcodeErrors(TC.typeMismatch('array', u)),
-)
+const validateArray = (name: string) =>
+  TE.fromPredicate(
+    (u): u is Array<unknown> => Array.isArray(u),
+    u => TC.transcodeErrors(TC.typeMismatch(name, u)),
+  )
 
 const applicativeValidation = TE.getApplicativeTaskValidation(
   T.ApplicativePar,
@@ -18,8 +19,8 @@ const applicativeValidation = TE.getApplicativeTaskValidation(
 )
 
 export const ArrayTranscoderPar: WithArray<TCP.SchemableLambda> = {
-  array: (params = {}) => {
-    const { minLength = 0, maxLength = 2 ** 32 - 2 } = params
+  array: params => {
+    const { minLength = 0, maxLength = 2 ** 32 - 2, errorName } = params
 
     return item => ({
       encode: RA.traverseWithIndex(applicativeValidation)((i, u) =>
@@ -29,11 +30,10 @@ export const ArrayTranscoderPar: WithArray<TCP.SchemableLambda> = {
         ),
       ),
       decode: flow(
-        validateArray,
+        validateArray(errorName),
         TE.filterOrElse(
           u => u.length >= minLength && u.length <= maxLength,
-          u =>
-            TC.transcodeErrors(TC.typeMismatch(`Array<${minLength}, ${maxLength}>`, u)),
+          u => TC.transcodeErrors(TC.typeMismatch(errorName, u)),
         ),
         TE.chain(
           RA.traverseWithIndex(applicativeValidation)((i, u) =>
@@ -46,7 +46,7 @@ export const ArrayTranscoderPar: WithArray<TCP.SchemableLambda> = {
       ),
     })
   },
-  tuple: (...components) => ({
+  tuple: (name, ...components) => ({
     encode: out =>
       unsafeCoerce(
         RA.sequence(applicativeValidation)(
@@ -54,11 +54,10 @@ export const ArrayTranscoderPar: WithArray<TCP.SchemableLambda> = {
         ),
       ),
     decode: flow(
-      validateArray,
+      validateArray(name),
       TE.filterOrElse(
         u => u.length === components.length,
-        u =>
-          TC.transcodeErrors(TC.typeMismatch(`tuple of length ${components.length}`, u)),
+        u => TC.transcodeErrors(TC.typeMismatch(name, u)),
       ),
       TE.chain(
         RA.traverseWithIndex(applicativeValidation)((i, u) =>
