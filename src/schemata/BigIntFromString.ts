@@ -110,7 +110,7 @@ export const BigIntFromString: (
           O.chain(O.tryCatchK(s => BigInt(s))),
           O.isSome,
         ),
-      'BigIntString',
+      'bigint',
     ),
     Brand<BigIntStringBrand>(),
     Imap(

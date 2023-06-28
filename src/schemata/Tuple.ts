@@ -1,7 +1,9 @@
 /** @since 1.4.0 */
 import { pipe, unsafeCoerce } from 'fp-ts/function'
 import * as RA from 'fp-ts/ReadonlyArray'
+import { getTypeString } from 'schemata-ts/derivations/type-string-schemable'
 import { type InputOf, type OutputOf, type Schema, make } from 'schemata-ts/Schema'
+import { ArrayTypeString } from 'schemata-ts/schemables/array/instances/type-string'
 
 /**
  * A schema for n-tuples
@@ -18,13 +20,15 @@ export const Tuple = <T extends ReadonlyArray<Schema<any, any>>>(
   {
     [K in keyof T]: OutputOf<T[K]>
   }
-> =>
-  unsafeCoerce(
+> => {
+  const name = ArrayTypeString.tuple('', ...items.map(getTypeString))[0]
+  return unsafeCoerce(
     make(S =>
       pipe(
         items,
         RA.map(schema => schema.runSchema(S)),
-        schemable => S.tuple(...schemable),
+        schemable => S.tuple(name, ...schemable),
       ),
     ),
   )
+}

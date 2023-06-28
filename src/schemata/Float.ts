@@ -5,7 +5,7 @@ import {
   type MaxPositiveFloat,
 } from 'schemata-ts/float'
 import { type Schema, make } from 'schemata-ts/Schema'
-import { type BoundedParams } from 'schemata-ts/schemables/primitives/definition'
+import { type NumberParams } from 'schemata-ts/schemables/primitives/definition'
 
 /**
  * Floating point branded newtype. Parameters: min, max are inclusive.
@@ -23,7 +23,7 @@ export const Float = <
   Min extends number | undefined = undefined,
   Max extends number | undefined = undefined,
 >(
-  params?: BoundedParams<Min, Max>,
+  params?: NumberParams<Min, Max>,
 ): Schema<
   Floating<
     Min extends undefined ? MaxNegativeFloat : Min,

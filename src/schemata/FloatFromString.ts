@@ -8,7 +8,7 @@ import {
 } from 'schemata-ts/float'
 import * as PB from 'schemata-ts/PatternBuilder'
 import { type Schema } from 'schemata-ts/Schema'
-import { type BoundedParams } from 'schemata-ts/schemables/primitives/definition'
+import { type NumberParams } from 'schemata-ts/schemables/primitives/definition'
 import { PrimitivesGuard } from 'schemata-ts/schemables/primitives/instances/guard'
 import { Brand } from 'schemata-ts/schemata/Brand'
 import { Imap } from 'schemata-ts/schemata/Imap'
@@ -158,7 +158,7 @@ export const FloatFromString = <
   Min extends number | undefined = undefined,
   Max extends number | undefined = undefined,
 >(
-  params?: BoundedParams<Min, Max>,
+  params?: NumberParams<Min, Max>,
 ): Schema<
   FloatString<
     Min extends undefined ? MaxNegativeFloat : Min,

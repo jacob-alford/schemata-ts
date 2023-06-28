@@ -5,7 +5,6 @@ import * as Str from 'fp-ts/string'
 import * as Eq from 'schemata-ts/internal/eq'
 import { type WithPrimitives } from 'schemata-ts/schemables/primitives/definition'
 
-/** @since 2.0.0 */
 export const PrimitivesEq: WithPrimitives<Eq.SchemableLambda> = {
   string: constant(Str.Eq),
   int: constant(N.Eq),

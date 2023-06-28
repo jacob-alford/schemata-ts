@@ -9,7 +9,6 @@ const isBoolean = (b: unknown): b is boolean => typeof b === 'boolean'
 const isNumber = (n: unknown): n is number => typeof n === 'number'
 const isNull = (n: unknown): n is null => n === null
 
-/** @since 2.0.0 */
 export const PrimitivesGuard: WithPrimitives<G.SchemableLambda> = {
   string: (params = {}) => ({
     is: (s): s is string =>

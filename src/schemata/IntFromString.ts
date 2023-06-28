@@ -4,7 +4,7 @@ import { type Branded } from 'schemata-ts/brand'
 import { type Integer, type MaxSafeInt, type MinSafeInt } from 'schemata-ts/integer'
 import * as PB from 'schemata-ts/PatternBuilder'
 import { type Schema } from 'schemata-ts/Schema'
-import { type BoundedParams } from 'schemata-ts/schemables/primitives/definition'
+import { type NumberParams } from 'schemata-ts/schemables/primitives/definition'
 import { PrimitivesGuard } from 'schemata-ts/schemables/primitives/instances/guard'
 import { Brand } from 'schemata-ts/schemata/Brand'
 import { Imap } from 'schemata-ts/schemata/Imap'
@@ -40,7 +40,7 @@ export type IntFromStringParams<
 > = Simplify<
   {
     readonly encodeToBase?: 2 | 8 | 10 | 16
-  } & BoundedParams<Min, Max>
+  } & NumberParams<Min, Max>
 >
 
 /**

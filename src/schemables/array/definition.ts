@@ -3,15 +3,17 @@ import { type SchemableKind, type SchemableLambda } from 'schemata-ts/internal/s
 export type ArrayParams = {
   readonly minLength?: number
   readonly maxLength?: number
+  readonly errorName: string
 }
 
 export interface WithArray<S extends SchemableLambda> {
   readonly array: (
-    params?: ArrayParams,
+    params: ArrayParams,
   ) => <I, A>(
     target: SchemableKind<S, I, A>,
   ) => SchemableKind<S, ReadonlyArray<I>, ReadonlyArray<A>>
   readonly tuple: <T extends ReadonlyArray<SchemableKind<S, any, any>>>(
+    errorName: string,
     ...targets: T
   ) => SchemableKind<
     S,
