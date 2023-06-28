@@ -237,50 +237,7 @@ assert.deepStrictEqual(JS.stripIdentity(jsonSchema), {
 
 A note on `JS.stripIdentity` in the above example: internally, JSON Schema is represented as a union of Typescript classes. This is handy when inspecting the schema because the name of the schema is shown next to its properties. Because this prevents equality comparison, schemata-ts exposes a method `stripIdentity` to remove the object's class identity. _Caution_: this method stringifies and parses the schema and may throw if the schema itself contains circularity.
 
-## Pattern Builder
-
-Schemata-ts comes with powerful regex combinators that are used to construct regex from comprehensible atoms. The `Pattern` schema allows extension of a string schema to a subset of strings defined by a pattern. Decoders and Guards guarantee that a string conforms to the specified pattern, Arbitrary generates strings that follow the pattern, and Json Schema generates string schemata that lists the pattern as a property.
-
-### US Phone Number Example
-
-This is a live example validating US Phone numbers found in `src/PatternBuilder.ts`
-
-```ts
-import * as PB from 'schemata-ts/PatternBuilder'
-import { pipe } from 'fp-ts/function'
-
-const digit = PB.characterClass(false, ['0', '9'])
-
-const areaCode = pipe(
-  pipe(
-    PB.char('('),
-    PB.then(PB.times(3)(digit)),
-    PB.then(PB.char(')')),
-    PB.then(PB.maybe(PB.char(' '))),
-  ),
-  PB.or(PB.times(3)(digit)),
-  PB.subgroup,
-)
-
-const prefix = PB.times(3)(digit)
-
-const lineNumber = PB.times(4)(digit)
-
-export const usPhoneNumber = pipe(
-  areaCode,
-  PB.then(pipe(PB.char('-'), PB.maybe)),
-  PB.then(prefix),
-  PB.then(PB.char('-')),
-  PB.then(lineNumber),
-)
-
-assert.equal(PB.regexFromPattern(usPhoneNumber).test('(123) 456-7890'), true)
-assert.equal(PB.regexFromPattern(usPhoneNumber).test('(123)456-7890'), true)
-assert.equal(PB.regexFromPattern(usPhoneNumber).test('123-456-7890'), true)
-assert.equal(PB.regexFromPattern(usPhoneNumber).test('1234567890'), false)
-```
-
-## Under the hood
+## Advanced Structs and Key Transformations
 
 Schemata-ts has powerful tools for constructing domain artifacts that are strongly-typed plain javascript objects. There are a few ways to build the same schema, and some ways are more powerful than others. If, for instance, domain types are fragmented and need to compose in different ways, they can't be changed once they've been turned into schemata. `schemata-ts/struct` has built-in combinators for composing struct definitions together in elegant ways.
 

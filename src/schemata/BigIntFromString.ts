@@ -2,8 +2,8 @@
 import { flow, pipe } from 'fp-ts/function'
 import * as O from 'fp-ts/Option'
 import * as Str from 'fp-ts/string'
+import * as k from 'kuvio'
 import { type Branded } from 'schemata-ts/brand'
-import * as PB from 'schemata-ts/PatternBuilder'
 import { type Schema } from 'schemata-ts/Schema'
 import { Brand } from 'schemata-ts/schemata/Brand'
 import { Imap } from 'schemata-ts/schemata/Imap'
@@ -33,44 +33,44 @@ export type BigIntFromStringParams = {
  * @since 1.0.0
  * @category Pattern
  */
-const binaryBigIntString: PB.Pattern = pipe(
-  PB.exactString('0b'),
-  PB.then(pipe(PB.characterClass(false, ['0', '1']), PB.atLeastOne())),
+const binaryBigIntString: k.Pattern = pipe(
+  k.exactString('0b'),
+  k.then(pipe(k.characterClass(false, ['0', '1']), k.atLeastOne())),
 )
 
 /**
  * @since 1.0.0
  * @category Pattern
  */
-const octalBigIntString: PB.Pattern = pipe(
-  PB.exactString('0o'),
-  PB.then(pipe(PB.characterClass(false, ['0', '7']), PB.atLeastOne())),
+const octalBigIntString: k.Pattern = pipe(
+  k.exactString('0o'),
+  k.then(pipe(k.characterClass(false, ['0', '7']), k.atLeastOne())),
 )
 
 /**
  * @since 1.0.0
  * @category Pattern
  */
-const decimalBigIntString: PB.Pattern = pipe(
-  PB.char('-'),
-  PB.maybe,
-  PB.then(pipe(PB.digit, PB.atLeastOne())),
+const decimalBigIntString: k.Pattern = pipe(
+  k.char('-'),
+  k.maybe,
+  k.then(pipe(k.digit, k.atLeastOne())),
 )
 
 /**
  * @since 1.0.0
  * @category Pattern
  */
-const hexBigIntString: PB.Pattern = pipe(
-  PB.exactString('0x'),
-  PB.then(pipe(PB.hexDigit, PB.atLeastOne())),
+const hexBigIntString: k.Pattern = pipe(
+  k.exactString('0x'),
+  k.then(pipe(k.hexDigit, k.atLeastOne())),
 )
 
 /**
  * @since 1.0.0
  * @category Pattern
  */
-export const bigIntString: PB.Pattern = PB.oneOf(
+export const bigIntString: k.Pattern = k.oneOf(
   binaryBigIntString,
   octalBigIntString,
   decimalBigIntString,

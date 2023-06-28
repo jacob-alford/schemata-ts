@@ -1,7 +1,7 @@
 /** @since 1.0.0 */
 import { pipe } from 'fp-ts/function'
+import * as k from 'kuvio'
 import { type Branded } from 'schemata-ts/brand'
-import * as PB from 'schemata-ts/PatternBuilder'
 import { type Schema } from 'schemata-ts/Schema'
 import { Brand } from 'schemata-ts/schemata/Brand'
 import { Pattern } from 'schemata-ts/schemata/Pattern'
@@ -24,8 +24,8 @@ export type BitcoinAddress = Branded<string, BitcoinAddressBrand>
  * @internal
  */
 const bech32 = pipe(
-  PB.exactString('bc1'),
-  PB.then(pipe(PB.characterClass(false, ['a', 'z'], ['0', '9']), PB.between(25, 39))),
+  k.exactString('bc1'),
+  k.then(pipe(k.characterClass(false, ['a', 'z'], ['0', '9']), k.between(25, 39))),
 )
 
 /**
@@ -34,10 +34,10 @@ const bech32 = pipe(
  * @internal
  */
 const base58 = pipe(
-  PB.subgroup(PB.characterClass(false, ['1', '3'])),
-  PB.then(
+  k.subgroup(k.characterClass(false, ['1', '3'])),
+  k.then(
     pipe(
-      PB.characterClass(
+      k.characterClass(
         false,
         ['A', 'H'],
         ['J', 'N'],
@@ -46,7 +46,7 @@ const base58 = pipe(
         ['m', 'z'],
         ['1', '9'],
       ),
-      PB.between(25, 39),
+      k.between(25, 39),
     ),
   ),
 )
@@ -55,7 +55,7 @@ const base58 = pipe(
  * @since 1.0.0
  * @category Pattern
  */
-export const bitcoinAddress: PB.Pattern = pipe(bech32, PB.or(base58))
+export const bitcoinAddress: k.Pattern = pipe(bech32, k.or(base58))
 
 /**
  * Represents strings which are valid Bitcoin addresses.

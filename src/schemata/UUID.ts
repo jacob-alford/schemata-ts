@@ -1,11 +1,9 @@
 /** @since 1.0.0 */
+import * as k from 'kuvio'
 import { type Branded } from 'schemata-ts/brand'
-import * as PB from 'schemata-ts/PatternBuilder'
 import { type Schema } from 'schemata-ts/Schema'
 import { Brand } from 'schemata-ts/schemata/Brand'
 import { Pattern } from 'schemata-ts/schemata/Pattern'
-
-const nHexDigits = (n: number) => PB.exactly(n)(PB.hexDigit)
 
 /**
  * See: https://github.com/validatorjs/validator.js/blob/master/src/lib/isUUID.js
@@ -14,91 +12,12 @@ const nHexDigits = (n: number) => PB.exactly(n)(PB.hexDigit)
  * @category Pattern
  */
 const uuidPattern = {
-  1: PB.subgroup(
-    PB.sequence(
-      nHexDigits(8),
-      PB.char('-'),
-      nHexDigits(4),
-      PB.char('-'),
-      PB.char('1'),
-      nHexDigits(3),
-      PB.char('-'),
-      nHexDigits(4),
-      PB.char('-'),
-      nHexDigits(12),
-    ),
-  ),
-  2: PB.subgroup(
-    PB.sequence(
-      nHexDigits(8),
-      PB.char('-'),
-      nHexDigits(4),
-      PB.char('-'),
-      PB.char('2'),
-      nHexDigits(3),
-      PB.char('-'),
-      nHexDigits(4),
-      PB.char('-'),
-      nHexDigits(12),
-    ),
-  ),
-  3: PB.subgroup(
-    PB.sequence(
-      nHexDigits(8),
-      PB.char('-'),
-      nHexDigits(4),
-      PB.char('-'),
-      PB.char('3'),
-      nHexDigits(3),
-      PB.char('-'),
-      nHexDigits(4),
-      PB.char('-'),
-      nHexDigits(12),
-    ),
-  ),
-  4: PB.subgroup(
-    PB.sequence(
-      nHexDigits(8),
-      PB.char('-'),
-      nHexDigits(4),
-      PB.char('-'),
-      PB.char('4'),
-      nHexDigits(3),
-      PB.char('-'),
-      PB.characterClass(false, '8', '9', 'a', 'b'),
-      nHexDigits(3),
-      PB.char('-'),
-      nHexDigits(12),
-    ),
-  ),
-  5: PB.subgroup(
-    PB.sequence(
-      nHexDigits(8),
-      PB.char('-'),
-      nHexDigits(4),
-      PB.char('-'),
-      PB.char('5'),
-      nHexDigits(3),
-      PB.char('-'),
-      PB.characterClass(false, 'a', 'b', '8', '9'),
-      nHexDigits(3),
-      PB.char('-'),
-      nHexDigits(12),
-    ),
-  ),
-  any: PB.subgroup(
-    PB.sequence(
-      nHexDigits(8),
-      PB.char('-'),
-      nHexDigits(4),
-      PB.char('-'),
-      nHexDigits(4),
-      PB.char('-'),
-      nHexDigits(4),
-      PB.char('-'),
-      nHexDigits(12),
-    ),
-  ),
+  1: k.patterns.uuidV1,
+  2: k.patterns.uuidV2,
+  3: k.patterns.uuidV3,
+  4: k.patterns.uuidV4,
+  5: k.patterns.uuidV5,
+  any: k.patterns.anyUUID,
 }
 
 /**
