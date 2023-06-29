@@ -30,6 +30,7 @@ export type TranscodeError =
  * @category Model
  */
 export class TranscodeErrors {
+  /** @since 2.0.0 */
   readonly _tag = 'TranscodeErrors'
   constructor(readonly errors: RNEA.ReadonlyNonEmptyArray<TranscodeError>) {}
 }
@@ -41,6 +42,7 @@ export class TranscodeErrors {
  * @category Model
  */
 export class TypeMismatch {
+  /** @since 2.0.0 */
   readonly _tag = 'TypeMismatch'
   constructor(readonly expected: string, readonly actual: unknown) {}
 }
@@ -52,6 +54,7 @@ export class TypeMismatch {
  * @category Model
  */
 export class SerializationError {
+  /** @since 2.0.0 */
   readonly _tag = 'SerializationError'
   constructor(
     readonly expected: string,
@@ -67,6 +70,7 @@ export class SerializationError {
  * @category Model
  */
 export class UnexpectedValue {
+  /** @since 2.0.0 */
   readonly _tag = 'UnexpectedValue'
   constructor(readonly actual: unknown) {}
 }
@@ -78,6 +82,7 @@ export class UnexpectedValue {
  * @category Model
  */
 export class ErrorAtIndex {
+  /** @since 2.0.0 */
   readonly _tag = 'ErrorAtIndex'
   constructor(readonly index: number, readonly errors: TranscodeErrors) {}
 }
@@ -89,6 +94,7 @@ export class ErrorAtIndex {
  * @category Model
  */
 export class ErrorAtKey {
+  /** @since 2.0.0 */
   readonly _tag = 'ErrorAtKey'
   constructor(readonly key: string, readonly errors: TranscodeErrors) {}
 }
@@ -100,6 +106,7 @@ export class ErrorAtKey {
  * @category Model
  */
 export class ErrorAtUnionMember {
+  /** @since 2.0.0 */
   readonly _tag = 'ErrorAtUnionMember'
   constructor(readonly member: number | string, readonly errors: TranscodeErrors) {}
 }

@@ -3089,17 +3089,17 @@ dir-glob@^3.0.1:
   dependencies:
     path-type "^4.0.0"
 
-docs-ts@^0.7.0:
-  version "0.7.0"
-  resolved "https://registry.yarnpkg.com/docs-ts/-/docs-ts-0.7.0.tgz#89c549462f8745b84744f68362eea2c3f29f90d9"
-  integrity sha512-S9UM7Ddh0l3qwftSJiko+3+aGJrnGTnigKq4wpsOvQBmMJz7kMmdAeiTwNCRgzQI70oT3T2uyuzR9hy5JT2xPQ==
+docs-ts@^0.7.2:
+  version "0.7.2"
+  resolved "https://registry.yarnpkg.com/docs-ts/-/docs-ts-0.7.2.tgz#ee4f34a1f9d11a91bd37d2cae7a0952b8e6efdfd"
+  integrity sha512-9zydJV84gi0imZWdVPHHqar7yIx6wRpwRHc4aJ3pw9vov/4pAmjfEPPE5gXRtiPFf+3WqOrE4qC6ih1kBJGl9w==
   dependencies:
     chalk "^2.4.2"
     doctrine "^3.0.0"
-    fp-ts "^2.9.3"
+    fp-ts "^2.13.2"
     fs-extra "^7.0.1"
     glob "^7.1.6"
-    io-ts "^2.2.13"
+    io-ts "^2.2.20"
     logging-ts "^0.3.4"
     markdown-toc "^1.2.0"
     rimraf "^2.7.1"
@@ -3771,12 +3771,12 @@ fp-ts-laws@^0.3.0:
   resolved "https://registry.yarnpkg.com/fp-ts-laws/-/fp-ts-laws-0.3.0.tgz#428639e087081317cdbf96fc7958449fb8c42602"
   integrity sha512-uCLBnZq429UDYIx7TDsKmIOXQvgVfEFJMDBbJ2OljpW19cCEF+UgwoGnTfq6AYkHofFlkd6t0p3a9HB1OXTiaA==
 
-fp-ts@^2.11, fp-ts@^2.13.1:
+fp-ts@^2.11, fp-ts@^2.13.1, fp-ts@^2.13.2:
   version "2.16.0"
   resolved "https://registry.yarnpkg.com/fp-ts/-/fp-ts-2.16.0.tgz#64e03314dfc1c7ce5e975d3496ac14bc3eb7f92e"
   integrity sha512-bLq+KgbiXdTEoT1zcARrWEpa5z6A/8b7PcDW7Gef3NSisQ+VS7ll2Xbf1E+xsgik0rWub/8u0qP/iTTjj+PhxQ==
 
-fp-ts@^2.9.3, fp-ts@^2.9.5:
+fp-ts@^2.9.5:
   version "2.12.3"
   resolved "https://registry.yarnpkg.com/fp-ts/-/fp-ts-2.12.3.tgz#d991b1e8467d325dadbb6b0ab9524f773e9c3c49"
   integrity sha512-8m0XvW8kZbfnJOA4NvSVXu95mLbPf4LQGwQyqVukIYS4KzSNJiyKSmuZUmbVHteUi6MGkAJGPb0goPZqI+Tsqg==
@@ -4286,10 +4286,10 @@ internal-slot@^1.0.3:
     has "^1.0.3"
     side-channel "^1.0.4"
 
-io-ts@^2.2.13:
-  version "2.2.18"
-  resolved "https://registry.yarnpkg.com/io-ts/-/io-ts-2.2.18.tgz#dfb41aded5f0e598ccf2a25a483c205444210173"
-  integrity sha512-3JxUUzRtPQPs5sOwB7pW0+Xb54nOzqA6M1sRB1hwgsRmkWMeGTjtOrCynGTJhIj+mBLUj2S37DAq2+BrPh9kTQ==
+io-ts@^2.2.20:
+  version "2.2.20"
+  resolved "https://registry.yarnpkg.com/io-ts/-/io-ts-2.2.20.tgz#be42b75f6668a2c44f706f72ee6e4c906777c7f5"
+  integrity sha512-Rq2BsYmtwS5vVttie4rqrOCIfHCS9TgpRLFpKQCM1wZBBRY9nWVGmEvm2FnDbSE2un1UE39DvFpTR5UL47YDcA==
 
 is-absolute@^1.0.0:
   version "1.0.0"

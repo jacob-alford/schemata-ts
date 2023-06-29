@@ -1,3 +1,4 @@
+/** @since 2.0.0 */
 import { type Branded } from 'schemata-ts/brand'
 
 /**
@@ -60,6 +61,7 @@ export type MaxNegativeFloat = -1.7976931348623157e308
  */
 export const maxNegativeFloat: MaxNegativeFloat = -Number.MAX_VALUE as MaxNegativeFloat
 
+/** @since 2.0.0 */
 interface FloatBrand<Min extends number, Max extends number> {
   readonly Float: unique symbol
   readonly Min: Min
