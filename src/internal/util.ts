@@ -1,9 +1,7 @@
 import * as E from 'fp-ts/Either'
 import { identity, pipe } from 'fp-ts/function'
 import type * as IO from 'fp-ts/IO'
-import * as O from 'fp-ts/Option'
-import * as RA from 'fp-ts/ReadonlyArray'
-import * as RNEA from 'fp-ts/ReadonlyNonEmptyArray'
+import type * as O from 'fp-ts/Option'
 import * as RR from 'fp-ts/ReadonlyRecord'
 import type * as Sg from 'fp-ts/Semigroup'
 import * as T from 'fp-ts/Task'
@@ -69,37 +67,34 @@ export const witherRemap =
     ) => E.Either<E, O.Option<readonly [output: A, key: keyof In]>>,
   ) =>
   (s: In): E.Either<E, { [K in keyof In]: A }> => {
-    const errors: E[] = []
-    const out: { [K in keyof In]: A } = {} as any
+    const effects: Record<string, E.Either<E, O.Option<readonly [A, keyof In]>>> = {}
+
     /* Enumerable own, Enumerable inherited */
     for (const key in s) {
       /* Ignores inherited properties */
       if (!hasOwn(s, key)) continue
 
       /* Perform effect */
-      const result = f(key, s[key])
-
-      /* add any errors to accumulation */
-      if (E.isLeft(result)) {
-        errors.push(result.left)
-        continue
-      }
-
-      /* none => skip */
-      if (O.isNone(result.right)) continue
-      else {
-        const [value, newKey] = result.right.value
-        // merge two keys if the new key already exists
-        if (hasOwn(out, newKey)) {
-          out[newKey] = concatKeys.concat(out[newKey], value)
-          continue
-        }
-        out[newKey] = value
-      }
+      effects[key] = f(key, s[key])
     }
-    return RA.isNonEmpty(errors)
-      ? E.left(pipe(errors, RNEA.concatAll(sgErrors)))
-      : E.right(out)
+
+    return pipe(
+      effects,
+      RR.wither(E.getApplicativeValidation(sgErrors))(identity),
+      E.map(s => {
+        const out: { [K in keyof In]: A } = {} as any
+        for (const key in s) {
+          // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+          const [value, newKey] = s[key]!
+          if (hasOwn(out, newKey)) {
+            out[newKey] = concatKeys.concat(out[newKey], value)
+            continue
+          }
+          out[newKey] = value
+        }
+        return out
+      }),
+    )
   }
 
 const getApplicativeValidationPar = <E>(sgErrors: Sg.Semigroup<E>) =>
