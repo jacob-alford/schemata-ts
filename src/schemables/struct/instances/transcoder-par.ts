@@ -15,16 +15,16 @@ const decodeErrorValidation = TE.getApplicativeTaskValidation(T.ApplyPar, TCE.Se
 const apSecond = Ap.apSecond(decodeErrorValidation)
 
 const validateObject: (
+  name: string,
+) => (
   u: unknown,
-) => TE.TaskEither<
-  TCE.TranscodeErrors,
-  Record<string | number | symbol, unknown>
-> = u => {
-  if (u === null || typeof u !== 'object' || Array.isArray(u)) {
-    return TCP.failure(TCP.transcodeErrors(TCP.typeMismatch('object', u)))
+) => TE.TaskEither<TCE.TranscodeErrors, Record<string | number | symbol, unknown>> =
+  name => u => {
+    if (u === null || typeof u !== 'object' || Array.isArray(u)) {
+      return TCP.failure(TCP.transcodeErrors(TCP.typeMismatch(name, u)))
+    }
+    return TCP.success(u as Record<string | number | symbol, unknown>)
   }
-  return TCP.success(u as Record<string | number | symbol, unknown>)
-}
 
 export const StructTranscoderPar: WithStruct<TCP.SchemableLambda> = {
   struct: (properties, extraProps = 'strip') => {
@@ -118,13 +118,13 @@ export const StructTranscoderPar: WithStruct<TCP.SchemableLambda> = {
       },
     }
   },
-  record: (key, codomain) => ({
+  record: (key, codomain, expectedName = 'object', semigroup = Sg.last()) => ({
     decode: flow(
-      validateObject,
+      validateObject(expectedName),
       TE.chain(
         witherRemapPar(
           TCE.Semigroup,
-          Sg.last<unknown>(),
+          semigroup,
         )((k, u) =>
           pipe(
             Ap.sequenceT(decodeErrorValidation)(codomain.decode(u), key.decode(k)),
@@ -149,7 +149,7 @@ export const StructTranscoderPar: WithStruct<TCP.SchemableLambda> = {
   }),
   intersection: (x, y) => ({
     decode: flow(
-      validateObject,
+      validateObject('object'),
       TE.chain(u =>
         pipe(
           Ap.sequenceT(decodeErrorValidation)(x.decode(u), y.decode(u)),

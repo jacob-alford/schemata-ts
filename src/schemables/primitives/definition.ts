@@ -14,6 +14,7 @@ export type NumberParams<
   readonly min?: Min
   readonly max?: Max
   readonly errorName?: string
+  readonly epsilon?: number
 }
 
 export type StringParams = {

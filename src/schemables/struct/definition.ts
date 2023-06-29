@@ -1,3 +1,4 @@
+import { type Semigroup } from 'fp-ts/Semigroup'
 import { type SchemableKind, type SchemableLambda } from 'schemata-ts/internal/schemable'
 import { type Combine } from 'schemata-ts/internal/type-utils'
 import type * as _ from 'schemata-ts/schemables/struct/type-utils'
@@ -21,6 +22,8 @@ export interface WithStruct<S extends SchemableLambda> {
   readonly record: <I, O, K extends string>(
     key: SchemableKind<S, K, K>,
     codomain: SchemableKind<S, I, O>,
+    expectedName?: string,
+    combineKeys?: Semigroup<O>,
   ) => SchemableKind<S, Readonly<Record<K, I>>, Readonly<Record<K, O>>>
   readonly intersection: <
     I1 extends Record<string, any>,

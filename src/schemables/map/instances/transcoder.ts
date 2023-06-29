@@ -10,11 +10,9 @@ import { ArrayTranscoder } from 'schemata-ts/schemables/array/instances/transcod
 import { type WithMap } from 'schemata-ts/schemables/map/definition'
 
 export const MapTranscoder: WithMap<TC.SchemableLambda> = {
-  mapFromEntries: (ordK, sk, sa, arrayExpected, tupleExpected) => ({
+  mapFromEntries: (ordK, sk, sa, expectedName) => ({
     decode: flow(
-      ArrayTranscoder.array({ errorName: arrayExpected })(
-        ArrayTranscoder.tuple(tupleExpected, sk, sa),
-      ).decode,
+      ArrayTranscoder.array({ expectedName })(ArrayTranscoder.tuple('', sk, sa)).decode,
       E.map(RM.fromFoldable(ordK, Sg.last(), RA.Foldable)),
     ),
     encode: flow(
