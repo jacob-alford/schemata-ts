@@ -14,15 +14,18 @@ const validateArray = (name: string) =>
 const applicativeValidation = E.getApplicativeValidation(TCE.Semigroup)
 
 export const ArrayTranscoder: WithArray<TC.SchemableLambda> = {
-  array: params => {
-    const { minLength = 0, maxLength = 2 ** 32 - 2, errorName } = params
+  array: (params = {}) => {
+    const { minLength = 0, maxLength = 2 ** 32 - 2, expectedName } = params
     return item => ({
       encode: flow(E.traverseArray(item.encode)),
       decode: flow(
-        validateArray(errorName),
+        validateArray(expectedName ?? 'Array'),
         E.filterOrElse(
           u => u.length >= minLength && u.length <= maxLength,
-          u => TC.transcodeErrors(TC.typeMismatch(errorName, u)),
+          u =>
+            TC.transcodeErrors(
+              TC.typeMismatch(expectedName ?? `Array[${minLength},${maxLength}]`, u),
+            ),
         ),
         E.chain(
           RA.traverseWithIndex(applicativeValidation)((i, u) =>
