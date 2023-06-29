@@ -6,7 +6,6 @@
     "moduleResolution": "node",
     "skipLibCheck": false,
     "lib": ["DOM", "ESNext"],
-
     "module": "CommonJS",
     "target": "ESNext",
 
