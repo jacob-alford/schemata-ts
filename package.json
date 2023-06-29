@@ -49,6 +49,7 @@
     "test:ci": "yarn run jest --coverage --ci",
     "circular": "yarn madge --circular dist",
     "clean": "rm -rf dist build",
+    "build:check": "tsc -p ./tsconfig.build.json --noEmit",
     "build": "tsc -b ./tsconfig.build.json",
     "build:watch": "yarn build --watch",
     "build:mjs": "babel build/esm --config-file ./.babel.esm.json --out-dir build/mjs --out-file-extension .mjs --source-maps",
