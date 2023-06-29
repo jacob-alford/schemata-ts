@@ -8,7 +8,10 @@ import { type WithPrimitives } from 'schemata-ts/schemables/primitives/definitio
 export const PrimitivesEq: WithPrimitives<Eq.SchemableLambda> = {
   string: constant(Str.Eq),
   int: constant(N.Eq),
-  float: constant(N.Eq),
+  float: (params = {}) => {
+    const { epsilon } = params
+    return Eq.fromEquals((x, y) => Math.abs(x - y) <= (epsilon ?? 2000 * Number.EPSILON))
+  },
   boolean: B.Eq,
   unknown: Eq.eqStrict,
   literal: constant(Eq.eqStrict),

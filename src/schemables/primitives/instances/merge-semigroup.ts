@@ -8,5 +8,5 @@ export const PrimitivesMergeSemigroup: WithPrimitives<MSg.SchemableLambda> = {
   float: constant(MSg.identity('number')),
   boolean: MSg.identity('boolean'),
   unknown: MSg.identity('unknown'),
-  literal: constant(MSg.identity()),
+  literal: constant(MSg.identity('fallback')),
 }

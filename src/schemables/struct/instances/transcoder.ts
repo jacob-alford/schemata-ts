@@ -14,13 +14,16 @@ const decodeErrorValidation = E.getApplicativeValidation(TCE.Semigroup)
 const apSecond = Ap.apSecond(decodeErrorValidation)
 
 const validateObject: (
+  name: string,
+) => (
   u: unknown,
-) => E.Either<TCE.TranscodeErrors, Record<string | number | symbol, unknown>> = u => {
-  if (u === null || typeof u !== 'object' || Array.isArray(u)) {
-    return TC.failure(TC.transcodeErrors(TC.typeMismatch('object', u)))
+) => E.Either<TCE.TranscodeErrors, Record<string | number | symbol, unknown>> =
+  name => u => {
+    if (u === null || typeof u !== 'object' || Array.isArray(u)) {
+      return TC.failure(TC.transcodeErrors(TC.typeMismatch(name, u)))
+    }
+    return TC.success(u as Record<string | number | symbol, unknown>)
   }
-  return TC.success(u as Record<string | number | symbol, unknown>)
-}
 
 export const StructTranscoder: WithStruct<TC.SchemableLambda> = {
   struct: (properties, extraProps = 'strip') => {
@@ -29,7 +32,7 @@ export const StructTranscoder: WithStruct<TC.SchemableLambda> = {
     return {
       decode: (u): E.Either<TCE.TranscodeErrors, any> =>
         pipe(
-          validateObject(u),
+          validateObject('object')(u),
           E.chain(u => {
             // --- decode all known properties of an object's own non-inherited properties
             const outKnown = pipe(
@@ -116,13 +119,13 @@ export const StructTranscoder: WithStruct<TC.SchemableLambda> = {
       },
     }
   },
-  record: (key, codomain) => ({
+  record: (key, codomain, expectedName = 'object', semigroup = Sg.last()) => ({
     decode: flow(
-      validateObject,
+      validateObject(expectedName),
       E.chain(
         witherRemap(
           TCE.Semigroup,
-          Sg.last<unknown>(),
+          semigroup,
         )((k, u) =>
           pipe(
             Ap.sequenceT(decodeErrorValidation)(codomain.decode(u), key.decode(k)),
@@ -147,7 +150,7 @@ export const StructTranscoder: WithStruct<TC.SchemableLambda> = {
   }),
   intersection: (x, y) => ({
     decode: flow(
-      validateObject,
+      validateObject('object'),
       E.chain(u =>
         pipe(
           Ap.sequenceT(decodeErrorValidation)(x.decode(u), y.decode(u)),

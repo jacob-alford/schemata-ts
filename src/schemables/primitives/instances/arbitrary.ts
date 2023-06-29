@@ -28,8 +28,8 @@ export const PrimitivesArbitrary: WithPrimitives<Arb.SchemableLambda> = {
     return Arb.makeArbitrary(fc =>
       fc
         .double({
-          min,
-          max,
+          min: Math.max(min, -Number.MAX_VALUE),
+          max: Math.min(max, Number.MAX_VALUE),
           noDefaultInfinity: true,
           noNaN: true,
         })

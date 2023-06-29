@@ -17,9 +17,6 @@ export const MapFromEntries = <EK, EA, K extends EK, A extends EA>(
   sK: Schema<EK, K>,
   sA: Schema<EA, A>,
 ): Schema<ReadonlyArray<readonly [EK, EA]>, ReadonlyMap<K, A>> => {
-  const tupleName = tuple('', getTypeString(sK), getTypeString(sA))
-  const arrayName = array({ errorName: '' })(tupleName)
-  return make(S =>
-    S.mapFromEntries(ordK, sK.runSchema(S), sA.runSchema(S), arrayName[0], tupleName[0]),
-  )
+  const arrayName = array()(tuple('', getTypeString(sK), getTypeString(sA)))
+  return make(S => S.mapFromEntries(ordK, sK.runSchema(S), sA.runSchema(S), arrayName[0]))
 }

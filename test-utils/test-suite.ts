@@ -3,7 +3,7 @@ import * as B_ from 'fp-ts/boolean'
 import * as E from 'fp-ts/Either'
 import { flow, pipe, tuple, unsafeCoerce } from 'fp-ts/function'
 import type * as IO from 'fp-ts/IO'
-import * as N from 'fp-ts/number'
+import type * as J from 'fp-ts/Json'
 import * as RA from 'fp-ts/ReadonlyArray'
 import * as RR from 'fp-ts/ReadonlyRecord'
 import * as RTup from 'fp-ts/ReadonlyTuple'
@@ -85,7 +85,11 @@ export interface TestSuite<I, O> {
   readonly testTranscoderLaws: IO.IO<void>
 
   /** Uses arbitrary to test semigroup associativity */
-  readonly testSemigroupLaws: IO.IO<void>
+  readonly testSemigroupLaws: (params: {
+    skipFirst?: boolean
+    skipLast?: boolean
+    skipMany?: boolean
+  }) => IO.IO<void>
 
   /** Uses arbitrary to generate random domain values and tests the eq identity law */
   readonly testEqLaws: IO.IO<void>
@@ -94,27 +98,30 @@ export interface TestSuite<I, O> {
   readonly testArbitraryGuard: IO.IO<void>
 }
 
-const replaceBigInts: (
+const mapArrayStruct: (
   input: Record<string, unknown> | Array<unknown>,
 ) => Readonly<Record<string, unknown>> | ReadonlyArray<unknown> = _ =>
   Array.isArray(_)
     ? pipe(
         _,
-        RA.mapWithIndex((i, _) => safeStringify(_, i)),
+        RA.mapWithIndex((i, _) => safeJsonify(_, i)),
       )
     : pipe(
         _,
-        RR.mapWithIndex((i, _) => safeStringify(_, i)),
+        RR.mapWithIndex((i, _) => safeJsonify(_, i)),
       )
 
-const safeStringify = (input: unknown, fallback: number | string): string => {
-  if (typeof input === 'string') return input
-  if (typeof input === 'number' || typeof input === 'bigint' || input === null) {
+const safeJsonify = (input: unknown, fallback: number | string): J.Json => {
+  if (typeof input === 'string' || typeof input === 'number' || input === null) {
+    return input
+  }
+
+  if (typeof input === 'bigint') {
     return String(input)
   }
 
   if (typeof input === 'object') {
-    return replaceBigInts(input as Record<string, unknown> | Array<unknown>) as any
+    return mapArrayStruct(input as Record<string, unknown> | Array<unknown>) as any
   }
 
   return String(fallback)
@@ -133,7 +140,7 @@ const foldTestSuites =
               suite as ReadonlyArray<TestItem<I, T>>,
               RA.mapWithIndex((i, [testValue, result]) =>
                 tuple(
-                  `${prepend(result)} ${safeStringify(testValue, i)}`,
+                  `${prepend(result)} ${JSON.stringify(safeJsonify(testValue, i))}`,
                   tuple(testValue, result),
                 ),
               ),
@@ -160,7 +167,7 @@ export const getTestSuite = <I, O>(schema: Schema<I, O>): TestSuite<I, O> => {
   const lastSemigroup = semigroup_.semigroup('last')
   const manySemigroup = semigroup_.semigroup({
     string: Str.Semigroup,
-    number: N.SemigroupSum,
+    number: Sg.last(),
     boolean: B_.SemigroupAll,
     unknown: Sg.last(),
     fallback: 'last',
@@ -348,42 +355,49 @@ export const getTestSuite = <I, O>(schema: Schema<I, O>): TestSuite<I, O> => {
                 )(),
               ).toStrictEqual(E.right(true))
             }),
+            {
+              endOnFailure: false,
+            },
           )
         })
       })
     },
-    testSemigroupLaws: () => {
-      const arbitrary = getArbitrary(schema).arbitrary(fc)
-      describe('associativity', () => {
-        test('firstSemigroup', () => {
-          fc.assert(
-            fc.property(arbitrary, arbitrary, arbitrary, (a, b, c) => {
-              const left = firstSemigroup.concat(firstSemigroup.concat(a, b), c)
-              const right = firstSemigroup.concat(a, firstSemigroup.concat(b, c))
-              expect(eq.equals(left, right)).toBe(true)
-            }),
-          )
+    testSemigroupLaws:
+      (params = {}) =>
+      () => {
+        const { skipMany = false, skipFirst = false, skipLast = false } = params
+        const arbitrary = getArbitrary(schema).arbitrary(fc)
+        describe('associativity', () => {
+          // eslint-disable-next-line @typescript-eslint/no-extra-semi
+          ;(skipFirst ? test.skip : test)('firstSemigroup', () => {
+            fc.assert(
+              fc.property(arbitrary, arbitrary, arbitrary, (a, b, c) => {
+                const left = firstSemigroup.concat(firstSemigroup.concat(a, b), c)
+                const right = firstSemigroup.concat(a, firstSemigroup.concat(b, c))
+                expect(eq.equals(left, right)).toBe(true)
+              }),
+            )
+          })
+          ;(skipLast ? test.skip : test)('lastSemigroup', () => {
+            fc.assert(
+              fc.property(arbitrary, arbitrary, arbitrary, (a, b, c) => {
+                const left = lastSemigroup.concat(lastSemigroup.concat(a, b), c)
+                const right = lastSemigroup.concat(a, lastSemigroup.concat(b, c))
+                expect(eq.equals(left, right)).toBe(true)
+              }),
+            )
+          })
+          ;(skipMany ? test.skip : test)('manySemigroup', () => {
+            fc.assert(
+              fc.property(arbitrary, arbitrary, arbitrary, (a, b, c) => {
+                const left = manySemigroup.concat(manySemigroup.concat(a, b), c)
+                const right = manySemigroup.concat(a, manySemigroup.concat(b, c))
+                expect(eq.equals(left, right)).toBe(true)
+              }),
+            )
+          })
         })
-        test('lastSemigroup', () => {
-          fc.assert(
-            fc.property(arbitrary, arbitrary, arbitrary, (a, b, c) => {
-              const left = lastSemigroup.concat(lastSemigroup.concat(a, b), c)
-              const right = lastSemigroup.concat(a, lastSemigroup.concat(b, c))
-              expect(eq.equals(left, right)).toBe(true)
-            }),
-          )
-        })
-        test('manySemigroup', () => {
-          fc.assert(
-            fc.property(arbitrary, arbitrary, arbitrary, (a, b, c) => {
-              const left = manySemigroup.concat(manySemigroup.concat(a, b), c)
-              const right = manySemigroup.concat(a, manySemigroup.concat(b, c))
-              expect(eq.equals(left, right)).toBe(true)
-            }),
-          )
-        })
-      })
-    },
+      },
     testEqLaws: () => {
       const arbitrary = getArbitrary(schema).arbitrary(fc)
       test('reflexivity', () => {
@@ -508,6 +522,11 @@ export type StandardTestSuiteOptions = {
   readonly skipArbitraryChecks?: boolean
   readonly skipJsonSchemaArbitraryChecks?: boolean
   readonly skipAll?: boolean
+  readonly skip?: ReadonlySet<
+    | 'semigroup-many-associativity'
+    | 'semigroup-first-associativity'
+    | 'semigroup-last-associativity'
+  >
 }
 
 type StandardTestSuiteFn = <I, O>(
@@ -530,6 +549,7 @@ const runStandardTestSuite_: StandardTestSuiteFn =
       skipArbitraryChecks = false,
       skipAll = false,
       skipJsonSchemaArbitraryChecks = false,
+      skip = new Set(),
     } = options
     const _ = getTestSuite(schema)
     const {
@@ -578,7 +598,14 @@ const runStandardTestSuite_: StandardTestSuiteFn =
           describe('json-schema validation', _.validateJsonSchemas)
         }
         describe('transcoder laws', _.testTranscoderLaws)
-        describe('semigroup laws', _.testSemigroupLaws)
+        describe(
+          'semigroup laws',
+          _.testSemigroupLaws({
+            skipFirst: skip.has('semigroup-first-associativity'),
+            skipLast: skip.has('semigroup-last-associativity'),
+            skipMany: skip.has('semigroup-many-associativity'),
+          }),
+        )
         describe('eq laws', _.testEqLaws)
         describe('arbitrary <-> guard', _.testArbitraryGuard)
       }

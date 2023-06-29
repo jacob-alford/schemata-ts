@@ -2,7 +2,8 @@ import { type Semigroup, first, last } from 'fp-ts/Semigroup'
 import type * as hkt from 'schemata-ts/internal/schemable'
 import { memoize } from 'schemata-ts/Schema'
 
-type MergeOptions = {
+/** @internal */
+export type MergeStrategy = {
   readonly string?: Semigroup<string>
   readonly number?: Semigroup<number>
   readonly boolean?: Semigroup<boolean>
@@ -12,7 +13,7 @@ type MergeOptions = {
 
 /** @internal */
 export interface MergeSemigroup<O> {
-  readonly semigroup: (concrete?: 'first' | 'last' | MergeOptions) => Semigroup<O>
+  readonly semigroup: (concrete?: 'first' | 'last' | MergeStrategy) => Semigroup<O>
 }
 
 /** @internal */
@@ -21,29 +22,42 @@ export interface SchemableLambda extends hkt.SchemableLambda {
 }
 
 /** @internal */
-export const identity: <O>(choose?: keyof MergeOptions) => MergeSemigroup<O> = (
-  choice = 'fallback',
-) =>
-  constSemigroup((concrete = 'last') =>
-    concrete === 'last'
-      ? last()
-      : concrete === 'first'
-      ? first()
-      : concrete[choice] ?? concrete['fallback'] === 'first'
-      ? first()
-      : last(),
-  )
+export const identity = <O>(choice: keyof MergeStrategy): MergeSemigroup<O> =>
+  constSemigroup<any>((concrete = 'last') => {
+    if (concrete === 'last') {
+      return last()
+    }
+    if (concrete === 'first') {
+      return first()
+    }
+
+    const _ = concrete[choice]
+
+    if (typeof _ !== 'string' && _ !== undefined) {
+      return _
+    }
+
+    if (_ === 'first') {
+      return first()
+    }
+
+    if (_ === 'last') {
+      return last()
+    }
+
+    return concrete['fallback'] === 'last' ? last() : first()
+  })
 
 /** @internal */
 export const constSemigroup: <O>(
-  make: (concrete?: 'first' | 'last' | MergeOptions) => Semigroup<O>,
+  make: (concrete?: 'first' | 'last' | MergeStrategy) => Semigroup<O>,
 ) => MergeSemigroup<O> = make => ({
   semigroup: memoize(make),
 })
 
 /** @internal */
 export const makeMergeSemigroup: <O>(
-  make: (concrete?: 'first' | 'last' | MergeOptions) => (x: O, y: O) => O,
+  make: (concrete?: 'first' | 'last' | MergeStrategy) => (x: O, y: O) => O,
 ) => MergeSemigroup<O> = make => ({
   semigroup: memoize(concrete => ({
     concat: make(concrete),
