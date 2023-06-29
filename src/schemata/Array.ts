@@ -20,16 +20,16 @@ export const Array =
   (params: ArrayParams = {}) =>
   <E, A>(codomain: Schema<E, A>): Schema<ReadonlyArray<E>, ReadonlyArray<A>> => {
     const { errorName: errorName_ } = params
-    const errorName =
+    const expectedName =
       errorName_ ??
       pipe(
         getTypeString(codomain),
-        ArrayTypeString.array({ ...params, errorName: '' }),
+        ArrayTypeString.array({ ...params, expectedName: '' }),
       )[0]
     return make(_ =>
       _.array({
         ...params,
-        errorName,
+        expectedName,
       })(codomain.runSchema(_)),
     )
   }
