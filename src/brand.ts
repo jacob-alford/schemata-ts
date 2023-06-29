@@ -6,6 +6,8 @@
 
 /** @since 2.0.0 */
 export const BrandSymbol = Symbol.for('schemata-ts/brand')
+
+/** @since 2.0.0 */
 export type BrandSymbol = typeof BrandSymbol
 
 /**

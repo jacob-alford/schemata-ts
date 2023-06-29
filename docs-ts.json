@@ -2,6 +2,7 @@
   "exclude": ["src/internal/*", "src/schemables/**/*"],
   "theme": "just-the-docs/just-the-docs",
   "compilerOptions": {
+    "allowImportingTsExtensions": true,
     "noEmit": true,
     "strict": true,
     "paths": {

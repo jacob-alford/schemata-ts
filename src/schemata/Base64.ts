@@ -20,6 +20,11 @@ interface Base64Brand {
  */
 export type Base64 = Branded<string, Base64Brand>
 
+/**
+ * A single base64 character, excluding padding characters
+ *
+ * @since 1.0.0
+ */
 export const base64Character = pipe(PB.alnum, PB.and(PB.characterClass(false, '+', '/')))
 
 /**
