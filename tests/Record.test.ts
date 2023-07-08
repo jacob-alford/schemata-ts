@@ -12,25 +12,21 @@ const Schema = S.Record(S.CamelCaseString(), S.Tuple(S.String(), S.Float()), {
   fallback: 'last',
 })
 
-runStandardTestSuite(
-  Schema,
-  _ => ({
-    decoderTests: [
-      _.decoder.pass(
-        {
-          'foo bar baz': ['foo', 1.2],
-          'baz-quux-foo': ['foo', 3.4],
-          foo_bar_baz: ['bar', 5.6],
-          BAZ_QUUX_FOO: ['baz', 7.8],
-        },
-        {
-          fooBarBaz: ['foobar', 6.8],
-          bazQuuxFoo: ['bazfoo', 11.2],
-        },
-      ),
-    ],
-    jsonSchema: JS.record(JS.tuple(JS.string(), JS.number())),
-    typeString: 'Record<string, [string, Float]>',
-  }),
-  { skipArbitraryChecks: true },
-)()
+runStandardTestSuite(Schema, _ => ({
+  decoderTests: [
+    _.decoder.pass(
+      {
+        'foo bar baz': ['foo', 1.2],
+        'baz-quux-foo': ['foo', 3.4],
+        foo_bar_baz: ['bar', 5.6],
+        BAZ_QUUX_FOO: ['baz', 7.8],
+      },
+      {
+        fooBarBaz: ['foobar', 6.8],
+        bazQuuxFoo: ['bazfoo', 11.2],
+      },
+    ),
+  ],
+  jsonSchema: JS.record(JS.tuple(JS.string(), JS.number())),
+  typeString: 'Record<string, [string, Float]>',
+}))()
