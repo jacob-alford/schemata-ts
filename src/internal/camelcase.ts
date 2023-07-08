@@ -71,7 +71,8 @@ const trimDelimiters: (s: string) => string = flow(
   RA.foldMap(Str.Monoid)(identity),
 )
 
-const isUppercase = (s: string): boolean => s === s.toUpperCase()
+const isLetter = (s: string): boolean => /[a-zA-Z]/.test(s)
+const isUppercase = (s: string): boolean => isLetter(s) && s === s.toUpperCase()
 const isNumber = (char: string): boolean => /[0-9]/.test(char)
 const hasLowercase = (s: string): boolean => /[a-z]/gm.test(s)
 

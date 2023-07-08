@@ -1,7 +1,8 @@
 import * as fc from 'fast-check'
 import * as B_ from 'fp-ts/boolean'
+import * as Cons from 'fp-ts/Console'
 import * as E from 'fp-ts/Either'
-import { flow, pipe, tuple, unsafeCoerce } from 'fp-ts/function'
+import { constVoid, flow, pipe, tuple, unsafeCoerce } from 'fp-ts/function'
 import type * as IO from 'fp-ts/IO'
 import type * as J from 'fp-ts/Json'
 import * as RA from 'fp-ts/ReadonlyArray'
@@ -351,7 +352,13 @@ export const getTestSuite = <I, O>(schema: Schema<I, O>): TestSuite<I, O> => {
                   result,
                   TE.bindTo('result'),
                   TE.apS('initial', initial),
-                  TE.map(({ result, initial }) => eq.equals(result, initial)),
+                  TE.bind('equals', ({ result, initial }) =>
+                    TE.right(eq.equals(result, initial)),
+                  ),
+                  TE.chainFirstIOK(({ result, initial, equals }) =>
+                    !equals ? Cons.log({ result, initial, output, equals }) : constVoid,
+                  ),
+                  TE.map(({ equals }) => equals),
                 )(),
               ).toStrictEqual(E.right(true))
             }),
