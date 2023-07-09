@@ -21,8 +21,8 @@ export const CheckDigitTranscoder: WithCheckDigit<TC.SchemableLambda> = {
             s =>
               TC.transcodeErrors(
                 TC.typeMismatch(
-                  s,
                   replaceCharAt(s, locationToIndex(s, location), algorithm(s)),
+                  s,
                 ),
               ),
           ),

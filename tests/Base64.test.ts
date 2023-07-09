@@ -44,5 +44,5 @@ runStandardTestSuite(S.Base64, _ => ({
   jsonSchema: JS.string({
     pattern: '^(([A-Za-z0-9+/]{4})*?([A-Za-z0-9+/]{2}={2}|[A-Za-z0-9+/]{3}=)?)$',
   }),
-  typeString: 'Base64*',
+  typeString: 'Base64',
 }))()
