@@ -2,5 +2,5 @@ import { type SchemableLambda, makeTypeString } from 'schemata-ts/internal/type-
 import { type WithPattern } from 'schemata-ts/schemables/pattern/definition'
 
 export const PatternTypeString: WithPattern<SchemableLambda> = {
-  pattern: (_, name) => makeTypeString(`${name}*`),
+  pattern: (_, name) => makeTypeString(name),
 }
