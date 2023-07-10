@@ -10,9 +10,6 @@ const valid: ReadonlyArray<string> = [
   'x@x.au',
   'foo@bar.com.au',
   'foo+bar@bar.com',
-  'hans.m端ller@test.com',
-  // 'hans@m端ller.com', // fails (but shouldn't)
-  // 'test|123@m端ller.com', // fails (but shouldn't)
   'test123+ext@gmail.com',
   'some.name.midd.leNa.me.and.locality+extension@GoogleMail.com',
   '"foobar"@example.com',
@@ -31,10 +28,13 @@ const invalid: ReadonlyArray<string> = [
   'invalid.com',
   '@invalid.com',
   'foo@bar.com.',
+  'hans.m端ller@test.com',
+  'hans@m端ller.com',
+  'test|123@m端ller.com',
   'somename@ｇｍａｉｌ.com',
   'foo@bar.co.uk.',
   'z@co.c',
-  // 'ｇｍａｉｌｇｍａｉｌｇｍａｉｌｇｍａｉｌｇｍａｉｌ@gmail.com', // passes (but shouldn't)
+  'ｇｍａｉｌｇｍａｉｌｇｍａｉｌｇｍａｉｌｇｍａｉｌ@gmail.com',
   // `${repeat('a', 64)}@${repeat('a', 251)}.com`, // passes (but shouldn't)
   // `${repeat('a', 65)}@${repeat('a', 250)}.com`, // passes (but shouldn't)
   // `${repeat('a', 64)}@${repeat('a', 64)}.com`, // passes (but shouldn't)
@@ -76,7 +76,7 @@ runStandardTestSuite(S.EmailAddress, _ => ({
   eqTests: [],
   jsonSchema: JS.string({
     pattern:
-      '^(([^<>()[\\x5d\\.,;: \\x09@"]+(\\.[^<>()[\\x5d\\.,;: \\x09@"]+)*|"[^"\\x00-\\x1f]+")@(\\[\\d{1,3}\\.\\d{1,3}\\.\\d{1,3}\\.\\d{1,3}\\]|([A-Za-z0-9\\x2d]*\\.)+[A-Za-z]{2,}))$',
+      '^(([A-Za-z0-9!#$%&\'*+\\x2d/=?\\x5e_`{|}~]+(\\.[A-Za-z0-9!#$%&\'*+\\x2d/=?\\x5e_`{|}~]+)*|"[^"\\x00-\\x1f]+")@(\\[\\d{1,3}\\.\\d{1,3}\\.\\d{1,3}\\.\\d{1,3}\\]|([A-Za-z0-9\\x2d]{0,63}\\.)+[A-Za-z]{2,}))$',
   }),
   typeString: 'EmailAddress',
 }))()

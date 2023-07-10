@@ -8,7 +8,7 @@ const tests: ReadonlyArray<
 > = [
   [
     1,
-    '^(([0-9A-Fa-f]{8}-[0-9A-Fa-f]{4}-1[0-9A-Fa-f]{3}-[0-9A-Fa-f]{4}-[0-9A-Fa-f]{12}))$',
+    '^([0-9A-Fa-f]{8}-[0-9A-Fa-f]{4}-1[0-9A-Fa-f]{3}-[0-9A-Fa-f]{4}-[0-9A-Fa-f]{12})$',
     ['E034B584-7D89-11E9-9669-1AECF481A97B'],
     [
       'xxxA987FBC9-4BED-3078-CF07-9141BA07C9F3',
@@ -20,7 +20,7 @@ const tests: ReadonlyArray<
   ],
   [
     2,
-    '^(([0-9A-Fa-f]{8}-[0-9A-Fa-f]{4}-2[0-9A-Fa-f]{3}-[0-9A-Fa-f]{4}-[0-9A-Fa-f]{12}))$',
+    '^([0-9A-Fa-f]{8}-[0-9A-Fa-f]{4}-2[0-9A-Fa-f]{3}-[0-9A-Fa-f]{4}-[0-9A-Fa-f]{12})$',
     ['A987FBC9-4BED-2078-CF07-9141BA07C9F3'],
     [
       '',
@@ -33,7 +33,7 @@ const tests: ReadonlyArray<
   ],
   [
     3,
-    '^(([0-9A-Fa-f]{8}-[0-9A-Fa-f]{4}-3[0-9A-Fa-f]{3}-[0-9A-Fa-f]{4}-[0-9A-Fa-f]{12}))$',
+    '^([0-9A-Fa-f]{8}-[0-9A-Fa-f]{4}-3[0-9A-Fa-f]{3}-[0-9A-Fa-f]{4}-[0-9A-Fa-f]{12})$',
     ['A987FBC9-4BED-3078-CF07-9141BA07C9F3'],
     [
       '',
@@ -46,7 +46,7 @@ const tests: ReadonlyArray<
   ],
   [
     4,
-    '^(([0-9A-Fa-f]{8}-[0-9A-Fa-f]{4}-4[0-9A-Fa-f]{3}-[89ab][0-9A-Fa-f]{3}-[0-9A-Fa-f]{12}))$',
+    '^([0-9A-Fa-f]{8}-[0-9A-Fa-f]{4}-4[0-9A-Fa-f]{3}-[AaBb89][0-9A-Fa-f]{3}-[0-9A-Fa-f]{12})$',
     [
       '713ae7e3-cb32-45f9-adcb-7c4fa86b90c1',
       '625e63f3-58f5-40b7-83a1-a72ad31acffb',
@@ -64,7 +64,7 @@ const tests: ReadonlyArray<
   ],
   [
     5,
-    '^(([0-9A-Fa-f]{8}-[0-9A-Fa-f]{4}-5[0-9A-Fa-f]{3}-[ab89][0-9A-Fa-f]{3}-[0-9A-Fa-f]{12}))$',
+    '^([0-9A-Fa-f]{8}-[0-9A-Fa-f]{4}-5[0-9A-Fa-f]{3}-[AaBb89][0-9A-Fa-f]{3}-[0-9A-Fa-f]{12})$',
     [
       // '987FBC97-4BED-5078-AF07-9141BA07C9F3', // TODO -- not passing
       // '987FBC97-4BED-5078-BF07-9141BA07C9F3', // TODO -- not passing
@@ -82,7 +82,7 @@ const tests: ReadonlyArray<
   ],
   [
     'any',
-    '^(([0-9A-Fa-f]{8}-[0-9A-Fa-f]{4}-[0-9A-Fa-f]{4}-[0-9A-Fa-f]{4}-[0-9A-Fa-f]{12}))$',
+    '^([0-9A-Fa-f]{8}-[0-9A-Fa-f]{4}-[0-9A-Fa-f]{4}-[0-9A-Fa-f]{4}-[0-9A-Fa-f]{12})$',
     [
       'A987FBC9-4BED-3078-CF07-9141BA07C9F3',
       'A117FBC9-4BED-3078-CF07-9141BA07C9F3',
