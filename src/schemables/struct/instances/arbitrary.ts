@@ -7,14 +7,13 @@ const readonly: <A>(a: A) => Readonly<A> = identity
 
 export const StructArbitrary: WithStruct<Arb.SchemableLambda> = {
   struct: properties => {
-    const lookupByOutputKey = remapPropertyKeys(properties, i => 1 / i)
+    const lookupByOutputKey = remapPropertyKeys(properties, i => 1000 / i)
 
     const collapsedArbs: Record<string, Arb.Arbitrary<unknown>> = {}
 
     for (const key in lookupByOutputKey) {
       // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
       const arbs = lookupByOutputKey[key]!
-
       collapsedArbs[key] =
         arbs.length === 1
           ? Arb.makeArbitrary(fc => arbs[0].member.arbitrary(fc))
@@ -22,7 +21,7 @@ export const StructArbitrary: WithStruct<Arb.SchemableLambda> = {
               fc.oneof(
                 ...arbs.map(({ member, precedence }) => ({
                   arbitrary: member.arbitrary(fc),
-                  weight: precedence,
+                  weight: Math.ceil(precedence),
                 })),
               ),
             )

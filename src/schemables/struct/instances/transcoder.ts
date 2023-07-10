@@ -37,13 +37,10 @@ export const StructTranscoder: WithStruct<TC.SchemableLambda> = {
             // --- decode all known properties of an object's own non-inherited properties
             const outKnown = pipe(
               properties,
-              witherRemap(
-                TCE.Semigroup,
-                Sg.last(),
-              )((k, prop) => {
+              witherRemap(TCE.Semigroup)((k, prop) => {
                 const inputKey = k as string
 
-                const { schemable } = prop
+                const { schemable, semigroup } = prop
 
                 const inputVal: unknown = (u as any)[inputKey]
 
@@ -57,7 +54,7 @@ export const StructTranscoder: WithStruct<TC.SchemableLambda> = {
                   E.bimap(
                     keyErrors =>
                       TC.transcodeErrors(TC.errorAtKey(inputKey as string, keyErrors)),
-                    result => O.some([result, outputKey]) as any,
+                    result => O.some([result, outputKey, semigroup]),
                   ),
                 )
               }),
@@ -68,10 +65,7 @@ export const StructTranscoder: WithStruct<TC.SchemableLambda> = {
             // -- if extra props are not allowed, return a failure on keys not specified in properties
             return pipe(
               u,
-              witherRemap(
-                TCE.Semigroup,
-                Sg.last(),
-              )((key, value) => {
+              witherRemap(TCE.Semigroup)((key, value) => {
                 if (properties[key as string] === undefined) {
                   return TC.failure(
                     TC.transcodeErrors(
@@ -91,20 +85,17 @@ export const StructTranscoder: WithStruct<TC.SchemableLambda> = {
       encode: output => {
         return pipe(
           output as Record<string, unknown>,
-          witherRemap(
-            TCE.Semigroup,
-            Sg.last(),
-          )((key, outputAtKey) => {
+          witherRemap(TCE.Semigroup)((key, outputAtKey) => {
             const unionMembers = lookupByOutputKey[key]
 
             // -- Param is extra (and additional properties are stripped)
             if (unionMembers === undefined) return E.right(O.zero())
 
-            for (const { member, guard, inputKey } of unionMembers) {
+            for (const { member, guard, inputKey, semigroup } of unionMembers) {
               if (guard.is(outputAtKey)) {
                 return pipe(
                   member.encode(outputAtKey),
-                  E.map(result => O.some(tuple(result, inputKey))),
+                  E.map(result => O.some(tuple(result, inputKey, semigroup))),
                 )
               }
             }
@@ -112,7 +103,7 @@ export const StructTranscoder: WithStruct<TC.SchemableLambda> = {
             // this shouldn't ever happen,
             // if there's a key which does not match a guard in the union of guards
             // we have no idea of knowing how to encode it
-            return E.right(O.zero()) as any
+            return E.right(O.zero())
           }),
           _ => _ as any,
         )
@@ -123,26 +114,30 @@ export const StructTranscoder: WithStruct<TC.SchemableLambda> = {
     decode: flow(
       validateObject(expectedName),
       E.chain(
-        witherRemap(
-          TCE.Semigroup,
-          semigroup,
-        )((k, u) =>
+        witherRemap(TCE.Semigroup)((k, u) =>
           pipe(
-            Ap.sequenceT(decodeErrorValidation)(codomain.decode(u), key.decode(k)),
+            Ap.sequenceT(decodeErrorValidation)(
+              codomain.decode(u),
+              key.decode(k),
+              E.right(semigroup),
+            ),
             E.map(O.some),
+            _ => _ as any,
           ),
         ),
       ),
       _ => _ as E.Either<TCE.TranscodeErrors, Readonly<Record<string, any>>>,
     ),
     encode: flow(
-      witherRemap(
-        TCE.Semigroup,
-        Sg.last<unknown>(),
-      )((k, u) =>
+      witherRemap(TCE.Semigroup)((k, u) =>
         pipe(
-          Ap.sequenceT(decodeErrorValidation)(codomain.encode(u), key.encode(k)),
+          Ap.sequenceT(decodeErrorValidation)(
+            codomain.encode(u),
+            key.encode(k),
+            E.right(semigroup),
+          ),
           E.map(O.some),
+          _ => _ as any,
         ),
       ),
       _ => _ as E.Either<TCE.TranscodeErrors, Readonly<Record<string, any>>>,

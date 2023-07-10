@@ -1,4 +1,5 @@
 import { type Const } from 'fp-ts/Const'
+import { type Semigroup } from 'fp-ts/Semigroup'
 import type * as G from 'schemata-ts/internal/guard'
 import { type SchemableKind, type SchemableLambda } from 'schemata-ts/internal/schemable'
 import type * as s from 'schemata-ts/internal/struct'
@@ -8,6 +9,7 @@ export type StructProp<S extends SchemableLambda> = {
   readonly schemable: SchemableKind<S, any, any>
   readonly guard: G.Guard<any>
   readonly information: Const<number, any>
+  readonly semigroup: Semigroup<any>
 }
 
 export type RemapKey<KeyIn, Prop> = Prop extends s.RemappedKey<infer KeyOut>

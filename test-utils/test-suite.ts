@@ -533,6 +533,7 @@ export type StandardTestSuiteOptions = {
     | 'semigroup-many-associativity'
     | 'semigroup-first-associativity'
     | 'semigroup-last-associativity'
+    | 'transcoder-idempotence'
   >
 }
 
@@ -604,7 +605,10 @@ const runStandardTestSuite_: StandardTestSuiteFn =
         if (!skipJsonSchemaArbitraryChecks) {
           describe('json-schema validation', _.validateJsonSchemas)
         }
-        describe('transcoder laws', _.testTranscoderLaws)
+        ;(skip.has('transcoder-idempotence') ? describe.skip : describe)(
+          'transcoder laws',
+          _.testTranscoderLaws,
+        )
         describe(
           'semigroup laws',
           _.testSemigroupLaws({

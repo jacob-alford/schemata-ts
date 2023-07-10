@@ -1,5 +1,6 @@
 /** @since 1.4.0 */
 import { unsafeCoerce } from 'fp-ts/function'
+import * as Sg from 'fp-ts/Semigroup'
 import { getGuard } from 'schemata-ts/derivations/guard-schemable'
 import { getInformation } from 'schemata-ts/derivations/information-schemable'
 import {
@@ -62,6 +63,7 @@ export const Struct = <T extends Record<string, Schema<any, any>>>(
           schemable,
           guard: getGuard(schema),
           information: getInformation(schema),
+          semigroup: Sg.last(),
         }
       }
       return _.struct(struct as any, extraProps)

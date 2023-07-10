@@ -60,7 +60,7 @@ interface IntBrand<Min extends number, Max extends number> {
  * @since 1.0.0
  * @category Model
  */
-export type Integer<Min extends number, Max extends number> = Branded<
-  number,
-  IntBrand<Min, Max>
->
+export type Integer<
+  Min extends number = MinSafeInt,
+  Max extends number = MaxSafeInt,
+> = Branded<number, IntBrand<Min, Max>>

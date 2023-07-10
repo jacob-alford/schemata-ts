@@ -4,7 +4,7 @@
  * @since 1.0.0
  */
 import { arbitraryFromPattern } from 'kuvio/arbitrary-deferred'
-import type * as Arb from 'schemata-ts/internal/arbitrary'
+import * as Arb from 'schemata-ts/internal/arbitrary'
 import { type WithPattern } from 'schemata-ts/schemables/pattern/definition'
 
 /**
@@ -12,5 +12,5 @@ import { type WithPattern } from 'schemata-ts/schemables/pattern/definition'
  * @category Instances
  */
 export const PatternArbitrary: WithPattern<Arb.SchemableLambda> = {
-  pattern: pattern => ({ arbitrary: fc => arbitraryFromPattern(fc)(pattern) }),
+  pattern: pattern => Arb.makeArbitrary(fc => arbitraryFromPattern(fc)(pattern)),
 }

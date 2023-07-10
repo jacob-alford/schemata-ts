@@ -3,6 +3,7 @@ import * as O from 'fp-ts/Option'
 import * as RA from 'fp-ts/ReadonlyArray'
 import * as RNEA from 'fp-ts/ReadonlyNonEmptyArray'
 import * as RR from 'fp-ts/ReadonlyRecord'
+import { type Semigroup } from 'fp-ts/Semigroup'
 import { type SchemableLambda } from 'schemata-ts/internal/schemable'
 import { getKeyRemap } from 'schemata-ts/internal/struct'
 import { hasOwn } from 'schemata-ts/internal/util'
@@ -14,6 +15,7 @@ import { type StructProp } from 'schemata-ts/schemables/struct/type-utils'
 
 export type UnionItem<S extends SchemableLambda> = GuardedPrecedentedUnionMember<S> & {
   readonly inputKey: string
+  readonly semigroup: Semigroup<any>
 }
 
 /**
@@ -32,7 +34,7 @@ export const remapPropertyKeys = <S extends SchemableLambda>(
     if (!hasOwn(properties, key)) continue
 
     // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-    const { schemable, guard, information } = properties[key]!
+    const { schemable, guard, information, semigroup } = properties[key]!
 
     const inputKey: string = key
     const outputKey = pipe(
@@ -45,6 +47,7 @@ export const remapPropertyKeys = <S extends SchemableLambda>(
       guard,
       precedence: mapInformation(information),
       inputKey,
+      semigroup,
     }
 
     const outputKeyUnion = pipe(

@@ -59,15 +59,21 @@ export const typeOf = (x: unknown): string => (x === null ? 'null' : typeof x)
  * @internal
  */
 export const witherRemap =
-  <E, A>(sgErrors: Sg.Semigroup<E>, concatKeys: Sg.Semigroup<A>) =>
+  <E, A>(sgErrors: Sg.Semigroup<E>) =>
   <In extends Record<string, any>>(
     f: <K extends keyof In>(
       key: K,
       value: In[K],
-    ) => E.Either<E, O.Option<readonly [output: A, key: keyof In]>>,
+    ) => E.Either<
+      E,
+      O.Option<readonly [output: A, key: keyof In, semigroup: Sg.Semigroup<A>]>
+    >,
   ) =>
   (s: In): E.Either<E, { [K in keyof In]: A }> => {
-    const effects: Record<string, E.Either<E, O.Option<readonly [A, keyof In]>>> = {}
+    const effects: Record<
+      string,
+      E.Either<E, O.Option<readonly [A, keyof In, Sg.Semigroup<A>]>>
+    > = {}
 
     /* Enumerable own, Enumerable inherited */
     for (const key in s) {
@@ -85,9 +91,9 @@ export const witherRemap =
         const out: { [K in keyof In]: A } = {} as any
         for (const key in s) {
           // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-          const [value, newKey] = s[key]!
+          const [value, newKey, semigroup] = s[key]!
           if (hasOwn(out, newKey)) {
-            out[newKey] = concatKeys.concat(out[newKey], value)
+            out[newKey] = semigroup.concat(out[newKey], value)
             continue
           }
           out[newKey] = value
@@ -102,15 +108,18 @@ const getApplicativeValidationPar = <E>(sgErrors: Sg.Semigroup<E>) =>
 
 /** Performs a task-validative traversal over a struct's own enumerable properties. */
 export const witherRemapPar =
-  <E, A>(sgErrors: Sg.Semigroup<E>, concatKeys: Sg.Semigroup<A>) =>
+  <E, A>(sgErrors: Sg.Semigroup<E>) =>
   <In extends Record<string, any>>(
     f: <K extends keyof In>(
       key: K,
       value: In[K],
-    ) => TE.TaskEither<E, O.Option<readonly [A, keyof In]>>,
+    ) => TE.TaskEither<E, O.Option<readonly [A, keyof In, Sg.Semigroup<A>]>>,
   ) =>
   (s: In): TE.TaskEither<E, { [K in keyof In]: A }> => {
-    const effects: Record<string, TE.TaskEither<E, O.Option<readonly [A, keyof In]>>> = {}
+    const effects: Record<
+      string,
+      TE.TaskEither<E, O.Option<readonly [A, keyof In, Sg.Semigroup<A>]>>
+    > = {}
 
     /* Enumerable own, Enumerable inherited */
     for (const key in s) {
@@ -128,9 +137,9 @@ export const witherRemapPar =
         const out: { [K in keyof In]: A } = {} as any
         for (const key in s) {
           // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-          const [value, newKey] = s[key]!
+          const [value, newKey, semigroup] = s[key]!
           if (hasOwn(out, newKey)) {
-            out[newKey] = concatKeys.concat(out[newKey], value)
+            out[newKey] = semigroup.concat(out[newKey], value)
             continue
           }
           out[newKey] = value

@@ -5,6 +5,7 @@ import { getGuard } from 'schemata-ts/derivations/guard-schemable'
 import { matchW } from 'schemata-ts/internal/match'
 import { type Schema } from 'schemata-ts/Schema'
 import {
+  type SafeDate,
   type SafeDateString,
   type SafeDateStringBrand,
 } from 'schemata-ts/schemables/date/definition'
@@ -277,7 +278,7 @@ export type DateFromIsoStringParams = {
  */
 export const DateFromIsoString: (
   params?: DateFromIsoStringParams,
-) => Schema<SafeDateString, Date> = (params = {}) => {
+) => Schema<SafeDateString, SafeDate> = (params = {}) => {
   const { requireTime = 'TimeAndOffset' } = params
   return pipe(
     Pattern(
@@ -291,11 +292,11 @@ export const DateFromIsoString: (
       ),
       'IsoDateString',
     ),
-    Refine((s): s is string => !Number.isNaN(new Date(s)), 'ParseableDate'),
+    Refine((s): s is SafeDateString => !Number.isNaN(new Date(s)), 'SafeDate'),
     Brand<SafeDateStringBrand>(),
     Imap(
       getGuard(DateS()),
-      s => new Date(s),
+      s => new Date(s) as SafeDate,
       d => d.toISOString() as SafeDateString,
     ),
   )

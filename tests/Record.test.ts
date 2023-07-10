@@ -3,10 +3,9 @@ import * as Str from 'fp-ts/string'
 import * as S from 'schemata-ts'
 import * as JS from 'schemata-ts/JsonSchema'
 
-// import * as TC from 'schemata-ts/Transcoder'
 import { runStandardTestSuite } from '../test-utils/test-suite'
 
-const Schema = S.Record(S.CamelCaseString(), S.Tuple(S.String(), S.Float()), {
+const Schema = S.CamelCaseRecord(S.Tuple(S.String(), S.Float()), {
   number: N.SemigroupSum,
   string: Str.Semigroup,
   fallback: 'last',

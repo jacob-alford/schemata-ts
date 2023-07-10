@@ -50,7 +50,7 @@ export const StructTypeString: WithStruct<SchemableLambda> = {
                 _.length === 1 &&
                 RA.isNonEmpty(_) &&
                 RNEA.head(_[0]).inputKey !== outputKey
-                  ? `[${RNEA.head(_[0])}->${outputKey}]: ${unionString}`
+                  ? `[${RNEA.head(_[0]).inputKey}->${outputKey}]: ${unionString}`
                   : `${outputKey}: ${unionString}`,
             ),
         ),

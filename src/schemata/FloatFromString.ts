@@ -165,7 +165,7 @@ export const FloatFromString = <
     Pattern(floatFromString, 'FloatFromString'),
     Refine(
       (s): s is string => PrimitivesGuard.float(params).is(Number(s)) && s.trim() !== '',
-      'FloatString',
+      'Float',
     ),
     Brand<
       FloatStringBrand<

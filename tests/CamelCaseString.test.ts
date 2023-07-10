@@ -100,9 +100,9 @@ runStandardTestSuite(S.CamelCaseString(), _ => ({
     ...miscCases.map(([input, expected]) => _.decoder.pass(input, expected)),
   ],
   encoderTests: [
-    ...typefestCases.map(([, expected]) => _.encoder.pass(expected, expected)),
-    ...camelcaseCases.map(([, expected]) => _.encoder.pass(expected, expected)),
-    ...miscCases.map(([, expected]) => _.encoder.pass(expected, expected)),
+    ...typefestCases.map(([, expected]) => _.encoder.pass(_.c(expected), _.c(expected))),
+    ...camelcaseCases.map(([, expected]) => _.encoder.pass(_.c(expected), _.c(expected))),
+    ...miscCases.map(([, expected]) => _.encoder.pass(_.c(expected), _.c(expected))),
   ],
   guardTests: [],
   eqTests: [],

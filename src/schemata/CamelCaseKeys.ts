@@ -1,10 +1,16 @@
 /** @since 1.4.0 */
 import { getGuard } from 'schemata-ts/derivations/guard-schemable'
 import { getInformation } from 'schemata-ts/derivations/information-schemable'
+import { getMergeSemigroup } from 'schemata-ts/derivations/merge-semigroup-schemable'
 import { camelCase } from 'schemata-ts/internal/camelcase'
+import {
+  type OptionalInputProps,
+  type RequiredInputProps,
+} from 'schemata-ts/internal/schema-utils'
 import { type SchemableKind, type SchemableLambda } from 'schemata-ts/internal/schemable'
 import { remapKey } from 'schemata-ts/internal/struct'
-import { type InputOf, type OutputOf, type Schema, make } from 'schemata-ts/Schema'
+import { type Combine } from 'schemata-ts/internal/type-utils'
+import { type OutputOf, type Schema, make } from 'schemata-ts/Schema'
 import type * as s from 'schemata-ts/schemables/struct/type-utils'
 import type { CamelCase } from 'type-fest'
 
@@ -19,7 +25,7 @@ import type { CamelCase } from 'type-fest'
  *   import * as S from 'schemata-ts/schemata'
  *   import { getDecoder } from 'schemata-ts/Decoder'
  *
- *   const DatabasePerson = S.CamelCaseFromMixed({
+ *   const DatabasePerson = S.CamelCaseKeys({
  *     first_name: S.String,
  *     last_name: S.String,
  *     age: S.Number,
@@ -49,16 +55,16 @@ import type { CamelCase } from 'type-fest'
  *     }),
  *   )
  */
-export const CamelCaseFromMixed: <T extends Record<string, Schema<unknown, unknown>>>(
+export const CamelCaseKeys: <T extends Record<string, Schema<any, any>>>(
   props: T,
+  extraProps?: 'strip' | 'error',
+  mergeStrategy?: 'first' | 'last',
 ) => Schema<
-  {
-    [K in keyof T]: InputOf<T[K]>
-  },
+  Combine<RequiredInputProps<T> & OptionalInputProps<T>>,
   {
     [K in keyof T as CamelCase<K, { preserveConsecutiveUppercase: true }>]: OutputOf<T[K]>
   }
-> = props =>
+> = (props, extraProps, mergeStrategy) =>
   make(_ => {
     const struct: Record<string, s.StructProp<any>> = {}
     for (const key in props) {
@@ -69,11 +75,13 @@ export const CamelCaseFromMixed: <T extends Record<string, Schema<unknown, unkno
         _.clone,
         camelCase(key),
       )
+
       struct[key] = {
         schemable,
         guard: getGuard(schema),
         information: getInformation(schema),
+        semigroup: getMergeSemigroup(schema).semigroup(mergeStrategy),
       }
     }
-    return _.struct(struct as any)
+    return _.struct(struct as any, extraProps)
   }) as any
