@@ -28,8 +28,7 @@ runStandardTestSuite(S.Jwt, _ => ({
   guardTests: [],
   eqTests: [],
   jsonSchema: JS.string({
-    pattern:
-      '^(([A-Za-z0-9_\\x2d]*)\\.([A-Za-z0-9_\\x2d]*)(\\.([A-Za-z0-9_\\x2d]*)){0,1})$',
+    pattern: '^(([A-Za-z0-9_\\x2d]*)\\.([A-Za-z0-9_\\x2d]*)(\\.([A-Za-z0-9_\\x2d]*))?)$',
   }),
   typeString: 'Jwt',
 }))()
