@@ -34,7 +34,7 @@ export const remapPropertyKeys = <S extends SchemableLambda>(
     if (!hasOwn(properties, key)) continue
 
     // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-    const { schemable, guard, information, semigroup } = properties[key]!
+    const { schemable, guard, information, semigroup, name } = properties[key]!
 
     const inputKey: string = key
     const outputKey = pipe(
@@ -48,6 +48,7 @@ export const remapPropertyKeys = <S extends SchemableLambda>(
       precedence: mapInformation(information),
       inputKey,
       semigroup,
+      name,
     }
 
     const outputKeyUnion = pipe(

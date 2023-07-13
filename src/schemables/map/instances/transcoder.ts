@@ -4,16 +4,15 @@ import { flow } from 'fp-ts/function'
 import * as RA from 'fp-ts/ReadonlyArray'
 import * as RM from 'fp-ts/ReadonlyMap'
 import * as RTup from 'fp-ts/ReadonlyTuple'
-import * as Sg from 'fp-ts/Semigroup'
 import * as TC from 'schemata-ts/internal/transcoder'
 import { ArrayTranscoder } from 'schemata-ts/schemables/array/instances/transcoder'
 import { type WithMap } from 'schemata-ts/schemables/map/definition'
 
 export const MapTranscoder: WithMap<TC.SchemableLambda> = {
-  mapFromEntries: (ordK, sk, sa, expectedName) => ({
+  mapFromEntries: (ordK, sk, sa, expectedName, combineKeys) => ({
     decode: flow(
       ArrayTranscoder.array({ expectedName })(ArrayTranscoder.tuple('', sk, sa)).decode,
-      E.map(RM.fromFoldable(ordK, Sg.last(), RA.Foldable)),
+      E.map(RM.fromFoldable(ordK, combineKeys, RA.Foldable)),
     ),
     encode: flow(
       RM.toReadonlyArray(ordK),

@@ -1,9 +1,12 @@
 /** @since 2.0.0 */
+import { type Const } from 'fp-ts/Const'
 import * as E from 'fp-ts/Either'
 import { flow, pipe, unsafeCoerce } from 'fp-ts/function'
 import * as J from 'fp-ts/Json'
-import { type Schema, make } from 'schemata-ts/Schema'
+import { getTypeString } from 'schemata-ts/derivations/type-string-schemable'
+import { type Schema } from 'schemata-ts/Schema'
 import { type JsonString } from 'schemata-ts/schemables/parser/definition'
+import { type ParserOptions, Parse } from 'schemata-ts/schemata/Parse'
 
 /**
  * Applies a fallible string mapping function to a schema which parses a Json string.
@@ -13,31 +16,19 @@ import { type JsonString } from 'schemata-ts/schemables/parser/definition'
  * @category Printer Parsers
  */
 export const ParseEncodedJsonString: (
-  name: string,
   decode: (encoded: string) => E.Either<unknown, string>,
   encode: (jsonString: string) => E.Either<unknown, string>,
-  jsonSchemaOptions?: {
-    contentEncoding?: string
-    contentMediaType?: string
-    format?: string
-  },
-) => <I, O>(inner: Schema<I, O>) => Schema<JsonString, O> =
-  (name, decode, encode, options = {}) =>
-  inner => {
-    const { contentEncoding, contentMediaType, format } = options
-    return unsafeCoerce(
-      make(_ =>
-        pipe(
-          inner.runSchema(_),
-          _.parse(
-            name,
-            flow(decode, E.chain(J.parse)),
-            flow(J.stringify, E.chain(encode)),
-            contentEncoding,
-            contentMediaType,
-            format,
-          ),
-        ),
+  options?: ParserOptions & { readonly nameOverride?: string },
+) => <I, O>(inner: Schema<I, O>) => Schema<Const<JsonString, I>, O> =
+  (decode, encode, options = {}) =>
+  inner =>
+    pipe(
+      inner,
+      Parse(
+        options.nameOverride ?? getTypeString(inner)[0],
+        flow(decode, E.chain(J.parse)),
+        flow(J.stringify, E.chain(encode)),
+        options,
       ),
+      _ => unsafeCoerce(_),
     )
-  }

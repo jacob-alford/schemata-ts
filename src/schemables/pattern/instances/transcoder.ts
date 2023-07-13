@@ -7,6 +7,8 @@ export const PatternTranscoder: WithPattern<TC.SchemableLambda> = {
   pattern: (p, name, caseInsensitive) =>
     pipe(
       pattern(p, caseInsensitive),
-      TC.fromGuard(identity, u => TC.transcodeErrors(TC.typeMismatch(name, u))),
+      TC.fromGuard(identity, u =>
+        TC.transcodeErrors(TC.typeMismatch(typeof name === 'string' ? name : name[0], u)),
+      ),
     ),
 }

@@ -14,6 +14,7 @@ export type GuardedPrecedentedUnionMember<S extends SchemableLambda> = {
   readonly guard: Guard<any>
   readonly member: SchemableKind<S, any, any>
   readonly precedence: number
+  readonly name: string
 }
 
 /** @internal */
@@ -28,7 +29,6 @@ export interface WithGuardedUnion<S extends SchemableLambda> {
   readonly guardedUnion: <
     T extends RNEA.ReadonlyNonEmptyArray<GuardedPrecedentedUnionMember<S>>,
   >(
-    name: string,
     ...members: T
   ) => SchemableKind<
     S,

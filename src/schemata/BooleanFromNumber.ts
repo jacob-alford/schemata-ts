@@ -22,5 +22,6 @@ export const BooleanFromNumber: Schema<Floating, boolean> = pipe(
     getGuard(Boolean),
     n => n !== 0,
     b => (b ? 1 : 0) as Floating,
+    'boolean',
   ),
 )

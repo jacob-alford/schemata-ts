@@ -6,7 +6,7 @@ import { type SchemableLambda, makeTypeString } from 'schemata-ts/internal/type-
 import { type WithGuardedUnion } from 'schemata-ts/schemables/guarded-union/definition'
 
 export const GuardedUnionTypeString: WithGuardedUnion<SchemableLambda> = {
-  guardedUnion: (_, ...members) =>
+  guardedUnion: (...members) =>
     pipe(
       members,
       RNEA.foldMap(

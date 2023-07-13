@@ -6,7 +6,7 @@ import { runStandardTestSuite } from '../test-utils/test-suite'
 
 runStandardTestSuite(
   S.Array({ minLength: 1, maxLength: 4 })(
-    S.Tuple(S.Float({ min: 0, max: 4 }), S.BigIntFromString()),
+    S.Tuple(S.Float({ min: 0, max: 4 }), S.BigIntFromString),
   ),
   _ => ({
     decoderTests: [

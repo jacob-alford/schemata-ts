@@ -76,6 +76,16 @@ export const unexpectedValue: (
 ) => TCE.TranscodeError = I.unexpectedValue
 
 /**
+ * A failure case for a serialization or deserialization error
+ *
+ * @since 2.0.0
+ * @category Constructors
+ */
+export const serializationError: (
+  ...args: ConstructorParameters<typeof TCE.SerializationError>
+) => TCE.TranscodeError = I.serializationError
+
+/**
  * A failure case at a specific index
  *
  * @since 2.0.0

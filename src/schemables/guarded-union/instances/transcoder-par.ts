@@ -12,7 +12,7 @@ import {
 import type * as TCE from 'schemata-ts/TranscodeError'
 
 export const GuardedUnionTranscoderPar: WithGuardedUnion<TCP.SchemableLambda> = {
-  guardedUnion: (name, ...members) => {
+  guardedUnion: (...members) => {
     const sortedMembers = pipe(members, RNEA.sort(ordGuardedPrecedentedUnionMember))
     return {
       encode: out => {
@@ -24,7 +24,7 @@ export const GuardedUnionTranscoderPar: WithGuardedUnion<TCP.SchemableLambda> = 
         }
         return pipe(
           sortedMembers,
-          RNEA.mapWithIndex(i =>
+          RNEA.mapWithIndex((i, { name }) =>
             TCP.errorAtUnionMember(i, TC.transcodeErrors(TCP.typeMismatch(name, out))),
           ),
           errs =>
@@ -51,7 +51,7 @@ export const GuardedUnionTranscoderPar: WithGuardedUnion<TCP.SchemableLambda> = 
                 () =>
                   pipe(
                     sortedMembers,
-                    RNEA.mapWithIndex(i =>
+                    RNEA.mapWithIndex((i, { name }) =>
                       TC.errorAtUnionMember(
                         i,
                         TC.transcodeErrors(TC.typeMismatch(name, u)),

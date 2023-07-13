@@ -77,48 +77,28 @@ export const bigIntString: k.Pattern = k.oneOf(
   hexBigIntString,
 )
 
-/** @internal */
-const baseToPrefix = (base: BigIntFromStringParams['encodeToBase']): string => {
-  switch (base) {
-    case 2:
-      return `0b`
-    case 8:
-      return `0o`
-    case 16:
-      return `0x`
-    default:
-      return ''
-  }
-}
-
 /**
  * Represents bigints converted from strings
  *
  * @since 1.0.0
  * @category Conversion
  */
-export const BigIntFromString: (
-  params?: BigIntFromStringParams,
-) => Schema<BigIntString, bigint> = (params = {}) =>
-  pipe(
-    Pattern(bigIntString, 'BigIntString'),
-    Refine(
-      (s): s is BigIntString =>
-        pipe(
-          s,
-          O.fromPredicate(flow(Str.trim, s => s.length > 0)),
-          O.chain(O.tryCatchK(s => BigInt(s))),
-          O.isSome,
-        ),
-      'bigint',
-    ),
-    Brand<BigIntStringBrand>(),
-    Imap(
-      { is: (u): u is bigint => typeof u === 'bigint' },
-      b => BigInt(b),
-      n =>
-        `${baseToPrefix(params.encodeToBase)}${n.toString(
-          params.encodeToBase ?? 10,
-        )}` as BigIntString,
-    ),
-  )
+export const BigIntFromString: Schema<BigIntString, bigint> = pipe(
+  Pattern(bigIntString, 'BigIntString'),
+  Refine(
+    (s): s is BigIntString =>
+      pipe(
+        s,
+        O.fromPredicate(flow(Str.trim, s => s.length > 0)),
+        O.chain(O.tryCatchK(s => BigInt(s))),
+        O.isSome,
+      ),
+    'bigint',
+  ),
+  Brand<BigIntStringBrand>(),
+  Imap(
+    { is: (u): u is bigint => typeof u === 'bigint' },
+    b => BigInt(b),
+    n => n.toString() as BigIntString,
+  ),
+)

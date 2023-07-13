@@ -48,7 +48,7 @@ test('Unlawful Camelcase types', () => {
 
 const expectedTypeString = `{
     APPLE_BANANA: Integer,
-    BAZ_QUUX_FOO: IsoDateString,
+    BAZ_QUUX_FOO: IsoDateTimeStringZ,
     apple-banana: Integer,
     baz-quux-foo: Float,
     foo bar baz: string,

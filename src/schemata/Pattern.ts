@@ -10,6 +10,6 @@ import { type Schema, make } from 'schemata-ts/Schema'
  */
 export const Pattern = (
   pattern: k.Pattern,
-  name: string,
+  name: string | readonly [string, string],
   caseSensitive?: boolean,
 ): Schema<string, string> => make(S => S.pattern(pattern, name, caseSensitive))

@@ -148,24 +148,15 @@ runStandardTestSuite(Schema, _ => ({
         TC.transcodeErrors(
           TC.errorAtKey(
             'a',
-            TC.errorAtUnionMember(0, TC.typeMismatch('null | string?', 511)),
-            TC.errorAtUnionMember(1, TC.typeMismatch('null | string?', 511)),
+            TC.errorAtUnionMember(0, TC.typeMismatch('null', 511)),
+            TC.errorAtUnionMember(1, TC.typeMismatch('string?', 511)),
           ),
           TC.errorAtKey('c', TC.typeMismatch('boolean', null)),
           TC.errorAtKey(
             'f',
-            TC.errorAtUnionMember(
-              0,
-              TC.typeMismatch('string | Float | null | DateString?', NaN),
-            ),
-            TC.errorAtUnionMember(
-              1,
-              TC.typeMismatch('string | Float | null | DateString?', NaN),
-            ),
-            TC.errorAtUnionMember(
-              2,
-              TC.typeMismatch('string | Float | null | DateString?', NaN),
-            ),
+            TC.errorAtUnionMember(0, TC.typeMismatch('null | DateString?', NaN)),
+            TC.errorAtUnionMember(1, TC.typeMismatch('string', NaN)),
+            TC.errorAtUnionMember(2, TC.typeMismatch('Float', NaN)),
           ),
         ),
     ),

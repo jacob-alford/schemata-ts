@@ -121,6 +121,12 @@ const safeJsonify = (input: unknown, fallback: number | string): J.Json => {
     return String(input)
   }
 
+  try {
+    JSON.stringify(input)
+  } catch (_) {
+    return String(fallback)
+  }
+
   if (typeof input === 'object') {
     return mapArrayStruct(input as Record<string, unknown> | Array<unknown>) as any
   }
@@ -605,6 +611,7 @@ const runStandardTestSuite_: StandardTestSuiteFn =
         if (!skipJsonSchemaArbitraryChecks) {
           describe('json-schema validation', _.validateJsonSchemas)
         }
+        // eslint-disable-next-line @typescript-eslint/no-extra-semi
         ;(skip.has('transcoder-idempotence') ? describe.skip : describe)(
           'transcoder laws',
           _.testTranscoderLaws,

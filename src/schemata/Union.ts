@@ -1,9 +1,6 @@
 /** @since 2.0.0 */
-import { flow, pipe, unsafeCoerce } from 'fp-ts/function'
+import { pipe, unsafeCoerce } from 'fp-ts/function'
 import * as RNEA from 'fp-ts/ReadonlyNonEmptyArray'
-import * as RTup from 'fp-ts/ReadonlyTuple'
-import * as Sg from 'fp-ts/Semigroup'
-import * as Str from 'fp-ts/string'
 import { getGuard } from 'schemata-ts/derivations/guard-schemable'
 import { getInformation } from 'schemata-ts/derivations/information-schemable'
 import { getTypeString } from 'schemata-ts/derivations/type-string-schemable'
@@ -51,10 +48,6 @@ export const Union = <T extends RNEA.ReadonlyNonEmptyArray<Schema<any, any>>>(
 ): IncludesExtension<T, ImplicitOptional> extends true
   ? ImplicitOptional & Schema<TupleToUnion<Inputs<T>>, TupleToUnion<Outputs<T>>>
   : Schema<TupleToUnion<Inputs<T>>, TupleToUnion<Outputs<T>>> => {
-  const name = pipe(
-    members,
-    RNEA.foldMap(Sg.intercalate(' | ')(Str.Semigroup))(flow(getTypeString, RTup.fst)),
-  )
   return unsafeCoerce(
     make(s =>
       pipe(
@@ -62,9 +55,10 @@ export const Union = <T extends RNEA.ReadonlyNonEmptyArray<Schema<any, any>>>(
         RNEA.map(schema => ({
           guard: getGuard(schema),
           precedence: getInformation(schema),
+          name: getTypeString(schema)[0],
           member: schema.runSchema(s),
         })),
-        guardedUnionMembers => s.guardedUnion(name, ...(guardedUnionMembers as any)),
+        guardedUnionMembers => s.guardedUnion(...(guardedUnionMembers as any)),
       ),
     ),
   )

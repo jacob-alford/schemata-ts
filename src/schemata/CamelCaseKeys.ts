@@ -2,6 +2,7 @@
 import { getGuard } from 'schemata-ts/derivations/guard-schemable'
 import { getInformation } from 'schemata-ts/derivations/information-schemable'
 import { getMergeSemigroup } from 'schemata-ts/derivations/merge-semigroup-schemable'
+import { getTypeString } from 'schemata-ts/derivations/type-string-schemable'
 import { camelCase } from 'schemata-ts/internal/camelcase'
 import {
   type OptionalInputProps,
@@ -17,6 +18,9 @@ import type { CamelCase } from 'type-fest'
 /**
  * The same as the `Struct` schema combinator, but keys are transformed to camel case in
  * the output type.
+ *
+ * **Warning** It is possible to have one or more input keys map to the same output key.
+ * This combination will produce unlawful instances.
  *
  * @since 1.4.0
  * @category Combinators
@@ -81,6 +85,7 @@ export const CamelCaseKeys: <T extends Record<string, Schema<any, any>>>(
         guard: getGuard(schema),
         information: getInformation(schema),
         semigroup: getMergeSemigroup(schema).semigroup(mergeStrategy),
+        name: getTypeString(schema)[0],
       }
     }
     return _.struct(struct as any, extraProps)

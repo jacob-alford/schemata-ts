@@ -1,6 +1,7 @@
 import * as Ap from 'fp-ts/Apply'
 import { flow, pipe, tuple } from 'fp-ts/function'
 import * as O from 'fp-ts/Option'
+import * as RNEA from 'fp-ts/ReadonlyNonEmptyArray'
 import * as Sg from 'fp-ts/Semigroup'
 import * as T from 'fp-ts/Task'
 import * as TE from 'fp-ts/TaskEither'
@@ -102,7 +103,28 @@ export const StructTranscoderPar: WithStruct<TCP.SchemableLambda> = {
               }
             }
 
-            return TE.right(O.zero())
+            return TCP.failure(
+              TCP.transcodeErrors(
+                TCP.errorAtKey(
+                  key,
+                  TCP.transcodeErrors(
+                    ...((unionMembers.length === 1
+                      ? RNEA.of(
+                          TCP.typeMismatch(RNEA.head(unionMembers).name, outputAtKey),
+                        )
+                      : pipe(
+                          unionMembers,
+                          RNEA.mapWithIndex((i, { name }) =>
+                            TCP.errorAtUnionMember(
+                              i,
+                              TCP.transcodeErrors(TCP.typeMismatch(name, outputAtKey)),
+                            ),
+                          ),
+                        )) as any),
+                  ),
+                ),
+              ),
+            )
           }),
           _ => _ as any,
         )

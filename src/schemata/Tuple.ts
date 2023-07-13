@@ -15,10 +15,10 @@ export const Tuple = <T extends ReadonlyArray<Schema<any, any>>>(
   ...items: T
 ): Schema<
   {
-    [K in keyof T]: InputOf<T[K]>
+    readonly [K in keyof T]: InputOf<T[K]>
   },
   {
-    [K in keyof T]: OutputOf<T[K]>
+    readonly [K in keyof T]: OutputOf<T[K]>
   }
 > => {
   const name = ArrayTypeString.tuple('', ...items.map(getTypeString))[0]

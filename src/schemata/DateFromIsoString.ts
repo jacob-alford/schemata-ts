@@ -290,9 +290,13 @@ export const DateFromIsoString: (
           TimeAndOffset: () => isoDateStringReqTzReqT,
         }),
       ),
-      'IsoDateString',
+      requireTime === 'TimeAndOffset'
+        ? 'IsoDateTimeStringZ'
+        : requireTime === 'Time'
+        ? 'IsoDateTimeString'
+        : 'IsoDateString',
     ),
-    Refine((s): s is SafeDateString => !Number.isNaN(new Date(s)), 'SafeDate'),
+    Refine((s): s is SafeDateString => !Number.isNaN(new Date(s).getTime()), 'SafeDate'),
     Brand<SafeDateStringBrand>(),
     Imap(
       getGuard(DateS()),

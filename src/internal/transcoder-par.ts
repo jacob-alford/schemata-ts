@@ -37,6 +37,11 @@ export const unexpectedValue = (
 ): TCE.TranscodeError => new TCE.UnexpectedValue(...args)
 
 /** @internal */
+export const serializationError = (
+  ...args: ConstructorParameters<typeof TCE.SerializationError>
+): TCE.TranscodeError => new TCE.SerializationError(...args)
+
+/** @internal */
 export const errorAtIndex = (
   ...args: ConstructorParameters<typeof TCE.ErrorAtIndex>
 ): TCE.TranscodeError => new TCE.ErrorAtIndex(...args)

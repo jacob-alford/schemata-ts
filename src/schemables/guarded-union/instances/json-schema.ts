@@ -6,7 +6,7 @@ import { hasImplicitOptional, makeImplicitOptional } from 'schemata-ts/internal/
 import { type WithGuardedUnion } from 'schemata-ts/schemables/guarded-union/definition'
 
 export const GuardedUnionJsonSchema: WithGuardedUnion<JS.SchemableLambda> = {
-  guardedUnion: (_, ...members) => {
+  guardedUnion: (...members) => {
     const isOptional = pipe(
       members,
       RA.foldMap(B.MonoidAny)(({ member }) => hasImplicitOptional(member)),

@@ -10,6 +10,7 @@ export type StructProp<S extends SchemableLambda> = {
   readonly guard: G.Guard<any>
   readonly information: Const<number, any>
   readonly semigroup: Semigroup<any>
+  readonly name: string
 }
 
 export type RemapKey<KeyIn, Prop> = Prop extends s.RemappedKey<infer KeyOut>

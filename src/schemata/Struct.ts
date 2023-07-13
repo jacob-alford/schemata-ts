@@ -3,6 +3,7 @@ import { unsafeCoerce } from 'fp-ts/function'
 import * as Sg from 'fp-ts/Semigroup'
 import { getGuard } from 'schemata-ts/derivations/guard-schemable'
 import { getInformation } from 'schemata-ts/derivations/information-schemable'
+import { getTypeString } from 'schemata-ts/derivations/type-string-schemable'
 import {
   type OptionalInputProps,
   type OutputProps,
@@ -64,6 +65,7 @@ export const Struct = <T extends Record<string, Schema<any, any>>>(
           guard: getGuard(schema),
           information: getInformation(schema),
           semigroup: Sg.last(),
+          name: getTypeString(schema)[0],
         }
       }
       return _.struct(struct as any, extraProps)

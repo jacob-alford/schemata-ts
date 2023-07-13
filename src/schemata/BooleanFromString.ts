@@ -23,7 +23,7 @@ export const booleanFromStringPattern: k.Pattern = k.oneOf(
  * @category Conversion
  */
 export const BooleanFromString: Schema<string, boolean> = pipe(
-  Pattern(booleanFromStringPattern, 'BooleanFromString'),
+  Pattern(booleanFromStringPattern, ["'true' | 'false'", 'boolean']),
   Imap(
     getGuard(Boolean),
     s => s === 'true',

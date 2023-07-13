@@ -2,6 +2,7 @@ import * as Ap from 'fp-ts/Apply'
 import * as E from 'fp-ts/Either'
 import { flow, pipe, tuple } from 'fp-ts/function'
 import * as O from 'fp-ts/Option'
+import * as RNEA from 'fp-ts/ReadonlyNonEmptyArray'
 import * as Sg from 'fp-ts/Semigroup'
 import { getKeyRemap } from 'schemata-ts/internal/struct'
 import * as TC from 'schemata-ts/internal/transcoder'
@@ -100,10 +101,28 @@ export const StructTranscoder: WithStruct<TC.SchemableLambda> = {
               }
             }
 
-            // this shouldn't ever happen,
-            // if there's a key which does not match a guard in the union of guards
-            // we have no idea of knowing how to encode it
-            return E.right(O.zero())
+            return TC.failure(
+              TC.transcodeErrors(
+                TC.errorAtKey(
+                  key,
+                  TC.transcodeErrors(
+                    ...((unionMembers.length === 1
+                      ? RNEA.of(
+                          TC.typeMismatch(RNEA.head(unionMembers).name, outputAtKey),
+                        )
+                      : pipe(
+                          unionMembers,
+                          RNEA.mapWithIndex((i, { name }) =>
+                            TC.errorAtUnionMember(
+                              i,
+                              TC.transcodeErrors(TC.typeMismatch(name, outputAtKey)),
+                            ),
+                          ),
+                        )) as any),
+                  ),
+                ),
+              ),
+            )
           }),
           _ => _ as any,
         )

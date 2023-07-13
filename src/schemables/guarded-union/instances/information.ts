@@ -5,7 +5,7 @@ import * as Inf from 'schemata-ts/internal/information'
 import { type WithGuardedUnion } from 'schemata-ts/schemables/guarded-union/definition'
 
 export const GuardedUnionInformation: WithGuardedUnion<Inf.SchemableLambda> = {
-  guardedUnion: (_, ...members) =>
+  guardedUnion: (...members) =>
     pipe(
       members,
       RNEA.foldMap(N.MonoidSum)(({ precedence }) => precedence),

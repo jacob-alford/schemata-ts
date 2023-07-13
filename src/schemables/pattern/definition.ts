@@ -4,7 +4,7 @@ import { type SchemableKind, type SchemableLambda } from 'schemata-ts/internal/s
 export interface WithPattern<S extends SchemableLambda> {
   readonly pattern: (
     pattern: Pattern,
-    name: string,
+    name: string | readonly [string, string],
     caseInsensitive?: boolean,
   ) => SchemableKind<S, string, string>
 }

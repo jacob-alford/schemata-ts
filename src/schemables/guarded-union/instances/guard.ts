@@ -14,7 +14,6 @@ export const GuardedUnionGuard: WithGuardedUnion<G.SchemableLambda> = {
       GuardedPrecedentedUnionMember<G.SchemableLambda>
     >,
   >(
-    _: string,
     ...members: T
   ): G.Guard<OutputOfSchemable<G.SchemableLambda, T[number]['member']>> => {
     const sortedMembers = pipe(members, RNEA.sort(ordGuardedPrecedentedUnionMember))
