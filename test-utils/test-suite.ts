@@ -341,7 +341,7 @@ export const getTestSuite = <I, O>(schema: Schema<I, O>): TestSuite<I, O> => {
         })
         test('parallel', async () => {
           const arbitrary = getArbitrary(schema).arbitrary(fc)
-          fc.assert(
+          await fc.assert(
             fc.asyncProperty(arbitrary, async output => {
               const initial = pipe(
                 output,
@@ -368,9 +368,6 @@ export const getTestSuite = <I, O>(schema: Schema<I, O>): TestSuite<I, O> => {
                 )(),
               ).toStrictEqual(E.right(true))
             }),
-            {
-              endOnFailure: false,
-            },
           )
         })
       })

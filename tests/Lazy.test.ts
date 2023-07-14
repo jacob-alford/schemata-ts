@@ -86,7 +86,7 @@ runStandardTestSuite(
     guardTests: [],
     eqTests: [],
     jsonSchema: expectedJsonSchema,
-    typeString: '{\n    two: Lazy<two>\n}',
+    typeString: '{ two: Lazy<two> }',
   }),
   {
     skipArbitraryChecks: true,

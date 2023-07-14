@@ -40,7 +40,12 @@ export const StructArbitrary: WithStruct<Arb.SchemableLambda> = {
   },
   record: (key, codomain) =>
     Arb.makeArbitrary(fc =>
-      fc.dictionary(key.arbitrary(fc), codomain.arbitrary(fc)).map(readonly),
+      fc
+        .dictionary(
+          key.arbitrary(fc).filter(k => k !== '__proto__'),
+          codomain.arbitrary(fc),
+        )
+        .map(readonly),
     ),
   intersection: (xs, ys) =>
     Arb.makeArbitrary(fc =>

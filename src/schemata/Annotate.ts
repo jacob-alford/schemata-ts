@@ -112,20 +112,12 @@ export const Annotate =
       RR.map(getJsonSchema),
     )
     return make(s =>
-      s.annotate(
-        params === undefined
-          ? undefined
-          : {
-              ...(params.title === undefined ? {} : { title: params.title }),
-              ...(params.description === undefined
-                ? {}
-                : { description: params.description }),
-              ...(params.references === undefined ? {} : { references: mappedRefs }),
-              ...(params.typeString === undefined
-                ? {}
-                : { typeString: params.typeString }),
-              ...(params.readOnly === undefined ? {} : { readOnly: params.readOnly }),
-            },
-      )(schema.runSchema(s)),
+      s.annotate({
+        ...(params.title === undefined ? {} : { title: params.title }),
+        ...(params.description === undefined ? {} : { description: params.description }),
+        ...(params.references === undefined ? {} : { references: mappedRefs }),
+        ...(params.typeString === undefined ? {} : { typeString: params.typeString }),
+        ...(params.readOnly === undefined ? {} : { readOnly: params.readOnly }),
+      })(schema.runSchema(s)),
     )
   }

@@ -14,5 +14,6 @@ import { Imap } from 'schemata-ts/schemata/Imap'
  */
 export const Newtype: <N extends Nt.Newtype<any, any>>(
   iso: Iso<N, Nt.CarrierOf<N>>,
-) => <O>(innerType: Schema<O, Nt.CarrierOf<N>>) => Schema<O, N> = iso => _ =>
-  pipe(_, Imap(getGuard(_), iso.get, iso.reverseGet))
+  name?: string,
+) => <O>(innerType: Schema<O, Nt.CarrierOf<N>>) => Schema<O, N> = (iso, name) => _ =>
+  pipe(_, Imap(getGuard(_), iso.get, iso.reverseGet, name))

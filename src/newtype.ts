@@ -20,8 +20,8 @@ export interface Newtype<URI, A> {
 
 /** @since 2.0.0 */
 export interface NewtypeIso<A, B> extends Iso<A, B> {
-  readonly wrap: (A: A) => B
-  readonly unwrap: (B: B) => A
+  readonly wrap: (B: B) => A
+  readonly unwrap: (A: A) => B
 }
 
 /**

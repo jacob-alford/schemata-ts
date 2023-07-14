@@ -58,12 +58,7 @@ const expectedJsonSchema = JS.string({
   contentSchema: expectedInnerSchema,
 })
 
-const expectedTypeString = `Base64 → {
-    age: Integer<0,120>,
-    birthday: Option<Integer<-8640000000000000,8640000000000000>>,
-    isAlive: boolean,
-    name: string
-}`
+const expectedTypeString = `Base64 → { age: Integer<0,120>, birthday: Option<Integer<-8640000000000000,8640000000000000>>, isAlive: boolean, name: string }`
 
 const circular: any = {
   name: 'John',

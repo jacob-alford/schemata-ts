@@ -90,7 +90,8 @@ export const StructTranscoder: WithStruct<TC.SchemableLambda> = {
             const unionMembers = lookupByOutputKey[key]
 
             // -- Param is extra (and additional properties are stripped)
-            if (unionMembers === undefined) return E.right(O.zero())
+            if (unionMembers === undefined || !Array.isArray(unionMembers))
+              return E.right(O.zero()) as any
 
             for (const { member, guard, inputKey, semigroup } of unionMembers) {
               if (guard.is(outputAtKey)) {

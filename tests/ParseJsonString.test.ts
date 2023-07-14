@@ -58,17 +58,7 @@ const expectedJsonSchema = JS.string({
   contentSchema: expectedInnerSchema,
 })
 
-const expectedTypeString = `{
-    age: Integer<0,120>,
-    birthday?: null | Integer<-8640000000000000,8640000000000000>?,
-    isAlive: 'true' | 'false',
-    name: string
-} → {
-    age: Integer<0,120>,
-    birthday: Option<Integer<-8640000000000000,8640000000000000>>,
-    isAlive: boolean,
-    name: string
-}`
+const expectedTypeString = `{ age: Integer<0,120>, birthday?: null | Integer<-8640000000000000,8640000000000000>?, isAlive: 'true' | 'false', name: string } → { age: Integer<0,120>, birthday: Option<Integer<-8640000000000000,8640000000000000>>, isAlive: boolean, name: string }`
 
 const circular: any = {
   name: 'John',

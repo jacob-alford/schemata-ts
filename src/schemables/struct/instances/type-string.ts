@@ -1,4 +1,4 @@
-import { flow, pipe, tuple } from 'fp-ts/function'
+import { flow, identity, pipe, tuple } from 'fp-ts/function'
 import * as O from 'fp-ts/Option'
 import * as Ord from 'fp-ts/Ord'
 import * as RA from 'fp-ts/ReadonlyArray'
@@ -25,10 +25,10 @@ export const StructTypeString: WithStruct<SchemableLambda> = {
       O.fold(
         () => '{}',
         flow(
-          RNEA.foldMap(Sg.intercalate(',\n  ')(Str.Semigroup))(
-            ([key, [i]]) => `  ${key}${i.includes('?') ? '?' : ''}: ${i}`,
+          RNEA.foldMap(Sg.intercalate(', ')(Str.Semigroup))(
+            ([key, [i]]) => `${key}${i.includes('?') ? '?' : ''}: ${i}`,
           ),
-          _ => `{\n  ${_}\n}`,
+          _ => `{ ${_} }`,
         ),
       ),
     )
@@ -59,10 +59,8 @@ export const StructTypeString: WithStruct<SchemableLambda> = {
       O.fold(
         () => '{}',
         flow(
-          RNEA.foldMap(Sg.intercalate(',\n  ')(Str.Semigroup))(
-            unionStr => `  ${unionStr}`,
-          ),
-          _ => `{\n  ${_}\n}`,
+          RNEA.foldMap(Sg.intercalate(', ')(Str.Semigroup))(identity),
+          _ => `{ ${_} }`,
         ),
       ),
     )
