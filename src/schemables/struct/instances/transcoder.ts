@@ -3,31 +3,24 @@ import * as E from 'fp-ts/Either'
 import { flow, pipe, tuple } from 'fp-ts/function'
 import * as O from 'fp-ts/Option'
 import * as RNEA from 'fp-ts/ReadonlyNonEmptyArray'
-import * as Sg from 'fp-ts/Semigroup'
 import { getKeyRemap } from 'schemata-ts/internal/struct'
 import * as TC from 'schemata-ts/internal/transcoder'
 import { witherRemap } from 'schemata-ts/internal/util'
 import { type WithStruct } from 'schemata-ts/schemables/struct/definition'
-import { remapPropertyKeys, safeIntersect } from 'schemata-ts/schemables/struct/utils'
+import {
+  getValidateObject,
+  remapPropertyKeys,
+  safeIntersect,
+} from 'schemata-ts/schemables/struct/utils'
 import * as TCE from 'schemata-ts/TranscodeError'
 
 const decodeErrorValidation = E.getApplicativeValidation(TCE.Semigroup)
 const apSecond = Ap.apSecond(decodeErrorValidation)
 
-const validateObject: (
-  name: string,
-) => (
-  u: unknown,
-) => E.Either<TCE.TranscodeErrors, Record<string | number | symbol, unknown>> =
-  name => u => {
-    if (u === null || typeof u !== 'object' || Array.isArray(u)) {
-      return TC.failure(TC.transcodeErrors(TC.typeMismatch(name, u)))
-    }
-    return TC.success(u as Record<string | number | symbol, unknown>)
-  }
+const validateObject = getValidateObject(E.MonadThrow)
 
 export const StructTranscoder: WithStruct<TC.SchemableLambda> = {
-  struct: (properties, extraProps = 'strip') => {
+  struct: (properties, extraProps) => {
     const lookupByOutputKey = remapPropertyKeys(properties)
 
     return {
@@ -130,7 +123,7 @@ export const StructTranscoder: WithStruct<TC.SchemableLambda> = {
       },
     }
   },
-  record: (key, codomain, expectedName = 'object', semigroup = Sg.last()) => ({
+  record: (key, codomain, expectedName, semigroup) => ({
     decode: flow(
       validateObject(expectedName),
       E.chain(

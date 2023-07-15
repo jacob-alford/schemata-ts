@@ -50,7 +50,7 @@ runStandardTestSuite(
       ),
     ],
     semigroupTests: [
-      _.semigroup.combines(
+      _.semigroup.combinesFirst(
         [[_.c(0), 0n]],
         [[_.c(1), 1n]],
         [

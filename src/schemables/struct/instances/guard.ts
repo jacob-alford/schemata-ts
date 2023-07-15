@@ -11,7 +11,7 @@ const isObject = (u: unknown): u is Record<string, unknown> =>
   typeof u === 'object' && u !== null && !Array.isArray(u)
 
 export const StructGuard: WithStruct<G.SchemableLambda> = {
-  struct: (properties, extraProps = 'strip') => {
+  struct: (properties, extraProps) => {
     const lookupByOutputKey = remapPropertyKeys(properties)
 
     return {

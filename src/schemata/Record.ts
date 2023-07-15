@@ -1,4 +1,5 @@
 /** @since 1.4.0 */
+import * as Sg from 'fp-ts/Semigroup'
 import { getMergeSemigroup } from 'schemata-ts/derivations/merge-semigroup-schemable'
 import { getTypeString } from 'schemata-ts/derivations/type-string-schemable'
 import { type MergeStrategy } from 'schemata-ts/internal/merge-semigroup'
@@ -22,6 +23,8 @@ export const Record = <K extends string, I, O>(
   const expectedName = StructTypeString.record(
     getTypeString(keys),
     getTypeString(codomain),
+    'object',
+    Sg.last(),
   )
   const valuesSemigroup = getMergeSemigroup(codomain).semigroup(mergeStrategy)
   return make(_ =>

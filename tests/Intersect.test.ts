@@ -75,3 +75,15 @@ runStandardTestSuite(Schema, _ => ({
   jsonSchema: expectedJsonSchema,
   typeString: expectedTypeString,
 }))()
+
+runStandardTestSuite(
+  S.Intersect(S.String() as any, S.String() as any),
+  _ => ({
+    decoderTests: [],
+    jsonSchema: JS.intersection(JS.string())(JS.string()),
+    typeString: 'string & string',
+  }),
+  {
+    skip: ['json-schema-validation', 'transcoder-idempotence', 'arbitrary-guard'],
+  },
+)()

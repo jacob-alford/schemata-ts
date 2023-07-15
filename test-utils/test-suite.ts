@@ -16,6 +16,7 @@ import { getArbitrary } from 'schemata-ts/derivations/arbitrary-schemable'
 import { getInformation } from 'schemata-ts/derivations/information-schemable'
 import { getEq } from 'schemata-ts/Eq'
 import { getGuard } from 'schemata-ts/Guard'
+import { type MergeStrategy } from 'schemata-ts/internal/merge-semigroup'
 import * as TS from 'schemata-ts/internal/type-string'
 import { fold } from 'schemata-ts/internal/type-string'
 import { getJsonSchema } from 'schemata-ts/JsonSchema'
@@ -60,7 +61,9 @@ export interface TestSuite<I, O> {
 
   /** Tests MergeSemigroup against a set of expected combinations */
   readonly testSemigroup: (
-    ...suites: ReadonlyArray<SchemableTest<readonly [O, O], O>>
+    ...suites: ReadonlyArray<
+      SchemableTest<readonly ['first' | 'last' | MergeStrategy | undefined, O, O], O>
+    >
   ) => IO.IO<void>
 
   /** Tests JsonSchema against a set of expected values */
@@ -257,16 +260,13 @@ export const getTestSuite = <I, O>(schema: Schema<I, O>): TestSuite<I, O> => {
       testSuites => () => {
         for (const testSuite of testSuites) {
           if (testSuite.length > 0) {
-            test.each(testSuite)('%s', (_, [[a, b], expected]) => {
-              const actual = firstSemigroup.concat(a, b)
-              expect(actual).toStrictEqual(expected)
-            })
-            test.each(testSuite)('%s', (_, [[a, b], expected]) => {
-              const actual = lastSemigroup.concat(a, b)
-              expect(actual).toStrictEqual(expected)
-            })
-            test.each(testSuite)('%s', (_, [[a, b], expected]) => {
-              const actual = manySemigroup.concat(a, b)
+            test.each(testSuite)('%s', (_, [[strategy, a, b], expected]) => {
+              const actual =
+                strategy === 'first'
+                  ? firstSemigroup.concat(a, b)
+                  : strategy === 'last'
+                  ? lastSemigroup.concat(a, b)
+                  : getMergeSemigroup(schema).semigroup(strategy).concat(a, b)
               expect(actual).toStrictEqual(expected)
             })
           }
@@ -523,20 +523,41 @@ export type MakeTestValues<I, O> = {
     readonly disequate: (a: O, b: O) => readonly [readonly [O, O], boolean]
   }
   readonly semigroup: {
-    readonly combines: (a: O, b: O, result: O) => readonly [readonly [O, O], O]
+    readonly combinesFirst: (
+      a: O,
+      b: O,
+      result: O,
+    ) => readonly [readonly ['first', O, O], O]
+    readonly combinesLast: (
+      a: O,
+      b: O,
+      result: O,
+    ) => readonly [readonly ['last', O, O], O]
+    readonly combinesWith: (
+      strategy?: MergeStrategy,
+    ) => (
+      a: O,
+      b: O,
+      result: O,
+    ) => readonly [readonly [MergeStrategy | undefined, O, O], O]
+  }
+  readonly guard: {
+    is: (input: unknown) => readonly [unknown, true]
+    isNot: (input: unknown) => readonly [unknown, false]
   }
 }
 
 export type StandardTestSuiteOptions = {
   readonly makeDecodeError?: (value: unknown) => TCE.TranscodeErrors
   readonly skipArbitraryChecks?: boolean
-  readonly skipJsonSchemaArbitraryChecks?: boolean
   readonly skipAll?: boolean
-  readonly skip?: ReadonlySet<
+  readonly skip?: ReadonlyArray<
     | 'semigroup-many-associativity'
     | 'semigroup-first-associativity'
     | 'semigroup-last-associativity'
     | 'transcoder-idempotence'
+    | 'json-schema-validation'
+    | 'arbitrary-guard'
   >
 }
 
@@ -559,9 +580,9 @@ const runStandardTestSuite_: StandardTestSuiteFn =
         new TCE.TranscodeErrors([new TCE.TypeMismatch(fold(name), value)]),
       skipArbitraryChecks = false,
       skipAll = false,
-      skipJsonSchemaArbitraryChecks = false,
-      skip = new Set(),
+      skip: skip_ = [],
     } = options
+    const skip = new Set(skip_)
     const _ = getTestSuite(schema)
     const {
       decoderTests = [],
@@ -591,7 +612,13 @@ const runStandardTestSuite_: StandardTestSuiteFn =
         disequate: (a, b) => tuple(tuple(a, b), false),
       },
       semigroup: {
-        combines: (a, b, result) => tuple(tuple(a, b), result),
+        combinesFirst: (a, b, result) => tuple(tuple('first', a, b), result),
+        combinesLast: (a, b, result) => tuple(tuple('last', a, b), result),
+        combinesWith: strategy => (a, b, result) => tuple(tuple(strategy, a, b), result),
+      },
+      guard: {
+        is: input => tuple(input, true),
+        isNot: input => tuple(input, false),
       },
     })
 
@@ -605,9 +632,11 @@ const runStandardTestSuite_: StandardTestSuiteFn =
       describe('information', _.assertValidInformation)
       describe('semigroup', _.testSemigroup(semigroupTests))
       if (!skipArbitraryChecks) {
-        if (!skipJsonSchemaArbitraryChecks) {
-          describe('json-schema validation', _.validateJsonSchemas)
-        }
+        // eslint-disable-next-line @typescript-eslint/no-extra-semi
+        ;(skip.has('json-schema-validation') ? describe.skip : describe)(
+          'json-schema validation',
+          _.validateJsonSchemas,
+        )
         // eslint-disable-next-line @typescript-eslint/no-extra-semi
         ;(skip.has('transcoder-idempotence') ? describe.skip : describe)(
           'transcoder laws',
@@ -622,7 +651,11 @@ const runStandardTestSuite_: StandardTestSuiteFn =
           }),
         )
         describe('eq laws', _.testEqLaws)
-        describe('arbitrary <-> guard', _.testArbitraryGuard)
+        // eslint-disable-next-line @typescript-eslint/no-extra-semi
+        ;(skip.has('arbitrary-guard') ? describe.skip : describe)(
+          'arbitrary <-> guard',
+          _.testArbitraryGuard,
+        )
       }
       if (additionalTests) {
         describe('additional tests', additionalTests(_))

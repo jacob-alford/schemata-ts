@@ -153,6 +153,6 @@ runStandardTestSuite(
     typeString: 'Lazy<Simple>',
   }),
   {
-    skipJsonSchemaArbitraryChecks: true,
+    skip: ['json-schema-validation'],
   },
 )()

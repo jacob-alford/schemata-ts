@@ -9,7 +9,7 @@ export interface WithStruct<S extends SchemableLambda> {
     RestKind extends SchemableKind<S, any, any> | undefined,
   >(
     properties: Props,
-    extraProps?: 'strip' | 'error',
+    extraProps: 'strip' | 'error',
   ) => SchemableKind<
     S,
     Combine<
@@ -22,8 +22,8 @@ export interface WithStruct<S extends SchemableLambda> {
   readonly record: <I, O, K extends string>(
     key: SchemableKind<S, K, K>,
     codomain: SchemableKind<S, I, O>,
-    expectedName?: string,
-    combineKeys?: Semigroup<O>,
+    expectedName: string,
+    combineKeys: Semigroup<O>,
   ) => SchemableKind<S, Readonly<Record<K, I>>, Readonly<Record<K, O>>>
   readonly intersection: <
     I1 extends Record<string, any>,

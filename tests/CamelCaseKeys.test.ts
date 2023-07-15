@@ -7,20 +7,21 @@ import {
   type SafeDate,
   type SafeDateString,
 } from 'schemata-ts/schemables/date/definition'
+import * as TC from 'schemata-ts/Transcoder'
 
 import { runStandardTestSuite } from '../test-utils/test-suite'
 
 const UnlawfulSchema = S.CamelCaseKeys(
   {
     'prickly-pear': S.FloatFromString(),
-    'apple-banana': S.Int(),
+    'apple-banana': S.String(),
     APPLE_BANANA: S.Int(),
     'foo bar baz': S.String(),
     'baz-quux-foo': S.Float(),
     foo_bar_baz: S.Nullable(S.Boolean),
     BAZ_QUUX_FOO: S.DateFromIsoString(),
   },
-  'strip',
+  undefined,
   'last',
 )
 
@@ -29,7 +30,7 @@ test('Unlawful Camelcase types', () => {
     S.Schema<
       {
         'prickly-pear': S.FloatString
-        'apple-banana': Integer
+        'apple-banana': string
         APPLE_BANANA: Integer
         'foo bar baz': string
         'baz-quux-foo': Float
@@ -38,7 +39,7 @@ test('Unlawful Camelcase types', () => {
       },
       {
         pricklyPear: Float
-        appleBanana: Integer
+        appleBanana: string | Integer
         fooBarBaz: string | boolean | null | undefined
         bazQuuxFoo: Float | SafeDate
       }
@@ -46,7 +47,7 @@ test('Unlawful Camelcase types', () => {
   >()
 })
 
-const expectedTypeString = `{ APPLE_BANANA: Integer, BAZ_QUUX_FOO: IsoDateTimeStringZ, apple-banana: Integer, baz-quux-foo: Float, foo bar baz: string, foo_bar_baz?: null | boolean?, prickly-pear: FloatFromString } → { appleBanana: (:apple-banana)Integer | (:APPLE_BANANA)Integer, bazQuuxFoo: (:BAZ_QUUX_FOO)SafeDate | (:baz-quux-foo)Float, fooBarBaz: (:foo_bar_baz)null | boolean? | (:foo bar baz)string, [prickly-pear->pricklyPear]: Float }`
+const expectedTypeString = `{ APPLE_BANANA: Integer, BAZ_QUUX_FOO: IsoDateTimeStringZ, apple-banana: string, baz-quux-foo: Float, foo bar baz: string, foo_bar_baz?: null | boolean?, prickly-pear: FloatFromString } → { appleBanana: (:apple-banana)string | (:APPLE_BANANA)Integer, bazQuuxFoo: (:BAZ_QUUX_FOO)SafeDate | (:baz-quux-foo)Float, fooBarBaz: (:foo_bar_baz)null | boolean? | (:foo bar baz)string, [prickly-pear->pricklyPear]: Float }`
 
 runStandardTestSuite(
   UnlawfulSchema,
@@ -56,14 +57,14 @@ runStandardTestSuite(
         {
           APPLE_BANANA: 1,
           BAZ_QUUX_FOO: '2021-01-01T00:00:00.000Z',
-          'apple-banana': 2,
+          'apple-banana': 'hello',
           'baz-quux-foo': 3.14,
           'foo bar baz': 'foo',
           foo_bar_baz: null,
           'prickly-pear': '-1234567890.1234567',
         },
         {
-          appleBanana: 2,
+          appleBanana: 'hello',
           bazQuuxFoo: 3.14,
           fooBarBaz: null,
           pricklyPear: -1234567890.1234567,
@@ -80,19 +81,35 @@ runStandardTestSuite(
         },
         // @ts-expect-error -- no way to make this bijective
         {
-          // APPLE_BANANA: _.c(2),
+          APPLE_BANANA: _.c(2),
           BAZ_QUUX_FOO: _.c('2021-01-01T00:00:00.000Z'),
           foo_bar_baz: _.c(true),
           'prickly-pear': _.c('-1234567890.1234567'),
-          'apple-banana': _.c(2),
+          // 'apple-banana': _.c(2),
           // 'baz-quux-foo': _.c(-1234567890.1234567),
           // 'foo bar baz': _.c(true),
         },
       ),
+      _.encoder.fail(
+        {
+          appleBanana: _.c(null),
+          bazQuuxFoo: _.c(new Date('2021-01-01T00:00:00.000Z')),
+          fooBarBaz: true,
+          pricklyPear: _.c(-1234567890.1234567),
+        },
+        () =>
+          TC.transcodeErrors(
+            TC.errorAtKey(
+              'appleBanana',
+              TC.errorAtUnionMember(0, TC.typeMismatch('string', null)),
+              TC.errorAtUnionMember(1, TC.typeMismatch('Integer', null)),
+            ),
+          ),
+      ),
     ],
     jsonSchema: JS.struct(
       {
-        'apple-banana': JS.integer(),
+        'apple-banana': JS.string(),
         APPLE_BANANA: JS.integer(),
         'foo bar baz': JS.string(),
         'baz-quux-foo': JS.number(),
@@ -117,7 +134,13 @@ runStandardTestSuite(
     ),
     typeString: expectedTypeString,
   }),
-  { skipArbitraryChecks: true },
+  {
+    skip: [
+      'json-schema-validation',
+      'transcoder-idempotence',
+      'semigroup-many-associativity',
+    ],
+  },
 )()
 
 // ----------------------------------------------

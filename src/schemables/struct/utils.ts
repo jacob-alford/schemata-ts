@@ -1,4 +1,6 @@
 import { identity, pipe } from 'fp-ts/function'
+import { type Kind2, type URIS2 } from 'fp-ts/HKT'
+import { type MonadThrow2 } from 'fp-ts/MonadThrow'
 import * as O from 'fp-ts/Option'
 import * as RA from 'fp-ts/ReadonlyArray'
 import * as RNEA from 'fp-ts/ReadonlyNonEmptyArray'
@@ -6,12 +8,14 @@ import * as RR from 'fp-ts/ReadonlyRecord'
 import { type Semigroup } from 'fp-ts/Semigroup'
 import { type SchemableLambda } from 'schemata-ts/internal/schemable'
 import { getKeyRemap } from 'schemata-ts/internal/struct'
+import * as TC from 'schemata-ts/internal/transcoder'
 import { hasOwn } from 'schemata-ts/internal/util'
 import {
   type GuardedPrecedentedUnionMember,
   ordGuardedPrecedentedUnionMember,
 } from 'schemata-ts/schemables/guarded-union/definition'
 import { type StructProp } from 'schemata-ts/schemables/struct/type-utils'
+import { type TranscodeErrors } from 'schemata-ts/TranscodeError'
 
 export type UnionItem<S extends SchemableLambda> = GuardedPrecedentedUnionMember<S> & {
   readonly inputKey: string
@@ -31,6 +35,7 @@ export const remapPropertyKeys = <S extends SchemableLambda>(
 
   for (const key in properties) {
     // -- ignore inherited properties
+    // istanbul ignore next
     if (!hasOwn(properties, key)) continue
 
     // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
@@ -69,3 +74,18 @@ export const safeIntersect = <A, B>(a: A, b: B): A & B => {
   if (isObjectA || isObjectB) return Object.assign({}, a, b)
   return void 0 as A & B
 }
+
+export const getValidateObject: <M extends URIS2>(
+  M: MonadThrow2<M>,
+) => (
+  name: string,
+) => (
+  u: unknown,
+) => Kind2<M, TranscodeErrors, Record<string | number | symbol, unknown>> =
+  M => name => u => {
+    if (u === null || typeof u !== 'object' || Array.isArray(u)) {
+      // istanbul ignore next
+      return M.throwError(TC.transcodeErrors(TC.typeMismatch(name, u)))
+    }
+    return M.of(u as Record<string | number | symbol, unknown>)
+  }

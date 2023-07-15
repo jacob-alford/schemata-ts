@@ -68,7 +68,7 @@ export const CamelCaseKeys: <T extends Record<string, Schema<any, any>>>(
   {
     [K in keyof T as CamelCase<K, { preserveConsecutiveUppercase: true }>]: OutputOf<T[K]>
   }
-> = (props, extraProps, mergeStrategy) =>
+> = (props, extraProps = 'strip', mergeStrategy) =>
   make(_ => {
     const struct: Record<string, s.StructProp<any>> = {}
     for (const key in props) {
