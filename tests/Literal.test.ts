@@ -44,3 +44,13 @@ runStandardTestSuite(
       ),
   },
 )()
+
+runStandardTestSuite(S.Literal(null), () => ({
+  jsonSchema: JS.literal(null),
+  typeString: 'null',
+}))()
+
+runStandardTestSuite(S.Literal('foo'), () => ({
+  jsonSchema: JS.literal('foo'),
+  typeString: 'foo',
+}))()

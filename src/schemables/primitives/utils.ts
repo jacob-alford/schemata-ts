@@ -49,6 +49,7 @@ export const isFloat =
     return typeof n === 'number' && !Number.isNaN(n) && n >= min && n <= max
   }
 
+// istanbul ignore next
 export const getLengthBoundsString: (
   params?: StringParams,
   lchar?: string,
@@ -59,6 +60,7 @@ export const getLengthBoundsString: (
   return `${lchar}${minLength ?? ''},${maxLength ?? ''}${rchar}`
 }
 
+// istanbul ignore next
 export const getNumberBoundsInt: (
   params?: NumberParams<any, any>,
   lchar?: string,

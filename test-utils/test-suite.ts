@@ -558,6 +558,7 @@ export type StandardTestSuiteOptions = {
     | 'transcoder-idempotence'
     | 'json-schema-validation'
     | 'arbitrary-guard'
+    | 'derived-guard-tests'
   >
 }
 
@@ -625,7 +626,9 @@ const runStandardTestSuite_: StandardTestSuiteFn =
     ;(skipAll ? describe.skip : describe)(`${fold(name)} Standard Test Suite`, () => {
       describe('decoder', _.testDecoder(decoderTests))
       describe('encoder', _.testEncoder(encoderTests))
-      describe('guard', _.testGuard(guardTests, deriveGuardTests(encoderTests)))
+      skip.has('derived-guard-tests')
+        ? describe('guard', _.testGuard(guardTests))
+        : describe('guard', _.testGuard(guardTests, deriveGuardTests(encoderTests)))
       describe('eq', _.testEq(eqTests, deriveEqTests(encoderTests)))
       describe('jsonSchema', _.assertJsonSchema(jsonSchema))
       describe('typeString', _.assertTypeString(typeString))
