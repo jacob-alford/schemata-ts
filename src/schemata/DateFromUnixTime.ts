@@ -5,6 +5,7 @@ import { getTypeString } from 'schemata-ts/derivations/type-string-schemable'
 import { type Float } from 'schemata-ts/float'
 import * as TS from 'schemata-ts/internal/type-string'
 import { type Schema } from 'schemata-ts/Schema'
+import { type SafeDate } from 'schemata-ts/schemables/date/definition'
 import { Date as DateS } from 'schemata-ts/schemata/Date'
 import { Float as FloatS } from 'schemata-ts/schemata/Float'
 import { Imap } from 'schemata-ts/schemata/Imap'
@@ -34,11 +35,11 @@ const DateSchema = DateS()
  * @since 1.0.0
  * @category Conversion
  */
-export const DateFromUnixTime: Schema<Float<MinUnixTime, MaxUnixTime>, Date> = pipe(
+export const DateFromUnixTime: Schema<Float<MinUnixTime, MaxUnixTime>, SafeDate> = pipe(
   UnixTimeFloat,
   Imap(
     getGuard(DateSchema),
-    n => new Date(n * 1000),
+    n => new Date(n * 1000) as SafeDate,
     d => (d.getTime() / 1000) as Float<MinUnixTime, MaxUnixTime>,
     TS.fold(getTypeString(DateSchema)),
   ),

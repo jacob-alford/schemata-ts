@@ -4,6 +4,7 @@ import * as O from 'fp-ts/Option'
 import * as S from 'schemata-ts'
 import { type Integer } from 'schemata-ts/integer'
 import * as JS from 'schemata-ts/JsonSchema'
+import { type SafeDate } from 'schemata-ts/schemables/date/definition'
 import { type JsonString } from 'schemata-ts/schemables/parser/definition'
 import * as TC from 'schemata-ts/Transcoder'
 
@@ -34,7 +35,7 @@ test('Parser types', () => {
         name: string
         age: Integer<0, 120>
         isAlive: boolean
-        birthday: O.Option<Date>
+        birthday: O.Option<SafeDate>
       }
     >
   >()
@@ -92,10 +93,14 @@ runStandardTestSuite(Schema, _ => ({
       TC.transcodeErrors(
         TC.errorAtKey(
           'birthday',
-          TC.errorAtUnionMember(0, TC.typeMismatch('null', 1.5)),
+          TC.errorAtUnionMember('null', TC.typeMismatch('null', 1.5)),
           TC.errorAtUnionMember(
-            1,
-            TC.typeMismatch('Integer<-8640000000000000,8640000000000000>?', 1.5),
+            'Integer<-8640000000000000,8640000000000000>?',
+            TC.errorAtUnionMember('undefined', TC.typeMismatch('undefined', 1.5)),
+            TC.errorAtUnionMember(
+              'Integer<-8640000000000000,8640000000000000>',
+              TC.typeMismatch('Integer<-8640000000000000,8640000000000000>', 1.5),
+            ),
           ),
         ),
         TC.errorAtKey('isAlive', TC.typeMismatch("'true' | 'false'", undefined)),

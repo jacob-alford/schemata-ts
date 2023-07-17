@@ -57,7 +57,7 @@ test('Struct types', () => {
         a: string | null | undefined
         b: Float
         c: boolean
-        d: Date
+        d: SafeDate
         e: Integer<0, 2> | undefined
         f: string | Float | O.Option<NonNullable<SafeDate>>
       }
@@ -65,7 +65,7 @@ test('Struct types', () => {
   >()
 })
 
-const testDate = new Date()
+const testDate = new Date() as SafeDate
 
 runStandardTestSuite(Schema, _ => ({
   decoderTests: [
@@ -134,15 +134,27 @@ runStandardTestSuite(Schema, _ => ({
         TC.transcodeErrors(
           TC.errorAtKey(
             'a',
-            TC.errorAtUnionMember(0, TC.typeMismatch('null', 511)),
-            TC.errorAtUnionMember(1, TC.typeMismatch('string?', 511)),
+            TC.errorAtUnionMember('null', TC.typeMismatch('null', 511)),
+            TC.errorAtUnionMember(
+              'string?',
+              TC.errorAtUnionMember('undefined', TC.typeMismatch('undefined', 511)),
+              TC.errorAtUnionMember('string', TC.typeMismatch('string', 511)),
+            ),
           ),
           TC.errorAtKey('c', TC.typeMismatch('boolean', null)),
           TC.errorAtKey(
             'f',
-            TC.errorAtUnionMember(0, TC.typeMismatch('null | DateString?', NaN)),
-            TC.errorAtUnionMember(1, TC.typeMismatch('string', NaN)),
-            TC.errorAtUnionMember(2, TC.typeMismatch('Float', NaN)),
+            TC.errorAtUnionMember(
+              'null | DateString?',
+              TC.errorAtUnionMember('null', TC.typeMismatch('null', NaN)),
+              TC.errorAtUnionMember(
+                'DateString?',
+                TC.errorAtUnionMember('undefined', TC.typeMismatch('undefined', NaN)),
+                TC.errorAtUnionMember('DateString', TC.typeMismatch('DateString', NaN)),
+              ),
+            ),
+            TC.errorAtUnionMember('string', TC.typeMismatch('string', NaN)),
+            TC.errorAtUnionMember('Float', TC.typeMismatch('Float', NaN)),
           ),
         ),
     ),

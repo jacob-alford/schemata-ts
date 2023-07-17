@@ -48,10 +48,12 @@ export const PrimitivesTranscoder: WithPrimitives<TC.SchemableLambda> = {
         pipe(
           literals,
           RNEA.mapWithIndex((i, literal) =>
-            TC.errorAtUnionMember(
-              i,
-              TC.transcodeErrors(TC.typeMismatch(String(literal), u)),
-            ),
+            literals.length > 1
+              ? TC.errorAtUnionMember(
+                  i,
+                  TC.transcodeErrors(TC.typeMismatch(String(literal), u)),
+                )
+              : TC.typeMismatch(String(literal), u),
           ),
           errs => TC.transcodeErrors(...(errs as any)),
         ),

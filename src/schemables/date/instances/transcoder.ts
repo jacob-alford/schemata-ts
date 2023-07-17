@@ -6,6 +6,7 @@ import { type WithDate } from 'schemata-ts/schemables/date/definition'
 import { DateGuard as Guard } from 'schemata-ts/schemables/date/instances/guard'
 import {
   earliestSafeDate,
+  getDateBoundsStr,
   isAfterInc,
   isBeforeInc,
   isValidDateString,
@@ -25,11 +26,15 @@ export const DateTranscoder: WithDate<TC.SchemableLambda> = {
         pipe(
           u,
           E.fromPredicate(isValidDateString, () =>
-            TC.transcodeErrors(TC.typeMismatch('Date', u)),
+            TC.transcodeErrors(
+              TC.typeMismatch(`DateString${getDateBoundsStr(params)}`, u),
+            ),
           ),
           E.map(ds => new Date(ds)),
           E.filterOrElse(Pred.and(isBeforeInc(afterDate))(isAfterInc(beforeDate)), () =>
-            TC.transcodeErrors(TC.typeMismatch('Date', u)),
+            TC.transcodeErrors(
+              TC.typeMismatch(`DateString${getDateBoundsStr(params)}`, u),
+            ),
           ),
           E.map(_ => unsafeCoerce(_)),
         ),

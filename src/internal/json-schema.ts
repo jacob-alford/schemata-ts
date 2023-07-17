@@ -120,7 +120,7 @@ export class JsonExclude {
 
 /** Matches any of the supplied schemas */
 export class JsonUnion {
-  constructor(readonly oneOf: ReadonlyArray<JsonSchema>) {}
+  constructor(readonly anyOf: ReadonlyArray<JsonSchema>) {}
 }
 
 /** Matches all of the supplied schemas */
@@ -172,12 +172,12 @@ const remapRecurse: (
   if (schema instanceof JsonExclude || 'not' in schema) {
     return { ...schema, not: method(schema.not as JsonSchema) }
   }
-  if (schema instanceof JsonUnion || 'oneOf' in schema) {
+  if (schema instanceof JsonUnion || 'anyOf' in schema) {
     const mapped: Array<JsonSchema> = []
-    for (const item of schema.oneOf as ReadonlyArray<JsonSchema>) {
+    for (const item of schema.anyOf as ReadonlyArray<JsonSchema>) {
       mapped.push(method(item))
     }
-    return { ...schema, oneOf: mapped }
+    return { ...schema, anyOf: mapped }
   }
   if (schema instanceof JsonIntersection || 'allOf' in schema) {
     const mapped: Array<JsonSchema> = []

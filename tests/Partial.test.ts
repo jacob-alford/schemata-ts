@@ -61,7 +61,16 @@ runStandardTestSuite(Schema, _ => ({
       { a: undefined, b: testIso.wrap(_.c(69)) },
     ),
     _.decoder.fail({ a: [] }, () =>
-      TC.transcodeErrors(TC.errorAtKey('a', TC.typeMismatch('Array[1,]<string>', []))),
+      TC.transcodeErrors(
+        TC.errorAtKey(
+          'a',
+          TC.errorAtUnionMember('undefined', TC.typeMismatch('undefined', [])),
+          TC.errorAtUnionMember(
+            'Array[1,]<string>',
+            TC.typeMismatch('Array[1,]<string>', []),
+          ),
+        ),
+      ),
     ),
   ],
   encoderTests: [
