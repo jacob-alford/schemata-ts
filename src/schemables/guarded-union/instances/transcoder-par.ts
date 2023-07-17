@@ -28,8 +28,8 @@ export const GuardedUnionTranscoderPar: WithGuardedUnion<TCP.SchemableLambda> = 
         }
         return pipe(
           sortedMembers,
-          RNEA.mapWithIndex((i, { name }) =>
-            TCP.errorAtUnionMember(i, TC.transcodeErrors(TCP.typeMismatch(name, out))),
+          RNEA.map(({ name }) =>
+            TCP.errorAtUnionMember(name, TC.transcodeErrors(TCP.typeMismatch(name, out))),
           ),
           errs =>
             TC.transcodeErrors(

@@ -123,6 +123,24 @@ runStandardTestSuite(NotMutex, _ => ({
         c: testNumber as Float<-8640000000000, 8640000000000>,
       },
     ),
+    _.encoder.fail(_.c({}), () =>
+      TC.transcodeErrors(
+        TC.errorAtUnionMember(
+          '{ a: EmailAddress, c: Float<-8640000000000,8640000000000> }',
+          TC.typeMismatch(
+            '{ a: EmailAddress, c: Float<-8640000000000,8640000000000> }',
+            {},
+          ),
+        ),
+        TC.errorAtUnionMember(
+          '{ a: string, b?: null | Integer?, c: Integer<-8640000000000000,8640000000000000> }',
+          TC.typeMismatch(
+            '{ a: string, b?: null | Integer?, c: Integer<-8640000000000000,8640000000000000> }',
+            {},
+          ),
+        ),
+      ),
+    ),
   ],
   jsonSchema: JS.union(
     JS.struct(
@@ -154,3 +172,39 @@ runStandardTestSuite(NotMutex, _ => ({
   ),
   typeString: `{ a: string, b?: null | Integer?, c: Integer<-8640000000000000,8640000000000000> } | { a: EmailAddress, c: Float<-8640000000000,8640000000000> } → { a: string, b: null | Integer?, c: Integer<-8640000000000000,8640000000000000> } | { a: EmailAddress, c: Date }`,
 }))()
+
+runStandardTestSuite(
+  S.Union(
+    S.Strict({
+      a: S.String(),
+      b: S.Natural,
+    }),
+  ),
+  _ => ({
+    decoderTests: [
+      _.decoder.pass({
+        a: 'hello',
+        b: 1,
+      }),
+      _.decoder.fail(
+        {
+          a: 'hello',
+          b: 1,
+          c: NaN,
+        },
+        () => TC.transcodeErrors(TC.errorAtKey('c', TC.unexpectedValue(NaN))),
+      ),
+    ],
+    typeString: `{ a: string, b: Integer<0,> }`,
+    jsonSchema: JS.struct(
+      {
+        a: JS.string(),
+        b: JS.integer({
+          minimum: 0,
+        }),
+      },
+      ['a', 'b'],
+      false,
+    ),
+  }),
+)()

@@ -5,6 +5,7 @@ import * as E from 'fp-ts/Either'
 import { constVoid, flow, pipe, tuple, unsafeCoerce } from 'fp-ts/function'
 import type * as IO from 'fp-ts/IO'
 import type * as J from 'fp-ts/Json'
+import * as O from 'fp-ts/Option'
 import * as RA from 'fp-ts/ReadonlyArray'
 import * as RR from 'fp-ts/ReadonlyRecord'
 import * as RTup from 'fp-ts/ReadonlyTuple'
@@ -486,14 +487,24 @@ export const deriveEqTests = <I, T>(
   Array.isArray(encoderTests)
     ? pipe(
         encoderTests as ReadonlyArray<TestItem<T, E.Either<TCE.TranscodeErrors, I>>>,
-        RA.map(([_]) => tuple(tuple(_, _), true)),
+        RA.filterMap(([_, e]) =>
+          pipe(
+            O.fromEither(e),
+            O.map(() => tuple(tuple(_, _), true)),
+          ),
+        ),
       )
     : pipe(
         encoderTests as Exclude<
           SchemableTest<T, E.Either<TCE.TranscodeErrors, I>>,
           { length: number }
         >,
-        RR.map(([_]) => tuple(tuple(_, _), true)),
+        RR.filterMap(([_, e]) =>
+          pipe(
+            O.fromEither(e),
+            O.map(() => tuple(tuple(_, _), true)),
+          ),
+        ),
       )
 
 export type MakeTestValues<I, O> = {

@@ -12,8 +12,10 @@ export const GuardedUnionJsonSchema: WithGuardedUnion<JS.SchemableLambda> = {
       RA.foldMap(B.MonoidAny)(({ member }) => hasImplicitOptional(member)),
     )
     const union = new JS.JsonUnion(members.map(({ member }) => member))
-    return isOptional
-      ? JS.make(makeImplicitOptional(union, _ => Object.assign({}, _)))
-      : JS.make(union)
+    return members.length > 1
+      ? isOptional
+        ? JS.make(makeImplicitOptional(union, _ => Object.assign({}, _)))
+        : JS.make(union)
+      : members[0].member
   },
 }
