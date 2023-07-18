@@ -3,7 +3,7 @@ import { type JsonSchema } from 'schemata-ts/internal/json-schema'
 import { type SchemableKind, type SchemableLambda } from 'schemata-ts/internal/schemable'
 
 export interface WithAnnotate<S extends SchemableLambda> {
-  readonly annotate: (params?: {
+  readonly annotate: (params: {
     readonly title?: string
     readonly description?: string
     readonly references?: RR.ReadonlyRecord<string, JsonSchema>

@@ -19,7 +19,7 @@ const applicativeValidation = TE.getApplicativeTaskValidation(
 )
 
 export const ArrayTranscoderPar: WithArray<TCP.SchemableLambda> = {
-  array: (params = {}) => {
+  array: params => {
     const { minLength = 0, maxLength = 2 ** 32 - 2, expectedName } = params
 
     return item => ({
@@ -30,13 +30,10 @@ export const ArrayTranscoderPar: WithArray<TCP.SchemableLambda> = {
         ),
       ),
       decode: flow(
-        validateArray(expectedName ?? 'Array'),
+        validateArray(expectedName),
         TE.filterOrElse(
           u => u.length >= minLength && u.length <= maxLength,
-          u =>
-            TC.transcodeErrors(
-              TC.typeMismatch(expectedName ?? `Array[${minLength},${maxLength}]`, u),
-            ),
+          u => TC.transcodeErrors(TC.typeMismatch(expectedName, u)),
         ),
         TE.chain(
           RA.traverseWithIndex(applicativeValidation)((i, u) =>

@@ -2,7 +2,7 @@ import type * as G from 'schemata-ts/internal/guard'
 import { type WithArray } from 'schemata-ts/schemables/array/definition'
 
 export const ArrayGuard: WithArray<G.SchemableLambda> = {
-  array: (params = {}) => {
+  array: params => {
     const { minLength = 0, maxLength = 2 ** 32 - 2 } = params
     return <A>(item: G.Guard<A>) => ({
       is: (u): u is ReadonlyArray<A> =>

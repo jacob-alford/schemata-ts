@@ -3,7 +3,7 @@ import * as Arb from 'schemata-ts/internal/arbitrary'
 import { type WithArray } from 'schemata-ts/schemables/array/definition'
 
 export const ArrayArbitrary: WithArray<Arb.SchemableLambda> = {
-  array: (params = {}) => {
+  array: params => {
     const { minLength = 0, maxLength = 2 ** 32 - 2 } = params
     return item =>
       Arb.makeArbitrary(fc =>

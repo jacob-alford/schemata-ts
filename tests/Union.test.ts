@@ -208,3 +208,46 @@ runStandardTestSuite(
     ),
   }),
 )()
+
+runStandardTestSuite(
+  S.Union(
+    S.Tuple(S.Literal('tag'), S.Date()),
+    S.Tuple(
+      S.String(),
+      S.Date({ beforeDate: new Date(2024, 1, 29), afterDate: new Date(2020, 1, 29) }),
+    ),
+  ),
+  _ => ({
+    decoderTests: [
+      _.decoder.fail(['not-tag', new Date(2019, 0, 0)], () =>
+        TC.transcodeErrors(
+          TC.errorAtUnionMember(
+            '[tag, Date]',
+            TC.errorAtIndex(0, TC.typeMismatch('tag', 'not-tag')),
+          ),
+          TC.errorAtUnionMember(
+            '[string, Date<2020-02-29T07:00:00.000Z,2024-02-29T07:00:00.000Z>]',
+            TC.errorAtIndex(
+              1,
+              TC.typeMismatch(
+                'Date<2020-02-29T07:00:00.000Z,2024-02-29T07:00:00.000Z>',
+                new Date(2019, 0, 0),
+              ),
+            ),
+          ),
+        ),
+      ),
+      _.decoder.pass(['tag', new Date(2019, 0, 0)]),
+      _.decoder.pass(['not-tag', new Date(2021, 0, 0)]),
+    ],
+    jsonSchema: JS.union(
+      JS.tuple(JS.literal('tag'), JS.emptySchema),
+      JS.tuple(JS.string(), JS.emptySchema),
+    ),
+    typeString:
+      '[tag, Date] | [string, Date<2020-02-29T07:00:00.000Z,2024-02-29T07:00:00.000Z>]',
+  }),
+  {
+    skip: ['json-schema-validation'],
+  },
+)()

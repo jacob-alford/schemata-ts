@@ -19,7 +19,8 @@ export const MapFromEntries = <EK, EA, K extends EK, A>(
   sA: Schema<EA, A>,
   mergeStrategy: 'first' | 'last',
 ): Schema<ReadonlyArray<readonly [EK, EA]>, ReadonlyMap<K, A>> => {
-  const arrayName = array()(tuple('', getTypeString(sK), getTypeString(sA)))
+  const tsA = getTypeString(sA)
+  const arrayName = array({ expectedName: tsA[0] })(tuple('', getTypeString(sK), tsA))
   const mergeSemigroup = getMergeSemigroup(sA).semigroup(mergeStrategy)
   return make(S =>
     S.mapFromEntries(

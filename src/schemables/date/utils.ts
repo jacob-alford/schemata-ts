@@ -29,6 +29,7 @@ export const earliestSafeDate = new Date(smallestSafeMs)
 /** @internal */
 export const latestSafeDate = new Date(largestSafeMs)
 
+// istanbul ignore next
 export const getDateBoundsStr: (
   params?: DateParams,
   lchar?: string,

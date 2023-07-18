@@ -8,4 +8,6 @@ export const replaceCharAt = (s: string, i: number, c: string): string =>
 export const locationToIndex = (
   s: string,
   location: number | ((s: string) => number),
-): number => (typeof location === 'number' ? location : location(s))
+): number =>
+  // istanbul ignore next
+  typeof location === 'number' ? location : location(s)

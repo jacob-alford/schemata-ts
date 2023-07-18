@@ -5,7 +5,7 @@ import { type WithAnnotate } from 'schemata-ts/schemables/annotate/definition'
 
 export const AnnotateJsonSchema: WithAnnotate<JS.SchemableLambda> = {
   annotate:
-    (params = {}) =>
+    params =>
     <O>(inner: Const<JS.JsonSchema, O>): Const<JS.JsonSchema, O> => {
       const { title, description, references } = params
       if (title === undefined && description === undefined && references === undefined)

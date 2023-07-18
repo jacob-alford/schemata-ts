@@ -32,7 +32,10 @@ const expectedJsonSchema: Const<JS.JsonSchema, S.InputOf<typeof Schema>> = JS.st
     f: JS.union(
       JS.string(),
       JS.number(),
-      JS.union(JS.nullSchema, JS.string({ format: 'date' })),
+      JS.union(
+        JS.nullSchema,
+        JS.union(JS.string({ format: 'date-time' }), JS.string({ format: 'date' })),
+      ),
     ),
   },
   ['b', 'c', 'd'],

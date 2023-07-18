@@ -3,7 +3,7 @@ import * as TS from 'schemata-ts/internal/type-string'
 import { type WithAnnotate } from 'schemata-ts/schemables/annotate/definition'
 
 export const AnnotateTypeString: WithAnnotate<TS.SchemableLambda> = {
-  annotate: (params = {}) => {
+  annotate: params => {
     const { typeString } = params
     return inner =>
       typeString === undefined

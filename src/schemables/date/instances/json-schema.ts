@@ -5,14 +5,25 @@ export const DateJsonSchema: WithDate<JS.SchemableLambda> = {
   date: () => JS.make(new JS.JsonEmpty()),
   dateFromString: () =>
     JS.make(
-      new JS.JsonString(
-        undefined,
-        undefined,
-        undefined,
-        undefined,
-        undefined,
-        undefined,
-        'date',
-      ),
+      new JS.JsonUnion([
+        new JS.JsonString(
+          undefined,
+          undefined,
+          undefined,
+          undefined,
+          undefined,
+          undefined,
+          'date-time',
+        ),
+        new JS.JsonString(
+          undefined,
+          undefined,
+          undefined,
+          undefined,
+          undefined,
+          undefined,
+          'date',
+        ),
+      ]),
     ),
 }
