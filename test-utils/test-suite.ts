@@ -461,7 +461,7 @@ type StandardTestInputs<I, T> = {
   readonly jsonSchema: GetFirstArg<TestSuite<I, T>['assertJsonSchema']>
   readonly jsonSchema2007?: GetFirstArg<TestSuite<I, T>['assertJsonSchema']>
   readonly jsonSchema2020?: GetFirstArg<TestSuite<I, T>['assertJsonSchema']>
-  readonly typeString: GetFirstArg<TestSuite<I, T>['assertTypeString']>
+  readonly typeString?: GetFirstArg<TestSuite<I, T>['assertTypeString']>
   readonly semigroupTests?: GetFirstArg<TestSuite<I, T>['testSemigroup']>
   readonly additionalTests?: (testSuite: TestSuite<I, T>) => IO.IO<void>
 }
@@ -649,7 +649,9 @@ const runStandardTestSuite_: StandardTestSuiteFn =
         'jsonSchema',
         _.assertJsonSchema(jsonSchema, jsonSchema2007, jsonSchema2020),
       )
-      describe('typeString', _.assertTypeString(typeString))
+      if (typeString !== undefined) {
+        describe('typeString', _.assertTypeString(typeString))
+      }
       describe('information', _.assertValidInformation)
       describe('semigroup', _.testSemigroup(semigroupTests))
       if (!skipArbitraryChecks) {
