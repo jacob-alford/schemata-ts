@@ -5,7 +5,6 @@
  */
 
 import { unsafeCoerce } from 'fp-ts/function'
-import { type Iso, make } from 'schemata-ts/iso'
 
 /**
  * Represents a wrapped type that's not assignable to its underlying type.
@@ -19,7 +18,7 @@ export interface Newtype<URI, A> {
 }
 
 /** @since 2.0.0 */
-export interface NewtypeIso<A, B> extends Iso<A, B> {
+export interface NewtypeIso<A, B> {
   readonly wrap: (B: B) => A
   readonly unwrap: (A: A) => B
 }
@@ -53,21 +52,6 @@ export const iso: <Nt extends Newtype<any, any>>() => NewtypeIso<
   Nt,
   CarrierOf<Nt>
 > = () => ({
-  ...make(unsafeCoerce, unsafeCoerce),
   wrap: unsafeCoerce,
   unwrap: unsafeCoerce,
 })
-
-/**
- * @since 1.4.0
- * @category Constructors
- */
-export const wrap: <Nt extends Newtype<any, any>>() => (a: CarrierOf<Nt>) => Nt = () =>
-  unsafeCoerce
-
-/**
- * @since 1.4.0
- * @category Destructors
- */
-export const unwrap: <Nt extends Newtype<any, any>>() => (a: Nt) => CarrierOf<Nt> = () =>
-  unsafeCoerce

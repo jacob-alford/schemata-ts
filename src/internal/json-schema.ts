@@ -12,7 +12,6 @@ export type JsonSchemaValue =
   | JsonInteger
   | JsonConst
   | JsonLiteral
-  | JsonExclude
   | JsonStruct
   | JsonArray
   | JsonUnion
@@ -35,15 +34,15 @@ export const make: <A>(value: JsonSchemaValue) => Const<JsonSchema, A> = make_
 
 /** @internal */
 export const addDescription =
-  (description?: Description) =>
+  (description: Description) =>
   <A>(schema: Const<JsonSchema, A>): Const<JsonSchema, A> =>
-    make_(Object.assign({}, schema, description ?? {}))
+    make_(Object.assign({}, schema, description))
 
 /** @internal */
 export const addReferences =
-  (references?: References) =>
+  (references: References) =>
   <A>(schema: Const<JsonSchema, A>): Const<JsonSchema, A> =>
-    make_(Object.assign({}, schema, references ?? {}))
+    make_(Object.assign({}, schema, references))
 
 /** Matches anything */
 export class JsonEmpty {}
@@ -113,11 +112,6 @@ export class JsonNull {
   readonly const = null
 }
 
-/** Negates a schema */
-export class JsonExclude {
-  constructor(readonly not: JsonSchema) {}
-}
-
 /** Matches any of the supplied schemas */
 export class JsonUnion {
   constructor(readonly anyOf: ReadonlyArray<JsonSchema>) {}
@@ -168,9 +162,6 @@ const remapRecurse: (
       return { ...schema, items: mapped }
     }
     return { ...schema, items: method(items) }
-  }
-  if (schema instanceof JsonExclude || 'not' in schema) {
-    return { ...schema, not: method(schema.not as JsonSchema) }
   }
   if (schema instanceof JsonUnion || 'anyOf' in schema) {
     const mapped: Array<JsonSchema> = []

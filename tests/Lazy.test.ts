@@ -150,6 +150,20 @@ runStandardTestSuite(
         },
       },
     },
+    jsonSchema2007: {
+      $ref: 'Simple',
+      definitions: {
+        Simple: {
+          properties: {
+            float: {
+              type: 'number',
+            },
+          },
+          required: ['float'],
+          type: 'object',
+        },
+      },
+    },
     typeString: 'Lazy<Simple>',
   }),
   {

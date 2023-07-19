@@ -116,16 +116,11 @@ export class ErrorAtUnionMember {
  * @category Instances
  */
 export const Semigroup: Sg.Semigroup<TranscodeErrors> = {
-  concat: (x, y) =>
-    x.errors.length === 0
-      ? y
-      : y.errors.length === 0
-      ? x
-      : new TranscodeErrors(RNEA.concat(y.errors)(x.errors)),
+  concat: (x, y) => new TranscodeErrors(RNEA.concat(y.errors)(x.errors)),
 }
 
 /**
- * Flattens a `DecodeError` tree into a common Monoid
+ * Flattens a `DecodeError` tree into a common Semigroup
  *
  * @since 2.0.0
  * @category Destructors
@@ -133,33 +128,49 @@ export const Semigroup: Sg.Semigroup<TranscodeErrors> = {
 export const fold =
   <S>(S: Sg.Semigroup<S>) =>
   (matchers: {
-    readonly TypeMismatch: (e: TypeMismatch) => S
-    readonly UnexpectedValue: (e: UnexpectedValue) => S
-    readonly SerializationError: (e: SerializationError) => S
-    readonly ErrorAtIndex: (e: ErrorAtIndex) => S
-    readonly ErrorAtKey: (e: ErrorAtKey) => S
-    readonly ErrorAtUnionMember: (e: ErrorAtUnionMember) => S
-  }) =>
-  (e: TranscodeErrors): S =>
-    pipe(
-      e.errors,
-      RNEA.foldMap(S)(err => {
-        switch (err._tag) {
-          case 'TypeMismatch':
-            return matchers.TypeMismatch(err)
-          case 'UnexpectedValue':
-            return matchers.UnexpectedValue(err)
-          case 'SerializationError':
-            return matchers.SerializationError(err)
-          case 'ErrorAtIndex':
-            return matchers.ErrorAtIndex(err)
-          case 'ErrorAtKey':
-            return matchers.ErrorAtKey(err)
-          case 'ErrorAtUnionMember':
-            return matchers.ErrorAtUnionMember(err)
-        }
-      }),
-    )
+    readonly TypeMismatch: (e: TypeMismatch, depth: number) => S
+    readonly UnexpectedValue: (e: UnexpectedValue, depth: number) => S
+    readonly SerializationError: (e: SerializationError, depth: number) => S
+    readonly ErrorAtIndex: (
+      err: ErrorAtIndex,
+      recurse: (errs: TranscodeErrors) => S,
+      depth: number,
+    ) => S
+    readonly ErrorAtKey: (
+      err: ErrorAtKey,
+      recurse: (errs: TranscodeErrors) => S,
+      depth: number,
+    ) => S
+    readonly ErrorAtUnionMember: (
+      err: ErrorAtUnionMember,
+      recurse: (errs: TranscodeErrors) => S,
+      depth: number,
+    ) => S
+  }): ((e: TranscodeErrors) => S) => {
+    const go =
+      (depth: number) =>
+      (err: TranscodeErrors): S =>
+        pipe(
+          err.errors,
+          RNEA.foldMap(S)(err => {
+            switch (err._tag) {
+              case 'TypeMismatch':
+                return matchers.TypeMismatch(err, depth)
+              case 'UnexpectedValue':
+                return matchers.UnexpectedValue(err, depth)
+              case 'SerializationError':
+                return matchers.SerializationError(err, depth)
+              case 'ErrorAtIndex':
+                return matchers.ErrorAtIndex(err, go(depth + 1), depth)
+              case 'ErrorAtKey':
+                return matchers.ErrorAtKey(err, go(depth + 1), depth)
+              case 'ErrorAtUnionMember':
+                return matchers.ErrorAtUnionMember(err, go(depth + 1), depth)
+            }
+          }),
+        )
+    return go(0)
+  }
 
 /**
  * Flattens a `DecodeError` tree into a common Monoid with access to the current
@@ -182,101 +193,73 @@ export const foldMap =
     readonly ErrorAtIndex: (index: number, errors: S, depth: number) => S
     readonly ErrorAtKey: (key: string, errors: S, depth: number) => S
     readonly ErrorAtUnionMember: (member: number | string, errors: S, depth: number) => S
-  }) =>
-  (e: TranscodeErrors): S => {
-    const go =
-      (depth: number) =>
-      (e: TranscodeErrors): S =>
-        pipe(
-          e.errors,
-          RNEA.foldMap(S)(err => {
-            switch (err._tag) {
-              case 'TypeMismatch':
-                return matchers.TypeMismatch(err.expected, err.actual, depth)
-              case 'UnexpectedValue':
-                return matchers.UnexpectedValue(err.actual, depth)
-              case 'SerializationError':
-                return matchers.SerializationError(
-                  err.expected,
-                  err.error,
-                  err.actual,
-                  depth,
-                )
-              case 'ErrorAtIndex':
-                return matchers.ErrorAtIndex(err.index, go(depth + 1)(err.errors), depth)
-              case 'ErrorAtKey':
-                return matchers.ErrorAtKey(err.key, go(depth + 1)(err.errors), depth)
-              case 'ErrorAtUnionMember':
-                return matchers.ErrorAtUnionMember(
-                  err.member,
-                  go(depth + 1)(err.errors),
-                  depth,
-                )
-            }
-          }),
-        )
-    return go(0)(e)
-  }
+  }): ((e: TranscodeErrors) => S) =>
+    fold(S)({
+      TypeMismatch: (err, depth) =>
+        matchers.TypeMismatch(err.expected, err.actual, depth),
+      UnexpectedValue: (err, depth) => matchers.UnexpectedValue(err.actual, depth),
+      SerializationError: (err, depth) =>
+        matchers.SerializationError(err.expected, err.error, err.actual, depth),
+      ErrorAtIndex: (err, recurse, depth) =>
+        matchers.ErrorAtIndex(err.index, recurse(err.errors), depth),
+      ErrorAtKey: (err, recurse, depth) =>
+        matchers.ErrorAtKey(err.key, recurse(err.errors), depth),
+      ErrorAtUnionMember: (err, recurse, depth) =>
+        matchers.ErrorAtUnionMember(err.member, recurse(err.errors), depth),
+    })
 
 /**
- * Draws a tree of `DecodeError` values with configurable markings
+ * Draws a tree of `TranscodeErrors` as lines with configurable child prefixes
  *
  * @since 2.0.0
  * @category Destructors
  */
-export const drawLinesWithMarkings = (params: {
-  readonly getIndentationString: (
-    err: string,
-    depth: number,
-    isLastChild: boolean,
-  ) => string
-}): ((err: TranscodeErrors) => ReadonlyArray<string>) =>
+export const drawLinesWithMarkings = (
+  markChildren: (err: string, depth: number, isLastChild: boolean) => string,
+  markParent: (parentError: string, depth: number) => string,
+): ((err: TranscodeErrors) => ReadonlyArray<string>) =>
   foldMap(RA.getMonoid<string>())({
-    TypeMismatch: (expected, actual) => [
-      `Expected ${expected} but got ${String(actual)}`,
+    TypeMismatch: (expected, actual, depth) => [
+      markParent(`Expected ${expected} but got \`${String(actual)}\``, depth),
     ],
-    UnexpectedValue: actual => [`Unexpected value: ${String(actual)}`],
-    SerializationError: (expected, error, actual) => [
-      `Expected ${expected}, but ran into Serialization error: ${String(
-        error,
-      )}; got ${actual}`,
+    UnexpectedValue: (actual, depth) => [
+      markParent(`Unexpected value: \`${String(actual)}\``, depth),
+    ],
+    SerializationError: (expected, error, actual, depth) => [
+      markParent(
+        `Expected ${expected}, but ran into serialization error: \`${String(
+          error,
+        )}\`; got ${actual}`,
+        depth,
+      ),
     ],
     ErrorAtIndex: (index, errors, depth) =>
       pipe(
-        [`Error at index ${index}`],
+        [markParent(`Error at index ${index}:`, depth)],
         RA.concat(
           pipe(
             errors,
-            RA.mapWithIndex((i, e) =>
-              params.getIndentationString(e, depth, i === errors.length - 1),
-            ),
+            RA.mapWithIndex((i, e) => markChildren(e, depth, i === errors.length - 1)),
           ),
         ),
       ),
     ErrorAtKey: (key, errors, depth) =>
       pipe(
-        [`Error at key ${key}`],
+        [markParent(`Error at key ${key}:`, depth)],
         RA.concat(
           pipe(
             errors,
-            RA.mapWithIndex((i, e) =>
-              params.getIndentationString(e, depth, i === errors.length - 1),
-            ),
+            RA.mapWithIndex((i, e) => markChildren(e, depth, i === errors.length - 1)),
           ),
         ),
       ),
     ErrorAtUnionMember: (member, errors, depth) =>
       pipe(
-        [`Error at union member ${member}`],
+        [markParent(`Error at union member \`${member}\`:`, depth)],
         RA.concat(
           pipe(
             errors,
-            RA.mapWithIndex(
-              (i, e) =>
-                `${params.getIndentationString(e, depth, i === errors.length - 1)}${
-                  e.includes('─') ? '─' : ' '
-                }${e}`,
-            ),
+            RA.mapWithIndex((i, e) => markChildren(e, depth, i === errors.length - 1)),
           ),
         ),
       ),
@@ -289,12 +272,13 @@ export const drawLinesWithMarkings = (params: {
  * @category Destructors
  */
 export const drawTree = flow(
-  drawLinesWithMarkings({
-    getIndentationString: (e, depth, isLastChild) =>
-      `${depth === 0 ? (isLastChild ? '└─' : '├─') : '─'}${'─'.repeat(depth * 2)}${
+  drawLinesWithMarkings(
+    (e, depth, isLastChild) =>
+      `${depth === 0 ? (isLastChild ? '  └─' : '  ├─') : '─'}${'─'.repeat(depth)}${
         e.includes('─') ? '─' : ' '
       }${e}`,
-  }),
+    (parent, depth) => (depth === 0 ? `  ┌ ${parent}` : parent),
+  ),
   as =>
     pipe(
       as,

@@ -43,6 +43,13 @@ runStandardTestSuite(
         ),
       ),
     ],
+    semigroupTests: [
+      _.semigroup.combinesFirst(
+        _.c(new Date('2023-07-30')),
+        _.c(new Date('2024-07-30')),
+        _.c(new Date('2023-07-30')),
+      ),
+    ],
     eqTests: [_.eq.equate(_.c(new Date('2023-07-30')), _.c(new Date('2023-07-30')))],
     typeString: 'In-between-the-leap-years',
     jsonSchema: {

@@ -2,7 +2,6 @@
 import { pipe } from 'fp-ts/function'
 import * as k from 'kuvio'
 import { getGuard } from 'schemata-ts/derivations/guard-schemable'
-import { matchW } from 'schemata-ts/internal/match'
 import { type Schema } from 'schemata-ts/Schema'
 import {
   type SafeDate,
@@ -280,16 +279,19 @@ export const DateFromIsoString: (
   params?: DateFromIsoStringParams,
 ) => Schema<SafeDateString, SafeDate> = (params = {}) => {
   const { requireTime = 'TimeAndOffset' } = params
+  const pattern = (() => {
+    switch (requireTime) {
+      case 'None':
+        return isoDateStringOptTzOptT
+      case 'Time':
+        return isoDateStringOptTzReqT
+      case 'TimeAndOffset':
+        return isoDateStringReqTzReqT
+    }
+  })()
   return pipe(
     Pattern(
-      pipe(
-        { tag: requireTime },
-        matchW({
-          None: () => isoDateStringOptTzOptT,
-          Time: () => isoDateStringOptTzReqT,
-          TimeAndOffset: () => isoDateStringReqTzReqT,
-        }),
-      ),
+      pattern,
       requireTime === 'TimeAndOffset'
         ? 'IsoDateTimeStringZ'
         : requireTime === 'Time'

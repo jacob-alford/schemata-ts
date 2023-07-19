@@ -10,8 +10,10 @@ import {
 } from 'schemata-ts/internal/schema-utils'
 import { type SchemableKind, type SchemableLambda } from 'schemata-ts/internal/schemable'
 import { remapKey } from 'schemata-ts/internal/struct'
+import type * as TS from 'schemata-ts/internal/type-string'
 import { type Combine } from 'schemata-ts/internal/type-utils'
 import { type OutputOf, type Schema, make } from 'schemata-ts/Schema'
+import { StructTypeString } from 'schemata-ts/schemables/struct/instances/type-string'
 import type * as s from 'schemata-ts/schemables/struct/type-utils'
 import type { CamelCase } from 'type-fest'
 
@@ -71,6 +73,7 @@ export const CamelCaseKeys: <T extends Record<string, Schema<any, any>>>(
 > = (props, extraProps = 'strip', mergeStrategy) =>
   make(_ => {
     const struct: Record<string, s.StructProp<any>> = {}
+    const structName: Record<string, s.StructProp<TS.SchemableLambda>> = {}
     for (const key in props) {
       // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
       const schema = props[key]!
@@ -79,14 +82,25 @@ export const CamelCaseKeys: <T extends Record<string, Schema<any, any>>>(
         _.clone,
         camelCase(key),
       )
-
+      const guard = getGuard(schema)
+      const information = getInformation(schema)
+      const name = getTypeString(schema)
+      const semigroup = getMergeSemigroup(schema).semigroup(mergeStrategy)
       struct[key] = {
         schemable,
-        guard: getGuard(schema),
-        information: getInformation(schema),
-        semigroup: getMergeSemigroup(schema).semigroup(mergeStrategy),
-        name: getTypeString(schema)[0],
+        guard,
+        information,
+        semigroup,
+        name: name[0],
+      }
+      structName[key] = {
+        schemable: name,
+        guard,
+        information,
+        semigroup,
+        name: name[0],
       }
     }
-    return _.struct(struct as any, extraProps)
+    const wholeName = StructTypeString.struct(structName, extraProps, '')
+    return _.struct(struct as any, extraProps, wholeName[0])
   }) as any

@@ -14,19 +14,17 @@ import {
 } from 'schemata-ts/schemables/struct/utils'
 import * as TCE from 'schemata-ts/TranscodeError'
 
-const decodeErrorValidation = E.getApplicativeValidation(TCE.Semigroup)
-const apSecond = Ap.apSecond(decodeErrorValidation)
-
+const apSecond = Ap.apSecond(TC.applicativeValidation)
 const validateObject = getValidateObject(E.MonadThrow)
 
 export const StructTranscoder: WithStruct<TC.SchemableLambda> = {
-  struct: (properties, extraProps) => {
+  struct: (properties, extraProps, wholeName) => {
     const lookupByOutputKey = remapPropertyKeys(properties)
 
     return {
       decode: (u): E.Either<TCE.TranscodeErrors, any> =>
         pipe(
-          validateObject('object')(u),
+          validateObject(wholeName)(u),
           E.chain(u => {
             // --- decode all known properties of an object's own non-inherited properties
             const outKnown = pipe(
@@ -129,7 +127,7 @@ export const StructTranscoder: WithStruct<TC.SchemableLambda> = {
       E.chain(
         witherRemap(TCE.Semigroup)((k, u) =>
           pipe(
-            Ap.sequenceT(decodeErrorValidation)(
+            Ap.sequenceT(TC.applicativeValidation)(
               codomain.decode(u),
               key.decode(k),
               E.right(semigroup),
@@ -144,7 +142,7 @@ export const StructTranscoder: WithStruct<TC.SchemableLambda> = {
     encode: flow(
       witherRemap(TCE.Semigroup)((k, u) =>
         pipe(
-          Ap.sequenceT(decodeErrorValidation)(
+          Ap.sequenceT(TC.applicativeValidation)(
             codomain.encode(u),
             key.encode(k),
             E.right(semigroup),
@@ -161,14 +159,14 @@ export const StructTranscoder: WithStruct<TC.SchemableLambda> = {
       validateObject('object'),
       E.chain(u =>
         pipe(
-          Ap.sequenceT(decodeErrorValidation)(x.decode(u), y.decode(u)),
+          Ap.sequenceT(TC.applicativeValidation)(x.decode(u), y.decode(u)),
           E.map(([x, y]) => safeIntersect(x, y)),
         ),
       ),
     ),
     encode: u =>
       pipe(
-        Ap.sequenceT(decodeErrorValidation)(x.encode(u), y.encode(u)),
+        Ap.sequenceT(TC.applicativeValidation)(x.encode(u), y.encode(u)),
         E.map(([x, y]) => safeIntersect(x, y)),
       ),
   }),

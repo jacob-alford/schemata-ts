@@ -62,7 +62,6 @@ export type JsonSchemaValue =
   | I.JsonInteger
   | I.JsonConst
   | I.JsonLiteral
-  | I.JsonExclude
   | I.JsonStruct
   | I.JsonArray
   | I.JsonUnion
@@ -91,13 +90,18 @@ export const getJsonSchema = <I, O>(
 ): JsonSchema => {
   switch (version) {
     case 'Draft-07':
+      // istanbul ignore next
       return (maintainIdentity ? identity : I.stripIdentity)(
         I.as2007(getJsonSchema_(schema)),
       )
     case '2019-09':
+      // istanbul ignore next
       return (maintainIdentity ? identity : I.stripIdentity)(getJsonSchema_(schema))
     case '2020-12':
-      return (maintainIdentity ? identity : I.stripIdentity)(getJsonSchema_(schema))
+      // istanbul ignore next
+      return (maintainIdentity ? identity : I.stripIdentity)(
+        I.as2020(getJsonSchema_(schema)),
+      )
   }
 }
 
@@ -180,8 +184,6 @@ export const integer = <
  */
 export const booleanSchema: Const<JsonSchema, boolean> = make(new I.JsonBoolean())
 
-const _const = <A>(value: A): Const<JsonSchema, A> => make({ const: value })
-
 /**
  * @since 1.2.0
  * @category Constructors
@@ -256,16 +258,6 @@ export const intersection =
   <A>(left: Const<JsonSchema, A>): Const<JsonSchema, A & B> =>
     make(new I.JsonIntersection([left, right]))
 
-/**
- * @since 1.2.0
- * @category Constructors
- */
-export const exclusion = <A, Z extends A>(
-  exclude: Z,
-  schema: Const<JsonSchema, A>,
-): Const<JsonSchema, Exclude<A, Z>> =>
-  make(new I.JsonIntersection([new I.JsonExclude(_const(exclude)), schema]))
-
 // -------------------------------------------------------------------------------------
 // Instances
 // -------------------------------------------------------------------------------------
@@ -291,6 +283,7 @@ declare module 'fp-ts/lib/HKT' {
  * @since 1.2.0
  * @category Combintators
  */
+// istanbul ignore next
 export const annotate: (params?: {
   readonly title?: string
   readonly description?: string

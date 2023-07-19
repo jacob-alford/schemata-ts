@@ -1,17 +1,10 @@
 import * as E from 'fp-ts/Either'
 import { identity, pipe } from 'fp-ts/function'
-import type * as IO from 'fp-ts/IO'
 import type * as O from 'fp-ts/Option'
 import * as RR from 'fp-ts/ReadonlyRecord'
 import type * as Sg from 'fp-ts/Semigroup'
 import * as T from 'fp-ts/Task'
 import * as TE from 'fp-ts/TaskEither'
-
-/** @internal */
-export const getLeft = <E>(either: E.Either<E, never>): E => (either as E.Left<E>).left
-
-/** @internal */
-export const getRight = <A>(either: E.Either<never, A>): A => (either as E.Right<A>).right
 
 /* istanbul ignore next */
 /** @internal */
@@ -23,6 +16,7 @@ export const base64Encode = (s: string): string => {
   }
 }
 
+// istanbul ignore next
 /** @internal */
 export const base64Decode = (s: string): string => {
   try {
@@ -31,10 +25,6 @@ export const base64Decode = (s: string): string => {
     return atob(s)
   }
 }
-
-/** @internal */
-export const urlifyBase64 = (s: string): string =>
-  s.replace(/[=+/]/g, c => (c === '/' ? '_' : c === '+' ? '-' : ''))
 
 /* istanbul ignore next */
 /**
@@ -45,12 +35,6 @@ export const urlifyBase64 = (s: string): string =>
 // eslint-disable-next-line @typescript-eslint/ban-types
 export const hasOwn = (o: object, v: PropertyKey): boolean =>
   Object.hasOwn ? Object.hasOwn(o, v) : Object.prototype.hasOwnProperty.call(o, v)
-
-/**
- * @since 1.0.0
- * @internal
- */
-export const typeOf = (x: unknown): string => (x === null ? 'null' : typeof x)
 
 /**
  * Performs a validative traversal over a struct's own enumerable properties while mapping
@@ -78,6 +62,7 @@ export const witherRemap =
     /* Enumerable own, Enumerable inherited */
     for (const key in s) {
       /* Ignores inherited properties */
+      // istanbul ignore next
       if (!hasOwn(s, key)) continue
 
       /* Perform effect */
@@ -124,6 +109,7 @@ export const witherRemapPar =
     /* Enumerable own, Enumerable inherited */
     for (const key in s) {
       /* Ignores inherited properties */
+      // istanbul ignore next
       if (!hasOwn(s, key)) continue
 
       /* Perform effect */
@@ -147,22 +133,4 @@ export const witherRemapPar =
         return out
       }),
     )
-  }
-
-/**
- * Iterates over an object's own non-inherited enumerable properties.
- *
- * @internal
- */
-export const forIn =
-  <A extends Record<string, any>>(
-    eff: <K extends keyof A>(key: K, value: A[K]) => IO.IO<void>,
-  ) =>
-  (a: A): IO.IO<void> => {
-    return () => {
-      for (const key in a) {
-        if (!hasOwn(a, key)) continue
-        eff(key, a[key])()
-      }
-    }
   }

@@ -26,13 +26,10 @@ const expectedJsonSchema = JS.annotate({
   title: 'Test Schema',
   description: 'This is a test schema',
 })(
-  JS.struct(
-    {
-      a: JS.array({ minItems: 1 })(JS.string()),
-      b: JS.integer({ minimum: 69, maximum: 420 }),
-    },
-    [],
-  ),
+  JS.struct({
+    a: JS.array({ minItems: 1 })(JS.string()),
+    b: JS.integer({ minimum: 69, maximum: 420 }),
+  }),
 )
 
 const expectedTypeString = `{ a?: Array[1,]<string>?, b?: Integer<69,420>? } → { a: Array[1,]<string>?, b: TestNt? }`
@@ -67,7 +64,7 @@ runStandardTestSuite(Schema, _ => ({
           TC.errorAtUnionMember('undefined', TC.typeMismatch('undefined', [])),
           TC.errorAtUnionMember(
             'Array[1,]<string>',
-            TC.typeMismatch('Array[1,]<string>', []),
+            TC.typeMismatch('Array[1,]<string>', 'Array(0)'),
           ),
         ),
       ),

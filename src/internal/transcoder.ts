@@ -1,5 +1,6 @@
+import * as Ap from 'fp-ts/Apply'
 import * as E from 'fp-ts/Either'
-import { flow, pipe } from 'fp-ts/function'
+import { flow } from 'fp-ts/function'
 import type * as RNEA from 'fp-ts/ReadonlyNonEmptyArray'
 import type * as G from 'schemata-ts/Guard'
 import type * as hkt from 'schemata-ts/internal/schemable'
@@ -57,22 +58,15 @@ export const errorAtUnionMember = (
 export const applicativeValidation = E.getApplicativeValidation(TE.Semigroup)
 
 /** @internal */
+export const apSecond = Ap.apSecond(applicativeValidation)
+
+/** @internal */
 export const fromGuard: <I, O>(
   encoder: (out: O) => I,
   onError: (u: unknown) => TE.TranscodeErrors,
 ) => (guard: G.Guard<O>) => Transcoder<I, O> = (encode, onError) => guard => ({
   decode: E.fromPredicate(guard.is, onError),
   encode: flow(encode, E.right),
-})
-
-/** @internal */
-export const fromPredicate: <I, O>(
-  predicate: (u: unknown) => u is O,
-  encode: (out: O) => I,
-  onError: (u: unknown) => TE.TranscodeErrors,
-) => Transcoder<I, O> = (predicate, encode, onError) => ({
-  encode: flow(encode, E.right),
-  decode: E.fromPredicate(predicate, onError),
 })
 
 /** @since 2.0.0 */
@@ -87,28 +81,4 @@ export const imap: <A, B>(
 ) => <I>(fa: Transcoder<I, A>) => Transcoder<I, B> = (f, g) => fa => ({
   decode: u => E.Functor.map(fa.decode(u), f),
   encode: out => fa.encode(g(out)),
-})
-
-/** @internal */
-export const alt: <I, A>(
-  that: () => Transcoder<I, A>,
-) => (fa: Transcoder<I, A>) => Transcoder<I, A> = that => self => ({
-  decode: u =>
-    pipe(
-      self.decode(u),
-      E.alt(() => that().decode(u)),
-    ),
-  encode: out =>
-    pipe(
-      self.encode(out),
-      E.alt(() => that().encode(out)),
-    ),
-})
-
-/** @internal */
-export const compose: <B, C>(
-  tBC: Transcoder<B, C>,
-) => <A>(tAB: Transcoder<A, B>) => Transcoder<A, C> = tBC => tAB => ({
-  decode: flow(tAB.decode, E.chain(tBC.decode)),
-  encode: flow(tBC.encode, E.chain(tAB.encode)),
 })

@@ -20,19 +20,23 @@ const TestParser = pipe(
   ),
 )
 
-const Schema = S.Intersect(
-  S.Struct({
-    a: TestParser,
-  }),
-  S.Record(S.String(), S.String(), 'last'),
+const Schema = S.Annotate({ title: 'Parser-Intersection' })(
+  S.Intersect(
+    S.Struct({
+      a: TestParser,
+    }),
+    S.Record(S.String(), S.String(), 'last'),
+  ),
 )
 
-const expectedJsonSchema = JS.intersection(JS.record(JS.string()))(
-  JS.struct(
-    {
-      a: JS.string(),
-    },
-    ['a'],
+const expectedJsonSchema = JS.annotate({ title: 'Parser-Intersection' })(
+  JS.intersection(JS.record(JS.string()))(
+    JS.struct(
+      {
+        a: JS.string(),
+      },
+      ['a'],
+    ),
   ),
 )
 
@@ -78,7 +82,7 @@ runStandardTestSuite(Schema, _ => ({
 
 runStandardTestSuite(
   S.Intersect(S.String() as any, S.String() as any),
-  _ => ({
+  () => ({
     decoderTests: [],
     jsonSchema: JS.intersection(JS.string())(JS.string()),
     typeString: 'string & string',

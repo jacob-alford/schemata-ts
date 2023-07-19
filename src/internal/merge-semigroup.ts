@@ -21,6 +21,7 @@ export interface SchemableLambda extends hkt.SchemableLambda {
   readonly type: MergeSemigroup<this['Output']>
 }
 
+// istanbul ignore next
 /** @internal */
 export const identity = <O>(choice: keyof MergeStrategy): MergeSemigroup<O> =>
   constSemigroup<any>((concrete = 'last') => {

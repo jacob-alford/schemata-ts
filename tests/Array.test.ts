@@ -43,7 +43,9 @@ runStandardTestSuite(
         ),
       ),
       _.decoder.fail([], () =>
-        TC.transcodeErrors(TC.typeMismatch('Array[1,4]<[Float<0,4>, BigIntString]>', [])),
+        TC.transcodeErrors(
+          TC.typeMismatch('Array[1,4]<[Float<0,4>, BigIntString]>', 'Array(0)'),
+        ),
       ),
       _.decoder.fail(
         [
@@ -56,14 +58,8 @@ runStandardTestSuite(
         ],
         () =>
           TC.transcodeErrors(
-            TC.typeMismatch('Array[1,4]<[Float<0,4>, BigIntString]>', [
-              [0, '0'],
-              [1, '1'],
-              [2, '2'],
-              [3, '3'],
-              [4, '4'],
-              [5, '5'],
-            ]),
+            TC.typeMismatch('Array[1,4]<[Float<0,4>, BigIntString]>', 'Array(6)'),
+            TC.errorAtIndex(5, TC.errorAtIndex(0, TC.typeMismatch('Float<0,4>', 5))),
           ),
       ),
     ],

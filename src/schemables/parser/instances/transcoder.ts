@@ -16,7 +16,7 @@ export const ParserTranscoder: WithParser<TC.SchemableLambda> = {
       ),
     ),
     decode: flow(
-      PrimitivesTranscoder.string().decode,
+      PrimitivesTranscoder.string({ errorName: name }).decode,
       E.chain(preparsed =>
         pipe(
           parse(preparsed),

@@ -196,15 +196,17 @@ runStandardTestSuite(
       ),
     ],
     typeString: `{ a: string, b: Integer<0,> }`,
-    jsonSchema: JS.struct(
-      {
-        a: JS.string(),
-        b: JS.integer({
-          minimum: 0,
-        }),
-      },
-      ['a', 'b'],
-      false,
+    jsonSchema: JS.union(
+      JS.struct(
+        {
+          a: JS.string(),
+          b: JS.integer({
+            minimum: 0,
+          }),
+        },
+        ['a', 'b'],
+        false,
+      ),
     ),
   }),
 )()

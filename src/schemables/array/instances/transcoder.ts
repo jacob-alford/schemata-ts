@@ -3,15 +3,12 @@ import { flow, pipe, unsafeCoerce } from 'fp-ts/function'
 import * as RA from 'fp-ts/ReadonlyArray'
 import * as TC from 'schemata-ts/internal/transcoder'
 import { type WithArray } from 'schemata-ts/schemables/array/definition'
-import * as TCE from 'schemata-ts/TranscodeError'
 
 const validateArray = (name: string) =>
   E.fromPredicate(
     (u): u is Array<unknown> => Array.isArray(u),
     u => TC.transcodeErrors(TC.typeMismatch(name, u)),
   )
-
-const applicativeValidation = E.getApplicativeValidation(TCE.Semigroup)
 
 export const ArrayTranscoder: WithArray<TC.SchemableLambda> = {
   // istanbul ignore next
@@ -27,19 +24,30 @@ export const ArrayTranscoder: WithArray<TC.SchemableLambda> = {
       decode: flow(
         // istanbul ignore next
         validateArray(expectedName),
-        E.filterOrElse(
-          u => u.length >= minLength && u.length <= maxLength,
-          u =>
-            TC.transcodeErrors(
-              // istanbul ignore next
-              TC.typeMismatch(expectedName, u),
+        E.chain(u =>
+          pipe(
+            u,
+            E.fromPredicate(
+              u => u.length >= minLength && u.length <= maxLength,
+              u =>
+                TC.transcodeErrors(
+                  // istanbul ignore next
+                  TC.typeMismatch(expectedName, `Array(${u.length})`),
+                ),
             ),
-        ),
-        E.chain(
-          RA.traverseWithIndex(applicativeValidation)((i, u) =>
-            pipe(
-              item.decode(u),
-              E.mapLeft(errs => TC.transcodeErrors(TC.errorAtIndex(i, errs))),
+            TC.apSecond(
+              pipe(
+                u,
+                validateArray(expectedName),
+                E.chain(
+                  RA.traverseWithIndex(TC.applicativeValidation)((i, u) =>
+                    pipe(
+                      item.decode(u),
+                      E.mapLeft(errs => TC.transcodeErrors(TC.errorAtIndex(i, errs))),
+                    ),
+                  ),
+                ),
+              ),
             ),
           ),
         ),
@@ -49,7 +57,7 @@ export const ArrayTranscoder: WithArray<TC.SchemableLambda> = {
   tuple: (name, ...components) => ({
     encode: out =>
       unsafeCoerce(
-        RA.sequence(applicativeValidation)(
+        RA.sequence(TC.applicativeValidation)(
           RA.zipWith(out, components, (a, encoderA) => encoderA.encode(a)),
         ),
       ),
@@ -60,7 +68,7 @@ export const ArrayTranscoder: WithArray<TC.SchemableLambda> = {
         u => TC.transcodeErrors(TC.typeMismatch(name, u)),
       ),
       E.chain(
-        RA.traverseWithIndex(applicativeValidation)((i, u) =>
+        RA.traverseWithIndex(TC.applicativeValidation)((i, u) =>
           pipe(
             // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
             components[i]!.decode(u),

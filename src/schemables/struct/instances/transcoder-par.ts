@@ -2,9 +2,9 @@ import * as Ap from 'fp-ts/Apply'
 import { flow, pipe, tuple } from 'fp-ts/function'
 import * as O from 'fp-ts/Option'
 import * as RNEA from 'fp-ts/ReadonlyNonEmptyArray'
-import * as T from 'fp-ts/Task'
 import * as TE from 'fp-ts/TaskEither'
 import { getKeyRemap } from 'schemata-ts/internal/struct'
+import * as TC from 'schemata-ts/internal/transcoder'
 import * as TCP from 'schemata-ts/internal/transcoder-par'
 import { witherRemapPar } from 'schemata-ts/internal/util'
 import { type WithStruct } from 'schemata-ts/schemables/struct/definition'
@@ -15,20 +15,19 @@ import {
 } from 'schemata-ts/schemables/struct/utils'
 import * as TCE from 'schemata-ts/TranscodeError'
 
-const decodeErrorValidation = TE.getApplicativeTaskValidation(T.ApplyPar, TCE.Semigroup)
-const apSecond = Ap.apSecond(decodeErrorValidation)
+const apSecond = Ap.apSecond(TCP.applicativeValidationPar)
 
 const validateObject = getValidateObject(TE.MonadThrow)
 
 export const StructTranscoderPar: WithStruct<TCP.SchemableLambda> = {
-  struct: (properties, extraProps) => {
+  struct: (properties, extraProps, wholeName) => {
     const lookupByOutputKey = remapPropertyKeys(properties)
 
     return {
       decode: (u): TE.TaskEither<TCE.TranscodeErrors, any> => {
         // --- typeof returns 'object' for null and arrays
         if (u === null || typeof u !== 'object' || Array.isArray(u)) {
-          return TCP.failure(TCP.transcodeErrors(TCP.typeMismatch('object', u)))
+          return TCP.failure(TC.transcodeErrors(TC.typeMismatch(wholeName, u)))
         }
 
         // --- decode all known properties of an object's own non-inherited properties
@@ -50,7 +49,7 @@ export const StructTranscoderPar: WithStruct<TCP.SchemableLambda> = {
               schemable.decode(inputVal),
               TE.bimap(
                 keyErrors =>
-                  TCP.transcodeErrors(TCP.errorAtKey(inputKey as string, keyErrors)),
+                  TC.transcodeErrors(TC.errorAtKey(inputKey as string, keyErrors)),
                 result => O.some(tuple(result, outputKey, semigroup)),
               ),
             )
@@ -65,10 +64,10 @@ export const StructTranscoderPar: WithStruct<TCP.SchemableLambda> = {
           witherRemapPar(TCE.Semigroup)((key, value) => {
             if (properties[key] === undefined) {
               return TCP.failure(
-                TCP.transcodeErrors(
-                  TCP.errorAtKey(
+                TC.transcodeErrors(
+                  TC.errorAtKey(
                     key as string,
-                    TCP.transcodeErrors(TCP.unexpectedValue(value)),
+                    TC.transcodeErrors(TC.unexpectedValue(value)),
                   ),
                 ),
               )
@@ -98,20 +97,20 @@ export const StructTranscoderPar: WithStruct<TCP.SchemableLambda> = {
             }
 
             return TCP.failure(
-              TCP.transcodeErrors(
-                TCP.errorAtKey(
+              TC.transcodeErrors(
+                TC.errorAtKey(
                   key,
-                  TCP.transcodeErrors(
+                  TC.transcodeErrors(
                     ...((unionMembers.length === 1
                       ? RNEA.of(
-                          TCP.typeMismatch(RNEA.head(unionMembers).name, outputAtKey),
+                          TC.typeMismatch(RNEA.head(unionMembers).name, outputAtKey),
                         )
                       : pipe(
                           unionMembers,
                           RNEA.mapWithIndex((i, { name }) =>
-                            TCP.errorAtUnionMember(
+                            TC.errorAtUnionMember(
                               i,
-                              TCP.transcodeErrors(TCP.typeMismatch(name, outputAtKey)),
+                              TC.transcodeErrors(TC.typeMismatch(name, outputAtKey)),
                             ),
                           ),
                         )) as any),
@@ -131,7 +130,7 @@ export const StructTranscoderPar: WithStruct<TCP.SchemableLambda> = {
       TE.chain(
         witherRemapPar(TCE.Semigroup)((k, u) =>
           pipe(
-            Ap.sequenceT(decodeErrorValidation)(
+            Ap.sequenceT(TCP.applicativeValidationPar)(
               codomain.decode(u),
               key.decode(k),
               TE.right(semigroup),
@@ -146,7 +145,7 @@ export const StructTranscoderPar: WithStruct<TCP.SchemableLambda> = {
     encode: flow(
       witherRemapPar(TCE.Semigroup)((k, u) =>
         pipe(
-          Ap.sequenceT(decodeErrorValidation)(
+          Ap.sequenceT(TCP.applicativeValidationPar)(
             codomain.encode(u),
             key.encode(k),
             TE.right(semigroup),
@@ -163,14 +162,14 @@ export const StructTranscoderPar: WithStruct<TCP.SchemableLambda> = {
       validateObject('object'),
       TE.chain(u =>
         pipe(
-          Ap.sequenceT(decodeErrorValidation)(x.decode(u), y.decode(u)),
+          Ap.sequenceT(TCP.applicativeValidationPar)(x.decode(u), y.decode(u)),
           TE.map(([x, y]) => safeIntersect(x, y)),
         ),
       ),
     ),
     encode: u =>
       pipe(
-        Ap.sequenceT(decodeErrorValidation)(x.encode(u), y.encode(u)),
+        Ap.sequenceT(TCP.applicativeValidationPar)(x.encode(u), y.encode(u)),
         TE.map(([x, y]) => safeIntersect(x, y)),
       ),
   }),

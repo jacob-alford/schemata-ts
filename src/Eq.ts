@@ -9,8 +9,8 @@
  * @since 2.0.0
  */
 import { type Contravariant1 } from 'fp-ts/Contravariant'
+import { constTrue } from 'fp-ts/function'
 import { type Invariant1 } from 'fp-ts/Invariant'
-import { type Monoid } from 'fp-ts/Monoid'
 import * as I from 'schemata-ts/internal/eq'
 
 /**
@@ -77,9 +77,10 @@ export const imap: <A, B>(f: (a: A) => B, g: (b: B) => A) => (fa: Eq<A>) => Eq<B
  * @since 2.0.0
  * @category Instances
  */
+// istanbul ignore next
 export const Invariant: Invariant1<URI> = {
   URI,
-  imap: (fa, f, g) => I.imap(f, g)(fa),
+  imap: (fa, f, g) => imap(f, g)(fa),
 }
 
 /**
@@ -92,46 +93,35 @@ export const contramap: <A, B>(f: (b: B) => A) => (fa: Eq<A>) => Eq<B> = I.contr
  * @since 2.0.0
  * @category Instance Methods
  */
+// istanbul ignore next
 export const Contravariant: Contravariant1<URI> = {
   URI,
-  contramap: (fa, f) => I.contramap(f)(fa),
+  contramap: (fa, f) => contramap(f)(fa),
 }
 
 /**
  * @since 2.0.0
  * @category Instance Methods
  */
-export const and: <A>(that: Eq<A>) => (self: Eq<A>) => Eq<A> = I.and
+export const and: <A>(that: Eq<A>) => (self: Eq<A>) => Eq<A> = that => self => ({
+  equals: (x, y) => self.equals(x, y) && that.equals(x, y),
+})
 
 /**
  * @since 2.0.0
  * @category Instance Methods
  */
-export const always: Eq<unknown> = I.always
-
-/**
- * @since 2.0.0
- * @category Instances
- */
-export const getMonoidAll: <A>() => Monoid<Eq<A>> = I.getMonoidAll
+export const always: Eq<unknown> = {
+  equals: constTrue,
+}
 
 /**
  * @since 2.0.0
  * @category Instance Methods
  */
-export const or: <A>(that: Eq<A>) => (self: Eq<A>) => Eq<A> = I.or
-
-/**
- * @since 2.0.0
- * @category Instance Methods
- */
-export const never: Eq<unknown> = I.never
-
-/**
- * @since 2.0.0
- * @category Instances
- */
-export const getMonoidAny: <A>() => Monoid<Eq<A>> = I.getMonoidAny
+export const or: <A>(that: Eq<A>) => (self: Eq<A>) => Eq<A> = that => self => ({
+  equals: (x, y) => self.equals(x, y) || that.equals(x, y),
+})
 
 /**
  * @since 2.0.0

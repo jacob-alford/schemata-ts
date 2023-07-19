@@ -73,7 +73,15 @@ const testDate = new Date() as SafeDate
 runStandardTestSuite(Schema, _ => ({
   decoderTests: [
     _.decoder.pass(
-      { a: 'a', b: 1, c: true, d: 1, e: 1, f: 'a' },
+      {
+        a: 'a',
+        b: 1,
+        c: true,
+        d: 1,
+        e: 1,
+        f: 'a',
+        __proto__: { 'who-cares': 'extra-param' },
+      },
       { a: 'a', b: 1, c: true, d: new Date(1000), e: 1, f: 'a' },
     ),
     _.decoder.pass(

@@ -13,16 +13,15 @@ import * as Sg from 'fp-ts/Semigroup'
 import * as Str from 'fp-ts/string'
 import * as TE from 'fp-ts/TaskEither'
 import { Draft07 } from 'json-schema-library'
-import { getArbitrary } from 'schemata-ts/derivations/arbitrary-schemable'
+import { getArbitrary } from 'schemata-ts/Arbitrary'
 import { getInformation } from 'schemata-ts/derivations/information-schemable'
 import { getEq } from 'schemata-ts/Eq'
 import { getGuard } from 'schemata-ts/Guard'
-import { type MergeStrategy } from 'schemata-ts/internal/merge-semigroup'
 import * as TS from 'schemata-ts/internal/type-string'
 import { fold } from 'schemata-ts/internal/type-string'
 import { getJsonSchema } from 'schemata-ts/JsonSchema'
 import * as JS from 'schemata-ts/JsonSchema'
-import { getMergeSemigroup } from 'schemata-ts/MergeSemigroup'
+import { type MergeStrategy, getMergeSemigroup } from 'schemata-ts/MergeSemigroup'
 import { type Schema } from 'schemata-ts/Schema'
 import { PrimitivesGuard } from 'schemata-ts/schemables/primitives/instances/guard'
 import * as TCE from 'schemata-ts/TranscodeError'
@@ -175,13 +174,13 @@ export const getTestSuite = <I, O>(schema: Schema<I, O>): TestSuite<I, O> => {
   const typeString = getTypeString(schema)
   const semigroup_ = getMergeSemigroup(schema)
   const firstSemigroup = semigroup_.semigroup('first')
-  const lastSemigroup = semigroup_.semigroup('last')
+  const lastSemigroup = semigroup_.semigroup()
   const manySemigroup = semigroup_.semigroup({
     string: Str.Semigroup,
     number: Sg.last(),
     boolean: B_.SemigroupAll,
     unknown: Sg.last(),
-    fallback: 'last',
+    fallback: 'first',
   })
   return {
     testDecoder: flow(
@@ -460,6 +459,8 @@ type StandardTestInputs<I, T> = {
   readonly guardTests?: GetFirstArg<TestSuite<I, T>['testGuard']>
   readonly eqTests?: GetFirstArg<TestSuite<I, T>['testEq']>
   readonly jsonSchema: GetFirstArg<TestSuite<I, T>['assertJsonSchema']>
+  readonly jsonSchema2007?: GetFirstArg<TestSuite<I, T>['assertJsonSchema']>
+  readonly jsonSchema2020?: GetFirstArg<TestSuite<I, T>['assertJsonSchema']>
   readonly typeString: GetFirstArg<TestSuite<I, T>['assertTypeString']>
   readonly semigroupTests?: GetFirstArg<TestSuite<I, T>['testSemigroup']>
   readonly additionalTests?: (testSuite: TestSuite<I, T>) => IO.IO<void>
@@ -538,12 +539,12 @@ export type MakeTestValues<I, O> = {
       a: O,
       b: O,
       result: O,
-    ) => readonly [readonly ['first', O, O], O]
+    ) => readonly [readonly ['first' | { readonly fallback: 'first' }, O, O], O]
     readonly combinesLast: (
       a: O,
       b: O,
       result: O,
-    ) => readonly [readonly ['last', O, O], O]
+    ) => readonly [readonly ['last' | { readonly fallback: 'last' }, O, O], O]
     readonly combinesWith: (
       strategy?: MergeStrategy,
     ) => (
@@ -604,6 +605,8 @@ const runStandardTestSuite_: StandardTestSuiteFn =
       semigroupTests = [],
       additionalTests,
       jsonSchema,
+      jsonSchema2007,
+      jsonSchema2020,
       typeString,
     } = makeTestValues({
       c: unsafeCoerce,
@@ -624,8 +627,9 @@ const runStandardTestSuite_: StandardTestSuiteFn =
         disequate: (a, b) => tuple(tuple(a, b), false),
       },
       semigroup: {
-        combinesFirst: (a, b, result) => tuple(tuple('first', a, b), result),
-        combinesLast: (a, b, result) => tuple(tuple('last', a, b), result),
+        combinesFirst: (a, b, result) =>
+          tuple(tuple({ fallback: 'first' }, a, b), result),
+        combinesLast: (a, b, result) => tuple(tuple({ fallback: 'last' }, a, b), result),
         combinesWith: strategy => (a, b, result) => tuple(tuple(strategy, a, b), result),
       },
       guard: {
@@ -641,7 +645,10 @@ const runStandardTestSuite_: StandardTestSuiteFn =
         ? describe('guard', _.testGuard(guardTests))
         : describe('guard', _.testGuard(guardTests, deriveGuardTests(encoderTests)))
       describe('eq', _.testEq(eqTests, deriveEqTests(encoderTests)))
-      describe('jsonSchema', _.assertJsonSchema(jsonSchema))
+      describe(
+        'jsonSchema',
+        _.assertJsonSchema(jsonSchema, jsonSchema2007, jsonSchema2020),
+      )
       describe('typeString', _.assertTypeString(typeString))
       describe('information', _.assertValidInformation)
       describe('semigroup', _.testSemigroup(semigroupTests))

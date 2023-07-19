@@ -48,9 +48,15 @@ runStandardTestSuite(Schema, _ => ({
     _.decoder.fail({ a: 'a', b: 1, c: true, d: 1 }, () =>
       TC.transcodeErrors(TC.errorAtKey('d', TC.unexpectedValue(1))),
     ),
-    _.decoder.fail(NaN, () => TC.transcodeErrors(TC.typeMismatch('object', NaN))),
-    _.decoder.fail(null, () => TC.transcodeErrors(TC.typeMismatch('object', null))),
-    _.decoder.fail([], () => TC.transcodeErrors(TC.typeMismatch('object', []))),
+    _.decoder.fail(NaN, () =>
+      TC.transcodeErrors(TC.typeMismatch('{ a: string, b?: Float?, c: boolean }', NaN)),
+    ),
+    _.decoder.fail(null, () =>
+      TC.transcodeErrors(TC.typeMismatch('{ a: string, b?: Float?, c: boolean }', null)),
+    ),
+    _.decoder.fail([], () =>
+      TC.transcodeErrors(TC.typeMismatch('{ a: string, b?: Float?, c: boolean }', [])),
+    ),
   ],
   encoderTests: [_.encoder.pass({ a: 'a', b: _.c(1), c: true })],
   guardTests: [_.guard.isNot({ a: 'a', b: _.c(1), c: true, d: NaN })],

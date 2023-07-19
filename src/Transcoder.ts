@@ -11,7 +11,6 @@ import type * as E from 'fp-ts/Either'
 import { pipe, unsafeCoerce } from 'fp-ts/function'
 import { type Invariant2 } from 'fp-ts/Invariant'
 import type * as RNEA from 'fp-ts/ReadonlyNonEmptyArray'
-import { type Semigroupoid2 } from 'fp-ts/Semigroupoid'
 import { getTranscoder as getTranscoder_ } from 'schemata-ts/derivations/transcoder-schemable'
 import * as I from 'schemata-ts/internal/transcoder'
 import { type Schema } from 'schemata-ts/Schema'
@@ -164,32 +163,8 @@ export const imap: <A, B>(
  * @since 2.0.0
  * @category Instances
  */
+// istanbul ignore next
 export const Invariant: Invariant2<URI> = {
   URI,
   imap: (fa, f, g) => pipe(fa, imap(f, g)),
-}
-
-/**
- * @since 2.0.0
- * @category Instance Methods
- */
-export const alt: <I, A>(
-  that: () => Transcoder<I, A>,
-) => (fa: Transcoder<I, A>) => Transcoder<I, A> = unsafeCoerce(I.alt)
-
-/**
- * @since 2.0.0
- * @category Instance Methods
- */
-export const compose: <B, C>(
-  tAB: Transcoder<B, C>,
-) => <A>(tAC: Transcoder<A, B>) => Transcoder<A, C> = unsafeCoerce(I.compose)
-
-/**
- * @since 2.0.0
- * @category Instances
- */
-export const Semigroupoid: Semigroupoid2<URI> = {
-  URI,
-  compose: (tBC, tAB) => compose(tBC)(tAB),
 }

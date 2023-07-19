@@ -1,8 +1,9 @@
 /** @since 1.0.0 */
+import { pipe } from 'fp-ts/function'
 import * as k from 'kuvio'
-import { type Branded } from 'schemata-ts/brand'
+import * as Nt from 'schemata-ts/newtype'
 import { type Schema } from 'schemata-ts/Schema'
-import { Brand } from 'schemata-ts/schemata/Brand'
+import { Newtype } from 'schemata-ts/schemata/Newtype'
 import { Pattern } from 'schemata-ts/schemata/Pattern'
 
 /**
@@ -37,7 +38,15 @@ interface UUIDBrand<Version extends UUIDVersion> {
  * @since 1.0.0
  * @category Model
  */
-export type UUID<Version extends UUIDVersion> = Branded<string, UUIDBrand<Version>>
+export interface UUID<Version extends UUIDVersion>
+  extends Nt.Newtype<UUIDBrand<Version>, string> {}
+
+/**
+ * A newtype iso for UUID
+ *
+ * @since 2.0.0
+ */
+export const isoUUID = <Version extends UUIDVersion>() => Nt.iso<UUID<Version>>()
 
 /**
  * @since 1.0.0
@@ -45,5 +54,8 @@ export type UUID<Version extends UUIDVersion> = Branded<string, UUIDBrand<Versio
  */
 export const UUID = <Version extends UUIDVersion>(
   version: Version,
-): Schema<UUID<Version>, UUID<Version>> =>
-  Brand<UUIDBrand<Version>>()(Pattern(uuidPattern[version], `UUID version ${version}`))
+): Schema<string, UUID<Version>> =>
+  pipe(
+    Pattern(uuidPattern[version], `UUID version ${version}`),
+    Newtype(isoUUID<Version>(), `UUID version ${version}`),
+  )

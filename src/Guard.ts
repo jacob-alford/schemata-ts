@@ -4,6 +4,7 @@
  *
  * @since 2.0.0
  */
+import * as I from 'schemata-ts/internal/guard'
 
 // ------------------
 // models
@@ -29,9 +30,8 @@ export interface Guard<A> {
  * @since 2.0.0
  * @category Constructors
  */
-export const fromPredicate = <A>(predicate: (u: unknown) => u is A): Guard<A> => ({
-  is: predicate,
-})
+export const fromPredicate: <A>(predicate: (u: unknown) => u is A) => Guard<A> =
+  I.fromPredicate
 
 // ------------------
 // combinators

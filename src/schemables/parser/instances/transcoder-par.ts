@@ -20,7 +20,7 @@ export const ParserTranscoderPar: WithParser<TCP.SchemableLambda> = {
       ),
     ),
     decode: flow(
-      PrimitivesTranscoderPar.string().decode,
+      PrimitivesTranscoderPar.string({ errorName: name }).decode,
       TE.chain(preparsed =>
         pipe(
           parse(preparsed),

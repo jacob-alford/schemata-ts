@@ -7,8 +7,6 @@
 import { type Const } from 'fp-ts/Const'
 import { pipe, unsafeCoerce } from 'fp-ts/function'
 import { type Invariant2 } from 'fp-ts/Invariant'
-import type * as RNEA from 'fp-ts/ReadonlyNonEmptyArray'
-import { type Semigroupoid2 } from 'fp-ts/Semigroupoid'
 import type * as TE from 'fp-ts/TaskEither'
 import { getTranscoderPar as getTranscoderPar_ } from 'schemata-ts/derivations/transcoder-par-schemable'
 import * as I from 'schemata-ts/internal/transcoder-par'
@@ -45,75 +43,6 @@ export const success: <A>(a: A) => TE.TaskEither<TCE.TranscodeErrors, A> = I.suc
 export const failure: <A>(
   e: TCE.TranscodeErrors,
 ) => TE.TaskEither<TCE.TranscodeErrors, A> = I.failure
-
-/**
- * A collection of failure cases
- *
- * @since 2.0.0
- * @category Constructors
- */
-export const decodeErrors: (
-  ...errors: RNEA.ReadonlyNonEmptyArray<TCE.TranscodeError>
-) => TCE.TranscodeErrors = I.transcodeErrors
-/**
- * A failure case for a value that does not match the expected type
- *
- * @since 2.0.0
- * @category Constructors
- */
-export const typeMismatch: (
-  ...args: ConstructorParameters<typeof TCE.TypeMismatch>
-) => TCE.TranscodeError = I.typeMismatch
-
-/**
- * A failure case for an unexpected value
- *
- * @since 2.0.0
- * @category Constructors
- */
-export const unexpectedValue: (
-  ...args: ConstructorParameters<typeof TCE.TranscodeErrors>
-) => TCE.TranscodeError = I.unexpectedValue
-
-/**
- * A failure case for a serialization or deserialization error
- *
- * @since 2.0.0
- * @category Constructors
- */
-export const serializationError: (
-  ...args: ConstructorParameters<typeof TCE.SerializationError>
-) => TCE.TranscodeError = I.serializationError
-
-/**
- * A failure case at a specific index
- *
- * @since 2.0.0
- * @category Constructors
- */
-export const errorAtIndex: (
-  ...args: ConstructorParameters<typeof TCE.ErrorAtIndex>
-) => TCE.TranscodeError = I.errorAtIndex
-
-/**
- * A failure case at a specific key
- *
- * @since 2.0.0
- * @category Constructors
- */
-export const errorAtKey: (
-  ...args: ConstructorParameters<typeof TCE.ErrorAtKey>
-) => TCE.TranscodeError = I.errorAtKey
-
-/**
- * A failure case for a union member
- *
- * @since 2.0.0
- * @category Constructors
- */
-export const errorAtUnionMember: (
-  ...args: ConstructorParameters<typeof TCE.ErrorAtUnionMember>
-) => TCE.TranscodeError = I.errorAtUnionMember
 
 // -------------------------------------------------------------------------------------
 // combinators
@@ -157,32 +86,8 @@ export const imap: <A, B>(
  * @since 2.0.0
  * @category Instances
  */
+// istanbul ignore next
 export const Invariant: Invariant2<URI> = {
   URI,
   imap: (fa, f, g) => pipe(fa, imap(f, g)),
-}
-
-/**
- * @since 2.0.0
- * @category Instance Methods
- */
-export const alt: <I, A>(
-  that: () => TranscoderPar<I, A>,
-) => (fa: TranscoderPar<I, A>) => TranscoderPar<I, A> = unsafeCoerce(I.alt)
-
-/**
- * @since 2.0.0
- * @category Instance Methods
- */
-export const compose: <B, C>(
-  tAB: TranscoderPar<B, C>,
-) => <A>(tAC: TranscoderPar<A, B>) => TranscoderPar<A, C> = unsafeCoerce(I.compose)
-
-/**
- * @since 2.0.0
- * @category Instances
- */
-export const Semigroupoid: Semigroupoid2<URI> = {
-  URI,
-  compose: (tBC, tAB) => compose(tBC)(tAB),
 }

@@ -10,6 +10,7 @@ export interface WithStruct<S extends SchemableLambda> {
   >(
     properties: Props,
     extraProps: 'strip' | 'error',
+    wholeName: string,
   ) => SchemableKind<
     S,
     Combine<
