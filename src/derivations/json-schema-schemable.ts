@@ -50,4 +50,4 @@ const JsonSchemaSchemable: Schemable<JS.SchemableLambda> = {
  * @since 2.0.0
  * @category Interpreters
  */
-export const getJsonSchema = interpret(JsonSchemaSchemable)
+export const deriveJsonSchema = interpret(JsonSchemaSchemable)

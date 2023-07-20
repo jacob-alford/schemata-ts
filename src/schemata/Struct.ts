@@ -1,9 +1,9 @@
 /** @since 1.4.0 */
 import { unsafeCoerce } from 'fp-ts/function'
 import * as Sg from 'fp-ts/Semigroup'
-import { getGuard } from 'schemata-ts/derivations/guard-schemable'
-import { getInformation } from 'schemata-ts/derivations/information-schemable'
-import { getTypeString } from 'schemata-ts/derivations/type-string-schemable'
+import { deriveGuard } from 'schemata-ts/derivations/guard-schemable'
+import { deriveInformation } from 'schemata-ts/derivations/information-schemable'
+import { deriveTypeString } from 'schemata-ts/derivations/type-string-schemable'
 import {
   type OptionalInputProps,
   type OutputProps,
@@ -21,31 +21,6 @@ import type * as s from 'schemata-ts/schemables/struct/type-utils'
  *
  * @since 1.0.0
  * @category Combinators
- * @example
- *   import * as E from 'fp-ts/Either'
- *   import * as S from 'schemata-ts/schemata'
- *   import { getDecoder } from 'schemata-ts/Decoder'
- *
- *   const SomeDomainType = S.Struct({
- *     a: S.String,
- *     b: S.BooleanFromNumber,
- *   })
- *
- *   // SomeDomainType will have the type:
- *   // Schema<{ a: string, b: number }, { a: string, b: boolean }>
- *
- *   const decoder = getDecoder(SomeDomainType)
- *
- *   assert.deepStrictEqual(
- *     decoder.decode({
- *       a: 'foo',
- *       b: 0,
- *     }),
- *     E.right({
- *       a: 'foo',
- *       b: false,
- *     }),
- *   )
  */
 export const Struct = <T extends Record<string, Schema<any, any>>>(
   props: T,
@@ -64,9 +39,9 @@ export const Struct = <T extends Record<string, Schema<any, any>>>(
         const schema = props[key]!
         const schemable: SchemableKind<SchemableLambda, unknown, unknown> =
           schema.runSchema(_)
-        const guard = getGuard(schema)
-        const information = getInformation(schema)
-        const name = getTypeString(schema)
+        const guard = deriveGuard(schema)
+        const information = deriveInformation(schema)
+        const name = deriveTypeString(schema)
         struct[key] = {
           schemable,
           guard,

@@ -50,4 +50,4 @@ const TranscoderSchemable: Schemable<TC.SchemableLambda> = {
  * @since 2.0.0
  * @category Interpreters
  */
-export const getTranscoder = interpret(TranscoderSchemable)
+export const deriveTranscoder = interpret(TranscoderSchemable)

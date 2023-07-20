@@ -1,5 +1,5 @@
 /** @since 1.0.0 */
-import { getTypeString } from 'schemata-ts/derivations/type-string-schemable'
+import { deriveTypeString } from 'schemata-ts/derivations/type-string-schemable'
 import {
   type ImplicitOptional,
   makeImplicitOptionalType,
@@ -17,5 +17,5 @@ export const Optional = <O, A>(
   target: Schema<O, A>,
 ): ImplicitOptional & Schema<O | undefined, A | undefined> =>
   makeImplicitOptionalType(
-    make(_ => _.optional(target.runSchema(_), getTypeString(target)[0])),
+    make(_ => _.optional(target.runSchema(_), deriveTypeString(target)[0])),
   )

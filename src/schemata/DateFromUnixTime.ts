@@ -1,7 +1,7 @@
 /** @since 1.0.0 */
 import { pipe } from 'fp-ts/function'
-import { getGuard } from 'schemata-ts/derivations/guard-schemable'
-import { getTypeString } from 'schemata-ts/derivations/type-string-schemable'
+import { deriveGuard } from 'schemata-ts/derivations/guard-schemable'
+import { deriveTypeString } from 'schemata-ts/derivations/type-string-schemable'
 import { type Float } from 'schemata-ts/float'
 import * as TS from 'schemata-ts/internal/type-string'
 import { type Schema } from 'schemata-ts/Schema'
@@ -38,9 +38,9 @@ const DateSchema = DateS()
 export const DateFromUnixTime: Schema<Float<MinUnixTime, MaxUnixTime>, SafeDate> = pipe(
   UnixTimeFloat,
   Imap(
-    getGuard(DateSchema),
+    deriveGuard(DateSchema),
     n => new Date(n * 1000) as SafeDate,
     d => (d.getTime() / 1000) as Float<MinUnixTime, MaxUnixTime>,
-    TS.fold(getTypeString(DateSchema)),
+    TS.fold(deriveTypeString(DateSchema)),
   ),
 )

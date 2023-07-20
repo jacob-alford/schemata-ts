@@ -1,6 +1,6 @@
 /** @since 1.0.0 */
 import { pipe } from 'fp-ts/function'
-import { getGuard } from 'schemata-ts/derivations/guard-schemable'
+import { deriveGuard } from 'schemata-ts/derivations/guard-schemable'
 import { type Float as Floating } from 'schemata-ts/float'
 import { type Schema } from 'schemata-ts/Schema'
 import { Boolean } from 'schemata-ts/schemata/Boolean'
@@ -19,7 +19,7 @@ import { Imap } from 'schemata-ts/schemata/Imap'
 export const BooleanFromNumber: Schema<Floating, boolean> = pipe(
   Float(),
   Imap(
-    getGuard(Boolean),
+    deriveGuard(Boolean),
     n => n !== 0,
     b => (b ? 1 : 0) as Floating,
     'boolean',

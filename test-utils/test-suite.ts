@@ -13,21 +13,21 @@ import * as Sg from 'fp-ts/Semigroup'
 import * as Str from 'fp-ts/string'
 import * as TE from 'fp-ts/TaskEither'
 import { Draft07 } from 'json-schema-library'
-import { getArbitrary } from 'schemata-ts/Arbitrary'
-import { getInformation } from 'schemata-ts/derivations/information-schemable'
-import { getEq } from 'schemata-ts/Eq'
-import { getGuard } from 'schemata-ts/Guard'
+import { deriveArbitrary } from 'schemata-ts/Arbitrary'
+import { deriveInformation } from 'schemata-ts/derivations/information-schemable'
+import { deriveEq } from 'schemata-ts/Eq'
+import { deriveGuard } from 'schemata-ts/Guard'
 import * as TS from 'schemata-ts/internal/type-string'
 import { fold } from 'schemata-ts/internal/type-string'
-import { getJsonSchema } from 'schemata-ts/JsonSchema'
+import { deriveJsonSchema } from 'schemata-ts/JsonSchema'
 import * as JS from 'schemata-ts/JsonSchema'
-import { type MergeStrategy, getMergeSemigroup } from 'schemata-ts/MergeSemigroup'
+import { type MergeStrategy, deriveMergeSemigroup } from 'schemata-ts/MergeSemigroup'
 import { type Schema } from 'schemata-ts/Schema'
 import { PrimitivesGuard } from 'schemata-ts/schemables/primitives/instances/guard'
 import * as TCE from 'schemata-ts/TranscodeError'
-import { getTranscoder } from 'schemata-ts/Transcoder'
-import { getTranscoderPar } from 'schemata-ts/TranscoderPar'
-import { getTypeString } from 'schemata-ts/TypeString'
+import { deriveTranscoder } from 'schemata-ts/Transcoder'
+import { deriveTranscoderPar } from 'schemata-ts/TranscoderPar'
+import { deriveTypeString } from 'schemata-ts/TypeString'
 
 const { BooleanAlgebra: B } = B_
 
@@ -163,16 +163,16 @@ const foldTestSuites =
     )
 
 export const getTestSuite = <I, O>(schema: Schema<I, O>): TestSuite<I, O> => {
-  const transcoder = getTranscoder(schema)
-  const transcodePar = getTranscoderPar(schema)
-  const guard = getGuard(schema)
-  const eq = getEq(schema)
-  const information = getInformation(schema)
-  const jsonSchema = getJsonSchema(schema)
-  const jsonSchema2007 = getJsonSchema(schema, 'Draft-07')
-  const jsonSchema2020 = getJsonSchema(schema, '2020-12')
-  const typeString = getTypeString(schema)
-  const semigroup_ = getMergeSemigroup(schema)
+  const transcoder = deriveTranscoder(schema)
+  const transcodePar = deriveTranscoderPar(schema)
+  const guard = deriveGuard(schema)
+  const eq = deriveEq(schema)
+  const information = deriveInformation(schema)
+  const jsonSchema = deriveJsonSchema(schema)
+  const jsonSchema2007 = deriveJsonSchema(schema, 'Draft-07')
+  const jsonSchema2020 = deriveJsonSchema(schema, '2020-12')
+  const typeString = deriveTypeString(schema)
+  const semigroup_ = deriveMergeSemigroup(schema)
   const firstSemigroup = semigroup_.semigroup('first')
   const lastSemigroup = semigroup_.semigroup()
   const manySemigroup = semigroup_.semigroup({
@@ -266,7 +266,7 @@ export const getTestSuite = <I, O>(schema: Schema<I, O>): TestSuite<I, O> => {
                   ? firstSemigroup.concat(a, b)
                   : strategy === 'last'
                   ? lastSemigroup.concat(a, b)
-                  : getMergeSemigroup(schema).semigroup(strategy).concat(a, b)
+                  : deriveMergeSemigroup(schema).semigroup(strategy).concat(a, b)
               expect(actual).toStrictEqual(expected)
             })
           }
@@ -299,7 +299,7 @@ export const getTestSuite = <I, O>(schema: Schema<I, O>): TestSuite<I, O> => {
       })
     },
     validateJsonSchemas: () => {
-      const arbitrary = getArbitrary(schema).arbitrary(fc)
+      const arbitrary = deriveArbitrary(schema).arbitrary(fc)
       const draft2007 = new Draft07(jsonSchema2007)
       test('Draft-2007', () => {
         fc.assert(
@@ -317,7 +317,7 @@ export const getTestSuite = <I, O>(schema: Schema<I, O>): TestSuite<I, O> => {
       })
     },
     testTranscoderLaws: () => {
-      const arbitrary = getArbitrary(schema).arbitrary(fc)
+      const arbitrary = deriveArbitrary(schema).arbitrary(fc)
       describe('idempotence', () => {
         test('sequential', () => {
           fc.assert(
@@ -340,7 +340,7 @@ export const getTestSuite = <I, O>(schema: Schema<I, O>): TestSuite<I, O> => {
           )
         })
         test('parallel', async () => {
-          const arbitrary = getArbitrary(schema).arbitrary(fc)
+          const arbitrary = deriveArbitrary(schema).arbitrary(fc)
           await fc.assert(
             fc.asyncProperty(arbitrary, async output => {
               const initial = pipe(
@@ -376,7 +376,7 @@ export const getTestSuite = <I, O>(schema: Schema<I, O>): TestSuite<I, O> => {
       (params = {}) =>
       () => {
         const { skipMany = false, skipFirst = false, skipLast = false } = params
-        const arbitrary = getArbitrary(schema).arbitrary(fc)
+        const arbitrary = deriveArbitrary(schema).arbitrary(fc)
         describe('associativity', () => {
           // eslint-disable-next-line @typescript-eslint/no-extra-semi
           ;(skipFirst ? test.skip : test)('firstSemigroup', () => {
@@ -409,7 +409,7 @@ export const getTestSuite = <I, O>(schema: Schema<I, O>): TestSuite<I, O> => {
         })
       },
     testEqLaws: () => {
-      const arbitrary = getArbitrary(schema).arbitrary(fc)
+      const arbitrary = deriveArbitrary(schema).arbitrary(fc)
       test('reflexivity', () => {
         fc.assert(
           fc.property(arbitrary, output => {
@@ -435,7 +435,7 @@ export const getTestSuite = <I, O>(schema: Schema<I, O>): TestSuite<I, O> => {
       })
     },
     testArbitraryGuard: () => {
-      const arbitrary = getArbitrary(schema).arbitrary(fc)
+      const arbitrary = deriveArbitrary(schema).arbitrary(fc)
       test('arbitraries', () => {
         fc.assert(
           fc.property(arbitrary, output => {
@@ -587,7 +587,7 @@ type RunStandardTestSuite = StandardTestSuiteFn & {
 const runStandardTestSuite_: StandardTestSuiteFn =
   (schema, makeTestValues, options = {}) =>
   () => {
-    const name = getTypeString(schema)
+    const name = deriveTypeString(schema)
     const {
       makeDecodeError = (value: unknown) =>
         new TCE.TranscodeErrors([new TCE.TypeMismatch(fold(name), value)]),

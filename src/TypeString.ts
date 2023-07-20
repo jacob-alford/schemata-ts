@@ -29,7 +29,7 @@ export {
    * @since 2.0.0
    * @category Interpreters
    */
-  getTypeString,
+  deriveTypeString,
 } from 'schemata-ts/derivations/type-string-schemable'
 
 // ------------------

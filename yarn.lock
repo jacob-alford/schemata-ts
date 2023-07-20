@@ -3124,14 +3124,14 @@ dir-glob@^3.0.1:
   dependencies:
     path-type "^4.0.0"
 
-docs-ts@^0.7.2:
-  version "0.7.2"
-  resolved "https://registry.yarnpkg.com/docs-ts/-/docs-ts-0.7.2.tgz#ee4f34a1f9d11a91bd37d2cae7a0952b8e6efdfd"
-  integrity sha512-9zydJV84gi0imZWdVPHHqar7yIx6wRpwRHc4aJ3pw9vov/4pAmjfEPPE5gXRtiPFf+3WqOrE4qC6ih1kBJGl9w==
+docs-ts@^0.8.0:
+  version "0.8.0"
+  resolved "https://registry.yarnpkg.com/docs-ts/-/docs-ts-0.8.0.tgz#48e43a9d38ac5ee1c6354e5fb80706175c9db411"
+  integrity sha512-Z++SYRAoJJnWrLZNHKkalIyroJQAppqnfrjoc8pmAr/k3wxZvl7YFd9mocVEAhIZwUEkzUl6luBaAlsJip3sdw==
   dependencies:
     chalk "^2.4.2"
     doctrine "^3.0.0"
-    fp-ts "^2.13.2"
+    fp-ts "^2.15.0"
     fs-extra "^7.0.1"
     glob "^7.1.6"
     io-ts "^2.2.20"
@@ -3700,7 +3700,7 @@ fp-ts-laws@^0.3.0:
   resolved "https://registry.yarnpkg.com/fp-ts-laws/-/fp-ts-laws-0.3.0.tgz#428639e087081317cdbf96fc7958449fb8c42602"
   integrity sha512-uCLBnZq429UDYIx7TDsKmIOXQvgVfEFJMDBbJ2OljpW19cCEF+UgwoGnTfq6AYkHofFlkd6t0p3a9HB1OXTiaA==
 
-fp-ts@^2.11, fp-ts@^2.13.1, fp-ts@^2.13.2, fp-ts@^2.9.5:
+fp-ts@^2.11, fp-ts@^2.13.1, fp-ts@^2.15.0, fp-ts@^2.9.5:
   version "2.16.0"
   resolved "https://registry.yarnpkg.com/fp-ts/-/fp-ts-2.16.0.tgz#64e03314dfc1c7ce5e975d3496ac14bc3eb7f92e"
   integrity sha512-bLq+KgbiXdTEoT1zcARrWEpa5z6A/8b7PcDW7Gef3NSisQ+VS7ll2Xbf1E+xsgik0rWub/8u0qP/iTTjj+PhxQ==
@@ -5166,7 +5166,7 @@ markdown-link@^0.1.1:
   resolved "https://registry.yarnpkg.com/markdown-link/-/markdown-link-0.1.1.tgz#32c5c65199a6457316322d1e4229d13407c8c7cf"
   integrity sha512-TurLymbyLyo+kAUUAV9ggR9EPcDjP/ctlv9QAFiqUH7c+t6FlsbivPo9OKTU8xdOx9oNd2drW/Fi5RRElQbUqA==
 
-markdown-magic@^2.0.0:
+markdown-magic@^2.6.1:
   version "2.6.1"
   resolved "https://registry.yarnpkg.com/markdown-magic/-/markdown-magic-2.6.1.tgz#fc1bcdc237754cabae4d04f75494cfe3b68f2abd"
   integrity sha512-i+wPC9bAGzFVftF1P5ItooOCvX+TTD3v504WpupsJz+3B0wRZMuPxeFAE7uZXEZYjsiQYskoMgpypoJTWerpVA==

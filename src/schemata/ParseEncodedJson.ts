@@ -3,7 +3,7 @@ import { type Const } from 'fp-ts/Const'
 import * as E from 'fp-ts/Either'
 import { flow, pipe, unsafeCoerce } from 'fp-ts/function'
 import * as J from 'fp-ts/Json'
-import { getTypeString } from 'schemata-ts/derivations/type-string-schemable'
+import { deriveTypeString } from 'schemata-ts/derivations/type-string-schemable'
 import { type Schema } from 'schemata-ts/Schema'
 import { type JsonString } from 'schemata-ts/schemables/parser/definition'
 import { type ParserOptions, Parse } from 'schemata-ts/schemata/Parse'
@@ -25,7 +25,7 @@ export const ParseEncodedJsonString: (
     pipe(
       inner,
       Parse(
-        options.nameOverride ?? getTypeString(inner)[0],
+        options.nameOverride ?? deriveTypeString(inner)[0],
         flow(decode, E.chain(J.parse)),
         flow(J.stringify, E.chain(encode)),
         options,

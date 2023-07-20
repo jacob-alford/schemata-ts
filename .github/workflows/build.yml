@@ -50,7 +50,7 @@ jobs:
       - name: Build
         run: yarn run build:pack
       - name: Generate docs
-        run: yarn run docs
+        run: yarn run docs:pack
       - name: Deploy
         uses: JamesIves/github-pages-deploy-action@4.0.0
         with:

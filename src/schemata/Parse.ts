@@ -1,6 +1,8 @@
+/** @since 2.0.0 */
 import type * as E from 'fp-ts/Either'
 import { type Schema, make } from 'schemata-ts/Schema'
 
+/** @since 2.0.0 */
 export type ParserOptions = {
   readonly contentEncoding?: string
   readonly contentMediaType?: string

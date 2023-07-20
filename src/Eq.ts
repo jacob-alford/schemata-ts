@@ -48,7 +48,7 @@ export {
    * @since 2.0.0
    * @category Interpreters
    */
-  getEq,
+  deriveEq,
 } from 'schemata-ts/derivations/eq-schemable'
 
 // ------------------

@@ -50,4 +50,4 @@ const ArbitrarySchemable: Schemable<Arb.SchemableLambda> = {
  * @since 2.0.0
  * @category Interpreters
  */
-export const getArbitrary = interpret(ArbitrarySchemable)
+export const deriveArbitrary = interpret(ArbitrarySchemable)

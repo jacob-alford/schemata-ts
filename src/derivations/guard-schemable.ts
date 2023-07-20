@@ -50,4 +50,4 @@ const GuardSchemable: Schemable<G.SchemableLambda> = {
  * @since 2.0.0
  * @category Interpreters
  */
-export const getGuard = interpret(GuardSchemable)
+export const deriveGuard = interpret(GuardSchemable)

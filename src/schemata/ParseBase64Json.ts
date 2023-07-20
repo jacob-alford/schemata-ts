@@ -2,7 +2,7 @@
 import { type Const } from 'fp-ts/Const'
 import * as E from 'fp-ts/Either'
 import { identity, pipe, unsafeCoerce } from 'fp-ts/function'
-import { getTypeString } from 'schemata-ts/derivations/type-string-schemable'
+import { deriveTypeString } from 'schemata-ts/derivations/type-string-schemable'
 import { base64Decode, base64Encode } from 'schemata-ts/internal/util'
 import { type Schema } from 'schemata-ts/Schema'
 import { Annotate } from 'schemata-ts/schemata/Annotate'
@@ -30,7 +30,7 @@ export const ParseBase64Json: <I, O>(
       },
     ),
     Annotate({
-      typeString: ['Base64', getTypeString(inner)[1]],
+      typeString: ['Base64', deriveTypeString(inner)[1]],
     }),
     _ => unsafeCoerce(_),
   )

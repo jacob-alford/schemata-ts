@@ -1,7 +1,7 @@
 /** @since 1.0.0 */
 import { pipe } from 'fp-ts/function'
 import * as k from 'kuvio'
-import { getGuard } from 'schemata-ts/derivations/guard-schemable'
+import { deriveGuard } from 'schemata-ts/derivations/guard-schemable'
 import { type Schema } from 'schemata-ts/Schema'
 import {
   type SafeDate,
@@ -301,7 +301,7 @@ export const DateFromIsoString: (
     Refine((s): s is SafeDateString => !Number.isNaN(new Date(s).getTime()), 'SafeDate'),
     Brand<SafeDateStringBrand>(),
     Imap(
-      getGuard(DateS()),
+      deriveGuard(DateS()),
       s => new Date(s) as SafeDate,
       d => d.toISOString() as SafeDateString,
     ),

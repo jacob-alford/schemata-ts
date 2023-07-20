@@ -11,7 +11,7 @@ import type * as E from 'fp-ts/Either'
 import { pipe, unsafeCoerce } from 'fp-ts/function'
 import { type Invariant2 } from 'fp-ts/Invariant'
 import type * as RNEA from 'fp-ts/ReadonlyNonEmptyArray'
-import { getTranscoder as getTranscoder_ } from 'schemata-ts/derivations/transcoder-schemable'
+import { deriveTranscoder as deriveTranscoder_ } from 'schemata-ts/derivations/transcoder-schemable'
 import * as I from 'schemata-ts/internal/transcoder'
 import { type Schema } from 'schemata-ts/Schema'
 import type * as TE from 'schemata-ts/TranscodeError'
@@ -131,8 +131,8 @@ export const errorAtUnionMember: (
  * @since 2.0.0
  * @category Interpreters
  */
-export const getTranscoder: <I, O>(schema: Schema<I, O>) => Transcoder<I, O> =
-  unsafeCoerce(getTranscoder_)
+export const deriveTranscoder: <I, O>(schema: Schema<I, O>) => Transcoder<I, O> =
+  unsafeCoerce(deriveTranscoder_)
 
 // -------------------------------------------------------------------------------------
 // instances

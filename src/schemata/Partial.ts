@@ -1,9 +1,9 @@
 /** @since 1.0.0 */
 import { unsafeCoerce } from 'fp-ts/function'
 import * as Sg from 'fp-ts/Semigroup'
-import { getGuard } from 'schemata-ts/derivations/guard-schemable'
-import { getInformation } from 'schemata-ts/derivations/information-schemable'
-import { getTypeString } from 'schemata-ts/derivations/type-string-schemable'
+import { deriveGuard } from 'schemata-ts/derivations/guard-schemable'
+import { deriveInformation } from 'schemata-ts/derivations/information-schemable'
+import { deriveTypeString } from 'schemata-ts/derivations/type-string-schemable'
 import {
   type OptionalInputProps,
   type PartialOutputProps,
@@ -40,9 +40,9 @@ export const Partial = <T extends Record<string, Schema<any, any>>>(
         const schema = Optional(props[key]!)
         const schemable: SchemableKind<SchemableLambda, unknown, unknown> =
           schema.runSchema(_)
-        const guard = getGuard(schema)
-        const information = getInformation(schema)
-        const name = getTypeString(schema)
+        const guard = deriveGuard(schema)
+        const information = deriveInformation(schema)
+        const name = deriveTypeString(schema)
         struct[key] = {
           schemable,
           guard,

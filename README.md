@@ -12,18 +12,35 @@
 </h1>
 
 <p align="center">
-Write domain types once.  A collection of Schemata inspired by io-ts-types and validators.js.
+A pipeable TypeScript schema engine and collection of validators inspired by validators.js.
 </p>
+
 <br><br>
+
 <div align="center">
 
 ![npm](https://img.shields.io/npm/v/schemata-ts?style=for-the-badge)
 &nbsp;
-![npm](https://img.shields.io/npm/dm/schemata-ts?style=for-the-badge)&nbsp;
+![TypeScript Badge](https://img.shields.io/badge/TypeScript-4.5%2B-blue?style=for-the-badge&logo=TypeScript)
+&nbsp;
+
+</div>
+<div align="center">
+
+![npm](https://img.shields.io/npm/dm/schemata-ts?style=for-the-badge)
+&nbsp;
 ![Coveralls branch](https://img.shields.io/coverallsCoverage/github/jacob-alford/schemata-ts?style=for-the-badge)
 &nbsp;
-![Snyk Vulnerabilities for npm scoped package](https://img.shields.io/snyk/vulnerabilities/npm/schemata-ts?style=for-the-badge)&nbsp;
 ![GitHub](https://img.shields.io/github/license/jacob-alford/schemata-ts?style=for-the-badge)
+&nbsp;
+
+</div>
+<div align="center">
+
+![Static Badge](https://img.shields.io/badge/ESM-Supported-success?style=for-the-badge&logo=JavaScript)
+&nbsp;
+![CommonJS](https://img.shields.io/badge/CJS-supported-success?style=for-the-badge&logo=Node.JS)
+&nbsp;
 
 </div>
 
@@ -40,492 +57,199 @@ Write domain types once.  A collection of Schemata inspired by io-ts-types and v
 
 <br><br>
 
-## Welcome
+# Welcome
 
-A schema is an expression of a type structure that can be used to generate typeclass instances from a single declaration. Typeclass instances can perform a variety of tasks, for instance `Decoder` can take a pesky `unknown` value and give you an Either in return where the success case abides by the `schema` that generated it. The example below constructs a `User` schema.
+`Schemata-ts` is an unofficial continuation of `io-ts` v2 built from the ground up using the highly extensible `Schemable`/`Schema` API. Schemata also comes with a suite of string validation schemas and branded types — powered by [Kuvio](https://github.com/skeate/kuvio) — all inspired by io-ts-types and validators.js.
+
+|     | Features                                                                               |
+| --- | -------------------------------------------------------------------------------------- |
+| ✅  | [Validation, Parsing, and Serialization](#validation-parsing-and-serialization)        |
+| ✅  | [Type Guards](#type-guards)                                                            |
+| ✅  | [Json-Schema Draft 07, 2019-09, and 2020-12](#json-schema-draft-7-2019-09-and-2020-12) |
+| ✅  | [Fast-Check Arbitraries](#fast-check-arbitraries)                                      |
+| ✅  | [and more](#and-more)                                                                  |
 
 ## Installation
 
-Uses `fp-ts`, and `io-ts` as peer dependencies. Read more about peer dependencies at [nodejs.org](https://nodejs.org/en/blog/npm/peer-dependencies/).
+#### Yarn
 
-Also contains `fast-check` as a soft peer dependency. Soft peer dependency implies that usage of the `Arbitrary` module requires fast-check as a peer-dependency.
-
-### Yarn
-
-```bash
+```console
 yarn add schemata-ts
 ```
 
-### NPM
+#### NPM
 
-```bash
+```console
 npm install schemata-ts
 ```
 
-### PNPM
+#### PNPM
 
-```bash
+```console
 pnpm add schemata-ts
 ```
 
-## Documentation
+**A note on fast-check:** Schemata lists `fast-check` as a peer dependency. As a result, it doesn't need to be installed for schemata to work. It is recommended to install `fast-check` as a dev dependency which will satisfy the peer dependency requirement. To avoid fast-check being bundled in a front-end application, only import from the `Arbitrary` module in test files.
 
-- [schemata-ts](https://jacob-alford.github.io/schemata-ts/modules/schemata.ts.html)
-- [fp-ts](https://gcanti.github.io/fp-ts/modules/)
-- [io-ts](https://gcanti.github.io/io-ts)
+## Schema
 
-## Codec and Arbitrary
+A `Schema` is a simple function that's architected using service-oriented principles. It's a function that takes a `Schemable` which is an interface of capabilities that produce a particular data-type. Schemas aren't intended to be constructed by users of the library but instead are pre-constructed and exported from the root directory.
 
-A codec is a typeclass that contains the methods of `Decoder`, `Encoder`, `JsonSerializer`, `JsonDeserializer`, and `Guard`. Decoder and encoder are lossless when composed together. This means that for all domain types for which an encoder encodes to, a decoder will return a valid `E.Right` value.
-
-### User Document Example
-
-This is a live example found in `src/Codec.ts` type-checked and tested with [docs-ts](https://github.com/gcanti/docs-ts).
-
-```typescript
-import * as fc from 'fast-check'
-import * as E from 'fp-ts/Either'
-import { pipe } from 'fp-ts/function'
-import * as O from 'fp-ts/Option'
-import * as RA from 'fp-ts/ReadonlyArray'
-import { getArbitrary } from 'schemata-ts/Arbitrary'
-import { getCodec } from 'schemata-ts/Codec'
-import * as S from 'schemata-ts/schemata'
-
-export const User = S.Struct({
-  id: S.UUID(5),
-  created_at: S.DateFromIsoString({ requireTime: 'None' }),
-  updated_at: S.DateFromIsoString({ requireTime: 'TimeAndOffset' }),
-  email: S.EmailAddress,
-  name: S.NonEmptyString,
-  username: S.Ascii,
-  age: S.PositiveInt,
-  favorite_color: S.OptionFromNullable(S.HexColor),
-})
-
-export type User = S.TypeOf<typeof User>
-export type UserInput = S.InputOf<typeof User>
-
-export const userArbitrary = getArbitrary(User).arbitrary(fc)
-export const userCodec = getCodec(User)
-
-const validInput = {
-  id: '987FBC97-4BED-5078-AF07-9141BA07C9F3',
-  created_at: '+002021-10-31',
-  updated_at: '2022-11-22T18:30Z',
-  name: 'Johnathan Doe',
-  email: 'jdoe22@probably-doesnt-exist.com',
-  username: 'jdoe22',
-  age: 52,
-  favorite_color: null,
-}
-
-const expectedOutput = {
-  id: '987FBC97-4BED-5078-AF07-9141BA07C9F3',
-  created_at: new Date('+002021-10-31'),
-  updated_at: new Date('2022-11-22T18:30Z'),
-  name: 'Johnathan Doe',
-  email: 'jdoe22@probably-doesnt-exist.com',
-  username: 'jdoe22',
-  age: 52,
-  favorite_color: O.none,
-}
-
-const invalidInput = {
-  // not a UUID
-  id: 123,
-  // Not ISO 8601 compliant, though parsable with `new Date()`
-  created_at: 'October 31, 2021',
-  updated_at: 'November 22, 2022 12:30',
-  // Empty string not allowed
-  name: '',
-  // Non-ASCII characters not allowed
-  username: '😂😂😂',
-  // Positive Ints only
-  age: 0,
-  // hex color values only
-  favorite_color: 'rgb(105, 190, 239)',
-}
-
-// Using Decoders
-
-assert.deepStrictEqual(userCodec.decode(validInput), E.right(expectedOutput))
-assert.deepStrictEqual(userCodec.decode(invalidInput)._tag, 'Left')
-
-// Using Arbitraries, Encoders, and Decoders
-
-const testUsers = fc.sample(userArbitrary, 10)
-
-assert.deepStrictEqual(
-  pipe(
-    testUsers,
-    // Encode the users generated using Arbitrary
-    RA.map(userCodec.encode),
-    // Decode the encoded users back to their original form, collecting any errors
-    E.traverseArray(userCodec.decode),
-  ),
-  E.right(testUsers),
-)
-```
-
-## Json Serializer and Deserializer
-
-Like encoder and decoder, `JsonSerializer` and `JsonDeserializer` are lossless when composed together. Certain data types in Javascript like `NaN`, `undefined`, `Infinity`, and others are not part of the JSON specification, and `JSON.stringify` will turn these values into something different (or omit them). This means that if you stringify these types and attempt to parse, you will get a different object than you originally started with. Additionally, JSON cannot stringify `bigint`, and cannot contain circular references. Under these circumstances `JSON.stringify` will throw an error.
-
-Anything that successfully stringifies using `JsonSerializer` will successfully parse with `JsonDeserializer` and will be equivalent objects. This is useful to avoid bugs when using JSON strings for storing data. Additionally, `JsonDeserializer` will decode the Json string into a domain type for immediate use in your program.
-
-## Deriving JSON Schema
-
-Schemata-ts comes with its own implementation of [JSON-Schema](https://json-schema.org/) and is a validation standard that can be used to validate artifacts in many other languages and frameworks. Schemata-ts's implementation is compatible with JSON Schema Draft 4, Draft 6, Draft 7, Draft 2019-09, and has partial support for 2020-12. _Note_: string `format` (like regex, contentType, or mediaType) is only available starting with Draft 6, and tuples are not compatible with Draft 2020-12.
-
-### Annotating JSON schema
-
-JSON schema can have description and title fields. To specify these values, you should use `S.Annotate`:
-
-```typescript
-import * as S from 'schemata-ts/schemata'
-
-const Name = pipe(
-  S.String,
-  S.Annotate({
-    title: 'Name',
-    description: 'The name of the person',
-  }),
-)
-
-const Email = pipe(
-  S.EmailAddress,
-  S.Annotate({
-    title: 'Email',
-    description: 'The email address of the person',
-  }),
-)
-
-const Street = pipe(
-  S.String,
-  S.Annotate({
-    title: 'Street',
-    description: 'The street address of the person',
-  }),
-)
-
-const City = pipe(
-  S.String,
-  S.Annotate({
-    title: 'City',
-    description: 'The city of the person',
-  }),
-)
-
-const Address = S.Struct({
-  street: Street,
-  city: City,
-})
-
-const Person = S.Struct({
-  name: Name,
-  email: Email,
-  address: Address,
-})
-```
-
-### JSON Schema Example
-
-This is a live example generating a JSON Schema in `src/base/JsonSchemaBase.ts`
+The following import will give you access to all of the pre-constructed schemas.
 
 ```ts
-import * as JS from 'schemata-ts/JsonSchema'
-import * as S from 'schemata-ts/schemata'
-import { getJsonSchema } from 'schemata-ts/JsonSchema'
+import * as S from 'schemata-ts'
+```
 
-const schema = S.Struct({
-  id: S.Natural,
-  jwt: S.Jwt,
-  tag: S.Literal('Customer'),
-})
+In addition to "primitive" schemas like `S.String(params?)`, `S.Int(params?)`, `S.Boolean`, schemata-ts also exports schema _combinators_ from the root directory. 'Combinator' is a fancy word for a function that takes one or more schemas and returns a new schema. For example, `S.Array(S.String())` is a schema over an array of strings, and `S.Struct({ foo: S.String() })` is a schema over an object with a single property `foo` which is a string.
 
-const jsonSchema = getJsonSchema(schema)
+- [All Schemata](https://jacob-alford.github.io/schemata-ts/schemata)
+- [Schema Source](https://github.com/jacob-alford/schemata-ts/tree/main/src/Schema)
+- [Schemata Source](https://github.com/jacob-alford/schemata-ts/tree/main/src/schemata)
 
-assert.deepStrictEqual(JS.stripIdentity(jsonSchema), {
-  type: 'object',
-  required: ['id', 'jwt', 'tag'],
-  properties: {
-    id: { type: 'integer', minimum: 0, maximum: 9007199254740991 },
-    jwt: {
-      type: 'string',
-      description: 'Jwt',
-      pattern:
-        '^(([A-Za-z0-9_\\x2d]*)\\.([A-Za-z0-9_\\x2d]*)(\\.([A-Za-z0-9_\\x2d]*)){0,1})$',
-    },
-    tag: { type: 'string', const: 'Customer' },
-  },
+#### Example
+
+```ts
+import * as S from 'schemata-ts'
+
+export const PersonSchema = S.Struct({
+  name: S.String(),
+  age: S.Int({ min: 0, max: 120 }),
+  isCool: S.Boolean,
+  favoriteColors: S.Array(S.String()),
 })
 ```
 
-A note on `JS.stripIdentity` in the above example: internally, JSON Schema is represented as a union of Typescript classes. This is handy when inspecting the schema because the name of the schema is shown next to its properties. Because this prevents equality comparison, schemata-ts exposes a method `stripIdentity` to remove the object's class identity. _Caution_: this method stringifies and parses the schema and may throw if the schema itself contains circularity.
+## TypeScript Types
 
-## Advanced Structs and Key Transformations
+Schemas can be used to extract the underlying TypeScript type to avoid writing the same definition twice and different parts of code getting out of sync.
 
-Schemata-ts has powerful tools for constructing domain artifacts that are strongly-typed plain javascript objects. There are a few ways to build the same schema, and some ways are more powerful than others. If, for instance, domain types are fragmented and need to compose in different ways, they can't be changed once they've been turned into schemata. `schemata-ts/struct` has built-in combinators for composing struct definitions together in elegant ways.
+Schemas have reference to both the input and output type. The input type is more often for usage outside of JavaScript land (such as over the wire in an API request), and the output type is more often for usage within JavaScript land.
 
-### Declaring a struct schema
+```ts
+export type Person = S.OutputOf<typeof PersonSchema>
 
-There are a few ways to declare a struct-based schema. The first is to use the `Struct` schema exported with all the other schemata from `schemata-ts/schemata`:
+export type PersonInput = S.InputOf<typeof PersonSchema>
+```
 
-```typescript
-import * as E from 'fp-ts/Either'
-import * as S from 'schemata-ts/schemata'
-import { getDecoder } from 'schemata-ts/Decoder'
+## Validation, Parsing, and Serialization
 
-const SomeDomainType = S.Struct({
-  a: S.String,
-  b: S.BooleanFromNumber,
-})
+`Schemata-ts`'s type-class for validation and parsing is called "Transcoder." Transcoders can be derived from schemas using `deriveTranscoder`:
 
-// SomeDomainType will have the type:
-// Schema<{ a: string, b: number }, { a: string, b: boolean }>
+```ts
+import { deriveTranscoder, type Transcoder } from 'schemata-ts/Transcoder'
 
-const decoder = getDecoder(SomeDomainType)
+const personTranscoder: Transcoder<PersonInput, Person> = deriveTranscoder(PersonSchema)
+```
 
-assert.deepStrictEqual(
-  decoder.decode({
-    a: 'foo',
-    b: 0,
-  }),
-  E.right({
-    a: 'foo',
-    b: false,
-  }),
+Transcoders are intended to succeed `Decoder`, `Encoder`, and `Codec` from `io-ts` v2. They contain two methods: `decode` and `encode`. The `decode` method takes an unknown value to an fp-ts `Either` type where the failure type is a `schemata-ts` error tree called `TranscodeError`, and the success type is the output type of the schema.
+
+- [Documentation](https://jacob-alford.github.io/schemata-ts/Transcoder)
+- [Source](https://github.com/jacob-alford/schemata-ts/tree/main/src/Transcoder)
+
+#### Transformations (_Advanced_)
+
+In addition to parsing an unknown value, Transcoder can _transform_ input types. One example is `MapFromEntries` which takes an array of key-value pairs and transforms it into a JavaScript `Map` type.
+
+```ts
+import * as Str from 'fp-ts/string'
+
+const PeopleSchema = S.MapFromEntries(Str.Ord, S.String(), PersonSchema)
+
+const peopleTranscoder: Transcoder<
+  ReadonlyArray<readonly [string, PersonInput]>,
+  ReadonlyMap<string, Person>
+> = deriveTranscoder(PeopleSchema)
+```
+
+#### Serialization (_Advanced_)
+
+Schemas can be turned into printer-parsers using various `Parser` schemas, such as:
+
+(De)Serialization from Json String:
+
+```ts
+const parsePersonTranscoder: Transcoder<S.JsonString, Person> = deriveTranscoder(
+  S.ParseJsonString(PersonSchema),
 )
 ```
 
-The next few ways use the `schemata-ts/struct` module to define meta-definitions of structs. Once the struct has been constructed as it needs, it can be plugged into the `StructM` schema, and used anywhere else schemata are used.
+or, (De)Serialization from a Base-64 encoded Json String:
 
-The following results in the same schema as defined in the above example:
-
-```typescript
-import * as S from 'schemata-ts/schemata'
-import * as s from 'schemata-ts/struct'
-import { getEncoder } from 'schemata-ts/Encoder'
-
-const someDomainType = s.struct({
-  a: S.String,
-  b: S.BooleanFromNumber,
-})
-
-const SomeDomainTypeSchema = S.StructM(someDomainType)
-
-// SomeDomainType will have the type:
-// Schema<{ a: string, b: number }, { a: string, b: boolean }>
-
-const encoder = getEncoder(SomeDomainTypeSchema)
-
-assert.deepStrictEqual(
-  encoder.encode({
-    a: 'foo',
-    b: false,
-  }),
-  {
-    a: 'foo',
-    b: 0,
-  },
+```ts
+const parsePersonTranscoder: Transcoder<S.Base64, Person> = deriveTranscoder(
+  S.ParseBase64String(PersonSchema),
 )
 ```
 
-The final way to write this domain type is to use `struct.defineStruct` which differs from `struct` in that each property key must explicitly specify whether the key is required or optional.
+#### Parallelized Validation (_Advanced_)
 
-The following results in the same schema as defined in the above two examples:
+Transcoders can be parallelized using `TranscoderPar` which is a typeclass similar to Transcoder but returns `TaskEither`s instead of `Either`s. This allows for parallelized validation for schemas of multiple values like structs and arrays.
 
-```typescript
+```ts
+import { deriveTranscoderPar, type TranscoderPar } from 'schemata-ts/TranscoderPar'
+
+const personTranscoderPar: TranscoderPar<PersonInput, Person> =
+  deriveTranscoderPar(PersonSchema)
+```
+
+#### Documentation
+
+- [Documentation](https://jacob-alford.github.io/schemata-ts/Transcoder)
+- [Source](https://github.com/jacob-alford/schemata-ts/tree/main/src/Transcoder)
+
+## Type Guards
+
+Type guards are used by TypeScript to narrow the type of a value to something concrete. Guards can be derived from schemas using `deriveTypeGuard`:
+
+```ts
+import { deriveTypeGuard, type Guard } from 'schemata-ts/Guard'
+
+const guardPerson: Guard<Person> = deriveTypeGuard(PersonSchema)
+```
+
+#### Documentation
+
+- [Documentation](https://jacob-alford.github.io/schemata-ts/Guard)
+- [Source](https://github.com/jacob-alford/schemata-ts/tree/main/src/Guard)
+
+## JSON Schema (Draft 7, 2019-09, and 2020-12)
+
+Json-Schema is a standard for describing JSON data. Schemata-ts can derive Json-Schema from schemas using `deriveJsonSchema` for versions 7, 2019-09, and 2020-12.
+
+```ts
+import { deriveJsonSchema } from 'schemata-ts/JsonSchema'
+
+const personJsonSchema2007 = deriveJsonSchema(PersonSchema, 'Draft-07')
+const personJsonSchema2019 = deriveJsonSchema(PersonSchema)
+const personJsonSchema2020 = deriveJsonSchema(PersonSchema, '2020-12')
+```
+
+#### Documentation
+
+- [Documentation](https://jacob-alford.github.io/schemata-ts/JsonSchema)
+- [Source](https://github.com/jacob-alford/schemata-ts/tree/main/src/JsonSchema)
+
+## Fast-Check Arbitraries
+
+Fast-Check is a property-based testing library for JavaScript. Schemata-ts can derive fast-check arbitraries from schemas using `deriveArbitrary`:
+
+```ts
 import * as fc from 'fast-check'
-import * as S from 'schemata-ts/schemata'
-import * as s from 'schemata-ts/struct'
-import { getGuard } from 'schemata-ts/Guard'
-import { getArbitrary } from 'schemata-ts/Arbitrary'
+import { deriveArbitrary } from 'schemata-ts/Arbitrary'
 
-const someDomainType = s.defineStruct({
-  a: s.required(S.String),
-  b: s.required(S.BooleanFromNumber),
-})
-
-const SomeDomainTypeSchema = S.StructM(someDomainType)
-
-// SomeDomainType will have the type:
-// Schema<{ a: string, b: number }, { a: string, b: boolean }>
-
-const arbitrary = getArbitrary(SomeDomainTypeSchema).arbitrary(fc)
-const guard = getGuard(SomeDomainTypeSchema)
-
-fc.assert(fc.property(arbitrary, guard.is))
+const personArbitrary = deriveArbitrary(PersonSchema).arbitrary(fc)
 ```
 
-### CamelCase Keys
+#### Documentation
 
-As of 1.4.0, schemata-ts has built in combinators for constructing domain types where the expected input type contains mixed case keys (words separated by [any whitespace character](https://en.wikipedia.org/wiki/Whitespace_character#Unicode), hyphens, and underscores) whose output is camelCase. Like struct above, there are a few ways to do this. This first example is using the `CamelCaseFromMixed` schema of `schemata-ts/schemata`.
+- [Documentation](https://jacob-alford.github.io/schemata-ts/Arbitrary)
+- [Source](https://github.com/jacob-alford/schemata-ts/tree/main/src/Arbitrary)
 
-```typescript
-import * as E from 'fp-ts/Either'
-import * as S from 'schemata-ts/schemata'
-import { getDecoder } from 'schemata-ts/Decoder'
+## And more
 
-const DatabasePerson = S.CamelCaseFromMixed({
-  first_name: S.String,
-  last_name: S.String,
-  age: S.Number,
-  is_married: S.BooleanFromString,
-})
+Schemata has other derivations besides the ones above, below are links to those places in the documentation.
 
-// DatabasePerson will have the type:
-// Schema<
-//   { first_name: string, last_name: string, age: number, is_married: string },
-//   { firstName: string, lastName: string, age: number, isMarried: boolean }
-// >
-
-const decoder = getDecoder(DatabasePerson)
-
-assert.deepStrictEqual(
-  decoder.decode({
-    first_name: 'John',
-    last_name: 'Doe',
-    age: 42,
-    is_married: 'false',
-  }),
-  E.right({
-    firstName: 'John',
-    lastName: 'Doe',
-    age: 42,
-    isMarried: false,
-  }),
-)
-```
-
-The following example is identical to the above except it uses the `camelCaseKeys` combinator of the struct module.
-
-```typescript
-import * as S from 'schemata-ts/schemata'
-import * as s from 'schemata-ts/struct'
-import { getEncoder } from 'schemata-ts/Encoder'
-
-const databasePerson = s.struct({
-  first_name: S.String,
-  last_name: S.String,
-  age: S.Number,
-  is_married: S.BooleanFromString,
-})
-
-const DatabasePerson = S.StructM(s.camelCaseKeys(databasePerson))
-
-// DatabasePerson will have the type:
-// Schema<
-//   { first_name: string, last_name: string, age: number, is_married: string },
-//   { firstName: string, lastName: string, age: number, isMarried: boolean }
-// >
-
-const encoder = getEncoder(DatabasePerson)
-
-assert.deepStrictEqual(
-  encoder.encode({
-    firstName: 'John',
-    lastName: 'Doe',
-    age: 42,
-    isMarried: false,
-  }),
-  {
-    first_name: 'John',
-    last_name: 'Doe',
-    age: 42,
-    is_married: 'false',
-  },
-)
-```
-
-The following example is identical to the above, except the keys being mapped to are explicitly specified using `defineStruct`:
-
-```typescript
-import * as fc from 'fast-check'
-import * as S from 'schemata-ts/schemata'
-import * as s from 'schemata-ts/struct'
-import { getArbitrary } from 'schemata-ts/Arbitrary'
-import { getGuard } from 'schemata-ts/Guard'
-
-const databasePerson = s.defineStruct({
-  first_name: s.mapKeyTo('firstName')(s.required(S.String)),
-  last_name: s.mapKeyTo('lastName')(s.required(S.String)),
-  age: s.required(S.Number),
-  is_married: s.mapKeyTo('isMarried')(s.required(S.BooleanFromString)),
-})
-
-const DatabasePerson = S.StructM(databasePerson)
-
-// DatabasePerson will have the type:
-// Schema<
-//   { first_name: string, last_name: string, age: number, is_married: string },
-//   { firstName: string, lastName: string, age: number, isMarried: boolean }
-// >
-
-const arbitrary = getArbitrary(DatabasePerson).arbitrary(fc)
-const guard = getGuard(DatabasePerson)
-
-fc.assert(fc.property(arbitrary, guard.is))
-```
-
-Furthermore, `schemata-ts` has several utilities for working with structs:
-
-| Name      | Description                                  |
-| --------- | -------------------------------------------- |
-| partial   | Marks all properties as optional             |
-| complete  | Marks all properties as required             |
-| pick      | Keep only specified keys                     |
-| omit      | Remove specified keys                        |
-| mapKeysTo | Apply a mapping function to an object's keys |
-
-## Exported Schemata
-
-| Schema                | Type           |
-| --------------------- | -------------- |
-| `Date.date`           | Base Schemable |
-| `Date.dateFromString` | Base Schemable |
-| `Int.int`             | Base Schemable |
-| `Float.float`         | Base Schemable |
-| `Json.json`           | Base Schemable |
-| `Json.jsonFromString` | Base Schemable |
-| Unknown               | Base Schemable |
-| BigIntFromString      | Conversion     |
-| BooleanFromString     | Conversion     |
-| BooleanFromNumber     | Conversion     |
-| CamelCaseFromMixed    | Conversion     |
-| DateFromInt           | Conversion     |
-| DateFromIsoString     | Conversion     |
-| DateFromUnixTime      | Conversion     |
-| FloatFromString       | Conversion     |
-| IntFromString         | Conversion     |
-| JsonFromString        | Conversion     |
-| OptionFromNullable    | Conversion     |
-| OptionFromUndefined   | Conversion     |
-| SetFromArray          | Conversion     |
-| NonEmptyArray         | Generic        |
-| Natural               | Number         |
-| NegativeFloat         | Number         |
-| NegativeInt           | Number         |
-| NonNegativeFloat      | Number         |
-| NonPositiveFloat      | Number         |
-| NonPositiveInt        | Number         |
-| PositiveFloat         | Number         |
-| PositiveInt           | Number         |
-| Ascii                 | String         |
-| Base64                | String         |
-| Base64Url             | String         |
-| BitcoinAddress        | String         |
-| CreditCard            | String         |
-| EmailAddress          | String         |
-| Ethereum Address      | String         |
-| Hexadecimal           | String         |
-| HexColor              | String         |
-| HslColor              | String         |
-| Jwt                   | String         |
-| LatLong               | String         |
-| NonEmptyString        | String         |
-| RGB                   | String         |
-| UUID                  | String         |
-
-Additionally, there are more unlisted base schemable schemata also exported from `schemata-ts/schemata`. These can be used to construct more complex schemata. There are many examples of custom schemata in `src/schemata` to use as a reference.
+- [MergeSemigroup](https://jacob-alford.github.io/schemata-ts/docs/MergeSemigroup): A customizable schema specific deep-merge ([source](https://github.com/jacob-alford/schemata-ts/tree/main/src/MergeSemigroup))
+- [Eq](https://jacob-alford.github.io/schemata-ts/docs/Eq): A schema-specific equality check ([source](https://github.com/jacob-alford/schemata-ts/tree/main/src/Eq))
+- [TypeString](https://jacob-alford.github.io/schemata-ts/docs/TypeString): Input / Output type strings ([source](https://github.com/jacob-alford/schemata-ts/tree/main/src/TypeString))

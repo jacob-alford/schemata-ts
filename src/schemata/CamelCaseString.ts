@@ -1,7 +1,7 @@
 /** @since 2.0.0 */
 import { identity, pipe } from 'fp-ts/function'
 import { type Branded } from 'schemata-ts/brand'
-import { getGuard } from 'schemata-ts/derivations/guard-schemable'
+import { deriveGuard } from 'schemata-ts/derivations/guard-schemable'
 import { camelCase } from 'schemata-ts/internal/camelcase'
 import { type Schema } from 'schemata-ts/Schema'
 import { type StringParams } from 'schemata-ts/schemables/primitives/definition'
@@ -28,6 +28,6 @@ export const CamelCaseString: (params?: StringParams) => Schema<CamelCase> = par
   const string: Schema<CamelCase> = String(params) as any
   return pipe(
     string,
-    Imap(getGuard(string), camelCase as (s: string) => CamelCase, identity),
+    Imap(deriveGuard(string), camelCase as (s: string) => CamelCase, identity),
   )
 }

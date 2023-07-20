@@ -17,10 +17,10 @@ const PersonSchema2pk = S.Struct({
 
 type Person2pk = S.OutputOf<typeof PersonSchema2pk>
 
-const personArb = Arb.getArbitrary(PersonSchema2pk).arbitrary(fc)
+const personArb = Arb.deriveArbitrary(PersonSchema2pk).arbitrary(fc)
 
-const eqUuid5 = Eq.getEq(UUID5)
-const eqUuid4 = Eq.getEq(UUID4)
+const eqUuid5 = Eq.deriveEq(UUID5)
+const eqUuid4 = Eq.deriveEq(UUID4)
 
 const id1Eq: Eq.Eq<Person2pk> = pipe(
   eqUuid5,

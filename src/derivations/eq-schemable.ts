@@ -50,4 +50,4 @@ const EqSchemable: Schemable<Eq.SchemableLambda> = {
  * @since 2.0.0
  * @category Interpreters
  */
-export const getEq = interpret(EqSchemable)
+export const deriveEq = interpret(EqSchemable)

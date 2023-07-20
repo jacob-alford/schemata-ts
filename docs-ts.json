@@ -1,5 +1,5 @@
 {
-  "exclude": ["src/internal/*", "src/schemables/**/*"],
+  "srcDir": "./src/schemata",
   "theme": "just-the-docs/just-the-docs",
   "compilerOptions": {
     "allowImportingTsExtensions": true,

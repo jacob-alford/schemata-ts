@@ -1,7 +1,7 @@
 /** @since 1.0.0 */
 import { pipe } from 'fp-ts/function'
 import * as k from 'kuvio'
-import { getGuard } from 'schemata-ts/Guard'
+import { deriveGuard } from 'schemata-ts/Guard'
 import { type Schema } from 'schemata-ts/Schema'
 import { Boolean } from 'schemata-ts/schemata/Boolean'
 import { Imap } from 'schemata-ts/schemata/Imap'
@@ -25,7 +25,7 @@ export const booleanFromStringPattern: k.Pattern = k.oneOf(
 export const BooleanFromString: Schema<string, boolean> = pipe(
   Pattern(booleanFromStringPattern, ["'true' | 'false'", 'boolean']),
   Imap(
-    getGuard(Boolean),
+    deriveGuard(Boolean),
     s => s === 'true',
     b => (b ? 'true' : 'false'),
   ),

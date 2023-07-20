@@ -1,9 +1,9 @@
 /** @since 2.0.0 */
 import { pipe, unsafeCoerce } from 'fp-ts/function'
 import * as RNEA from 'fp-ts/ReadonlyNonEmptyArray'
-import { getGuard } from 'schemata-ts/derivations/guard-schemable'
-import { getInformation } from 'schemata-ts/derivations/information-schemable'
-import { getTypeString } from 'schemata-ts/derivations/type-string-schemable'
+import { deriveGuard } from 'schemata-ts/derivations/guard-schemable'
+import { deriveInformation } from 'schemata-ts/derivations/information-schemable'
+import { deriveTypeString } from 'schemata-ts/derivations/type-string-schemable'
 import { type ImplicitOptional } from 'schemata-ts/internal/struct'
 import { type Schema, make } from 'schemata-ts/Schema'
 import { type TupleToUnion } from 'type-fest'
@@ -53,9 +53,9 @@ export const Union = <T extends RNEA.ReadonlyNonEmptyArray<Schema<any, any>>>(
       pipe(
         members,
         RNEA.map(schema => ({
-          guard: getGuard(schema),
-          precedence: getInformation(schema),
-          name: getTypeString(schema)[0],
+          guard: deriveGuard(schema),
+          precedence: deriveInformation(schema),
+          name: deriveTypeString(schema)[0],
           member: schema.runSchema(s),
         })),
         guardedUnionMembers => s.guardedUnion(...(guardedUnionMembers as any)),

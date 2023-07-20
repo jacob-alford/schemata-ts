@@ -2,7 +2,7 @@
 import { pipe } from 'fp-ts/function'
 import { type Ord } from 'fp-ts/Ord'
 import * as RS from 'fp-ts/ReadonlySet'
-import { getGuard } from 'schemata-ts/Guard'
+import { deriveGuard } from 'schemata-ts/Guard'
 import type * as G from 'schemata-ts/internal/guard'
 import { type Schema } from 'schemata-ts/Schema'
 import { Array as Array_ } from 'schemata-ts/schemata/Array'
@@ -24,5 +24,9 @@ export const SetFromArray: <A>(
   pipe(
     _,
     Array_(),
-    Imap(getSetGuard(getGuard(_)), RS.fromReadonlyArray(ordA), RS.toReadonlyArray(ordA)),
+    Imap(
+      getSetGuard(deriveGuard(_)),
+      RS.fromReadonlyArray(ordA),
+      RS.toReadonlyArray(ordA),
+    ),
   )

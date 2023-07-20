@@ -2,40 +2,12 @@
  * Models for JsonSchema as subsets of JSON Schema Draft 4, Draft 6, and Draft 7.
  *
  * @since 1.2.0
- * @example
- *   import * as JS from 'schemata-ts/JsonSchema'
- *   import * as S from 'schemata-ts/schemata'
- *   import { getJsonSchema } from 'schemata-ts/JsonSchema'
- *
- *   const schema = S.Struct({
- *     id: S.Natural,
- *     jwt: S.Jwt,
- *     tag: S.Literal('Customer'),
- *   })
- *
- *   const jsonSchema = getJsonSchema(schema)
- *
- *   assert.deepStrictEqual(JS.stripIdentity(jsonSchema), {
- *     type: 'object',
- *     required: ['id', 'jwt', 'tag'],
- *     properties: {
- *       id: { type: 'integer', minimum: 0, maximum: 9007199254740991 },
- *       jwt: {
- *         type: 'string',
- *         description: 'Jwt',
- *         pattern:
- *           '^(([A-Za-z0-9_\\x2d]*)\\.([A-Za-z0-9_\\x2d]*)(\\.([A-Za-z0-9_\\x2d]*)){0,1})$',
- *       },
- *       tag: { type: 'string', const: 'Customer' },
- *     },
- *   })
- *
  * @see https://json-schema.org/draft/2020-12/json-schema-validation.html
  */
 import { type Const, make } from 'fp-ts/Const'
 import { identity } from 'fp-ts/function'
 import type * as RR from 'fp-ts/ReadonlyRecord'
-import { getJsonSchema as getJsonSchema_ } from 'schemata-ts/derivations/json-schema-schemable'
+import { deriveJsonSchema as deriveJsonSchema_ } from 'schemata-ts/derivations/json-schema-schemable'
 import {
   type Float,
   type MaxNegativeFloat,
@@ -83,7 +55,7 @@ export type JsonSchema = JsonSchemaValue & I.Description & I.References
  *
  * @since 1.2.0
  */
-export const getJsonSchema = <I, O>(
+export const deriveJsonSchema = <I, O>(
   schema: Schema<I, O>,
   version: 'Draft-07' | '2019-09' | '2020-12' = '2019-09',
   maintainIdentity = false,
@@ -92,15 +64,15 @@ export const getJsonSchema = <I, O>(
     case 'Draft-07':
       // istanbul ignore next
       return (maintainIdentity ? identity : I.stripIdentity)(
-        I.as2007(getJsonSchema_(schema)),
+        I.as2007(deriveJsonSchema_(schema)),
       )
     case '2019-09':
       // istanbul ignore next
-      return (maintainIdentity ? identity : I.stripIdentity)(getJsonSchema_(schema))
+      return (maintainIdentity ? identity : I.stripIdentity)(deriveJsonSchema_(schema))
     case '2020-12':
       // istanbul ignore next
       return (maintainIdentity ? identity : I.stripIdentity)(
-        I.as2020(getJsonSchema_(schema)),
+        I.as2020(deriveJsonSchema_(schema)),
       )
   }
 }

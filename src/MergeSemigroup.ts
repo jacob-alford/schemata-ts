@@ -58,7 +58,7 @@ export {
    * @since 2.0.0
    * @category Interpreters
    */
-  getMergeSemigroup,
+  deriveMergeSemigroup,
 } from 'schemata-ts/derivations/merge-semigroup-schemable'
 
 // ------------------

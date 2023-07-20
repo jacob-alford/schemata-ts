@@ -179,7 +179,7 @@ const makeInterpreter: (typeclass: SchemableTypeclasses) => ts.VariableStatement
       _.createVariableDeclarationList(
         [
           _.createVariableDeclaration(
-            _.createIdentifier(`get${module}`),
+            _.createIdentifier(`derive${module}`),
             undefined,
             undefined,
             _.createCallExpression(_.createIdentifier('interpret'), undefined, [

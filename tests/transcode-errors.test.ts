@@ -10,7 +10,7 @@ const Schema = S.Strict({
   qaz: S.Optional(S.UnknownArray),
 })
 
-const transcoder = TC.getTranscoder(Schema)
+const transcoder = TC.deriveTranscoder(Schema)
 
 const result = transcoder.decode({
   quux: 'baz',

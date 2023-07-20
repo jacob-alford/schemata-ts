@@ -24,7 +24,7 @@ export {
    * @since 2.0.0
    * @category Interpreters
    */
-  getArbitrary,
+  deriveArbitrary,
 } from 'schemata-ts/derivations/arbitrary-schemable'
 
 // -------------------------------------------------------------------------------------

@@ -50,4 +50,4 @@ const InformationSchemable: Schemable<Inf.SchemableLambda> = {
  * @since 2.0.0
  * @category Interpreters
  */
-export const getInformation = interpret(InformationSchemable)
+export const deriveInformation = interpret(InformationSchemable)

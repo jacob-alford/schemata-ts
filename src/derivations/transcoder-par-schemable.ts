@@ -50,4 +50,4 @@ const TranscoderParSchemable: Schemable<TCP.SchemableLambda> = {
  * @since 2.0.0
  * @category Interpreters
  */
-export const getTranscoderPar = interpret(TranscoderParSchemable)
+export const deriveTranscoderPar = interpret(TranscoderParSchemable)

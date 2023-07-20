@@ -50,4 +50,4 @@ const MergeSemigroupSchemable: Schemable<MSg.SchemableLambda> = {
  * @since 2.0.0
  * @category Interpreters
  */
-export const getMergeSemigroup = interpret(MergeSemigroupSchemable)
+export const deriveMergeSemigroup = interpret(MergeSemigroupSchemable)

@@ -1,7 +1,7 @@
 /** @since 2.0.0 */
 import { pipe } from 'fp-ts/function'
 import { type Option as Option_ } from 'fp-ts/Option'
-import { getTypeString } from 'schemata-ts/derivations/type-string-schemable'
+import { deriveTypeString } from 'schemata-ts/derivations/type-string-schemable'
 import { type Schema } from 'schemata-ts/Schema'
 import { Annotate } from 'schemata-ts/schemata/Annotate'
 import { Literal } from 'schemata-ts/schemata/Literal'
@@ -27,7 +27,7 @@ export const Option = <I, O>(inner: Schema<I, O>): Schema<Option_<I>, Option_<O>
     ),
     Annotate({
       typeString: pipe(
-        getTypeString(inner),
+        deriveTypeString(inner),
         ([input, output]) => `Option<${input}, ${output}>`,
       ),
     }),

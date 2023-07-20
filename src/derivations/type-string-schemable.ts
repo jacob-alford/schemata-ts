@@ -50,4 +50,4 @@ const TypeStringSchemable: Schemable<TS.SchemableLambda> = {
  * @since 2.0.0
  * @category Interpreters
  */
-export const getTypeString = interpret(TypeStringSchemable)
+export const deriveTypeString = interpret(TypeStringSchemable)

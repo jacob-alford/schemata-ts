@@ -1,8 +1,8 @@
 /** @since 1.4.0 */
-import { getGuard } from 'schemata-ts/derivations/guard-schemable'
-import { getInformation } from 'schemata-ts/derivations/information-schemable'
-import { getMergeSemigroup } from 'schemata-ts/derivations/merge-semigroup-schemable'
-import { getTypeString } from 'schemata-ts/derivations/type-string-schemable'
+import { deriveGuard } from 'schemata-ts/derivations/guard-schemable'
+import { deriveInformation } from 'schemata-ts/derivations/information-schemable'
+import { deriveMergeSemigroup } from 'schemata-ts/derivations/merge-semigroup-schemable'
+import { deriveTypeString } from 'schemata-ts/derivations/type-string-schemable'
 import { camelCase } from 'schemata-ts/internal/camelcase'
 import {
   type OptionalInputProps,
@@ -26,40 +26,6 @@ import type { CamelCase } from 'type-fest'
  *
  * @since 1.4.0
  * @category Combinators
- * @example
- *   import * as E from 'fp-ts/Either'
- *   import * as S from 'schemata-ts/schemata'
- *   import { getDecoder } from 'schemata-ts/Decoder'
- *
- *   const DatabasePerson = S.CamelCaseKeys({
- *     first_name: S.String,
- *     last_name: S.String,
- *     age: S.Number,
- *     is_married: S.BooleanFromString,
- *   })
- *
- *   // DatabasePerson will have the type:
- *   // Schema<
- *   //   { first_name: string, last_name: string, age: number, is_married: string },
- *   //   { firstName: string, lastName: string, age: number, isMarried: boolean }
- *   // >
- *
- *   const decoder = getDecoder(DatabasePerson)
- *
- *   assert.deepStrictEqual(
- *     decoder.decode({
- *       first_name: 'John',
- *       last_name: 'Doe',
- *       age: 42,
- *       is_married: 'false',
- *     }),
- *     E.right({
- *       firstName: 'John',
- *       lastName: 'Doe',
- *       age: 42,
- *       isMarried: false,
- *     }),
- *   )
  */
 export const CamelCaseKeys: <T extends Record<string, Schema<any, any>>>(
   props: T,
@@ -82,10 +48,10 @@ export const CamelCaseKeys: <T extends Record<string, Schema<any, any>>>(
         _.clone,
         camelCase(key),
       )
-      const guard = getGuard(schema)
-      const information = getInformation(schema)
-      const name = getTypeString(schema)
-      const semigroup = getMergeSemigroup(schema).semigroup(mergeStrategy)
+      const guard = deriveGuard(schema)
+      const information = deriveInformation(schema)
+      const name = deriveTypeString(schema)
+      const semigroup = deriveMergeSemigroup(schema).semigroup(mergeStrategy)
       struct[key] = {
         schemable,
         guard,

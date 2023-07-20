@@ -8,7 +8,7 @@ import { type Const } from 'fp-ts/Const'
 import { pipe, unsafeCoerce } from 'fp-ts/function'
 import { type Invariant2 } from 'fp-ts/Invariant'
 import type * as TE from 'fp-ts/TaskEither'
-import { getTranscoderPar as getTranscoderPar_ } from 'schemata-ts/derivations/transcoder-par-schemable'
+import { deriveTranscoderPar as deriveTranscoderPar_ } from 'schemata-ts/derivations/transcoder-par-schemable'
 import * as I from 'schemata-ts/internal/transcoder-par'
 import { type Schema } from 'schemata-ts/Schema'
 import type * as TCE from 'schemata-ts/TranscodeError'
@@ -54,8 +54,8 @@ export const failure: <A>(
  * @since 2.0.0
  * @category Interpreters
  */
-export const getTranscoderPar: <I, O>(schema: Schema<I, O>) => TranscoderPar<I, O> =
-  unsafeCoerce(getTranscoderPar_)
+export const deriveTranscoderPar: <I, O>(schema: Schema<I, O>) => TranscoderPar<I, O> =
+  unsafeCoerce(deriveTranscoderPar_)
 
 // -------------------------------------------------------------------------------------
 // instances
