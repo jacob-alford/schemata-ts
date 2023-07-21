@@ -72,7 +72,7 @@
       "jest --findRelatedTests --silent"
     ],
     "*": [
-      "docs:pack"
+      "yarn docs:pack"
     ]
   },
   "peerDependencies": {
