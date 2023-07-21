@@ -11,7 +11,11 @@ const isObject = (u: unknown): u is Record<string, unknown> =>
   typeof u === 'object' && u !== null && !Array.isArray(u)
 
 export const StructGuard: WithStruct<G.SchemableLambda> = {
-  struct: (properties, extraProps) => {
+  struct: (
+    properties,
+    // istanbul ignore next
+    extraProps = 'strip',
+  ) => {
     const lookupByOutputKey = remapPropertyKeys(properties)
 
     return {
@@ -26,7 +30,7 @@ export const StructGuard: WithStruct<G.SchemableLambda> = {
           }
 
           // -- if extra props are stripped then their presence is not a failure
-          return pipe(
+          const knownMatch = pipe(
             lookupByOutputKey,
             RR.foldMapWithIndex(Str.Ord)(B.MonoidAll)((key, members) => {
               const inputAtKey: unknown = (u as any)[key]
@@ -36,6 +40,20 @@ export const StructGuard: WithStruct<G.SchemableLambda> = {
               return false
             }),
           )
+
+          if (typeof extraProps === 'string' || knownMatch === false) {
+            return knownMatch
+          }
+
+          const restMatch = pipe(
+            u as Record<string, unknown>,
+            RR.foldMapWithIndex(Str.Ord)(B.MonoidAll)((key, value) => {
+              if (lookupByOutputKey[key] !== undefined) return true
+              return extraProps.is(value)
+            }),
+          )
+
+          return restMatch && knownMatch
         }),
         a => a as any,
       ),

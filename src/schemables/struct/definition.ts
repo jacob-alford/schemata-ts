@@ -9,8 +9,8 @@ export interface WithStruct<S extends SchemableLambda> {
     RestKind extends SchemableKind<S, any, any> | undefined,
   >(
     properties: Props,
-    extraProps: 'strip' | 'error',
-    wholeName: string,
+    extraProps?: 'strip' | 'error' | RestKind,
+    wholeName?: string,
   ) => SchemableKind<
     S,
     Combine<

@@ -19,7 +19,7 @@ A pipeable TypeScript schema engine and collection of validators inspired by val
 
 <div align="center">
 
-![npm](https://img.shields.io/npm/v/schemata-ts?style=for-the-badge)
+![npm](https://img.shields.io/npm/v/schemata-ts?style=for-the-badge&logo=npm)
 &nbsp;
 ![TypeScript Badge](https://img.shields.io/badge/TypeScript-4.5%2B-blue?style=for-the-badge&logo=TypeScript)
 &nbsp;
@@ -203,9 +203,9 @@ const personTranscoderPar: TranscoderPar<PersonInput, Person> =
 Type guards are used by TypeScript to narrow the type of a value to something concrete. Guards can be derived from schemas using `deriveTypeGuard`:
 
 ```ts
-import { deriveTypeGuard, type Guard } from 'schemata-ts/Guard'
+import { deriveGuard, type Guard } from 'schemata-ts/Guard'
 
-const guardPerson: Guard<Person> = deriveTypeGuard(PersonSchema)
+const guardPerson: Guard<Person> = deriveGuard(PersonSchema)
 ```
 
 #### Documentation
@@ -253,3 +253,14 @@ Schemata has other derivations besides the ones above, below are links to those 
 - [MergeSemigroup](https://jacob-alford.github.io/schemata-ts/docs/MergeSemigroup): A customizable schema specific deep-merge ([source](https://github.com/jacob-alford/schemata-ts/tree/main/src/MergeSemigroup))
 - [Eq](https://jacob-alford.github.io/schemata-ts/docs/Eq): A schema-specific equality check ([source](https://github.com/jacob-alford/schemata-ts/tree/main/src/Eq))
 - [TypeString](https://jacob-alford.github.io/schemata-ts/docs/TypeString): Input / Output type strings ([source](https://github.com/jacob-alford/schemata-ts/tree/main/src/TypeString))
+
+# Contributors
+
+<!-- ALL-CONTRIBUTORS-LIST:START - Do not remove or modify this section -->
+<!-- prettier-ignore-start -->
+<!-- markdownlint-disable -->
+
+<!-- markdownlint-restore -->
+<!-- prettier-ignore-end -->
+
+<!-- ALL-CONTRIBUTORS-LIST:END -->

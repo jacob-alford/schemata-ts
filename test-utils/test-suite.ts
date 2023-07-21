@@ -34,9 +34,7 @@ const { BooleanAlgebra: B } = B_
 const isValidNumber = PrimitivesGuard.float().is
 
 type TestItem<I, T> = readonly [I, T]
-type SchemableTest<I, T> =
-  | RR.ReadonlyRecord<string, TestItem<I, T>>
-  | ReadonlyArray<TestItem<I, T>>
+type SchemableTest<I, T> = ReadonlyArray<TestItem<I, T>>
 
 export interface TestSuite<I, O> {
   /** Tests transcoder and transcoderPar > decoder against a set of expected values */
@@ -145,20 +143,15 @@ const foldTestSuites =
     pipe(
       suites,
       RA.map(suite =>
-        Array.isArray(suite)
-          ? pipe(
-              suite as ReadonlyArray<TestItem<I, T>>,
-              RA.mapWithIndex((i, [testValue, result]) =>
-                tuple(
-                  `${prepend(result)} ${JSON.stringify(safeJsonify(testValue, i))}`,
-                  tuple(testValue, result),
-                ),
-              ),
-            )
-          : pipe(
-              suite as RR.ReadonlyRecord<string, TestItem<I, T>>,
-              RR.collect(Str.Ord)(tuple),
+        pipe(
+          suite,
+          RA.mapWithIndex((i, [testValue, result]) =>
+            tuple(
+              `${prepend(result)} ${JSON.stringify(safeJsonify(testValue, i))}`,
+              tuple(testValue, result),
             ),
+          ),
+        ),
       ),
     )
 
@@ -458,7 +451,7 @@ type StandardTestInputs<I, T> = {
   readonly encoderTests?: GetFirstArg<TestSuite<I, T>['testEncoder']>
   readonly guardTests?: GetFirstArg<TestSuite<I, T>['testGuard']>
   readonly eqTests?: GetFirstArg<TestSuite<I, T>['testEq']>
-  readonly jsonSchema: GetFirstArg<TestSuite<I, T>['assertJsonSchema']>
+  readonly jsonSchema?: GetFirstArg<TestSuite<I, T>['assertJsonSchema']>
   readonly jsonSchema2007?: GetFirstArg<TestSuite<I, T>['assertJsonSchema']>
   readonly jsonSchema2020?: GetFirstArg<TestSuite<I, T>['assertJsonSchema']>
   readonly typeString?: GetFirstArg<TestSuite<I, T>['assertTypeString']>
@@ -469,44 +462,23 @@ type StandardTestInputs<I, T> = {
 export const deriveGuardTests = <I, T>(
   encoderTests: StandardTestInputs<I, T>['encoderTests'],
 ): NonNullable<Exclude<StandardTestInputs<I, T>['guardTests'], 'derive'>> =>
-  Array.isArray(encoderTests)
-    ? pipe(
-        encoderTests as ReadonlyArray<TestItem<T, E.Either<TCE.TranscodeErrors, I>>>,
-        RA.map(RTup.mapSnd(E.isRight)),
-      )
-    : pipe(
-        encoderTests as Exclude<
-          SchemableTest<T, E.Either<TCE.TranscodeErrors, I>>,
-          { length: number }
-        >,
-        RR.map(RTup.mapSnd(E.isRight)),
-      )
+  pipe(
+    encoderTests as ReadonlyArray<TestItem<T, E.Either<TCE.TranscodeErrors, I>>>,
+    RA.map(RTup.mapSnd(E.isRight)),
+  )
 
 export const deriveEqTests = <I, T>(
   encoderTests: StandardTestInputs<I, T>['encoderTests'],
 ): NonNullable<Exclude<StandardTestInputs<I, T>['eqTests'], 'derive'>> =>
-  Array.isArray(encoderTests)
-    ? pipe(
-        encoderTests as ReadonlyArray<TestItem<T, E.Either<TCE.TranscodeErrors, I>>>,
-        RA.filterMap(([_, e]) =>
-          pipe(
-            O.fromEither(e),
-            O.map(() => tuple(tuple(_, _), true)),
-          ),
-        ),
-      )
-    : pipe(
-        encoderTests as Exclude<
-          SchemableTest<T, E.Either<TCE.TranscodeErrors, I>>,
-          { length: number }
-        >,
-        RR.filterMap(([_, e]) =>
-          pipe(
-            O.fromEither(e),
-            O.map(() => tuple(tuple(_, _), true)),
-          ),
-        ),
-      )
+  pipe(
+    encoderTests as ReadonlyArray<TestItem<T, E.Either<TCE.TranscodeErrors, I>>>,
+    RA.filterMap(([_, e]) =>
+      pipe(
+        O.fromEither(e),
+        O.map(() => tuple(tuple(_, _), true)),
+      ),
+    ),
+  )
 
 export type MakeTestValues<I, O> = {
   readonly c: <A>(_: unknown) => A
@@ -576,7 +548,7 @@ export type StandardTestSuiteOptions = {
 
 type StandardTestSuiteFn = <I, O>(
   schema: Schema<I, O>,
-  makeTestValues: (helpers: MakeTestValues<I, O>) => StandardTestInputs<I, O>,
+  makeTestValues?: (helpers: MakeTestValues<I, O>) => StandardTestInputs<I, O>,
   options?: StandardTestSuiteOptions,
 ) => IO.IO<void>
 
@@ -585,7 +557,7 @@ type RunStandardTestSuite = StandardTestSuiteFn & {
 }
 
 const runStandardTestSuite_: StandardTestSuiteFn =
-  (schema, makeTestValues, options = {}) =>
+  (schema, makeTestValues = () => ({}), options = {}) =>
   () => {
     const name = deriveTypeString(schema)
     const {
@@ -645,10 +617,12 @@ const runStandardTestSuite_: StandardTestSuiteFn =
         ? describe('guard', _.testGuard(guardTests))
         : describe('guard', _.testGuard(guardTests, deriveGuardTests(encoderTests)))
       describe('eq', _.testEq(eqTests, deriveEqTests(encoderTests)))
-      describe(
-        'jsonSchema',
-        _.assertJsonSchema(jsonSchema, jsonSchema2007, jsonSchema2020),
-      )
+      if (jsonSchema !== undefined) {
+        describe(
+          'jsonSchema',
+          _.assertJsonSchema(jsonSchema, jsonSchema2007, jsonSchema2020),
+        )
+      }
       if (typeString !== undefined) {
         describe('typeString', _.assertTypeString(typeString))
       }

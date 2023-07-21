@@ -8,6 +8,8 @@ import {
   type OptionalInputProps,
   type OutputProps,
   type RequiredInputProps,
+  type RestInput,
+  type RestOutput,
 } from 'schemata-ts/internal/schema-utils'
 import { type SchemableKind, type SchemableLambda } from 'schemata-ts/internal/schemable'
 import type * as TS from 'schemata-ts/internal/type-string'
@@ -22,12 +24,15 @@ import type * as s from 'schemata-ts/schemables/struct/type-utils'
  * @since 1.0.0
  * @category Combinators
  */
-export const Struct = <T extends Record<string, Schema<any, any>>>(
+export const Struct = <
+  T extends Record<string, Schema<any, any>>,
+  Rest extends Schema<any, any> | undefined,
+>(
   props: T,
-  extraProps: 'strip' | 'error' = 'strip',
+  extraProps: 'strip' | 'error' | Rest = 'strip',
 ): Schema<
-  Combine<RequiredInputProps<T> & OptionalInputProps<T>>,
-  Combine<OutputProps<T>>
+  Combine<RestInput<Rest> & RequiredInputProps<T> & OptionalInputProps<T>>,
+  Combine<RestOutput<Rest> & OutputProps<T>>
 > =>
   unsafeCoerce(
     make(_ => {
@@ -57,7 +62,13 @@ export const Struct = <T extends Record<string, Schema<any, any>>>(
           name: name[0],
         }
       }
-      const wholeName = StructTypeString.struct(structName, extraProps, '')
-      return _.struct(struct as any, extraProps, wholeName[0])
+
+      const extraProps_ =
+        typeof extraProps === 'string' ? extraProps : extraProps.runSchema(_)
+      const extraPropsName_ =
+        typeof extraProps === 'string' ? extraProps : deriveTypeString(extraProps)
+
+      const wholeName = StructTypeString.struct(structName, extraPropsName_, '')
+      return _.struct(struct as any, extraProps_, wholeName[0])
     }),
   )

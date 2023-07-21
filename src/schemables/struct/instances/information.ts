@@ -8,13 +8,21 @@ import { type WithStruct } from 'schemata-ts/schemables/struct/definition'
 import { remapPropertyKeys } from 'schemata-ts/schemables/struct/utils'
 
 export const StructInformation: WithStruct<Inf.SchemableLambda> = {
-  struct: properties =>
+  struct: (
+    properties,
+    // istanbul ignore next
+    extraProps = 'strip',
+  ) =>
     pipe(
       remapPropertyKeys(properties),
       RR.foldMap(Str.Ord)(N.MonoidProduct)(
         RNEA.foldMap(N.SemigroupSum)(({ precedence }) => precedence),
       ),
-      _ => Inf.makeInformation(_),
+      _ => {
+        if (typeof extraProps === 'string' || extraProps === undefined)
+          return Inf.makeInformation(_)
+        return Inf.makeInformation(_ + extraProps)
+      },
     ),
   record: (key, codomain) => pipe(Math.max(key, codomain), _ => Inf.makeInformation(_)),
   intersection: (x, y) => Inf.makeInformation(x * y - Math.min(x, y)),

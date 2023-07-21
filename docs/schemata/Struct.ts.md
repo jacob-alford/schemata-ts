@@ -26,7 +26,10 @@ Used to construct a struct schema with enumerated keys.
 **Signature**
 
 ```ts
-export declare const Struct: <T extends Record<string, any>>(props: T, extraProps?: 'strip' | 'error') => any
+export declare const Struct: <T extends Record<string, any>, Rest extends unknown>(
+  props: T,
+  extraProps?: Rest | 'strip' | 'error'
+) => any
 ```
 
 Added in v1.0.0

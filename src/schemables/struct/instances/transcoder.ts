@@ -3,6 +3,7 @@ import * as E from 'fp-ts/Either'
 import { flow, pipe, tuple } from 'fp-ts/function'
 import * as O from 'fp-ts/Option'
 import * as RNEA from 'fp-ts/ReadonlyNonEmptyArray'
+import * as Sg from 'fp-ts/Semigroup'
 import { getKeyRemap } from 'schemata-ts/internal/struct'
 import * as TC from 'schemata-ts/internal/transcoder'
 import { witherRemap } from 'schemata-ts/internal/util'
@@ -18,7 +19,13 @@ const apSecond = Ap.apSecond(TC.applicativeValidation)
 const validateObject = getValidateObject(E.MonadThrow)
 
 export const StructTranscoder: WithStruct<TC.SchemableLambda> = {
-  struct: (properties, extraProps, wholeName) => {
+  struct: (
+    properties,
+    // istanbul ignore next
+    extraProps = 'strip',
+    // istanbul ignore next
+    wholeName = 'object',
+  ) => {
     const lookupByOutputKey = remapPropertyKeys(properties)
 
     return {
@@ -52,6 +59,24 @@ export const StructTranscoder: WithStruct<TC.SchemableLambda> = {
               }),
             )
 
+            if (typeof extraProps !== 'string') {
+              return pipe(
+                u,
+                witherRemap(TCE.Semigroup)((key, value) => {
+                  if (properties[key as string] === undefined) {
+                    return pipe(
+                      extraProps.decode(value),
+                      E.map(_ => O.some(tuple(_, key, Sg.last()))),
+                    )
+                  }
+                  return E.right(O.zero())
+                }),
+                E.bindTo('rest'),
+                E.apS('known', outKnown),
+                E.map(({ known, rest }) => safeIntersect(known, rest)),
+              )
+            }
+
             if (extraProps === 'strip') return outKnown
 
             // -- if extra props are not allowed, return a failure on keys not specified in properties
@@ -81,8 +106,15 @@ export const StructTranscoder: WithStruct<TC.SchemableLambda> = {
             const unionMembers = lookupByOutputKey[key]
 
             // -- Param is extra (and additional properties are stripped)
-            if (unionMembers === undefined || !Array.isArray(unionMembers))
+            if (unionMembers === undefined || !Array.isArray(unionMembers)) {
+              if (typeof extraProps !== 'string') {
+                return pipe(
+                  extraProps.encode(outputAtKey),
+                  E.map(result => O.some(tuple(result, key, Sg.last()))),
+                )
+              }
               return E.right(O.zero()) as any
+            }
 
             for (const { member, guard, inputKey, semigroup } of unionMembers) {
               if (guard.is(outputAtKey)) {

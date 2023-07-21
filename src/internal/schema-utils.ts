@@ -29,9 +29,9 @@ export type PartialOutputProps<T extends Record<string, Schema<any, any>>> = {
 /** @since 2.0.0 */
 export type RestInput<RestKind> = RestKind extends undefined
   ? unknown
-  : { [key: string]: RestKind extends Schema<infer I, any> ? I : never } | {}
+  : { [key: string]: RestKind extends Schema<infer I, any> ? I : never }
 
 /** @since 2.0.0 */
 export type RestOutput<RestKind> = RestKind extends undefined
   ? unknown
-  : { [key: string]: RestKind extends Schema<any, infer O> ? O : never } | {}
+  : { [key: string]: RestKind extends Schema<any, infer O> ? O : never }

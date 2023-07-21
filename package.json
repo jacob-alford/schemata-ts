@@ -69,8 +69,10 @@
     "src/**/*.ts": [
       "eslint --fix-type layout --fix --cache",
       "prettier --write",
-      "jest --findRelatedTests --silent",
-      "docs-pack"
+      "jest --findRelatedTests --silent"
+    ],
+    "*": [
+      "docs:pack"
     ]
   },
   "peerDependencies": {

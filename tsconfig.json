@@ -8,7 +8,6 @@
     "lib": ["DOM", "ESNext"],
     "module": "CommonJS",
     "target": "ESNext",
-
     "noUnusedLocals": true,
     "noUnusedParameters": true,
     "noImplicitReturns": true,

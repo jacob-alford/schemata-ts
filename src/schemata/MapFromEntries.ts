@@ -17,6 +17,7 @@ export const MapFromEntries = <EK, EA, K extends EK, A>(
   ordK: Ord.Ord<K>,
   sK: Schema<EK, K>,
   sA: Schema<EA, A>,
+  // istanbul ignore next
   mergeStrategy: 'first' | 'last' = 'last',
 ): Schema<ReadonlyArray<readonly [EK, EA]>, ReadonlyMap<K, A>> => {
   const tsA = deriveTypeString(sA)

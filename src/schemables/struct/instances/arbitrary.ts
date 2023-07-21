@@ -6,7 +6,11 @@ import { remapPropertyKeys, safeIntersect } from 'schemata-ts/schemables/struct/
 const readonly: <A>(a: A) => Readonly<A> = identity
 
 export const StructArbitrary: WithStruct<Arb.SchemableLambda> = {
-  struct: properties => {
+  struct: (
+    properties,
+    // istanbul ignore next
+    extraParams = 'strip',
+  ) => {
     const lookupByOutputKey = remapPropertyKeys(properties, i => 1000 / i)
 
     const collapsedArbs: Record<string, Arb.Arbitrary<unknown>> = {}
@@ -33,6 +37,12 @@ export const StructArbitrary: WithStruct<Arb.SchemableLambda> = {
         // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
         const arb = collapsedArbs[key]!
         out[key] = arb.arbitrary(fc)
+      }
+
+      if (typeof extraParams !== 'string') {
+        return fc
+          .tuple(fc.record(out), fc.dictionary(fc.string(), extraParams.arbitrary(fc)))
+          .map(([a, b]) => safeIntersect(a, b))
       }
 
       return fc.record(out) as any
