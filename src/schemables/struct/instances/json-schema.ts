@@ -22,7 +22,7 @@ export const StructJsonSchema: WithStruct<JS.SchemableLambda> = {
     return new JS.JsonStruct(
       jsonSchema,
       requiredKeys,
-      extraProps === 'error' ? false : undefined,
+      extraProps === 'error' ? false : extraProps === 'strip' ? undefined : extraProps,
     ) as any
   },
   record: (_, so) => JS.make(new JS.JsonStruct({}, [], so)),

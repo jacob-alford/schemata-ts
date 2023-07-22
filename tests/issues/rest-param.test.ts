@@ -2,6 +2,7 @@ import { expectTypeOf } from 'expect-type'
 import * as O from 'fp-ts/Option'
 import * as S from 'schemata-ts'
 import { type Float } from 'schemata-ts/float'
+import * as JS from 'schemata-ts/JsonSchema'
 import { type SafeDate } from 'schemata-ts/schemables/date/definition'
 import * as TC from 'schemata-ts/Transcoder'
 
@@ -35,6 +36,16 @@ test('Struct types', () => {
 })
 
 runStandardTestSuite(WithRestParam, _ => ({
+  jsonSchema: JS.struct(
+    {
+      date: JS.union(
+        JS.nullSchema,
+        JS.number({ minimum: S.minUnixTime, maximum: S.maxUnixTime }),
+      ),
+    },
+    [],
+    JS.union(JS.nullSchema, JS.string()),
+  ),
   decoderTests: [
     _.decoder.pass(
       { date: 367722000, dog: 'cat' },
