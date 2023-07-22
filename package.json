@@ -66,13 +66,13 @@
     "prepare": "husky install"
   },
   "lint-staged": {
+    "*": [
+      "yarn docs:pack"
+    ],
     "src/**/*.ts": [
       "eslint --fix-type layout --fix --cache",
       "prettier --write",
       "jest --findRelatedTests --silent"
-    ],
-    "*": [
-      "yarn docs:pack"
     ]
   },
   "peerDependencies": {
