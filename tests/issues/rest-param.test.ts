@@ -22,12 +22,12 @@ test('Struct types', () => {
     S.Schema<
       {
         [x: string]: string | null | undefined
-        // @ts-expect-error -- key signature is support to extend the union of all other keys
+        // @ts-expect-error -- key signature is supposed to extend the union of all other keys
         date?: Float<-8640000000000, 8640000000000> | null | undefined
       },
       {
         [x: string]: O.Option<string>
-        // @ts-expect-error -- key signature is support to extend the union of all other keys
+        // @ts-expect-error -- key signature is supposed to extend the union of all other keys
         date: O.Option<NonNullable<SafeDate>>
       }
     >

@@ -21,7 +21,7 @@ import type * as s from 'schemata-ts/schemables/struct/type-utils'
 /**
  * Used to construct a struct schema with enumerated keys.
  *
- * **Note:** Rest parameters must accomodate the input/output types for all other
+ * **Note:** Index signatures must accomodate the input/output types for all other
  * enumerated keys. It will decode properly otherwise, but TypeScript does not permit
  * construction of such a type
  *
@@ -31,13 +31,13 @@ import type * as s from 'schemata-ts/schemables/struct/type-utils'
  */
 export const Struct = <
   T extends Record<string, Schema<any, any>>,
-  Rest extends Schema<any, any> | undefined,
+  IndexSignature extends Schema<any, any> | undefined,
 >(
   props: T,
-  extraProps: 'strip' | 'error' | Rest = 'strip',
+  extraProps: 'strip' | 'error' | IndexSignature = 'strip',
 ): Schema<
-  Combine<RestInput<Rest> & RequiredInputProps<T> & OptionalInputProps<T>>,
-  Combine<RestOutput<Rest> & OutputProps<T>>
+  Combine<RestInput<IndexSignature> & RequiredInputProps<T> & OptionalInputProps<T>>,
+  Combine<RestOutput<IndexSignature> & OutputProps<T>>
 > =>
   unsafeCoerce(
     make(_ => {
