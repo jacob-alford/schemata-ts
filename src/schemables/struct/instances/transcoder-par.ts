@@ -65,18 +65,26 @@ export const StructTranscoderPar: WithStruct<TCP.SchemableLambda> = {
 
         if (typeof extraProps !== 'string') {
           return pipe(
-            u,
-            witherRemapPar(TCE.Semigroup)((key, value) => {
-              if (properties[key as string] === undefined) {
-                return pipe(
-                  extraProps.decode(value),
-                  TE.map(_ => O.some(tuple(_, key, Sg.last()))),
-                )
-              }
-              return TE.right(O.zero())
-            }),
-            TE.bindTo('rest'),
+            TE.Do,
             TE.apS('known', outKnown),
+            TCP.apS(
+              'rest',
+              pipe(
+                u,
+                witherRemapPar(TCE.Semigroup)((key, value) => {
+                  if (properties[key as string] === undefined) {
+                    return pipe(
+                      extraProps.decode(value),
+                      TE.bimap(
+                        errs => TC.transcodeErrors(TC.errorAtKey(key as string, errs)),
+                        _ => O.some(tuple(_, key, Sg.last())),
+                      ),
+                    )
+                  }
+                  return TE.right(O.zero())
+                }),
+              ),
+            ),
             TE.map(({ known, rest }) => safeIntersect(known, rest)),
           )
         }

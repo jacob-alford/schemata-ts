@@ -30,6 +30,9 @@ export const applicativeValidationPar = TE.getApplicativeTaskValidation(
 export const apSecond = Ap.apSecond(applicativeValidationPar)
 
 /** @internal */
+export const apS = Ap.apS(applicativeValidationPar)
+
+/** @internal */
 export const fromTranscoder: <I, O>(
   transcoder: Transcoder<I, O>,
 ) => TranscoderPar<I, O> = tc => ({

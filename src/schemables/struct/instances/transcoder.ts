@@ -15,7 +15,6 @@ import {
 } from 'schemata-ts/schemables/struct/utils'
 import * as TCE from 'schemata-ts/TranscodeError'
 
-const apSecond = Ap.apSecond(TC.applicativeValidation)
 const validateObject = getValidateObject(E.MonadThrow)
 
 export const StructTranscoder: WithStruct<TC.SchemableLambda> = {
@@ -61,18 +60,27 @@ export const StructTranscoder: WithStruct<TC.SchemableLambda> = {
 
             if (typeof extraProps !== 'string') {
               return pipe(
-                u,
-                witherRemap(TCE.Semigroup)((key, value) => {
-                  if (properties[key as string] === undefined) {
-                    return pipe(
-                      extraProps.decode(value),
-                      E.map(_ => O.some(tuple(_, key, Sg.last()))),
-                    )
-                  }
-                  return E.right(O.zero())
-                }),
-                E.bindTo('rest'),
+                E.Do,
                 E.apS('known', outKnown),
+                TC.apS(
+                  'rest',
+                  pipe(
+                    u,
+                    witherRemap(TCE.Semigroup)((key, value) => {
+                      if (properties[key as string] === undefined) {
+                        return pipe(
+                          extraProps.decode(value),
+                          E.bimap(
+                            errs =>
+                              TC.transcodeErrors(TC.errorAtKey(key as string, errs)),
+                            _ => O.some(tuple(_, key, Sg.last())),
+                          ),
+                        )
+                      }
+                      return E.right(O.zero())
+                    }),
+                  ),
+                ),
                 E.map(({ known, rest }) => safeIntersect(known, rest)),
               )
             }
@@ -95,7 +103,7 @@ export const StructTranscoder: WithStruct<TC.SchemableLambda> = {
                 }
                 return E.right(O.zero()) as any
               }),
-              apSecond(outKnown),
+              TC.apSecond(outKnown),
             )
           }),
         ),

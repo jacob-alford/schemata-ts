@@ -61,6 +61,9 @@ export const applicativeValidation = E.getApplicativeValidation(TE.Semigroup)
 export const apSecond = Ap.apSecond(applicativeValidation)
 
 /** @internal */
+export const apS = Ap.apS(applicativeValidation)
+
+/** @internal */
 export const fromGuard: <I, O>(
   encoder: (out: O) => I,
   onError: (u: unknown) => TE.TranscodeErrors,

@@ -23,6 +23,10 @@ Added in v1.4.0
 
 Used to construct a struct schema with enumerated keys.
 
+**Note:** Rest parameters must accomodate the input/output types for all other
+enumerated keys. It will decode properly otherwise, but TypeScript does not permit
+construction of such a type
+
 **Signature**
 
 ```ts
