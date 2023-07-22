@@ -16,7 +16,11 @@ const ordUnionItemByInputKey: Ord.Ord<UnionItem<any>> = pipe(
 )
 
 export const StructTypeString: WithStruct<SchemableLambda> = {
-  struct: properties => {
+  struct: (
+    properties,
+    // istanbul ignore next
+    extraProps = 'strip',
+  ) => {
     const remapped = remapPropertyKeys(properties)
     const inputStruct = pipe(
       properties,
@@ -28,7 +32,10 @@ export const StructTypeString: WithStruct<SchemableLambda> = {
           RNEA.foldMap(Sg.intercalate(', ')(Str.Semigroup))(
             ([key, [i]]) => `${key}${i.includes('?') ? '?' : ''}: ${i}`,
           ),
-          _ => `{ ${_} }`,
+          _ =>
+            typeof extraProps === 'string'
+              ? `{ ${_} }`
+              : `{ [i: string]: ${extraProps[0]}, ${_} }`,
         ),
       ),
     )
@@ -58,9 +65,10 @@ export const StructTypeString: WithStruct<SchemableLambda> = {
       RNEA.fromReadonlyArray,
       O.fold(
         () => '{}',
-        flow(
-          RNEA.foldMap(Sg.intercalate(', ')(Str.Semigroup))(identity),
-          _ => `{ ${_} }`,
+        flow(RNEA.foldMap(Sg.intercalate(', ')(Str.Semigroup))(identity), _ =>
+          typeof extraProps === 'string'
+            ? `{ ${_} }`
+            : `{ [i: string]: ${extraProps[1]}, ${_} }`,
         ),
       ),
     )

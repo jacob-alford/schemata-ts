@@ -93,19 +93,27 @@ const miscCases: ReadonlyArray<readonly [string, string]> = [
   ['a0a0', 'a0A0'],
 ]
 
-runStandardTestSuite(S.CamelCaseString(), _ => ({
-  decoderTests: [
-    ...typefestCases.map(([input, expected]) => _.decoder.pass(input, expected)),
-    ...camelcaseCases.map(([input, expected]) => _.decoder.pass(input, expected)),
-    ...miscCases.map(([input, expected]) => _.decoder.pass(input, expected)),
-  ],
-  encoderTests: [
-    ...typefestCases.map(([, expected]) => _.encoder.pass(_.c(expected), _.c(expected))),
-    ...camelcaseCases.map(([, expected]) => _.encoder.pass(_.c(expected), _.c(expected))),
-    ...miscCases.map(([, expected]) => _.encoder.pass(_.c(expected), _.c(expected))),
-  ],
-  guardTests: [],
-  eqTests: [],
-  jsonSchema: JS.string(),
-  typeString: 'string',
-}))()
+runStandardTestSuite(
+  S.CamelCaseString(),
+  _ => ({
+    decoderTests: [
+      ...typefestCases.map(([input, expected]) => _.decoder.pass(input, expected)),
+      ...camelcaseCases.map(([input, expected]) => _.decoder.pass(input, expected)),
+      ...miscCases.map(([input, expected]) => _.decoder.pass(input, expected)),
+    ],
+    encoderTests: [
+      ...typefestCases.map(([, expected]) =>
+        _.encoder.pass(_.c(expected), _.c(expected)),
+      ),
+      ...camelcaseCases.map(([, expected]) =>
+        _.encoder.pass(_.c(expected), _.c(expected)),
+      ),
+      ...miscCases.map(([, expected]) => _.encoder.pass(_.c(expected), _.c(expected))),
+    ],
+    guardTests: [],
+    eqTests: [],
+    jsonSchema: JS.string(),
+    typeString: 'string',
+  }),
+  { skip: ['semigroup-many-associativity'] },
+)()

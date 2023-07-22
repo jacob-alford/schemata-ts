@@ -41,7 +41,13 @@ export const StructArbitrary: WithStruct<Arb.SchemableLambda> = {
 
       if (typeof extraParams !== 'string') {
         return fc
-          .tuple(fc.record(out), fc.dictionary(fc.string(), extraParams.arbitrary(fc)))
+          .tuple(
+            fc.record(out),
+            fc.dictionary(
+              fc.string().filter(k => k !== '__proto__'),
+              extraParams.arbitrary(fc),
+            ),
+          )
           .map(([a, b]) => safeIntersect(a, b))
       }
 

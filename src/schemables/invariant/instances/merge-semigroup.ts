@@ -5,10 +5,6 @@ export const InvariantMergeSemigroup: WithInvariant<MSg.SchemableLambda> = {
   imap: () => (get, reverseGet) => msgA =>
     MSg.makeMergeSemigroup(
       concrete => (x, y) =>
-        get(
-          msgA
-            .semigroup(concrete === 'first' ? 'first' : 'last')
-            .concat(reverseGet(x), reverseGet(y)),
-        ),
+        get(msgA.semigroup(concrete).concat(reverseGet(x), reverseGet(y))),
     ),
 }

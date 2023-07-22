@@ -1,5 +1,6 @@
 import { expectTypeOf } from 'expect-type'
 import * as O from 'fp-ts/Option'
+import * as Str from 'fp-ts/string'
 import * as S from 'schemata-ts'
 import { type Float } from 'schemata-ts/float'
 import * as JS from 'schemata-ts/JsonSchema'
@@ -172,4 +173,105 @@ runStandardTestSuite(WithRestParam, _ => ({
       }),
     ),
   ],
+  eqTests: [
+    _.eq.equate(
+      _.c({
+        date: O.some(_.c(new Date(367722000 * 1000))),
+        foo: O.some('cat'),
+        bar: O.some('dog'),
+      }),
+      _.c({
+        date: O.some(_.c(new Date(367722000 * 1000))),
+        foo: O.some('cat'),
+        bar: O.some('dog'),
+      }),
+    ),
+    _.eq.disequate(
+      _.c({
+        date: O.some(_.c(new Date(367722000 * 1000))),
+        dog: O.some('cat'),
+        bar: O.some('cat'),
+      }),
+      _.c({
+        date: O.some(_.c(new Date(367722000 * 1000))),
+        dog: O.some('dog'),
+        bar: O.some('cat'),
+      }),
+    ),
+    _.eq.disequate(
+      _.c({
+        date: O.some(_.c(new Date(367722000 * 100))),
+        dog: O.some('cat'),
+        bar: O.some('cat'),
+      }),
+      _.c({
+        date: O.some(_.c(new Date(367722000 * 1000))),
+        dog: O.some('cat'),
+        bar: O.none,
+      }),
+    ),
+    _.eq.disequate(
+      _.c({ date: O.none, dog: O.some('cat'), foo: O.some('cat') }),
+      _.c({ date: O.none, cat: O.some('cat'), bar: O.some('dog') }),
+    ),
+    _.eq.disequate(
+      _.c({ date: O.none, dog: O.some('cat'), foo: O.some('cat') }),
+      _.c({ date: O.none, dog: O.some('cat'), foo: O.some('cat'), bar: O.some('dog') }),
+    ),
+  ],
+  semigroupTests: [
+    _.semigroup.combinesFirst(
+      _.c({
+        date: O.some(_.c(new Date(367722000 * 100))),
+        foo: O.some('cat'),
+      }),
+      _.c({
+        date: O.some(_.c(new Date(367722000 * 1000))),
+        bar: O.some('dog'),
+      }),
+      _.c({
+        date: O.some(_.c(new Date(367722000 * 100))),
+        foo: O.some('cat'),
+        bar: O.some('dog'),
+      }),
+    ),
+    _.semigroup.combinesLast(
+      _.c({
+        date: O.some(_.c(new Date(367722000 * 100))),
+        foo: O.some('cat'),
+        quux: O.some('quux'),
+      }),
+      _.c({
+        date: O.some(_.c(new Date(367722000 * 1000))),
+        bar: O.some('dog'),
+        quux: O.some('quux2'),
+      }),
+      _.c({
+        date: O.some(_.c(new Date(367722000 * 1000))),
+        foo: O.some('cat'),
+        bar: O.some('dog'),
+        quux: O.some('quux2'),
+      }),
+    ),
+    _.semigroup.combinesWith({ fallback: 'last', string: Str.Semigroup })(
+      _.c({
+        date: O.some(_.c(new Date(367722000 * 100))),
+        foo: O.some('cat'),
+        quux: O.some('quux'),
+      }),
+      _.c({
+        date: O.some(_.c(new Date(367722000 * 1000))),
+        bar: O.some('dog'),
+        quux: O.some('quux2'),
+      }),
+      _.c({
+        date: O.some(_.c(new Date(367722000 * 1000))),
+        foo: O.some('cat'),
+        bar: O.some('dog'),
+        quux: O.some('quux2'),
+      }),
+    ),
+  ],
+  typeString:
+    '{ [i: string]: null | string?, date?: null | Float<-8640000000000,8640000000000>? } → { [i: string]: Option<string>, date: Option<Date> }',
 }))()
