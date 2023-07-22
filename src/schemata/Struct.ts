@@ -22,7 +22,7 @@ import type * as s from 'schemata-ts/schemables/struct/type-utils'
  * Used to construct a struct schema with enumerated keys.
  *
  * **Note:** Index signatures must accomodate the input/output types for all other
- * enumerated keys. It will decode properly otherwise, but TypeScript does not permit
+ * enumerated keys. It will decode properly otherwise, but TypeScript will not permit
  * construction of such a type
  *
  * @since 1.0.0

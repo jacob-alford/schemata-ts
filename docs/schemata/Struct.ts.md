@@ -23,16 +23,16 @@ Added in v1.4.0
 
 Used to construct a struct schema with enumerated keys.
 
-**Note:** Rest parameters must accomodate the input/output types for all other
-enumerated keys. It will decode properly otherwise, but TypeScript does not permit
+**Note:** Index signatures must accomodate the input/output types for all other
+enumerated keys. It will decode properly otherwise, but TypeScript will not permit
 construction of such a type
 
 **Signature**
 
 ```ts
-export declare const Struct: <T extends Record<string, any>, Rest extends unknown>(
+export declare const Struct: <T extends Record<string, any>, IndexSignature extends unknown>(
   props: T,
-  extraProps?: Rest | 'strip' | 'error'
+  extraProps?: IndexSignature | 'strip' | 'error'
 ) => any
 ```
 

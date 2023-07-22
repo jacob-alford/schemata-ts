@@ -67,7 +67,8 @@
   },
   "lint-staged": {
     "*": [
-      "yarn docs:pack"
+      "yarn docs:pack",
+      "git add \"./docs/*.md\""
     ],
     "src/**/*.ts": [
       "eslint --fix-type layout --fix --cache",
