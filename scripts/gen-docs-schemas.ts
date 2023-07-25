@@ -37,8 +37,12 @@ const stringExamples = (schema: S.Schema<string, string>): string =>
         .filter(s => s.length > 5 && s !== ''),
       3,
     ),
-    RA.intercalate(Str.Monoid)(', '),
-    _ => ` e.g:  \`${_}\``,
+    RNEA.fromReadonlyArray,
+    O.map(RNEA.foldMap(Sg.intercalate(', ')(Str.Semigroup))(str => `\`${str}\``)),
+    O.fold(
+      () => '',
+      _ => ` (e.g:  ${_})`,
+    ),
   )
 
 const makeExamples: (category: string, file: string, schema: unknown) => string = (
@@ -51,7 +55,7 @@ const makeExamples: (category: string, file: string, schema: unknown) => string 
     case 'UUID':
       return stringExamples(S.UUID('any') as any)
     case 'CamelCaseString':
-      return ' e.g:  `Camel_case-string` → `camelCaseString`'
+      return ' (e.g:  `Camel_case-string` → `camelCaseString`)'
     default:
       return S.isSchema(schema) ? stringExamples(schema as any) : ''
   }
@@ -61,6 +65,7 @@ const categoryTemplate = (
   cat: string,
   files: RNEA.ReadonlyNonEmptyArray<string>,
 ) => `### ${cat} (${files.length})
+
 ${pipe(
   files,
   RNEA.foldMap(Sg.intercalate('\n')(Str.Semigroup))(
