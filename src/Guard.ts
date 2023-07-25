@@ -1,6 +1,6 @@
 /**
- * Represents a typeclass and data-type that narrows an unknown value to a specific type
- * using Typescript type guards
+ * `Guard` is a data-type that narrows an unknown value to a specific type using
+ * Typescript type guards
  *
  * @since 2.0.0
  */

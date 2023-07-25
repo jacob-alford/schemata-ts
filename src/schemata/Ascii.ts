@@ -31,6 +31,6 @@ export const ascii: k.Pattern = pipe(
  * A string of ASCII characters.
  *
  * @since 1.0.0
- * @category Schema
+ * @category String
  */
 export const Ascii: Schema<Ascii> = Brand<AsciiBrand>()(Pattern(ascii, 'Ascii'))

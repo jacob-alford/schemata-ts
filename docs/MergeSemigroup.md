@@ -1,1 +1,119 @@
-# `MergeSemigroup`
+---
+title: MergeSemigroup.ts
+nav_order: 8
+permalink: /merge-semigroup/
+---
+
+## MergeSemigroup overview
+
+A typeclass which models the `getSemigroup` operation that returns a merge-wise
+semigroup for a particular domain type
+
+Added in v2.0.0
+
+---
+
+<h2 class="text-delta">Table of contents</h2>
+
+- [Instances](#instances)
+  - [URI](#uri)
+  - [URI (type alias)](#uri-type-alias)
+- [Interpreters](#interpreters)
+  - [deriveMergeSemigroup](#derivemergesemigroup)
+- [Model](#model)
+  - [MergeSemigroup (interface)](#mergesemigroup-interface)
+- [utils](#utils)
+  - [MergeOptions (type alias)](#mergeoptions-type-alias)
+  - [MergeStrategy (type alias)](#mergestrategy-type-alias)
+
+---
+
+# Instances
+
+## URI
+
+**Signature**
+
+```ts
+export declare const URI: 'schemata-ts/MergeSemigroup'
+```
+
+Added in v2.0.0
+
+## URI (type alias)
+
+**Signature**
+
+```ts
+export type URI = typeof URI
+```
+
+Added in v2.0.0
+
+# Interpreters
+
+## deriveMergeSemigroup
+
+Interprets a schema as a MergeSemigroup
+
+**Signature**
+
+```ts
+export declare const deriveMergeSemigroup: <E, A>(schema: Schema<E, A>) => MergeSemigroup<A>
+```
+
+Added in v2.0.0
+
+# Model
+
+## MergeSemigroup (interface)
+
+A typeclass which models the `getSemigroup` operation that returns a merge-wise
+semigroup for a particular domain type
+
+Default merge strategy is `last`, i.e. overwrite
+
+**Signature**
+
+```ts
+export interface MergeSemigroup<O> {
+  readonly semigroup: (mergeStrategy?: MergeStrategy) => Semigroup<O>
+}
+```
+
+Added in v2.0.0
+
+# utils
+
+## MergeOptions (type alias)
+
+Options for merging particular data types.
+
+Note: Imap, Unions, and Literals will always use the `fallback` strategy to maintain
+associativity.
+
+**Signature**
+
+```ts
+export type MergeOptions = {
+  readonly string?: Semigroup<string>
+  readonly number?: Semigroup<number>
+  readonly boolean?: Semigroup<boolean>
+  readonly unknown?: Semigroup<unknown>
+  readonly fallback: 'first' | 'last'
+}
+```
+
+Added in v2.0.0
+
+## MergeStrategy (type alias)
+
+Determines how concrete values are concatenated
+
+**Signature**
+
+```ts
+export type MergeStrategy = 'first' | 'last' | MergeOptions
+```
+
+Added in v2.0.0

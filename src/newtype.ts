@@ -1,5 +1,8 @@
 /**
- * A port of `newtype-ts` to schemata-ts
+ * A port of `newtype-ts` to schemata-ts. Unliked branded types, newtypes are not
+ * assignable to the underlying type.
+ *
+ * Schemata-ts uses Newtypes for UUIDs.
  *
  * @since 1.4.0
  */

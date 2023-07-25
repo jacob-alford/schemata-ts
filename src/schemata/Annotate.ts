@@ -9,8 +9,8 @@ import { type Schema, make } from 'schemata-ts/Schema'
  * Annotate a Json Schema with title, description, and references.
  *
  * Note: references must be specified for all "Lazy" schemas, and must occur after the
- * declaration of the primary schema. This is because Lazy for json-schema is implemented
- * as a ref, and that ref must be specified in the parent using `Annotate`
+ * declaration of the primary schema. This is because mutual-recursion for json-schema is
+ * implemented as a ref, and that ref must be specified in the parent using `Annotate`
  *
  * @since 1.2.0
  * @category Combinators

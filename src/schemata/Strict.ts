@@ -4,9 +4,9 @@ import {
   type OutputProps,
   type RequiredInputProps,
 } from 'schemata-ts/internal/schema-utils'
-import { type Combine } from 'schemata-ts/internal/type-utils'
 import { type Schema } from 'schemata-ts/Schema'
 import { Struct } from 'schemata-ts/schemata/Struct'
+import { type Simplify } from 'type-fest'
 
 /**
  * Same as `Struct` combinator, but disallows additional properties.
@@ -17,6 +17,6 @@ import { Struct } from 'schemata-ts/schemata/Struct'
 export const Strict = <T extends Record<string, Schema<any, any>>>(
   props: T,
 ): Schema<
-  Combine<RequiredInputProps<T> & OptionalInputProps<T>>,
-  Combine<OutputProps<T>>
+  Simplify<RequiredInputProps<T> & OptionalInputProps<T>>,
+  Simplify<OutputProps<T>>
 > => Struct(props, 'error')

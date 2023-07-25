@@ -11,11 +11,10 @@ import {
 import { type SchemableKind, type SchemableLambda } from 'schemata-ts/internal/schemable'
 import { remapKey } from 'schemata-ts/internal/struct'
 import type * as TS from 'schemata-ts/internal/type-string'
-import { type Combine } from 'schemata-ts/internal/type-utils'
 import { type OutputOf, type Schema, make } from 'schemata-ts/Schema'
 import { StructTypeString } from 'schemata-ts/schemables/struct/instances/type-string'
 import type * as s from 'schemata-ts/schemables/struct/type-utils'
-import type { CamelCase } from 'type-fest'
+import type { CamelCase, Simplify } from 'type-fest'
 
 /**
  * The same as the `Struct` schema combinator, but keys are transformed to camel case in
@@ -32,7 +31,7 @@ export const CamelCaseKeys: <T extends Record<string, Schema<any, any>>>(
   extraProps?: 'strip' | 'error',
   mergeStrategy?: 'first' | 'last',
 ) => Schema<
-  Combine<RequiredInputProps<T> & OptionalInputProps<T>>,
+  Simplify<RequiredInputProps<T> & OptionalInputProps<T>>,
   {
     [K in keyof T as CamelCase<K, { preserveConsecutiveUppercase: true }>]: OutputOf<T[K]>
   }

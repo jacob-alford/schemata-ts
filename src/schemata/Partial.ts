@@ -11,11 +11,11 @@ import {
 } from 'schemata-ts/internal/schema-utils'
 import { type SchemableKind, type SchemableLambda } from 'schemata-ts/internal/schemable'
 import type * as TS from 'schemata-ts/internal/type-string'
-import { type Combine } from 'schemata-ts/internal/type-utils'
 import { type Schema, make } from 'schemata-ts/Schema'
 import { StructTypeString } from 'schemata-ts/schemables/struct/instances/type-string'
 import type * as s from 'schemata-ts/schemables/struct/type-utils'
 import { Optional } from 'schemata-ts/schemata/Optional'
+import { type Simplify } from 'type-fest'
 /**
  * Used to construct a struct schema with enumerated keys where any number of known keys
  * are permitted.
@@ -27,8 +27,8 @@ export const Partial = <T extends Record<string, Schema<any, any>>>(
   props: T,
   extraProps: 'strip' | 'error' = 'strip',
 ): Schema<
-  Combine<Partial<RequiredInputProps<T> & OptionalInputProps<T>>>,
-  Combine<PartialOutputProps<T>>
+  Simplify<Partial<RequiredInputProps<T> & OptionalInputProps<T>>>,
+  Simplify<PartialOutputProps<T>>
 > =>
   unsafeCoerce(
     make(_ => {

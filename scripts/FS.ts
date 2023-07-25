@@ -28,13 +28,6 @@ const readDirs = TE.taskify<
   ReadonlyArray<fs.Dirent>
 >(fs.readdir)
 
-const readFiles = TE.taskify<
-  fs.PathLike,
-  { encoding: BufferEncoding; withFileTypes: false | undefined },
-  NodeJS.ErrnoException,
-  ReadonlyArray<string>
->(fs.readdir)
-
 const readFile = TE.taskify<
   fs.PathLike,
   { encoding: BufferEncoding },
@@ -84,7 +77,21 @@ export const fileSystem: FileSystem = {
       ),
     ),
   readFile: path => readFile(path, { encoding: 'utf-8' }),
-  readFiles: path => readFiles(path, { encoding: 'utf-8', withFileTypes: false }),
+  readFiles: path =>
+    pipe(
+      readDirs(path, { encoding: 'utf-8', withFileTypes: true }),
+      TE.map(
+        flow(
+          RA.filterMap(dir =>
+            pipe(
+              dir,
+              O.fromPredicate(dir => !dir.isDirectory()),
+              O.map(file => file.name),
+            ),
+          ),
+        ),
+      ),
+    ),
   writeFile,
   copyFile,
   glob,

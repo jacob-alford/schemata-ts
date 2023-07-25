@@ -1,6 +1,6 @@
 /**
- * Represents a typeclass and data type that determines if two values of the same type are
- * equal, and follows the following laws:
+ * Eq is a data type that determines if two values of the same type are equal, and abides
+ * the following laws:
  *
  * 1. Reflexivity: `x === x`
  * 2. Symmetry: `x === y <=> y === x`

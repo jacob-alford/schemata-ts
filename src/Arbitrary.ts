@@ -1,5 +1,9 @@
 /**
- * An instance of `Schemable` for `fast-check` arbitraries that emit valid values
+ * FastCheck Arbitrary's derivable from Schemata-ts schemas. Arbitrary's can even generate
+ * `pattern` schema thanks to Kuvio.
+ *
+ * Arbitrary's require an additional method call `arbitrary` which prevents runtime errors
+ * when fast-check isn't present.
  *
  * @since 1.0.0
  */
@@ -19,7 +23,7 @@ export interface Arbitrary<A> {
 
 export {
   /**
-   * Interprets a schema as a decoder
+   * Derive a fast-check arbitrary from a schemata-ts schema
    *
    * @since 2.0.0
    * @category Interpreters

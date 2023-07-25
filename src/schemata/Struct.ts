@@ -13,10 +13,10 @@ import {
 } from 'schemata-ts/internal/schema-utils'
 import { type SchemableKind, type SchemableLambda } from 'schemata-ts/internal/schemable'
 import type * as TS from 'schemata-ts/internal/type-string'
-import { type Combine } from 'schemata-ts/internal/type-utils'
 import { type Schema, make } from 'schemata-ts/Schema'
 import { StructTypeString } from 'schemata-ts/schemables/struct/instances/type-string'
 import type * as s from 'schemata-ts/schemables/struct/type-utils'
+import { type Simplify } from 'type-fest'
 
 /**
  * Used to construct a struct schema with enumerated keys.
@@ -36,8 +36,8 @@ export const Struct = <
   props: T,
   extraProps: 'strip' | 'error' | IndexSignature = 'strip',
 ): Schema<
-  Combine<RestInput<IndexSignature> & RequiredInputProps<T> & OptionalInputProps<T>>,
-  Combine<RestOutput<IndexSignature> & OutputProps<T>>
+  Simplify<RestInput<IndexSignature> & RequiredInputProps<T> & OptionalInputProps<T>>,
+  Simplify<RestOutput<IndexSignature> & OutputProps<T>>
 > =>
   unsafeCoerce(
     make(_ => {

@@ -1,7 +1,7 @@
 {
   "name": "schemata-ts",
-  "version": "1.4.3",
-  "description": "Write domain types once. A schema engine based on io-ts v2 with a collection of schemata inspired by io-ts-types and validators.js",
+  "version": "2.0.0",
+  "description": "A pipeable TypeScript schema engine and collection of validators inspired by validators.js.",
   "homepage": "https://jacob-alford.github.io/schemata-ts/",
   "repository": {
     "type": "git",
@@ -61,19 +61,17 @@
     "prerelease": "yarn clean && yarn build:pack",
     "release": "yarn ts-node scripts/config.ts && cd dist && npm publish",
     "docs": "yarn run docs-ts",
+    "docs:pack": "yarn ts-node -r tsconfig-paths/register scripts/docs.ts",
     "docs-toc": "yarn markdown --path ./docs/index.md",
-    "docs:pack": "yarn docs && yarn ts-node scripts/pack-docs.ts",
     "prepare": "husky install"
   },
   "lint-staged": {
-    "src/schemata/*.ts": [
-      "yarn docs:pack",
-      "git add \"./docs/*.md\""
-    ],
     "src/**/*.ts": [
       "eslint --fix-type layout --fix --cache",
       "prettier --write",
-      "jest --findRelatedTests --silent"
+      "jest --findRelatedTests --silent",
+      "yarn docs:pack",
+      "git add \"./docs/*.md\""
     ]
   },
   "peerDependencies": {
@@ -104,8 +102,6 @@
     "eslint-plugin-unused-imports": "^2.0.0",
     "expect-type": "^0.15.0",
     "fast-check": "^3.1.4",
-    "fp-ts": "^2.9.5",
-    "fp-ts-laws": "^0.3.0",
     "glob": "^8.0.3",
     "husky": "^8.0.0",
     "jest": "^29.5.0",

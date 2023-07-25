@@ -1,62 +1,234 @@
 ---
-title: Transcoder
-permalink: /transcoder
-has_children: false
-nav_order: 1
+title: Transcoder.ts
+nav_order: 86
+permalink: /transcoder/
 ---
 
-## Validation, Parsing, and Serialization
+## Transcoder overview
 
-`Schemata-ts`'s typeclass for validation and parsing is called "Transcoder." Transcoders can be constructed from schemas using the following import and `deriveTranscoder`.
+A transcoder is a data-type that `decode`s from unknown type of an expected input shape
+to an output type, and `encode`s from an output type to the expected input shape. Can
+be represented as printer/parsers, and transformations.
 
-```ts
-import { deriveTranscoder, type Transcoder } from 'schemata-ts/Transcoder'
+Lawful transcoders must be idempotent, and all derivable transcoders exported by
+schemata (unless otherwise specified) are lawful.
 
-const personTranscoder: Transcoder<PersonInput, Person> = deriveTranscoder(PersonSchema)
-```
+Added in v2.0.0
 
-Transcoders are intended to succeed `Decoder`, `Encoder`, and `Codec` from `io-ts` v2. They contain two methods: `decode`, and `encode`. The `decode` method takes an unknown value to an fp-ts `Either` type where the failure type is a `schemata-ts` error tree called `TranscodeError`, and the success type is the output type of the schema.
+---
 
-#### Transformations (_Advanced_)
+<h2 class="text-delta">Table of contents</h2>
 
-In addition to parsing an unknown value, Transcoder can _transform_ input types. One example is `MapFromEntries` which takes an array of key-value pairs and transforms it into a javascript `Map` type.
+- [Constructors](#constructors)
+  - [errorAtIndex](#erroratindex)
+  - [errorAtKey](#erroratkey)
+  - [errorAtUnionMember](#erroratunionmember)
+  - [failure](#failure)
+  - [serializationError](#serializationerror)
+  - [success](#success)
+  - [transcodeErrors](#transcodeerrors)
+  - [typeMismatch](#typemismatch)
+  - [unexpectedValue](#unexpectedvalue)
+- [Instance Methods](#instance-methods)
+  - [imap](#imap)
+- [Instances](#instances)
+  - [Invariant](#invariant)
+- [Interpreters](#interpreters)
+  - [deriveTranscoder](#derivetranscoder)
+- [Model](#model)
+  - [Transcoder (interface)](#transcoder-interface)
+- [utils](#utils)
+  - [URI](#uri)
+  - [URI (type alias)](#uri-type-alias)
 
-```ts
-import * as Str from 'fp-ts/string'
+---
 
-const PeopleSchema = S.MapFromEntries(Str.Ord, S.String(), PersonSchema)
+# Constructors
 
-const peopleTranscoder: Transcoder<
-  ReadonlyArray<readonly [string, PersonInput]>,
-  ReadonlyMap<string, Person>
-> = deriveTranscoder(PeopleSchema)
-```
+## errorAtIndex
 
-#### Serialization (_Advanced_)
+A failure case at a specific index
 
-Schemas can be turned into printer-parsers using various `Parser` schemas, such as:
-
-```ts
-// Raw Json-string
-const parsePersonTranscoder: Transcoder<S.JsonString, Person> = deriveTranscoder(
-  S.ParseJsonString(PersonSchema),
-)
-```
-
-```ts
-// Base-64 encoded Json-string
-const parsePersonTranscoder: Transcoder<S.Base64, Person> = deriveTranscoder(
-  S.ParseBase64String(PersonSchema),
-)
-```
-
-#### Parallelized Validation (_Advanced_)
-
-Transcoders can be parallelized using `TranscoderPar` which is a typeclass similar to Transcoder but returns `TaskEither`s instead of `Either`s. This allows for parallelized validation for schemas of multiple values like structs and arrays.
+**Signature**
 
 ```ts
-import { deriveTranscoderPar, type TranscoderPar } from 'schemata-ts/TranscoderPar'
-
-const personTranscoderPar: TranscoderPar<PersonInput, Person> =
-  deriveTranscoderPar(PersonSchema)
+export declare const errorAtIndex: (
+  index: number,
+  ...errors: RNEA.ReadonlyNonEmptyArray<TE.TranscodeError>
+) => TE.TranscodeError
 ```
+
+Added in v2.0.0
+
+## errorAtKey
+
+A failure case at a specific key
+
+**Signature**
+
+```ts
+export declare const errorAtKey: (
+  key: string,
+  ...errors: RNEA.ReadonlyNonEmptyArray<TE.TranscodeError>
+) => TE.TranscodeError
+```
+
+Added in v2.0.0
+
+## errorAtUnionMember
+
+A failure case for a union member
+
+**Signature**
+
+```ts
+export declare const errorAtUnionMember: (
+  member: string | number,
+  ...errors: RNEA.ReadonlyNonEmptyArray<TE.TranscodeError>
+) => TE.TranscodeError
+```
+
+Added in v2.0.0
+
+## failure
+
+**Signature**
+
+```ts
+export declare const failure: <A>(e: TE.TranscodeErrors) => E.Either<TE.TranscodeErrors, A>
+```
+
+Added in v2.0.0
+
+## serializationError
+
+A failure case for a serialization or deserialization error
+
+**Signature**
+
+```ts
+export declare const serializationError: (expected: string, error: unknown, actual: unknown) => TE.TranscodeError
+```
+
+Added in v2.0.0
+
+## success
+
+**Signature**
+
+```ts
+export declare const success: <A>(a: A) => E.Either<TE.TranscodeErrors, A>
+```
+
+Added in v2.0.0
+
+## transcodeErrors
+
+A collection of failure cases
+
+**Signature**
+
+```ts
+export declare const transcodeErrors: (...errors: RNEA.ReadonlyNonEmptyArray<TE.TranscodeError>) => TE.TranscodeErrors
+```
+
+Added in v2.0.0
+
+## typeMismatch
+
+A failure case for a value that does not match the expected type
+
+**Signature**
+
+```ts
+export declare const typeMismatch: (expected: string, actual: unknown) => TE.TranscodeError
+```
+
+Added in v2.0.0
+
+## unexpectedValue
+
+A failure case for an unexpected value
+
+**Signature**
+
+```ts
+export declare const unexpectedValue: (actual: unknown) => TE.TranscodeError
+```
+
+Added in v2.0.0
+
+# Instance Methods
+
+## imap
+
+**Signature**
+
+```ts
+export declare const imap: <A, B>(f: (a: A) => B, g: (b: B) => A) => <I>(fa: Transcoder<I, A>) => Transcoder<I, B>
+```
+
+Added in v2.0.0
+
+# Instances
+
+## Invariant
+
+**Signature**
+
+```ts
+export declare const Invariant: Invariant2<'schemata-ts/Transcoder'>
+```
+
+Added in v2.0.0
+
+# Interpreters
+
+## deriveTranscoder
+
+Interprets a schema as a decoder
+
+**Signature**
+
+```ts
+export declare const deriveTranscoder: <I, O>(schema: Schema<I, O>) => Transcoder<I, O>
+```
+
+Added in v2.0.0
+
+# Model
+
+## Transcoder (interface)
+
+**Signature**
+
+```ts
+export interface Transcoder<I, O> {
+  readonly decode: (u: unknown) => E.Either<Const<TE.TranscodeErrors, I>, O>
+  readonly encode: (o: O) => E.Either<Const<TE.TranscodeErrors, O>, I>
+}
+```
+
+Added in v2.0.0
+
+# utils
+
+## URI
+
+**Signature**
+
+```ts
+export declare const URI: 'schemata-ts/Transcoder'
+```
+
+Added in v2.0.0
+
+## URI (type alias)
+
+**Signature**
+
+```ts
+export type URI = typeof URI
+```
+
+Added in v2.0.0

@@ -1,6 +1,9 @@
 /**
- * Transcoder par is a transcoder that executes its task in parallel for transactions that
- * are parallelizable such as for arrays and structs.
+ * Transcoder par is a transcoder that executes its decoding/encoding task in parallel for
+ * transactions that are parallelizable such as for arrays and structs.
+ *
+ * Lawful transcoders must be idempotent, and all derivable transcoders exported by
+ * schemata (unless otherwise specified) are lawful.
  *
  * @since 2.0.0
  */

@@ -111,7 +111,8 @@ import * as S from 'schemata-ts'
 In addition to "primitive" schemas like `S.String(params?)`, `S.Int(params?)`, `S.Boolean`, schemata-ts also exports schema _combinators_ from the root directory. 'Combinator' is a fancy word for a function that takes one or more schemas and returns a new schema. For example, `S.Array(S.String())` is a schema over an array of strings, and `S.Struct({ foo: S.String() })` is a schema over an object with a single property `foo` which is a string.
 
 - [All Schemata](https://jacob-alford.github.io/schemata-ts/schemata)
-- [Schema Source](https://github.com/jacob-alford/schemata-ts/tree/main/src/Schema)
+- [Source](https://github.com/jacob-alford/schemata-ts/tree/main/src/Schema)
+- [Docs](https://jacob-alford.github.io/schemata-ts/schemata)
 - [Schemata Source](https://github.com/jacob-alford/schemata-ts/tree/main/src/schemata)
 
 #### Example
@@ -151,7 +152,7 @@ const personTranscoder: Transcoder<PersonInput, Person> = deriveTranscoder(Perso
 
 Transcoders are intended to succeed `Decoder`, `Encoder`, and `Codec` from `io-ts` v2. They contain two methods: `decode` and `encode`. The `decode` method takes an unknown value to an fp-ts `Either` type where the failure type is a `schemata-ts` error tree called `TranscodeError`, and the success type is the output type of the schema.
 
-- [Documentation](https://jacob-alford.github.io/schemata-ts/Transcoder)
+- [Documentation](https://jacob-alford.github.io/schemata-ts/transcoder)
 - [Source](https://github.com/jacob-alford/schemata-ts/tree/main/src/Transcoder)
 
 #### Transformations (_Advanced_)
@@ -202,8 +203,8 @@ const personTranscoderPar: TranscoderPar<PersonInput, Person> =
 
 #### Documentation
 
-- [Documentation](https://jacob-alford.github.io/schemata-ts/Transcoder)
-- [Source](https://github.com/jacob-alford/schemata-ts/tree/main/src/Transcoder)
+- [Documentation](https://jacob-alford.github.io/schemata-ts/transcoder-par)
+- [Source](https://github.com/jacob-alford/schemata-ts/tree/main/src/TranscoderPar)
 
 ## Type Guards
 
@@ -217,7 +218,7 @@ const guardPerson: Guard<Person> = deriveGuard(PersonSchema)
 
 #### Documentation
 
-- [Documentation](https://jacob-alford.github.io/schemata-ts/Guard)
+- [Documentation](https://jacob-alford.github.io/schemata-ts/guard)
 - [Source](https://github.com/jacob-alford/schemata-ts/tree/main/src/Guard)
 
 ## JSON Schema (Draft 7, 2019-09, and 2020-12)
@@ -234,7 +235,7 @@ const personJsonSchema2020 = deriveJsonSchema(PersonSchema, '2020-12')
 
 #### Documentation
 
-- [Documentation](https://jacob-alford.github.io/schemata-ts/JsonSchema)
+- [Documentation](https://jacob-alford.github.io/schemata-ts/json-schema)
 - [Source](https://github.com/jacob-alford/schemata-ts/tree/main/src/JsonSchema)
 
 ## Fast-Check Arbitraries
@@ -250,16 +251,16 @@ const personArbitrary = deriveArbitrary(PersonSchema).arbitrary(fc)
 
 #### Documentation
 
-- [Documentation](https://jacob-alford.github.io/schemata-ts/Arbitrary)
+- [Documentation](https://jacob-alford.github.io/schemata-ts/arbitrary)
 - [Source](https://github.com/jacob-alford/schemata-ts/tree/main/src/Arbitrary)
 
 ## And more
 
 Schemata has other derivations besides the ones above, below are links to those places in the documentation.
 
-- [MergeSemigroup](https://jacob-alford.github.io/schemata-ts/docs/MergeSemigroup): A customizable schema specific deep-merge ([source](https://github.com/jacob-alford/schemata-ts/tree/main/src/MergeSemigroup))
-- [Eq](https://jacob-alford.github.io/schemata-ts/docs/Eq): A schema-specific equality check ([source](https://github.com/jacob-alford/schemata-ts/tree/main/src/Eq))
-- [TypeString](https://jacob-alford.github.io/schemata-ts/docs/TypeString): Input / Output type strings ([source](https://github.com/jacob-alford/schemata-ts/tree/main/src/TypeString))
+- [MergeSemigroup](https://jacob-alford.github.io/schemata-ts/docs/merge-semigroup): A customizable schema specific deep-merge ([source](https://github.com/jacob-alford/schemata-ts/tree/main/src/MergeSemigroup))
+- [Eq](https://jacob-alford.github.io/schemata-ts/docs/eq): A schema-specific equality check ([source](https://github.com/jacob-alford/schemata-ts/tree/main/src/Eq))
+- [TypeString](https://jacob-alford.github.io/schemata-ts/docs/type-string): Input / Output type strings ([source](https://github.com/jacob-alford/schemata-ts/tree/main/src/TypeString))
 
 # Contributors
 

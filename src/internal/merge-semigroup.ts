@@ -2,7 +2,6 @@ import { type Semigroup, first, last } from 'fp-ts/Semigroup'
 import type * as hkt from 'schemata-ts/internal/schemable'
 import { memoize } from 'schemata-ts/Schema'
 
-/** @internal */
 export type MergeStrategy = {
   readonly string?: Semigroup<string>
   readonly number?: Semigroup<number>
@@ -11,12 +10,10 @@ export type MergeStrategy = {
   readonly fallback: 'first' | 'last'
 }
 
-/** @internal */
 export interface MergeSemigroup<O> {
   readonly semigroup: (concrete?: 'first' | 'last' | MergeStrategy) => Semigroup<O>
 }
 
-/** @internal */
 export interface SchemableLambda extends hkt.SchemableLambda {
   readonly type: MergeSemigroup<this['Output']>
 }

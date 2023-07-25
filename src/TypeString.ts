@@ -1,5 +1,7 @@
 /**
- * Input / output type strings for a schema
+ * A tuple of strings where the first element is a string representing the input type of a
+ * schema, and the second element is a string representing the output type of a schema. It
+ * can be overriden using the `Annotate` schema.
  *
  * @since 2.0.0
  */

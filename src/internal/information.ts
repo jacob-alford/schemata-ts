@@ -6,14 +6,12 @@
 import { type Const, make } from 'fp-ts/Const'
 import type * as hkt from 'schemata-ts/internal/schemable'
 
-/** @internal */
 export type Information<A> = Const<number, A>
 
 /** @internal */
 export const makeInformation: <A>(e: number) => Information<A> = e =>
   make(Math.min(e, Number.MAX_VALUE)) as any
 
-/** @internal */
 export interface SchemableLambda extends hkt.SchemableLambda {
   readonly type: Information<this['Output']>
 }

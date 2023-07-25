@@ -1,7 +1,7 @@
 import { type Semigroup } from 'fp-ts/Semigroup'
 import { type SchemableKind, type SchemableLambda } from 'schemata-ts/internal/schemable'
-import { type Combine } from 'schemata-ts/internal/type-utils'
 import type * as _ from 'schemata-ts/schemables/struct/type-utils'
+import { type Simplify } from 'type-fest'
 
 export interface WithStruct<S extends SchemableLambda> {
   readonly struct: <
@@ -13,12 +13,12 @@ export interface WithStruct<S extends SchemableLambda> {
     wholeName?: string,
   ) => SchemableKind<
     S,
-    Combine<
+    Simplify<
       _.RestInput<S, RestKind> &
         _.OptionalInputProps<S, Props> &
         _.RequiredInputProps<S, Props>
     >,
-    Combine<_.RestOutput<S, RestKind> & _.OutputProps<S, Props>>
+    Simplify<_.RestOutput<S, RestKind> & _.OutputProps<S, Props>>
   >
   readonly record: <I, O, K extends string>(
     key: SchemableKind<S, K, K>,

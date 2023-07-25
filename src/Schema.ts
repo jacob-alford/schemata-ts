@@ -1,5 +1,5 @@
 /**
- * Schema combinators for SchemableExt
+ * The schemata-ts schema type
  *
  * @since 1.0.0
  */
@@ -7,7 +7,7 @@ import { identity } from 'fp-ts/function'
 import type * as hkt from 'schemata-ts/internal/schemable'
 import { type Schemable } from 'schemata-ts/Schemable'
 
-const SchemaSymbol = Symbol('schemata-ts/Schema')
+const SchemaSymbol = Symbol.for('schemata-ts/Schema')
 type SchemaSymbol = typeof SchemaSymbol
 
 /**
@@ -22,6 +22,13 @@ export interface Schema<I, O = I> {
     S: Schemable<S>,
   ) => hkt.SchemableKind<S, I, O>
 }
+
+/**
+ * @since 2.0.0
+ * @category Guards
+ */
+export const isSchema = (u: unknown): u is Schema<unknown, unknown> =>
+  u !== null && typeof u === 'object' && !Array.isArray(u) && SchemaSymbol in u
 
 /** @internal */
 export const memoize = <A, B>(f: (a: A) => B): ((a: A) => B) => {

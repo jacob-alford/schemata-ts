@@ -1,4 +1,9 @@
-/** @since 2.0.0 */
+/**
+ * `float` represents valid javascript floating point numbers within (and tagged with) a
+ * certain range
+ *
+ * @since 2.0.0
+ */
 import { type Branded } from 'schemata-ts/brand'
 
 /**

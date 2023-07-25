@@ -6,7 +6,6 @@ import type * as hkt from 'schemata-ts/internal/schemable'
 import { type Transcoder } from 'schemata-ts/internal/transcoder'
 import * as TCE from 'schemata-ts/TranscodeError'
 
-/** @internal */
 export interface TranscoderPar<I, O> {
   readonly decode: (u: unknown) => TE.TaskEither<TCE.TranscodeErrors, O>
   readonly encode: (out: O) => TE.TaskEither<TCE.TranscodeErrors, I>
@@ -40,7 +39,6 @@ export const fromTranscoder: <I, O>(
   encode: flow(tc.encode, TE.fromEither),
 })
 
-/** @since 2.0.0 */
 export interface SchemableLambda extends hkt.SchemableLambda {
   readonly type: TranscoderPar<this['Input'], this['Output']>
 }

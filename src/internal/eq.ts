@@ -1,6 +1,5 @@
 import type * as hkt from 'schemata-ts/internal/schemable'
 
-/** @internal */
 export interface Eq<A> {
   readonly equals: (x: A, y: A) => boolean
 }
@@ -10,7 +9,6 @@ export const fromEquals = (equals: Eq<any>['equals']): Eq<any> => ({
   equals: (x, y) => x === y || equals(x, y),
 })
 
-/** @since 2.0.0 */
 export interface SchemableLambda extends hkt.SchemableLambda {
   readonly type: Eq<this['Output']>
 }

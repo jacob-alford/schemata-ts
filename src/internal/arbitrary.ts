@@ -25,7 +25,6 @@ declare module 'fp-ts/lib/HKT' {
   }
 }
 
-/** @since 2.0.0 */
 export interface SchemableLambda extends hkt.SchemableLambda {
   readonly type: Arbitrary<this['Output']>
 }

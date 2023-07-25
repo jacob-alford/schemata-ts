@@ -1,8 +1,10 @@
 /**
- * A transcoder is a printer-parser that decodes from unknown value of an expected input
- * type to a known value, and encodes an input value to an output type. Decoding and
- * encoding are fallible operations that returns `Lefts` upon invalid input types and
- * encoding failures respectively.
+ * A transcoder is a data-type that `decode`s from unknown type of an expected input shape
+ * to an output type, and `encode`s from an output type to the expected input shape. Can
+ * be represented as printer/parsers, and transformations.
+ *
+ * Lawful transcoders must be idempotent, and all derivable transcoders exported by
+ * schemata (unless otherwise specified) are lawful.
  *
  * @since 2.0.0
  */

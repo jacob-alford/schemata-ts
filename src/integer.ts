@@ -1,14 +1,8 @@
 /**
- * Integer branded newtype. Parameters: min, max are inclusive.
+ * `Integer` represents valid/safe javascript integer numbers within (and tagged with) a
+ * certain range.
  *
- * Represents integers:
- *
- * ```math
- *  { z | z ∈ ℤ, z >= -2 ** 53 + 1, z <= 2 ** 53 - 1 }
- * ```
- *
- * @since 1.0.0
- * @category Model
+ * @since 2.0.0
  */
 import { type Branded } from 'schemata-ts/brand'
 
