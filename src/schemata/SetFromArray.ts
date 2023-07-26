@@ -22,8 +22,7 @@ export const SetFromArray: <A>(
   ordA: Ord<A>,
 ) => <O>(sA: Schema<O, A>) => Schema<ReadonlyArray<O>, ReadonlySet<A>> = ordA => _ =>
   pipe(
-    _,
-    Array_(),
+    Array_(_),
     Imap(
       getSetGuard(deriveGuard(_)),
       RS.fromReadonlyArray(ordA),

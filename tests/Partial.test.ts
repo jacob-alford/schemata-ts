@@ -1,4 +1,5 @@
 import { expectTypeOf } from 'expect-type'
+import type * as RNEA from 'fp-ts/ReadonlyNonEmptyArray'
 import * as S from 'schemata-ts'
 import { type Integer } from 'schemata-ts/integer'
 import * as JS from 'schemata-ts/JsonSchema'
@@ -17,7 +18,7 @@ const Schema = S.Annotate({
   readOnly: true,
 })(
   S.Partial({
-    a: S.Array({ minLength: 1 })(S.String()),
+    a: S.NonEmptyArray(S.String()),
     b: S.Newtype(testIso, 'TestNt')(S.Int({ min: 69, max: 420 })),
   }),
 )
@@ -38,11 +39,11 @@ test('types', () => {
   expectTypeOf(Schema).toEqualTypeOf<
     S.Schema<
       {
-        a?: readonly string[] | undefined
+        a?: RNEA.ReadonlyNonEmptyArray<string> | undefined
         b?: Integer<69, 420>
       },
       {
-        a: readonly string[] | undefined
+        a: RNEA.ReadonlyNonEmptyArray<string> | undefined
         b: TestNt | undefined
       }
     >

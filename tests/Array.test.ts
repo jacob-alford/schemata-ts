@@ -5,9 +5,10 @@ import * as TC from 'schemata-ts/Transcoder'
 import { runStandardTestSuite } from '../test-utils/test-suite'
 
 runStandardTestSuite(
-  S.Array({ minLength: 1, maxLength: 4 })(
-    S.Tuple(S.Float({ min: 0, max: 4 }), S.BigIntFromString),
-  ),
+  S.Array(S.Tuple(S.Float({ min: 0, max: 4 }), S.BigIntFromString), {
+    minLength: 1,
+    maxLength: 4,
+  }),
   _ => ({
     decoderTests: [
       _.decoder.pass(
@@ -85,7 +86,7 @@ runStandardTestSuite(
   }),
 )()
 
-runStandardTestSuite(S.Array()(S.Union(S.Natural, S.String())), _ => ({
+runStandardTestSuite(S.Array(S.Union(S.Natural, S.String())), _ => ({
   encoderTests: [
     _.encoder.fail([_.c({})], () =>
       TC.transcodeErrors(

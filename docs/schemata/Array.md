@@ -26,9 +26,7 @@ An array type of known values.
 **Signature**
 
 ```ts
-export declare const Array: (
-  params?: ArrayParams
-) => <E, A>(codomain: Schema<E, A>) => Schema<readonly E[], readonly A[]>
+export declare const Array: <E, A>(codomain: Schema<E, A>, params?: ArrayParams) => Schema<readonly E[], readonly A[]>
 ```
 
 Added in v1.0.0

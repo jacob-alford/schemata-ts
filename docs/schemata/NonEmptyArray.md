@@ -27,7 +27,7 @@ A read-only Array containing one or more elements.
 
 ```ts
 export declare const NonEmptyArray: <A, O>(
-  sA: Schema<O, A>
+  inner: Schema<O, A>
 ) => Schema<RNEA.ReadonlyNonEmptyArray<O>, RNEA.ReadonlyNonEmptyArray<A>>
 ```
 

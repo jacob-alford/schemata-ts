@@ -7,4 +7,4 @@ import { Unknown } from 'schemata-ts/schemata/Unknown'
  * @since 1.0.0
  * @category Unknown
  */
-export const UnknownArray: Schema<ReadonlyArray<unknown>> = ArrayS()(Unknown)
+export const UnknownArray: Schema<ReadonlyArray<unknown>> = ArrayS(Unknown)

@@ -1,5 +1,5 @@
 /**
- * Models for JsonSchema as subsets of JSON Schema Draft 4, Draft 6, and Draft 7.
+ * Models for JsonSchema with derivations in Draft-07, 2019-09, and 2020-12
  *
  * @since 1.2.0
  * @see https://json-schema.org/draft/2020-12/json-schema-validation.html
