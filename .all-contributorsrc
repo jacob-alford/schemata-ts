@@ -42,6 +42,15 @@
       "contributions": [
         "code"
       ]
+    },
+    {
+      "login": "golergka",
+      "name": "golergka",
+      "avatar_url": "https://avatars.githubusercontent.com/u/929735?v=4",
+      "profile": "https://github.com/golergka",
+      "contributions": [
+        "doc"
+      ]
     }
   ],
   "contributorsPerLine": 7,
