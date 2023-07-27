@@ -29,6 +29,13 @@ jobs:
       - run: yarn run build
       - run: yarn run eslint
       - run: yarn run test:ci
+      - name: Add coverage
+        if: github.ref == 'refs/heads/main'
+        uses: coverallsapp/github-action@1.1.3
+        env:
+          NODE_COVERALLS_DEBUG: 1
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
   deploy-docs:
     if: github.ref == 'refs/heads/main'
     needs:
@@ -42,18 +49,3 @@ jobs:
         with:
           branch: gh-pages
           folder: docs
-  add-coverage:
-    if: github.ref == 'refs/heads/main'
-    needs:
-      - build
-      - deploy-docs
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v2.3.1
-      - name: Add coverage
-        uses: coverallsapp/github-action@1.1.3
-        env:
-          NODE_COVERALLS_DEBUG: 1
-        with:
-          github-token: ${{ secrets.GITHUB_TOKEN }}
