@@ -230,15 +230,13 @@ export const foldMapDepthFirst =
  * @category Destructors
  */
 export const prefixedLines = (
-  prefix: (node: readonly [depth: number, totalChildren: number]) => string,
+  prefix: (depth: number, totalChildren: number) => string,
   // istanbul ignore next
   prefixChildren: (
-    node: readonly [
-      depth: number,
-      childIndex: number,
-      totalSiblings: number,
-      innerNode: string,
-    ],
+    depth: number,
+    childIndex: number,
+    totalSiblings: number,
+    innerNode: string,
   ) => string = constant(''),
   errorStrings: {
     readonly TypeMismatch?: (expected: string, actual: unknown) => string
@@ -268,46 +266,44 @@ export const prefixedLines = (
 
   return foldMapDepthFirst(RNEA.getSemigroup<string>())({
     TypeMismatch: (expected, actual, depth) => [
-      `${prefix([depth, 0])}${TypeMismatch(expected, actual)}`,
+      `${prefix(depth, 0)}${TypeMismatch(expected, actual)}`,
     ],
-    UnexpectedValue: (actual, depth) => [
-      `${prefix([depth, 0])}${UnexpectedValue(actual)}`,
-    ],
+    UnexpectedValue: (actual, depth) => [`${prefix(depth, 0)}${UnexpectedValue(actual)}`],
     SerializationError: (expected, error, actual, depth) => [
-      `${prefix([depth, 0])}${SerializationError(expected, error, actual)}`,
+      `${prefix(depth, 0)}${SerializationError(expected, error, actual)}`,
     ],
     ErrorAtIndex: (index, errors, depth) =>
       pipe(
-        [`${prefix([depth, errors.length])}${ErrorAtIndex(index)}`],
+        [`${prefix(depth, errors.length)}${ErrorAtIndex(index)}`],
         RNEA.concat(
           pipe(
             errors,
             RA.mapWithIndex(
-              (i, e) => `${prefixChildren([depth, i, errors.length, e])}${e}`,
+              (i, e) => `${prefixChildren(depth, i, errors.length, e)}${e}`,
             ),
           ),
         ),
       ),
     ErrorAtKey: (key, errors, depth) =>
       pipe(
-        [`${prefix([depth, errors.length])}${ErrorAtKey(key)}`],
+        [`${prefix(depth, errors.length)}${ErrorAtKey(key)}`],
         RNEA.concat(
           pipe(
             errors,
             RA.mapWithIndex(
-              (i, e) => `${prefixChildren([depth, i, errors.length, e])}${e}`,
+              (i, e) => `${prefixChildren(depth, i, errors.length, e)}${e}`,
             ),
           ),
         ),
       ),
     ErrorAtUnionMember: (member, errors, depth) =>
       pipe(
-        [`${prefix([depth, errors.length])}${ErrorAtUnionMember(member)}`],
+        [`${prefix(depth, errors.length)}${ErrorAtUnionMember(member)}`],
         RNEA.concat(
           pipe(
             errors,
             RA.mapWithIndex(
-              (i, e) => `${prefixChildren([depth, i, errors.length, e])}${e}`,
+              (i, e) => `${prefixChildren(depth, i, errors.length, e)}${e}`,
             ),
           ),
         ),
@@ -347,7 +343,7 @@ export const drawTree: (
   return pipe(
     errors,
     prefixedLines(
-      ([depth, totalChildren]) => {
+      (depth, totalChildren) => {
         switch (totalChildren) {
           case 0:
             return '─ '
@@ -355,7 +351,7 @@ export const drawTree: (
             return depth === 0 ? '┌ ' : '─ '
         }
       },
-      ([depth, childIndex, totalChildren]) => {
+      (depth, childIndex, totalChildren) => {
         switch (depth) {
           case 0:
             return childIndex === totalChildren - 1 ? '└─' : '├─'

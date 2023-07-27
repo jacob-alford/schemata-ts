@@ -140,10 +140,8 @@ override the default error type templates
 
 ```ts
 export declare const prefixedLines: (
-  prefix: (node: readonly [depth: number, totalChildren: number]) => string,
-  prefixChildren?: (
-    node: readonly [depth: number, childIndex: number, totalSiblings: number, innerNode: string]
-  ) => string,
+  prefix: (depth: number, totalChildren: number) => string,
+  prefixChildren?: (depth: number, childIndex: number, totalSiblings: number, innerNode: string) => string,
   errorStrings?: {
     readonly TypeMismatch?: ((expected: string, actual: unknown) => string) | undefined
     readonly UnexpectedValue?: ((actual: unknown) => string) | undefined
