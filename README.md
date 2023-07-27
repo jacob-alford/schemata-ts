@@ -251,9 +251,9 @@ const personArbitrary = deriveArbitrary(PersonSchema).arbitrary(fc)
 
 Schemata has other derivations besides the ones above, below are links to those places in the documentation.
 
-- [MergeSemigroup](https://jacob-alford.github.io/schemata-ts/docs/merge-semigroup): A customizable schema specific deep-merge ([source](https://github.com/jacob-alford/schemata-ts/tree/main/src/MergeSemigroup))
-- [Eq](https://jacob-alford.github.io/schemata-ts/docs/eq): A schema-specific equality check ([source](https://github.com/jacob-alford/schemata-ts/tree/main/src/Eq))
-- [TypeString](https://jacob-alford.github.io/schemata-ts/docs/type-string): Input / Output type strings ([source](https://github.com/jacob-alford/schemata-ts/tree/main/src/TypeString))
+- [MergeSemigroup](https://jacob-alford.github.io/schemata-ts/merge-semigroup): A customizable schema specific deep-merge ([source](https://github.com/jacob-alford/schemata-ts/tree/main/src/MergeSemigroup))
+- [Eq](https://jacob-alford.github.io/schemata-ts/eq): A schema-specific equality check ([source](https://github.com/jacob-alford/schemata-ts/tree/main/src/Eq))
+- [TypeString](https://jacob-alford.github.io/schemata-ts/type-string): Input / Output type strings ([source](https://github.com/jacob-alford/schemata-ts/tree/main/src/TypeString))
 
 # Contributors ✨
 
