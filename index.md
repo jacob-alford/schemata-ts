@@ -26,27 +26,27 @@ A pipeable TypeScript schema engine and collection of validators inspired by val
 
 <div align="center">
 
-![npm](https://img.shields.io/npm/v/schemata-ts?style=for-the-badge&logo=npm)
+<img alt="npm" src="https://img.shields.io/npm/v/schemata-ts?style=for-the-badge&logo=npm">
 &nbsp;
-![TypeScript Badge](https://img.shields.io/badge/TypeScript-4.5%2B-blue?style=for-the-badge&logo=TypeScript)
-&nbsp;
-
-</div>
-<div align="center">
-
-![npm](https://img.shields.io/npm/dm/schemata-ts?style=for-the-badge)
-&nbsp;
-![Coveralls branch](https://img.shields.io/coverallsCoverage/github/jacob-alford/schemata-ts?style=for-the-badge)
-&nbsp;
-![GitHub](https://img.shields.io/github/license/jacob-alford/schemata-ts?style=for-the-badge)
+<img alt="TypeScript" src="https://img.shields.io/badge/TypeScript-4.5%2B-blue?style=for-the-badge&logo=TypeScript">
 &nbsp;
 
 </div>
 <div align="center">
 
-![Static Badge](https://img.shields.io/badge/ESM-Supported-success?style=for-the-badge&logo=JavaScript)
+<img alt="npm" src="https://img.shields.io/npm/dm/schemata-ts?style=for-the-badge">
 &nbsp;
-![CommonJS](https://img.shields.io/badge/CJS-supported-success?style=for-the-badge&logo=Node.JS)
+<img alt="Coveralls branch" src="https://img.shields.io/coverallsCoverage/github/jacob-alford/schemata-ts?style=for-the-badge">
+&nbsp;
+<img alt="GitHub" src="https://img.shields.io/github/license/jacob-alford/schemata-ts?style=for-the-badge">
+&nbsp;
+
+</div>
+<div align="center">
+
+<img alt="Static Badge" src="https://img.shields.io/badge/ESM-Supported-success?style=for-the-badge&logo=JavaScript">
+&nbsp;
+<img alt="Static Badge" src="https://img.shields.io/badge/CJS-supported-success?style=for-the-badge&logo=Node.JS">
 &nbsp;
 
 </div>
