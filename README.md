@@ -259,9 +259,7 @@ Schemata has other derivations besides the ones above, below are links to those 
 # Contributors ✨
 
 <!-- ALL-CONTRIBUTORS-BADGE:START - Do not remove or modify this section -->
-
-[![All Contributors](https://img.shields.io/badge/all_contributors-1-orange.svg?style=flat-square)](#contributors-)
-
+[![All Contributors](https://img.shields.io/badge/all_contributors-2-orange.svg?style=flat-square)](#contributors-)
 <!-- ALL-CONTRIBUTORS-BADGE:END -->
 
 Thanks goes to these wonderful people ([emoji key](https://allcontributors.org/docs/en/emoji-key)):
@@ -273,6 +271,7 @@ Thanks goes to these wonderful people ([emoji key](https://allcontributors.org/d
   <tbody>
     <tr>
       <td align="center" valign="top" width="14.28%"><a href="https://github.com/jacob-alford"><img src="https://avatars.githubusercontent.com/u/7153123?v=4?s=100" width="100px;" alt="Jacob Alford"/><br /><sub><b>Jacob Alford</b></sub></a><br /><a href="https://github.com/jacob-alford/schemata-ts/commits?author=jacob-alford" title="Code">💻</a></td>
+      <td align="center" valign="top" width="14.28%"><a href="https://github.com/newswim"><img src="https://avatars.githubusercontent.com/u/6667096?v=4?s=100" width="100px;" alt="Dan Minshew"/><br /><sub><b>Dan Minshew</b></sub></a><br /><a href="https://github.com/jacob-alford/schemata-ts/commits?author=newswim" title="Code">💻</a></td>
     </tr>
   </tbody>
 </table>
