@@ -1,7 +1,9 @@
 {
-  "exclude": ["src/internal/*", "src/schemables/**/*"],
+  "srcDir": "./temp-docs",
+  "exclude": ["index.ts"],
   "theme": "just-the-docs/just-the-docs",
   "compilerOptions": {
+    "allowImportingTsExtensions": true,
     "noEmit": true,
     "strict": true,
     "paths": {

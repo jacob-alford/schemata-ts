@@ -1,21 +1,32 @@
 /**
- * A port of `newtype-ts` to schemata-ts
+ * A port of `newtype-ts` to schemata-ts. Unliked branded types, newtypes are not
+ * assignable to the underlying type.
+ *
+ * Schemata-ts uses Newtypes for UUIDs.
  *
  * @since 1.4.0
  */
 
 import { unsafeCoerce } from 'fp-ts/function'
-import { Iso, make } from 'schemata-ts/iso'
 
 /**
  * Represents a wrapped type that's not assignable to its underlying type.
  *
  * @since 1.4.0
- * @category Models
+ * @category Model
  */
 export interface Newtype<URI, A> {
   readonly _URI: URI
   readonly _A: A
+}
+
+/**
+ * @since 2.0.0
+ * @category Model
+ */
+export interface NewtypeIso<A, B> {
+  readonly wrap: (B: B) => A
+  readonly unwrap: (A: A) => B
 }
 
 /**
@@ -43,19 +54,10 @@ export type CombineURIs<
  * @since 1.4.0
  * @category Constructors
  */
-export const iso: <Nt extends Newtype<any, any>>() => Iso<Nt, CarrierOf<Nt>> = () =>
-  make(unsafeCoerce, unsafeCoerce)
-
-/**
- * @since 1.4.0
- * @category Constructors
- */
-export const wrap: <Nt extends Newtype<any, any>>() => (a: CarrierOf<Nt>) => Nt = () =>
-  unsafeCoerce
-
-/**
- * @since 1.4.0
- * @category Destructors
- */
-export const unwrap: <Nt extends Newtype<any, any>>() => (a: Nt) => CarrierOf<Nt> = () =>
-  unsafeCoerce
+export const iso: <Nt extends Newtype<any, any>>() => NewtypeIso<
+  Nt,
+  CarrierOf<Nt>
+> = () => ({
+  wrap: unsafeCoerce,
+  unwrap: unsafeCoerce,
+})

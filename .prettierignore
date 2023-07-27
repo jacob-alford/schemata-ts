@@ -1,7 +1,6 @@
 node_modules/
 dist/
 yarn-error.log
-docs/modules/*.ts.md
 docs/_site
 coverage
 build

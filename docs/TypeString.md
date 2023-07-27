@@ -1,0 +1,77 @@
+---
+title: TypeString.ts
+nav_order: 88
+permalink: /type-string/
+---
+
+## TypeString overview
+
+A tuple of strings where the first element is a string representing the input type of a
+schema, and the second element is a string representing the output type of a schema. It
+can be overriden using the `Annotate` schema.
+
+Added in v2.0.0
+
+---
+
+<h2 class="text-delta">Table of contents</h2>
+
+- [Instances](#instances)
+  - [URI](#uri)
+  - [URI (type alias)](#uri-type-alias)
+- [Interpreters](#interpreters)
+  - [deriveTypeString](#derivetypestring)
+- [Model](#model)
+  - [TypeString (type alias)](#typestring-type-alias)
+
+---
+
+# Instances
+
+## URI
+
+**Signature**
+
+```ts
+export declare const URI: 'schemata-ts/TypeString'
+```
+
+Added in v2.0.0
+
+## URI (type alias)
+
+**Signature**
+
+```ts
+export type URI = typeof URI
+```
+
+Added in v2.0.0
+
+# Interpreters
+
+## deriveTypeString
+
+Interprets a schema as a type string
+
+**Signature**
+
+```ts
+export declare const deriveTypeString: <E, A>(schema: Schema<E, A>) => Const<readonly [string, string], readonly [E, A]>
+```
+
+Added in v2.0.0
+
+# Model
+
+## TypeString (type alias)
+
+Input / Output type strings for a schema
+
+**Signature**
+
+```ts
+export type TypeString<I, O> = Const<readonly [string, string], readonly [I, O]>
+```
+
+Added in v2.0.0

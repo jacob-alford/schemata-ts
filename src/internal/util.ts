@@ -1,22 +1,30 @@
 import * as E from 'fp-ts/Either'
-import { identity, pipe, tuple } from 'fp-ts/function'
-import * as IO from 'fp-ts/IO'
-import * as O from 'fp-ts/Option'
-import * as RA from 'fp-ts/ReadonlyArray'
-import * as RNEA from 'fp-ts/ReadonlyNonEmptyArray'
+import { identity, pipe } from 'fp-ts/function'
+import type * as O from 'fp-ts/Option'
 import * as RR from 'fp-ts/ReadonlyRecord'
-import * as Sg from 'fp-ts/Semigroup'
+import type * as Sg from 'fp-ts/Semigroup'
 import * as T from 'fp-ts/Task'
 import * as TE from 'fp-ts/TaskEither'
 
 /* istanbul ignore next */
 /** @internal */
-export const base64Encode = (s: string): string =>
-  Buffer ? Buffer.from(s).toString('base64') : btoa(s)
+export const base64Encode = (s: string): string => {
+  try {
+    return Buffer ? Buffer.from(s).toString('base64') : btoa(s)
+  } catch (_) {
+    return btoa(s)
+  }
+}
 
+// istanbul ignore next
 /** @internal */
-export const urlifyBase64 = (s: string): string =>
-  s.replace(/[=+/]/g, c => (c === '/' ? '_' : c === '+' ? '-' : ''))
+export const base64Decode = (s: string): string => {
+  try {
+    return Buffer ? Buffer.from(s, 'base64').toString() : atob(s)
+  } catch (_) {
+    return atob(s)
+  }
+}
 
 /* istanbul ignore next */
 /**
@@ -29,86 +37,79 @@ export const hasOwn = (o: object, v: PropertyKey): boolean =>
   Object.hasOwn ? Object.hasOwn(o, v) : Object.prototype.hasOwnProperty.call(o, v)
 
 /**
- * @since 1.0.0
- * @internal
- */
-export const typeOf = (x: unknown): string => (x === null ? 'null' : typeof x)
-
-/**
- * Performs a validative traversal over a struct's own enumerable properties.
- *
- * @internal
- */
-export const witherS =
-  <E>(sgErrors: Sg.Semigroup<E>) =>
-  <In extends Record<string, any>, A>(
-    f: <K extends keyof In>(key: K, value: In[K]) => E.Either<E, O.Option<A>>,
-  ): ((s: In) => E.Either<E, { [K in keyof In]: A }>) =>
-    witherSM<E>(sgErrors)<In, A>((key, value) =>
-      pipe(f(key, value), E.map(O.map(a => tuple(a, key)))),
-    )
-
-/**
  * Performs a validative traversal over a struct's own enumerable properties while mapping
  * output types.
  *
  * @internal
  */
-export const witherSM =
-  <E>(sgErrors: Sg.Semigroup<E>) =>
-  <In extends Record<string, any>, A>(
+export const witherRemap =
+  <E, A>(sgErrors: Sg.Semigroup<E>) =>
+  <In extends Record<string, any>>(
     f: <K extends keyof In>(
       key: K,
       value: In[K],
-    ) => E.Either<E, O.Option<readonly [A, keyof In]>>,
+    ) => E.Either<
+      E,
+      O.Option<readonly [output: A, key: keyof In, semigroup: Sg.Semigroup<A>]>
+    >,
   ) =>
   (s: In): E.Either<E, { [K in keyof In]: A }> => {
-    const errors: E[] = []
-    const out: { [K in keyof In]: A } = {} as any
+    const effects: Record<
+      string,
+      E.Either<E, O.Option<readonly [A, keyof In, Sg.Semigroup<A>]>>
+    > = {}
+
     /* Enumerable own, Enumerable inherited */
     for (const key in s) {
       /* Ignores inherited properties */
+      // istanbul ignore next
       if (!hasOwn(s, key)) continue
 
       /* Perform effect */
-      const result = f(key, s[key])
-
-      /* add any errors to accumulation */
-      if (E.isLeft(result)) {
-        errors.push(result.left)
-        continue
-      }
-
-      /* none => skip */
-      if (O.isNone(result.right)) continue
-      else {
-        const [value, newKey] = result.right.value
-        out[newKey] = value
-      }
+      effects[key] = f(key, s[key])
     }
-    return RA.isNonEmpty(errors)
-      ? E.left(pipe(errors, RNEA.concatAll(sgErrors)))
-      : E.right(out)
+
+    return pipe(
+      effects,
+      RR.wither(E.getApplicativeValidation(sgErrors))(identity),
+      E.map(s => {
+        const out: { [K in keyof In]: A } = {} as any
+        for (const key in s) {
+          // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+          const [value, newKey, semigroup] = s[key]!
+          if (hasOwn(out, newKey)) {
+            out[newKey] = semigroup.concat(out[newKey], value)
+            continue
+          }
+          out[newKey] = value
+        }
+        return out
+      }),
+    )
   }
 
 const getApplicativeValidationPar = <E>(sgErrors: Sg.Semigroup<E>) =>
   TE.getApplicativeTaskValidation(T.ApplicativePar, sgErrors)
 
 /** Performs a task-validative traversal over a struct's own enumerable properties. */
-export const witherTaskParSM =
-  <E>(sgErrors: Sg.Semigroup<E>) =>
-  <In extends Record<string, any>, A>(
+export const witherRemapPar =
+  <E, A>(sgErrors: Sg.Semigroup<E>) =>
+  <In extends Record<string, any>>(
     f: <K extends keyof In>(
       key: K,
       value: In[K],
-    ) => TE.TaskEither<E, O.Option<readonly [A, keyof In]>>,
+    ) => TE.TaskEither<E, O.Option<readonly [A, keyof In, Sg.Semigroup<A>]>>,
   ) =>
   (s: In): TE.TaskEither<E, { [K in keyof In]: A }> => {
-    const effects: Record<string, TE.TaskEither<E, O.Option<readonly [A, keyof In]>>> = {}
+    const effects: Record<
+      string,
+      TE.TaskEither<E, O.Option<readonly [A, keyof In, Sg.Semigroup<A>]>>
+    > = {}
 
     /* Enumerable own, Enumerable inherited */
     for (const key in s) {
       /* Ignores inherited properties */
+      // istanbul ignore next
       if (!hasOwn(s, key)) continue
 
       /* Perform effect */
@@ -122,28 +123,14 @@ export const witherTaskParSM =
         const out: { [K in keyof In]: A } = {} as any
         for (const key in s) {
           // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-          const [value, newKey] = s[key]!
+          const [value, newKey, semigroup] = s[key]!
+          if (hasOwn(out, newKey)) {
+            out[newKey] = semigroup.concat(out[newKey], value)
+            continue
+          }
           out[newKey] = value
         }
         return out
       }),
     )
-  }
-
-/**
- * Iterates over an object's own non-inherited enumerable properties.
- *
- * @internal
- */
-export const forIn =
-  <A extends Record<string, any>>(
-    eff: <K extends keyof A>(key: K, value: A[K]) => IO.IO<void>,
-  ) =>
-  (a: A): IO.IO<void> => {
-    return () => {
-      for (const key in a) {
-        if (!hasOwn(a, key)) continue
-        eff(key, a[key])()
-      }
-    }
   }

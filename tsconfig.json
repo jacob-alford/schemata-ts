@@ -1,15 +1,14 @@
 {
   "compilerOptions": {
+    "baseUrl": ".",
     "strict": true,
     "allowJs": false,
     "esModuleInterop": true,
-    "moduleResolution": "node",
     "skipLibCheck": false,
+    "moduleResolution": "nodenext",
     "lib": ["DOM", "ESNext"],
-
     "module": "CommonJS",
     "target": "ESNext",
-
     "noUnusedLocals": true,
     "noUnusedParameters": true,
     "noImplicitReturns": true,

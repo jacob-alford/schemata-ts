@@ -3,6 +3,7 @@ dist/
 yarn-error.log
 docs/modules/**/*.ts.md
 docs/_site
+temp-docs
 coverage
 build
 .DS_store
