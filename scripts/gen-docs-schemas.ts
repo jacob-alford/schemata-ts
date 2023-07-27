@@ -17,7 +17,7 @@ import { type Build } from './build'
 import { SCHEMA_OUT_DIR, SCHEMA_SRC_DIR } from './docs-config'
 
 const makeSchemaDocsLink = (file: string): string =>
-  `https://jacob-alford.github.io/schemata-ts/schemata/${file}.ts.html`
+  `https://jacob-alford.github.io/schemata-ts/schemata/${file}.html`
 const makeSchemaSourceLink = (file: string): string =>
   `https://github.com/jacob-alford/schemata-ts/tree/main/src/schemata/${file}.ts`
 
@@ -80,8 +80,8 @@ const schemaTemplate = (
   schemas: RNEA.ReadonlyNonEmptyArray<[string, RNEA.ReadonlyNonEmptyArray<string>]>,
 ): string => `---
 title: schemata
-nav_order: 1
-parent: schemata
+nav_order: 2
+permalink: /schemata/
 has_children: true
 ---
 

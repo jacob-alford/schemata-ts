@@ -1,6 +1,6 @@
 ---
 title: schemata
-nav_order: 1
+nav_order: 2
 parent: schemata
 has_children: true
 ---
