@@ -19,14 +19,13 @@ Added in v1.4.0
 
 - [Constructors](#constructors)
   - [iso](#iso)
-- [Models](#models)
+- [Model](#model)
   - [Newtype (interface)](#newtype-interface)
+  - [NewtypeIso (interface)](#newtypeiso-interface)
 - [Type Helpers](#type-helpers)
   - [CarrierOf (type alias)](#carrierof-type-alias)
   - [CombineURIs (type alias)](#combineuris-type-alias)
   - [URIOf (type alias)](#uriof-type-alias)
-- [utils](#utils)
-  - [NewtypeIso (interface)](#newtypeiso-interface)
 
 ---
 
@@ -42,7 +41,7 @@ export declare const iso: <Nt extends Newtype<any, any>>() => NewtypeIso<Nt, Car
 
 Added in v1.4.0
 
-# Models
+# Model
 
 ## Newtype (interface)
 
@@ -58,6 +57,19 @@ export interface Newtype<URI, A> {
 ```
 
 Added in v1.4.0
+
+## NewtypeIso (interface)
+
+**Signature**
+
+```ts
+export interface NewtypeIso<A, B> {
+  readonly wrap: (B: B) => A
+  readonly unwrap: (A: A) => B
+}
+```
+
+Added in v2.0.0
 
 # Type Helpers
 
@@ -93,18 +105,3 @@ export type URIOf<N extends Newtype<any, any>> = N['_URI']
 ```
 
 Added in v1.4.0
-
-# utils
-
-## NewtypeIso (interface)
-
-**Signature**
-
-```ts
-export interface NewtypeIso<A, B> {
-  readonly wrap: (B: B) => A
-  readonly unwrap: (A: A) => B
-}
-```
-
-Added in v2.0.0

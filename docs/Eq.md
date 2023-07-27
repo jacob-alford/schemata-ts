@@ -19,26 +19,50 @@ Added in v2.0.0
 
 <h2 class="text-delta">Table of contents</h2>
 
+- [Combinators](#combinators)
+  - [and](#and)
+  - [or](#or)
 - [Constructors](#constructors)
   - [fromEquals](#fromequals)
 - [Instance Methods](#instance-methods)
-  - [Contravariant](#contravariant)
-  - [always](#always)
-  - [and](#and)
   - [contramap](#contramap)
   - [imap](#imap)
-  - [or](#or)
 - [Instances](#instances)
+  - [Contravariant](#contravariant)
   - [Invariant](#invariant)
+  - [always](#always)
   - [eqStrict](#eqstrict)
 - [Interpreters](#interpreters)
   - [deriveEq](#deriveeq)
-- [utils](#utils)
+- [Model](#model)
   - [Eq (interface)](#eq-interface)
-  - [URI](#uri)
+- [URI](#uri)
+  - [URI](#uri-1)
   - [URI (type alias)](#uri-type-alias)
 
 ---
+
+# Combinators
+
+## and
+
+**Signature**
+
+```ts
+export declare const and: <A>(that: Eq<A>) => (self: Eq<A>) => Eq<A>
+```
+
+Added in v2.0.0
+
+## or
+
+**Signature**
+
+```ts
+export declare const or: <A>(that: Eq<A>) => (self: Eq<A>) => Eq<A>
+```
+
+Added in v2.0.0
 
 # Constructors
 
@@ -53,36 +77,6 @@ export declare const fromEquals: <A>(equals: (x: A, y: A) => boolean) => Eq<A>
 Added in v2.0.0
 
 # Instance Methods
-
-## Contravariant
-
-**Signature**
-
-```ts
-export declare const Contravariant: Contravariant1<'schemata-ts/Eq'>
-```
-
-Added in v2.0.0
-
-## always
-
-**Signature**
-
-```ts
-export declare const always: Eq<unknown>
-```
-
-Added in v2.0.0
-
-## and
-
-**Signature**
-
-```ts
-export declare const and: <A>(that: Eq<A>) => (self: Eq<A>) => Eq<A>
-```
-
-Added in v2.0.0
 
 ## contramap
 
@@ -104,17 +98,17 @@ export declare const imap: <A, B>(f: (a: A) => B, g: (b: B) => A) => (fa: Eq<A>)
 
 Added in v2.0.0
 
-## or
+# Instances
+
+## Contravariant
 
 **Signature**
 
 ```ts
-export declare const or: <A>(that: Eq<A>) => (self: Eq<A>) => Eq<A>
+export declare const Contravariant: Contravariant1<'schemata-ts/Eq'>
 ```
 
 Added in v2.0.0
-
-# Instances
 
 ## Invariant
 
@@ -122,6 +116,16 @@ Added in v2.0.0
 
 ```ts
 export declare const Invariant: Invariant1<'schemata-ts/Eq'>
+```
+
+Added in v2.0.0
+
+## always
+
+**Signature**
+
+```ts
+export declare const always: Eq<unknown>
 ```
 
 Added in v2.0.0
@@ -150,7 +154,7 @@ export declare const deriveEq: <E, A>(schema: Schema<E, A>) => I.Eq<A>
 
 Added in v2.0.0
 
-# utils
+# Model
 
 ## Eq (interface)
 
@@ -170,6 +174,8 @@ export interface Eq<A> {
 ```
 
 Added in v2.0.0
+
+# URI
 
 ## URI
 

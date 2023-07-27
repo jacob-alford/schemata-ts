@@ -22,6 +22,7 @@ import * as I from 'schemata-ts/internal/eq'
  * 3. Transitivity: `x === y && y === z => x === z`
  *
  * @since 2.0.0
+ * @category Model
  */
 export interface Eq<A> {
   readonly equals: (x: A, y: A) => boolean
@@ -55,10 +56,16 @@ export {
 // instances
 // ------------------
 
-/** @since 2.0.0 */
+/**
+ * @since 2.0.0
+ * @category URI
+ */
 export const URI = 'schemata-ts/Eq'
 
-/** @since 2.0.0 */
+/**
+ * @since 2.0.0
+ * @category URI
+ */
 export type URI = typeof URI
 
 declare module 'fp-ts/lib/HKT' {
@@ -91,7 +98,7 @@ export const contramap: <A, B>(f: (b: B) => A) => (fa: Eq<A>) => Eq<B> = I.contr
 
 /**
  * @since 2.0.0
- * @category Instance Methods
+ * @category Instances
  */
 // istanbul ignore next
 export const Contravariant: Contravariant1<URI> = {
@@ -101,7 +108,7 @@ export const Contravariant: Contravariant1<URI> = {
 
 /**
  * @since 2.0.0
- * @category Instance Methods
+ * @category Combinators
  */
 export const and: <A>(that: Eq<A>) => (self: Eq<A>) => Eq<A> = that => self => ({
   equals: (x, y) => self.equals(x, y) && that.equals(x, y),
@@ -109,7 +116,7 @@ export const and: <A>(that: Eq<A>) => (self: Eq<A>) => Eq<A> = that => self => (
 
 /**
  * @since 2.0.0
- * @category Instance Methods
+ * @category Instances
  */
 export const always: Eq<unknown> = {
   equals: constTrue,
@@ -117,7 +124,7 @@ export const always: Eq<unknown> = {
 
 /**
  * @since 2.0.0
- * @category Instance Methods
+ * @category Combinators
  */
 export const or: <A>(that: Eq<A>) => (self: Eq<A>) => Eq<A> = that => self => ({
   equals: (x, y) => self.equals(x, y) || that.equals(x, y),

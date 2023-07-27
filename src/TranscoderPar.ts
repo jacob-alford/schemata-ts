@@ -64,10 +64,16 @@ export const deriveTranscoderPar: <I, O>(schema: Schema<I, O>) => TranscoderPar<
 // instances
 // -------------------------------------------------------------------------------------
 
-/** @since 2.0.0 */
+/**
+ * @since 2.0.0
+ * @cateogry URI
+ */
 export const URI = 'schemata-ts/TranscoderPar'
 
-/** @since 2.0.0 */
+/**
+ * @since 2.0.0
+ * @cateogry URI
+ */
 export type URI = typeof URI
 
 declare module 'fp-ts/lib/HKT' {

@@ -53,13 +53,13 @@ export {
 
 /**
  * @since 2.0.0
- * @category Instances
+ * @category URI
  */
 export const URI = 'schemata-ts/Guard'
 
 /**
  * @since 2.0.0
- * @category Instances
+ * @category URI
  */
 export type URI = typeof URI
 

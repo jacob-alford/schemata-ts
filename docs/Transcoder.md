@@ -29,6 +29,8 @@ Added in v2.0.0
   - [transcodeErrors](#transcodeerrors)
   - [typeMismatch](#typemismatch)
   - [unexpectedValue](#unexpectedvalue)
+- [Destructors](#destructors)
+  - [drawErrorTree](#drawerrortree)
 - [Instance Methods](#instance-methods)
   - [imap](#imap)
 - [Instances](#instances)
@@ -37,8 +39,9 @@ Added in v2.0.0
   - [deriveTranscoder](#derivetranscoder)
 - [Model](#model)
   - [Transcoder (interface)](#transcoder-interface)
+- [URI](#uri)
+  - [URI](#uri-1)
 - [utils](#utils)
-  - [URI](#uri)
   - [URI (type alias)](#uri-type-alias)
 
 ---
@@ -158,6 +161,21 @@ export declare const unexpectedValue: (actual: unknown) => TE.TranscodeError
 
 Added in v2.0.0
 
+# Destructors
+
+## drawErrorTree
+
+**Signature**
+
+```ts
+export declare const drawErrorTree: (
+  errors: TE.TranscodeErrors,
+  configuration?: { readonly showHeading?: boolean | undefined } | undefined
+) => string
+```
+
+Added in v2.0.0
+
 # Instance Methods
 
 ## imap
@@ -211,7 +229,7 @@ export interface Transcoder<I, O> {
 
 Added in v2.0.0
 
-# utils
+# URI
 
 ## URI
 
@@ -222,6 +240,8 @@ export declare const URI: 'schemata-ts/Transcoder'
 ```
 
 Added in v2.0.0
+
+# utils
 
 ## URI (type alias)
 

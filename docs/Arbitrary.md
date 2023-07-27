@@ -18,37 +18,15 @@ Added in v1.0.0
 
 <h2 class="text-delta">Table of contents</h2>
 
-- [Instances](#instances)
-  - [URI](#uri)
-  - [URI (type alias)](#uri-type-alias)
 - [Interpreters](#interpreters)
   - [deriveArbitrary](#derivearbitrary)
 - [Model](#model)
   - [Arbitrary (interface)](#arbitrary-interface)
+- [URI](#uri)
+  - [URI](#uri-1)
+  - [URI (type alias)](#uri-type-alias)
 
 ---
-
-# Instances
-
-## URI
-
-**Signature**
-
-```ts
-export declare const URI: 'Arbitrary'
-```
-
-Added in v1.0.0
-
-## URI (type alias)
-
-**Signature**
-
-```ts
-export type URI = typeof URI
-```
-
-Added in v1.0.0
 
 # Interpreters
 
@@ -74,6 +52,28 @@ Added in v2.0.0
 export interface Arbitrary<A> {
   readonly arbitrary: (fc: typeof FastCheck) => FastCheck.Arbitrary<A>
 }
+```
+
+Added in v1.0.0
+
+# URI
+
+## URI
+
+**Signature**
+
+```ts
+export declare const URI: 'Arbitrary'
+```
+
+Added in v1.0.0
+
+## URI (type alias)
+
+**Signature**
+
+```ts
+export type URI = typeof URI
 ```
 
 Added in v1.0.0

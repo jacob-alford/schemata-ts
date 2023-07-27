@@ -18,6 +18,7 @@ import { type Semigroup } from 'fp-ts/Semigroup'
  * associativity.
  *
  * @since 2.0.0
+ * @category Model
  */
 export type MergeOptions = {
   readonly string?: Semigroup<string>
@@ -31,6 +32,7 @@ export type MergeOptions = {
  * Determines how concrete values are concatenated
  *
  * @since 2.0.0
+ * @category Model
  */
 export type MergeStrategy = 'first' | 'last' | MergeOptions
 
@@ -67,13 +69,13 @@ export {
 
 /**
  * @since 2.0.0
- * @category Instances
+ * @category URI
  */
 export const URI = 'schemata-ts/MergeSemigroup'
 
 /**
  * @since 2.0.0
- * @category Instances
+ * @category URI
  */
 export type URI = typeof URI
 

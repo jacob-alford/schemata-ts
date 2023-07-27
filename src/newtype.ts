@@ -13,14 +13,17 @@ import { unsafeCoerce } from 'fp-ts/function'
  * Represents a wrapped type that's not assignable to its underlying type.
  *
  * @since 1.4.0
- * @category Models
+ * @category Model
  */
 export interface Newtype<URI, A> {
   readonly _URI: URI
   readonly _A: A
 }
 
-/** @since 2.0.0 */
+/**
+ * @since 2.0.0
+ * @category Model
+ */
 export interface NewtypeIso<A, B> {
   readonly wrap: (B: B) => A
   readonly unwrap: (A: A) => B

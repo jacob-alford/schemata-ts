@@ -15,40 +15,17 @@ Added in v2.0.0
 
 <h2 class="text-delta">Table of contents</h2>
 
-- [Instances](#instances)
-  - [URI](#uri)
-  - [URI (type alias)](#uri-type-alias)
 - [Interpreters](#interpreters)
   - [deriveMergeSemigroup](#derivemergesemigroup)
 - [Model](#model)
-  - [MergeSemigroup (interface)](#mergesemigroup-interface)
-- [utils](#utils)
   - [MergeOptions (type alias)](#mergeoptions-type-alias)
+  - [MergeSemigroup (interface)](#mergesemigroup-interface)
   - [MergeStrategy (type alias)](#mergestrategy-type-alias)
+- [URI](#uri)
+  - [URI](#uri-1)
+  - [URI (type alias)](#uri-type-alias)
 
 ---
-
-# Instances
-
-## URI
-
-**Signature**
-
-```ts
-export declare const URI: 'schemata-ts/MergeSemigroup'
-```
-
-Added in v2.0.0
-
-## URI (type alias)
-
-**Signature**
-
-```ts
-export type URI = typeof URI
-```
-
-Added in v2.0.0
 
 # Interpreters
 
@@ -65,25 +42,6 @@ export declare const deriveMergeSemigroup: <E, A>(schema: Schema<E, A>) => Merge
 Added in v2.0.0
 
 # Model
-
-## MergeSemigroup (interface)
-
-A typeclass which models the `getSemigroup` operation that returns a merge-wise
-semigroup for a particular domain type
-
-Default merge strategy is `last`, i.e. overwrite
-
-**Signature**
-
-```ts
-export interface MergeSemigroup<O> {
-  readonly semigroup: (mergeStrategy?: MergeStrategy) => Semigroup<O>
-}
-```
-
-Added in v2.0.0
-
-# utils
 
 ## MergeOptions (type alias)
 
@@ -106,6 +64,23 @@ export type MergeOptions = {
 
 Added in v2.0.0
 
+## MergeSemigroup (interface)
+
+A typeclass which models the `getSemigroup` operation that returns a merge-wise
+semigroup for a particular domain type
+
+Default merge strategy is `last`, i.e. overwrite
+
+**Signature**
+
+```ts
+export interface MergeSemigroup<O> {
+  readonly semigroup: (mergeStrategy?: MergeStrategy) => Semigroup<O>
+}
+```
+
+Added in v2.0.0
+
 ## MergeStrategy (type alias)
 
 Determines how concrete values are concatenated
@@ -114,6 +89,28 @@ Determines how concrete values are concatenated
 
 ```ts
 export type MergeStrategy = 'first' | 'last' | MergeOptions
+```
+
+Added in v2.0.0
+
+# URI
+
+## URI
+
+**Signature**
+
+```ts
+export declare const URI: 'schemata-ts/MergeSemigroup'
+```
+
+Added in v2.0.0
+
+## URI (type alias)
+
+**Signature**
+
+```ts
+export type URI = typeof URI
 ```
 
 Added in v2.0.0

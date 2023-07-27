@@ -37,13 +37,13 @@ export {
 
 /**
  * @since 1.0.0
- * @category Instances
+ * @category URI
  */
 export const URI = 'Arbitrary'
 
 /**
  * @since 1.0.0
- * @category Instances
+ * @category URI
  */
 export type URI = typeof URI
 

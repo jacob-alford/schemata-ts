@@ -16,7 +16,7 @@ import type * as RNEA from 'fp-ts/ReadonlyNonEmptyArray'
 import { deriveTranscoder as deriveTranscoder_ } from 'schemata-ts/derivations/transcoder-schemable'
 import * as I from 'schemata-ts/internal/transcoder'
 import { type Schema } from 'schemata-ts/Schema'
-import type * as TE from 'schemata-ts/TranscodeError'
+import * as TE from 'schemata-ts/TranscodeError'
 
 // ------------------
 // models
@@ -124,6 +124,17 @@ export const errorAtUnionMember: (
   I.errorAtUnionMember(member, transcodeErrors(...(errs as any)))
 
 // -------------------------------------------------------------------------------------
+// destructors
+// -------------------------------------------------------------------------------------
+
+/**
+ * @since 2.0.0
+ * @category Destructors
+ */
+export const drawErrorTree: (...params: Parameters<typeof TE.drawTree>) => string =
+  TE.drawTree
+
+// -------------------------------------------------------------------------------------
 // combinators
 // -------------------------------------------------------------------------------------
 
@@ -140,10 +151,16 @@ export const deriveTranscoder: <I, O>(schema: Schema<I, O>) => Transcoder<I, O> 
 // instances
 // -------------------------------------------------------------------------------------
 
-/** @since 2.0.0 */
+/**
+ * @since 2.0.0
+ * @category URI
+ */
 export const URI = 'schemata-ts/Transcoder'
 
-/** @since 2.0.0 */
+/**
+ * @since 2.0.0
+ * @cateogry URI
+ */
 export type URI = typeof URI
 
 declare module 'fp-ts/lib/HKT' {

@@ -54,6 +54,7 @@ export type JsonSchema = JsonSchemaValue & I.Description & I.References
  * Interprets a schema as a JsonSchema projecting into either Draft-07 or 2020-12
  *
  * @since 1.2.0
+ * @category Interpreters
  */
 export const deriveJsonSchema = <I, O>(
   schema: Schema<I, O>,

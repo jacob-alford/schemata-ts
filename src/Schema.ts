@@ -63,7 +63,7 @@ export const make = <S extends Schema<any, any>['runSchema']>(
  * Extract the output of a schema
  *
  * @since 1.0.0
- * @category Utilities
+ * @category Type Helpers
  */
 export type TypeOf<S> = S extends Schema<any, infer A> ? A : never
 
@@ -73,7 +73,7 @@ export type TypeOf<S> = S extends Schema<any, infer A> ? A : never
  * Alias of `TypeOf`
  *
  * @since 1.0.0
- * @category Utilities
+ * @category Type Helpers
  */
 export type OutputOf<S> = TypeOf<S>
 
@@ -81,7 +81,7 @@ export type OutputOf<S> = TypeOf<S>
  * Extract the input type of a schema.
  *
  * @since 1.0.0
- * @category Utilities
+ * @category Type Helpers
  */
 export type InputOf<S> = S extends Schema<infer I, any> ? I : never
 

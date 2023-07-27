@@ -17,13 +17,13 @@ Added in v2.0.0
 
 - [Constructors](#constructors)
   - [fromPredicate](#frompredicate)
-- [Instances](#instances)
-  - [URI](#uri)
-  - [URI (type alias)](#uri-type-alias)
 - [Interpreters](#interpreters)
   - [deriveGuard](#deriveguard)
 - [Model](#model)
   - [Guard (interface)](#guard-interface)
+- [URI](#uri)
+  - [URI](#uri-1)
+  - [URI (type alias)](#uri-type-alias)
 
 ---
 
@@ -37,28 +37,6 @@ Constructs a guard from predicate function
 
 ```ts
 export declare const fromPredicate: <A>(predicate: (u: unknown) => u is A) => Guard<A>
-```
-
-Added in v2.0.0
-
-# Instances
-
-## URI
-
-**Signature**
-
-```ts
-export declare const URI: 'schemata-ts/Guard'
-```
-
-Added in v2.0.0
-
-## URI (type alias)
-
-**Signature**
-
-```ts
-export type URI = typeof URI
 ```
 
 Added in v2.0.0
@@ -89,6 +67,28 @@ Represents a typeclass and data-type that narrows an unknown value to a specific
 export interface Guard<A> {
   readonly is: (u: unknown) => u is A
 }
+```
+
+Added in v2.0.0
+
+# URI
+
+## URI
+
+**Signature**
+
+```ts
+export declare const URI: 'schemata-ts/Guard'
+```
+
+Added in v2.0.0
+
+## URI (type alias)
+
+**Signature**
+
+```ts
+export type URI = typeof URI
 ```
 
 Added in v2.0.0

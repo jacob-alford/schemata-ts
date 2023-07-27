@@ -20,7 +20,7 @@ Added in v1.0.0
   - [isSchema](#isschema)
 - [Model](#model)
   - [Schema (interface)](#schema-interface)
-- [Utilities](#utilities)
+- [Type Helpers](#type-helpers)
   - [InputOf (type alias)](#inputof-type-alias)
   - [OutputOf (type alias)](#outputof-type-alias)
   - [TypeOf (type alias)](#typeof-type-alias)
@@ -72,7 +72,7 @@ export interface Schema<I, O = I> {
 
 Added in v1.0.0
 
-# Utilities
+# Type Helpers
 
 ## InputOf (type alias)
 

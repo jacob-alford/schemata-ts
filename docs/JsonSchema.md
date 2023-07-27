@@ -32,13 +32,14 @@ Added in v1.2.0
   - [union](#union)
 - [Destructors](#destructors)
   - [stripIdentity](#stripidentity)
+- [Interpreters](#interpreters)
+  - [deriveJsonSchema](#derivejsonschema)
 - [Model](#model)
   - [JsonSchema (type alias)](#jsonschema-type-alias)
   - [JsonSchemaValue (type alias)](#jsonschemavalue-type-alias)
 - [utils](#utils)
   - [URI](#uri)
   - [URI (type alias)](#uri-type-alias)
-  - [deriveJsonSchema](#derivejsonschema)
   - [ref](#ref)
 
 ---
@@ -275,6 +276,24 @@ export declare const stripIdentity: (schema: JsonSchema) => JsonSchema
 
 Added in v1.2.0
 
+# Interpreters
+
+## deriveJsonSchema
+
+Interprets a schema as a JsonSchema projecting into either Draft-07 or 2020-12
+
+**Signature**
+
+```ts
+export declare const deriveJsonSchema: <I, O>(
+  schema: Schema<I, O>,
+  version?: 'Draft-07' | '2019-09' | '2020-12',
+  maintainIdentity?: boolean
+) => JsonSchema
+```
+
+Added in v1.2.0
+
 # Model
 
 ## JsonSchema (type alias)
@@ -328,22 +347,6 @@ Added in v1.2.0
 
 ```ts
 export type URI = typeof URI
-```
-
-Added in v1.2.0
-
-## deriveJsonSchema
-
-Interprets a schema as a JsonSchema projecting into either Draft-07 or 2020-12
-
-**Signature**
-
-```ts
-export declare const deriveJsonSchema: <I, O>(
-  schema: Schema<I, O>,
-  version?: 'Draft-07' | '2019-09' | '2020-12',
-  maintainIdentity?: boolean
-) => JsonSchema
 ```
 
 Added in v1.2.0
