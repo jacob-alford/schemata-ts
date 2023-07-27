@@ -274,6 +274,7 @@ Thanks goes to these wonderful people ([emoji key](https://allcontributors.org/d
       <td align="center" valign="top" width="14.28%"><a href="https://github.com/jacob-alford"><img src="https://avatars.githubusercontent.com/u/7153123?v=4?s=100" width="100px;" alt="Jacob Alford"/><br /><sub><b>Jacob Alford</b></sub></a><br /><a href="https://github.com/jacob-alford/schemata-ts/commits?author=jacob-alford" title="Code">💻</a></td>
       <td align="center" valign="top" width="14.28%"><a href="https://github.com/newswim"><img src="https://avatars.githubusercontent.com/u/6667096?v=4?s=100" width="100px;" alt="Dan Minshew"/><br /><sub><b>Dan Minshew</b></sub></a><br /><a href="https://github.com/jacob-alford/schemata-ts/commits?author=newswim" title="Code">💻</a></td>
       <td align="center" valign="top" width="14.28%"><a href="http://skeate.dev"><img src="https://avatars.githubusercontent.com/u/387382?v=4?s=100" width="100px;" alt="Jonathan Skeate"/><br /><sub><b>Jonathan Skeate</b></sub></a><br /><a href="https://github.com/jacob-alford/schemata-ts/commits?author=skeate" title="Code">💻</a></td>
+      <td align="center" valign="top" width="14.28%"><a href="https://github.com/golergka"><img src="https://avatars.githubusercontent.com/u/929735?v=4?s=100" width="100px;" alt="golergka"/><br /><sub><b>golergka</b></sub></a><br /><a href="https://github.com/jacob-alford/schemata-ts/commits?author=golergka" title="Documentation">📖</a></td>
     </tr>
   </tbody>
 </table>
