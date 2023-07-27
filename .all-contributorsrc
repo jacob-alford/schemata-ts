@@ -24,6 +24,15 @@
       "contributions": [
         "code"
       ]
+    },
+    {
+      "login": "skeate",
+      "name": "Jonathan Skeate",
+      "avatar_url": "https://avatars.githubusercontent.com/u/387382?v=4",
+      "profile": "http://skeate.dev",
+      "contributions": [
+        "code"
+      ]
     }
   ],
   "contributorsPerLine": 7,
