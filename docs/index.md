@@ -258,17 +258,36 @@ const personArbitrary = deriveArbitrary(PersonSchema).arbitrary(fc)
 
 Schemata has other derivations besides the ones above, below are links to those places in the documentation.
 
-- [MergeSemigroup](https://jacob-alford.github.io/schemata-ts/docs/merge-semigroup): A customizable schema specific deep-merge ([source](https://github.com/jacob-alford/schemata-ts/tree/main/src/MergeSemigroup))
-- [Eq](https://jacob-alford.github.io/schemata-ts/docs/eq): A schema-specific equality check ([source](https://github.com/jacob-alford/schemata-ts/tree/main/src/Eq))
-- [TypeString](https://jacob-alford.github.io/schemata-ts/docs/type-string): Input / Output type strings ([source](https://github.com/jacob-alford/schemata-ts/tree/main/src/TypeString))
+- [MergeSemigroup](https://jacob-alford.github.io/schemata-ts/merge-semigroup): A customizable schema specific deep-merge ([source](https://github.com/jacob-alford/schemata-ts/tree/main/src/MergeSemigroup))
+- [Eq](https://jacob-alford.github.io/schemata-ts/eq): A schema-specific equality check ([source](https://github.com/jacob-alford/schemata-ts/tree/main/src/Eq))
+- [TypeString](https://jacob-alford.github.io/schemata-ts/type-string): Input / Output type strings ([source](https://github.com/jacob-alford/schemata-ts/tree/main/src/TypeString))
 
-# Contributors
+# Contributors ✨
+
+<!-- ALL-CONTRIBUTORS-BADGE:START - Do not remove or modify this section -->
+[![All Contributors](https://img.shields.io/badge/all_contributors-5-orange.svg?style=flat-square)](#contributors-)
+<!-- ALL-CONTRIBUTORS-BADGE:END -->
+
+Thanks goes to these wonderful people ([emoji key](https://allcontributors.org/docs/en/emoji-key)):
 
 <!-- ALL-CONTRIBUTORS-LIST:START - Do not remove or modify this section -->
 <!-- prettier-ignore-start -->
 <!-- markdownlint-disable -->
+<table>
+  <tbody>
+    <tr>
+      <td align="center" valign="top" width="14.28%"><a href="https://github.com/jacob-alford"><img src="https://avatars.githubusercontent.com/u/7153123?v=4?s=100" width="100px;" alt="Jacob Alford"/><br /><sub><b>Jacob Alford</b></sub></a><br /><a href="https://github.com/jacob-alford/schemata-ts/commits?author=jacob-alford" title="Code">💻</a></td>
+      <td align="center" valign="top" width="14.28%"><a href="https://github.com/newswim"><img src="https://avatars.githubusercontent.com/u/6667096?v=4?s=100" width="100px;" alt="Dan Minshew"/><br /><sub><b>Dan Minshew</b></sub></a><br /><a href="https://github.com/jacob-alford/schemata-ts/commits?author=newswim" title="Code">💻</a></td>
+      <td align="center" valign="top" width="14.28%"><a href="http://skeate.dev"><img src="https://avatars.githubusercontent.com/u/387382?v=4?s=100" width="100px;" alt="Jonathan Skeate"/><br /><sub><b>Jonathan Skeate</b></sub></a><br /><a href="https://github.com/jacob-alford/schemata-ts/commits?author=skeate" title="Code">💻</a></td>
+      <td align="center" valign="top" width="14.28%"><a href="https://github.com/0x706b"><img src="https://avatars.githubusercontent.com/u/20319430?v=4?s=100" width="100px;" alt="Peter Krol"/><br /><sub><b>Peter Krol</b></sub></a><br /><a href="https://github.com/jacob-alford/schemata-ts/commits?author=0x706b" title="Code">💻</a></td>
+      <td align="center" valign="top" width="14.28%"><a href="https://github.com/golergka"><img src="https://avatars.githubusercontent.com/u/929735?v=4?s=100" width="100px;" alt="golergka"/><br /><sub><b>golergka</b></sub></a><br /><a href="https://github.com/jacob-alford/schemata-ts/commits?author=golergka" title="Documentation">📖</a></td>
+    </tr>
+  </tbody>
+</table>
 
 <!-- markdownlint-restore -->
 <!-- prettier-ignore-end -->
 
 <!-- ALL-CONTRIBUTORS-LIST:END -->
+
+This project follows the [all-contributors](https://github.com/all-contributors/all-contributors) specification. Contributions of any kind welcome!
