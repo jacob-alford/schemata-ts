@@ -1,7 +1,7 @@
 ---
 title: Simple Example
-nav_order: 89
-permalink: /simple-example/
+nav_order: 100
+parent: Examples
 ---
 
 # Simple Example
@@ -238,7 +238,7 @@ assert.deepStrictEqual(
 
 > Use `deriveEq` to interpret the schema as an `Eq`
 
-`Eq` insteances s are used to determine if two values of the expected output type are equal.  Which are essentially a schema-tailored deep-merge.
+`Eq` instances are used to determine if two values of the output type are equal.  Which is in essence a schema-tailored equality check.
 
 <!-- AUTO-GENERATED-CONTENT:START (CODE:src=../examples/simple-example.ts&lines=155-172) -->
 <!-- The below code snippet is automatically added from ../examples/simple-example.ts -->

@@ -1,5 +1,5 @@
 ---
-title: schemata/Intersect.ts
+title: Intersect
 nav_order: 42
 parent: schemata
 ---

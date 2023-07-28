@@ -1,5 +1,5 @@
 ---
-title: schemata/UnknownRecord.ts
+title: UnknownRecord
 nav_order: 83
 parent: schemata
 ---

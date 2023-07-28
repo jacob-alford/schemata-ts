@@ -12,7 +12,7 @@
 </h1>
 
 <p align="center">
-A pipeable TypeScript schema engine and collection of validators inspired by validators.js.
+A TypeScript schema engine written with fp-ts and a collection of schema inspired by validators.js and io-ts.
 </p>
 
 <br><br>

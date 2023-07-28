@@ -1,5 +1,5 @@
 ---
-title: schemata/Annotate.ts
+title: Annotate
 nav_order: 11
 parent: schemata
 ---

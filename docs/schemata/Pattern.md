@@ -1,5 +1,5 @@
 ---
-title: schemata/Pattern.ts
+title: Pattern
 nav_order: 68
 parent: schemata
 ---

@@ -1,5 +1,5 @@
 ---
-title: schemata/Date.ts
+title: Date
 nav_order: 27
 parent: schemata
 ---

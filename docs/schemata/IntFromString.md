@@ -1,5 +1,5 @@
 ---
-title: schemata/IntFromString.ts
+title: IntFromString
 nav_order: 43
 parent: schemata
 ---

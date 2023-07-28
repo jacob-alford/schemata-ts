@@ -1,5 +1,5 @@
 ---
-title: schemata/OptionFromNullable.ts
+title: OptionFromNullable
 nav_order: 62
 parent: schemata
 ---

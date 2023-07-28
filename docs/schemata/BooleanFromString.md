@@ -1,5 +1,5 @@
 ---
-title: schemata/BooleanFromString.ts
+title: BooleanFromString
 nav_order: 20
 parent: schemata
 ---

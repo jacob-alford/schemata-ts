@@ -1,5 +1,5 @@
 ---
-title: schemata/Imap.ts
+title: Imap
 nav_order: 39
 parent: schemata
 ---

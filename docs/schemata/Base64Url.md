@@ -1,5 +1,5 @@
 ---
-title: schemata/Base64Url.ts
+title: Base64Url
 nav_order: 15
 parent: schemata
 ---

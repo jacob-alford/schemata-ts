@@ -1,5 +1,5 @@
 ---
-title: schemata/Float.ts
+title: Float
 nav_order: 34
 parent: schemata
 ---

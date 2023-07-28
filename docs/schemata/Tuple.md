@@ -1,5 +1,5 @@
 ---
-title: schemata/Tuple.ts
+title: Tuple
 nav_order: 79
 parent: schemata
 ---

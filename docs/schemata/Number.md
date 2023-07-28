@@ -1,5 +1,5 @@
 ---
-title: schemata/Number.ts
+title: Number
 nav_order: 59
 parent: schemata
 ---

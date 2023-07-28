@@ -1,5 +1,5 @@
 ---
-title: schemata/Parse.ts
+title: Parse
 nav_order: 63
 parent: schemata
 ---

@@ -1,5 +1,5 @@
 ---
-title: schemata/Newtype.ts
+title: Newtype
 nav_order: 52
 parent: schemata
 ---

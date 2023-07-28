@@ -1,5 +1,5 @@
 ---
-title: schemata/FloatFromString.ts
+title: FloatFromString
 nav_order: 35
 parent: schemata
 ---

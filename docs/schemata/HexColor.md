@@ -1,5 +1,5 @@
 ---
-title: schemata/HexColor.ts
+title: HexColor
 nav_order: 37
 parent: schemata
 ---

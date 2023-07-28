@@ -1,5 +1,5 @@
 ---
-title: schemata/Strict.ts
+title: Strict
 nav_order: 76
 parent: schemata
 ---

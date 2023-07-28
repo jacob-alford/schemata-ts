@@ -1,5 +1,5 @@
 ---
-title: schemata/UnknownArray.ts
+title: UnknownArray
 nav_order: 82
 parent: schemata
 ---

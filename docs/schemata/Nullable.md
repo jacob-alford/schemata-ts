@@ -1,5 +1,5 @@
 ---
-title: schemata/Nullable.ts
+title: Nullable
 nav_order: 58
 parent: schemata
 ---

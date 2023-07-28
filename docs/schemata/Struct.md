@@ -1,5 +1,5 @@
 ---
-title: schemata/Struct.ts
+title: Struct
 nav_order: 78
 parent: schemata
 ---

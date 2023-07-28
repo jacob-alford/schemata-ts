@@ -1,5 +1,5 @@
 ---
-title: schemata/String.ts
+title: String
 nav_order: 77
 parent: schemata
 ---

@@ -1,5 +1,5 @@
 ---
-title: schemata/Brand.ts
+title: Brand
 nav_order: 21
 parent: schemata
 ---

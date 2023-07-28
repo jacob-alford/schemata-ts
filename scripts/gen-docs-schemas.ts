@@ -80,7 +80,7 @@ const schemaTemplate = (
   schemas: RNEA.ReadonlyNonEmptyArray<[string, RNEA.ReadonlyNonEmptyArray<string>]>,
 ): string => `---
 title: schemata
-nav_order: 2
+nav_order: 150
 permalink: /schemata/
 has_children: true
 ---

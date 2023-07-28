@@ -24,6 +24,11 @@ const rewriteParent =
       ),
     )
 
+const rewriteSchemaTitle =
+  (file: string) =>
+  (fileContents: string): string =>
+    fileContents.replace(/title: (.*)\n/g, () => `title: ${removeExt(file)}\n`)
+
 export const docsPack: Build<void> = _ =>
   pipe(
     TE.Do,
@@ -37,6 +42,7 @@ export const docsPack: Build<void> = _ =>
           pipe(
             _.readFile(path.join(`./docs/modules/schemata`, file)),
             TE.map(rewriteParent(O.some('schemata'))),
+            TE.map(rewriteSchemaTitle(file)),
             TE.chain(contents =>
               _.writeFile(path.join(SCHEMA_OUT_DIR, `${removeExt(file)}.md`), contents),
             ),

@@ -1,5 +1,5 @@
 ---
-title: schemata/Refine.ts
+title: Refine
 nav_order: 73
 parent: schemata
 ---

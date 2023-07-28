@@ -42,7 +42,7 @@ export const genDocs: Build<void> = _ =>
 title: Home
 permalink: /
 has_children: false
-nav_order: 1
+nav_order: 0
 ---\n\n${file}`,
           ),
         ),

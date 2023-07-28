@@ -1,5 +1,5 @@
 ---
-title: schemata/ParseEncodedJson.ts
+title: ParseEncodedJson
 nav_order: 65
 parent: schemata
 ---

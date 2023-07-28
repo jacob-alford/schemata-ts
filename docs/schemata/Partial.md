@@ -1,5 +1,5 @@
 ---
-title: schemata/Partial.ts
+title: Partial
 nav_order: 67
 parent: schemata
 ---

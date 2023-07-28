@@ -1,5 +1,5 @@
 ---
-title: schemata/CreditCard.ts
+title: CreditCard
 nav_order: 26
 parent: schemata
 ---

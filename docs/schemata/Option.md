@@ -1,5 +1,5 @@
 ---
-title: schemata/Option.ts
+title: Option
 nav_order: 60
 parent: schemata
 ---

@@ -1,5 +1,5 @@
 ---
-title: schemata/Array.ts
+title: Array
 nav_order: 12
 parent: schemata
 ---

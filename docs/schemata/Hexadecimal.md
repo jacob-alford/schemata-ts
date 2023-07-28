@@ -1,5 +1,5 @@
 ---
-title: schemata/Hexadecimal.ts
+title: Hexadecimal
 nav_order: 36
 parent: schemata
 ---
