@@ -18,16 +18,21 @@ export type JsonSchemaValue =
   | JsonIntersection
   | JsonRef
 
-export type JsonSchema = JsonSchemaValue & Description & References
+export type JsonSchema = JsonSchemaValue & Description & References & Default
 
 export interface Description {
   readonly title?: string
   readonly description?: string
   readonly readOnly?: boolean
+  readonly deprecated?: boolean
 }
 
 export interface References {
   readonly $defs?: RR.ReadonlyRecord<string, JsonSchema>
+}
+
+export interface Default {
+  readonly default?: unknown
 }
 
 export const make: <A>(value: JsonSchemaValue) => Const<JsonSchema, A> = make_
@@ -43,6 +48,12 @@ export const addReferences =
   (references: References) =>
   <A>(schema: Const<JsonSchema, A>): Const<JsonSchema, A> =>
     make_(Object.assign({}, schema, references))
+
+/** @internal */
+export const addDefault =
+  (defaultValue: unknown) =>
+  <A>(schema: Const<JsonSchema, A>): Const<JsonSchema, A> =>
+    make_(Object.assign({}, schema, { default: defaultValue }))
 
 /** Matches anything */
 export class JsonEmpty {}

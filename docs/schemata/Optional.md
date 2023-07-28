@@ -21,13 +21,21 @@ Added in v1.0.0
 
 ## Optional
 
-A schema for widening the type of a schema to include `undefined`. Also marks the input
-property of a struct as optional.
+A schema that widens a schema to include `undefined`. Also marks the input property of
+a struct as optional.
+
+Optional property `fallbackInput` is used to provide a default value for transcoders
+and json-schemas.
 
 **Signature**
 
 ```ts
-export declare const Optional: <O, A>(target: Schema<O, A>) => ImplicitOptional & Schema<O | undefined, A | undefined>
+export declare const Optional: <I, O, Fallback extends I | undefined = undefined>(
+  target: Schema<I, O>,
+  fallbackInput?: Fallback | undefined
+) => Fallback extends undefined
+  ? ImplicitOptional & Schema<I | undefined, O | undefined>
+  : ImplicitOptional & Schema<I | undefined, O>
 ```
 
 Added in v1.0.0

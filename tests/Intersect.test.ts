@@ -20,7 +20,7 @@ const TestParser = pipe(
   ),
 )
 
-const Schema = S.Annotate({ title: 'Parser-Intersection' })(
+const Schema = S.Annotate({ title: 'Parser-Intersection', deprecated: true })(
   S.Intersect(
     S.Struct({
       a: TestParser,
@@ -29,7 +29,10 @@ const Schema = S.Annotate({ title: 'Parser-Intersection' })(
   ),
 )
 
-const expectedJsonSchema = JS.annotate({ title: 'Parser-Intersection' })(
+const expectedJsonSchema = JS.annotate({
+  title: 'Parser-Intersection',
+  deprecated: true,
+})(
   JS.intersection(JS.record(JS.string()))(
     JS.struct(
       {

@@ -44,7 +44,7 @@ export type JsonSchemaValue =
  * @since 1.2.0
  * @category Model
  */
-export type JsonSchema = JsonSchemaValue & I.Description & I.References
+export type JsonSchema = JsonSchemaValue & I.Description & I.References & I.Default
 
 // -------------------------------------------------------------------------------------
 // Constructors
@@ -261,8 +261,9 @@ export const annotate: (params?: {
   readonly title?: string
   readonly description?: string
   readonly references?: RR.ReadonlyRecord<string, JsonSchema>
+  readonly deprecated?: boolean
 }) => (schema: JsonSchema) => Const<JsonSchema, never> =
-  ({ title, description, references } = {}) =>
+  ({ title, description, references, deprecated } = {}) =>
   schema =>
     title === undefined && description === undefined && references === undefined
       ? make(schema)
@@ -271,6 +272,7 @@ export const annotate: (params?: {
           ...(title === undefined ? {} : { title }),
           ...(description === undefined ? {} : { description }),
           ...(references === undefined ? {} : { $defs: references }),
+          ...(deprecated === undefined ? {} : { deprecated }),
         })
 
 /**

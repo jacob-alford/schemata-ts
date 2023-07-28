@@ -5,13 +5,15 @@ import * as TC from 'schemata-ts/internal/transcoder'
 import { type WithOptional } from 'schemata-ts/schemables/optional/definition'
 
 export const OptionalTranscoder: WithOptional<TC.SchemableLambda> = {
-  optional: (da, name) =>
+  optional: (da, name, { fallbackInput }) =>
     makeImplicitOptionalType({
       decode: u =>
-        u === undefined
-          ? TC.success(u)
+        fallbackInput === undefined && u === undefined
+          ? TC.success(undefined)
           : pipe(
-              da.decode(u),
+              da.decode(
+                fallbackInput !== undefined && u === undefined ? fallbackInput : u,
+              ),
               E.mapLeft(errs =>
                 TC.transcodeErrors(
                   TC.errorAtUnionMember(

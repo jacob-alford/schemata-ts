@@ -6,13 +6,15 @@ import * as TCP from 'schemata-ts/internal/transcoder-par'
 import { type WithOptional } from 'schemata-ts/schemables/optional/definition'
 
 export const OptionalTranscoderPar: WithOptional<TCP.SchemableLambda> = {
-  optional: (da, name) =>
+  optional: (da, name, { fallbackInput }) =>
     makeImplicitOptionalType({
       decode: u =>
-        u === undefined
-          ? TCP.success<any>(u)
+        fallbackInput === undefined && u === undefined
+          ? TCP.success(undefined)
           : pipe(
-              da.decode(u),
+              da.decode(
+                fallbackInput !== undefined && u === undefined ? fallbackInput : u,
+              ),
               TE.mapLeft(errs =>
                 TC.transcodeErrors(
                   TC.errorAtUnionMember(

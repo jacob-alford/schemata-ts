@@ -3,5 +3,8 @@ import { type SchemableLambda, makeTypeString } from 'schemata-ts/internal/type-
 import { type WithOptional } from 'schemata-ts/schemables/optional/definition'
 
 export const OptionalTypeString: WithOptional<SchemableLambda> = {
-  optional: ([i, o]) => makeImplicitOptionalType(makeTypeString([`${i}?`, `${o}?`])),
+  optional: ([i, o], _, { fallbackInput }) =>
+    makeImplicitOptionalType(
+      makeTypeString([`${i}?`, `${o}${fallbackInput === undefined ? '?' : ''}`]),
+    ),
 }

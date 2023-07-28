@@ -22,6 +22,7 @@ export const Annotate =
     readonly references?: Refs
     readonly typeString?: string | readonly [string, string]
     readonly readOnly?: boolean
+    readonly deprecated?: boolean
   }) =>
   <O, A>(schema: Schema<O, A>): Schema<O, A> => {
     const { references = {} } = params
@@ -36,6 +37,7 @@ export const Annotate =
         ...(params.references === undefined ? {} : { references: mappedRefs }),
         ...(params.typeString === undefined ? {} : { typeString: params.typeString }),
         ...(params.readOnly === undefined ? {} : { readOnly: params.readOnly }),
+        ...(params.deprecated === undefined ? {} : { deprecated: params.deprecated }),
       })(schema.runSchema(s)),
     )
   }
