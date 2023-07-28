@@ -90,7 +90,8 @@ ${pipe(
   RNEA.foldMap(Sg.intercalate('\n\n')(Str.Semigroup))(([cat, files]) =>
     categoryTemplate(cat, files),
   ),
-)}`
+)}
+`
 
 export const genSchemas: Build<void> = _ =>
   pipe(

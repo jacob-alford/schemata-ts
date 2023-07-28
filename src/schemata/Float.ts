@@ -4,7 +4,8 @@ import {
   type MaxNegativeFloat,
   type MaxPositiveFloat,
 } from 'schemata-ts/float'
-import { type Schema, make } from 'schemata-ts/Schema'
+import { make } from 'schemata-ts/internal/schema'
+import { type Schema } from 'schemata-ts/Schema'
 import { type NumberParams } from 'schemata-ts/schemables/primitives/definition'
 
 /**

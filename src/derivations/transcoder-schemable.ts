@@ -5,8 +5,8 @@
  *
  * @since 2.0.0
  */
+import { type Interpreter, interpret } from 'schemata-ts/internal/schema'
 import type * as TC from 'schemata-ts/internal/transcoder'
-import { interpret } from 'schemata-ts/Schema'
 import { type Schemable } from 'schemata-ts/Schemable'
 import * as annotate from 'schemata-ts/schemables/annotate/instances/transcoder'
 import * as array from 'schemata-ts/schemables/array/instances/transcoder'
@@ -50,4 +50,5 @@ const TranscoderSchemable: Schemable<TC.SchemableLambda> = {
  * @since 2.0.0
  * @category Interpreters
  */
-export const deriveTranscoder = interpret(TranscoderSchemable)
+export const deriveTranscoder: Interpreter<TC.SchemableLambda> =
+  interpret(TranscoderSchemable)

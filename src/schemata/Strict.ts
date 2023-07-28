@@ -3,7 +3,7 @@ import {
   type OptionalInputProps,
   type OutputProps,
   type RequiredInputProps,
-} from 'schemata-ts/internal/schema-utils'
+} from 'schemata-ts/internal/schema'
 import { type Schema } from 'schemata-ts/Schema'
 import { Struct } from 'schemata-ts/schemata/Struct'
 import { type Simplify } from 'type-fest'

@@ -6,7 +6,7 @@
  * @since 2.0.0
  */
 import type * as MSg from 'schemata-ts/internal/merge-semigroup'
-import { interpret } from 'schemata-ts/Schema'
+import { type Interpreter, interpret } from 'schemata-ts/internal/schema'
 import { type Schemable } from 'schemata-ts/Schemable'
 import * as annotate from 'schemata-ts/schemables/annotate/instances/merge-semigroup'
 import * as array from 'schemata-ts/schemables/array/instances/merge-semigroup'
@@ -50,4 +50,6 @@ const MergeSemigroupSchemable: Schemable<MSg.SchemableLambda> = {
  * @since 2.0.0
  * @category Interpreters
  */
-export const deriveMergeSemigroup = interpret(MergeSemigroupSchemable)
+export const deriveMergeSemigroup: Interpreter<MSg.SchemableLambda> = interpret(
+  MergeSemigroupSchemable,
+)

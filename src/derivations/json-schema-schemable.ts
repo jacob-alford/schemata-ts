@@ -6,7 +6,7 @@
  * @since 2.0.0
  */
 import type * as JS from 'schemata-ts/internal/json-schema'
-import { interpret } from 'schemata-ts/Schema'
+import { type Interpreter, interpret } from 'schemata-ts/internal/schema'
 import { type Schemable } from 'schemata-ts/Schemable'
 import * as annotate from 'schemata-ts/schemables/annotate/instances/json-schema'
 import * as array from 'schemata-ts/schemables/array/instances/json-schema'
@@ -50,4 +50,5 @@ const JsonSchemaSchemable: Schemable<JS.SchemableLambda> = {
  * @since 2.0.0
  * @category Interpreters
  */
-export const deriveJsonSchema = interpret(JsonSchemaSchemable)
+export const deriveJsonSchema: Interpreter<JS.SchemableLambda> =
+  interpret(JsonSchemaSchemable)

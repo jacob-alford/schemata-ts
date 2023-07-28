@@ -1,6 +1,7 @@
 /** @since 1.0.0 */
 import type * as G from 'schemata-ts/internal/guard'
-import { type Schema, make } from 'schemata-ts/Schema'
+import { make } from 'schemata-ts/internal/schema'
+import { type Schema } from 'schemata-ts/Schema'
 
 /**
  * A Schema that maps the output type of another Schema. Guard is not invariant, and

@@ -1,6 +1,7 @@
 /** @since 1.0.0 */
 import { type Integer, type MaxSafeInt, type MinSafeInt } from 'schemata-ts/integer'
-import { type Schema, make } from 'schemata-ts/Schema'
+import { make } from 'schemata-ts/internal/schema'
+import { type Schema } from 'schemata-ts/Schema'
 import { type NumberParams } from 'schemata-ts/schemables/primitives/definition'
 
 /**

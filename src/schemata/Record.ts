@@ -3,7 +3,8 @@ import * as Sg from 'fp-ts/Semigroup'
 import { deriveMergeSemigroup } from 'schemata-ts/derivations/merge-semigroup-schemable'
 import { deriveTypeString } from 'schemata-ts/derivations/type-string-schemable'
 import { type MergeStrategy } from 'schemata-ts/internal/merge-semigroup'
-import { type Schema, make } from 'schemata-ts/Schema'
+import { make } from 'schemata-ts/internal/schema'
+import { type Schema } from 'schemata-ts/Schema'
 import { StructTypeString } from 'schemata-ts/schemables/struct/instances/type-string'
 
 /**

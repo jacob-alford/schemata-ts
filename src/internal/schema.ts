@@ -1,6 +1,9 @@
 /* eslint-disable @typescript-eslint/ban-types */
+import { identity, unsafeCoerce } from 'fp-ts/function'
+import { type SchemableKind, type SchemableLambda } from 'schemata-ts/internal/schemable'
 import type * as s from 'schemata-ts/internal/struct'
 import { type InputOf, type OutputOf, type Schema } from 'schemata-ts/Schema'
+import { type Schemable } from 'schemata-ts/Schemable'
 
 /** @since 2.0.0 */
 export type OptionalInputProps<T extends Record<string, Schema<any, any>>> = {
@@ -35,3 +38,44 @@ export type RestInput<RestKind> = RestKind extends undefined
 export type RestOutput<RestKind> = RestKind extends undefined
   ? unknown
   : { [key: string]: RestKind extends Schema<any, infer O> ? O : never }
+
+/** @internal */
+export const memoize = <A, B>(f: (a: A) => B): ((a: A) => B) => {
+  const cache = new Map()
+  return a => {
+    if (!cache.has(a)) {
+      const b = f(a)
+      cache.set(a, b)
+      return b
+    }
+    return cache.get(a)
+  }
+}
+
+const SchemaSymbol = Symbol.for('schemata-ts/Schema')
+
+/** @internal */
+export const make = <S extends Schema<any, any>['runSchema']>(
+  f: S,
+): S extends (...args: ReadonlyArray<any>) => {
+  Input: (...args: ReadonlyArray<any>) => infer E
+  Output: (...args: ReadonlyArray<any>) => infer A
+}
+  ? Schema<E, A>
+  : never =>
+  unsafeCoerce({
+    [SchemaSymbol]: SchemaSymbol,
+    runSchema: memoize(f),
+    input: identity,
+    output: identity,
+  })
+
+/** @since 2.0.0 */
+export type Interpreter<S extends SchemableLambda> = <I, O>(
+  schema: Schema<I, O>,
+) => SchemableKind<S, I, O>
+
+/** @since 1.0.0 */
+export const interpret: <S extends SchemableLambda>(S: Schemable<S>) => Interpreter<S> =
+  S => schema =>
+    schema.runSchema(S)

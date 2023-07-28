@@ -5,8 +5,8 @@
  *
  * @since 2.0.0
  */
+import { type Interpreter, interpret } from 'schemata-ts/internal/schema'
 import type * as TS from 'schemata-ts/internal/type-string'
-import { interpret } from 'schemata-ts/Schema'
 import { type Schemable } from 'schemata-ts/Schemable'
 import * as annotate from 'schemata-ts/schemables/annotate/instances/type-string'
 import * as array from 'schemata-ts/schemables/array/instances/type-string'
@@ -50,4 +50,5 @@ const TypeStringSchemable: Schemable<TS.SchemableLambda> = {
  * @since 2.0.0
  * @category Interpreters
  */
-export const deriveTypeString = interpret(TypeStringSchemable)
+export const deriveTypeString: Interpreter<TS.SchemableLambda> =
+  interpret(TypeStringSchemable)

@@ -1,6 +1,6 @@
 import { type Lazy } from 'fp-ts/function'
+import { memoize } from 'schemata-ts/internal/schema'
 import type * as TC from 'schemata-ts/internal/transcoder'
-import { memoize } from 'schemata-ts/Schema'
 import { type WithLazy } from 'schemata-ts/schemables/lazy/definition'
 
 export const LazyTranscoder: WithLazy<TC.SchemableLambda> = {

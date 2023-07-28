@@ -4,8 +4,9 @@ import * as RNEA from 'fp-ts/ReadonlyNonEmptyArray'
 import { deriveGuard } from 'schemata-ts/derivations/guard-schemable'
 import { deriveInformation } from 'schemata-ts/derivations/information-schemable'
 import { deriveTypeString } from 'schemata-ts/derivations/type-string-schemable'
+import { make } from 'schemata-ts/internal/schema'
 import { type ImplicitOptional } from 'schemata-ts/internal/struct'
-import { type Schema, make } from 'schemata-ts/Schema'
+import { type Schema } from 'schemata-ts/Schema'
 import { type TupleToUnion } from 'type-fest'
 
 type Inputs<Xs extends ReadonlyArray<Schema<any, any>>> = {

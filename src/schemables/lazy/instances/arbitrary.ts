@@ -1,6 +1,6 @@
 import { type Lazy } from 'fp-ts/function'
 import * as Arb from 'schemata-ts/internal/arbitrary'
-import { memoize } from 'schemata-ts/Schema'
+import { memoize } from 'schemata-ts/internal/schema'
 import { type WithLazy } from 'schemata-ts/schemables/lazy/definition'
 
 export const LazyArbitrary: WithLazy<Arb.SchemableLambda> = {

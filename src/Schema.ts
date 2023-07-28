@@ -3,7 +3,6 @@
  *
  * @since 1.0.0
  */
-import { identity } from 'fp-ts/function'
 import type * as hkt from 'schemata-ts/internal/schemable'
 import { type Schemable } from 'schemata-ts/Schemable'
 
@@ -30,35 +29,6 @@ export interface Schema<I, O = I> {
 export const isSchema = (u: unknown): u is Schema<unknown, unknown> =>
   u !== null && typeof u === 'object' && !Array.isArray(u) && SchemaSymbol in u
 
-/** @internal */
-export const memoize = <A, B>(f: (a: A) => B): ((a: A) => B) => {
-  const cache = new Map()
-  return a => {
-    if (!cache.has(a)) {
-      const b = f(a)
-      cache.set(a, b)
-      return b
-    }
-    return cache.get(a)
-  }
-}
-
-/** @internal */
-export const make = <S extends Schema<any, any>['runSchema']>(
-  f: S,
-): S extends (...args: ReadonlyArray<any>) => {
-  Input: (...args: ReadonlyArray<any>) => infer E
-  Output: (...args: ReadonlyArray<any>) => infer A
-}
-  ? Schema<E, A>
-  : never =>
-  ({
-    [SchemaSymbol]: SchemaSymbol,
-    runSchema: memoize(f),
-    input: identity,
-    output: identity,
-  } as any)
-
 /**
  * Extract the output of a schema
  *
@@ -84,14 +54,3 @@ export type OutputOf<S> = TypeOf<S>
  * @category Type Helpers
  */
 export type InputOf<S> = S extends Schema<infer I, any> ? I : never
-
-/**
- * Derives a typeclass instance from a Schema by supplying Schemable
- *
- * @since 1.0.0
- * @category Destructors
- */
-export const interpret: <S extends hkt.SchemableLambda>(
-  S: Schemable<S>,
-) => <E, A>(schema: Schema<E, A>) => hkt.SchemableKind<S, E, A> = S => schema =>
-  schema.runSchema(S)

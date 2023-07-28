@@ -10,10 +10,11 @@ import {
   type RequiredInputProps,
   type RestInput,
   type RestOutput,
-} from 'schemata-ts/internal/schema-utils'
+  make,
+} from 'schemata-ts/internal/schema'
 import { type SchemableKind, type SchemableLambda } from 'schemata-ts/internal/schemable'
 import type * as TS from 'schemata-ts/internal/type-string'
-import { type Schema, make } from 'schemata-ts/Schema'
+import { type Schema } from 'schemata-ts/Schema'
 import { StructTypeString } from 'schemata-ts/schemables/struct/instances/type-string'
 import type * as s from 'schemata-ts/schemables/struct/type-utils'
 import { type Simplify } from 'type-fest'

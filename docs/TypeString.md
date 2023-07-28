@@ -57,7 +57,7 @@ Interprets a schema as a type string
 **Signature**
 
 ```ts
-export declare const deriveTypeString: <E, A>(schema: Schema<E, A>) => Const<readonly [string, string], readonly [E, A]>
+export declare const deriveTypeString: Interpreter<SchemableLambda>
 ```
 
 Added in v2.0.0

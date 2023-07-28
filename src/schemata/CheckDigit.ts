@@ -1,5 +1,6 @@
 /** @since 1.0.0 */
-import { type Schema, make } from 'schemata-ts/Schema'
+import { make } from 'schemata-ts/internal/schema'
+import { type Schema } from 'schemata-ts/Schema'
 import { type CheckDigitVerified } from 'schemata-ts/schemables/check-digit/definition'
 
 /**

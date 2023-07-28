@@ -5,8 +5,8 @@
  *
  * @since 2.0.0
  */
+import { type Interpreter, interpret } from 'schemata-ts/internal/schema'
 import type * as TCP from 'schemata-ts/internal/transcoder-par'
-import { interpret } from 'schemata-ts/Schema'
 import { type Schemable } from 'schemata-ts/Schemable'
 import * as annotate from 'schemata-ts/schemables/annotate/instances/transcoder-par'
 import * as array from 'schemata-ts/schemables/array/instances/transcoder-par'
@@ -50,4 +50,5 @@ const TranscoderParSchemable: Schemable<TCP.SchemableLambda> = {
  * @since 2.0.0
  * @category Interpreters
  */
-export const deriveTranscoderPar = interpret(TranscoderParSchemable)
+export const deriveTranscoderPar: Interpreter<TCP.SchemableLambda> =
+  interpret(TranscoderParSchemable)

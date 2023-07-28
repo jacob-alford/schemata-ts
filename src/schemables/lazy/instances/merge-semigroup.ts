@@ -1,6 +1,6 @@
 import { type Lazy } from 'fp-ts/function'
 import * as MSg from 'schemata-ts/internal/merge-semigroup'
-import { memoize } from 'schemata-ts/Schema'
+import { memoize } from 'schemata-ts/internal/schema'
 import { type WithLazy } from 'schemata-ts/schemables/lazy/definition'
 
 export const LazyMergeSemigroup: WithLazy<MSg.SchemableLambda> = {

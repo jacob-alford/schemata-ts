@@ -56,7 +56,7 @@ export declare const annotate: (
     | {
         readonly title?: string | undefined
         readonly description?: string | undefined
-        readonly references?: Readonly<Record<string, any>> | undefined
+        readonly references?: Readonly<Record<string, JsonSchema>> | undefined
         readonly deprecated?: boolean | undefined
       }
     | undefined
@@ -72,7 +72,10 @@ Added in v1.2.0
 **Signature**
 
 ```ts
-export declare const array: (params?: { minItems?: number; maxItems?: number }) => <A>(items: any) => any
+export declare const array: (params?: {
+  minItems?: number
+  maxItems?: number
+}) => <A>(items: Const<JsonSchema, A>) => Const<JsonSchema, A[]>
 ```
 
 Added in v1.2.0
@@ -82,7 +85,7 @@ Added in v1.2.0
 **Signature**
 
 ```ts
-export declare const booleanSchema: any
+export declare const booleanSchema: Const<JsonSchema, boolean>
 ```
 
 Added in v1.2.0
@@ -108,7 +111,13 @@ export declare const integer: <
 >(params?: {
   minimum?: Min | undefined
   maximum?: Max | undefined
-}) => any
+}) => Const<
+  JsonSchema,
+  Opaque<
+    number,
+    IntBrand<Min extends undefined ? -9007199254740991 : Min, Max extends undefined ? 9007199254740991 : Max>
+  >
+>
 ```
 
 Added in v1.2.0
@@ -118,7 +127,9 @@ Added in v1.2.0
 **Signature**
 
 ```ts
-export declare const intersection: <B>(right: any) => <A>(left: any) => any
+export declare const intersection: <B>(
+  right: Const<JsonSchema, B>
+) => <A>(left: Const<JsonSchema, A>) => Const<JsonSchema, A & B>
 ```
 
 Added in v1.2.0
@@ -128,7 +139,7 @@ Added in v1.2.0
 **Signature**
 
 ```ts
-export declare const literal: <A extends string | number | boolean | null>(value: A) => any
+export declare const literal: <A extends string | number | boolean | null>(value: A) => Const<JsonSchema, A>
 ```
 
 Added in v1.2.0
@@ -154,7 +165,16 @@ export declare const number: <
 >(params?: {
   minimum?: Min | undefined
   maximum?: Max | undefined
-}) => any
+}) => Const<
+  JsonSchema,
+  Opaque<
+    number,
+    FloatBrand<
+      Min extends undefined ? -1.7976931348623157e308 : Min,
+      Max extends undefined ? 1.7976931348623157e308 : Max
+    >
+  >
+>
 ```
 
 Added in v1.2.0
@@ -164,7 +184,7 @@ Added in v1.2.0
 **Signature**
 
 ```ts
-export declare const record: <A>(additionalProperties: any) => any
+export declare const record: <A>(additionalProperties: Const<JsonSchema, A>) => Const<JsonSchema, Record<string, A>>
 ```
 
 Added in v1.2.0
@@ -193,10 +213,28 @@ Added in v1.2.0
 
 ```ts
 export declare const struct: <A>(
-  properties: { [K in keyof A]: any },
+  properties: { [K in keyof A]: Const<JsonSchema, A[K]> },
   required?: ReadonlyArray<string>,
-  additionalProperties?: JsonSchema | false
-) => any
+  additionalProperties?:
+    | false
+    | (I.JsonEmpty & I.Description & I.References & I.Default)
+    | (I.JsonString & I.Description & I.References & I.Default)
+    | (I.JsonNumber & I.Description & I.References & I.Default)
+    | (I.JsonBoolean & I.Description & I.References & I.Default)
+    | (I.JsonNull & I.Description & I.References & I.Default)
+    | (I.JsonInteger & I.Description & I.References & I.Default)
+    | (I.JsonConst & I.Description & I.References & I.Default)
+    | (I.JsonString & I.JsonConst & I.Description & I.References & I.Default)
+    | (I.JsonNumber & I.JsonConst & I.Description & I.References & I.Default)
+    | (I.JsonBoolean & I.JsonConst & I.Description & I.References & I.Default)
+    | (I.JsonNull & I.JsonConst & I.Description & I.References & I.Default)
+    | (I.JsonStruct & I.Description & I.References & I.Default)
+    | (I.JsonArray & I.Description & I.References & I.Default)
+    | (I.JsonUnion & I.Description & I.References & I.Default)
+    | (I.JsonIntersection & I.Description & I.References & I.Default)
+    | (I.JsonRef & I.Description & I.References & I.Default)
+    | undefined
+) => Const<JsonSchema, A>
 ```
 
 Added in v1.2.0
@@ -206,7 +244,9 @@ Added in v1.2.0
 **Signature**
 
 ```ts
-export declare const tuple: <A extends readonly unknown[]>(...items: { [K in keyof A]: any }) => any
+export declare const tuple: <A extends readonly unknown[]>(
+  ...items: { [K in keyof A]: Const<JsonSchema, A[K]> }
+) => Const<JsonSchema, A>
 ```
 
 Added in v1.2.0
@@ -216,7 +256,9 @@ Added in v1.2.0
 **Signature**
 
 ```ts
-export declare const union: <U extends readonly any[]>(...members: U) => any
+export declare const union: <U extends readonly Const<JsonSchema, unknown>[]>(
+  ...members: U
+) => Const<JsonSchema, U[number] extends Const<JsonSchema, infer A> ? A : never>
 ```
 
 Added in v1.2.0
@@ -317,7 +359,7 @@ A reference to a schema definition
 **Signature**
 
 ```ts
-export declare const ref: <A>(ref: string) => any
+export declare const ref: <A>(ref: string) => Const<JsonSchema, A>
 ```
 
 Added in v2.0.0

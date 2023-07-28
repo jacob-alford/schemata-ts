@@ -6,7 +6,7 @@
  * @since 2.0.0
  */
 import type * as Arb from 'schemata-ts/internal/arbitrary'
-import { interpret } from 'schemata-ts/Schema'
+import { type Interpreter, interpret } from 'schemata-ts/internal/schema'
 import { type Schemable } from 'schemata-ts/Schemable'
 import * as annotate from 'schemata-ts/schemables/annotate/instances/arbitrary'
 import * as array from 'schemata-ts/schemables/array/instances/arbitrary'
@@ -50,4 +50,5 @@ const ArbitrarySchemable: Schemable<Arb.SchemableLambda> = {
  * @since 2.0.0
  * @category Interpreters
  */
-export const deriveArbitrary = interpret(ArbitrarySchemable)
+export const deriveArbitrary: Interpreter<Arb.SchemableLambda> =
+  interpret(ArbitrarySchemable)

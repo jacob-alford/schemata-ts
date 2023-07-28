@@ -1,6 +1,6 @@
 import { type Semigroup, first, last } from 'fp-ts/Semigroup'
+import { memoize } from 'schemata-ts/internal/schema'
 import type * as hkt from 'schemata-ts/internal/schemable'
-import { memoize } from 'schemata-ts/Schema'
 
 export type MergeStrategy = {
   readonly string?: Semigroup<string>

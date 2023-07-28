@@ -1,5 +1,6 @@
 /** @since 1.0.0 */
-import { type Schema, make } from 'schemata-ts/Schema'
+import { make } from 'schemata-ts/internal/schema'
+import { type Schema } from 'schemata-ts/Schema'
 
 /**
  * Used to refine a type to a subtype using a predicate function.

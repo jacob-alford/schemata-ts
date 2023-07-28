@@ -1,6 +1,6 @@
 import type * as FastCheck from 'fast-check'
+import { memoize } from 'schemata-ts/internal/schema'
 import type * as hkt from 'schemata-ts/internal/schemable'
-import { memoize } from 'schemata-ts/Schema'
 
 export interface Arbitrary<A> {
   readonly arbitrary: (fc: typeof FastCheck) => FastCheck.Arbitrary<A>

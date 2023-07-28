@@ -6,7 +6,7 @@
  * @since 2.0.0
  */
 import type * as Inf from 'schemata-ts/internal/information'
-import { interpret } from 'schemata-ts/Schema'
+import { type Interpreter, interpret } from 'schemata-ts/internal/schema'
 import { type Schemable } from 'schemata-ts/Schemable'
 import * as annotate from 'schemata-ts/schemables/annotate/instances/information'
 import * as array from 'schemata-ts/schemables/array/instances/information'
@@ -50,4 +50,5 @@ const InformationSchemable: Schemable<Inf.SchemableLambda> = {
  * @since 2.0.0
  * @category Interpreters
  */
-export const deriveInformation = interpret(InformationSchemable)
+export const deriveInformation: Interpreter<Inf.SchemableLambda> =
+  interpret(InformationSchemable)

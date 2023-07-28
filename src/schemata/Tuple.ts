@@ -2,7 +2,8 @@
 import { pipe, unsafeCoerce } from 'fp-ts/function'
 import * as RA from 'fp-ts/ReadonlyArray'
 import { deriveTypeString } from 'schemata-ts/derivations/type-string-schemable'
-import { type InputOf, type OutputOf, type Schema, make } from 'schemata-ts/Schema'
+import { make } from 'schemata-ts/internal/schema'
+import { type InputOf, type OutputOf, type Schema } from 'schemata-ts/Schema'
 import { ArrayTypeString } from 'schemata-ts/schemables/array/instances/type-string'
 
 /**

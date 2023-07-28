@@ -3,7 +3,8 @@ import { pipe } from 'fp-ts/function'
 import * as RR from 'fp-ts/ReadonlyRecord'
 import { deriveJsonSchema } from 'schemata-ts/derivations/json-schema-schemable'
 import type * as JS from 'schemata-ts/internal/json-schema'
-import { type Schema, make } from 'schemata-ts/Schema'
+import { make } from 'schemata-ts/internal/schema'
+import { type Schema } from 'schemata-ts/Schema'
 
 /**
  * Annotate a Json Schema with title, description, and references.

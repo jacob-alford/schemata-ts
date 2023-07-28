@@ -170,7 +170,7 @@ const makeSchemableInstance: (
 
 const makeInterpreter: (typeclass: SchemableTypeclasses) => ts.VariableStatement = ([
   module,
-  ,
+  accessor,
   version,
 ]) =>
   ts.addSyntheticLeadingComment(
@@ -181,7 +181,15 @@ const makeInterpreter: (typeclass: SchemableTypeclasses) => ts.VariableStatement
           _.createVariableDeclaration(
             _.createIdentifier(`derive${module}`),
             undefined,
-            undefined,
+            _.createTypeReferenceNode(_.createIdentifier('Interpreter'), [
+              _.createTypeReferenceNode(
+                _.createQualifiedName(
+                  _.createIdentifier(accessor),
+                  _.createIdentifier('SchemableLambda'),
+                ),
+                undefined,
+              ),
+            ]),
             _.createCallExpression(_.createIdentifier('interpret'), undefined, [
               _.createIdentifier(`${module}Schemable`),
             ]),
@@ -216,7 +224,7 @@ const makeSchemableInstanceModuleContents: (
       moduleHeaderComment(module, sinceVersion),
       makeModuleStarImport(accessor, `schemata-ts/internal/${paramCase(module)}`),
       makeDestructureImport(['Schemable'], 'schemata-ts/Schemable'),
-      makeDestructureImport(['interpret'], 'schemata-ts/Schema'),
+      makeDestructureImport(['interpret', 'Interpreter'], 'schemata-ts/internal/schema'),
       ...pipe(
         schemables,
         RA.map(([schemable]) =>

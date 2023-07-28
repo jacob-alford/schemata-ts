@@ -1,6 +1,7 @@
 /** @since 1.0.0 */
 import { type Lazy as LazyArg } from 'fp-ts/function'
-import { type Schema, make } from 'schemata-ts/Schema'
+import { make } from 'schemata-ts/internal/schema'
+import { type Schema } from 'schemata-ts/Schema'
 
 /**
  * A lazy schema is a schema for mutual recursive types.

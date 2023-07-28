@@ -1,8 +1,9 @@
 /** @since 1.0.0 */
 import { unsafeCoerce } from 'fp-ts/function'
 import { deriveTypeString } from 'schemata-ts/derivations/type-string-schemable'
+import { make } from 'schemata-ts/internal/schema'
 import { type ImplicitOptional } from 'schemata-ts/internal/struct'
-import { type Schema, make } from 'schemata-ts/Schema'
+import { type Schema } from 'schemata-ts/Schema'
 
 /**
  * A schema that widens a schema to include `undefined`. Also marks the input property of

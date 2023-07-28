@@ -6,7 +6,7 @@
  * @since 2.0.0
  */
 import type * as G from 'schemata-ts/internal/guard'
-import { interpret } from 'schemata-ts/Schema'
+import { type Interpreter, interpret } from 'schemata-ts/internal/schema'
 import { type Schemable } from 'schemata-ts/Schemable'
 import * as annotate from 'schemata-ts/schemables/annotate/instances/guard'
 import * as array from 'schemata-ts/schemables/array/instances/guard'
@@ -50,4 +50,4 @@ const GuardSchemable: Schemable<G.SchemableLambda> = {
  * @since 2.0.0
  * @category Interpreters
  */
-export const deriveGuard = interpret(GuardSchemable)
+export const deriveGuard: Interpreter<G.SchemableLambda> = interpret(GuardSchemable)
