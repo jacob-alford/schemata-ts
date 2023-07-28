@@ -1,5 +1,5 @@
 ---
-title: schemata/Natural.ts
+title: Natural
 nav_order: 49
 parent: schemata
 ---

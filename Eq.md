@@ -149,7 +149,7 @@ Interprets a schema as an `Eq` instance.
 **Signature**
 
 ```ts
-export declare const deriveEq: <E, A>(schema: Schema<E, A>) => I.Eq<A>
+export declare const deriveEq: Interpreter<I.SchemableLambda>
 ```
 
 Added in v2.0.0

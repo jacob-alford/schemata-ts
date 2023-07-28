@@ -1,5 +1,5 @@
 ---
-title: schemata/Ascii.ts
+title: Ascii
 nav_order: 13
 parent: schemata
 ---

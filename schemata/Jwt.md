@@ -1,5 +1,5 @@
 ---
-title: schemata/Jwt.ts
+title: Jwt
 nav_order: 44
 parent: schemata
 ---

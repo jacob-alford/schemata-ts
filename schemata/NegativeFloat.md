@@ -1,5 +1,5 @@
 ---
-title: schemata/NegativeFloat.ts
+title: NegativeFloat
 nav_order: 50
 parent: schemata
 ---

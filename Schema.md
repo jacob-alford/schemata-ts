@@ -14,8 +14,6 @@ Added in v1.0.0
 
 <h2 class="text-delta">Table of contents</h2>
 
-- [Destructors](#destructors)
-  - [interpret](#interpret)
 - [Guards](#guards)
   - [isSchema](#isschema)
 - [Model](#model)
@@ -26,22 +24,6 @@ Added in v1.0.0
   - [TypeOf (type alias)](#typeof-type-alias)
 
 ---
-
-# Destructors
-
-## interpret
-
-Derives a typeclass instance from a Schema by supplying Schemable
-
-**Signature**
-
-```ts
-export declare const interpret: <S extends hkt.SchemableLambda>(
-  S: Schemable<S>
-) => <E, A>(schema: Schema<E, A>) => hkt.SchemableKind<S, E, A>
-```
-
-Added in v1.0.0
 
 # Guards
 

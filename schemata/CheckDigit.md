@@ -1,5 +1,5 @@
 ---
-title: schemata/CheckDigit.ts
+title: CheckDigit
 nav_order: 25
 parent: schemata
 ---

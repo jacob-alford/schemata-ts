@@ -16,17 +16,45 @@ Added in v2.0.0
 
 <h2 class="text-delta">Table of contents</h2>
 
-- [Instances](#instances)
-  - [URI](#uri)
-  - [URI (type alias)](#uri-type-alias)
 - [Interpreters](#interpreters)
   - [deriveTypeString](#derivetypestring)
 - [Model](#model)
   - [TypeString (type alias)](#typestring-type-alias)
+- [URI](#uri)
+  - [URI](#uri-1)
+  - [URI (type alias)](#uri-type-alias)
 
 ---
 
-# Instances
+# Interpreters
+
+## deriveTypeString
+
+Interprets a schema as a type string
+
+**Signature**
+
+```ts
+export declare const deriveTypeString: Interpreter<SchemableLambda>
+```
+
+Added in v2.0.0
+
+# Model
+
+## TypeString (type alias)
+
+Input / Output type strings for a schema
+
+**Signature**
+
+```ts
+export type TypeString<I, O> = Const<readonly [string, string], readonly [I, O]>
+```
+
+Added in v2.0.0
+
+# URI
 
 ## URI
 
@@ -44,34 +72,6 @@ Added in v2.0.0
 
 ```ts
 export type URI = typeof URI
-```
-
-Added in v2.0.0
-
-# Interpreters
-
-## deriveTypeString
-
-Interprets a schema as a type string
-
-**Signature**
-
-```ts
-export declare const deriveTypeString: <E, A>(schema: Schema<E, A>) => Const<readonly [string, string], readonly [E, A]>
-```
-
-Added in v2.0.0
-
-# Model
-
-## TypeString (type alias)
-
-Input / Output type strings for a schema
-
-**Signature**
-
-```ts
-export type TypeString<I, O> = Const<readonly [string, string], readonly [I, O]>
 ```
 
 Added in v2.0.0

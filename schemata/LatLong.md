@@ -1,5 +1,5 @@
 ---
-title: schemata/LatLong.ts
+title: LatLong
 nav_order: 45
 parent: schemata
 ---

@@ -1,5 +1,5 @@
 ---
-title: schemata/DateFromString.ts
+title: DateFromString
 nav_order: 30
 parent: schemata
 ---

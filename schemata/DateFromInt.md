@@ -1,5 +1,5 @@
 ---
-title: schemata/DateFromInt.ts
+title: DateFromInt
 nav_order: 28
 parent: schemata
 ---

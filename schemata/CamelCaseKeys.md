@@ -1,5 +1,5 @@
 ---
-title: schemata/CamelCaseKeys.ts
+title: CamelCaseKeys
 nav_order: 22
 parent: schemata
 ---

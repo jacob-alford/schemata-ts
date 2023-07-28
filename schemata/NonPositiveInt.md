@@ -1,5 +1,5 @@
 ---
-title: schemata/NonPositiveInt.ts
+title: NonPositiveInt
 nav_order: 57
 parent: schemata
 ---

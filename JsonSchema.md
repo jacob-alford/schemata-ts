@@ -26,6 +26,7 @@ Added in v1.2.0
   - [nullSchema](#nullschema)
   - [number](#number)
   - [record](#record)
+  - [ref](#ref)
   - [string](#string)
   - [struct](#struct)
   - [tuple](#tuple)
@@ -37,10 +38,9 @@ Added in v1.2.0
 - [Model](#model)
   - [JsonSchema (type alias)](#jsonschema-type-alias)
   - [JsonSchemaValue (type alias)](#jsonschemavalue-type-alias)
-- [utils](#utils)
-  - [URI](#uri)
+- [URI](#uri)
+  - [URI](#uri-1)
   - [URI (type alias)](#uri-type-alias)
-  - [ref](#ref)
 
 ---
 
@@ -57,6 +57,7 @@ export declare const annotate: (
         readonly title?: string | undefined
         readonly description?: string | undefined
         readonly references?: Readonly<Record<string, JsonSchema>> | undefined
+        readonly deprecated?: boolean | undefined
       }
     | undefined
 ) => (schema: JsonSchema) => Const<JsonSchema, never>
@@ -188,6 +189,18 @@ export declare const record: <A>(additionalProperties: Const<JsonSchema, A>) => 
 
 Added in v1.2.0
 
+## ref
+
+A reference to a schema definition
+
+**Signature**
+
+```ts
+export declare const ref: <A>(ref: string) => Const<JsonSchema, A>
+```
+
+Added in v2.0.0
+
 ## string
 
 **Signature**
@@ -216,22 +229,22 @@ export declare const struct: <A>(
   required?: ReadonlyArray<string>,
   additionalProperties?:
     | false
-    | (I.JsonEmpty & I.Description & I.References)
-    | (I.JsonString & I.Description & I.References)
-    | (I.JsonNumber & I.Description & I.References)
-    | (I.JsonBoolean & I.Description & I.References)
-    | (I.JsonNull & I.Description & I.References)
-    | (I.JsonInteger & I.Description & I.References)
-    | (I.JsonConst & I.Description & I.References)
-    | (I.JsonString & I.JsonConst & I.Description & I.References)
-    | (I.JsonNumber & I.JsonConst & I.Description & I.References)
-    | (I.JsonBoolean & I.JsonConst & I.Description & I.References)
-    | (I.JsonNull & I.JsonConst & I.Description & I.References)
-    | (I.JsonStruct & I.Description & I.References)
-    | (I.JsonArray & I.Description & I.References)
-    | (I.JsonUnion & I.Description & I.References)
-    | (I.JsonIntersection & I.Description & I.References)
-    | (I.JsonRef & I.Description & I.References)
+    | (I.JsonEmpty & I.Description & I.References & I.Default)
+    | (I.JsonString & I.Description & I.References & I.Default)
+    | (I.JsonNumber & I.Description & I.References & I.Default)
+    | (I.JsonBoolean & I.Description & I.References & I.Default)
+    | (I.JsonNull & I.Description & I.References & I.Default)
+    | (I.JsonInteger & I.Description & I.References & I.Default)
+    | (I.JsonConst & I.Description & I.References & I.Default)
+    | (I.JsonString & I.JsonConst & I.Description & I.References & I.Default)
+    | (I.JsonNumber & I.JsonConst & I.Description & I.References & I.Default)
+    | (I.JsonBoolean & I.JsonConst & I.Description & I.References & I.Default)
+    | (I.JsonNull & I.JsonConst & I.Description & I.References & I.Default)
+    | (I.JsonStruct & I.Description & I.References & I.Default)
+    | (I.JsonArray & I.Description & I.References & I.Default)
+    | (I.JsonUnion & I.Description & I.References & I.Default)
+    | (I.JsonIntersection & I.Description & I.References & I.Default)
+    | (I.JsonRef & I.Description & I.References & I.Default)
     | undefined
 ) => Const<JsonSchema, A>
 ```
@@ -301,7 +314,7 @@ Added in v1.2.0
 **Signature**
 
 ```ts
-export type JsonSchema = JsonSchemaValue & I.Description & I.References
+export type JsonSchema = JsonSchemaValue & I.Description & I.References & I.Default
 ```
 
 Added in v1.2.0
@@ -329,7 +342,7 @@ export type JsonSchemaValue =
 
 Added in v1.2.0
 
-# utils
+# URI
 
 ## URI
 
@@ -350,15 +363,3 @@ export type URI = typeof URI
 ```
 
 Added in v1.2.0
-
-## ref
-
-A reference to a schema definition
-
-**Signature**
-
-```ts
-export declare const ref: <A>(ref: string) => Const<JsonSchema, A>
-```
-
-Added in v2.0.0

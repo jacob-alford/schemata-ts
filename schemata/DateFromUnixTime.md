@@ -1,5 +1,5 @@
 ---
-title: schemata/DateFromUnixTime.ts
+title: DateFromUnixTime
 nav_order: 31
 parent: schemata
 ---

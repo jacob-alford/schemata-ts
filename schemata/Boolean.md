@@ -1,5 +1,5 @@
 ---
-title: schemata/Boolean.ts
+title: Boolean
 nav_order: 18
 parent: schemata
 ---

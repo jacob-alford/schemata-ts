@@ -2,7 +2,7 @@
 title: Home
 permalink: /
 has_children: false
-nav_order: 1
+nav_order: 0
 ---
 
 <br>
@@ -19,7 +19,7 @@ nav_order: 1
 </h1>
 
 <p align="center">
-A pipeable TypeScript schema engine and collection of validators inspired by validators.js.
+An all-inclusive schema engine featuring schemata inspired by io-ts and validators.js.  Written for TypeScript with fp-ts
 </p>
 
 <br><br>
@@ -186,7 +186,7 @@ or, (De)Serialization from a Base-64 encoded Json String:
 
 ```ts
 const parsePersonTranscoder: Transcoder<S.Base64, Person> = deriveTranscoder(
-  S.ParseBase64String(PersonSchema),
+  S.ParseBase64Json(PersonSchema),
 )
 ```
 
@@ -223,12 +223,12 @@ const guardPerson: Guard<Person> = deriveGuard(PersonSchema)
 
 ## JSON Schema (Draft 7, 2019-09, and 2020-12)
 
-Json-Schema is a standard for describing JSON data. Schemata-ts can derive Json-Schema from schemas using `deriveJsonSchema` for versions 7, 2019-09, and 2020-12.
+Json-Schema is a standard for describing JSON data. Schemata-ts can derive Json-Schema from schemas using `deriveJsonSchema` for versions Draft-07, 2019-09, and 2020-12.
 
 ```ts
 import { deriveJsonSchema } from 'schemata-ts/JsonSchema'
 
-const personJsonSchema2007 = deriveJsonSchema(PersonSchema, 'Draft-07')
+const personJsonSchemaDraft07 = deriveJsonSchema(PersonSchema, 'Draft-07')
 const personJsonSchema2019 = deriveJsonSchema(PersonSchema)
 const personJsonSchema2020 = deriveJsonSchema(PersonSchema, '2020-12')
 ```

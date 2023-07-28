@@ -98,7 +98,7 @@ Added in v2.0.0
 
 ## foldMapDepthFirst
 
-Flattens a `DecodeError` tree into a common Monoid with access to the current
+Flattens a `DecodeError` tree into a common Semigroup with access to the current
 accumulation and current level of depth
 
 **Signature**
@@ -125,13 +125,13 @@ Draws a tree of `TranscodeErrors` as lines with configurable prefix characters.
 The first argument, `prefix` appends any string or character to a concrete node. The
 depth represents how many generations are between the root node and the current node.
 The total children represents the total number of children the current node has. If a
-node has zero children, it is a concrete node; i.e. type-mismatch, unepexted value, or
+node has zero children, it is a concrete node; i.e. type-mismatch, unexpected value, or
 serialization error. If a node has one or more children, it is a container node; i.e.
 error-at-key, error-at-index, or error-at-union-member.
 
 The second argument, `prefixChildren` appends any string or character to a child node,
 which would have already been prefixed by the first argument. It will be called for
-nodes that have perhapds been prefixed many times.
+nodes that have been prefixed many times.
 
 The third argument, `errorStrings` is a configuration object that can be used to
 override the default error type templates

@@ -1,5 +1,5 @@
 ---
-title: schemata/SetFromArray.ts
+title: SetFromArray
 nav_order: 75
 parent: schemata
 ---

@@ -1,5 +1,5 @@
 ---
-title: schemata/BitcoinAddress.ts
+title: BitcoinAddress
 nav_order: 17
 parent: schemata
 ---

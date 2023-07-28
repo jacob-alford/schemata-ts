@@ -1,5 +1,5 @@
 ---
-title: schemata/NonEmptyArray.ts
+title: NonEmptyArray
 nav_order: 53
 parent: schemata
 ---

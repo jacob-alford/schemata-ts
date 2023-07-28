@@ -37,7 +37,7 @@ Derive a fast-check arbitrary from a schemata-ts schema
 **Signature**
 
 ```ts
-export declare const deriveArbitrary: <E, A>(schema: Schema<E, A>) => Arbitrary<A>
+export declare const deriveArbitrary: Interpreter<SchemableLambda>
 ```
 
 Added in v2.0.0

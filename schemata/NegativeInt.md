@@ -1,5 +1,5 @@
 ---
-title: schemata/NegativeInt.ts
+title: NegativeInt
 nav_order: 51
 parent: schemata
 ---

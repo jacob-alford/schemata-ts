@@ -1,5 +1,5 @@
 ---
-title: schemata/PositiveInt.ts
+title: PositiveInt
 nav_order: 70
 parent: schemata
 ---

@@ -1,5 +1,5 @@
 ---
-title: schemata/EthereumAddress.ts
+title: EthereumAddress
 nav_order: 33
 parent: schemata
 ---

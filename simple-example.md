@@ -1,7 +1,7 @@
 ---
 title: Simple Example
-nav_order: 89
-permalink: /simple-example/
+nav_order: 100
+parent: Examples
 ---
 
 # Simple Example
@@ -53,7 +53,7 @@ const Person = S.Struct({
 
 > Use `S.InputOf` to extract the underlying input type, and `S.OutputOf` to extract the underlying output type.
 
-The `Person` schema has nearly identical input/output types, with one exception. The `favoriteColor` key, may be present or not with the input type, but will always be present in the output type.
+The `Person` schema has nearly identical input/output types, with one exception. The `favoriteColor` key may be present or not in the input type, but will always be present in the output type.
 
 <!-- AUTO-GENERATED-CONTENT:START (CODE:src=../examples/simple-example.ts&lines=24-36) -->
 <!-- The below code snippet is automatically added from ../examples/simple-example.ts -->
@@ -238,7 +238,7 @@ assert.deepStrictEqual(
 
 > Use `deriveEq` to interpret the schema as an `Eq`
 
-`Eq` insteances s are used to determine if two values of the expected output type are equal.  Which are essentially a schema-tailored deep-merge.
+`Eq` instances are used to determine if two values of the output type are equal.  Which is in essence a schema-tailored equality check.
 
 <!-- AUTO-GENERATED-CONTENT:START (CODE:src=../examples/simple-example.ts&lines=155-172) -->
 <!-- The below code snippet is automatically added from ../examples/simple-example.ts -->

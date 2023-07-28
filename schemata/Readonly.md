@@ -1,5 +1,5 @@
 ---
-title: schemata/Readonly.ts
+title: Readonly
 nav_order: 71
 parent: schemata
 ---

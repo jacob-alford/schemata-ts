@@ -1,5 +1,5 @@
 ---
-title: schemata/Record.ts
+title: Record
 nav_order: 72
 parent: schemata
 ---

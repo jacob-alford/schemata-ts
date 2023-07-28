@@ -1,5 +1,5 @@
 ---
-title: schemata/UUID.ts
+title: UUID
 nav_order: 84
 parent: schemata
 ---

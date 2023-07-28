@@ -1,5 +1,5 @@
 ---
-title: schemata/EmailAddress.ts
+title: EmailAddress
 nav_order: 32
 parent: schemata
 ---

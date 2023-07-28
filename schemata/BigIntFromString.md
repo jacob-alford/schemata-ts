@@ -1,5 +1,5 @@
 ---
-title: schemata/BigIntFromString.ts
+title: BigIntFromString
 nav_order: 16
 parent: schemata
 ---

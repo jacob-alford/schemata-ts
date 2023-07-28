@@ -1,5 +1,5 @@
 ---
-title: schemata/HslColor.ts
+title: HslColor
 nav_order: 38
 parent: schemata
 ---

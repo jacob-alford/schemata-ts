@@ -1,5 +1,5 @@
 ---
-title: schemata/ParseBase64Json.ts
+title: ParseBase64Json
 nav_order: 64
 parent: schemata
 ---

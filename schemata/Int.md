@@ -1,5 +1,5 @@
 ---
-title: schemata/Int.ts
+title: Int
 nav_order: 41
 parent: schemata
 ---

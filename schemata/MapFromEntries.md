@@ -1,5 +1,5 @@
 ---
-title: schemata/MapFromEntries.ts
+title: MapFromEntries
 nav_order: 48
 parent: schemata
 ---

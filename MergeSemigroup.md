@@ -36,7 +36,7 @@ Interprets a schema as a MergeSemigroup
 **Signature**
 
 ```ts
-export declare const deriveMergeSemigroup: <E, A>(schema: Schema<E, A>) => MergeSemigroup<A>
+export declare const deriveMergeSemigroup: Interpreter<SchemableLambda>
 ```
 
 Added in v2.0.0

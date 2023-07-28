@@ -1,5 +1,5 @@
 ---
-title: schemata/Literal.ts
+title: Literal
 nav_order: 47
 parent: schemata
 ---

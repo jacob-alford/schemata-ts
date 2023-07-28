@@ -1,5 +1,5 @@
 ---
-title: schemata/Annotate.ts
+title: Annotate
 nav_order: 11
 parent: schemata
 ---
@@ -36,6 +36,7 @@ export declare const Annotate: <Refs extends Readonly<Record<string, Schema<any,
   readonly references?: Refs | undefined
   readonly typeString?: string | readonly [string, string] | undefined
   readonly readOnly?: boolean | undefined
+  readonly deprecated?: boolean | undefined
 }) => <O, A>(schema: Schema<O, A>) => Schema<O, A>
 ```
 

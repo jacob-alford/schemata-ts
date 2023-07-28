@@ -1,5 +1,5 @@
 ---
-title: schemata/NonEmptyString.ts
+title: NonEmptyString
 nav_order: 54
 parent: schemata
 ---

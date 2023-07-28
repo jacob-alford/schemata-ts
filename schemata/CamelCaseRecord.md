@@ -1,5 +1,5 @@
 ---
-title: schemata/CamelCaseRecord.ts
+title: CamelCaseRecord
 nav_order: 23
 parent: schemata
 ---

@@ -1,5 +1,5 @@
 ---
-title: schemata/Lazy.ts
+title: Lazy
 nav_order: 46
 parent: schemata
 ---

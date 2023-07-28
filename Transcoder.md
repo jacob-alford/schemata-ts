@@ -41,7 +41,6 @@ Added in v2.0.0
   - [Transcoder (interface)](#transcoder-interface)
 - [URI](#uri)
   - [URI](#uri-1)
-- [utils](#utils)
   - [URI (type alias)](#uri-type-alias)
 
 ---
@@ -240,8 +239,6 @@ export declare const URI: 'schemata-ts/Transcoder'
 ```
 
 Added in v2.0.0
-
-# utils
 
 ## URI (type alias)
 

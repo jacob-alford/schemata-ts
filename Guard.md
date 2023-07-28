@@ -50,7 +50,7 @@ Interprets a schema as a decoder
 **Signature**
 
 ```ts
-export declare const deriveGuard: <E, A>(schema: Schema<E, A>) => I.Guard<A>
+export declare const deriveGuard: Interpreter<I.SchemableLambda>
 ```
 
 Added in v2.0.0
