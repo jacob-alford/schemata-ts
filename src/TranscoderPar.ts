@@ -66,13 +66,13 @@ export const deriveTranscoderPar: <I, O>(schema: Schema<I, O>) => TranscoderPar<
 
 /**
  * @since 2.0.0
- * @cateogry URI
+ * @category URI
  */
 export const URI = 'schemata-ts/TranscoderPar'
 
 /**
  * @since 2.0.0
- * @cateogry URI
+ * @category URI
  */
 export type URI = typeof URI
 

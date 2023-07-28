@@ -29,8 +29,8 @@ Added in v2.0.0
   - [deriveTranscoderPar](#derivetranscoderpar)
 - [Model](#model)
   - [TranscoderPar (interface)](#transcoderpar-interface)
-- [utils](#utils)
-  - [URI](#uri)
+- [URI](#uri)
+  - [URI](#uri-1)
   - [URI (type alias)](#uri-type-alias)
 
 ---
@@ -110,7 +110,7 @@ export interface TranscoderPar<I, O> {
 
 Added in v2.0.0
 
-# utils
+# URI
 
 ## URI
 

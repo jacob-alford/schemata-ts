@@ -159,7 +159,7 @@ export const URI = 'schemata-ts/Transcoder'
 
 /**
  * @since 2.0.0
- * @cateogry URI
+ * @category URI
  */
 export type URI = typeof URI
 

@@ -26,6 +26,7 @@ Added in v1.2.0
   - [nullSchema](#nullschema)
   - [number](#number)
   - [record](#record)
+  - [ref](#ref)
   - [string](#string)
   - [struct](#struct)
   - [tuple](#tuple)
@@ -37,10 +38,9 @@ Added in v1.2.0
 - [Model](#model)
   - [JsonSchema (type alias)](#jsonschema-type-alias)
   - [JsonSchemaValue (type alias)](#jsonschemavalue-type-alias)
-- [utils](#utils)
-  - [URI](#uri)
+- [URI](#uri)
+  - [URI](#uri-1)
   - [URI (type alias)](#uri-type-alias)
-  - [ref](#ref)
 
 ---
 
@@ -189,6 +189,18 @@ export declare const record: <A>(additionalProperties: Const<JsonSchema, A>) => 
 
 Added in v1.2.0
 
+## ref
+
+A reference to a schema definition
+
+**Signature**
+
+```ts
+export declare const ref: <A>(ref: string) => Const<JsonSchema, A>
+```
+
+Added in v2.0.0
+
 ## string
 
 **Signature**
@@ -330,7 +342,7 @@ export type JsonSchemaValue =
 
 Added in v1.2.0
 
-# utils
+# URI
 
 ## URI
 
@@ -351,15 +363,3 @@ export type URI = typeof URI
 ```
 
 Added in v1.2.0
-
-## ref
-
-A reference to a schema definition
-
-**Signature**
-
-```ts
-export declare const ref: <A>(ref: string) => Const<JsonSchema, A>
-```
-
-Added in v2.0.0

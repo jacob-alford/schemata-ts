@@ -1,7 +1,7 @@
 {
   "name": "schemata-ts",
   "version": "2.0.0",
-  "description": "A TypeScript schema engine written with fp-ts and a collection of schemata inspired by io-ts and validators.js",
+  "description": "An all-inclusive schema engine featuring schemata inspired by io-ts and validators.js.  Written for TypeScript with fp-ts",
   "homepage": "https://jacob-alford.github.io/schemata-ts/",
   "repository": {
     "type": "git",

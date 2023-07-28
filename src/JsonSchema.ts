@@ -231,14 +231,28 @@ export const intersection =
   <A>(left: Const<JsonSchema, A>): Const<JsonSchema, A & B> =>
     make(new I.JsonIntersection([left, right]))
 
+/**
+ * A reference to a schema definition
+ *
+ * @since 2.0.0
+ * @category Constructors
+ */
+export const ref = <A>(ref: string): Const<JsonSchema, A> => make(new I.JsonRef(ref))
+
 // -------------------------------------------------------------------------------------
 // Instances
 // -------------------------------------------------------------------------------------
 
-/** @since 1.2.0 */
+/**
+ * @since 1.2.0
+ * @category URI
+ */
 export const URI = 'schemata-ts/JsonSchema'
 
-/** @since 1.2.0 */
+/**
+ * @since 1.2.0
+ * @category URI
+ */
 export type URI = typeof URI
 
 declare module 'fp-ts/lib/HKT' {
@@ -274,13 +288,6 @@ export const annotate: (params?: {
           ...(references === undefined ? {} : { $defs: references }),
           ...(deprecated === undefined ? {} : { deprecated }),
         })
-
-/**
- * A reference to a schema definition
- *
- * @since 2.0.0
- */
-export const ref = <A>(ref: string): Const<JsonSchema, A> => make(new I.JsonRef(ref))
 
 // -------------------------------------------------------------------------------------
 // Destructors
