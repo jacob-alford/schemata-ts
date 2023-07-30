@@ -8,9 +8,9 @@ nav_order: 0
 <br>
 <div align="center">
   <picture>
-    <source media="(prefers-color-scheme: light)" srcset="https://raw.githubusercontent.com/jacob-alford/schemata-ts/v2-reorg/assets/schemata-purple.png">
-    <source media="(prefers-color-scheme: dark)" srcset="https://raw.githubusercontent.com/jacob-alford/schemata-ts/v2-reorg/assets/schemata-white.png">
-    <img alt="schemata-ts" src="https://raw.githubusercontent.com/jacob-alford/schemata-ts/v2-reorg/assets/schemata-blue.png">
+    <source media="(prefers-color-scheme: light)" srcset="https://raw.githubusercontent.com/jacob-alford/schemata-ts/main/assets/schemata-purple.png">
+    <source media="(prefers-color-scheme: dark)" srcset="https://raw.githubusercontent.com/jacob-alford/schemata-ts/main/assets/schemata-white.png">
+    <img alt="schemata-ts" src="https://raw.githubusercontent.com/jacob-alford/schemata-ts/main/assets/schemata-blue.png">
   </picture>
 </div>
 <br>
