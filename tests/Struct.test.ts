@@ -248,6 +248,24 @@ runStandardTestSuite(Schema, _ => ({
   eqTests: [
     _.eq.disequate(
       {
+        a: _.c(100),
+        b: Number.MAX_VALUE as Float,
+        c: true,
+        d: testDate,
+        e: undefined,
+        f: 'a',
+      },
+      {
+        a: _.c(100),
+        b: Number.MAX_VALUE as Float,
+        c: true,
+        d: testDate,
+        e: undefined,
+        f: 'a',
+      },
+    ),
+    _.eq.disequate(
+      {
         a: 'a',
         b: Number.MAX_VALUE as Float,
         c: true,
