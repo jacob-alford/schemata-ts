@@ -60,42 +60,6 @@ export const GuardedUnionTranscoderPar: WithGuardedUnion<TCP.SchemableLambda> = 
             ),
           ),
         ),
-      // pipe(
-      //   sortedMembers,
-      //   RA.wither(TE.ApplicativePar)(({ member }) =>
-      //     pipe(
-      //       member.decode(u),
-      //       TE.map(O.some),
-      //       TE.orElseW(() => TE.right(O.none)),
-      //     ),
-      //   ),
-      //   TE.chain(
-      //     flow(
-      //       RNEA.fromReadonlyArray,
-      //       O.fold(
-      //         () =>
-      //           pipe(
-      //             sortedMembers,
-      //             RNEA.mapWithIndex((i, { name }) =>
-      //               TC.errorAtUnionMember(
-      //                 i,
-      //                 TC.transcodeErrors(TC.typeMismatch(name, u)),
-      //               ),
-      //             ),
-      //             errs =>
-      //               TC.transcodeErrors(
-      //                 ...(errs as [
-      //                   TCE.TranscodeError,
-      //                   ...ReadonlyArray<TCE.TranscodeError>,
-      //                 ]),
-      //               ),
-      //             TCP.failure,
-      //           ),
-      //         flow(RNEA.head, TCP.success),
-      //       ),
-      //     ),
-      //   ),
-      // ),
     }
   },
 }

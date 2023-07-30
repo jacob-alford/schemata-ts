@@ -28,7 +28,6 @@ export const StructEq: WithStruct<Eq.SchemableLambda> = {
               return member.equals(x[key], y[key])
             }
           }
-          // istanbul ignore next
           return false
         }),
       )

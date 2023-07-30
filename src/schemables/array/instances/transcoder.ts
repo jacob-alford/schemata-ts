@@ -11,7 +11,6 @@ const validateArray = (name: string) =>
   )
 
 export const ArrayTranscoder: WithArray<TC.SchemableLambda> = {
-  // istanbul ignore next
   array: params => {
     const { minLength = 0, maxLength = 2 ** 32 - 2, expectedName } = params
     return item => ({
@@ -22,7 +21,6 @@ export const ArrayTranscoder: WithArray<TC.SchemableLambda> = {
         ),
       ),
       decode: flow(
-        // istanbul ignore next
         validateArray(expectedName),
         E.chain(u =>
           pipe(
@@ -30,10 +28,7 @@ export const ArrayTranscoder: WithArray<TC.SchemableLambda> = {
             E.fromPredicate(
               u => u.length >= minLength && u.length <= maxLength,
               u =>
-                TC.transcodeErrors(
-                  // istanbul ignore next
-                  TC.typeMismatch(expectedName, `Array(${u.length})`),
-                ),
+                TC.transcodeErrors(TC.typeMismatch(expectedName, `Array(${u.length})`)),
             ),
             TC.apSecond(
               pipe(
