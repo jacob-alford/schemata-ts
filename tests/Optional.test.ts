@@ -24,8 +24,8 @@ runStandardTestSuite(OptionalWithDefault, _ => ({
       ),
     ),
   ],
-  encoderTests: [_.encoder.pass('string'), _.encoder.pass(_.c(undefined), undefined)],
-  guardTests: [_.guard.is('string'), _.guard.is(undefined)],
+  encoderTests: [_.encoder.pass('string')],
+  guardTests: [_.guard.is('string'), _.guard.isNot(undefined)],
   eqTests: [],
   jsonSchema: {
     type: 'string',
