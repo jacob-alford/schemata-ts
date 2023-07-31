@@ -5,6 +5,7 @@
  */
 import { constant, pipe } from 'fp-ts/function'
 import * as N from 'fp-ts/number'
+import * as O from 'fp-ts/Option'
 import * as RA from 'fp-ts/ReadonlyArray'
 import * as RNEA from 'fp-ts/ReadonlyNonEmptyArray'
 import type * as Sg from 'fp-ts/Semigroup'
@@ -253,12 +254,12 @@ export const prefixedLines = (
 ): ((err: TranscodeErrors) => RNEA.ReadonlyNonEmptyArray<string>) => {
   const {
     TypeMismatch = (expected, actual) =>
-      `Expected ${expected} but got \`${String(actual)}\``,
-    UnexpectedValue = actual => `Unexpected value: \`${String(actual)}\``,
+      `Expected ${expected} but got ${safeShow(actual)}`,
+    UnexpectedValue = actual => `Unexpected value: ${safeShow(actual)}`,
     SerializationError = (expected, error, actual) =>
-      `Expected ${expected}, but ran into serialization error: \`${String(
+      `Expected ${expected}, but ran into serialization error: ${safeShow(
         error,
-      )}\`; got ${actual}`,
+      )}; got ${safeShow(actual)}`,
     ErrorAtIndex = index => `at index ${index}:`,
     ErrorAtKey = key => `at key ${key}:`,
     ErrorAtUnionMember = member => `at union member \`${member}\`:`,
@@ -364,9 +365,7 @@ export const drawTree: (
     _ =>
       `${
         showHeading
-          ? `Encountered ${totalErrors(errors)} transcode error${
-              errorCount === 1 ? '' : 's'
-            }:\n`
+          ? `Encountered ${errorCount} transcode error${errorCount === 1 ? '' : 's'}:\n`
           : ''
       }${_}`,
   )
@@ -379,3 +378,25 @@ export const drawTree: (
  * @category Destructors
  */
 export const draw: (errors: TranscodeErrors) => string = drawTree
+
+/** @internal */
+const typeOf = (a: unknown): string => {
+  if (Array.isArray(a)) return 'Array'
+  return typeof a
+}
+
+/** @internal */
+const safeShow = (a: unknown): string => {
+  if (a instanceof Error || typeof a === 'symbol') return String(a)
+  if (typeof a === 'string') return `"${a}"`
+  if (typeof a === 'bigint') return `${a}n`
+  if (a instanceof Map) return `Map(${a.size})`
+  if (a instanceof Set) return `Set(${a.size})`
+  if (typeof a === 'function')
+    return `[Function ${a.name === '' ? '(anonymous)' : a.name}]`
+  const tA = typeOf(a)
+  return pipe(
+    O.tryCatch(() => JSON.stringify(a, null, 1)),
+    O.getOrElse(() => `[Circular ${tA}]`),
+  )
+}
