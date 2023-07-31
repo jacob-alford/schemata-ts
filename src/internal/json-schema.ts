@@ -104,6 +104,7 @@ export class JsonStruct {
     readonly properties: Readonly<Record<string, JsonSchema>>,
     readonly required: ReadonlyArray<string>,
     readonly additionalProperties?: JsonSchema | false,
+    readonly propertyNames?: JsonSchema,
   ) {}
 }
 

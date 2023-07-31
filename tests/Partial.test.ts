@@ -26,6 +26,7 @@ const Schema = S.Annotate({
 const expectedJsonSchema = JS.annotate({
   title: 'Test Schema',
   description: 'This is a test schema',
+  readOnly: true,
 })(
   JS.struct({
     a: JS.array({ minItems: 1 })(JS.string()),

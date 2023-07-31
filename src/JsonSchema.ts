@@ -185,8 +185,11 @@ export const struct = <A>(
  */
 export const record = <A>(
   additionalProperties: Const<JsonSchema, A>,
+  propertyNames?: Const<JsonSchema, string>,
 ): Const<JsonSchema, Record<string, A>> =>
-  make(new I.JsonStruct(new I.JsonEmpty() as any, [], additionalProperties))
+  make(
+    new I.JsonStruct(new I.JsonEmpty() as any, [], additionalProperties, propertyNames),
+  )
 
 /**
  * @since 1.2.0
@@ -276,8 +279,9 @@ export const annotate: (params?: {
   readonly description?: string
   readonly references?: RR.ReadonlyRecord<string, JsonSchema>
   readonly deprecated?: boolean
+  readonly readOnly?: boolean
 }) => (schema: JsonSchema) => Const<JsonSchema, never> =
-  ({ title, description, references, deprecated } = {}) =>
+  ({ title, description, references, deprecated, readOnly } = {}) =>
   schema =>
     title === undefined && description === undefined && references === undefined
       ? make(schema)
@@ -287,6 +291,7 @@ export const annotate: (params?: {
           ...(description === undefined ? {} : { description }),
           ...(references === undefined ? {} : { $defs: references }),
           ...(deprecated === undefined ? {} : { deprecated }),
+          ...(readOnly === undefined ? {} : { readOnly }),
         })
 
 // -------------------------------------------------------------------------------------

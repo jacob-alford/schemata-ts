@@ -7,7 +7,7 @@ export const AnnotateJsonSchema: WithAnnotate<JS.SchemableLambda> = {
   annotate:
     params =>
     <O>(inner: Const<JS.JsonSchema, O>): Const<JS.JsonSchema, O> => {
-      const { title, description, references, deprecated } = params
+      const { title, description, references, deprecated, readOnly } = params
       if (title === undefined && description === undefined && references === undefined)
         return inner
       return pipe(
@@ -17,6 +17,7 @@ export const AnnotateJsonSchema: WithAnnotate<JS.SchemableLambda> = {
               ...(title === undefined ? {} : { title }),
               ...(description === undefined ? {} : { description }),
               ...(deprecated === undefined ? {} : { deprecated }),
+              ...(readOnly === undefined ? {} : { readOnly }),
             })
           : identity,
         references !== undefined ? JS.addReferences({ $defs: references }) : identity,
