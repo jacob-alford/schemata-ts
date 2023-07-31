@@ -29,15 +29,21 @@ export const earliestSafeDate = new Date(smallestSafeMs)
 /** @internal */
 export const latestSafeDate = new Date(largestSafeMs)
 
-// istanbul ignore next
-export const getDateBoundsStr: (
-  params?: DateParams,
-  lchar?: string,
-  rchar?: string,
-) => string = (params = {}, lchar = '<', rchar = '>') => {
+export const getDateBoundsStr: (params?: DateParams) => string = (
+  // istanbul ignore next
+  params = {},
+) => {
   const { afterDate, beforeDate } = params
   if (afterDate === undefined && beforeDate === undefined) return ''
+  // istanbul ignore next
   const beforeDateStr = beforeDate?.toISOString()
+  // istanbul ignore next
   const afterDateStr = afterDate?.toISOString()
-  return `${lchar}${afterDateStr ?? ''},${beforeDateStr ?? ''}${rchar}`
+  return `<${
+    // istanbul ignore next
+    afterDateStr ?? ''
+  },${
+    // istanbul ignore next
+    beforeDateStr ?? ''
+  }>`
 }

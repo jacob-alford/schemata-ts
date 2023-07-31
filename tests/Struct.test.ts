@@ -72,6 +72,30 @@ const testDate = new Date() as SafeDate
 
 runStandardTestSuite(Schema, _ => ({
   decoderTests: [
+    _.decoder.fail(null, () =>
+      TC.transcodeErrors(
+        TC.typeMismatch(
+          '{ a?: null | string?, b: Float, c: boolean, d: Float<-8640000000000,8640000000000>, e?: Integer<0,2>?, f?: string | Float | null | DateString? }',
+          null,
+        ),
+      ),
+    ),
+    _.decoder.fail([], () =>
+      TC.transcodeErrors(
+        TC.typeMismatch(
+          '{ a?: null | string?, b: Float, c: boolean, d: Float<-8640000000000,8640000000000>, e?: Integer<0,2>?, f?: string | Float | null | DateString? }',
+          [],
+        ),
+      ),
+    ),
+    _.decoder.fail(NaN, () =>
+      TC.transcodeErrors(
+        TC.typeMismatch(
+          '{ a?: null | string?, b: Float, c: boolean, d: Float<-8640000000000,8640000000000>, e?: Integer<0,2>?, f?: string | Float | null | DateString? }',
+          NaN,
+        ),
+      ),
+    ),
     _.decoder.pass(
       {
         a: 'a',
@@ -322,3 +346,10 @@ runStandardTestSuite(Schema, _ => ({
   jsonSchema: expectedJsonSchema,
   typeString: expectedTypeString,
 }))()
+
+const IgnoresInheritedProps = S.Struct({
+  a: S.String(),
+  __proto__: { 'who-cares': 'extra-param' },
+} as { a: S.Schema<string, string> })
+
+runStandardTestSuite(IgnoresInheritedProps)()

@@ -26,6 +26,6 @@ runStandardTestSuite(Schema, _ => ({
       },
     ),
   ],
-  jsonSchema: JS.record(JS.tuple(JS.string(), JS.number())),
+  jsonSchema: JS.record(JS.tuple(JS.string(), JS.number()), JS.string()),
   typeString: 'Record<string, [string, Float]>',
 }))()

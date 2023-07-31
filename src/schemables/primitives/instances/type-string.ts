@@ -13,8 +13,8 @@ import {
 export const PrimitivesTypeString: WithPrimitives<SchemableLambda> = {
   string: (params = {}) =>
     makeTypeString(`string${getLengthBoundsString(params, '<', '>')}`),
-  int: (params = {}) => makeTypeString(`Integer${getNumberBoundsInt(params, '<', '>')}`),
-  float: (params = {}) => makeTypeString(`Float${getNumberBoundsInt(params, '<', '>')}`),
+  int: (params = {}) => makeTypeString(`Integer${getNumberBoundsInt(params)}`),
+  float: (params = {}) => makeTypeString(`Float${getNumberBoundsInt(params)}`),
   boolean: makeTypeString('boolean'),
   unknown: makeTypeString('unknown'),
   literal: (...items) =>

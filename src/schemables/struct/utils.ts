@@ -84,7 +84,6 @@ export const getValidateObject: <M extends URIS2>(
 ) => Kind2<M, TranscodeErrors, Record<string | number | symbol, unknown>> =
   M => name => u => {
     if (u === null || typeof u !== 'object' || Array.isArray(u)) {
-      // istanbul ignore next
       return M.throwError(TC.transcodeErrors(TC.typeMismatch(name, u)))
     }
     return M.of(u as Record<string | number | symbol, unknown>)
