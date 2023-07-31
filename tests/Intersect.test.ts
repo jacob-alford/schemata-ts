@@ -33,7 +33,7 @@ const expectedJsonSchema = JS.annotate({
   title: 'Parser-Intersection',
   deprecated: true,
 })(
-  JS.intersection(JS.record(JS.string()))(
+  JS.intersection(JS.record(JS.string(), JS.string()))(
     JS.struct(
       {
         a: JS.string(),

@@ -60,13 +60,11 @@ export const getLengthBoundsString: (
   return `${lchar}${minLength ?? ''},${maxLength ?? ''}${rchar}`
 }
 
-// istanbul ignore next
-export const getNumberBoundsInt: (
-  params?: NumberParams<any, any>,
-  lchar?: string,
-  rchar?: string,
-) => string = (params = {}, lchar = '<', rchar = '>') => {
+export const getNumberBoundsInt: (params?: NumberParams<any, any>) => string = (
+  // istanbul ignore next
+  params = {},
+) => {
   const { min, max } = params
   if (min === undefined && max === undefined) return ''
-  return `${lchar}${min ?? ''},${max ?? ''}${rchar}`
+  return `<${min ?? ''},${max ?? ''}>`
 }

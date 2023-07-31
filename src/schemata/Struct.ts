@@ -14,6 +14,7 @@ import {
 } from 'schemata-ts/internal/schema'
 import { type SchemableKind, type SchemableLambda } from 'schemata-ts/internal/schemable'
 import type * as TS from 'schemata-ts/internal/type-string'
+import { hasOwn } from 'schemata-ts/internal/util'
 import { type Schema } from 'schemata-ts/Schema'
 import { StructTypeString } from 'schemata-ts/schemables/struct/instances/type-string'
 import type * as s from 'schemata-ts/schemables/struct/type-utils'
@@ -46,6 +47,7 @@ export const Struct = <
       const structName: Record<string, s.StructProp<TS.SchemableLambda>> = {}
 
       for (const key in props) {
+        if (!hasOwn(props, key)) continue
         // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
         const schema = props[key]!
         const schemable: SchemableKind<SchemableLambda, unknown, unknown> =

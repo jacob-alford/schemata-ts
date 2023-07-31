@@ -21,6 +21,7 @@ const expectedJsonSchema = JS.record(
     },
     ['a', 'b'],
   ),
+  JS.string(),
 )
 
 const expectedTypeString = `Record<string, { a: { quux: Integer }, b: Array<string> }>`

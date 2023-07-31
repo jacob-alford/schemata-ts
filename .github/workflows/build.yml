@@ -30,7 +30,6 @@ jobs:
       - run: yarn run eslint
       - run: yarn run test:ci
       - name: Add coverage
-        if: github.ref == 'refs/heads/main'
         uses: coverallsapp/github-action@1.1.3
         env:
           NODE_COVERALLS_DEBUG: 1

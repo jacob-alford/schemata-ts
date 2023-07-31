@@ -17,7 +17,7 @@ runStandardTestSuite(
       _.decoder.pass(undefined),
       _.decoder.pass(NaN),
     ],
-    encoderTests: [],
+    encoderTests: [_.encoder.pass(Number.NaN)],
     guardTests: [],
     eqTests: [],
     jsonSchema: JS.emptySchema,
