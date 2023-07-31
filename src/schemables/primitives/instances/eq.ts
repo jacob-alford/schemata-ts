@@ -13,8 +13,7 @@ export const PrimitivesEq: WithPrimitives<Eq.SchemableLambda> = {
     return Eq.fromEquals((x, y) => Math.abs(x - y) <= (epsilon ?? 2000 * Number.EPSILON))
   },
   boolean: B.Eq,
-  unknown: Eq.fromEquals((x: unknown, y: unknown) =>
-    Number.isNaN(x) && Number.isNaN(y) ? true : x === y,
-  ),
+  // note: `fromEquals` first applies the equality check, which fails for NaN
+  unknown: Eq.fromEquals((x, y) => Number.isNaN(x) && Number.isNaN(y)),
   literal: constant(Eq.eqStrict),
 }
