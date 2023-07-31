@@ -387,7 +387,12 @@ const typeOf = (a: unknown): string => {
 
 /** @internal */
 const safeShow = (a: unknown): string => {
-  if (a instanceof Error || typeof a === 'symbol') return String(a)
+  if (
+    a instanceof Error ||
+    typeof a === 'symbol' ||
+    (typeof a === 'number' && (Number.isNaN(a) || !Number.isFinite(a)))
+  )
+    return String(a)
   if (typeof a === 'string') return `"${a}"`
   if (typeof a === 'bigint') return `${a}n`
   if (a instanceof Map) return `Map(${a.size})`

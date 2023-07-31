@@ -136,4 +136,16 @@ describe('transcode errors', () => {
 ─ Expected string but got Symbol(NS: Foo)`,
     )
   })
+  it('handles bad numbers', () => {
+    const testError = TC.transcodeErrors(
+      TC.typeMismatch('string', NaN),
+      TC.typeMismatch('string', Infinity),
+      TC.typeMismatch('string', -Infinity),
+    )
+    expect(drawTree(testError, { showHeading: false })).toBe(
+      `─ Expected string but got NaN
+─ Expected string but got Infinity
+─ Expected string but got -Infinity`,
+    )
+  })
 })
