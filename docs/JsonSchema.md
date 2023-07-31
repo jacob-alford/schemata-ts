@@ -58,6 +58,7 @@ export declare const annotate: (
         readonly description?: string | undefined
         readonly references?: Readonly<Record<string, JsonSchema>> | undefined
         readonly deprecated?: boolean | undefined
+        readonly readOnly?: boolean | undefined
       }
     | undefined
 ) => (schema: JsonSchema) => Const<JsonSchema, never>
@@ -184,7 +185,27 @@ Added in v1.2.0
 **Signature**
 
 ```ts
-export declare const record: <A>(additionalProperties: Const<JsonSchema, A>) => Const<JsonSchema, Record<string, A>>
+export declare const record: <A>(
+  additionalProperties: Const<JsonSchema, A>,
+  propertyNames?:
+    | (I.JsonEmpty & I.Description & I.References & I.Default & { readonly _A: string })
+    | (I.JsonString & I.Description & I.References & I.Default & { readonly _A: string })
+    | (I.JsonNumber & I.Description & I.References & I.Default & { readonly _A: string })
+    | (I.JsonBoolean & I.Description & I.References & I.Default & { readonly _A: string })
+    | (I.JsonNull & I.Description & I.References & I.Default & { readonly _A: string })
+    | (I.JsonInteger & I.Description & I.References & I.Default & { readonly _A: string })
+    | (I.JsonConst & I.Description & I.References & I.Default & { readonly _A: string })
+    | (I.JsonString & I.JsonConst & I.Description & I.References & I.Default & { readonly _A: string })
+    | (I.JsonNumber & I.JsonConst & I.Description & I.References & I.Default & { readonly _A: string })
+    | (I.JsonBoolean & I.JsonConst & I.Description & I.References & I.Default & { readonly _A: string })
+    | (I.JsonNull & I.JsonConst & I.Description & I.References & I.Default & { readonly _A: string })
+    | (I.JsonStruct & I.Description & I.References & I.Default & { readonly _A: string })
+    | (I.JsonArray & I.Description & I.References & I.Default & { readonly _A: string })
+    | (I.JsonUnion & I.Description & I.References & I.Default & { readonly _A: string })
+    | (I.JsonIntersection & I.Description & I.References & I.Default & { readonly _A: string })
+    | (I.JsonRef & I.Description & I.References & I.Default & { readonly _A: string })
+    | undefined
+) => Const<JsonSchema, Record<string, A>>
 ```
 
 Added in v1.2.0
