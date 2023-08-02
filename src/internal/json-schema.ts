@@ -1,6 +1,6 @@
 import { type Const, make as make_ } from 'fp-ts/Const'
 import type * as RNEA from 'fp-ts/ReadonlyNonEmptyArray'
-import type * as RR from 'fp-ts/ReadonlyRecord'
+import * as RR from 'fp-ts/ReadonlyRecord'
 import type * as hkt from 'schemata-ts/internal/schemable'
 
 export type JsonSchemaValue =
@@ -153,55 +153,91 @@ export interface SchemableLambda extends hkt.SchemableLambda {
 
 const remapRecurse: (
   method: (schema: JsonSchema) => JsonSchema,
+  defs?: '$defs' | 'definitions',
 ) => (schema: JsonSchema) => JsonSchema = method => schema => {
+  if ('contentSchema' in schema) {
+    const { contentSchema, ...rest } = schema
+    return {
+      ...method(rest),
+      contentSchema: contentSchema === undefined ? undefined : method(contentSchema),
+    }
+  }
   if (schema instanceof JsonStruct || 'properties' in schema) {
     const mapped: Record<string, JsonSchema> = {}
-    const properties = schema.properties as Record<string, JsonSchema>
+    const { properties, additionalProperties, ...rest } = schema as JsonStruct
+    const keySchema = (schema as JsonStruct).propertyNames
     for (const key in properties) {
       // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
       const inner = properties[key]!
       mapped[key] = method(inner)
     }
-    return { ...schema, properties: mapped }
+    return {
+      ...method(rest),
+      properties: mapped,
+      ...(additionalProperties === undefined
+        ? {}
+        : {
+            additionalProperties:
+              additionalProperties === false ? false : method(additionalProperties),
+          }),
+      // istanbul ignore next
+      ...(keySchema === undefined ? {} : { propertyNames: method(keySchema) }),
+    }
   }
   if (schema instanceof JsonArray || 'items' in schema) {
-    const items = schema.items as JsonSchema | ReadonlyArray<JsonSchema>
+    const { items, ...rest } = schema as JsonArray
     if (Array.isArray(items)) {
       const mapped: Array<JsonSchema> = []
       for (const item of items as ReadonlyArray<JsonSchema>) {
         mapped.push(method(item))
       }
-      return { ...schema, items: mapped }
+      return { ...method(rest), items: mapped }
     }
-    return { ...schema, items: method(items) }
+    return { ...method(rest), items: method(items) }
   }
   if (schema instanceof JsonUnion || 'anyOf' in schema) {
+    const { anyOf, ...rest } = schema
     const mapped: Array<JsonSchema> = []
-    for (const item of schema.anyOf as ReadonlyArray<JsonSchema>) {
+    for (const item of anyOf as ReadonlyArray<JsonSchema>) {
       mapped.push(method(item))
     }
-    return { ...schema, anyOf: mapped }
+    return { ...method(rest), anyOf: mapped }
   }
   if (schema instanceof JsonIntersection || 'allOf' in schema) {
     const mapped: Array<JsonSchema> = []
-    for (const item of schema.allOf as ReadonlyArray<JsonSchema>) {
+    const { allOf, ...rest } = schema
+    for (const item of allOf as ReadonlyArray<JsonSchema>) {
       mapped.push(method(item))
     }
-    return { ...schema, allOf: mapped }
+    return { ...method(rest), allOf: mapped }
   }
   return schema
 }
 
 /** @internal */
 export const as2007: (schema: JsonSchema) => JsonSchema = schema => {
-  if (schema instanceof JsonRef || '$defs' in schema) {
-    return { ...schema, $defs: undefined, definitions: schema.$defs }
+  if ('$defs' in schema) {
+    const { $defs, ...rest } = schema
+    // istanbul ignore next
+    return {
+      ...as2007(rest),
+      $defs: undefined,
+      definitions: $defs === undefined ? undefined : RR.map(as2007)($defs),
+    }
   }
-  return remapRecurse(as2007)(schema)
+  return remapRecurse(as2007, 'definitions')(schema)
 }
 
 /** @internal */
 export const as2020: (schema: JsonSchema) => JsonSchema = schema => {
+  if ('$defs' in schema) {
+    const { $defs, ...rest } = schema
+    // istanbul ignore next
+    return {
+      ...as2020(rest),
+      $defs: $defs === undefined ? undefined : RR.map(as2020)($defs),
+    }
+  }
   if (schema instanceof JsonArray || 'items' in schema) {
     const items = schema.items as JsonSchema | ReadonlyArray<JsonSchema>
     if (Array.isArray(items)) {
