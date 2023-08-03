@@ -65,7 +65,7 @@ export const deriveJsonSchema = <I, O>(
     case 'Draft-07':
       // istanbul ignore next
       return (maintainIdentity ? identity : I.stripIdentity)(
-        I.as2007(deriveJsonSchema_(schema)),
+        I.asDraft07(deriveJsonSchema_(schema)),
       )
     case '2019-09':
       // istanbul ignore next

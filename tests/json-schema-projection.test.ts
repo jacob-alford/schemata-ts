@@ -1,9 +1,7 @@
 import { pipe } from 'fp-ts/function'
 import * as S from 'schemata-ts'
 
-import { runStandardTestSuite } from '../../test-utils/test-suite'
-
-// never a formal issue, but this covers projection of inner record schemas
+import { runStandardTestSuite } from '../test-utils/test-suite'
 
 const Schema = pipe(
   S.Record(
@@ -62,7 +60,6 @@ runStandardTestSuite(Schema, () => ({
             items: [
               {
                 type: 'string',
-                $defs: undefined,
               },
             ],
             minItems: 1,
@@ -110,7 +107,6 @@ runStandardTestSuite(Schema, () => ({
           ],
           maxItems: 2,
           minItems: 2,
-          $defs: undefined,
         },
       },
       required: ['arr', 'tup'],
@@ -135,7 +131,6 @@ runStandardTestSuite(Schema, () => ({
             items: [
               {
                 type: 'string',
-                $defs: undefined,
               },
             ],
             minItems: 1,
@@ -145,7 +140,6 @@ runStandardTestSuite(Schema, () => ({
                 items: [
                   {
                     type: 'string',
-                    definitions: undefined,
                   },
                 ],
                 maxItems: 1,
@@ -184,7 +178,6 @@ runStandardTestSuite(Schema, () => ({
           ],
           maxItems: 2,
           minItems: 2,
-          $defs: undefined,
         },
       },
       required: ['arr', 'tup'],
@@ -209,7 +202,6 @@ runStandardTestSuite(Schema, () => ({
             prefixItems: [
               {
                 type: 'string',
-                $defs: undefined,
               },
             ],
             items: false,
@@ -260,7 +252,6 @@ runStandardTestSuite(Schema, () => ({
           ],
           maxItems: 2,
           minItems: 2,
-          $defs: undefined,
         },
       },
       required: ['arr', 'tup'],
