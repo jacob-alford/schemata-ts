@@ -148,4 +148,12 @@ describe('transcode errors', () => {
 ─ Expected string but got -Infinity`,
     )
   })
+  it('handles deep bigints', () => {
+    const testError = TC.transcodeErrors(
+      TC.typeMismatch('string', { foo: { bar: { baz: 42n } } }),
+    )
+    expect(drawTree(testError, { showHeading: false })).toBe(
+      `─ Expected string but got {"foo":{"bar":{"baz":"42n"}}}`,
+    )
+  })
 })

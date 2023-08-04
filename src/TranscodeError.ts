@@ -401,7 +401,7 @@ const safeShow = (a: unknown): string => {
     return `[Function ${a.name === '' ? '(anonymous)' : a.name}]`
   const tA = typeOf(a)
   return pipe(
-    O.tryCatch(() => JSON.stringify(a, null, 1)),
+    O.tryCatch(() => JSON.stringify(a, (_, v) => (typeof v === 'bigint' ? `${v}n` : v))),
     O.getOrElse(() => `[Circular ${tA}]`),
   )
 }
