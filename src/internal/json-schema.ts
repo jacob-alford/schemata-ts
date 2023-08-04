@@ -1,7 +1,12 @@
 import { type Const, make as make_ } from 'fp-ts/Const'
-import type * as RNEA from 'fp-ts/ReadonlyNonEmptyArray'
-import type * as RR from 'fp-ts/ReadonlyRecord'
+import * as E from 'fp-ts/Either'
+import { type Endomorphism } from 'fp-ts/Endomorphism'
+import { flow, pipe, tuple } from 'fp-ts/function'
+import * as RA from 'fp-ts/ReadonlyArray'
+import * as RNEA from 'fp-ts/ReadonlyNonEmptyArray'
+import * as RR from 'fp-ts/ReadonlyRecord'
 import type * as hkt from 'schemata-ts/internal/schemable'
+import { hasOwn } from 'schemata-ts/internal/util'
 
 export type JsonSchemaValue =
   | JsonEmpty
@@ -151,67 +156,133 @@ export interface SchemableLambda extends hkt.SchemableLambda {
   readonly type: Const<JsonSchema, this['Input']>
 }
 
-const remapRecurse: (
-  method: (schema: JsonSchema) => JsonSchema,
-) => (schema: JsonSchema) => JsonSchema = method => schema => {
-  if (schema instanceof JsonStruct || 'properties' in schema) {
-    const mapped: Record<string, JsonSchema> = {}
-    const properties = schema.properties as Record<string, JsonSchema>
-    for (const key in properties) {
-      // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-      const inner = properties[key]!
-      mapped[key] = method(inner)
-    }
-    return { ...schema, properties: mapped }
-  }
-  if (schema instanceof JsonArray || 'items' in schema) {
-    const items = schema.items as JsonSchema | ReadonlyArray<JsonSchema>
-    if (Array.isArray(items)) {
-      const mapped: Array<JsonSchema> = []
-      for (const item of items as ReadonlyArray<JsonSchema>) {
-        mapped.push(method(item))
-      }
-      return { ...schema, items: mapped }
-    }
-    return { ...schema, items: method(items) }
-  }
-  if (schema instanceof JsonUnion || 'anyOf' in schema) {
-    const mapped: Array<JsonSchema> = []
-    for (const item of schema.anyOf as ReadonlyArray<JsonSchema>) {
-      mapped.push(method(item))
-    }
-    return { ...schema, anyOf: mapped }
-  }
-  if (schema instanceof JsonIntersection || 'allOf' in schema) {
-    const mapped: Array<JsonSchema> = []
-    for (const item of schema.allOf as ReadonlyArray<JsonSchema>) {
-      mapped.push(method(item))
-    }
-    return { ...schema, allOf: mapped }
-  }
-  return schema
+/** @internal */
+// istanbul ignore next
+class References_ implements References {
+  constructor(readonly $defs: RR.ReadonlyRecord<string, JsonSchema>) {}
 }
 
-/** @internal */
-export const as2007: (schema: JsonSchema) => JsonSchema = schema => {
-  if (schema instanceof JsonRef || '$defs' in schema) {
-    return { ...schema, $defs: undefined, definitions: schema.$defs }
+// -----------------
+// Json Remapping
+// -----------------
+
+type JsonRemapper = Endomorphism<Endomorphism<JsonSchema>>
+
+/** Plucks a key from a struct and remaps it while also remapping the rest of the struct */
+const recurseKeyOf = <JS extends JsonSchema, K extends keyof JS>(
+  _: new (...args: ReadonlyArray<any>) => JS,
+  key: K,
+  mapper: (
+    method: (schema: JsonSchema) => JsonSchema,
+  ) => (
+    schema: NonNullable<JS[K]>,
+  ) => E.Either<
+    readonly [remapped: NonNullable<JS[K]>, inject?: JsonSchema],
+    readonly [key: string, remapped: NonNullable<JS[K]>, inject?: JsonSchema]
+  >,
+): JsonRemapper => {
+  return method => schema => {
+    if (!hasOwn(schema, key) || (schema as any)[key] === undefined) {
+      return schema
+    }
+    const { [key]: value, ...rest } = schema
+    const result = mapper(method)(value as any)
+    if (E.isRight(result)) {
+      const [newKey, _, inject] = result.right
+      return Object.assign({}, method(rest), { [newKey]: _ }, inject)
+    }
+    const [_, inject] = result.left
+    return Object.assign({}, method(rest), { [key]: _ }, inject)
   }
-  return remapRecurse(as2007)(schema)
 }
 
+const foldDefault: JsonRemapper = method => schema => method(schema)
+const foldDefaultLeft = (method: Endomorphism<JsonSchema>) =>
+  flow(foldDefault(method), tuple, E.left)
+
+// -----------------
+// Json Remappers
+// -----------------
+
+const remapContentSchema: JsonRemapper = recurseKeyOf(
+  JsonString,
+  'contentSchema',
+  foldDefaultLeft,
+)
+const remapProperties: JsonRemapper = recurseKeyOf(JsonStruct, 'properties', method =>
+  flow(RR.map(method), tuple, E.left),
+)
+const remapAdditionalProperties: JsonRemapper = recurseKeyOf(
+  JsonStruct,
+  'additionalProperties',
+  foldDefaultLeft,
+)
+const remapPropertyNames: JsonRemapper = recurseKeyOf(
+  JsonStruct,
+  'propertyNames',
+  foldDefaultLeft,
+)
+const remapItems: JsonRemapper = recurseKeyOf(
+  JsonArray,
+  'items',
+  method => items =>
+    E.left(tuple(Array.isArray(items) ? items.map(method) : method(items))),
+)
+const remapAnyOf: JsonRemapper = recurseKeyOf(JsonUnion, 'anyOf', _ =>
+  flow(RA.map(_), tuple, E.left),
+)
+const remapAllOf: JsonRemapper = recurseKeyOf(JsonIntersection, 'allOf', _ =>
+  flow(RNEA.map(_), tuple, E.left),
+)
+const remapDefs: JsonRemapper = recurseKeyOf(References_, '$defs', _ =>
+  flow(RR.map(_), tuple, E.left),
+)
+
+// ---------------------
+// Json Schema Draft-07
+// ---------------------
+
 /** @internal */
-export const as2020: (schema: JsonSchema) => JsonSchema = schema => {
-  if (schema instanceof JsonArray || 'items' in schema) {
-    const items = schema.items as JsonSchema | ReadonlyArray<JsonSchema>
-    if (Array.isArray(items)) {
-      const mapped: Array<JsonSchema> = []
-      for (const item of items as ReadonlyArray<JsonSchema>) {
-        mapped.push(as2020(item))
-      }
-      return { ...schema, prefixItems: mapped, items: false }
-    }
-    return schema
-  }
-  return remapRecurse(as2020)(schema)
-}
+export const asDraft07: (schema: JsonSchema) => JsonSchema = schema =>
+  pipe(schema, defsToDefinitions(asDraft07), recurseDraft07)
+
+const defsToDefinitions = recurseKeyOf(References_, '$defs', () =>
+  flow(RR.map(asDraft07), _ => E.right(tuple('definitions', _))),
+)
+
+const recurseDraft07 = flow(
+  remapContentSchema(asDraft07),
+  remapProperties(asDraft07),
+  remapAdditionalProperties(asDraft07),
+  remapPropertyNames(asDraft07),
+  remapItems(asDraft07),
+  remapAnyOf(asDraft07),
+  remapAllOf(asDraft07),
+)
+
+// ---------------------
+// Json Schema 2020-12
+// ---------------------
+
+/** @internal */
+export const as2020: (schema: JsonSchema) => JsonSchema = schema =>
+  pipe(schema, itemsToPrefixItems(as2020), recurse2020)
+
+const itemsToPrefixItems = recurseKeyOf(
+  JsonArray,
+  'items',
+  () => schema =>
+    Array.isArray(schema)
+      ? E.right(tuple('prefixItems', schema.map(as2020), { items: false }))
+      : E.left(tuple(as2020(schema))),
+)
+
+const recurse2020 = flow(
+  remapDefs(as2020),
+  remapContentSchema(as2020),
+  remapProperties(as2020),
+  remapAdditionalProperties(as2020),
+  remapPropertyNames(as2020),
+  remapAnyOf(as2020),
+  remapAllOf(as2020),
+)
