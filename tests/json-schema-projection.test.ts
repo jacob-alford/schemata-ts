@@ -90,6 +90,7 @@ runStandardTestSuite(Schema, () => ({
             minimum: -9007199254740991,
           },
           minItems: 1,
+          readOnly: true,
         },
         tup: {
           type: 'array',
@@ -103,10 +104,12 @@ runStandardTestSuite(Schema, () => ({
             {
               type: 'integer',
               minimum: 0,
+              deprecated: true,
             },
           ],
           maxItems: 2,
           minItems: 2,
+          deprecated: false,
         },
       },
       required: ['arr', 'tup'],
@@ -161,6 +164,7 @@ runStandardTestSuite(Schema, () => ({
             minimum: -9007199254740991,
           },
           minItems: 1,
+          readOnly: true,
         },
         tup: {
           type: 'array',
@@ -174,8 +178,10 @@ runStandardTestSuite(Schema, () => ({
             {
               type: 'integer',
               minimum: 0,
+              deprecated: true,
             },
           ],
+          deprecated: false,
           maxItems: 2,
           minItems: 2,
         },
@@ -234,6 +240,7 @@ runStandardTestSuite(Schema, () => ({
             minimum: -9007199254740991,
           },
           minItems: 1,
+          readOnly: true,
         },
         tup: {
           type: 'array',
@@ -248,8 +255,10 @@ runStandardTestSuite(Schema, () => ({
             {
               type: 'integer',
               minimum: 0,
+              deprecated: true,
             },
           ],
+          deprecated: false,
           maxItems: 2,
           minItems: 2,
         },
