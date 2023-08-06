@@ -168,7 +168,7 @@ class References_ implements References {
 
 type JsonRemapper = Endomorphism<Endomorphism<JsonSchema>>
 
-/** Plucks a key from a struct and remaps it while also remapping the rest of the struct */
+/** A recursive key setter */
 const recurseKeyOf = <JS extends JsonSchema, K extends keyof JS>(
   _: new (...args: ReadonlyArray<any>) => JS,
   key: K,
@@ -189,10 +189,10 @@ const recurseKeyOf = <JS extends JsonSchema, K extends keyof JS>(
     const result = mapper(method)(value as any)
     if (E.isRight(result)) {
       const [newKey, _, inject] = result.right
-      return Object.assign({}, method(rest), { [newKey]: _ }, inject)
+      return Object.assign({}, rest, { [newKey]: _ }, inject)
     }
     const [_, inject] = result.left
-    return Object.assign({}, method(rest), { [key]: _ }, inject)
+    return Object.assign({}, rest, { [key]: _ }, inject)
   }
 }
 
