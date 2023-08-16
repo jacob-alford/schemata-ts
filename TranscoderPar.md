@@ -42,7 +42,7 @@ Added in v2.0.0
 **Signature**
 
 ```ts
-export declare const failure: <A>(e: TCE.TranscodeErrors) => TE.TaskEither<TCE.TranscodeErrors, A>
+export declare const failure: <A>(e: TCE.TranscodeErrors) => TaskEither<TCE.TranscodeErrors, A>
 ```
 
 Added in v2.0.0
@@ -52,7 +52,7 @@ Added in v2.0.0
 **Signature**
 
 ```ts
-export declare const success: <A>(a: A) => TE.TaskEither<TCE.TranscodeErrors, A>
+export declare const success: <A>(a: A) => TaskEither<TCE.TranscodeErrors, A>
 ```
 
 Added in v2.0.0
@@ -103,8 +103,8 @@ Added in v2.0.0
 
 ```ts
 export interface TranscoderPar<I, O> {
-  readonly decode: (u: unknown) => TE.TaskEither<Const<TCE.TranscodeErrors, I>, O>
-  readonly encode: (o: O) => TE.TaskEither<Const<TCE.TranscodeErrors, O>, I>
+  readonly decode: (u: unknown) => TaskEither<Const<TCE.TranscodeErrors, I>, O>
+  readonly encode: (o: O) => TaskEither<Const<TCE.TranscodeErrors, O>, I>
 }
 ```
 
