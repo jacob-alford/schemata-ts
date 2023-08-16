@@ -3,6 +3,7 @@ import { flow, pipe } from 'fp-ts/function'
 import * as TC from 'schemata-ts/internal/transcoder'
 import { type WithParser } from 'schemata-ts/schemables/parser/definition'
 import { PrimitivesTranscoder } from 'schemata-ts/schemables/primitives/instances/transcoder'
+import { TranscodeErrors } from 'schemata-ts/TranscodeError'
 
 export const ParserTranscoder: WithParser<TC.SchemableLambda> = {
   parse: (name, parse, print) => inner => ({
@@ -11,7 +12,11 @@ export const ParserTranscoder: WithParser<TC.SchemableLambda> = {
       E.chain(encoded =>
         pipe(
           print(encoded),
-          E.mapLeft(err => TC.transcodeErrors(TC.serializationError(name, err, encoded))),
+          E.mapLeft(err =>
+            err instanceof TranscodeErrors
+              ? err
+              : TC.transcodeErrors(TC.serializationError(name, err, encoded)),
+          ),
         ),
       ),
     ),
@@ -21,7 +26,9 @@ export const ParserTranscoder: WithParser<TC.SchemableLambda> = {
         pipe(
           parse(preparsed),
           E.mapLeft(err =>
-            TC.transcodeErrors(TC.serializationError(name, err, preparsed)),
+            err instanceof TranscodeErrors
+              ? err
+              : TC.transcodeErrors(TC.serializationError(name, err, preparsed)),
           ),
         ),
       ),
