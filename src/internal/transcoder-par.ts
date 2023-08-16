@@ -3,21 +3,21 @@ import { flow } from 'fp-ts/function'
 import * as T from 'fp-ts/Task'
 import * as TE from 'fp-ts/TaskEither'
 import type * as hkt from 'schemata-ts/internal/schemable'
+import { type TaskEither } from 'schemata-ts/internal/task-either'
 import { type Transcoder } from 'schemata-ts/internal/transcoder'
 import * as TCE from 'schemata-ts/TranscodeError'
 
 export interface TranscoderPar<I, O> {
-  readonly decode: (u: unknown) => TE.TaskEither<TCE.TranscodeErrors, O>
-  readonly encode: (out: O) => TE.TaskEither<TCE.TranscodeErrors, I>
+  readonly decode: (u: unknown) => TaskEither<TCE.TranscodeErrors, O>
+  readonly encode: (out: O) => TaskEither<TCE.TranscodeErrors, I>
 }
 
 /** @internal */
-export const success: <A>(a: A) => TE.TaskEither<TCE.TranscodeErrors, A> = TE.right
+export const success: <A>(a: A) => TaskEither<TCE.TranscodeErrors, A> = TE.right
 
 /** @internal */
-export const failure: <A>(
-  e: TCE.TranscodeErrors,
-) => TE.TaskEither<TCE.TranscodeErrors, A> = TE.throwError
+export const failure: <A>(e: TCE.TranscodeErrors) => TaskEither<TCE.TranscodeErrors, A> =
+  TE.throwError
 
 /** @internal */
 export const applicativeValidationPar = TE.getApplicativeTaskValidation(

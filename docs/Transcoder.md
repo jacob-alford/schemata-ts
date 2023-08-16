@@ -97,7 +97,7 @@ Added in v2.0.0
 **Signature**
 
 ```ts
-export declare const failure: <A>(e: TE.TranscodeErrors) => E.Either<TE.TranscodeErrors, A>
+export declare const failure: <A>(e: TE.TranscodeErrors) => Either<TE.TranscodeErrors, A>
 ```
 
 Added in v2.0.0
@@ -119,7 +119,7 @@ Added in v2.0.0
 **Signature**
 
 ```ts
-export declare const success: <A>(a: A) => E.Either<TE.TranscodeErrors, A>
+export declare const success: <A>(a: A) => Either<TE.TranscodeErrors, A>
 ```
 
 Added in v2.0.0
@@ -221,8 +221,8 @@ Added in v2.0.0
 
 ```ts
 export interface Transcoder<I, O> {
-  readonly decode: (u: unknown) => E.Either<Const<TE.TranscodeErrors, I>, O>
-  readonly encode: (o: O) => E.Either<Const<TE.TranscodeErrors, O>, I>
+  readonly decode: (u: unknown) => Either<Const<TE.TranscodeErrors, I>, O>
+  readonly encode: (o: O) => Either<Const<TE.TranscodeErrors, O>, I>
 }
 ```
 

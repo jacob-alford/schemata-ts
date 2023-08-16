@@ -9,11 +9,11 @@
  * @since 2.0.0
  */
 import { type Const } from 'fp-ts/Const'
-import type * as E from 'fp-ts/Either'
 import { pipe, unsafeCoerce } from 'fp-ts/function'
 import { type Invariant2 } from 'fp-ts/Invariant'
 import type * as RNEA from 'fp-ts/ReadonlyNonEmptyArray'
 import { deriveTranscoder as deriveTranscoder_ } from 'schemata-ts/derivations/transcoder-schemable'
+import { type Either } from 'schemata-ts/internal/either'
 import * as I from 'schemata-ts/internal/transcoder'
 import { type Schema } from 'schemata-ts/Schema'
 import * as TE from 'schemata-ts/TranscodeError'
@@ -27,8 +27,8 @@ import * as TE from 'schemata-ts/TranscodeError'
  * @category Model
  */
 export interface Transcoder<I, O> {
-  readonly decode: (u: unknown) => E.Either<Const<TE.TranscodeErrors, I>, O>
-  readonly encode: (o: O) => E.Either<Const<TE.TranscodeErrors, O>, I>
+  readonly decode: (u: unknown) => Either<Const<TE.TranscodeErrors, I>, O>
+  readonly encode: (o: O) => Either<Const<TE.TranscodeErrors, O>, I>
 }
 
 // -------------------------------------------------------------------------------------
@@ -39,13 +39,13 @@ export interface Transcoder<I, O> {
  * @since 2.0.0
  * @category Constructors
  */
-export const success: <A>(a: A) => E.Either<TE.TranscodeErrors, A> = I.success
+export const success: <A>(a: A) => Either<TE.TranscodeErrors, A> = I.success
 
 /**
  * @since 2.0.0
  * @category Constructors
  */
-export const failure: <A>(e: TE.TranscodeErrors) => E.Either<TE.TranscodeErrors, A> =
+export const failure: <A>(e: TE.TranscodeErrors) => Either<TE.TranscodeErrors, A> =
   I.failure
 
 /**

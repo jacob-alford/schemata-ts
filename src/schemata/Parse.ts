@@ -1,5 +1,5 @@
 /** @since 2.0.0 */
-import type * as E from 'fp-ts/Either'
+import { type Either } from 'schemata-ts/internal/either'
 import { make } from 'schemata-ts/internal/schema'
 import { type Schema } from 'schemata-ts/Schema'
 
@@ -18,8 +18,8 @@ export type ParserOptions = {
  */
 export const Parse: <I>(
   name: string,
-  parse: (raw: string) => E.Either<unknown, unknown>,
-  print: (a: I) => E.Either<unknown, string>,
+  parse: (raw: string) => Either<unknown, unknown>,
+  print: (a: I) => Either<unknown, string>,
   options?: ParserOptions,
 ) => <O>(inner: Schema<I, O>) => Schema<string, O> =
   (name, parse, print, options = {}) =>

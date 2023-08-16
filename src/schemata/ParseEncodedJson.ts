@@ -4,6 +4,7 @@ import * as E from 'fp-ts/Either'
 import { flow, pipe, unsafeCoerce } from 'fp-ts/function'
 import * as J from 'fp-ts/Json'
 import { deriveTypeString } from 'schemata-ts/derivations/type-string-schemable'
+import { type Either } from 'schemata-ts/internal/either'
 import { type Schema } from 'schemata-ts/Schema'
 import { type JsonString } from 'schemata-ts/schemables/parser/definition'
 import { type ParserOptions, Parse } from 'schemata-ts/schemata/Parse'
@@ -16,8 +17,8 @@ import { type ParserOptions, Parse } from 'schemata-ts/schemata/Parse'
  * @category Printer Parsers
  */
 export const ParseEncodedJsonString: (
-  decode: (encoded: string) => E.Either<unknown, string>,
-  encode: (jsonString: string) => E.Either<unknown, string>,
+  decode: (encoded: string) => Either<unknown, string>,
+  encode: (jsonString: string) => Either<unknown, string>,
   options?: ParserOptions & { readonly nameOverride?: string },
 ) => <I, O>(inner: Schema<I, O>) => Schema<Const<JsonString, I>, O> =
   (decode, encode, options = {}) =>

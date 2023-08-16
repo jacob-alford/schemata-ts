@@ -3,6 +3,7 @@ import { pipe } from 'fp-ts/function'
 import * as O from 'fp-ts/Option'
 import { deriveTypeString } from 'schemata-ts/derivations/type-string-schemable'
 import { deriveGuard } from 'schemata-ts/Guard'
+import { type Option as Option_ } from 'schemata-ts/internal/option'
 import {
   type ImplicitOptional,
   makeImplicitOptionalType,
@@ -20,7 +21,7 @@ import { Option } from 'schemata-ts/schemata/Option'
  */
 export const OptionFromNullable = <A, O>(
   inner: Schema<O, A>,
-): ImplicitOptional & Schema<O | null | undefined, O.Option<NonNullable<A>>> => {
+): ImplicitOptional & Schema<O | null | undefined, Option_<NonNullable<A>>> => {
   const guard = deriveGuard(Option(inner))
   return makeImplicitOptionalType(
     pipe(
