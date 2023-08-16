@@ -31,6 +31,10 @@ runStandardTestSuite(Described, () => ({
     type: 'string',
     description: 'Described',
   },
+  jsonSchema2020: {
+    type: 'string',
+    description: 'Described',
+  },
 }))()
 
 runStandardTestSuite(Deprecated, () => ({
@@ -39,6 +43,10 @@ runStandardTestSuite(Deprecated, () => ({
     deprecated: true,
   },
   jsonSchema2007: {
+    type: 'string',
+    deprecated: true,
+  },
+  jsonSchema2020: {
     type: 'string',
     deprecated: true,
   },

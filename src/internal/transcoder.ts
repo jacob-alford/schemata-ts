@@ -3,19 +3,20 @@ import * as E from 'fp-ts/Either'
 import { flow } from 'fp-ts/function'
 import type * as RNEA from 'fp-ts/ReadonlyNonEmptyArray'
 import type * as G from 'schemata-ts/Guard'
+import { type Either } from 'schemata-ts/internal/either'
 import type * as hkt from 'schemata-ts/internal/schemable'
 import * as TE from 'schemata-ts/TranscodeError'
 
 export interface Transcoder<I, O> {
-  readonly decode: (u: unknown) => E.Either<TE.TranscodeErrors, O>
-  readonly encode: (out: O) => E.Either<TE.TranscodeErrors, I>
+  readonly decode: (u: unknown) => Either<TE.TranscodeErrors, O>
+  readonly encode: (out: O) => Either<TE.TranscodeErrors, I>
 }
 
 /** @internal */
-export const success: <A>(a: A) => E.Either<TE.TranscodeErrors, A> = E.right
+export const success: <A>(a: A) => Either<TE.TranscodeErrors, A> = E.right
 
 /** @internal */
-export const failure: <A>(e: TE.TranscodeErrors) => E.Either<TE.TranscodeErrors, A> =
+export const failure: <A>(e: TE.TranscodeErrors) => Either<TE.TranscodeErrors, A> =
   E.throwError
 
 /** @internal */

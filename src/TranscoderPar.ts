@@ -10,8 +10,8 @@
 import { type Const } from 'fp-ts/Const'
 import { pipe, unsafeCoerce } from 'fp-ts/function'
 import { type Invariant2 } from 'fp-ts/Invariant'
-import type * as TE from 'fp-ts/TaskEither'
 import { deriveTranscoderPar as deriveTranscoderPar_ } from 'schemata-ts/derivations/transcoder-par-schemable'
+import { type TaskEither } from 'schemata-ts/internal/task-either'
 import * as I from 'schemata-ts/internal/transcoder-par'
 import { type Schema } from 'schemata-ts/Schema'
 import type * as TCE from 'schemata-ts/TranscodeError'
@@ -25,8 +25,8 @@ import type * as TCE from 'schemata-ts/TranscodeError'
  * @category Model
  */
 export interface TranscoderPar<I, O> {
-  readonly decode: (u: unknown) => TE.TaskEither<Const<TCE.TranscodeErrors, I>, O>
-  readonly encode: (o: O) => TE.TaskEither<Const<TCE.TranscodeErrors, O>, I>
+  readonly decode: (u: unknown) => TaskEither<Const<TCE.TranscodeErrors, I>, O>
+  readonly encode: (o: O) => TaskEither<Const<TCE.TranscodeErrors, O>, I>
 }
 
 // -------------------------------------------------------------------------------------
@@ -37,15 +37,14 @@ export interface TranscoderPar<I, O> {
  * @since 2.0.0
  * @category Constructors
  */
-export const success: <A>(a: A) => TE.TaskEither<TCE.TranscodeErrors, A> = I.success
+export const success: <A>(a: A) => TaskEither<TCE.TranscodeErrors, A> = I.success
 
 /**
  * @since 2.0.0
  * @category Constructors
  */
-export const failure: <A>(
-  e: TCE.TranscodeErrors,
-) => TE.TaskEither<TCE.TranscodeErrors, A> = I.failure
+export const failure: <A>(e: TCE.TranscodeErrors) => TaskEither<TCE.TranscodeErrors, A> =
+  I.failure
 
 // -------------------------------------------------------------------------------------
 // combinators

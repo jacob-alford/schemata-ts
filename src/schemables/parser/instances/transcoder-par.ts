@@ -4,6 +4,7 @@ import * as TC from 'schemata-ts/internal/transcoder'
 import type * as TCP from 'schemata-ts/internal/transcoder-par'
 import { type WithParser } from 'schemata-ts/schemables/parser/definition'
 import { PrimitivesTranscoderPar } from 'schemata-ts/schemables/primitives/instances/transcoder-par'
+import { TranscodeErrors } from 'schemata-ts/TranscodeError'
 
 export const ParserTranscoderPar: WithParser<TCP.SchemableLambda> = {
   parse: (name, parse, print) => inner => ({
@@ -14,7 +15,9 @@ export const ParserTranscoderPar: WithParser<TCP.SchemableLambda> = {
           print(encoded),
           TE.fromEither,
           TE.mapLeft(err =>
-            TC.transcodeErrors(TC.serializationError(name, err, encoded)),
+            err instanceof TranscodeErrors
+              ? err
+              : TC.transcodeErrors(TC.serializationError(name, err, encoded)),
           ),
         ),
       ),
@@ -26,7 +29,9 @@ export const ParserTranscoderPar: WithParser<TCP.SchemableLambda> = {
           parse(preparsed),
           TE.fromEither,
           TE.mapLeft(err =>
-            TC.transcodeErrors(TC.serializationError(name, err, preparsed)),
+            err instanceof TranscodeErrors
+              ? err
+              : TC.transcodeErrors(TC.serializationError(name, err, preparsed)),
           ),
         ),
       ),

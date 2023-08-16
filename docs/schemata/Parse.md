@@ -30,8 +30,8 @@ A schema for pre-parsing/printing a string
 ```ts
 export declare const Parse: <I>(
   name: string,
-  parse: (raw: string) => E.Either<unknown, unknown>,
-  print: (a: I) => E.Either<unknown, string>,
+  parse: (raw: string) => Either<unknown, unknown>,
+  print: (a: I) => Either<unknown, string>,
   options?: ParserOptions | undefined
 ) => <O>(inner: Schema<I, O>) => Schema<string, O>
 ```

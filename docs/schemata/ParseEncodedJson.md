@@ -28,8 +28,8 @@ Useful for things like conversion between character encodings.
 
 ```ts
 export declare const ParseEncodedJsonString: (
-  decode: (encoded: string) => E.Either<unknown, string>,
-  encode: (jsonString: string) => E.Either<unknown, string>,
+  decode: (encoded: string) => Either<unknown, string>,
+  encode: (jsonString: string) => Either<unknown, string>,
   options?: (ParserOptions & { readonly nameOverride?: string | undefined }) | undefined
 ) => <I, O>(inner: Schema<I, O>) => Schema<Const<Opaque<string, { JsonString: unique symbol }>, I>, O>
 ```

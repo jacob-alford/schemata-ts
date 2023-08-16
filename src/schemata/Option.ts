@@ -1,7 +1,7 @@
 /** @since 2.0.0 */
 import { pipe } from 'fp-ts/function'
-import { type Option as Option_ } from 'fp-ts/Option'
 import { deriveTypeString } from 'schemata-ts/derivations/type-string-schemable'
+import { type Option as Option_ } from 'schemata-ts/internal/option'
 import { type Schema } from 'schemata-ts/Schema'
 import { Annotate } from 'schemata-ts/schemata/Annotate'
 import { Literal } from 'schemata-ts/schemata/Literal'

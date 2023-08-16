@@ -208,7 +208,7 @@ const personTranscoderPar: TranscoderPar<PersonInput, Person> =
 
 ## Type Guards
 
-Type guards are used by TypeScript to narrow the type of a value to something concrete. Guards can be derived from schemas using `deriveTypeGuard`:
+Type guards are used by TypeScript to narrow the type of a value to something concrete. Guards can be derived from schemas using `deriveGuard`:
 
 ```ts
 import { deriveGuard, type Guard } from 'schemata-ts/Guard'
