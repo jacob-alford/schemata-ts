@@ -1,5 +1,7 @@
 import * as Cons from 'fp-ts/Console'
 import { flow, pipe, tuple } from 'fp-ts/function'
+import * as O from 'fp-ts/Option'
+import * as Pred from 'fp-ts/Predicate'
 import * as RTE from 'fp-ts/ReaderTaskEither'
 import * as RA from 'fp-ts/ReadonlyArray'
 import * as RNEA from 'fp-ts/ReadonlyNonEmptyArray'
@@ -59,10 +61,17 @@ const writeToDisk: (path: string) => (contents: string) => Build<void> =
 // #endregion
 
 /** Extracts module name, e.g. ASCII.ts -> ASCII */
-const getModuleName: (file: string) => string = flow(Str.split('.'), RNEA.head)
+const getModuleName: (file: string) => O.Option<string> = flow(
+  Str.split('.'),
+  RNEA.head,
+  O.fromPredicate(Pred.not(Str.includes('index'))),
+)
 
 const getSchemata: Build<ReadonlyArray<readonly [schemaName: string]>> = C =>
-  pipe(C.readFiles('./src/schemata'), TE.map(RA.map(flow(getModuleName, tuple))))
+  pipe(
+    C.readFiles('./src/schemata'),
+    TE.map(RA.filterMap(flow(getModuleName, O.map(tuple)))),
+  )
 
 const format: Build<void> = C => C.exec('yarn format')
 
