@@ -7,7 +7,7 @@
     "skipLibCheck": false,
     "moduleResolution": "nodenext",
     "lib": ["DOM", "ESNext"],
-    "module": "CommonJS",
+    "module": "NodeNext",
     "target": "ESNext",
     "noUnusedLocals": true,
     "noUnusedParameters": true,
