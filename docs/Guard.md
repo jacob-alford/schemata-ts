@@ -19,6 +19,7 @@ Added in v2.0.0
   - [fromPredicate](#frompredicate)
 - [Interpreters](#interpreters)
   - [deriveGuard](#deriveguard)
+  - [deriveInputGuard](#deriveinputguard)
 - [Model](#model)
   - [Guard (interface)](#guard-interface)
 - [URI](#uri)
@@ -45,7 +46,7 @@ Added in v2.0.0
 
 ## deriveGuard
 
-Interprets a schema as a decoder
+Interprets a schema as a guard for the `Output` type
 
 **Signature**
 
@@ -54,6 +55,18 @@ export declare const deriveGuard: Interpreter<I.SchemableLambda>
 ```
 
 Added in v2.0.0
+
+## deriveInputGuard
+
+Interprets a schema as a guard for the `Input` type
+
+**Signature**
+
+```ts
+export declare const deriveInputGuard: <I, O>(schema: Schema<I, O>) => Guard<I>
+```
+
+Added in v2.1.0
 
 # Model
 

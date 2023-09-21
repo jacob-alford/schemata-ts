@@ -91,6 +91,11 @@ runStandardTestSuite(
     typeString: 'string & string',
   }),
   {
-    skip: ['json-schema-validation', 'transcoder-idempotence', 'arbitrary-guard'],
+    skip: [
+      'json-schema-validation',
+      'transcoder-idempotence',
+      'arbitrary-guard',
+      'arbitrary-input-guard',
+    ],
   },
 )()

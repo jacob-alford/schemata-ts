@@ -4,7 +4,10 @@
  *
  * @since 2.0.0
  */
+import * as E from 'fp-ts/Either'
+import { deriveTranscoder } from 'schemata-ts/derivations/transcoder-schemable'
 import * as I from 'schemata-ts/internal/guard'
+import { type Schema } from 'schemata-ts/Schema'
 
 // ------------------
 // models
@@ -39,13 +42,26 @@ export const fromPredicate: <A>(predicate: (u: unknown) => u is A) => Guard<A> =
 
 export {
   /**
-   * Interprets a schema as a decoder
+   * Interprets a schema as a guard for the `Output` type
    *
    * @since 2.0.0
    * @category Interpreters
    */
   deriveGuard,
 } from 'schemata-ts/derivations/guard-schemable'
+
+/**
+ * Interprets a schema as a guard for the `Input` type
+ *
+ * @since 2.1.0
+ * @category Interpreters
+ */
+export const deriveInputGuard = <I, O>(schema: Schema<I, O>): Guard<I> => {
+  const transcoder = deriveTranscoder(schema)
+  return {
+    is: (u): u is I => E.isRight(transcoder.decode(u)),
+  }
+}
 
 // ------------------
 // instances
