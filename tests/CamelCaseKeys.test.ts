@@ -139,6 +139,7 @@ runStandardTestSuite(
       'json-schema-validation',
       'transcoder-idempotence',
       'semigroup-many-associativity',
+      'arbitrary-input-guard',
     ],
   },
 )()

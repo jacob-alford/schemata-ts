@@ -16,7 +16,7 @@ import { Draft07 } from 'json-schema-library'
 import { deriveArbitrary } from 'schemata-ts/Arbitrary'
 import { deriveInformation } from 'schemata-ts/derivations/information-schemable'
 import { deriveEq } from 'schemata-ts/Eq'
-import { deriveGuard } from 'schemata-ts/Guard'
+import { deriveGuard, deriveInputGuard } from 'schemata-ts/Guard'
 import * as TS from 'schemata-ts/internal/type-string'
 import { fold } from 'schemata-ts/internal/type-string'
 import { deriveJsonSchema } from 'schemata-ts/JsonSchema'
@@ -98,6 +98,12 @@ export interface TestSuite<I, O> {
 
   /** Uses arbitrary to generate random domain values and validates them using the guard */
   readonly testArbitraryGuard: IO.IO<void>
+
+  /**
+   * Uses arbitrary to generate domain values, encode them to input types, and then use
+   * `inputGuard` to validate them
+   */
+  readonly testArbitraryInputGuard: IO.IO<void>
 }
 
 const mapArrayStruct: (
@@ -429,10 +435,22 @@ export const getTestSuite = <I, O>(schema: Schema<I, O>): TestSuite<I, O> => {
     },
     testArbitraryGuard: () => {
       const arbitrary = deriveArbitrary(schema).arbitrary(fc)
-      test('arbitraries', () => {
+      test('arbitrary <~> output', () => {
         fc.assert(
           fc.property(arbitrary, output => {
             expect(guard.is(output)).toStrictEqual(true)
+          }),
+        )
+      })
+    },
+    testArbitraryInputGuard: () => {
+      const arbitrary = deriveArbitrary(schema).arbitrary(fc)
+      const inputGuard = deriveInputGuard(schema)
+      test('arbitrary <~> input', () => {
+        fc.assert(
+          fc.property(arbitrary, input => {
+            const result = pipe(input, transcoder.encode, E.map(inputGuard.is), E.toUnion)
+            expect(result).toStrictEqual(true)
           }),
         )
       })
@@ -542,6 +560,7 @@ export type StandardTestSuiteOptions = {
     | 'transcoder-idempotence'
     | 'json-schema-validation'
     | 'arbitrary-guard'
+    | 'arbitrary-input-guard'
     | 'derived-guard-tests'
   >
 }
@@ -652,6 +671,11 @@ const runStandardTestSuite_: StandardTestSuiteFn =
         ;(skip.has('arbitrary-guard') ? describe.skip : describe)(
           'arbitrary <-> guard',
           _.testArbitraryGuard,
+        )
+        // eslint-disable-next-line @typescript-eslint/no-extra-semi
+        ;(skip.has('arbitrary-input-guard') ? describe.skip : describe)(
+          'arbitrary <-> inputGuard',
+          _.testArbitraryInputGuard,
         )
       }
       if (additionalTests) {
