@@ -9,7 +9,7 @@ has_children: true
 
 * Boolean ([docs](https://jacob-alford.github.io/schemata-ts/schemata/Boolean.html)) ([source](https://github.com/jacob-alford/schemata-ts/tree/main/src/schemata/Boolean.ts))
 
-### Combinators (26)
+### Combinators (27)
 
 * Annotate ([docs](https://jacob-alford.github.io/schemata-ts/schemata/Annotate.html)) ([source](https://github.com/jacob-alford/schemata-ts/tree/main/src/schemata/Annotate.ts))
 * Array ([docs](https://jacob-alford.github.io/schemata-ts/schemata/Array.html)) ([source](https://github.com/jacob-alford/schemata-ts/tree/main/src/schemata/Array.ts))
@@ -17,6 +17,7 @@ has_children: true
 * CamelCaseKeys ([docs](https://jacob-alford.github.io/schemata-ts/schemata/CamelCaseKeys.html)) ([source](https://github.com/jacob-alford/schemata-ts/tree/main/src/schemata/CamelCaseKeys.ts))
 * CamelCaseRecord ([docs](https://jacob-alford.github.io/schemata-ts/schemata/CamelCaseRecord.html)) ([source](https://github.com/jacob-alford/schemata-ts/tree/main/src/schemata/CamelCaseRecord.ts))
 * CheckDigit ([docs](https://jacob-alford.github.io/schemata-ts/schemata/CheckDigit.html)) ([source](https://github.com/jacob-alford/schemata-ts/tree/main/src/schemata/CheckDigit.ts))
+* Either ([docs](https://jacob-alford.github.io/schemata-ts/schemata/Either.html)) ([source](https://github.com/jacob-alford/schemata-ts/tree/main/src/schemata/Either.ts))
 * Intersect ([docs](https://jacob-alford.github.io/schemata-ts/schemata/Intersect.html)) ([source](https://github.com/jacob-alford/schemata-ts/tree/main/src/schemata/Intersect.ts))
 * Lazy ([docs](https://jacob-alford.github.io/schemata-ts/schemata/Lazy.html)) ([source](https://github.com/jacob-alford/schemata-ts/tree/main/src/schemata/Lazy.ts))
 * Literal ([docs](https://jacob-alford.github.io/schemata-ts/schemata/Literal.html)) ([source](https://github.com/jacob-alford/schemata-ts/tree/main/src/schemata/Literal.ts))
@@ -81,23 +82,23 @@ has_children: true
 
 ### String (17)
 
-* Ascii ([docs](https://jacob-alford.github.io/schemata-ts/schemata/Ascii.html)) ([source](https://github.com/jacob-alford/schemata-ts/tree/main/src/schemata/Ascii.ts)) (e.g:  `~C" Nrp`, `_S^I@ukqN`, `fZFtDhI`)
-* Base64 ([docs](https://jacob-alford.github.io/schemata-ts/schemata/Base64.html)) ([source](https://github.com/jacob-alford/schemata-ts/tree/main/src/schemata/Base64.ts)) (e.g:  `e0DC30YV4j+=`, `kcFBA++/FsE+7/8/xa/59v4T/IuBu/6U`, `+1xZ/OmSKB2C2/+54gD2/+p/Chv31+6/tR+//C/N`)
-* Base64Url ([docs](https://jacob-alford.github.io/schemata-ts/schemata/Base64Url.html)) ([source](https://github.com/jacob-alford/schemata-ts/tree/main/src/schemata/Base64Url.ts)) (e.g:  `yM--N__9E`, `W64a0r12C_`, `qBoC9e`)
-* BitcoinAddress ([docs](https://jacob-alford.github.io/schemata-ts/schemata/BitcoinAddress.html)) ([source](https://github.com/jacob-alford/schemata-ts/tree/main/src/schemata/BitcoinAddress.ts)) (e.g:  `bc168vjz40h099ka513vca2hvi358r`, `bc11g934984snn4w1mwjhn748j19788g1m2wx4w`, `bc1v41mdc7boe333700af22752x7gdb`)
+* Ascii ([docs](https://jacob-alford.github.io/schemata-ts/schemata/Ascii.html)) ([source](https://github.com/jacob-alford/schemata-ts/tree/main/src/schemata/Ascii.ts)) (e.g:  `DMBp]3`, `  j xa2,`, `JY87cZeN%`)
+* Base64 ([docs](https://jacob-alford.github.io/schemata-ts/schemata/Base64.html)) ([source](https://github.com/jacob-alford/schemata-ts/tree/main/src/schemata/Base64.ts)) (e.g:  `+/A+K/87a/lV+y7/+28=`, `d/1Xc5eE+/E/+E==`, `4/S0++w/A+b/+4d/+0++Zk188/81++b=`)
+* Base64Url ([docs](https://jacob-alford.github.io/schemata-ts/schemata/Base64Url.html)) ([source](https://github.com/jacob-alford/schemata-ts/tree/main/src/schemata/Base64Url.ts)) (e.g:  `ABaw_9N4-9`, `d_uCP7__`, `X_-m-8`)
+* BitcoinAddress ([docs](https://jacob-alford.github.io/schemata-ts/schemata/BitcoinAddress.html)) ([source](https://github.com/jacob-alford/schemata-ts/tree/main/src/schemata/BitcoinAddress.ts)) (e.g:  `2e7AKymhN3LWikM8VDrjEK5DFmKP8mbj`, `bc19vebs1b1s23v10199az22ucc7`, `bc11x70o9g7c9831508kx4penko7vh`)
 * CamelCaseString ([docs](https://jacob-alford.github.io/schemata-ts/schemata/CamelCaseString.html)) ([source](https://github.com/jacob-alford/schemata-ts/tree/main/src/schemata/CamelCaseString.ts)) (e.g:  `Camel_case-string` → `camelCaseString`)
-* CreditCard ([docs](https://jacob-alford.github.io/schemata-ts/schemata/CreditCard.html)) ([source](https://github.com/jacob-alford/schemata-ts/tree/main/src/schemata/CreditCard.ts)) (e.g:  `8233729975041209`, `628575076525552546`, `8205777223963264`)
-* EmailAddress ([docs](https://jacob-alford.github.io/schemata-ts/schemata/EmailAddress.html)) ([source](https://github.com/jacob-alford/schemata-ts/tree/main/src/schemata/EmailAddress.ts)) (e.g:  `{l}$?%=H{$.'v!B_3.w+&.${/~{^^.x}I.%&^+.J/+#^.^%.{==|_/~$.=.$&}%-+??*@xYqn--.-tUnC4-.e-gVbY.-FE---1TUd.odeQm0iZ.p0Zd2-j.b-5W3C--.wQgJYkcPkE`, `%*N*'&?-_+.#'#~.{=|$#_.F?*'-%|~?{*?.=!^$.--/6b}*?}6.$*'.Y|+#'!@32z.---b-A7D-.d7a1zT7.-w3-c-b3-.sLRzSyJZLysQdZ`, `~-!'.#^!${.'{}#/7|@-L-p7X.DXjlz`)
-* EthereumAddress ([docs](https://jacob-alford.github.io/schemata-ts/schemata/EthereumAddress.html)) ([source](https://github.com/jacob-alford/schemata-ts/tree/main/src/schemata/EthereumAddress.ts)) (e.g:  `0x6Aff0BdB3BB8EDa0ec12A4dACC0EF100ceB20022`, `0xF56BBBDBbCC70a9df2Fb52a701Cd2A9aB3ebEA25`, `0xCF1130CBc7bb9EABFAD400Bd8fA0E10EB3c2CDaF`)
-* HexColor ([docs](https://jacob-alford.github.io/schemata-ts/schemata/HexColor.html)) ([source](https://github.com/jacob-alford/schemata-ts/tree/main/src/schemata/HexColor.ts)) (e.g:  `BBb21Ec2`, `#Cc47eBec`, `C79A0C10`)
-* Hexadecimal ([docs](https://jacob-alford.github.io/schemata-ts/schemata/Hexadecimal.html)) ([source](https://github.com/jacob-alford/schemata-ts/tree/main/src/schemata/Hexadecimal.ts)) (e.g:  `EaB5cEb30e`, `0xBcA8639`, `Ba40fAfDBbaB`)
-* HslColor ([docs](https://jacob-alford.github.io/schemata-ts/schemata/HslColor.html)) ([source](https://github.com/jacob-alford/schemata-ts/tree/main/src/schemata/HslColor.ts)) (e.g:  `hsla(3,0100e80923%,+000000100%)`, `hsl(.52992502e+12359,+0091.1480501e-90%,0000100.0%,31862.6133851118e416322)`, `hsla(-8028575363600000100e-14133588294%+000000000096e-22163964%)`)
-* Jwt ([docs](https://jacob-alford.github.io/schemata-ts/schemata/Jwt.html)) ([source](https://github.com/jacob-alford/schemata-ts/tree/main/src/schemata/Jwt.ts)) (e.g:  `-.v270_-3by`, `5-_DSc_L..Sb`, `6_wu6.-`)
-* LatLong ([docs](https://jacob-alford.github.io/schemata-ts/schemata/LatLong.html)) ([source](https://github.com/jacob-alford/schemata-ts/tree/main/src/schemata/LatLong.ts)) (e.g:  `80,+99`, `90,180.0`, `-90,106.0607340`)
-* NonEmptyString ([docs](https://jacob-alford.github.io/schemata-ts/schemata/NonEmptyString.html)) ([source](https://github.com/jacob-alford/schemata-ts/tree/main/src/schemata/NonEmptyString.ts)) (e.g:  `pR0AiCVJOLw=`, `prototy=`, `!02RAk`)
-* RGB ([docs](https://jacob-alford.github.io/schemata-ts/schemata/RGB.html)) ([source](https://github.com/jacob-alford/schemata-ts/tree/main/src/schemata/RGB.ts)) (e.g:  `rgb(100%,100%,95%)`, `rgb(100%,100%,93%)`, `rgba(100%,100%,91%,0.791)`)
+* CreditCard ([docs](https://jacob-alford.github.io/schemata-ts/schemata/CreditCard.html)) ([source](https://github.com/jacob-alford/schemata-ts/tree/main/src/schemata/CreditCard.ts)) (e.g:  `6221272306310132`, `62844733161743063`, `3529393243393399`)
+* EmailAddress ([docs](https://jacob-alford.github.io/schemata-ts/schemata/EmailAddress.html)) ([source](https://github.com/jacob-alford/schemata-ts/tree/main/src/schemata/EmailAddress.ts)) (e.g:  `"㑂鑬"@.42l346MlA.7.s4j.5.9-.qwxbrcLjdceQc`, `%^|.a~-?~9!~.$~##+.r'*R}~^_k.+.*.|{*@[5.1.919.8]`, `_}&$!'*$W#.#&.'^*_#+~d%@[279.977.590.6]`)
+* EthereumAddress ([docs](https://jacob-alford.github.io/schemata-ts/schemata/EthereumAddress.html)) ([source](https://github.com/jacob-alford/schemata-ts/tree/main/src/schemata/EthereumAddress.ts)) (e.g:  `0x2A80CeC004780fbfacD0DbFcbCBbc4Dee1A8Fa7E`, `0x3BAdfaC5bA8cfcf7bC3AdFbf11CaFBC70A19D6E1`, `0x7aA8dAAab980a7BcBEcaEcFcfaa3afE7ea372bB2`)
+* HexColor ([docs](https://jacob-alford.github.io/schemata-ts/schemata/HexColor.html)) ([source](https://github.com/jacob-alford/schemata-ts/tree/main/src/schemata/HexColor.ts)) (e.g:  `DacDac`, `bbcaD7`, `00cEa60c`)
+* Hexadecimal ([docs](https://jacob-alford.github.io/schemata-ts/schemata/Hexadecimal.html)) ([source](https://github.com/jacob-alford/schemata-ts/tree/main/src/schemata/Hexadecimal.ts)) (e.g:  `c9A41aAec`, `0XD6C3C`, `64Ce0b4e1847`)
+* HslColor ([docs](https://jacob-alford.github.io/schemata-ts/schemata/HslColor.html)) ([source](https://github.com/jacob-alford/schemata-ts/tree/main/src/schemata/HslColor.ts)) (e.g:  `hsl(.7829e59446263,000.3985798%,00031.1226%)`, `hsl(+88,000000.37242374%,+00000.900%)`, `hsla(04e-416988rad,000.38e+638451659%,+0.0062e384754552%,2.3255934e26914606)`)
+* Jwt ([docs](https://jacob-alford.github.io/schemata-ts/schemata/Jwt.html)) ([source](https://github.com/jacob-alford/schemata-ts/tree/main/src/schemata/Jwt.ts)) (e.g:  `1.__8rl--6_.__0`, `Wug.-0z-9A._`, `_a.e_c`)
+* LatLong ([docs](https://jacob-alford.github.io/schemata-ts/schemata/LatLong.html)) ([source](https://github.com/jacob-alford/schemata-ts/tree/main/src/schemata/LatLong.ts)) (e.g:  `-90.0000,+180`, `(81,+5)`, `-90.000,180`)
+* NonEmptyString ([docs](https://jacob-alford.github.io/schemata-ts/schemata/NonEmptyString.html)) ([source](https://github.com/jacob-alford/schemata-ts/tree/main/src/schemata/NonEmptyString.ts)) (e.g:  `}N2fg`, `]L)w:9=<b`, `WM9WXXSW4Cz=`)
+* RGB ([docs](https://jacob-alford.github.io/schemata-ts/schemata/RGB.html)) ([source](https://github.com/jacob-alford/schemata-ts/tree/main/src/schemata/RGB.ts)) (e.g:  `rgb(117,254,123)`, `rgba(100%,95%,90%,1)`, `rgb(239,202,204)`)
 * String ([docs](https://jacob-alford.github.io/schemata-ts/schemata/String.html)) ([source](https://github.com/jacob-alford/schemata-ts/tree/main/src/schemata/String.ts))
-* UUID ([docs](https://jacob-alford.github.io/schemata-ts/schemata/UUID.html)) ([source](https://github.com/jacob-alford/schemata-ts/tree/main/src/schemata/UUID.ts)) (e.g:  `5FcFadfb-e5A3-3abc-cbc2-02E1d50beEae`, `666CFa1f-0feF-a4B6-7C6F-A2cFD98be1ea`, `DB69Be2a-DCAa-293f-fbbf-Db0CECcabC69`)
+* UUID ([docs](https://jacob-alford.github.io/schemata-ts/schemata/UUID.html)) ([source](https://github.com/jacob-alford/schemata-ts/tree/main/src/schemata/UUID.ts)) (e.g:  `c0dACC1a-360c-7a69-CC51-E8cc7EFBAcdc`, `afA1B1CA-5371-EDCc-1Cb8-A7a7ce3aaFDC`, `ddCd08e3-dc37-5cAa-EDf0-9ADbffBbb3B6`)
 
 ### Unit (1)
 
