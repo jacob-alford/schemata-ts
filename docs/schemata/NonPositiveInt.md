@@ -1,6 +1,6 @@
 ---
 title: NonPositiveInt
-nav_order: 57
+nav_order: 58
 parent: schemata
 ---
 
