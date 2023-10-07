@@ -25,6 +25,7 @@ import type * as s from 'schemata-ts/schemables/struct/type-utils'
 import { Imap } from 'schemata-ts/schemata/Imap'
 import { Option } from 'schemata-ts/schemata/Option'
 import { Optional } from 'schemata-ts/schemata/Optional'
+import { Readonly } from 'schemata-ts/schemata/Readonly'
 import { type Simplify } from 'type-fest'
 
 /**
@@ -34,11 +35,14 @@ import { type Simplify } from 'type-fest'
  * enumerated keys. It will decode properly otherwise, but TypeScript will not permit
  * construction of such a type
  *
+ * **Note:** The second parameter `extraProps` is deprecated, use `Struct({}).strict()` or
+ * `Struct({}).addIndexSignature()` instead
+ *
  * @since 1.0.0
  * @category Combinators
  * @see https://www.typescriptlang.org/docs/handbook/2/objects.html#index-signatures
  */
-export const Struct = <T extends PropBase, Ix extends IxSigBase>(
+export const Struct = <T extends PropBase, Ix extends IxSigBase = undefined>(
   props: T,
   extraProps: ExtraProps<Ix> = 'strip',
 ): StructSchema<T, Ix> => new StructSchema(props, extraProps)
@@ -118,7 +122,7 @@ class StructSchema<T extends PropBase, Ix extends IxSigBase>
   /**
    * Re-declares a StructSchema by only including specified properties.
    *
-   * Returns a new StructSchema
+   * Returns a new `StructSchema`
    *
    * @since 2.1.0
    */
@@ -138,7 +142,7 @@ class StructSchema<T extends PropBase, Ix extends IxSigBase>
   /**
    * Re-declares a StructSchema by excluding specified properties.
    *
-   * Returns a new StructSchema
+   * Returns a new `StructSchema`
    *
    * @since 2.1.0
    */
@@ -158,7 +162,7 @@ class StructSchema<T extends PropBase, Ix extends IxSigBase>
   /**
    * Marks all properties as optional; applies `Partial` to both input and output types.
    *
-   * Returns a new Schema.
+   * Returns a new schema.
    *
    * @since 2.1.0
    */
@@ -173,7 +177,9 @@ class StructSchema<T extends PropBase, Ix extends IxSigBase>
 
   /**
    * A variant of `partial` that applies `Partial` to input properties and maps each
-   * property output property to the fp-ts `Option` type.
+   * output property to the fp-ts `Option` type.
+   *
+   * Returns a new schema.
    *
    * @since 2.1.0
    */
@@ -184,6 +190,44 @@ class StructSchema<T extends PropBase, Ix extends IxSigBase>
     return unsafeCoerce(
       new StructSchema(pipe(this.props, RR.map(OptionFromOptional)), this.indexSignature),
     )
+  }
+
+  /**
+   * Marks all properties as readonly; applies `Readonly` to both input and output types.
+   *
+   * Returns a new schema.
+   *
+   * @since 2.1.0
+   */
+  public readonly(): Schema<
+    Simplify<Readonly<Input<T, Ix>>>,
+    Simplify<Readonly<Output<T, Ix>>>
+  > {
+    return Readonly(new StructSchema(this.props, this.indexSignature))
+  }
+
+  /**
+   * Sets a Struct Schema's index signature to be strict
+   *
+   * Returns a new `StructSchema`.
+   *
+   * @since 2.1.0
+   */
+  public strict(): StructSchema<T, undefined> {
+    return new StructSchema<T, undefined>(this.props, 'error')
+  }
+
+  /**
+   * Adds an index signature to a Struct Schema.
+   *
+   * Returns a new `StructSchema`.
+   *
+   * @since 2.1.0
+   */
+  public addIndexSignature<Ix2 extends Schema<any, any>>(
+    indexSignature: Ix2,
+  ): StructSchema<T, Ix2> {
+    return new StructSchema<T, Ix2>(this.props, indexSignature)
   }
 }
 

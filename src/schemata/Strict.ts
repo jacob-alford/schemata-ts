@@ -11,6 +11,7 @@ import { type Simplify } from 'type-fest'
 /**
  * Same as `Struct` combinator, but disallows additional properties.
  *
+ * @deprecated Use `Struct({}).strict()` instead
  * @since 2.0.0
  * @category Combinators
  */
