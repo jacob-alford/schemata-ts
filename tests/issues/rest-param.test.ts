@@ -20,7 +20,7 @@ const WithRestParam = S.Struct(
 )
 
 test('Struct types', () => {
-  expectTypeOf(WithRestParam).toEqualTypeOf<
+  expectTypeOf(WithRestParam).toMatchTypeOf<
     S.Schema<
       {
         [x: string]: string | null | undefined

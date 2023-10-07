@@ -30,23 +30,10 @@ construction of such a type
 **Signature**
 
 ```ts
-export declare const Struct: <
-  T extends Record<string, Schema<any, any>>,
-  IndexSignature extends Schema<any, any> | undefined
->(
+export declare const Struct: <T extends Record<string, Schema<any, any>>, Ix extends IxSigBase>(
   props: T,
-  extraProps?: IndexSignature | 'strip' | 'error'
-) => Schema<
-  {
-    [KeyType in keyof (RestInput<IndexSignature> &
-      RequiredInputProps<T> &
-      OptionalInputProps<T>)]: (RestInput<IndexSignature> & RequiredInputProps<T> & OptionalInputProps<T>)[KeyType]
-  },
-  {
-    [KeyType in keyof (RestOutput<IndexSignature> & OutputProps<T>)]: (RestOutput<IndexSignature> &
-      OutputProps<T>)[KeyType]
-  }
->
+  extraProps?: ExtraProps<Ix>
+) => StructSchema<T, Ix>
 ```
 
 Added in v1.0.0
