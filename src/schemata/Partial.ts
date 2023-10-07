@@ -17,10 +17,12 @@ import { StructTypeString } from 'schemata-ts/schemables/struct/instances/type-s
 import type * as s from 'schemata-ts/schemables/struct/type-utils'
 import { Optional } from 'schemata-ts/schemata/Optional'
 import { type Simplify } from 'type-fest'
+
 /**
  * Used to construct a struct schema with enumerated keys where any number of known keys
  * are permitted.
  *
+ * @deprecated Use `Struct({}).partial()` instead
  * @since 1.0.0
  * @category Combinators
  */
