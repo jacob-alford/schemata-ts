@@ -1,12 +1,15 @@
 /** @since 1.4.0 */
 import { pipe, unsafeCoerce } from 'fp-ts/function'
+import * as O from 'fp-ts/Option'
 import * as RR from 'fp-ts/ReadonlyRecord'
 import * as Sg from 'fp-ts/Semigroup'
 import { deriveGuard } from 'schemata-ts/derivations/guard-schemable'
 import { deriveInformation } from 'schemata-ts/derivations/information-schemable'
 import { deriveTypeString } from 'schemata-ts/derivations/type-string-schemable'
+import { type Option as Option_ } from 'schemata-ts/internal/option'
 import {
   type OptionalInputProps,
+  type OptionOutputProps,
   type OutputProps,
   type RequiredInputProps,
   type RestInput,
@@ -19,6 +22,10 @@ import { type Schema, SchemaImplementation } from 'schemata-ts/Schema'
 import { type Schemable } from 'schemata-ts/Schemable'
 import { StructTypeString } from 'schemata-ts/schemables/struct/instances/type-string'
 import type * as s from 'schemata-ts/schemables/struct/type-utils'
+import { Imap } from 'schemata-ts/schemata/Imap'
+import { Option } from 'schemata-ts/schemata/Option'
+import { Optional } from 'schemata-ts/schemata/Optional'
+import { Readonly } from 'schemata-ts/schemata/Readonly'
 import { type Simplify } from 'type-fest'
 
 /**
@@ -28,11 +35,14 @@ import { type Simplify } from 'type-fest'
  * enumerated keys. It will decode properly otherwise, but TypeScript will not permit
  * construction of such a type
  *
+ * **Note:** The second parameter `extraProps` is deprecated, use `Struct({}).strict()` or
+ * `Struct({}).addIndexSignature()` instead
+ *
  * @since 1.0.0
  * @category Combinators
  * @see https://www.typescriptlang.org/docs/handbook/2/objects.html#index-signatures
  */
-export const Struct = <T extends PropBase, Ix extends IxSigBase>(
+export const Struct = <T extends PropBase, Ix extends IxSigBase = undefined>(
   props: T,
   extraProps: ExtraProps<Ix> = 'strip',
 ): StructSchema<T, Ix> => new StructSchema(props, extraProps)
@@ -48,6 +58,10 @@ type Input<T extends PropBase, Ix extends IxSigBase> = Simplify<
 
 type Output<T extends PropBase, Ix extends IxSigBase> = Simplify<
   RestOutput<Ix> & OutputProps<T>
+>
+
+type OptionOutput<T extends PropBase, Ix extends IxSigBase> = Simplify<
+  RestOutput<Ix> & OptionOutputProps<T>
 >
 
 /** @since 2.1.0 */
@@ -105,7 +119,13 @@ class StructSchema<T extends PropBase, Ix extends IxSigBase>
     })
   }
 
-  /** @since 2.1.0 */
+  /**
+   * Re-declares a StructSchema by only including specified properties.
+   *
+   * Returns a new `StructSchema`
+   *
+   * @since 2.1.0
+   */
   public pick<K extends keyof T>(
     ...keys: ReadonlyArray<K>
   ): StructSchema<Simplify<Pick<T, K>>, Ix> {
@@ -119,7 +139,13 @@ class StructSchema<T extends PropBase, Ix extends IxSigBase>
     )
   }
 
-  /** @since 2.1.0 */
+  /**
+   * Re-declares a StructSchema by excluding specified properties.
+   *
+   * Returns a new `StructSchema`
+   *
+   * @since 2.1.0
+   */
   public omit<K extends keyof T>(
     ...keys: ReadonlyArray<K>
   ): StructSchema<Simplify<Omit<T, K>>, Ix> {
@@ -132,4 +158,100 @@ class StructSchema<T extends PropBase, Ix extends IxSigBase>
       this.indexSignature,
     )
   }
+
+  /**
+   * Marks all properties as optional; applies `Partial` to both input and output types.
+   *
+   * Returns a new schema.
+   *
+   * @since 2.1.0
+   */
+  public partial(): Schema<
+    Simplify<Partial<Input<T, Ix>>>,
+    Simplify<Partial<Output<T, Ix>>>
+  > {
+    return unsafeCoerce(
+      new StructSchema(pipe(this.props, RR.map(Optional)), this.indexSignature),
+    )
+  }
+
+  /**
+   * A variant of `partial` that applies `Partial` to input properties and maps each
+   * output property to the fp-ts `Option` type.
+   *
+   * Returns a new schema.
+   *
+   * @since 2.1.0
+   */
+  public partialOption(): Schema<
+    Simplify<Partial<Input<T, Ix>>>,
+    Simplify<OptionOutput<T, Ix>>
+  > {
+    return unsafeCoerce(
+      new StructSchema(pipe(this.props, RR.map(OptionFromOptional)), this.indexSignature),
+    )
+  }
+
+  /**
+   * Marks all properties as readonly; applies `Readonly` to both input and output types.
+   *
+   * Returns a new schema.
+   *
+   * @since 2.1.0
+   */
+  public readonly(): Schema<
+    Simplify<Readonly<Input<T, Ix>>>,
+    Simplify<Readonly<Output<T, Ix>>>
+  > {
+    return Readonly(new StructSchema(this.props, this.indexSignature))
+  }
+
+  /**
+   * Sets a Struct Schema's index signature to be strict
+   *
+   * Returns a new `StructSchema`.
+   *
+   * @since 2.1.0
+   */
+  public strict(): StructSchema<T, undefined> {
+    return new StructSchema<T, undefined>(this.props, 'error')
+  }
+
+  /**
+   * Adds an index signature to a Struct Schema.
+   *
+   * Returns a new `StructSchema`.
+   *
+   * @since 2.1.0
+   */
+  public addIndexSignature<Ix2 extends Schema<any, any>>(
+    indexSignature: Ix2,
+  ): StructSchema<T, Ix2> {
+    return new StructSchema<T, Ix2>(this.props, indexSignature)
+  }
+}
+
+const OptionFromOptional = <I, O>(
+  schema: Schema<I, O>,
+): Schema<I | undefined, Option_<NonNullable<O>>> => {
+  const guard = deriveGuard(Option(schema))
+
+  return pipe(
+    Optional(schema),
+    Imap(
+      {
+        is: (u): u is O.Option<NonNullable<O>> =>
+          guard.is(u) &&
+          pipe(
+            u,
+            O.fold(
+              () => true,
+              a => a !== undefined,
+            ),
+          ),
+      },
+      O.fromNullable,
+      O.toUndefined,
+    ),
+  )
 }

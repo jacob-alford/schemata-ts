@@ -13,13 +13,13 @@ Added in v1.4.0
 <h2 class="text-delta">Table of contents</h2>
 
 - [Combinators](#combinators)
-  - [Strict](#strict)
+  - [~~Strict~~](#strict)
 
 ---
 
 # Combinators
 
-## Strict
+## ~~Strict~~
 
 Same as `Struct` combinator, but disallows additional properties.
 

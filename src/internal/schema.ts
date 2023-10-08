@@ -1,3 +1,4 @@
+import { type Option } from 'schemata-ts/internal/option'
 import { type SchemableKind, type SchemableLambda } from 'schemata-ts/internal/schemable'
 import type * as s from 'schemata-ts/internal/struct'
 import {
@@ -30,6 +31,10 @@ export type PartialOutputProps<T extends Record<string, Schema<any, any>>> = {
   [K in keyof T]: T[K] extends s.ImplicitOptional & infer A
     ? OutputOf<A> | undefined
     : OutputOf<T[K]> | undefined
+}
+
+export type OptionOutputProps<T extends Record<string, Schema<any, any>>> = {
+  [K in keyof T]: Option<NonNullable<OutputOf<T[K]>>>
 }
 
 /** @since 2.0.0 */

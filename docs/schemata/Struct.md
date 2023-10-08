@@ -27,10 +27,13 @@ Used to construct a struct schema with enumerated keys.
 enumerated keys. It will decode properly otherwise, but TypeScript will not permit
 construction of such a type
 
+**Note:** The second parameter `extraProps` is deprecated, use `Struct({}).strict()` or
+`Struct({}).addIndexSignature()` instead
+
 **Signature**
 
 ```ts
-export declare const Struct: <T extends Record<string, Schema<any, any>>, Ix extends IxSigBase>(
+export declare const Struct: <T extends Record<string, Schema<any, any>>, Ix extends IxSigBase = undefined>(
   props: T,
   extraProps?: ExtraProps<Ix>
 ) => StructSchema<T, Ix>
