@@ -1,8 +1,12 @@
-/* eslint-disable @typescript-eslint/ban-types */
-import { identity, unsafeCoerce } from 'fp-ts/function'
+import { type Option } from 'schemata-ts/internal/option'
 import { type SchemableKind, type SchemableLambda } from 'schemata-ts/internal/schemable'
 import type * as s from 'schemata-ts/internal/struct'
-import { type InputOf, type OutputOf, type Schema } from 'schemata-ts/Schema'
+import {
+  type InputOf,
+  type OutputOf,
+  type Schema,
+  SchemaImplementation,
+} from 'schemata-ts/Schema'
 import { type Schemable } from 'schemata-ts/Schemable'
 
 /** @since 2.0.0 */
@@ -29,6 +33,10 @@ export type PartialOutputProps<T extends Record<string, Schema<any, any>>> = {
     : OutputOf<T[K]> | undefined
 }
 
+export type OptionOutputProps<T extends Record<string, Schema<any, any>>> = {
+  [K in keyof T]: Option<NonNullable<OutputOf<T[K]>>>
+}
+
 /** @since 2.0.0 */
 export type RestInput<RestKind> = RestKind extends undefined
   ? unknown
@@ -40,21 +48,6 @@ export type RestOutput<RestKind> = RestKind extends undefined
   : { [key: string]: RestKind extends Schema<any, infer O> ? O : never }
 
 /** @internal */
-export const memoize = <A, B>(f: (a: A) => B): ((a: A) => B) => {
-  const cache = new Map()
-  return a => {
-    if (!cache.has(a)) {
-      const b = f(a)
-      cache.set(a, b)
-      return b
-    }
-    return cache.get(a)
-  }
-}
-
-const SchemaSymbol = Symbol.for('schemata-ts/Schema')
-
-/** @internal */
 export const make = <S extends Schema<any, any>['runSchema']>(
   f: S,
 ): S extends (...args: ReadonlyArray<any>) => {
@@ -62,13 +55,7 @@ export const make = <S extends Schema<any, any>['runSchema']>(
   Output: (...args: ReadonlyArray<any>) => infer A
 }
   ? Schema<E, A>
-  : never =>
-  unsafeCoerce({
-    [SchemaSymbol]: SchemaSymbol,
-    runSchema: memoize(f),
-    input: identity,
-    output: identity,
-  })
+  : never => SchemaImplementation.make(f)
 
 /** @since 2.0.0 */
 export type Interpreter<S extends SchemableLambda> = <I, O>(
@@ -79,3 +66,5 @@ export type Interpreter<S extends SchemableLambda> = <I, O>(
 export const interpret: <S extends SchemableLambda>(S: Schemable<S>) => Interpreter<S> =
   S => schema =>
     schema.runSchema(S)
+
+export { memoize } from 'schemata-ts/Schema'

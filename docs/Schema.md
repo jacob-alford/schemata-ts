@@ -22,6 +22,12 @@ Added in v1.0.0
   - [InputOf (type alias)](#inputof-type-alias)
   - [OutputOf (type alias)](#outputof-type-alias)
   - [TypeOf (type alias)](#typeof-type-alias)
+- [utils](#utils)
+  - [SchemaImplementation (class)](#schemaimplementation-class)
+    - [[SchemaSymbol] (property)](#schemasymbol-property)
+    - [input (property)](#input-property)
+    - [output (property)](#output-property)
+    - [runSchema (property)](#runschema-property)
 
 ---
 
@@ -93,3 +99,57 @@ export type TypeOf<S> = S extends Schema<any, infer A> ? A : never
 ```
 
 Added in v1.0.0
+
+# utils
+
+## SchemaImplementation (class)
+
+**Signature**
+
+```ts
+export declare class SchemaImplementation<I, O> {
+  protected constructor(runSchema: <S extends hkt.SchemableLambda>(S: Schemable<S>) => hkt.SchemableKind<S, I, O>)
+}
+```
+
+Added in v2.1.0
+
+### [SchemaSymbol] (property)
+
+**Signature**
+
+```ts
+readonly [SchemaSymbol]: typeof SchemaSymbol
+```
+
+Added in v2.0.0
+
+### input (property)
+
+**Signature**
+
+```ts
+readonly input: (_: I) => I
+```
+
+Added in v2.0.0
+
+### output (property)
+
+**Signature**
+
+```ts
+readonly output: (_: O) => O
+```
+
+Added in v2.0.0
+
+### runSchema (property)
+
+**Signature**
+
+```ts
+readonly runSchema: <S extends hkt.SchemableLambda>(S: Schemable<S>) => hkt.SchemableKind<S, I, O>
+```
+
+Added in v2.0.0

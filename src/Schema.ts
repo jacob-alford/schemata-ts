@@ -3,6 +3,7 @@
  *
  * @since 1.0.0
  */
+import { identity, unsafeCoerce } from 'fp-ts/function'
 import type * as hkt from 'schemata-ts/internal/schemable'
 import { type Schemable } from 'schemata-ts/Schemable'
 
@@ -20,6 +21,41 @@ export interface Schema<I, O = I> {
   readonly runSchema: <S extends hkt.SchemableLambda>(
     S: Schemable<S>,
   ) => hkt.SchemableKind<S, I, O>
+}
+
+/** @since 2.1.0 */
+export class SchemaImplementation<I, O = I> implements Schema<I, O> {
+  /** @since 2.0.0 */
+  readonly [SchemaSymbol]: SchemaSymbol = SchemaSymbol
+
+  /** @since 2.0.0 */
+  readonly input: (_: I) => I = identity
+
+  /** @since 2.0.0 */
+  readonly output: (_: O) => O = identity
+
+  /** @since 2.0.0 */
+  readonly runSchema: <S extends hkt.SchemableLambda>(
+    S: Schemable<S>,
+  ) => hkt.SchemableKind<S, I, O>
+
+  protected constructor(
+    runSchema: <S extends hkt.SchemableLambda>(
+      S: Schemable<S>,
+    ) => hkt.SchemableKind<S, I, O>,
+  ) {
+    this.runSchema = memoize(runSchema)
+  }
+
+  /** @internal */
+  public static make = <S extends Schema<any, any>['runSchema']>(
+    f: S,
+  ): S extends (...args: ReadonlyArray<any>) => {
+    Input: (...args: ReadonlyArray<any>) => infer I
+    Output: (...args: ReadonlyArray<any>) => infer O
+  }
+    ? Schema<I, O>
+    : never => unsafeCoerce(new SchemaImplementation(f))
 }
 
 /**
@@ -54,3 +90,16 @@ export type OutputOf<S> = TypeOf<S>
  * @category Type Helpers
  */
 export type InputOf<S> = S extends Schema<infer I, any> ? I : never
+
+/** @internal */
+export const memoize = <A, B>(f: (a: A) => B): ((a: A) => B) => {
+  const cache = new Map()
+  return a => {
+    if (!cache.has(a)) {
+      const b = f(a)
+      cache.set(a, b)
+      return b
+    }
+    return cache.get(a)
+  }
+}

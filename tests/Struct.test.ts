@@ -46,7 +46,7 @@ const expectedTypeString =
   `{ a?: null | string?, b: Float, c: boolean, d: Float<-8640000000000,8640000000000>, e?: Integer<0,2>?, f?: string | Float | null | DateString? } → { a: null | string?, b: Float, c: boolean, d: Date, e: Integer<0,2>?, f: string | Float | Option<Date> }`
 
 test('Struct types', () => {
-  expectTypeOf(Schema).toEqualTypeOf<
+  expectTypeOf(Schema).toMatchTypeOf<
     S.Schema<
       {
         a?: string | null | undefined

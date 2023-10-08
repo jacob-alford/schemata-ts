@@ -7,17 +7,11 @@ import * as JS from 'schemata-ts/JsonSchema'
 import { type SafeDate } from 'schemata-ts/schemables/date/definition'
 import * as TC from 'schemata-ts/Transcoder'
 
-import { runStandardTestSuite } from '../../test-utils/test-suite'
+import { runStandardTestSuite } from '../test-utils/test-suite'
 
-// based on an example by @Ethan826:
-// https://github.com/jacob-alford/schemata-ts/blob/b4a8255dc586c81483367cc1ec6a0f72256d5952/tests/schemables/WithStructM.test.ts#L860
+const Base = S.Struct({ date: S.OptionFromNullable(S.DateFromUnixTime) })
 
-// This is technically not a valid typescript struct,
-// but it works for purposes of validation, and produces lawful artifacts
-const WithRestParam = S.Struct(
-  { date: S.OptionFromNullable(S.DateFromUnixTime) },
-  S.OptionFromNullable(S.String()),
-)
+const WithRestParam = Base.addIndexSignature(S.OptionFromNullable(S.String()))
 
 test('Struct types', () => {
   expectTypeOf(WithRestParam).toMatchTypeOf<
