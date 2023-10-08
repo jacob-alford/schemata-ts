@@ -26,7 +26,7 @@ import { Imap } from 'schemata-ts/schemata/Imap'
 import { Option } from 'schemata-ts/schemata/Option'
 import { Optional } from 'schemata-ts/schemata/Optional'
 import { Readonly } from 'schemata-ts/schemata/Readonly'
-import { type Simplify } from 'type-fest'
+import { type Simplify, type Spread } from 'type-fest'
 
 /**
  * Used to construct a struct schema with enumerated keys.
@@ -71,7 +71,7 @@ class StructSchema<T extends PropBase, Ix extends IxSigBase>
 {
   constructor(
     private readonly props: T,
-    private readonly indexSignature: ExtraProps<Ix>,
+    private readonly indexSignature?: ExtraProps<Ix>,
   ) {
     super(<S extends SchemableLambda>(_: Schemable<S>) => {
       const struct: Record<string, s.StructProp<S>> = {}
@@ -220,6 +220,37 @@ class StructSchema<T extends PropBase, Ix extends IxSigBase>
   public readonly addIndexSignature = <Ix2 extends Schema<any, any>>(
     indexSignature: Ix2,
   ): StructSchema<T, Ix2> => new StructSchema<T, Ix2>(this.props, indexSignature)
+
+  /**
+   * Extends a Struct Schema with additional properties. Keys specified in `props` will
+   * overwrite keys in `this`.
+   *
+   * Returns a new `StructSchema`.
+   *
+   * @since 2.1.0
+   */
+  public readonly extend = <T2 extends PropBase>(
+    props: T2,
+  ): StructSchema<Spread<T, T2>, Ix> =>
+    this.intersect(new StructSchema(props, this.indexSignature))
+
+  /**
+   * Intersects the present Struct Schema with another effectively concatenating their
+   * keys. Keys in `this` will be overwritten with identical keys in `that`.
+   *
+   * **Note:** The index signature of `that` will be discarded.
+   *
+   * Returns a new `StructSchema`.
+   *
+   * @since 2.1.0
+   */
+  public readonly intersect = <T2 extends PropBase>(
+    that: StructSchema<T2, any>,
+  ): StructSchema<Spread<T, T2>, Ix> =>
+    new StructSchema(
+      { ...this.props, ...that.props } as Spread<T, T2>,
+      this.indexSignature,
+    )
 }
 
 const OptionFromOptional = <I, O>(
