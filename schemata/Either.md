@@ -29,7 +29,10 @@ The fp-ts Either type as a schemata-ts schema.
 export declare const Either: <EI, EO, AI, AO>(
   left: Schema<EI, EO>,
   right: Schema<AI, AO>
-) => Schema<{ readonly _tag: 'Left'; left: EI } | { readonly _tag: 'Right'; right: AI }, Either_<EO, AO>>
+) => Schema<
+  { readonly _tag: 'Left'; readonly left: EI } | { readonly _tag: 'Right'; readonly right: AI },
+  Either_<EO, AO>
+>
 ```
 
 Added in v2.1.0

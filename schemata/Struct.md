@@ -27,26 +27,16 @@ Used to construct a struct schema with enumerated keys.
 enumerated keys. It will decode properly otherwise, but TypeScript will not permit
 construction of such a type
 
+**Note:** The second parameter `extraProps` is deprecated, use `Struct({}).strict()` or
+`Struct({}).addIndexSignature()` instead
+
 **Signature**
 
 ```ts
-export declare const Struct: <
-  T extends Record<string, Schema<any, any>>,
-  IndexSignature extends Schema<any, any> | undefined
->(
+export declare const Struct: <T extends Record<string, Schema<any, any>>, Ix extends IxSigBase = undefined>(
   props: T,
-  extraProps?: IndexSignature | 'strip' | 'error'
-) => Schema<
-  {
-    [KeyType in keyof (RestInput<IndexSignature> &
-      RequiredInputProps<T> &
-      OptionalInputProps<T>)]: (RestInput<IndexSignature> & RequiredInputProps<T> & OptionalInputProps<T>)[KeyType]
-  },
-  {
-    [KeyType in keyof (RestOutput<IndexSignature> & OutputProps<T>)]: (RestOutput<IndexSignature> &
-      OutputProps<T>)[KeyType]
-  }
->
+  extraProps?: ExtraProps<Ix>
+) => StructSchema<T, Ix>
 ```
 
 Added in v1.0.0

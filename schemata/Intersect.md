@@ -13,13 +13,13 @@ Added in v1.0.0
 <h2 class="text-delta">Table of contents</h2>
 
 - [Combinators](#combinators)
-  - [Intersect](#intersect)
+  - [~~Intersect~~](#intersect)
 
 ---
 
 # Combinators
 
-## Intersect
+## ~~Intersect~~
 
 An intersection of two struct-derived types.
 

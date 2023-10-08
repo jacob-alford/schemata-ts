@@ -13,13 +13,13 @@ Added in v1.0.0
 <h2 class="text-delta">Table of contents</h2>
 
 - [Combinators](#combinators)
-  - [Partial](#partial)
+  - [~~Partial~~](#partial)
 
 ---
 
 # Combinators
 
-## Partial
+## ~~Partial~~
 
 Used to construct a struct schema with enumerated keys where any number of known keys
 are permitted.
