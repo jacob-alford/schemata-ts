@@ -126,10 +126,10 @@ class StructSchema<T extends PropBase, Ix extends IxSigBase>
    *
    * @since 2.1.0
    */
-  public pick<K extends keyof T>(
+  public readonly pick = <K extends keyof T>(
     ...keys: ReadonlyArray<K>
-  ): StructSchema<Simplify<Pick<T, K>>, Ix> {
-    return new StructSchema(
+  ): StructSchema<Simplify<Pick<T, K>>, Ix> =>
+    new StructSchema(
       pipe(
         this.props,
         RR.filterWithIndex(k => keys.includes(k as K)),
@@ -137,7 +137,6 @@ class StructSchema<T extends PropBase, Ix extends IxSigBase>
       ),
       this.indexSignature,
     )
-  }
 
   /**
    * Re-declares a StructSchema by excluding specified properties.
@@ -146,10 +145,10 @@ class StructSchema<T extends PropBase, Ix extends IxSigBase>
    *
    * @since 2.1.0
    */
-  public omit<K extends keyof T>(
+  public readonly omit = <K extends keyof T>(
     ...keys: ReadonlyArray<K>
-  ): StructSchema<Simplify<Omit<T, K>>, Ix> {
-    return new StructSchema(
+  ): StructSchema<Simplify<Omit<T, K>>, Ix> =>
+    new StructSchema(
       pipe(
         this.props,
         RR.filterWithIndex(k => !keys.includes(k as K)),
@@ -157,7 +156,6 @@ class StructSchema<T extends PropBase, Ix extends IxSigBase>
       ),
       this.indexSignature,
     )
-  }
 
   /**
    * Marks all properties as optional; applies `Partial` to both input and output types.
@@ -166,14 +164,13 @@ class StructSchema<T extends PropBase, Ix extends IxSigBase>
    *
    * @since 2.1.0
    */
-  public partial(): Schema<
+  public readonly partial = (): Schema<
     Simplify<Partial<Input<T, Ix>>>,
     Simplify<Partial<Output<T, Ix>>>
-  > {
-    return unsafeCoerce(
+  > =>
+    unsafeCoerce(
       new StructSchema(pipe(this.props, RR.map(Optional)), this.indexSignature),
     )
-  }
 
   /**
    * A variant of `partial` that applies `Partial` to input properties and maps each
@@ -183,14 +180,13 @@ class StructSchema<T extends PropBase, Ix extends IxSigBase>
    *
    * @since 2.1.0
    */
-  public partialOption(): Schema<
+  public readonly partialOption = (): Schema<
     Simplify<Partial<Input<T, Ix>>>,
     Simplify<OptionOutput<T, Ix>>
-  > {
-    return unsafeCoerce(
+  > =>
+    unsafeCoerce(
       new StructSchema(pipe(this.props, RR.map(OptionFromOptional)), this.indexSignature),
     )
-  }
 
   /**
    * Marks all properties as readonly; applies `Readonly` to both input and output types.
@@ -199,12 +195,10 @@ class StructSchema<T extends PropBase, Ix extends IxSigBase>
    *
    * @since 2.1.0
    */
-  public readonly(): Schema<
+  public readonly readonly = (): Schema<
     Simplify<Readonly<Input<T, Ix>>>,
     Simplify<Readonly<Output<T, Ix>>>
-  > {
-    return Readonly(new StructSchema(this.props, this.indexSignature))
-  }
+  > => Readonly(new StructSchema(this.props, this.indexSignature))
 
   /**
    * Sets a Struct Schema's index signature to be strict
@@ -213,9 +207,8 @@ class StructSchema<T extends PropBase, Ix extends IxSigBase>
    *
    * @since 2.1.0
    */
-  public strict(): StructSchema<T, undefined> {
-    return new StructSchema<T, undefined>(this.props, 'error')
-  }
+  public readonly strict = (): StructSchema<T, undefined> =>
+    new StructSchema<T, undefined>(this.props, 'error')
 
   /**
    * Adds an index signature to a Struct Schema.
@@ -224,11 +217,9 @@ class StructSchema<T extends PropBase, Ix extends IxSigBase>
    *
    * @since 2.1.0
    */
-  public addIndexSignature<Ix2 extends Schema<any, any>>(
+  public readonly addIndexSignature = <Ix2 extends Schema<any, any>>(
     indexSignature: Ix2,
-  ): StructSchema<T, Ix2> {
-    return new StructSchema<T, Ix2>(this.props, indexSignature)
-  }
+  ): StructSchema<T, Ix2> => new StructSchema<T, Ix2>(this.props, indexSignature)
 }
 
 const OptionFromOptional = <I, O>(
