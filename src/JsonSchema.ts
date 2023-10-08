@@ -283,7 +283,11 @@ export const annotate: (params?: {
 }) => (schema: JsonSchema) => Const<JsonSchema, never> =
   ({ title, description, references, deprecated, readOnly } = {}) =>
   schema =>
-    title === undefined && description === undefined && references === undefined
+    title === undefined &&
+    description === undefined &&
+    references === undefined &&
+    deprecated === undefined &&
+    readOnly === undefined
       ? make(schema)
       : make({
           ...schema,
