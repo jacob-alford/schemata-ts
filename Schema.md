@@ -16,18 +16,20 @@ Added in v1.0.0
 
 - [Guards](#guards)
   - [isSchema](#isschema)
+- [Implementation](#implementation)
+  - [SchemaImplementation (class)](#schemaimplementation-class)
+    - [[SchemaSymbol] (property)](#schemasymbol-property)
+    - [input (property)](#input-property)
+    - [output (property)](#output-property)
+    - [runSchema (property)](#runschema-property)
 - [Model](#model)
   - [Schema (interface)](#schema-interface)
 - [Type Helpers](#type-helpers)
   - [InputOf (type alias)](#inputof-type-alias)
   - [OutputOf (type alias)](#outputof-type-alias)
   - [TypeOf (type alias)](#typeof-type-alias)
-- [utils](#utils)
-  - [SchemaImplementation (class)](#schemaimplementation-class)
-    - [[SchemaSymbol] (property)](#schemasymbol-property)
-    - [input (property)](#input-property)
-    - [output (property)](#output-property)
-    - [runSchema (property)](#runschema-property)
+- [Utilities](#utilities)
+  - [memoize](#memoize)
 
 ---
 
@@ -39,6 +41,60 @@ Added in v1.0.0
 
 ```ts
 export declare const isSchema: (u: unknown) => u is Schema<unknown, unknown>
+```
+
+Added in v2.0.0
+
+# Implementation
+
+## SchemaImplementation (class)
+
+**Signature**
+
+```ts
+export declare class SchemaImplementation<I, O> {
+  protected constructor(runSchema: <S extends hkt.SchemableLambda>(S: Schemable<S>) => hkt.SchemableKind<S, I, O>)
+}
+```
+
+Added in v2.1.0
+
+### [SchemaSymbol] (property)
+
+**Signature**
+
+```ts
+readonly [SchemaSymbol]: typeof SchemaSymbol
+```
+
+Added in v2.0.0
+
+### input (property)
+
+**Signature**
+
+```ts
+readonly input: (_: I) => I
+```
+
+Added in v2.0.0
+
+### output (property)
+
+**Signature**
+
+```ts
+readonly output: (_: O) => O
+```
+
+Added in v2.0.0
+
+### runSchema (property)
+
+**Signature**
+
+```ts
+readonly runSchema: <S extends hkt.SchemableLambda>(S: Schemable<S>) => hkt.SchemableKind<S, I, O>
 ```
 
 Added in v2.0.0
@@ -100,56 +156,14 @@ export type TypeOf<S> = S extends Schema<any, infer A> ? A : never
 
 Added in v1.0.0
 
-# utils
+# Utilities
 
-## SchemaImplementation (class)
-
-**Signature**
-
-```ts
-export declare class SchemaImplementation<I, O> {
-  protected constructor(runSchema: <S extends hkt.SchemableLambda>(S: Schemable<S>) => hkt.SchemableKind<S, I, O>)
-}
-```
-
-Added in v2.1.0
-
-### [SchemaSymbol] (property)
+## memoize
 
 **Signature**
 
 ```ts
-readonly [SchemaSymbol]: typeof SchemaSymbol
+export declare const memoize: <A, B>(f: (a: A) => B) => (a: A) => B
 ```
 
-Added in v2.0.0
-
-### input (property)
-
-**Signature**
-
-```ts
-readonly input: (_: I) => I
-```
-
-Added in v2.0.0
-
-### output (property)
-
-**Signature**
-
-```ts
-readonly output: (_: O) => O
-```
-
-Added in v2.0.0
-
-### runSchema (property)
-
-**Signature**
-
-```ts
-readonly runSchema: <S extends hkt.SchemableLambda>(S: Schemable<S>) => hkt.SchemableKind<S, I, O>
-```
-
-Added in v2.0.0
+Added in v1.0.0
