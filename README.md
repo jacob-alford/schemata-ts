@@ -27,7 +27,7 @@ An all-inclusive schema engine featuring schemata inspired by io-ts and validato
 </div>
 <div align="center">
 
-<img alt="npm" src="https://img.shields.io/npm/dm/schemata-ts?style=for-the-badge">
+<img alt="npm" src="https://img.shields.io/npm/dt/schemata-ts?style=for-the-badge">
 &nbsp;
 <img alt="Coveralls branch" src="https://img.shields.io/coverallsCoverage/github/jacob-alford/schemata-ts?style=for-the-badge">
 &nbsp;
@@ -71,19 +71,19 @@ An all-inclusive schema engine featuring schemata inspired by io-ts and validato
 
 ## Installation
 
-#### Yarn
+### Yarn
 
 ```console
 yarn add schemata-ts
 ```
 
-#### NPM
+### NPM
 
 ```console
 npm install schemata-ts
 ```
 
-#### PNPM
+### PNPM
 
 ```console
 pnpm add schemata-ts
@@ -108,7 +108,7 @@ In addition to "primitive" schemas like `S.String(params?)`, `S.Int(params?)`, `
 - [View All Schemata](https://jacob-alford.github.io/schemata-ts/schemata)
 - [All Schemata Source](https://github.com/jacob-alford/schemata-ts/tree/main/src/schemata)
 
-#### Example
+### Schema Example
 
 ```ts
 import * as S from 'schemata-ts'
@@ -119,6 +119,34 @@ export const PersonSchema = S.Struct({
   isCool: S.Boolean,
   favoriteColors: S.Array(S.String()),
 })
+```
+
+## Schema Transformations
+
+There are two types of schema transformations in `schemata-ts`: ['combinators'](#schema) which are functions that take schemas as parameters and return new schemas, and 'transformers' which are specific to a particular schema. Starting with version 2.1 it is possible to adjust the declaration of a schema _after_ it's declared. The possibilities here are endless. Schemata-ts currently supports the following transformations:
+
+- `StructSchema`: A struct specific schema transformer which permits the following methods:
+  - `omit`: Omit one or many properties from a struct schema
+  - `pick`: Pick one or many properties from a struct schema
+  - `extend`: Extend a struct schema with additional properties
+  - `intersect`: Extend a struct schema with additional properties from another struct schema
+  - `partial`: Make both input and output properties of a struct schema optional
+  - `partialOption`: Make both input properties optional, and map output properties to the fp-ts `Option` type
+  - `strict`: Raise an `UnexpectedValue` transcode error when encountering unspecified properties
+  - `addIndexSignature`: Add an index signature to a struct schema, effectively providing a schema for all properties not explicitly defined
+  - `readonly`: Mark all properties of a struct schema readonly
+
+And others are soon to come, for instance `Array` and `String` with `nonEmpty`; `Tuple` with `prepend` and `append`; and `Union` with `extend`.
+
+### Transformation Example
+
+```typescript
+const SoftwareDeveloperSchema = PersonSchema.omit('isCool')
+  .extend({
+    favoriteLanguages: S.Array(S.String()),
+    favoriteFrameworks: S.Array(S.String()),
+  })
+  .strict()
 ```
 
 ## TypeScript Types
@@ -148,7 +176,7 @@ Transcoders are intended to succeed `Decoder`, `Encoder`, and `Codec` from `io-t
 - [Documentation](https://jacob-alford.github.io/schemata-ts/transcoder)
 - [Source](https://github.com/jacob-alford/schemata-ts/tree/main/src/Transcoder.ts)
 
-#### Transformations (_Advanced_)
+### Transcoder Transformations (_Advanced_)
 
 In addition to parsing an unknown value, Transcoder can _transform_ input types. One example is `MapFromEntries` which takes an array of key-value pairs and transforms it into a JavaScript `Map` type.
 
@@ -163,7 +191,7 @@ const peopleTranscoder: Transcoder<
 > = deriveTranscoder(PeopleSchema)
 ```
 
-#### Serialization (_Advanced_)
+### Transcoder Serialization (_Advanced_)
 
 Schemas can be turned into printer-parsers using various `Parser` schemas, such as:
 
@@ -183,7 +211,7 @@ const parsePersonTranscoder: Transcoder<S.Base64, Person> = deriveTranscoder(
 )
 ```
 
-#### Parallelized Validation (_Advanced_)
+### Transcoder Parallelized Validation (_Advanced_)
 
 Transcoders can be parallelized using `TranscoderPar` which is a typeclass similar to Transcoder but returns `TaskEither`s instead of `Either`s. This allows for parallelized validation for schemas of multiple values like structs and arrays.
 
@@ -194,7 +222,7 @@ const personTranscoderPar: TranscoderPar<PersonInput, Person> =
   deriveTranscoderPar(PersonSchema)
 ```
 
-#### Documentation
+### Transcoder Documentation
 
 - [Documentation](https://jacob-alford.github.io/schemata-ts/transcoder-par)
 - [Source](https://github.com/jacob-alford/schemata-ts/tree/main/src/TranscoderPar.ts)
@@ -209,7 +237,7 @@ import { deriveGuard, type Guard } from 'schemata-ts/Guard'
 const guardPerson: Guard<Person> = deriveGuard(PersonSchema)
 ```
 
-#### Documentation
+### Type Guard Documentation
 
 - [Documentation](https://jacob-alford.github.io/schemata-ts/guard)
 - [Source](https://github.com/jacob-alford/schemata-ts/tree/main/src/Guard.ts)
@@ -226,10 +254,11 @@ const personJsonSchema2019 = deriveJsonSchema(PersonSchema)
 const personJsonSchema2020 = deriveJsonSchema(PersonSchema, '2020-12')
 ```
 
-#### Documentation
+### JSON Schema Documentation
 
 - [Documentation](https://jacob-alford.github.io/schemata-ts/json-schema)
 - [Source](https://github.com/jacob-alford/schemata-ts/tree/main/src/JsonSchema.ts)
+- [Specification](https://json-schema.org/specification)
 
 ## Fast-Check Arbitraries
 
@@ -242,10 +271,11 @@ import { deriveArbitrary } from 'schemata-ts/Arbitrary'
 const personArbitrary = deriveArbitrary(PersonSchema).arbitrary(fc)
 ```
 
-#### Documentation
+### Arbitrary Documentation
 
 - [Documentation](https://jacob-alford.github.io/schemata-ts/arbitrary)
 - [Source](https://github.com/jacob-alford/schemata-ts/tree/main/src/Arbitrary.ts)
+- [Fast-Check](https://github.com/dubzzz/fast-check)
 
 ## And more
 

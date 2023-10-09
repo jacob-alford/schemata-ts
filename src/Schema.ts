@@ -23,7 +23,10 @@ export interface Schema<I, O = I> {
   ) => hkt.SchemableKind<S, I, O>
 }
 
-/** @since 2.1.0 */
+/**
+ * @since 2.1.0
+ * @category Implementation
+ */
 export class SchemaImplementation<I, O = I> implements Schema<I, O> {
   /** @since 2.0.0 */
   readonly [SchemaSymbol]: SchemaSymbol = SchemaSymbol
@@ -91,7 +94,10 @@ export type OutputOf<S> = TypeOf<S>
  */
 export type InputOf<S> = S extends Schema<infer I, any> ? I : never
 
-/** @internal */
+/**
+ * @since 1.0.0
+ * @category Utilities
+ */
 export const memoize = <A, B>(f: (a: A) => B): ((a: A) => B) => {
   const cache = new Map()
   return a => {
