@@ -108,6 +108,7 @@ export const genSchemas: Build<void> = _ =>
                 RA.findLastMap(line =>
                   pipe(
                     O.fromNullable(line.match(/@category\b(.*)\b/)),
+                    O.map(RA.filter(category => !category.includes('Transformations'))),
                     O.chain(RA.head),
                     O.map(categoryString =>
                       tuple(

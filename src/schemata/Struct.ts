@@ -64,8 +64,13 @@ type OptionOutput<T extends PropBase, Ix extends IxSigBase> = Simplify<
   RestOutput<Ix> & OptionOutputProps<T>
 >
 
-/** @since 2.1.0 */
-class StructSchema<T extends PropBase, Ix extends IxSigBase>
+/**
+ * Use `Struct({})` schema combinator instead
+ *
+ * @since 2.1.0
+ * @category Transformations
+ */
+export class StructSchema<T extends PropBase, Ix extends IxSigBase>
   extends SchemaImplementation<Input<T, Ix>, Output<T, Ix>>
   implements Schema<Input<T, Ix>, Output<T, Ix>>
 {
