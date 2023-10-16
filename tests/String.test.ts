@@ -1,5 +1,8 @@
+import { expectTypeOf } from 'expect-type'
 import * as S from 'schemata-ts'
+import { type Branded } from 'schemata-ts/brand'
 import * as JS from 'schemata-ts/JsonSchema'
+import * as TC from 'schemata-ts/Transcoder'
 
 import { runStandardTestSuite } from '../test-utils/test-suite'
 
@@ -64,4 +67,30 @@ runStandardTestSuite(S.String({ minLength: 10, maxLength: 20 }), _ => ({
   eqTests: [],
   jsonSchema: JS.string({ minLength: 10, maxLength: 20 }),
   typeString: 'string<10,20>',
+}))()
+
+interface TestBrand_ {
+  readonly Brand: unique symbol
+}
+
+const TestTBase = S.String().minLength(1).maxLength(5).errorName('TestT')
+
+test('string-transformations', () => {
+  expectTypeOf(TestTBase).toMatchTypeOf<S.Schema<string>>()
+})
+
+const TestT = TestTBase.brand<TestBrand_>()
+
+test('.brand()', () => {
+  expectTypeOf(TestT).toEqualTypeOf<
+    S.Schema<Branded<string, TestBrand_>, Branded<string, TestBrand_>>
+  >()
+})
+
+runStandardTestSuite(TestT, _ => ({
+  decoderTests: [
+    _.decoder.pass('abcd'),
+    _.decoder.fail('', () => TC.transcodeErrors(TC.typeMismatch('TestT', ''))),
+    _.decoder.fail('abcdef', _ => TC.transcodeErrors(TC.typeMismatch('TestT', _))),
+  ],
 }))()
