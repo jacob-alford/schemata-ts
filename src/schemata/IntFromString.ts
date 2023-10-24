@@ -2,7 +2,7 @@
 import { pipe } from 'fp-ts/function'
 import * as k from 'kuvio'
 import { type Branded } from 'schemata-ts/brand'
-import { type Integer } from 'schemata-ts/integer'
+import { type Integer, type MaxSafeInt, type MinSafeInt } from 'schemata-ts/integer'
 import { type Schema } from 'schemata-ts/Schema'
 import { PrimitivesGuard } from 'schemata-ts/schemables/primitives/instances/guard'
 import { PrimitivesTypeString } from 'schemata-ts/schemables/primitives/instances/type-string'
@@ -10,8 +10,10 @@ import { Brand } from 'schemata-ts/schemata/Brand'
 import { Imap } from 'schemata-ts/schemata/Imap'
 import { Pattern } from 'schemata-ts/schemata/Pattern'
 
-type IntStringBrand = {
+type IntStringBrand<Min, Max> = {
   readonly IntString: unique symbol
+  readonly min: Min
+  readonly max: Max
 }
 
 /**
@@ -19,7 +21,10 @@ type IntStringBrand = {
  *
  * @since 2.0.0
  */
-export type IntString = Branded<string, IntStringBrand>
+export type IntString<Min = MinSafeInt, Max = MaxSafeInt> = Branded<
+  string,
+  IntStringBrand<Min, Max>
+>
 
 /**
  * @since 1.0.0
@@ -84,12 +89,13 @@ export const intFromString: k.Pattern = k.oneOf(
  *  { z | z ∈ ℤ, z >= -2 ** 53 + 1, z <= 2 ** 53 - 1 }
  * ```
  *
+ * @deprecated Use `ParseInt` instead.
  * @since 1.0.0
  * @category Conversion
  */
 export const IntFromString: Schema<IntString, Integer> = pipe(
   Pattern(intFromString, ['IntString', PrimitivesTypeString.int()[1]]),
-  Brand<IntStringBrand>(),
+  Brand<IntStringBrand<MinSafeInt, MaxSafeInt>>(),
   Imap(
     PrimitivesGuard.int(),
     s => Number(s) as Integer,
