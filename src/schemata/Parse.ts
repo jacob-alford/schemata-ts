@@ -16,12 +16,12 @@ export type ParserOptions = {
  * @since 2.0.0
  * @category Combinators
  */
-export const Parse: <I>(
-  name: string,
+export const Parse: <I, IO extends string = string>(
+  inputName: string,
   parse: (raw: string) => Either<unknown, unknown>,
-  print: (a: I) => Either<unknown, string>,
+  print: (a: I) => Either<unknown, IO>,
   options?: ParserOptions,
-) => <O>(inner: Schema<I, O>) => Schema<string, O> =
+) => <O>(inner: Schema<I, O>) => Schema<IO, O> =
   (name, parse, print, options = {}) =>
   inner =>
     make(_ =>

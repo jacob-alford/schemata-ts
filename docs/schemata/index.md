@@ -75,10 +75,12 @@ has_children: true
 * PositiveFloat ([docs](https://jacob-alford.github.io/schemata-ts/schemata/PositiveFloat.html)) ([source](https://github.com/jacob-alford/schemata-ts/tree/main/src/schemata/PositiveFloat.ts))
 * PositiveInt ([docs](https://jacob-alford.github.io/schemata-ts/schemata/PositiveInt.html)) ([source](https://github.com/jacob-alford/schemata-ts/tree/main/src/schemata/PositiveInt.ts))
 
-### Printer Parsers (3)
+### Printer Parsers (5)
 
 * ParseBase64Json ([docs](https://jacob-alford.github.io/schemata-ts/schemata/ParseBase64Json.html)) ([source](https://github.com/jacob-alford/schemata-ts/tree/main/src/schemata/ParseBase64Json.ts))
 * ParseEncodedJson ([docs](https://jacob-alford.github.io/schemata-ts/schemata/ParseEncodedJson.html)) ([source](https://github.com/jacob-alford/schemata-ts/tree/main/src/schemata/ParseEncodedJson.ts))
+* ParseFloat ([docs](https://jacob-alford.github.io/schemata-ts/schemata/ParseFloat.html)) ([source](https://github.com/jacob-alford/schemata-ts/tree/main/src/schemata/ParseFloat.ts))
+* ParseInt ([docs](https://jacob-alford.github.io/schemata-ts/schemata/ParseInt.html)) ([source](https://github.com/jacob-alford/schemata-ts/tree/main/src/schemata/ParseInt.ts))
 * ParseJsonString ([docs](https://jacob-alford.github.io/schemata-ts/schemata/ParseJsonString.html)) ([source](https://github.com/jacob-alford/schemata-ts/tree/main/src/schemata/ParseJsonString.ts))
 
 ### String (17)
