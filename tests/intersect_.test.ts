@@ -72,6 +72,5 @@ runStandardTestSuite(Intersected, _ => ({
     required: ['a', 'c'],
     readOnly: true,
   },
-  typeString:
-    '{ a: string, b?: Integer<0,>?, c: string } → { a: string, b: Integer<0,>?, c: string }',
+  typeString: '{ a: string, b?: Integer<0,>?, c: string }',
 }))()

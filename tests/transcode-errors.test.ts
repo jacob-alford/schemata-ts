@@ -81,15 +81,15 @@ describe('transcode errors', () => {
     obj.obj = obj
     const testError = TC.transcodeErrors(TC.typeMismatch('string', obj))
     expect(drawTree(testError, { showHeading: false })).toBe(
-      `─ Expected string but got [Circular object]`,
+      `─ Expected string but got {"obj":"[Circular object]"}`,
     )
   })
   it('shows circular arrays', () => {
     const arr: any = []
-    arr[0] = arr
+    arr[1] = arr
     const testError = TC.transcodeErrors(TC.typeMismatch('string', arr))
     expect(drawTree(testError, { showHeading: false })).toBe(
-      `─ Expected string but got [Circular Array]`,
+      `─ Expected string but got [null,"[Circular Array]"]`,
     )
   })
   it('shows maps', () => {

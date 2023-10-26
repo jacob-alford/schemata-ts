@@ -170,7 +170,7 @@ runStandardTestSuite(NotMutex, _ => ({
       false,
     ),
   ),
-  typeString: `{ a: string, b?: null | Integer?, c: Integer<-8640000000000000,8640000000000000> } | { a: EmailAddress, c: Float<-8640000000000,8640000000000> } → { a: string, b: null | Integer?, c: Integer<-8640000000000000,8640000000000000> } | { a: EmailAddress, c: Date }`,
+  typeString: `{ a: string, b?: null | Integer?, c: Integer<-8640000000000000,8640000000000000> } | { a: EmailAddress, c: Float<-8640000000000,8640000000000> } → { a: string, b?: null | Integer?, c: Integer<-8640000000000000,8640000000000000> } | { a: EmailAddress, c: Date }`,
 }))()
 
 runStandardTestSuite(

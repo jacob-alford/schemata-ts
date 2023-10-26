@@ -34,7 +34,7 @@ const expectedJsonSchema = JS.annotate({
   }),
 )
 
-const expectedTypeString = `{ a?: Array[1,]<string>?, b?: Integer<69,420>? } → { a: Array[1,]<string>?, b: TestNt? }`
+const expectedTypeString = `{ a?: Array[1,]<string>?, b?: Integer<69,420>? } → { a?: Array[1,]<string>?, b?: TestNt? }`
 
 test('types', () => {
   expectTypeOf(Schema).toEqualTypeOf<
