@@ -2,6 +2,7 @@ import * as E from 'fp-ts/Either'
 import * as S from 'schemata-ts'
 import { drawTree } from 'schemata-ts/TranscodeError'
 import * as TC from 'schemata-ts/Transcoder'
+import * as util from 'util'
 
 const Schema = S.Strict({
   foo: S.Union(S.NonEmptyString, S.Boolean),
@@ -155,5 +156,16 @@ describe('transcode errors', () => {
     expect(drawTree(testError, { showHeading: false })).toBe(
       `─ Expected string but got {"foo":{"bar":{"baz":"42n"}}}`,
     )
+  })
+  describe('introspection', () => {
+    test('JSON.stringify', () => {
+      expect(JSON.stringify(result.left)).toBe(JSON.stringify(expectedError))
+    })
+    test('toString', () => {
+      expect(result.left.toString()).toBe(expectedError)
+    })
+    test('inspect', () => {
+      expect(util.inspect(result.left)).toBe(expectedError)
+    })
   })
 })
