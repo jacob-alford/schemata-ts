@@ -35,6 +35,21 @@ export class TranscodeErrors {
   /** @since 2.0.0 */
   readonly _tag = 'TranscodeErrors'
   constructor(readonly errors: RNEA.ReadonlyNonEmptyArray<TranscodeError>) {}
+
+  /** @since 2.2.0 */
+  public toJSON(this: TranscodeErrors) {
+    return draw(this)
+  }
+
+  /** @since 2.2.0 */
+  public toString(this: TranscodeErrors) {
+    return draw(this)
+  }
+
+  /** @since 2.2.0 */
+  public [Symbol.for('nodejs.util.inspect.custom')](this: TranscodeErrors) {
+    return draw(this)
+  }
 }
 
 /**
