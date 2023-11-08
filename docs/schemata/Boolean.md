@@ -1,6 +1,6 @@
 ---
 title: Boolean
-nav_order: 18
+nav_order: 19
 parent: schemata
 ---
 

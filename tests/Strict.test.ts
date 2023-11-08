@@ -39,7 +39,7 @@ const expectedJsonSchema = JS.struct(
   false,
 )
 
-const expectedTypeString = `{ a: string, b?: Float?, c: boolean } → { a: string, b: Float?, c: boolean }`
+const expectedTypeString = `{ a: string, b?: Float?, c: boolean }`
 
 runStandardTestSuite(Schema, _ => ({
   decoderTests: [
