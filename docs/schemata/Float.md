@@ -1,6 +1,6 @@
 ---
 title: Float
-nav_order: 36
+nav_order: 37
 parent: schemata
 ---
 
@@ -49,7 +49,7 @@ Added in v1.0.0
 
 ## FloatSchema (class)
 
-The StringSchema transformer class, use instead `S.String` function to create a StringSchema
+The FloatSchema transformer class, use instead `S.Float` function to create a FloatSchema
 
 **Signature**
 
@@ -63,7 +63,7 @@ Added in v2.2.0
 
 ### brand (property)
 
-Brands this string schema with a certain brand
+Brands this FloatSchema with a certain brand
 
 **Signature**
 
@@ -75,7 +75,7 @@ Added in v2.2.0
 
 ### min (property)
 
-Sets the minimum required length of the string
+Sets the minimum value of the FloatSchema
 
 **Signature**
 
@@ -87,7 +87,7 @@ Added in v2.2.0
 
 ### max (property)
 
-Sets the maximum required length of the string
+Sets the maximum value of the FloatSchema
 
 **Signature**
 

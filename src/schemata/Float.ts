@@ -37,7 +37,7 @@ export const Float = <
 ): FloatSchema<Min, Max> => new FloatSchema(params)
 
 /**
- * The StringSchema transformer class, use instead `S.String` function to create a StringSchema
+ * The FloatSchema transformer class, use instead `S.Float` function to create a FloatSchema
  *
  * @since 2.2.0
  * @category Transformations
@@ -51,7 +51,7 @@ export class FloatSchema<
   }
 
   /**
-   * Brands this string schema with a certain brand
+   * Brands this FloatSchema with a certain brand
    *
    * @since 2.2.0
    */
@@ -59,7 +59,7 @@ export class FloatSchema<
     () => unsafeCoerce(this)
 
   /**
-   * Sets the minimum required length of the string
+   * Sets the minimum value of the FloatSchema
    *
    * @since 2.2.0
    */
@@ -68,7 +68,7 @@ export class FloatSchema<
   ) => FloatSchema<NewMin, Max> = min => new FloatSchema({ ...this.params, min })
 
   /**
-   * Sets the maximum required length of the string
+   * Sets the maximum value of the FloatSchema
    *
    * @since 2.2.0
    */

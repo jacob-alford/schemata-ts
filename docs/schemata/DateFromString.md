@@ -1,6 +1,6 @@
 ---
 title: DateFromString
-nav_order: 31
+nav_order: 32
 parent: schemata
 ---
 

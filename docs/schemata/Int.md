@@ -1,6 +1,6 @@
 ---
 title: Int
-nav_order: 43
+nav_order: 44
 parent: schemata
 ---
 
@@ -49,7 +49,7 @@ Added in v1.0.0
 
 ## IntSchema (class)
 
-The StringSchema transformer class, use instead `S.String` function to create a StringSchema
+The IntSchema transformer class, use instead `S.Int` function to create an IntSchema
 
 **Signature**
 
@@ -63,7 +63,7 @@ Added in v2.2.0
 
 ### brand (property)
 
-Brands this string schema with a certain brand
+Brands this Int schema with a certain brand
 
 **Signature**
 
@@ -75,7 +75,7 @@ Added in v2.2.0
 
 ### min (property)
 
-Sets the minimum required length of the string
+Sets the minimum value of the IntSchema
 
 **Signature**
 
@@ -87,7 +87,7 @@ Added in v2.2.0
 
 ### max (property)
 
-Sets the maximum required length of the string
+Sets the maximum value of the IntSchema
 
 **Signature**
 

@@ -33,7 +33,7 @@ export const Int = <
 ): IntSchema<Min, Max> => new IntSchema(params)
 
 /**
- * The StringSchema transformer class, use instead `S.String` function to create a StringSchema
+ * The IntSchema transformer class, use instead `S.Int` function to create an IntSchema
  *
  * @since 2.2.0
  * @category Transformations
@@ -47,7 +47,7 @@ export class IntSchema<
   }
 
   /**
-   * Brands this string schema with a certain brand
+   * Brands this Int schema with a certain brand
    *
    * @since 2.2.0
    */
@@ -55,7 +55,7 @@ export class IntSchema<
     () => unsafeCoerce(this)
 
   /**
-   * Sets the minimum required length of the string
+   * Sets the minimum value of the IntSchema
    *
    * @since 2.2.0
    */
@@ -64,7 +64,7 @@ export class IntSchema<
   ) => IntSchema<NewMin, Max> = min => new IntSchema({ ...this.params, min })
 
   /**
-   * Sets the maximum required length of the string
+   * Sets the maximum value of the IntSchema
    *
    * @since 2.2.0
    */
