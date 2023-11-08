@@ -1,5 +1,6 @@
 import * as S from 'schemata-ts'
 import * as JS from 'schemata-ts/JsonSchema'
+import * as TC from 'schemata-ts/Transcoder'
 
 import { runStandardTestSuite } from '../test-utils/test-suite'
 
@@ -38,7 +39,7 @@ runStandardTestSuite(S.Float(), _ => ({
   typeString: 'Float',
 }))()
 
-runStandardTestSuite(S.Float({ min: 10 }), _ => ({
+runStandardTestSuite(S.Float().min(10), _ => ({
   decoderTests: [
     _.decoder.pass(10),
     _.decoder.pass(11),
@@ -54,7 +55,7 @@ runStandardTestSuite(S.Float({ min: 10 }), _ => ({
   typeString: 'Float<10,>',
 }))()
 
-runStandardTestSuite(S.Float({ max: 10 }), _ => ({
+runStandardTestSuite(S.Float().max(10), _ => ({
   decoderTests: [
     _.decoder.fail(11),
     _.decoder.fail(156e10),
@@ -70,23 +71,29 @@ runStandardTestSuite(S.Float({ max: 10 }), _ => ({
   typeString: 'Float<,10>',
 }))()
 
-runStandardTestSuite(S.Float({ min: 10, max: 20 }), _ => ({
-  decoderTests: [
-    _.decoder.pass(10),
-    _.decoder.pass(11),
-    _.decoder.pass(20),
-    _.decoder.pass(19),
-    _.decoder.pass(10.1),
-    _.decoder.pass(19.9),
-    _.decoder.fail(9),
-    _.decoder.fail(0),
-    _.decoder.fail(-1),
-    _.decoder.fail(21),
-    _.decoder.fail(156e10),
-  ],
-  encoderTests: [],
-  guardTests: [],
-  eqTests: [],
-  jsonSchema: JS.number({ minimum: 10, maximum: 20 }),
-  typeString: 'Float<10,20>',
-}))()
+runStandardTestSuite(
+  S.Float({ min: 10, max: 20 }).errorName('Foo').brand(),
+  _ => ({
+    decoderTests: [
+      _.decoder.pass(10),
+      _.decoder.pass(11),
+      _.decoder.pass(20),
+      _.decoder.pass(19),
+      _.decoder.pass(10.1),
+      _.decoder.pass(19.9),
+      _.decoder.fail(9),
+      _.decoder.fail(0),
+      _.decoder.fail(-1),
+      _.decoder.fail(21),
+      _.decoder.fail(156e10),
+    ],
+    encoderTests: [],
+    guardTests: [],
+    eqTests: [],
+    jsonSchema: JS.number({ minimum: 10, maximum: 20 }),
+    typeString: 'Float<10,20>',
+  }),
+  {
+    makeDecodeError: _ => TC.transcodeErrors(TC.typeMismatch('Foo', _)),
+  },
+)()
