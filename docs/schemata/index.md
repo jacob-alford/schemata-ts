@@ -9,7 +9,7 @@ has_children: true
 
 * Boolean ([docs](https://jacob-alford.github.io/schemata-ts/schemata/Boolean.html)) ([source](https://github.com/jacob-alford/schemata-ts/tree/main/src/schemata/Boolean.ts))
 
-### Combinators (27)
+### Combinators (28)
 
 * Annotate ([docs](https://jacob-alford.github.io/schemata-ts/schemata/Annotate.html)) ([source](https://github.com/jacob-alford/schemata-ts/tree/main/src/schemata/Annotate.ts))
 * Array ([docs](https://jacob-alford.github.io/schemata-ts/schemata/Array.html)) ([source](https://github.com/jacob-alford/schemata-ts/tree/main/src/schemata/Array.ts))
@@ -17,6 +17,7 @@ has_children: true
 * CamelCaseKeys ([docs](https://jacob-alford.github.io/schemata-ts/schemata/CamelCaseKeys.html)) ([source](https://github.com/jacob-alford/schemata-ts/tree/main/src/schemata/CamelCaseKeys.ts))
 * CamelCaseRecord ([docs](https://jacob-alford.github.io/schemata-ts/schemata/CamelCaseRecord.html)) ([source](https://github.com/jacob-alford/schemata-ts/tree/main/src/schemata/CamelCaseRecord.ts))
 * CheckDigit ([docs](https://jacob-alford.github.io/schemata-ts/schemata/CheckDigit.html)) ([source](https://github.com/jacob-alford/schemata-ts/tree/main/src/schemata/CheckDigit.ts))
+* Class ([docs](https://jacob-alford.github.io/schemata-ts/schemata/Class.html)) ([source](https://github.com/jacob-alford/schemata-ts/tree/main/src/schemata/Class.ts))
 * Either ([docs](https://jacob-alford.github.io/schemata-ts/schemata/Either.html)) ([source](https://github.com/jacob-alford/schemata-ts/tree/main/src/schemata/Either.ts))
 * Intersect ([docs](https://jacob-alford.github.io/schemata-ts/schemata/Intersect.html)) ([source](https://github.com/jacob-alford/schemata-ts/tree/main/src/schemata/Intersect.ts))
 * Lazy ([docs](https://jacob-alford.github.io/schemata-ts/schemata/Lazy.html)) ([source](https://github.com/jacob-alford/schemata-ts/tree/main/src/schemata/Lazy.ts))
