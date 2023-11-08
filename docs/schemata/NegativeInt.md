@@ -1,6 +1,6 @@
 ---
 title: NegativeInt
-nav_order: 53
+nav_order: 54
 parent: schemata
 ---
 

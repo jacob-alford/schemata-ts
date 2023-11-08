@@ -1,6 +1,6 @@
 ---
 title: OptionFromNullable
-nav_order: 64
+nav_order: 65
 parent: schemata
 ---
 

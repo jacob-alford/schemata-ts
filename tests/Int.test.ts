@@ -1,5 +1,6 @@
 import * as S from 'schemata-ts'
 import * as JS from 'schemata-ts/JsonSchema'
+import * as TC from 'schemata-ts/Transcoder'
 
 import { runStandardTestSuite } from '../test-utils/test-suite'
 
@@ -39,7 +40,7 @@ runStandardTestSuite(S.Int(), _ => ({
   typeString: 'Integer',
 }))()
 
-runStandardTestSuite(S.Int({ min: 10 }), _ => ({
+runStandardTestSuite(S.Int().min(10), _ => ({
   decoderTests: [
     _.decoder.pass(10),
     _.decoder.pass(11),
@@ -55,7 +56,7 @@ runStandardTestSuite(S.Int({ min: 10 }), _ => ({
   typeString: 'Integer<10,>',
 }))()
 
-runStandardTestSuite(S.Int({ max: 10 }), _ => ({
+runStandardTestSuite(S.Int().max(10), _ => ({
   decoderTests: [
     _.decoder.fail(11),
     _.decoder.fail(156e10),
@@ -71,19 +72,25 @@ runStandardTestSuite(S.Int({ max: 10 }), _ => ({
   typeString: 'Integer<,10>',
 }))()
 
-runStandardTestSuite(S.Int({ min: 10, max: 20 }), _ => ({
-  decoderTests: [
-    _.decoder.pass(10),
-    _.decoder.pass(11),
-    _.decoder.pass(20),
-    _.decoder.fail(9),
-    _.decoder.fail(0),
-    _.decoder.fail(-1),
-    _.decoder.fail(21),
-  ],
-  encoderTests: [],
-  guardTests: [],
-  eqTests: [],
-  jsonSchema: JS.integer({ minimum: 10, maximum: 20 }),
-  typeString: 'Integer<10,20>',
-}))()
+runStandardTestSuite(
+  S.Int({ min: 10, max: 20 }).errorName('Foo').brand(),
+  _ => ({
+    decoderTests: [
+      _.decoder.pass(10),
+      _.decoder.pass(11),
+      _.decoder.pass(20),
+      _.decoder.fail(9),
+      _.decoder.fail(0),
+      _.decoder.fail(-1),
+      _.decoder.fail(21),
+    ],
+    encoderTests: [],
+    guardTests: [],
+    eqTests: [],
+    jsonSchema: JS.integer({ minimum: 10, maximum: 20 }),
+    typeString: 'Integer<10,20>',
+  }),
+  {
+    makeDecodeError: _ => TC.transcodeErrors(TC.typeMismatch('Foo', _)),
+  },
+)()
