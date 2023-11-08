@@ -13,7 +13,7 @@ Added in v1.0.0
 <h2 class="text-delta">Table of contents</h2>
 
 - [Conversion](#conversion)
-  - [FloatFromString](#floatfromstring)
+  - [~~FloatFromString~~](#floatfromstring)
 - [utils](#utils)
   - [FloatString (type alias)](#floatstring-type-alias)
 
@@ -21,7 +21,7 @@ Added in v1.0.0
 
 # Conversion
 
-## FloatFromString
+## ~~FloatFromString~~
 
 Floating point branded newtype from strings. Parameters: min, max are inclusive.
 
@@ -35,7 +35,7 @@ Represents string floating point numbers:
 
 ```ts
 export declare const FloatFromString: Schema<
-  Opaque<string, FloatStringBrand>,
+  Opaque<string, FloatStringBrand<-1.7976931348623157e308, 1.7976931348623157e308>>,
   Opaque<number, FloatBrand<-1.7976931348623157e308, 1.7976931348623157e308>>
 >
 ```
@@ -51,7 +51,7 @@ A string that can safely be parsed to a floating point number.
 **Signature**
 
 ```ts
-export type FloatString = Branded<string, FloatStringBrand>
+export type FloatString<Min = MaxNegativeFloat, Max = MaxPositiveFloat> = Branded<string, FloatStringBrand<Min, Max>>
 ```
 
 Added in v2.0.0

@@ -2,7 +2,11 @@
 import { pipe } from 'fp-ts/function'
 import * as k from 'kuvio'
 import { type Branded } from 'schemata-ts/brand'
-import { type Float } from 'schemata-ts/float'
+import {
+  type Float,
+  type MaxNegativeFloat,
+  type MaxPositiveFloat,
+} from 'schemata-ts/float'
 import { type Schema } from 'schemata-ts/Schema'
 import { PrimitivesGuard } from 'schemata-ts/schemables/primitives/instances/guard'
 import { Brand } from 'schemata-ts/schemata/Brand'
@@ -10,8 +14,10 @@ import { Imap } from 'schemata-ts/schemata/Imap'
 import { Pattern } from 'schemata-ts/schemata/Pattern'
 import { Refine } from 'schemata-ts/schemata/Refine'
 
-type FloatStringBrand = {
+type FloatStringBrand<Min, Max> = {
   readonly FloatString: unique symbol
+  readonly Min: Min
+  readonly Max: Max
 }
 
 /**
@@ -19,7 +25,10 @@ type FloatStringBrand = {
  *
  * @since 2.0.0
  */
-export type FloatString = Branded<string, FloatStringBrand>
+export type FloatString<Min = MaxNegativeFloat, Max = MaxPositiveFloat> = Branded<
+  string,
+  FloatStringBrand<Min, Max>
+>
 
 /**
  * Negative floats with at least one digit before the decimal point.
@@ -133,6 +142,7 @@ const floatFromString: k.Pattern = pipe(
  *  { f | f ∈ ℝ, f >= -Number.MAX_VALUE, f <= Number.MAX_VALUE }
  * ```
  *
+ * @deprecated Use `ParseFloat` instead.
  * @since 1.0.0
  * @category Conversion
  */
@@ -142,7 +152,7 @@ export const FloatFromString: Schema<FloatString, Float> = pipe(
     (s): s is string => PrimitivesGuard.float().is(Number(s)) && s.trim() !== '',
     'Float',
   ),
-  Brand<FloatStringBrand>(),
+  Brand<FloatStringBrand<MaxNegativeFloat, MaxPositiveFloat>>(),
   Imap(
     PrimitivesGuard.float(),
     s => Number(s) as Float,
