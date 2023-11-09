@@ -1,6 +1,6 @@
 ---
 title: RGB
-nav_order: 75
+nav_order: 79
 parent: schemata
 ---
 

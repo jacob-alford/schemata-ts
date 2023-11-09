@@ -1,6 +1,6 @@
 ---
 title: newtype.ts
-nav_order: 9
+nav_order: 10
 permalink: /newtype/
 ---
 

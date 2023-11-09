@@ -1,6 +1,6 @@
 ---
 title: BooleanFromString
-nav_order: 20
+nav_order: 21
 parent: schemata
 ---
 

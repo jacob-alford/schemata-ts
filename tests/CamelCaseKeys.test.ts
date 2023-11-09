@@ -47,7 +47,20 @@ test('Unlawful Camelcase types', () => {
   >()
 })
 
-const expectedTypeString = `{ APPLE_BANANA: Integer, BAZ_QUUX_FOO: IsoDateTimeStringZ, apple-banana: string, baz-quux-foo: Float, foo bar baz: string, foo_bar_baz?: null | boolean?, prickly-pear: FloatString } → { appleBanana: (:apple-banana)string | (:APPLE_BANANA)Integer, bazQuuxFoo: (:BAZ_QUUX_FOO)SafeDate | (:baz-quux-foo)Float, fooBarBaz: (:foo_bar_baz)null | boolean? | (:foo bar baz)string, [prickly-pear->pricklyPear]: Float }`
+const expectedTypeString =
+  `{ APPLE_BANANA: Integer,` +
+  ` BAZ_QUUX_FOO: IsoDateTimeStringZ,` +
+  ` apple-banana: string,` +
+  ` baz-quux-foo: Float,` +
+  ` foo bar baz: string,` +
+  ` foo_bar_baz?: null | boolean?,` +
+  ` prickly-pear: FloatString` +
+  ` } → {` +
+  ` appleBanana: (:apple-banana)string | (:APPLE_BANANA)Integer,` +
+  ` bazQuuxFoo: (:BAZ_QUUX_FOO)SafeDate | (:baz-quux-foo)Float,` +
+  ` fooBarBaz?: (:foo_bar_baz)null | boolean? | (:foo bar baz)string,` +
+  ` [prickly-pear->pricklyPear]: Float` +
+  ` }`
 
 runStandardTestSuite(
   UnlawfulSchema,
@@ -173,7 +186,15 @@ test('Lawful Camelcase types', () => {
   >()
 })
 
-const expectedLawfulTypeString = `{ FIVE_SIX: boolean, ThreeFour?: null | boolean?, one-two: Float } → { [FIVE_SIX->fiveSix]: boolean, [one-two->oneTwo]: Float, [ThreeFour->threeFour]: null | boolean? }`
+const expectedLawfulTypeString =
+  `{ FIVE_SIX: boolean,` +
+  ` ThreeFour?: null | boolean?,` +
+  ` one-two: Float` +
+  ` } → {` +
+  ` [FIVE_SIX->fiveSix]: boolean,` +
+  ` [one-two->oneTwo]: Float,` +
+  ` [ThreeFour->threeFour]?: null | boolean?` +
+  ` }`
 
 runStandardTestSuite(LawfulSchema, _ => ({
   decoderTests: [

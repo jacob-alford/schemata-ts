@@ -35,6 +35,21 @@ export class TranscodeErrors {
   /** @since 2.0.0 */
   readonly _tag = 'TranscodeErrors'
   constructor(readonly errors: RNEA.ReadonlyNonEmptyArray<TranscodeError>) {}
+
+  /** @since 2.2.0 */
+  public toJSON(this: TranscodeErrors) {
+    return draw(this)
+  }
+
+  /** @since 2.2.0 */
+  public toString(this: TranscodeErrors) {
+    return draw(this)
+  }
+
+  /** @since 2.2.0 */
+  public [Symbol.for('nodejs.util.inspect.custom')](this: TranscodeErrors) {
+    return draw(this)
+  }
 }
 
 /**
@@ -386,7 +401,7 @@ const typeOf = (a: unknown): string => {
 }
 
 /** @internal */
-const safeShow = (a: unknown): string => {
+export const safeShow = (a: unknown): string => {
   if (
     a instanceof Error ||
     typeof a === 'symbol' ||
@@ -401,7 +416,20 @@ const safeShow = (a: unknown): string => {
     return `[Function ${a.name === '' ? '(anonymous)' : a.name}]`
   const tA = typeOf(a)
   return pipe(
-    O.tryCatch(() => JSON.stringify(a, (_, v) => (typeof v === 'bigint' ? `${v}n` : v))),
-    O.getOrElse(() => `[Circular ${tA}]`),
+    O.tryCatch(() => {
+      const seen = new WeakSet()
+      return JSON.stringify(a, (_, v) => {
+        if (typeof v === 'object' && v !== null) {
+          if (seen.has(v)) return `[Circular ${tA}]`
+          seen.add(v)
+        }
+        return typeof v === 'bigint' ? `${v}n` : v
+      })
+    }),
+    // unreachable case, such as if a circular object does not have a constant reference (???)
+    O.getOrElse(
+      // istanbul ignore next
+      () => `[Circular ${tA}]`,
+    ),
   )
 }

@@ -1,4 +1,7 @@
+import { expectTypeOf } from 'expect-type'
+import type * as RNEA from 'fp-ts/ReadonlyNonEmptyArray'
 import * as S from 'schemata-ts'
+import { type Integer } from 'schemata-ts/integer'
 import * as JS from 'schemata-ts/JsonSchema'
 import * as TC from 'schemata-ts/Transcoder'
 
@@ -105,4 +108,28 @@ runStandardTestSuite(S.Array(S.Union(S.Natural, S.String())), _ => ({
 runStandardTestSuite(S.Tuple(), () => ({
   typeString: '[]',
   jsonSchema: JS.tuple(),
+}))()
+
+const SchemaModiferTest_ = S.Array(S.Natural).maxLength(5)
+
+test('SchemaModiferTest_', () => {
+  expectTypeOf(SchemaModiferTest_).toMatchTypeOf<S.Schema<ReadonlyArray<Integer<0>>>>()
+})
+
+const SchemaModiferTest = SchemaModiferTest_.nonEmpty()
+
+test('SchemaModiferTest', () => {
+  expectTypeOf(SchemaModiferTest).toMatchTypeOf<
+    S.Schema<RNEA.ReadonlyNonEmptyArray<Integer<0>>>
+  >()
+})
+
+runStandardTestSuite(SchemaModiferTest, _ => ({
+  decoderTests: [
+    _.decoder.pass([0]),
+    _.decoder.pass([1, 2, 3, 4, 5]),
+    _.decoder.fail([1, 2, 3, 4, 5, 6], () =>
+      TC.transcodeErrors(TC.typeMismatch('Array[1,5]<Integer<0,>>', 'Array(6)')),
+    ),
+  ],
 }))()

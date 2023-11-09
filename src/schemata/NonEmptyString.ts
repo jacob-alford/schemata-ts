@@ -1,7 +1,6 @@
 /** @since 1.0.0 */
 import { type Branded } from 'schemata-ts/brand'
 import { type Schema } from 'schemata-ts/Schema'
-import { Brand } from 'schemata-ts/schemata/Brand'
 import { String } from 'schemata-ts/schemata/String'
 
 interface NonEmptyStringBrand {
@@ -22,6 +21,6 @@ export type NonEmptyString = Branded<string, NonEmptyStringBrand>
  * @since 1.0.0
  * @category String
  */
-export const NonEmptyString: Schema<NonEmptyString> = Brand<NonEmptyStringBrand>()(
-  String({ minLength: 1 }),
-)
+export const NonEmptyString: Schema<NonEmptyString> = String({
+  minLength: 1,
+}).brand<NonEmptyStringBrand>()

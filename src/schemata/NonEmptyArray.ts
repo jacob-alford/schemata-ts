@@ -6,6 +6,7 @@ import { Array as ArrayS } from 'schemata-ts/schemata/Array'
 /**
  * A read-only Array containing one or more elements.
  *
+ * @deprecated Use `Array().nonEmpty()` instead
  * @since 1.1.0
  * @category Combinators
  */

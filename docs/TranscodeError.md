@@ -1,6 +1,6 @@
 ---
 title: TranscodeError.ts
-nav_order: 87
+nav_order: 91
 permalink: /transcode-error/
 ---
 
@@ -34,6 +34,9 @@ Added in v2.0.0
     - [\_tag (property)](#_tag-property-3)
   - [TranscodeError (type alias)](#transcodeerror-type-alias)
   - [TranscodeErrors (class)](#transcodeerrors-class)
+    - [toJSON (method)](#tojson-method)
+    - [toString (method)](#tostring-method)
+    - [[Symbol.for('nodejs.util.inspect.custom')] (method)](#symbolfornodejsutilinspectcustom-method)
     - [\_tag (property)](#_tag-property-4)
   - [TypeMismatch (class)](#typemismatch-class)
     - [\_tag (property)](#_tag-property-5)
@@ -308,6 +311,36 @@ export declare class TranscodeErrors {
 ```
 
 Added in v2.0.0
+
+### toJSON (method)
+
+**Signature**
+
+```ts
+public toJSON(this: TranscodeErrors)
+```
+
+Added in v2.2.0
+
+### toString (method)
+
+**Signature**
+
+```ts
+public toString(this: TranscodeErrors)
+```
+
+Added in v2.2.0
+
+### [Symbol.for('nodejs.util.inspect.custom')] (method)
+
+**Signature**
+
+```ts
+public [Symbol.for('nodejs.util.inspect.custom')](this: TranscodeErrors)
+```
+
+Added in v2.2.0
 
 ### \_tag (property)
 

@@ -1,6 +1,6 @@
 ---
 title: TypeString.ts
-nav_order: 90
+nav_order: 94
 permalink: /type-string/
 ---
 

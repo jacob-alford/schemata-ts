@@ -43,7 +43,7 @@ const expectedJsonSchema = JS.annotate({ readOnly: true })(
   ),
 )
 
-const expectedTypeString = `{ a: string, b?: Float?, c: boolean } → { a: string, b: Float?, c: boolean }`
+const expectedTypeString = `{ a: string, b?: Float?, c: boolean }`
 
 runStandardTestSuite(Schema, _ => ({
   decoderTests: [

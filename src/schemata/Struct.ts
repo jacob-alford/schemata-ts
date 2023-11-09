@@ -75,17 +75,17 @@ export class StructSchema<T extends PropBase, Ix extends IxSigBase>
   implements Schema<Input<T, Ix>, Output<T, Ix>>
 {
   constructor(
-    private readonly props: T,
+    public readonly definition: T,
     private readonly indexSignature?: ExtraProps<Ix>,
   ) {
     super(<S extends SchemableLambda>(_: Schemable<S>) => {
       const struct: Record<string, s.StructProp<S>> = {}
       const structName: Record<string, s.StructProp<TS.SchemableLambda>> = {}
 
-      for (const key in props) {
-        if (!hasOwn(props, key)) continue
+      for (const key in definition) {
+        if (!hasOwn(definition, key)) continue
         // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-        const schema = props[key]!
+        const schema = definition[key]!
         const schemable: SchemableKind<S, unknown, unknown> = schema.runSchema(_)
         const guard = deriveGuard(schema)
         const information = deriveInformation(schema)
@@ -136,7 +136,7 @@ export class StructSchema<T extends PropBase, Ix extends IxSigBase>
   ): StructSchema<Simplify<Pick<T, K>>, Ix> =>
     new StructSchema(
       pipe(
-        this.props,
+        this.definition,
         RR.filterWithIndex(k => keys.includes(k as K)),
         _ => unsafeCoerce(_),
       ),
@@ -155,7 +155,7 @@ export class StructSchema<T extends PropBase, Ix extends IxSigBase>
   ): StructSchema<Simplify<Omit<T, K>>, Ix> =>
     new StructSchema(
       pipe(
-        this.props,
+        this.definition,
         RR.filterWithIndex(k => !keys.includes(k as K)),
         _ => unsafeCoerce(_),
       ),
@@ -174,7 +174,7 @@ export class StructSchema<T extends PropBase, Ix extends IxSigBase>
     Simplify<Partial<Output<T, Ix>>>
   > =>
     unsafeCoerce(
-      new StructSchema(pipe(this.props, RR.map(Optional)), this.indexSignature),
+      new StructSchema(pipe(this.definition, RR.map(Optional)), this.indexSignature),
     )
 
   /**
@@ -190,7 +190,10 @@ export class StructSchema<T extends PropBase, Ix extends IxSigBase>
     Simplify<OptionOutput<T, Ix>>
   > =>
     unsafeCoerce(
-      new StructSchema(pipe(this.props, RR.map(OptionFromOptional)), this.indexSignature),
+      new StructSchema(
+        pipe(this.definition, RR.map(OptionFromOptional)),
+        this.indexSignature,
+      ),
     )
 
   /**
@@ -203,7 +206,7 @@ export class StructSchema<T extends PropBase, Ix extends IxSigBase>
   public readonly readonly = (): Schema<
     Simplify<Readonly<Input<T, Ix>>>,
     Simplify<Readonly<Output<T, Ix>>>
-  > => Readonly(new StructSchema(this.props, this.indexSignature))
+  > => Readonly(new StructSchema(this.definition, this.indexSignature))
 
   /**
    * Sets a Struct Schema's index signature to be strict
@@ -213,7 +216,7 @@ export class StructSchema<T extends PropBase, Ix extends IxSigBase>
    * @since 2.1.0
    */
   public readonly strict = (): StructSchema<T, undefined> =>
-    new StructSchema<T, undefined>(this.props, 'error')
+    new StructSchema<T, undefined>(this.definition, 'error')
 
   /**
    * Adds an index signature to a Struct Schema.
@@ -224,7 +227,7 @@ export class StructSchema<T extends PropBase, Ix extends IxSigBase>
    */
   public readonly addIndexSignature = <Ix2 extends Schema<any, any>>(
     indexSignature: Ix2,
-  ): StructSchema<T, Ix2> => new StructSchema<T, Ix2>(this.props, indexSignature)
+  ): StructSchema<T, Ix2> => new StructSchema<T, Ix2>(this.definition, indexSignature)
 
   /**
    * Extends a Struct Schema with additional properties. Keys specified in `props` will
@@ -253,7 +256,7 @@ export class StructSchema<T extends PropBase, Ix extends IxSigBase>
     that: StructSchema<T2, any>,
   ): StructSchema<Spread<T, T2>, Ix> =>
     new StructSchema(
-      { ...this.props, ...that.props } as Spread<T, T2>,
+      { ...this.definition, ...that.definition } as Spread<T, T2>,
       this.indexSignature,
     )
 }

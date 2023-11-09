@@ -1,6 +1,6 @@
 ---
 title: IntFromString
-nav_order: 44
+nav_order: 46
 parent: schemata
 ---
 
@@ -13,7 +13,7 @@ Added in v1.0.0
 <h2 class="text-delta">Table of contents</h2>
 
 - [Conversion](#conversion)
-  - [IntFromString](#intfromstring)
+  - [~~IntFromString~~](#intfromstring)
 - [Pattern](#pattern)
   - [intFromString](#intfromstring)
 - [utils](#utils)
@@ -23,7 +23,7 @@ Added in v1.0.0
 
 # Conversion
 
-## IntFromString
+## ~~IntFromString~~
 
 Integer branded newtype from string. Parameters: min, max are inclusive.
 
@@ -43,7 +43,7 @@ Represents string-integers:
 
 ```ts
 export declare const IntFromString: Schema<
-  Opaque<string, IntStringBrand>,
+  Opaque<string, IntStringBrand<-9007199254740991, 9007199254740991>>,
   Opaque<number, IntBrand<-9007199254740991, 9007199254740991>>
 >
 ```
@@ -71,7 +71,7 @@ A string that can safely be parsed to a floating point number.
 **Signature**
 
 ```ts
-export type IntString = Branded<string, IntStringBrand>
+export type IntString<Min = MinSafeInt, Max = MaxSafeInt> = Branded<string, IntStringBrand<Min, Max>>
 ```
 
 Added in v2.0.0
