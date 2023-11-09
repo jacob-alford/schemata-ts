@@ -130,26 +130,26 @@ export const PersonSchema = S.Struct({
 
 ## Schema Transformations
 
-There are three ways to transform a schema in `schemata-ts`: ['combinators'](#schema) which are functions that take schemas as parameters and return new schemas, 'transformers' which are specific to a particular schema, and `Imap` which applies an invariant transformation to the underlying data-type.
+There are three ways to transform a schema in `schemata-ts`: ['combinators'](#schema) which are functions that take schemas as parameters and return new schemas, 'transformers' which are specific to particular schemata, and `Imap` which applies an invariant transformation to the underlying data-type.
 
 ### Invariant Transformations
 
-All data-types derivable from schemas are invariant functors, aside from `Guard`. This means that if you supply mapping functions `to`, and `from` the new type, you will adjust the `Output` type of that particular data type. Because `Guard` is not invariant, you must supply the resulting `Guard` to the invariant map. The combinator version of this is `Imap`. In version `3.0` which is coming in late 2023/early 2024 it will be possible to `.imap` a schema.
+Aside from `Guard`, all data-types derivable from schemas are invariant functors. This means that supplying mapping functions `to` and `from` to `Imap` adjusts the `Output` of that particular data type. Because `Guard` is not invariant, you must supply the resulting `Guard` to the invariant map. The combinator version of this is `Imap`. In version `3.0` (coming late 2023/early 2024) it will be possible to `.imap()` any schema.
 
 ### Schema Transformers
 
 Schema transformers are classes which extend `SchemaImplementation`, and allow adjustment to the underlying schema parameters after it has been declared in an immutable fashion. This is useful for type-specific methods like `pick` or `omit` for `Struct`.
 
-Here are the current transformers and available methods:
+Here are the current transformers and available methods,
 
-- `StructSchema`: `pick`, `omit`, `partial`, `partialOption`, `readonly`, `strict`, `addIndexSignature`, `extend`, `intersect`
-- `ArraySchema`: `minLength`, `maxLength`, `nonEmpty`
-- `StringSchema`: `brand`, `minLength`, `maxLength`, `errorName`
-- `IntSchema`: `brand`, `min`, `max`, `errorName`
-- `FloatSchema`: `brand`, `min`, `max`, `errorName`
-- `TupleSchema`: `append`, `prepend`
+- Struct: `pick`, `omit`, `partial`, `partialOption`, `readonly`, `strict`, `addIndexSignature`, `extend`, `intersect`
+- Array: `minLength`, `maxLength`, `nonEmpty`
+- String: `brand`, `minLength`, `maxLength`, `errorName`
+- Int: `brand`, `min`, `max`, `errorName`
+- Float: `brand`, `min`, `max`, `errorName`
+- Tuple: `append`, `prepend`
 
-... and more to come!
+... with more to come!
 
 ### Transformation Example
 
