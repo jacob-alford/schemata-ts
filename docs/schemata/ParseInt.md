@@ -1,6 +1,6 @@
 ---
 title: ParseInt
-nav_order: 68
+nav_order: 70
 parent: schemata
 ---
 

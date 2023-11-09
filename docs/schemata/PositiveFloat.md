@@ -1,6 +1,6 @@
 ---
 title: PositiveFloat
-nav_order: 72
+nav_order: 74
 parent: schemata
 ---
 

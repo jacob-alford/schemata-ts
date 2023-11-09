@@ -1,6 +1,6 @@
 ---
 title: String
-nav_order: 80
+nav_order: 82
 parent: schemata
 ---
 

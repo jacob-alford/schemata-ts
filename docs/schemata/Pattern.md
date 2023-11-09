@@ -1,6 +1,6 @@
 ---
 title: Pattern
-nav_order: 71
+nav_order: 73
 parent: schemata
 ---
 

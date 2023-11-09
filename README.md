@@ -123,20 +123,26 @@ export const PersonSchema = S.Struct({
 
 ## Schema Transformations
 
-There are two types of schema transformations in `schemata-ts`: ['combinators'](#schema) which are functions that take schemas as parameters and return new schemas, and 'transformers' which are specific to a particular schema. Starting with version 2.1 it is possible to adjust the declaration of a schema _after_ it's declared. The possibilities here are endless. Schemata-ts currently supports the following transformations:
+There are three ways to transform a schema in `schemata-ts`: ['combinators'](#schema) which are functions that take schemas as parameters and return new schemas, 'transformers' which are specific to particular schemata, and `Imap` which applies an invariant transformation to the underlying data-type.
 
-- `StructSchema`: A struct specific schema transformer which permits the following methods:
-  - `omit`: Omit one or many properties from a struct schema
-  - `pick`: Pick one or many properties from a struct schema
-  - `extend`: Extend a struct schema with additional properties
-  - `intersect`: Extend a struct schema with additional properties from another struct schema
-  - `partial`: Make both input and output properties of a struct schema optional
-  - `partialOption`: Make both input properties optional, and map output properties to the fp-ts `Option` type
-  - `strict`: Raise an `UnexpectedValue` transcode error when encountering unspecified properties
-  - `addIndexSignature`: Add an index signature to a struct schema, effectively providing a schema for all properties not explicitly defined
-  - `readonly`: Mark all properties of a struct schema readonly
+### Invariant Transformations
 
-And others are soon to come, for instance `Array` and `String` with `nonEmpty`; `Tuple` with `prepend` and `append`; and `Union` with `extend`.
+Aside from `Guard`, all data-types derivable from schemas are invariant functors. This means that supplying mapping functions `to` and `from` to `Imap` adjusts the `Output` of that particular data type. Because `Guard` is not invariant, you must supply the resulting `Guard` to the invariant map. The combinator version of this is `Imap`. In version `3.0` (coming late 2023/early 2024) it will be possible to `.imap()` any schema.
+
+### Schema Transformers
+
+Schema transformers are classes which extend `SchemaImplementation`, and allow adjustment to the underlying schema parameters after it has been declared in an immutable fashion. This is useful for type-specific methods like `pick` or `omit` for `Struct`.
+
+Here are the current transformers and available methods,
+
+- Struct: `pick`, `omit`, `partial`, `partialOption`, `readonly`, `strict`, `addIndexSignature`, `extend`, `intersect`
+- Array: `minLength`, `maxLength`, `nonEmpty`
+- String: `brand`, `minLength`, `maxLength`, `errorName`
+- Int: `brand`, `min`, `max`, `errorName`
+- Float: `brand`, `min`, `max`, `errorName`
+- Tuple: `append`, `prepend`
+
+... with more to come!
 
 ### Transformation Example
 
