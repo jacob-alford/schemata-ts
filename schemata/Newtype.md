@@ -1,6 +1,6 @@
 ---
 title: Newtype
-nav_order: 53
+nav_order: 55
 parent: schemata
 ---
 

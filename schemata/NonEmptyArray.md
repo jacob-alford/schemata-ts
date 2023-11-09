@@ -1,6 +1,6 @@
 ---
 title: NonEmptyArray
-nav_order: 54
+nav_order: 56
 parent: schemata
 ---
 
@@ -13,13 +13,13 @@ Added in v1.1.0
 <h2 class="text-delta">Table of contents</h2>
 
 - [Combinators](#combinators)
-  - [NonEmptyArray](#nonemptyarray)
+  - [~~NonEmptyArray~~](#nonemptyarray)
 
 ---
 
 # Combinators
 
-## NonEmptyArray
+## ~~NonEmptyArray~~
 
 A read-only Array containing one or more elements.
 

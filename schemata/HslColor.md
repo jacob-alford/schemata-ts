@@ -1,6 +1,6 @@
 ---
 title: HslColor
-nav_order: 39
+nav_order: 41
 parent: schemata
 ---
 

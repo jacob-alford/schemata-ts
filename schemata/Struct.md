@@ -1,6 +1,6 @@
 ---
 title: Struct
-nav_order: 79
+nav_order: 83
 parent: schemata
 ---
 
@@ -62,7 +62,7 @@ Use `Struct({})` schema combinator instead
 
 ```ts
 export declare class StructSchema<T, Ix> {
-  constructor(private readonly props: T, private readonly indexSignature?: ExtraProps<Ix>)
+  constructor(public readonly definition: T, private readonly indexSignature?: ExtraProps<Ix>)
 }
 ```
 

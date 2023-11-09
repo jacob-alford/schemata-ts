@@ -1,6 +1,6 @@
 ---
 title: Number
-nav_order: 60
+nav_order: 62
 parent: schemata
 ---
 

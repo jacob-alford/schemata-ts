@@ -1,6 +1,6 @@
 ---
 title: Strict
-nav_order: 77
+nav_order: 81
 parent: schemata
 ---
 

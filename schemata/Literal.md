@@ -1,6 +1,6 @@
 ---
 title: Literal
-nav_order: 48
+nav_order: 50
 parent: schemata
 ---
 

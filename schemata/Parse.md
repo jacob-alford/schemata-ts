@@ -1,6 +1,6 @@
 ---
 title: Parse
-nav_order: 64
+nav_order: 66
 parent: schemata
 ---
 
@@ -28,12 +28,12 @@ A schema for pre-parsing/printing a string
 **Signature**
 
 ```ts
-export declare const Parse: <I>(
-  name: string,
+export declare const Parse: <I, IO extends string = string>(
+  inputName: string,
   parse: (raw: string) => Either<unknown, unknown>,
-  print: (a: I) => Either<unknown, string>,
+  print: (a: I) => Either<unknown, IO>,
   options?: ParserOptions | undefined
-) => <O>(inner: Schema<I, O>) => Schema<string, O>
+) => <O>(inner: Schema<I, O>) => Schema<IO, O>
 ```
 
 Added in v2.0.0

@@ -1,6 +1,6 @@
 ---
 title: Partial
-nav_order: 68
+nav_order: 72
 parent: schemata
 ---
 
