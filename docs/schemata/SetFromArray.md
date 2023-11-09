@@ -1,6 +1,6 @@
 ---
 title: SetFromArray
-nav_order: 78
+nav_order: 80
 parent: schemata
 ---
 

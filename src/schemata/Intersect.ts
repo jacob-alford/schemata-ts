@@ -5,7 +5,6 @@ import { type Schema } from 'schemata-ts/Schema'
 /**
  * An intersection of two struct-derived types.
  *
- * @deprecated Use `Struct({}).intersect()` instead.
  * @since 1.0.0
  * @category Combinators
  */

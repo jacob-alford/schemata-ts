@@ -1,6 +1,6 @@
 ---
 title: PositiveInt
-nav_order: 73
+nav_order: 75
 parent: schemata
 ---
 
