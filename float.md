@@ -22,6 +22,7 @@ Added in v2.0.0
   - [MinNegativeFloat (type alias)](#minnegativefloat-type-alias)
   - [MinPositiveFloat (type alias)](#minpositivefloat-type-alias)
 - [utils](#utils)
+  - [FloatBrand (interface)](#floatbrand-interface)
   - [maxNegativeFloat](#maxnegativefloat)
   - [maxPositiveFloat](#maxpositivefloat)
   - [minNegativeFloat](#minnegativefloat)
@@ -101,6 +102,22 @@ export type MinPositiveFloat = 5e-324
 Added in v2.0.0
 
 # utils
+
+## FloatBrand (interface)
+
+A brand for bounded floats.
+
+**Signature**
+
+```ts
+export interface FloatBrand<Min extends number, Max extends number> {
+  readonly Float: unique symbol
+  readonly Min: Min
+  readonly Max: Max
+}
+```
+
+Added in v2.2.1
 
 ## maxNegativeFloat
 
