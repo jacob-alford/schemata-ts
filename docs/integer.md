@@ -20,6 +20,7 @@ Added in v2.0.0
   - [MaxSafeInt (type alias)](#maxsafeint-type-alias)
   - [MinSafeInt (type alias)](#minsafeint-type-alias)
 - [utils](#utils)
+  - [IntBrand (interface)](#intbrand-interface)
   - [maxSafeInt](#maxsafeint)
   - [minSafeInt](#minsafeint)
 
@@ -73,6 +74,22 @@ export type MinSafeInt = -9007199254740991
 Added in v2.0.0
 
 # utils
+
+## IntBrand (interface)
+
+A brand for bounded integers.
+
+**Signature**
+
+```ts
+export interface IntBrand<Min extends number, Max extends number> {
+  readonly Int: unique symbol
+  readonly Min: Min
+  readonly Max: Max
+}
+```
+
+Added in v2.2.1
 
 ## maxSafeInt
 

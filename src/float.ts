@@ -66,8 +66,12 @@ export type MaxNegativeFloat = -1.7976931348623157e308
  */
 export const maxNegativeFloat: MaxNegativeFloat = -Number.MAX_VALUE as MaxNegativeFloat
 
-/** @since 2.0.0 */
-interface FloatBrand<Min extends number, Max extends number> {
+/**
+ * A brand for bounded floats.
+ *
+ * @since 2.2.1
+ */
+export interface FloatBrand<Min extends number, Max extends number> {
   readonly Float: unique symbol
   readonly Min: Min
   readonly Max: Max

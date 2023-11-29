@@ -36,7 +36,12 @@ export type MaxSafeInt = 9007199254740991
  */
 export const maxSafeInt: MaxSafeInt = Number.MAX_SAFE_INTEGER as MaxSafeInt
 
-interface IntBrand<Min extends number, Max extends number> {
+/**
+ * A brand for bounded integers.
+ *
+ * @since 2.2.1
+ */
+export interface IntBrand<Min extends number, Max extends number> {
   readonly Int: unique symbol
   readonly Min: Min
   readonly Max: Max
