@@ -1,1 +1,1 @@
-export type * from 'fp-ts/Option'
+export * from 'fp-ts/Option'

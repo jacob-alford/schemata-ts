@@ -1,1 +1,1 @@
-export type * from 'fp-ts/TaskEither'
+export * from 'fp-ts/TaskEither'
