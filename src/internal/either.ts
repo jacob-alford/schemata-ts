@@ -1,1 +1,1 @@
-export type * from 'fp-ts/Either'
+export * from 'fp-ts/Either'
