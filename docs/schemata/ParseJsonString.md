@@ -12,10 +12,26 @@ Added in v2.0.0
 
 <h2 class="text-delta">Table of contents</h2>
 
+- [Model](#model)
+  - [JsonString (type alias)](#jsonstring-type-alias)
 - [Printer Parsers](#printer-parsers)
   - [ParseJsonString](#parsejsonstring)
 
 ---
+
+# Model
+
+## JsonString (type alias)
+
+A branded string representing a parsable JSON string
+
+**Signature**
+
+```ts
+export type JsonString = _.JsonString
+```
+
+Added in v2.2.3
 
 # Printer Parsers
 
