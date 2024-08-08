@@ -11,7 +11,7 @@ import { run } from './run'
 interface Build<A> extends RTE.ReaderTaskEither<FileSystem, Error, A> {}
 
 const writeNpmrc: (token: string) => string = token =>
-  `_authToken=${token}\nalways-auth=true`
+  `//registry.yarnpkg.com/:_authToken=${token}\nalways-auth=true`
 
 const writeNpmIgnore: Build<void> = C =>
   pipe(
