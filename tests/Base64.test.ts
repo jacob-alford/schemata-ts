@@ -42,7 +42,8 @@ runStandardTestSuite(S.Base64, _ => ({
   guardTests: [],
   eqTests: [],
   jsonSchema: JS.string({
-    pattern: '^(([A-Za-z0-9+/]{4})*?([A-Za-z0-9+/]{2}={2}|[A-Za-z0-9+/]{3}=)?)$',
+    pattern:
+      '^(([A-Za-z0-9+\\x2f]{4})*?([A-Za-z0-9+\\x2f]{2}={2}|[A-Za-z0-9+\\x2f]{3}=)?)$',
   }),
   typeString: 'Base64',
 }))()

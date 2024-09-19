@@ -32,7 +32,7 @@ export type IntString<Min = MinSafeInt, Max = MaxSafeInt> = Branded<
  */
 const binaryIntString: k.Pattern = pipe(
   k.exactString('0b'),
-  k.then(pipe(k.characterClass(false, ['0', '1']), k.between(1, 53))),
+  k.andThen(pipe(k.characterClass(false, ['0', '1']), k.between(1, 53))),
 )
 
 /**
@@ -41,7 +41,7 @@ const binaryIntString: k.Pattern = pipe(
  */
 const octalIntString: k.Pattern = pipe(
   k.exactString('0o'),
-  k.then(pipe(k.characterClass(false, ['0', '7']), k.between(1, 18))),
+  k.andThen(pipe(k.characterClass(false, ['0', '7']), k.between(1, 18))),
 )
 
 /**
@@ -51,7 +51,7 @@ const octalIntString: k.Pattern = pipe(
 const decimalIntString: k.Pattern = pipe(
   k.char('-'),
   k.maybe,
-  k.then(pipe(k.digit, k.between(1, 16))),
+  k.andThen(pipe(k.digit, k.between(1, 16))),
 )
 
 /**
@@ -60,7 +60,7 @@ const decimalIntString: k.Pattern = pipe(
  */
 const hexIntString: k.Pattern = pipe(
   k.exactString('0x'),
-  k.then(pipe(k.hexDigit, k.between(1, 14))),
+  k.andThen(pipe(k.hexDigit, k.between(1, 14))),
 )
 
 /**

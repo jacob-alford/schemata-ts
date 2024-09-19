@@ -40,8 +40,10 @@ export type FloatString<Min = MaxNegativeFloat, Max = MaxPositiveFloat> = Brande
  */
 const negativeFloatLeft: k.Pattern = pipe(
   k.char('-'),
-  k.then(pipe(k.digit, k.between(1, 308))),
-  k.then(pipe(k.char('.'), k.then(pipe(k.digit, k.anyNumber())), k.subgroup, k.maybe)),
+  k.andThen(pipe(k.digit, k.between(1, 308))),
+  k.andThen(
+    pipe(k.char('.'), k.andThen(pipe(k.digit, k.anyNumber())), k.subgroup, k.maybe),
+  ),
 )
 
 /**
@@ -54,8 +56,10 @@ const negativeFloatLeft: k.Pattern = pipe(
  */
 const negativeFloatRight: k.Pattern = pipe(
   k.char('-'),
-  k.then(pipe(k.digit, k.between(0, 308))),
-  k.then(pipe(k.char('.'), k.then(pipe(k.digit, k.atLeastOne())), k.subgroup, k.maybe)),
+  k.andThen(pipe(k.digit, k.between(0, 308))),
+  k.andThen(
+    pipe(k.char('.'), k.andThen(pipe(k.digit, k.atLeastOne())), k.subgroup, k.maybe),
+  ),
 )
 
 /**
@@ -69,7 +73,9 @@ const negativeFloatRight: k.Pattern = pipe(
 const positiveFloatLeft: k.Pattern = pipe(
   k.digit,
   k.between(1, 308),
-  k.then(pipe(k.char('.'), k.then(pipe(k.digit, k.anyNumber())), k.subgroup, k.maybe)),
+  k.andThen(
+    pipe(k.char('.'), k.andThen(pipe(k.digit, k.anyNumber())), k.subgroup, k.maybe),
+  ),
 )
 
 /**
@@ -83,7 +89,9 @@ const positiveFloatLeft: k.Pattern = pipe(
 const positiveFloatRight: k.Pattern = pipe(
   k.digit,
   k.between(0, 308),
-  k.then(pipe(k.char('.'), k.then(pipe(k.digit, k.atLeastOne())), k.subgroup, k.maybe)),
+  k.andThen(
+    pipe(k.char('.'), k.andThen(pipe(k.digit, k.atLeastOne())), k.subgroup, k.maybe),
+  ),
 )
 
 /**
@@ -104,7 +112,7 @@ const decimalFloat: k.Pattern = k.oneOf(
 const positiveExponential: k.Pattern = pipe(
   k.char('+'),
   k.maybe,
-  k.then(pipe(k.integerRange(0, 308), k.subgroup)),
+  k.andThen(pipe(k.integerRange(0, 308), k.subgroup)),
 )
 
 /**
@@ -113,7 +121,7 @@ const positiveExponential: k.Pattern = pipe(
  */
 const negativeExponential: k.Pattern = pipe(
   k.char('-'),
-  k.then(pipe(k.digit, k.atLeastOne(), k.subgroup)),
+  k.andThen(pipe(k.digit, k.atLeastOne(), k.subgroup)),
 )
 
 /**
@@ -123,10 +131,10 @@ const negativeExponential: k.Pattern = pipe(
 const floatFromString: k.Pattern = pipe(
   decimalFloat,
   k.subgroup,
-  k.then(
+  k.andThen(
     pipe(
       k.char('e'),
-      k.then(pipe(k.oneOf(positiveExponential, negativeExponential), k.subgroup)),
+      k.andThen(pipe(k.oneOf(positiveExponential, negativeExponential), k.subgroup)),
       k.subgroup,
       k.maybe,
     ),

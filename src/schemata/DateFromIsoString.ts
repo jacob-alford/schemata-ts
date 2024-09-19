@@ -31,7 +31,7 @@ const year: k.Pattern = pipe(k.digit, k.exactly(4))
 const expandedYear: k.Pattern = pipe(
   k.characterClass(false, '+', '-'),
   k.subgroup,
-  k.then(pipe(k.digit, k.exactly(6))),
+  k.andThen(pipe(k.digit, k.exactly(6))),
 )
 
 /**
@@ -42,7 +42,7 @@ const expandedYear: k.Pattern = pipe(
  */
 const month: k.Pattern = pipe(
   k.char('0'),
-  k.then(pipe(k.integerRange(1, 9), k.subgroup)),
+  k.andThen(pipe(k.integerRange(1, 9), k.subgroup)),
   k.subgroup,
   k.or(pipe(k.integerRange(10, 12), k.subgroup)),
   k.subgroup,
@@ -56,7 +56,7 @@ const month: k.Pattern = pipe(
  */
 const day: k.Pattern = pipe(
   k.char('0'),
-  k.then(pipe(k.integerRange(1, 9), k.subgroup)),
+  k.andThen(pipe(k.integerRange(1, 9), k.subgroup)),
   k.subgroup,
   k.or(pipe(k.integerRange(10, 31), k.subgroup)),
   k.subgroup,
@@ -102,7 +102,7 @@ const date: k.Pattern = k.subgroup(k.oneOf(yearMonthDay, yearMonth, year, expand
  */
 const hour: k.Pattern = pipe(
   k.char('0'),
-  k.then(pipe(k.integerRange(0, 9), k.subgroup)),
+  k.andThen(pipe(k.integerRange(0, 9), k.subgroup)),
   k.subgroup,
   k.or(pipe(k.integerRange(10, 23), k.subgroup)),
   k.subgroup,
@@ -116,7 +116,7 @@ const hour: k.Pattern = pipe(
  */
 export const minutesSeconds: k.Pattern = pipe(
   k.char('0'),
-  k.then(pipe(k.integerRange(0, 9), k.subgroup)),
+  k.andThen(pipe(k.integerRange(0, 9), k.subgroup)),
   k.subgroup,
   k.or(pipe(k.integerRange(10, 59), k.subgroup)),
   k.subgroup,
@@ -139,9 +139,9 @@ const timezoneOffset: k.Pattern = pipe(
   k.or(
     pipe(
       k.characterClass(false, '+', '-'),
-      k.then(hour),
-      k.then(k.char(':')),
-      k.then(minutesSeconds),
+      k.andThen(hour),
+      k.andThen(k.char(':')),
+      k.andThen(minutesSeconds),
     ),
   ),
   k.subgroup,
@@ -155,12 +155,12 @@ const timezoneOffset: k.Pattern = pipe(
  */
 const hrMinSecMs: k.Pattern = pipe(
   hour,
-  k.then(k.char(':')),
-  k.then(minutesSeconds),
-  k.then(k.char(':')),
-  k.then(minutesSeconds),
-  k.then(k.char('.')),
-  k.then(milliseconds),
+  k.andThen(k.char(':')),
+  k.andThen(minutesSeconds),
+  k.andThen(k.char(':')),
+  k.andThen(minutesSeconds),
+  k.andThen(k.char('.')),
+  k.andThen(milliseconds),
 )
 
 /**
@@ -171,10 +171,10 @@ const hrMinSecMs: k.Pattern = pipe(
  */
 const hrMinSec: k.Pattern = pipe(
   hour,
-  k.then(k.char(':')),
-  k.then(minutesSeconds),
-  k.then(k.char(':')),
-  k.then(minutesSeconds),
+  k.andThen(k.char(':')),
+  k.andThen(minutesSeconds),
+  k.andThen(k.char(':')),
+  k.andThen(minutesSeconds),
 )
 
 /**
@@ -183,7 +183,7 @@ const hrMinSec: k.Pattern = pipe(
  * @since 1.0.0
  * @category Pattern
  */
-const hrMin: k.Pattern = pipe(hour, k.then(k.char(':')), k.then(minutesSeconds))
+const hrMin: k.Pattern = pipe(hour, k.andThen(k.char(':')), k.andThen(minutesSeconds))
 
 /**
  * Iso time string
@@ -199,8 +199,15 @@ const time: k.Pattern = pipe(hrMinSecMs, k.or(hrMinSec), k.or(hrMin), k.subgroup
  */
 const dateTimeStringOptT: k.Pattern = pipe(
   date,
-  k.then(
-    pipe(k.char('T'), k.or(k.char(' ')), k.subgroup, k.then(time), k.subgroup, k.maybe),
+  k.andThen(
+    pipe(
+      k.char('T'),
+      k.or(k.char(' ')),
+      k.subgroup,
+      k.andThen(time),
+      k.subgroup,
+      k.maybe,
+    ),
   ),
 )
 
@@ -210,8 +217,8 @@ const dateTimeStringOptT: k.Pattern = pipe(
  */
 const dateTimeStringReqT: k.Pattern = pipe(
   date,
-  k.then(pipe(k.char('T'), k.or(k.char(' ')), k.subgroup)),
-  k.then(time),
+  k.andThen(pipe(k.char('T'), k.or(k.char(' ')), k.subgroup)),
+  k.andThen(time),
 )
 
 /**
@@ -220,7 +227,7 @@ const dateTimeStringReqT: k.Pattern = pipe(
  */
 const isoDateStringOptTzOptT: k.Pattern = pipe(
   dateTimeStringOptT,
-  k.then(pipe(timezoneOffset, k.maybe)),
+  k.andThen(pipe(timezoneOffset, k.maybe)),
 )
 
 /**
@@ -229,14 +236,17 @@ const isoDateStringOptTzOptT: k.Pattern = pipe(
  */
 const isoDateStringOptTzReqT: k.Pattern = pipe(
   dateTimeStringReqT,
-  k.then(pipe(timezoneOffset, k.maybe)),
+  k.andThen(pipe(timezoneOffset, k.maybe)),
 )
 
 /**
  * @since 1.0.0
  * @category Pattern
  */
-const isoDateStringReqTzReqT: k.Pattern = pipe(dateTimeStringReqT, k.then(timezoneOffset))
+const isoDateStringReqTzReqT: k.Pattern = pipe(
+  dateTimeStringReqT,
+  k.andThen(timezoneOffset),
+)
 
 /**
  * @since 1.0.0
