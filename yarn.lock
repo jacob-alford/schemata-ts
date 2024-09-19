@@ -1835,14 +1835,6 @@
     "@sagold/json-pointer" "^5.0.0"
     ebnf "^1.9.0"
 
-"@simspace/matchers@^0.0.4":
-  version "0.0.4"
-  resolved "https://registry.yarnpkg.com/@simspace/matchers/-/matchers-0.0.4.tgz#b219dc0795bbfd525d96c2f58f63eb532a358c46"
-  integrity sha512-WYCbqmN+WaUKaZoCtiRP8AnAd7pM/jX2EM24m37ghodhYdXhas9LdrH00nqjlbkS9YShcAYNHjw3F1zyQ94NcQ==
-  dependencies:
-    fp-ts "^2.11"
-    typelevel-ts "^0.4.0"
-
 "@sinclair/typebox@^0.25.16":
   version "0.25.24"
   resolved "https://registry.yarnpkg.com/@sinclair/typebox/-/typebox-0.25.24.tgz#8c7688559979f7079aacaf31aa881c3aa410b718"
@@ -3695,7 +3687,7 @@ format@^0.2.0:
   resolved "https://registry.yarnpkg.com/format/-/format-0.2.2.tgz#d6170107e9efdc4ed30c9dc39016df942b5cb58b"
   integrity sha512-wzsgA6WOq+09wrU1tsJ09udeR/YZRaeArL9e1wPbFg3GG2yDnC2ldKpxs4xunpFF9DgqCqOIra3bc1HWrJ37Ww==
 
-fp-ts@^2.11, fp-ts@^2.13.1, fp-ts@^2.15.0, fp-ts@^2.9.5:
+fp-ts@^2.15.0, fp-ts@^2.9.5:
   version "2.16.0"
   resolved "https://registry.yarnpkg.com/fp-ts/-/fp-ts-2.16.0.tgz#64e03314dfc1c7ce5e975d3496ac14bc3eb7f92e"
   integrity sha512-bLq+KgbiXdTEoT1zcARrWEpa5z6A/8b7PcDW7Gef3NSisQ+VS7ll2Xbf1E+xsgik0rWub/8u0qP/iTTjj+PhxQ==
@@ -4953,13 +4945,10 @@ kleur@^4.0.3:
   resolved "https://registry.yarnpkg.com/kleur/-/kleur-4.1.5.tgz#95106101795f7050c6c650f350c683febddb1780"
   integrity sha512-o+NO+8WrRiQEE4/7nwRJhN1HWpVmJm511pBHUxPLtp0BUISzlBplORYSmTclCnJvQq2tKu/sgl3xVpkc7ZWuQQ==
 
-kuvio@^1.3.1:
-  version "1.3.1"
-  resolved "https://registry.yarnpkg.com/kuvio/-/kuvio-1.3.1.tgz#6f5516c6c6696421a372d1cd4c0293a8e061c618"
-  integrity sha512-ta6NhQwo2qkWOokqO4L3Z4rlpYbdztCEfH1fQCvvTKX7lRYreoSUuJmwDVVZpVPSNa8n43SLt5XCX1kEcIGy9w==
-  dependencies:
-    "@simspace/matchers" "^0.0.4"
-    fp-ts "^2.13.1"
+kuvio@^2.0.0:
+  version "2.0.0"
+  resolved "https://registry.yarnpkg.com/kuvio/-/kuvio-2.0.0.tgz#fb73d7a17eb32f491d248d2179ce46459c3d24cf"
+  integrity sha512-PC6LhfPGrhohyAnKBedRakAJhiJANniSpb8InM6H6mhtE82QHn6ASSeAnpxNObCKdNMKNWAwQAsd8p8q+N4HAg==
 
 lazy-cache@^2.0.2:
   version "2.0.2"
@@ -6843,11 +6832,6 @@ typedarray@^0.0.6:
   version "0.0.6"
   resolved "https://registry.yarnpkg.com/typedarray/-/typedarray-0.0.6.tgz#867ac74e3864187b1d3d47d996a78ec5c8830777"
   integrity sha512-/aCDEGatGvZ2BIk+HmLf4ifCJFwvKFNb9/JeZPMulfgFracn9QFcAf5GO8B/mweUjSoblS5In0cWhqpfs/5PQA==
-
-typelevel-ts@^0.4.0:
-  version "0.4.0"
-  resolved "https://registry.yarnpkg.com/typelevel-ts/-/typelevel-ts-0.4.0.tgz#5a757bd74a3484b42b6992a27c038e7a34330b5d"
-  integrity sha512-Qn4EgOuc7lrzjgJYc7arwteuZutO18zFyhVj4/6+BEhPr07BMsqaM02LuuRCVFP1ud5tbDYGn/Vr/BAYnGOSqw==
 
 typescript@^5.1.0:
   version "5.1.3"

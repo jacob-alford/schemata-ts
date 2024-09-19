@@ -25,7 +25,7 @@ export type BitcoinAddress = Branded<string, BitcoinAddressBrand>
  */
 const bech32 = pipe(
   k.exactString('bc1'),
-  k.then(pipe(k.characterClass(false, ['a', 'z'], ['0', '9']), k.between(25, 39))),
+  k.andThen(pipe(k.characterClass(false, ['a', 'z'], ['0', '9']), k.between(25, 39))),
 )
 
 /**
@@ -35,7 +35,7 @@ const bech32 = pipe(
  */
 const base58 = pipe(
   k.subgroup(k.characterClass(false, ['1', '3'])),
-  k.then(
+  k.andThen(
     pipe(
       k.characterClass(
         false,

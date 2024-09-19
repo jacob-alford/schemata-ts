@@ -35,7 +35,7 @@ export type BigIntFromStringParams = {
  */
 const binaryBigIntString: k.Pattern = pipe(
   k.exactString('0b'),
-  k.then(pipe(k.characterClass(false, ['0', '1']), k.atLeastOne())),
+  k.andThen(pipe(k.characterClass(false, ['0', '1']), k.atLeastOne())),
 )
 
 /**
@@ -44,7 +44,7 @@ const binaryBigIntString: k.Pattern = pipe(
  */
 const octalBigIntString: k.Pattern = pipe(
   k.exactString('0o'),
-  k.then(pipe(k.characterClass(false, ['0', '7']), k.atLeastOne())),
+  k.andThen(pipe(k.characterClass(false, ['0', '7']), k.atLeastOne())),
 )
 
 /**
@@ -54,7 +54,7 @@ const octalBigIntString: k.Pattern = pipe(
 const decimalBigIntString: k.Pattern = pipe(
   k.char('-'),
   k.maybe,
-  k.then(pipe(k.digit, k.atLeastOne())),
+  k.andThen(pipe(k.digit, k.atLeastOne())),
 )
 
 /**
@@ -63,7 +63,7 @@ const decimalBigIntString: k.Pattern = pipe(
  */
 const hexBigIntString: k.Pattern = pipe(
   k.exactString('0x'),
-  k.then(pipe(k.hexDigit, k.atLeastOne())),
+  k.andThen(pipe(k.hexDigit, k.atLeastOne())),
 )
 
 /**
