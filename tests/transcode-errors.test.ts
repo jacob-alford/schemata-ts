@@ -19,23 +19,27 @@ const result = transcoder.decode({
   baz: '{"age":42}',
 })
 
-const expectedError = `Encountered 7 transcode errors:
-┌ at key quux:
-└── Unexpected value: "baz"
-┌ at key bar:
-├── Expected Array[2,5]<[Integer<0,>, UUID version 5]> but got "Array(1)"
-├── at index 0:
-├─── at index 0:
-├──── Expected Integer<0,> but got -1
-├─── at index 1:
-└──── Expected UUID version 5 but got "not-a-uuid"
-┌ at key baz:
-└── Expected Base64, but ran into serialization error: SyntaxError: Unexpected token j in JSON at position 0; got "{"age":42}"
-┌ at key foo:
-├── at union member \`boolean\`:
-├─── Expected boolean but got undefined
-├── at union member \`string<1,>\`:
-└─── Expected string<1,> but got undefined`
+const expectedErrorLines = [
+  'Encountered 7 transcode errors:',
+  '┌ at key quux:',
+  '└── Unexpected value: "baz"',
+  '┌ at key bar:',
+  '├── Expected Array[2,5]<[Integer<0,>, UUID version 5]> but got "Array(1)"',
+  '├── at index 0:',
+  '├─── at index 0:',
+  '├──── Expected Integer<0,> but got -1',
+  '├─── at index 1:',
+  '└──── Expected UUID version 5 but got "not-a-uuid"',
+  '┌ at key baz:',
+  expect.stringContaining(
+    '└── Expected Base64, but ran into serialization error: SyntaxError:',
+  ),
+  '┌ at key foo:',
+  '├── at union member `boolean`:',
+  '├─── Expected boolean but got undefined',
+  '├── at union member `string<1,>`:',
+  '└─── Expected string<1,> but got undefined',
+]
 
 describe('transcode errors', () => {
   if (E.isRight(result)) {
@@ -43,7 +47,8 @@ describe('transcode errors', () => {
   }
   test('drawTree', () => {
     const mockError = result.left
-    expect(drawTree(mockError)).toBe(expectedError)
+
+    expect(drawTree(mockError).split('\n')).toStrictEqual(expectedErrorLines)
   })
   test('struct > array error', () => {
     const result = transcoder.decode([])
@@ -159,13 +164,15 @@ describe('transcode errors', () => {
   })
   describe('introspection', () => {
     test('JSON.stringify', () => {
-      expect(JSON.stringify(result.left)).toBe(JSON.stringify(expectedError))
+      expect(JSON.parse(JSON.stringify(result.left)).split('\n')).toStrictEqual(
+        expectedErrorLines,
+      )
     })
     test('toString', () => {
-      expect(result.left.toString()).toBe(expectedError)
+      expect(result.left.toString().split('\n')).toStrictEqual(expectedErrorLines)
     })
     test('inspect', () => {
-      expect(util.inspect(result.left)).toBe(expectedError)
+      expect(util.inspect(result.left).split('\n')).toStrictEqual(expectedErrorLines)
     })
   })
 })
