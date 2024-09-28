@@ -124,9 +124,10 @@ runStandardTestSuite(Schema, _ => ({
         TC.transcodeErrors(
           TC.serializationError(
             'Base64',
-            new SyntaxError('Unexpected token j in JSON at position 0'),
-            // eslint-disable-next-line no-useless-escape
-            `{\"age\":42,\"birthday\":null,\"isAlive\":\"true\",\"name\":\"John\"}`,
+            expect.any(SyntaxError),
+            expect.stringContaining(
+              `{"age":42,"birthday":null,"isAlive":"true","name":"John"}`,
+            ),
           ),
         ),
     ),

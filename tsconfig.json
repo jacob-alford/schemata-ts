@@ -20,5 +20,6 @@
       "schemata-ts/*": ["./src/*"]
     }
   },
+  "include": ["./**/*.ts"],
   "exclude": ["build", "dist", "node_modules"]
 }

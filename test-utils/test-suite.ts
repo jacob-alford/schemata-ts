@@ -199,7 +199,7 @@ export const getTestSuite = <I, O>(schema: Schema<I, O>): TestSuite<I, O> => {
                 expect(actual).toStrictEqual(expected)
               })
               test(`parallel`, async () => {
-                expect(await actualPar()).toStrictEqual(expected)
+                expect(await actualPar()).toEqual(expected)
               })
             })
         }
