@@ -17,7 +17,7 @@
         default = pkgs.mkShell {
           packages = with pkgs; [
             yarn
-            nodejs_18
+            nodejs_22
           ];
         };
       });
