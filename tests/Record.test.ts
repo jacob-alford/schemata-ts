@@ -2,6 +2,7 @@ import * as E from 'fp-ts/Either'
 import * as Str from 'fp-ts/string'
 import * as S from 'schemata-ts'
 import * as JS from 'schemata-ts/JsonSchema'
+import * as TC from 'schemata-ts/Transcoder'
 
 import { runStandardTestSuite } from '../test-utils/test-suite'
 
@@ -50,6 +51,12 @@ runStandardTestSuite(Schema, _ => ({
         },
       },
     ),
+    _.decoder.fail(
+      {
+        foo: "bar"
+      },
+      () => TC.transcodeErrors(TC.errorAtKey('foo', TC.typeMismatch("{ a: { quux: Integer }, b: Array<string> }", "bar")))
+    )
   ],
   jsonSchema: expectedJsonSchema,
   typeString: expectedTypeString,
