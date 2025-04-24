@@ -175,7 +175,10 @@ export const StructTranscoderPar: WithStruct<TCP.SchemableLambda> = {
               key.decode(k),
               TE.right(semigroup),
             ),
-            TE.map(O.some),
+            TE.bimap(
+              err => new TCE.TranscodeErrors([new TCE.ErrorAtKey(k, err)]) as any,
+              O.some,
+            ),
             _ => _ as any,
           ),
         ),

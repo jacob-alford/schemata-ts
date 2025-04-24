@@ -114,7 +114,7 @@ export declare const foldMapDepthFirst: <S>(
   readonly UnexpectedValue: (actual: unknown, depth: number) => S
   readonly SerializationError: (expected: string, error: unknown, actual: unknown, depth: number) => S
   readonly ErrorAtIndex: (index: number, errors: S, depth: number) => S
-  readonly ErrorAtKey: (key: string, errors: S, depth: number) => S
+  readonly ErrorAtKey: (key: PropertyKey, errors: S, depth: number) => S
   readonly ErrorAtUnionMember: (member: number | string, errors: S, depth: number) => S
 }) => (e: TranscodeErrors) => S
 ```
@@ -150,7 +150,7 @@ export declare const prefixedLines: (
     readonly UnexpectedValue?: ((actual: unknown) => string) | undefined
     readonly SerializationError?: ((expected: string, error: unknown, actual: unknown) => string) | undefined
     readonly ErrorAtIndex?: ((index: number) => string) | undefined
-    readonly ErrorAtKey?: ((key: string) => string) | undefined
+    readonly ErrorAtKey?: ((key: PropertyKey) => string) | undefined
     readonly ErrorAtUnionMember?: ((member: number | string) => string) | undefined
   }
 ) => (err: TranscodeErrors) => RNEA.ReadonlyNonEmptyArray<string>
@@ -216,7 +216,7 @@ Represents an error at a specific key
 
 ```ts
 export declare class ErrorAtKey {
-  constructor(readonly key: string, readonly errors: TranscodeErrors)
+  constructor(readonly key: PropertyKey, readonly errors: TranscodeErrors)
 }
 ```
 

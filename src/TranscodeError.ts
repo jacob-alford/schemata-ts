@@ -113,7 +113,7 @@ export class ErrorAtIndex {
 export class ErrorAtKey {
   /** @since 2.0.0 */
   readonly _tag = 'ErrorAtKey'
-  constructor(readonly key: string, readonly errors: TranscodeErrors) {}
+  constructor(readonly key: PropertyKey, readonly errors: TranscodeErrors) {}
 }
 
 /**
@@ -208,7 +208,7 @@ export const foldMapDepthFirst =
       depth: number,
     ) => S
     readonly ErrorAtIndex: (index: number, errors: S, depth: number) => S
-    readonly ErrorAtKey: (key: string, errors: S, depth: number) => S
+    readonly ErrorAtKey: (key: PropertyKey, errors: S, depth: number) => S
     readonly ErrorAtUnionMember: (member: number | string, errors: S, depth: number) => S
   }): ((e: TranscodeErrors) => S) =>
     fold(S)({
@@ -263,7 +263,7 @@ export const prefixedLines = (
       actual: unknown,
     ) => string
     readonly ErrorAtIndex?: (index: number) => string
-    readonly ErrorAtKey?: (key: string) => string
+    readonly ErrorAtKey?: (key: PropertyKey) => string
     readonly ErrorAtUnionMember?: (member: number | string) => string
   } = {},
 ): ((err: TranscodeErrors) => RNEA.ReadonlyNonEmptyArray<string>) => {
@@ -276,7 +276,7 @@ export const prefixedLines = (
         error,
       )}; got ${safeShow(actual)}`,
     ErrorAtIndex = index => `at index ${index}:`,
-    ErrorAtKey = key => `at key ${key}:`,
+    ErrorAtKey = key => `at key ${String(key)}:`,
     ErrorAtUnionMember = member => `at union member \`${member}\`:`,
   } = errorStrings
 
